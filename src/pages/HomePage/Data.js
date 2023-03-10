@@ -1,14 +1,14 @@
 export const homeObjOne = {
     primary: true,
-    lightBg: false,
+    lightBg: true,
     lightTopLine: true,
     lightText: true,
     lightTextDesc: true,
-    headline: "Verify your Nigerian identity easily",
+    headline: "Verify your Nigerian identity ",
     description: "How it works",
     buttonLabel: "Verify Identity",
     imgStart: "",
-    img: require("../../images/svg-1.svg"),
+    img: require("../../images/hero-2.svg"),
     alt: "Credit Card",
     start: "",
 };

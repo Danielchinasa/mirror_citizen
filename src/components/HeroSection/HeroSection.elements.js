@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeroSec = styled.div`
     color: #fff;
-    padding: 160px 0;
+    padding: 10px 0px 0px 20px;
     background: ${({lightBg}) => (lightBg ? "#fff" : "#FAFFFB")};
 `;
 
@@ -78,10 +78,11 @@ export const Img = styled.img`
 
 export const Heading = styled.h1`
     margin-bottom: 24px;
+    max-width: 450px;
     font-size: 48px;
     line-height: 1.1;
     font-weight: 600;
-    color: ${({lightText}) => (lightText ? "#f7f8fa" : "#1c2237")};
+    color: ${({lightText}) => (lightText ? "#354138" : "#1c2237")};
 `;
 
 export const Subtitle = styled.p`
@@ -89,5 +90,5 @@ export const Subtitle = styled.p`
     margin-bottom: 35px;
     font-size: 18px;
     line-height: 24px;
-    color: ${({lightTextDesc}) => (lightTextDesc ? "#a9b3c1" : "#1c2237")};
+    color: ${(props) => (props.color === "primary" ? "#09C93A" : props.color === "light" ? "#a9b3c1" : "#1c2237")};
 `;
