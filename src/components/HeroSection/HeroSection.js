@@ -3,20 +3,7 @@ import {HeroSec, HeroRow, HeroColumn, TextWrapper, Heading, Subtitle, ImgWrapper
 import {Container, MainButton} from "../../globalStyles";
 import {Link} from "react-router-dom";
 
-const HeroSection = ({
-    primary,
-    lightBg,
-    lightText,
-    lightTextDesc,
-    primaryTextDesc,
-    headline,
-    description,
-    buttonLabel,
-    img,
-    alt,
-    imgStart,
-    start,
-}) => {
+const HeroSection = ({lightBg, lightText, headline, description, buttonLabel, img, alt, imgStart, start}) => {
     return (
         <>
             <HeroSec lightBg={lightBg}>
