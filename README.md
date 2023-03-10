@@ -1,14 +1,11 @@
-# Product Landing Page Template
+# Product E-Citizen
 
-This gorgeous responsive website is a static landing page built with React, styled-components, react-router, and react hooks. All the components are reusable and can be used for any dynamic content. It's fully responsive for all the platforms and hosted using Netlify
+This repository contains the E-Citizen Front-end built with React, styled-components, react-router, and react hooks. All the components are reusable and can be used for any dynamic content. It's fully responsive for all the platforms.
 
 # Description 
 
-This is a static landing page ususally used for marketting of products. You can navigate to different pages possible due to react-router. I always wanted to learn styled-components and building a project is a practical way to learn it.
-The only challenge I faced is using styled-components, it was intimidating at first and since I used regular CSS and SASS it was weird without any classnames. Atleast styled-components are similar to SASS in terms of nesting. I also need to get used to the different folder structure you make while using styled-components. Anyways I refered to this doc - [styled component doc](https://styled-components.com/).
+e-Citizen allows you to see and verify it. eCitizen is a secure way to verify your Nigerian identity online. It makes it safe, quick and easy to access government services like filing your tax or checking the information on your driving licence and much more
 
-
-[Click here to see the live demo](https://ultra-b73fc5.netlify.app/)
 
 # Tech Stack
 * React
@@ -17,8 +14,7 @@ The only challenge I faced is using styled-components, it was intimidating at fi
 * React Hooks
 
 # Screenshot
-<img src="./UltraDesktop.png" alt="the screenshot of the app large screen"/>
-<img src="./UltraIPhone.png" alt="the screenshot of the app large screen"/>
+<img src="./ECitizen.png" alt="the screenshot of the app large screen"/>
 
 # Credits
-@briandesign
+@danielochinasa
