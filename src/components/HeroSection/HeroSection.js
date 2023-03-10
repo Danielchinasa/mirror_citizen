@@ -8,6 +8,7 @@ const HeroSection = ({
     lightBg,
     lightText,
     lightTextDesc,
+    primaryTextDesc,
     headline,
     description,
     buttonLabel,
@@ -23,13 +24,16 @@ const HeroSection = ({
                     <HeroRow imgStart={imgStart}>
                         <HeroColumn>
                             <TextWrapper>
-                                <Heading lightText={lightText}>{headline}</Heading>
+                                <Heading lightText={lightText} style={{fontFamily: "Poppins"}}>
+                                    {headline}
+                                    <span style={{color: "#09C93A", fontFamily: "Poppins"}}>easily</span>
+                                </Heading>
                                 <Link to="/sign-up">
-                                    <MainButton big fontBig primary={primary}>
+                                    <MainButton big fontBig type="primary">
                                         {buttonLabel}
                                     </MainButton>
                                 </Link>
-                                <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
+                                <Subtitle color="primary">{description}</Subtitle>
                             </TextWrapper>
                         </HeroColumn>
                         <HeroColumn>
