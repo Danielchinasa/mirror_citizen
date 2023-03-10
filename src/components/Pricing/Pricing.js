@@ -1,5 +1,5 @@
 import React from "react";
-import {Button} from "../../globalStyles";
+import {MainButton, OutlineButton} from "../../globalStyles";
 import {GiCrystalBars} from "react-icons/gi";
 import {GiCutDiamond, GiRock} from "react-icons/gi";
 import {IconContext} from "react-icons/lib";
@@ -38,7 +38,7 @@ const Pricing = () => {
                                     <PricingCardFeature>$10,000 Budget</PricingCardFeature>
                                     <PricingCardFeature>Retargeting analytics</PricingCardFeature>
                                 </PricingCardFeatures>
-                                <Button primary>Choose Plan</Button>
+                                <OutlineButton primary>Choose Plan</OutlineButton>
                             </PricingCardInfo>
                         </PricingCard>
                         <PricingCard to="/sign-up">
@@ -54,7 +54,7 @@ const Pricing = () => {
                                     <PricingCardFeature>$50,000 Budget</PricingCardFeature>
                                     <PricingCardFeature>Lead Gen Analytics</PricingCardFeature>
                                 </PricingCardFeatures>
-                                <Button primary>Choose Plan</Button>
+                                <MainButton primary>Choose Plan</MainButton>
                             </PricingCardInfo>
                         </PricingCard>
                         <PricingCard to="/sign-up">
@@ -70,7 +70,7 @@ const Pricing = () => {
                                     <PricingCardFeature>Unlimited Budget</PricingCardFeature>
                                     <PricingCardFeature>24/7 Support</PricingCardFeature>
                                 </PricingCardFeatures>
-                                <Button primary>Choose Plan</Button>
+                                <MainButton primary>Choose Plan</MainButton>
                             </PricingCardInfo>
                         </PricingCard>
                     </PricingContainer>
