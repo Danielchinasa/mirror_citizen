@@ -1,6 +1,6 @@
 import React from "react";
 import {HeroSec, HeroRow, HeroColumn, TextWrapper, Heading, Subtitle, ImgWrapper, Img} from "./HeroSection.elements";
-import {Container, Button} from "../../globalStyles";
+import {Container, MainButton} from "../../globalStyles";
 import {Link} from "react-router-dom";
 
 const HeroSection = ({
@@ -25,9 +25,9 @@ const HeroSection = ({
                             <TextWrapper>
                                 <Heading lightText={lightText}>{headline}</Heading>
                                 <Link to="/sign-up">
-                                    <Button big fontBig primary={primary}>
+                                    <MainButton big fontBig primary={primary}>
                                         {buttonLabel}
-                                    </Button>
+                                    </MainButton>
                                 </Link>
                                 <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
                             </TextWrapper>
