@@ -9,10 +9,9 @@ import {
   StyledLabel,
   MainButton,
   InfoSec,
-  BtnLink,
 } from "../../globalStyles";
 
-const ForgotPassword = () => {
+const CheckPasswordResetLink = () => {
   return (
     <div>
       <Row justify="center">
@@ -48,17 +47,16 @@ const ForgotPassword = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading>Forgot password?</Heading>
+              <Heading>Check your email</Heading>
               <Subtitle color="light">
-                Don’t worry, we’ll send reset instruction
+                We sent a password reset link to samuel.igboji@biosec.com.ng
               </Subtitle>
               <StyledForm>
-                <StyledLabel>Email</StyledLabel>
-                <StyledInput type="text" placeholder="Enter your email" />
-                <BtnLink to="/check-email">
-                  <MainButton type="primary">Reset Password</MainButton>
-                </BtnLink>
+                <MainButton type="primary">Check Email</MainButton>
               </StyledForm>
+              <Subtitle color="light">
+                Didn’t receive an email? Click to resend
+              </Subtitle>
             </InfoSec>
           </CenterText>
         </Col>
@@ -82,4 +80,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default CheckPasswordResetLink;

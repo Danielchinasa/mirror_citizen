@@ -1,4 +1,5 @@
 import styled, {createGlobalStyle} from "styled-components";
+import {Link} from "react-router-dom";
 
 const GlobalStyles = createGlobalStyle`
 * {
@@ -67,6 +68,7 @@ export const MainButton = styled.button`
     ${buttonBaseStyles};
     background-color: ${({type}) => colors[type]};
     color: #ffffff;
+    margin-bottom: 10px;
     border: none;
     width: 100%;
     outline: none;
@@ -143,6 +145,10 @@ export const StyledInput = styled.input`
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 20px;
+`;
+
+export const BtnLink = styled(Link)`
+    text-decoration: none;
 `;
 
 export default GlobalStyles;
