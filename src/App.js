@@ -21,6 +21,11 @@ function App() {
                     token: {
                         colorPrimary: "#09C93A",
                     },
+                    components: {
+                        Input: {
+                            colorPrimary: "#09C93A",
+                        },
+                    },
                 }}
             >
                 <GlobalStyles />

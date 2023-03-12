@@ -164,6 +164,10 @@ export const StyledInput = styled.input`
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 20px;
+    &:focus {
+        outline: none;
+        border-color: #09c93a !important;
+    }
 `;
 
 export const BtnLink = styled(Link)`
