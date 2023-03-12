@@ -10,6 +10,7 @@ import {ConfigProvider} from "antd";
 import LoginPage from "./pages/Login/loginPage";
 import ForgotPassword from "./pages/ForgotPassword/forgotPassword";
 import CheckPasswordResetLink from "./pages/ForgotPassword/checkPasswordResetLink";
+import SetNewPassword from "./pages/ForgotPassword/setNewPassword";
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/login" component={LoginPage} />
                     <Route path="/forgot-password" component={ForgotPassword} />
                     <Route path="/check-email" component={CheckPasswordResetLink} />
+                    <Route path="/set-new-password" component={SetNewPassword} />
                     <Route path="/products" component={Products} />
                     <Route path="/sign-up" component={SignUp} />
                 </Switch>
