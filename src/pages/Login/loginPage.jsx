@@ -1,16 +1,40 @@
+import { Checkbox, Col, Image, Row, Divider } from "antd";
 import React from "react";
-import { Col, Row, Image } from "antd";
 
+import {
+  BtnLink,
+  Heading,
+  Img,
+  InfoSec,
+  MainButtonFull,
+  OutlineButtonFull,
+  StyledForm,
+  StyledInput,
+  StyledLabel,
+  Subtitle,
+} from "../../globalStyles";
 import lady from "../../images/lady.svg";
 import LoginForm from "./loginForm";
 
 const LoginPage = () => {
   return (
     <Row>
-      <Col span={7}>
-        <Image src={lady} />
+      <Col
+        span={8}
+        xs={{ span: 0 }}
+        sm={{ span: 0 }}
+        md={{ span: 8 }}
+        lg={{ span: 8 }}
+      >
+        <Img src={lady} />
       </Col>
-      <Col span={9} offset={2}>
+      <Col
+        span={10}
+        xs={{ span: 24 }}
+        sm={{ span: 24 }}
+        md={{ span: 10 }}
+        lg={{ span: 10 }}
+      >
         <LoginForm />
       </Col>
     </Row>

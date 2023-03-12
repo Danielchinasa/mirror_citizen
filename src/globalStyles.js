@@ -54,6 +54,7 @@ const colors = {
     default: "#155EC2",
     success: "#12AC3F",
     info: "#AE1DC5",
+    light: "#a9b3c1",
 };
 
 const hoverColors = {
@@ -122,6 +123,25 @@ export const OutlineButton = styled.button`
         width: 100%;
     }
 `;
+
+export const OutlineButtonFull = styled.button`
+    ${buttonBaseStyles};
+    background-color: #ffffff;
+    color: ${({type}) => colors[type]};
+    border: ${({type}) => `1px solid ${colors[type]}`};
+    border-radius: 4px;
+    width: 100%;
+    font-size: ${({fontBig}) => (fontBig ? "20px" : "16px")};
+    padding: ${({big}) => (big ? "12px 64px" : "10px 20px")};
+    :hover {
+        transition: all 0.3s ease-out;
+        color: ${({type}) => hoverColors[type]};
+        border: ${({type}) => `1px solid ${hoverColors[type]}`};
+    }
+    @media screen and (max-width: 960px) {
+        width: 100%;
+    }
+`;
 export const InfoSec = styled.div`
     padding-top: 150px;
     padding-bottom: 150px;
@@ -140,7 +160,7 @@ export const CenterText = styled.div`
 `;
 
 export const Subtitle = styled.p`
-    margin-bottom: 35px;
+    margin-bottom: 5px;
     font-size: 18px;
     line-height: 24px;
     font-family: Nunito;
@@ -172,6 +192,15 @@ export const StyledInput = styled.input`
 
 export const BtnLink = styled(Link)`
     text-decoration: none;
+`;
+
+export const Img = styled.img`
+    padding-right: 0;
+    border: 0;
+    max-width: 100%;
+    vertical-align: middle;
+    display: inline-block;
+    max-height: 600px;
 `;
 
 export default GlobalStyles;
