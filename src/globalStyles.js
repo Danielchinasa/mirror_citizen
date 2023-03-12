@@ -102,15 +102,47 @@ export const OutlineButton = styled.button`
     }
 `;
 export const InfoSec = styled.div`
-    padding-top: 160px;
+    padding-top: 150px;
+    padding-bottom: 150px;
     background: #fff;
 `;
 
 export const Heading = styled.h4`
-    font-size: 38px;
-    background: red;
+    font-size: 40px;
     font-weight: 600;
+    font-family: Poppins;
     color: ${({lightText}) => (lightText ? "#f7f8fa" : "#1c2237")};
+`;
+
+export const CenterText = styled.div`
+    text-align: center;
+`;
+
+export const Subtitle = styled.p`
+    margin-bottom: 35px;
+    font-size: 18px;
+    line-height: 24px;
+    font-family: Nunito;
+    color: ${(props) => (props.color === "primary" ? "#09C93A" : props.color === "light" ? "#a9b3c1" : "#1c2237")};
+`;
+
+export const StyledForm = styled.form`
+    padding: 20px;
+`;
+
+export const StyledLabel = styled.label`
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    color: ${(props) => (props.invalid ? "red" : "black")};
+`;
+
+export const StyledInput = styled.input`
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
 `;
 
 export default GlobalStyles;
