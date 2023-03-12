@@ -39,11 +39,11 @@ function Navbar() {
                         <NavMenu onClick={handleClick} click={click}>
                             <NavItemBtn>
                                 {button ? (
-                                    <NavBtnLink to="/sign-up">
+                                    <NavBtnLink to="/login">
                                         <OutlineButton type="primary">LOGIN</OutlineButton>
                                     </NavBtnLink>
                                 ) : (
-                                    <NavBtnLink to="/sign-up">
+                                    <NavBtnLink to="/login">
                                         <OutlineButton onClick={closeMobileMenu} fontBig primary>
                                             LOGIN
                                         </OutlineButton>
