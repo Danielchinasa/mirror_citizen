@@ -8,6 +8,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import ScrollToTop from "./components/ScrollToTop";
 import {ConfigProvider} from "antd";
 import LoginPage from "./pages/Login/loginPage";
+import ForgotPassword from "./pages/ForgotPassword/forgotPassword";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/login" component={LoginPage} />
+                    <Route path="/forgot-password" component={ForgotPassword} />
                     <Route path="/products" component={Products} />
                     <Route path="/sign-up" component={SignUp} />
                 </Switch>
