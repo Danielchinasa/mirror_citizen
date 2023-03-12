@@ -7,7 +7,7 @@ import {
   StyledInput,
   StyledForm,
   StyledLabel,
-  MainButton,
+  MainButtonFull,
   InfoSec,
   BtnLink,
 } from "../../globalStyles";
@@ -56,7 +56,7 @@ const ForgotPassword = () => {
                 <StyledLabel>Email</StyledLabel>
                 <StyledInput type="text" placeholder="Enter your email" />
                 <BtnLink to="/check-email">
-                  <MainButton type="primary">Reset Password</MainButton>
+                  <MainButtonFull type="primary">Reset Password</MainButtonFull>
                 </BtnLink>
               </StyledForm>
             </InfoSec>

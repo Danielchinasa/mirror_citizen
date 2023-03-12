@@ -57,6 +57,7 @@ export const NavMenu = styled.ul`
     align-items: center;
     list-style: none;
     text-align: center;
+    padding-left: 0px !important;
 
     @media screen and (max-width: 960px) {
         display: flex;
@@ -68,6 +69,7 @@ export const NavMenu = styled.ul`
         opacity: 1;
         transition: all 0.5s ease;
         background-color: #101522;
+        padding-left: 0px !important;
         left: ${({click}) => (click ? 0 : "-100%")};
     }
 `;
