@@ -5,7 +5,7 @@ import {
   CenterText,
   Heading,
   InfoSec,
-  MainButton,
+  MainButtonFull,
   StyledForm,
   Subtitle,
 } from "../../globalStyles";
@@ -54,7 +54,7 @@ const PasswordResetConfirm = () => {
                 Your password has been successfully reset, Click below to log in
               </Subtitle>
               <StyledForm>
-                <MainButton type="primary">Continue</MainButton>
+                <MainButtonFull type="primary">Continue</MainButtonFull>
               </StyledForm>
             </InfoSec>
           </CenterText>

@@ -17,7 +17,6 @@ export const HeroRow = styled.div`
 export const HeroColumn = styled.div`
     margin-bottom: 15px;
     padding-right: 15px;
-    padding-left: 15px;
     flex: 1;
     max-width: 50%;
     flex-basis: 50%;
@@ -26,7 +25,7 @@ export const HeroColumn = styled.div`
         max-width: 100%;
         flex-basis: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: left;
     }
 
     @media (min-width: 320px) and (max-width: 480px) {
@@ -34,7 +33,7 @@ export const HeroColumn = styled.div`
         flex-basis: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: left;
     }
 `;
 

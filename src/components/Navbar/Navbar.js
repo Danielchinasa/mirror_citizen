@@ -5,6 +5,7 @@ import {IconContext} from "react-icons/lib";
 import {MainButton, OutlineButton} from "../../globalStyles";
 
 import {ReactComponent as Logo} from "../../images/logo.svg";
+import {Link} from "react-router-dom";
 
 function Navbar() {
     const [click, setClick] = useState(false);
@@ -34,7 +35,9 @@ function Navbar() {
             <IconContext.Provider value={{color: "#000"}}>
                 <Nav>
                     <NavbarContainer>
-                        <Logo style={{marginTop: "10px"}} />
+                        <Link to="/">
+                            <Logo style={{marginTop: "10px"}} />
+                        </Link>
                         <HamburgerIcon onClick={handleClick}>{click ? <FaTimes /> : <FaBars />}</HamburgerIcon>
                         <NavMenu onClick={handleClick} click={click}>
                             <NavItemBtn>

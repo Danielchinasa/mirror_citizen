@@ -68,6 +68,25 @@ export const MainButton = styled.button`
     ${buttonBaseStyles};
     background-color: ${({type}) => colors[type]};
     color: #ffffff;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: ${({fontBig}) => (fontBig ? "20px" : "16px")};
+    padding: ${({big}) => (big ? "12px 64px" : "10px 20px")};
+    :hover {
+        transition: all 0.3s ease-out;
+        background-color: ${({type}) => hoverColors[type]};
+    }
+    @media screen and (max-width: 960px) {
+        width: 100%;
+    }
+`;
+
+export const MainButtonFull = styled.button`
+    ${buttonBaseStyles};
+    background-color: ${({type}) => colors[type]};
+    color: #ffffff;
     margin-bottom: 10px;
     border: none;
     width: 100%;
@@ -145,6 +164,10 @@ export const StyledInput = styled.input`
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 20px;
+    &:focus {
+        outline: none;
+        border-color: #09c93a !important;
+    }
 `;
 
 export const BtnLink = styled(Link)`

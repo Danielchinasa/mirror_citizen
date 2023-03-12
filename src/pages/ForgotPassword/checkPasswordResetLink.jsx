@@ -7,8 +7,9 @@ import {
   StyledInput,
   StyledForm,
   StyledLabel,
-  MainButton,
+  MainButtonFull,
   InfoSec,
+  BtnLink,
 } from "../../globalStyles";
 
 const CheckPasswordResetLink = () => {
@@ -52,7 +53,9 @@ const CheckPasswordResetLink = () => {
                 We sent a password reset link to samuel.igboji@biosec.com.ng
               </Subtitle>
               <StyledForm>
-                <MainButton type="primary">Check Email</MainButton>
+                <BtnLink to="/set-new-password">
+                  <MainButtonFull type="primary">Check Email</MainButtonFull>
+                </BtnLink>
               </StyledForm>
               <Subtitle color="light">
                 Didn’t receive an email? Click to resend
