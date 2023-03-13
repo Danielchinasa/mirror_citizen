@@ -39,7 +39,6 @@ const SignUpForm = () => {
           <Switch
             checkedChildren="Personal"
             unCheckedChildren="Business"
-            checked="true"
             style={{ maxWidth: "100px", marginTop: "15px" }}
           />
         </Col>
