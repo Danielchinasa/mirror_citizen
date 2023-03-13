@@ -192,6 +192,7 @@ export const StyledInput = styled.input`
 
 export const BtnLink = styled(Link)`
     text-decoration: none;
+    color: #09c93a;
 `;
 
 export const Img = styled.img`
