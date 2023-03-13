@@ -1,21 +1,20 @@
-import { Col, Row } from "antd";
 import React from "react";
-
+import { Col, Row } from "antd";
 import { Img } from "../../globalStyles";
-import lady from "../../images/lady.svg";
-import LoginForm from "./loginForm";
+import mr from "../../images/mr.svg";
+import SignUpForm from "./signUpForm";
 
-const LoginPage = () => {
+const SignUpPage = () => {
   return (
     <Row>
       <Col
-        span={8}
+        span={9}
         xs={{ span: 0 }}
         sm={{ span: 0 }}
-        md={{ span: 8 }}
-        lg={{ span: 8 }}
+        md={{ span: 9 }}
+        lg={{ span: 9 }}
       >
-        <Img src={lady} />
+        <Img src={mr} style={{ maxHeight: "750px" }} />
       </Col>
       <Col
         span={10}
@@ -24,10 +23,10 @@ const LoginPage = () => {
         md={{ span: 10 }}
         lg={{ span: 10 }}
       >
-        <LoginForm />
+        <SignUpForm />
       </Col>
     </Row>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Checkbox,
@@ -9,6 +9,7 @@ import {
   Image,
   Row,
   Divider,
+  Switch,
 } from "antd";
 import {
   BtnLink,
@@ -22,15 +23,27 @@ import {
   StyledLabel,
   Subtitle,
 } from "../../globalStyles";
-import { Link } from "react-router-dom";
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
   return (
     <div style={{ marginTop: "50px" }}>
-      <Heading>Login</Heading>
+      <Row justify="space-between">
+        <Col span={20}>
+          {" "}
+          <Heading>Create Account </Heading>
+        </Col>
+        <Col span={4}>
+          <Switch
+            checkedChildren="Personal"
+            unCheckedChildren="Business"
+            checked="true"
+            style={{ maxWidth: "100px", marginTop: "15px" }}
+          />
+        </Col>
+      </Row>
       <StyledForm>
         <Row gutter={10}>
           <Col span={12}>
@@ -51,27 +64,28 @@ const LoginForm = () => {
           </Col>
         </Row>
         <Divider style={{ color: "#000", borderColor: "#a9b3c1" }}>OR</Divider>
+        <StyledLabel>Full name</StyledLabel>
+        <StyledInput type="text" placeholder="Enter your full name" />
         <StyledLabel>Email address</StyledLabel>
-        <StyledInput type="text" placeholder="Enter your email" />
+        <StyledInput type="text" placeholder="Enter your email address" />
+        <StyledLabel>Phone number</StyledLabel>
+        <StyledInput type="text" placeholder="Enter your phone number" />
         <StyledLabel>Password</StyledLabel>
         <StyledInput type="text" placeholder="Enter password" />
-        <Checkbox onChange={onChange}>Remember me</Checkbox>
+        <Checkbox onChange={onChange}>
+          I certify that I have read and accepted the e-citizen Privacy Policy
+          and Terms of Service
+        </Checkbox>
         <BtnLink to="/check-email">
-          <MainButtonFull type="primary">Login</MainButtonFull>
+          <MainButtonFull type="primary">Create Account</MainButtonFull>
         </BtnLink>
         <Subtitle color="light">
-          Don’t have an account?{" "}
-          <span style={{ color: "#09C93A" }}>Register here</span>
-        </Subtitle>
-        <Subtitle color="light">
-          Forgot password?{" "}
-          <span style={{ color: "#09C93A" }}>
-            <BtnLink to="/forgot-password">Click me!</BtnLink>
-          </span>
+          Already have an account?
+          <span style={{ color: "#09C93A" }}> Login</span>
         </Subtitle>
       </StyledForm>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

@@ -4,7 +4,6 @@ import GlobalStyles from "./globalStyles";
 import {Navbar, Footer} from "./components";
 import Home from "./pages/HomePage/Home";
 import Products from "./pages/Products/Products";
-import SignUp from "./pages/SignUp/SignUp";
 import ScrollToTop from "./components/ScrollToTop";
 import {ConfigProvider} from "antd";
 import LoginPage from "./pages/Login/loginPage";
@@ -12,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword/forgotPassword";
 import CheckPasswordResetLink from "./pages/ForgotPassword/checkPasswordResetLink";
 import SetNewPassword from "./pages/ForgotPassword/setNewPassword";
 import PasswordResetConfirm from "./pages/ForgotPassword/passwordResetConfirm";
+import SignUpPage from "./pages/SignUp/signUpPage";
 
 function App() {
     return (
@@ -39,7 +39,7 @@ function App() {
                     <Route path="/set-new-password" component={SetNewPassword} />
                     <Route path="/password-confirm" component={PasswordResetConfirm} />
                     <Route path="/products" component={Products} />
-                    <Route path="/sign-up" component={SignUp} />
+                    <Route path="/sign-up" component={SignUpPage} />
                 </Switch>
                 <Footer />
             </ConfigProvider>

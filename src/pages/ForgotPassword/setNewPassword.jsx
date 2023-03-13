@@ -60,7 +60,7 @@ const SetNewPassword = () => {
                 />
                 <StyledLabel>Confirm password</StyledLabel>
                 <StyledInput type="text" placeholder="Confirm password" />
-                <BtnLink to="/check-email">
+                <BtnLink to="/password-confirm">
                   <MainButtonFull type="primary">Reset Password</MainButtonFull>
                 </BtnLink>
               </StyledForm>
