@@ -12,6 +12,7 @@ import CheckPasswordResetLink from "./pages/ForgotPassword/checkPasswordResetLin
 import SetNewPassword from "./pages/ForgotPassword/setNewPassword";
 import PasswordResetConfirm from "./pages/ForgotPassword/passwordResetConfirm";
 import SignUpPage from "./pages/SignUp/signUpPage";
+import ContactPage from "./pages/Contact/contactPage";
 
 function App() {
     return (
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/check-email" component={CheckPasswordResetLink} />
                     <Route path="/set-new-password" component={SetNewPassword} />
                     <Route path="/password-confirm" component={PasswordResetConfirm} />
+                    <Route path="/contact" component={ContactPage} />
                     <Route path="/products" component={Products} />
                     <Route path="/sign-up" component={SignUpPage} />
                 </Switch>

@@ -143,8 +143,8 @@ export const OutlineButtonFull = styled.button`
     }
 `;
 export const InfoSec = styled.div`
-    padding-top: 150px;
-    padding-bottom: 150px;
+    padding-top: 100px;
+    padding-bottom: 100px;
     background: #fff;
 `;
 
@@ -184,9 +184,25 @@ export const StyledInput = styled.input`
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 20px;
+    background: rgba(53, 65, 56, 0.1);
     &:focus {
         outline: none;
         border-color: #09c93a !important;
+        background: #fff;
+    }
+`;
+
+export const StyledTextArea = styled.textarea`
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background: rgba(53, 65, 56, 0.1);
+    &:focus {
+        outline: none;
+        border-color: #09c93a !important;
+        background: #fff;
     }
 `;
 
