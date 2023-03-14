@@ -1,7 +1,7 @@
-import { Checkbox, Col, DatePicker, Row, Select, Upload, message } from "antd";
-import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
 import { CloudUploadOutlined } from "@ant-design/icons";
+import { Checkbox, Col, DatePicker, message, Row, Select, Upload } from "antd";
+import dayjs from "dayjs";
+import React, { useState } from "react";
 import {
   Container,
   Heading,
@@ -11,7 +11,6 @@ import {
   InfoSec,
   MainButtonFull,
   OutlineButtonFull,
-  StyledForm,
   StyledInput,
   StyledLabel,
 } from "../../globalStyles";
@@ -49,11 +48,6 @@ const DashboardPage = () => {
   const [disableStep2, setDisableStep2] = useState(true);
   const [disableStep3, setDisableStep3] = useState(true);
   const [verificationMethod, setVerificationMethod] = useState(undefined);
-
-  const handleClick = (event) => {
-    console.log(verificationMethod);
-    event.preventDefault();
-  };
 
   return (
     <Row>
@@ -223,17 +217,17 @@ const DashboardPage = () => {
                 ]}
               />
               <div style={{ marginTop: "20px" }}>
-                {verificationMethod == "1" ? (
+                {verificationMethod === "1" ? (
                   <>
                     <StyledLabel>National Identity Number(NIN)</StyledLabel>
                     <StyledInput placeholder="Enter your NIN" />
                   </>
-                ) : verificationMethod == "3" ? (
+                ) : verificationMethod === "3" ? (
                   <>
                     <StyledLabel>Phone number</StyledLabel>
                     <StyledInput placeholder="Enter your Phone number" />
                   </>
-                ) : verificationMethod == "4" ? (
+                ) : verificationMethod === "4" ? (
                   <>
                     <StyledLabel>First Name</StyledLabel>
                     <StyledInput placeholder="Enter your First Name" />
@@ -289,7 +283,7 @@ const DashboardPage = () => {
                       </Col>
                     </Row>
                   </>
-                ) : verificationMethod == "2" ? (
+                ) : verificationMethod === "2" ? (
                   <div>
                     <StyledLabel>Upload Finger</StyledLabel>
                     <Dragger {...props}>

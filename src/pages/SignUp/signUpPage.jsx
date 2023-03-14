@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row } from "antd";
 import { Img } from "../../globalStyles";
-import mr from "../../images/mr.svg";
+import reg from "../../images/reg.jpg";
 import SignUpForm from "./signUpForm";
 
 const SignUpPage = () => {
@@ -14,7 +14,7 @@ const SignUpPage = () => {
         md={{ span: 9 }}
         lg={{ span: 9 }}
       >
-        <Img src={mr} style={{ maxHeight: "750px" }} />
+        <Img src={reg} style={{ maxHeight: "750px" }} />
       </Col>
       <Col
         span={10}
