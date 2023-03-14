@@ -128,6 +128,7 @@ export const OutlineButtonFull = styled.button`
     ${buttonBaseStyles};
     background-color: #ffffff;
     color: ${({type}) => colors[type]};
+    margin-bottom: 10px;
     border: ${({type}) => `1px solid ${colors[type]}`};
     border-radius: 4px;
     width: 100%;
@@ -143,14 +144,28 @@ export const OutlineButtonFull = styled.button`
     }
 `;
 export const InfoSec = styled.div`
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 80px;
+    padding-bottom: 80px;
     background: #fff;
 `;
 
-export const Heading = styled.h4`
+export const Heading = styled.h1`
     font-size: 40px;
     font-weight: 600;
+    font-family: Poppins;
+    color: ${({lightText}) => (lightText ? "#f7f8fa" : "#1c2237")};
+`;
+
+export const Heading6 = styled.h6`
+    font-size: 20px;
+    font-weight: 300;
+    font-family: Poppins;
+    color: ${({lightText}) => (lightText ? "#f7f8fa" : "#1c2237")};
+`;
+
+export const Heading4 = styled.h4`
+    font-size: 30px;
+    font-weight: 300;
     font-family: Poppins;
     color: ${({lightText}) => (lightText ? "#f7f8fa" : "#1c2237")};
 `;

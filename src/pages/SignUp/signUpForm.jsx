@@ -1,21 +1,8 @@
 import React from "react";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Space,
-  Col,
-  Image,
-  Row,
-  Divider,
-  Switch,
-} from "antd";
+import { Checkbox, Space, Col, Row, Divider, Switch } from "antd";
 import {
   BtnLink,
   Heading,
-  Img,
-  InfoSec,
   MainButtonFull,
   OutlineButtonFull,
   StyledForm,
@@ -48,7 +35,10 @@ const SignUpForm = () => {
           <Col span={12}>
             <OutlineButtonFull type="light">
               <Space size={10}>
-                <img src="https://img.icons8.com/color/30/null/google-logo.png" />
+                <img
+                  src="https://img.icons8.com/color/30/null/google-logo.png"
+                  alt=""
+                />
                 Continue with Google
               </Space>
             </OutlineButtonFull>
@@ -56,7 +46,10 @@ const SignUpForm = () => {
           <Col span={12}>
             <OutlineButtonFull type="light">
               <Space size={10}>
-                <img src="https://img.icons8.com/color/30/null/facebook-circled--v1.png" />
+                <img
+                  src="https://img.icons8.com/color/30/null/facebook-circled--v1.png"
+                  alt=""
+                />
                 Continue with Google
               </Space>
             </OutlineButtonFull>

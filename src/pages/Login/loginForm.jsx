@@ -1,20 +1,8 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Space,
-  Col,
-  Image,
-  Row,
-  Divider,
-} from "antd";
+import React from "react";
+import { Checkbox, Space, Col, Row, Divider } from "antd";
 import {
   BtnLink,
   Heading,
-  Img,
-  InfoSec,
   MainButtonFull,
   OutlineButtonFull,
   StyledForm,
@@ -22,7 +10,6 @@ import {
   StyledLabel,
   Subtitle,
 } from "../../globalStyles";
-import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const onChange = (e) => {
@@ -36,7 +23,10 @@ const LoginForm = () => {
           <Col span={12}>
             <OutlineButtonFull type="light">
               <Space size={10}>
-                <img src="https://img.icons8.com/color/30/null/google-logo.png" />
+                <img
+                  src="https://img.icons8.com/color/30/null/google-logo.png"
+                  alt="google_logo"
+                />
                 Continue with Google
               </Space>
             </OutlineButtonFull>
@@ -44,7 +34,10 @@ const LoginForm = () => {
           <Col span={12}>
             <OutlineButtonFull type="light">
               <Space size={10}>
-                <img src="https://img.icons8.com/color/30/null/facebook-circled--v1.png" />
+                <img
+                  src="https://img.icons8.com/color/30/null/facebook-circled--v1.png"
+                  alt="facebook_logo"
+                />
                 Continue with Google
               </Space>
             </OutlineButtonFull>
@@ -56,7 +49,7 @@ const LoginForm = () => {
         <StyledLabel>Password</StyledLabel>
         <StyledInput type="text" placeholder="Enter password" />
         <Checkbox onChange={onChange}>Remember me</Checkbox>
-        <BtnLink to="/check-email">
+        <BtnLink to="/dashboard">
           <MainButtonFull type="primary">Login</MainButtonFull>
         </BtnLink>
         <Subtitle color="light">
