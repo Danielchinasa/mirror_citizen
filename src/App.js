@@ -14,6 +14,8 @@ import PasswordResetConfirm from "./pages/ForgotPassword/passwordResetConfirm";
 import SignUpPage from "./pages/SignUp/signUpPage";
 import ContactPage from "./pages/Contact/contactPage";
 import DashboardPage from "./pages/dashboard/dashboardPage";
+import Disclaimer from "./pages/disclaimer/disclaimer";
+import Consent from "./pages/consent/consent";
 
 function App() {
     return (
@@ -42,6 +44,8 @@ function App() {
                     <Route path="/password-confirm" component={PasswordResetConfirm} />
                     <Route path="/contact" component={ContactPage} />
                     <Route path="/dashboard" component={DashboardPage} />
+                    <Route path="/disclaimer" component={Disclaimer} />
+                    <Route path="/consent" component={Consent} />
                     <Route path="/products" component={Products} />
                     <Route path="/sign-up" component={SignUpPage} />
                 </Switch>
