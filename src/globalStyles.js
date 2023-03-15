@@ -51,7 +51,7 @@ const buttonBaseStyles = createGlobalStyle`
 const colors = {
     primary: "#09C93A",
     warning: "#E10D30",
-    default: "#155EC2",
+    disabled: "#F2F2F2",
     success: "#12AC3F",
     info: "#AE1DC5",
     light: "#a9b3c1",
@@ -100,6 +100,24 @@ export const MainButtonFull = styled.button`
         transition: all 0.3s ease-out;
         background-color: ${({type}) => hoverColors[type]};
     }
+    @media screen and (max-width: 960px) {
+        width: 100%;
+    }
+`;
+
+export const DisabledButtonFull = styled.button`
+    ${buttonBaseStyles};
+    background-color: background: rgba(53, 65, 56, 0.1);
+    color: #A9A9A9;
+    margin-bottom: 10px;
+    border: none;
+    width: 100%;
+    outline: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: ${({fontBig}) => (fontBig ? "20px" : "16px")};
+    padding: ${({big}) => (big ? "12px 64px" : "10px 20px")};
+    
     @media screen and (max-width: 960px) {
         width: 100%;
     }

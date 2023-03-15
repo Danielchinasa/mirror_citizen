@@ -13,6 +13,7 @@ import {
   OutlineButtonFull,
   StyledInput,
   StyledLabel,
+  DisabledButtonFull,
 } from "../../globalStyles";
 import banner from "../../images/banner.png";
 
@@ -47,6 +48,7 @@ const DashboardPage = () => {
   const [step3, setStep3] = useState(false);
   const [disableStep2, setDisableStep2] = useState(true);
   const [disableStep3, setDisableStep3] = useState(true);
+  const [disablePayment, setDisablePayment] = useState(true);
   const [verificationMethod, setVerificationMethod] = useState(undefined);
 
   return (
@@ -185,6 +187,7 @@ const DashboardPage = () => {
                 value={verificationMethod}
                 onChange={(event) => {
                   setVerificationMethod(event);
+                  setDisablePayment(false);
                   return false;
                 }}
                 placeholder="Select Verification method"
@@ -321,9 +324,13 @@ const DashboardPage = () => {
               </Checkbox>
             </strong>
             <Heading4>Default fee: ₦200</Heading4>
-            <MainButtonFull type="primary">
-              Make payment & get result
-            </MainButtonFull>
+            {disablePayment ? (
+              <DisabledButtonFull>Make payment & get result</DisabledButtonFull>
+            ) : (
+              <MainButtonFull type="primary">
+                Make payment & get result
+              </MainButtonFull>
+            )}
           </Col>
         </Row>
       </Container>
