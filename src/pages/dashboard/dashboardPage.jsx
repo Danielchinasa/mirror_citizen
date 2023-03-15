@@ -2,6 +2,7 @@ import { CloudUploadOutlined } from "@ant-design/icons";
 import { Checkbox, Col, DatePicker, message, Row, Select, Upload } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Heading,
@@ -327,9 +328,11 @@ const DashboardPage = () => {
             {disablePayment ? (
               <DisabledButtonFull>Make payment & get result</DisabledButtonFull>
             ) : (
-              <MainButtonFull type="primary">
-                Make payment & get result
-              </MainButtonFull>
+              <Link to="/disclaimer">
+                <MainButtonFull type="primary">
+                  Make payment & get result
+                </MainButtonFull>
+              </Link>
             )}
           </Col>
         </Row>
