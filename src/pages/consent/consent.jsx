@@ -1,14 +1,6 @@
 import React from "react";
-import { Col, Row, Spin } from "antd";
-import { Link } from "react-router-dom";
-import {
-  Subtitle,
-  Heading,
-  OutlineButton,
-  MainButton,
-  InfoSec,
-  BtnLink,
-} from "../../globalStyles";
+import { Col, Spin } from "antd";
+import { Subtitle, Heading, InfoSec, BtnLink } from "../../globalStyles";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const antIcon = (

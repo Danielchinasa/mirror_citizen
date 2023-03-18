@@ -16,6 +16,7 @@ import ContactPage from "./pages/Contact/contactPage";
 import DashboardPage from "./pages/dashboard/dashboardPage";
 import Disclaimer from "./pages/disclaimer/disclaimer";
 import Consent from "./pages/consent/consent";
+import Result from "./pages/result/result";
 
 function App() {
     return (
@@ -46,6 +47,7 @@ function App() {
                     <Route path="/dashboard" component={DashboardPage} />
                     <Route path="/disclaimer" component={Disclaimer} />
                     <Route path="/consent" component={Consent} />
+                    <Route path="/result" component={Result} />
                     <Route path="/products" component={Products} />
                     <Route path="/sign-up" component={SignUpPage} />
                 </Switch>
