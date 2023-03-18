@@ -17,6 +17,7 @@ import DashboardPage from "./pages/dashboard/dashboardPage";
 import Disclaimer from "./pages/disclaimer/disclaimer";
 import Consent from "./pages/consent/consent";
 import Result from "./pages/result/result";
+import ProfilePage from "./pages/profile/profilePage";
 
 function App() {
     return (
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/disclaimer" component={Disclaimer} />
                     <Route path="/consent" component={Consent} />
                     <Route path="/result" component={Result} />
+                    <Route path="/profile" component={ProfilePage} />
                     <Route path="/products" component={Products} />
                     <Route path="/sign-up" component={SignUpPage} />
                 </Switch>
