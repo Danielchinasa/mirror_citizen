@@ -2,6 +2,7 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React from "react";
 import {
+  BtnLink,
   CenterText,
   Heading,
   InfoSec,
@@ -54,7 +55,9 @@ const PasswordResetConfirm = () => {
                 Your password has been successfully reset, Click below to log in
               </Subtitle>
               <StyledForm>
-                <MainButtonFull type="primary">Continue</MainButtonFull>
+                <BtnLink to="/main-dashboard">
+                  <MainButtonFull type="primary">Continue</MainButtonFull>
+                </BtnLink>
               </StyledForm>
             </InfoSec>
           </CenterText>

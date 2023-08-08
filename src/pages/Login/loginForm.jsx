@@ -54,7 +54,9 @@ const LoginForm = () => {
         </BtnLink>
         <Subtitle color="light">
           Don’t have an account?{" "}
-          <span style={{ color: "#09C93A" }}>Register here</span>
+          <BtnLink to="/sign-up">
+            <span style={{ color: "#09C93A" }}>Register here</span>
+          </BtnLink>
         </Subtitle>
         <Subtitle color="light">
           Forgot password?{" "}

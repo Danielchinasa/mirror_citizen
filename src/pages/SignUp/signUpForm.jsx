@@ -71,9 +71,13 @@ const SignUpForm = () => {
         <BtnLink to="/check-email">
           <MainButtonFull type="primary">Create Account</MainButtonFull>
         </BtnLink>
+
         <Subtitle color="light">
           Already have an account?
-          <span style={{ color: "#09C93A" }}> Login</span>
+          <BtnLink to="/login">
+            {" "}
+            <span style={{ color: "#09C93A" }}> Login</span>
+          </BtnLink>
         </Subtitle>
       </StyledForm>
     </div>

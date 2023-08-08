@@ -15,7 +15,7 @@ const HeroSection = ({lightBg, lightText, headline, description, buttonLabel, im
                                     {headline}
                                     <span style={{color: "#09C93A", fontFamily: "Poppins"}}>easily</span>
                                 </Heading>
-                                <Link to="/sign-up">
+                                <Link to="/login">
                                     <MainButton big fontBig type="primary">
                                         {buttonLabel}
                                     </MainButton>

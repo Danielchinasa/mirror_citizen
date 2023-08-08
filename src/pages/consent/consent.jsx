@@ -31,7 +31,7 @@ const Consent = () => {
               currently awaiting their response. You can track the progress via
               the dashboard. Thank you for your patience.
             </Subtitle>
-            <BtnLink to="/dashboard">
+            <BtnLink to="/result">
               <Subtitle color="primary" style={{ marginTop: "50px" }}>
                 Return to Dashboard
               </Subtitle>

@@ -53,23 +53,23 @@ const data = [
   {
     key: "1",
     name: "John Brown",
-    agency: 32,
+    agency: "NIMC",
     email: "New York No. 1 Lake Park",
-    expires: ["nice", "developer"],
+    expires: ["2024/03/13"],
   },
   {
     key: "2",
     name: "Jim Green",
-    agency: 42,
+    agency: "NIMC",
     email: "London No. 1 Lake Park",
-    expires: ["loser"],
+    expires: ["2024/03/16"],
   },
   {
     key: "3",
     name: "Joe Black",
-    agency: 32,
+    agency: "NIMC",
     email: "Sydney No. 1 Lake Park",
-    expires: ["cool", "teacher"],
+    expires: ["2024/03/16"],
   },
 ];
 
