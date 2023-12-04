@@ -1,29 +1,16 @@
 import React from "react";
-import { Col, Row } from "antd";
-import { Img } from "../../globalStyles";
+import { Col, Row, Image } from "antd";
 import reg from "../../images/reg.jpg";
-import SignUpForm from "./signUpForm";
+import SignUpMode from "./signUpMode";
 
 const SignUpPage = () => {
   return (
     <Row>
-      <Col
-        span={9}
-        xs={{ span: 0 }}
-        sm={{ span: 0 }}
-        md={{ span: 9 }}
-        lg={{ span: 9 }}
-      >
-        <Img src={reg} style={{ maxHeight: "750px" }} />
+      <Col span={8} sm={0} xs={0} md={8} lg={8}>
+        <Image src={reg} preview={false} />
       </Col>
-      <Col
-        span={10}
-        xs={{ span: 24 }}
-        sm={{ span: 24 }}
-        md={{ span: 10 }}
-        lg={{ span: 10 }}
-      >
-        <SignUpForm />
+      <Col span={13} sm={24} xs={24} md={13} lg={13}>
+        <SignUpMode />
       </Col>
     </Row>
   );
