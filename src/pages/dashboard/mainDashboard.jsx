@@ -77,25 +77,59 @@ const MainDashboard = () => {
   return (
     <Container>
       <InfoSec>
-        <Card
+        {/* <Card
           style={{
             width: "100%",
           }}
         >
           <Heading4>Dashboard</Heading4>
           <Subtitle>Contains all previous activities carried out</Subtitle>
-        </Card>
-        <Row gutter={3} style={{ marginTop: "30px" }}>
+        </Card> */}
+        <Row gutter={20}>
           <Col
             span={6}
             xs={{ span: 24 }}
             sm={{ span: 24 }}
-            md={{ span: 6 }}
-            lg={{ span: 6 }}
+            md={{ span: 8 }}
+            lg={{ span: 8 }}
           >
-            <Card style={{ backgroundColor: "#DFF7E4" }}>
+            <Card style={{ backgroundColor: "#DFF7E4", marginTop: "10px" }}>
               <Statistic
-                title="Verifications"
+                title="Total verification "
+                value={124}
+                valueStyle={{
+                  color: "#3f8600",
+                }}
+              />
+            </Card>
+          </Col>
+          <Col
+            span={6}
+            xs={{ span: 24 }}
+            sm={{ span: 24 }}
+            md={{ span: 8 }}
+            lg={{ span: 8 }}
+          >
+            <Card style={{ backgroundColor: "#DFF7E4", marginTop: "10px" }}>
+              <Statistic
+                title="Successful verification "
+                value={124}
+                valueStyle={{
+                  color: "#3f8600",
+                }}
+              />
+            </Card>
+          </Col>
+          <Col
+            span={6}
+            xs={{ span: 24 }}
+            sm={{ span: 24 }}
+            md={{ span: 8 }}
+            lg={{ span: 8 }}
+          >
+            <Card style={{ backgroundColor: "#DFF7E4", marginTop: "10px" }}>
+              <Statistic
+                title="Failed verification "
                 value={124}
                 valueStyle={{
                   color: "#3f8600",

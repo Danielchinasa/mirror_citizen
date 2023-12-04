@@ -92,9 +92,11 @@ const BusinessSignUp2 = () => {
                 <StyledLabel>Confirm password</StyledLabel>
                 <StyledInput type="text" placeholder="Re-enter the password " />
               </StyledForm>
-              <Button type="primary" block size="large">
-                Proceed
-              </Button>
+              <BtnLink to={"/verify-otp"}>
+                <Button type="primary" block size="large">
+                  Proceed
+                </Button>
+              </BtnLink>
             </Space>
           </div>
         </Col>

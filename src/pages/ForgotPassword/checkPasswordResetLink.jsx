@@ -56,7 +56,8 @@ const CheckPasswordResetLink = () => {
                 </BtnLink>
               </StyledForm>
               <Subtitle color="light">
-                Didn’t receive an email? Click to resend
+                Didn’t receive an email?{" "}
+                <strong style={{ color: "#09C93A" }}>Click to resend</strong>
               </Subtitle>
             </InfoSec>
           </CenterText>
