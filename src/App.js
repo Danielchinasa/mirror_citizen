@@ -22,6 +22,8 @@ import ProfilePage from "./pages/profile/profilePage";
 import MainDashboard from "./pages/dashboard/mainDashboard";
 import BusinessSignUp from "./pages/SignUp/businessSignUp";
 import BusinessSignUp2 from "./pages/SignUp/businessSignUp2";
+import VerifyOtp from "./pages/otp/verifyOtp";
+import EmailVerifiedConfirm from "./pages/otp/emailVerifiedConfirm";
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/login" component={LoginPage} />
           <Route path="/forgot-password" component={ForgotPassword} />
+          <Route path="/verify-otp" component={VerifyOtp} />
+          <Route path="/email-confirm" component={EmailVerifiedConfirm} />
           <Route path="/check-email" component={CheckPasswordResetLink} />
           <Route path="/set-new-password" component={SetNewPassword} />
           <Route path="/password-confirm" component={PasswordResetConfirm} />

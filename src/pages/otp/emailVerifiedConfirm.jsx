@@ -1,18 +1,18 @@
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { Col, Row, Typography } from "antd";
 import React from "react";
-import { Col, Row } from "antd";
 import {
+  BtnLink,
   CenterText,
   Heading,
-  Subtitle,
-  StyledInput,
-  StyledForm,
-  StyledLabel,
-  MainButtonFull,
   InfoSec,
-  BtnLink,
+  MainButtonFull,
+  StyledForm,
+  Subtitle,
 } from "../../globalStyles";
+const { Title } = Typography;
 
-const ForgotPassword = () => {
+const EmailVerifiedConfirm = () => {
   return (
     <div>
       <Row justify="center">
@@ -48,18 +48,15 @@ const ForgotPassword = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading>Forgot password?</Heading>
+              <CheckCircleOutlined
+                style={{ fontSize: "92px", color: "#09C93A" }}
+              />
+              <Title>Email verified successfully</Title>
               <Subtitle color="light">
-                Enter the email that is associated with your account and we’ll
-                send you instructions on how to recover your account.
+                Congratulations! Your email has been successfully verified. You
+                can now enjoy full access to all the features and benefits of
+                our platform.
               </Subtitle>
-              <StyledForm>
-                <StyledLabel>Email</StyledLabel>
-                <StyledInput type="text" placeholder="Enter your email" />
-                <BtnLink to="/check-email">
-                  <MainButtonFull type="primary">Reset</MainButtonFull>
-                </BtnLink>
-              </StyledForm>
             </InfoSec>
           </CenterText>
         </Col>
@@ -83,4 +80,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default EmailVerifiedConfirm;

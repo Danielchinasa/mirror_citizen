@@ -85,7 +85,7 @@ const IndividualSignUp = () => {
                   Policy
                 </Checkbox>
               </StyledForm>
-              <BtnLink to={"/products"}>
+              <BtnLink to={"/verify-otp"}>
                 <Button type="primary" block size="large">
                   Proceed
                 </Button>
