@@ -19,31 +19,6 @@ const LoginForm = () => {
     <div style={{ marginTop: "50px" }}>
       <Heading>Login</Heading>
       <StyledForm>
-        <Row gutter={10}>
-          <Col span={12}>
-            <OutlineButtonFull type="light">
-              <Space size={10}>
-                <img
-                  src="https://img.icons8.com/color/30/null/google-logo.png"
-                  alt="google_logo"
-                />
-                Continue with Google
-              </Space>
-            </OutlineButtonFull>
-          </Col>
-          <Col span={12}>
-            <OutlineButtonFull type="light">
-              <Space size={10}>
-                <img
-                  src="https://img.icons8.com/color/30/null/facebook-circled--v1.png"
-                  alt="facebook_logo"
-                />
-                Continue with Google
-              </Space>
-            </OutlineButtonFull>
-          </Col>
-        </Row>
-        <Divider style={{ color: "#000", borderColor: "#a9b3c1" }}>OR</Divider>
         <StyledLabel>Email address</StyledLabel>
         <StyledInput type="text" placeholder="Enter your email" />
         <StyledLabel>Password</StyledLabel>
