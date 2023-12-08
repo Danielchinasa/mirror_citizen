@@ -1,40 +1,71 @@
 import React, { useState } from "react";
-import {
-  Image,
-  Typography,
-  Button,
-  Avatar,
-  List,
-  Space,
-  Col,
-  Row,
-  Checkbox,
-} from "antd";
-import individual from "../../images/individual.svg";
-import Corporate from "../../images/Corporate.svg";
+import { useHistory } from "react-router-dom";
+import { Image, Typography, Button, Alert, Space, Col, Row } from "antd";
 import reg from "../../images/reg.jpg";
-import slide from "../../images/slide.svg";
 import {
   BtnLink,
   StyledForm,
   StyledInput,
   StyledLabel,
-  Subtitle,
 } from "../../globalStyles";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import slide from "../../images/slide.svg";
 const { Title } = Typography;
 
 const BusinessSignUp = () => {
-  const data = [
-    {
-      title: "Ant Design Title 1",
-    },
-  ];
-  const [selectedDiv, setSelectedDiv] = useState(null);
+  const history = useHistory();
+  const [formData, setFormData] = useState({
+    businessName: "",
+    rcNumber: "",
+    officeAddress: "",
+  });
 
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+  const [formErrors, setFormErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+
+    // Business Name
+    if (!formData.businessName) {
+      errors.businessName = "Please enter your business name";
+    }
+
+    // RC Number
+    if (!formData.rcNumber) {
+      errors.rcNumber = "Please enter your RC number";
+    }
+
+    // Office Address
+    if (!formData.officeAddress) {
+      errors.officeAddress = "Please enter your office address";
+    }
+
+    return errors;
   };
+
+  const handleInputChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+    setFormErrors({ ...formErrors, [name]: null });
+  };
+
+  const handleNext = (event) => {
+    event.preventDefault();
+
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    // If validation passes, proceed with the next step or API call
+    // For now, let's store the form data in localStorage and log it
+    localStorage.setItem("businessFormData", JSON.stringify(formData));
+    console.log(JSON.stringify(formData));
+
+    // Navigate to the next page
+    history.push("/individual/sign-up/3");
+  };
+
   return (
     <>
       <Row>
@@ -71,22 +102,70 @@ const BusinessSignUp = () => {
                 display: "flex",
               }}
             >
-              <StyledForm>
+              <StyledForm onSubmit={handleNext}>
+                {formErrors.general && (
+                  <Alert
+                    message={formErrors.general}
+                    type="error"
+                    showIcon
+                    style={{ marginBottom: "16px" }}
+                  />
+                )}
+
                 <StyledLabel>Business name</StyledLabel>
                 <StyledInput
                   type="text"
                   placeholder="Enter your business name"
+                  name="businessName"
+                  value={formData.businessName}
+                  onChange={(e) =>
+                    handleInputChange("businessName", e.target.value)
+                  }
                 />
+                {formErrors.businessName && (
+                  <Alert
+                    message={formErrors.businessName}
+                    type="error"
+                    showIcon
+                  />
+                )}
+
                 <StyledLabel>RC Number</StyledLabel>
-                <StyledInput type="text" placeholder="Enter your RC number" />
+                <StyledInput
+                  type="text"
+                  placeholder="Enter your RC number"
+                  name="rcNumber"
+                  value={formData.rcNumber}
+                  onChange={(e) =>
+                    handleInputChange("rcNumber", e.target.value)
+                  }
+                />
+                {formErrors.rcNumber && (
+                  <Alert message={formErrors.rcNumber} type="error" showIcon />
+                )}
+
                 <StyledLabel>Office address</StyledLabel>
-                <StyledInput type="text" placeholder="Enter office address" />
-              </StyledForm>
-              <BtnLink to={"/individual/sign-up/3"}>
-                <Button type="primary" block size="large">
+                <StyledInput
+                  type="text"
+                  placeholder="Enter office address"
+                  name="officeAddress"
+                  value={formData.officeAddress}
+                  onChange={(e) =>
+                    handleInputChange("officeAddress", e.target.value)
+                  }
+                />
+                {formErrors.officeAddress && (
+                  <Alert
+                    message={formErrors.officeAddress}
+                    type="error"
+                    showIcon
+                  />
+                )}
+
+                <Button type="primary" block size="large" htmlType="submit">
                   Next
                 </Button>
-              </BtnLink>
+              </StyledForm>
             </Space>
           </div>
         </Col>
