@@ -1,11 +1,13 @@
 // src/redux/actions.js
 import axios from "axios";
 import baseUrl from "../apiConfig";
+import { persistor } from "../redux/store";
 
 export const signIn = (credentials) => async (dispatch) => {
   try {
     const response = await axios.post(`${baseUrl}/login`, credentials);
     const userData = response.data;
+    console.log("User Data:", userData);
 
     dispatch({
       type: "SIGN_IN",
@@ -98,6 +100,12 @@ export const BusinessSignUp = (credentials) => async (dispatch) => {
   }
 };
 
-export const logout = () => ({
-  type: "LOGOUT",
-});
+export const logout = () => async (dispatch) => {
+  // Clear the persisted state asynchronously
+  await persistor.purge();
+
+  // Dispatch the logout action after the state is cleared
+  dispatch({
+    type: "LOGOUT",
+  });
+};
