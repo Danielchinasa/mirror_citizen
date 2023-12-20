@@ -1,55 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Statistic, Space, Table, Tag, Tabs } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+import { fetchVerificationData } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a href="/">{text}</a>,
-  },
-  {
-    title: "Agency",
-    dataIndex: "agency",
-    key: "agency",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Expires",
-    key: "expires",
-    dataIndex: "expires",
-    render: (_, { expires }) => (
-      <>
-        {expires.map((expire) => {
-          let color = expire.length > 5 ? "geekblue" : "green";
-          if (expire === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={expire}>
-              {expire.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a href="/">Invite {record.name}</a>
-      </Space>
-    ),
-  },
-];
 const data = [
   {
     key: "1",
@@ -76,24 +31,6 @@ const data = [
 const onChange = (key) => {
   console.log(key);
 };
-const items = [
-  {
-    key: "1",
-    label: "Verification History",
-    children: (
-      <Row>
-        <Col span={24}>
-          <Table columns={columns} dataSource={data} />
-        </Col>
-      </Row>
-    ),
-  },
-  {
-    key: "2",
-    label: "Transaction Logs",
-    children: "Content of Tab Pane 2",
-  },
-];
 
 const config = {
   public_key: "FLWPUBK-**************************-X",
@@ -116,7 +53,74 @@ const config = {
 // const handleFlutterPayment = useFlutterwave(config);
 
 const MainDashboard = () => {
+  const dispatch = useDispatch();
+  const verificationData = useSelector((state) => state.verificationData);
+  const user = useSelector((state) => state.user);
+  const userToken = user?.jwtToken || "";
   const handleFlutterPayment = useFlutterwave(config);
+
+  useEffect(() => {
+    // Dispatch the fetchVerificationData action with the bearer token when the component mounts
+    if (userToken) {
+      dispatch(fetchVerificationData(userToken));
+    }
+  }, [dispatch, userToken]);
+
+  // Log the verificationData to the console
+  useEffect(() => {
+    console.log("Verification Data:", verificationData);
+  }, [verificationData]);
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => <a href="/">{text}</a>,
+    },
+    {
+      title: "Agency",
+      dataIndex: "agency",
+      key: "agency",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Expires",
+      key: "expires",
+      dataIndex: "expires",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <a href="/">Invite {record.name}</a>
+        </Space>
+      ),
+    },
+  ];
+  const items = [
+    {
+      key: "1",
+      label: "Verification History",
+      children: (
+        <Row>
+          <Col span={24}>
+            <Table columns={columns} dataSource={verificationData} />
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      key: "2",
+      label: "Transaction Logs",
+      children: "Content of Tab Pane 2",
+    },
+  ];
   return (
     <Container>
       <InfoSec>
@@ -164,6 +168,7 @@ const MainDashboard = () => {
                 background: "#EBFFF0",
               }}
             >
+              fdojo
               <Statistic
                 title="Successful verification "
                 value={450}
@@ -204,23 +209,22 @@ const MainDashboard = () => {
           </Col>
         </Row>
         <div style={{ marginTop: "30px" }}>
-          <Space direction="horizontal" align="center">
-            <Heading4>Recent Activities</Heading4>
-            <MainButton
-              type="primary"
-              onClick={() => {
-                handleFlutterPayment({
-                  callback: (response) => {
-                    console.log(response);
-                    closePaymentModal(); // this will close the modal programmatically
-                  },
-                  onClose: () => {},
-                });
-              }}
-            >
-              Fund Wallet
-            </MainButton>
-          </Space>
+          {/* <Heading4>Recent Activities</Heading4> */}
+          <MainButton
+            type="primary"
+            style={{ float: "right" }}
+            onClick={() => {
+              handleFlutterPayment({
+                callback: (response) => {
+                  console.log(response);
+                  closePaymentModal(); // this will close the modal programmatically
+                },
+                onClose: () => {},
+              });
+            }}
+          >
+            Fund Wallet
+          </MainButton>
 
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         </div>

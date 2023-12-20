@@ -109,3 +109,30 @@ export const logout = () => async (dispatch) => {
     type: "LOGOUT",
   });
 };
+
+export const fetchVerificationData = (token) => {
+  return async (dispatch) => {
+    try {
+      // Make an API call to fetch verification data
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/posts`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the bearer token
+          },
+        }
+      );
+      console.log("Verification Data Response:", response);
+
+      // Dispatch the fetched data to the store
+      dispatch({
+        type: "FETCH_VERIFICATION_DATA_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      // Handle errors, dispatch an error action, or set an error state
+      console.error("Error fetching verification data:", error);
+    }
+  };
+};

@@ -2,6 +2,7 @@
 const initialState = {
   isAuthenticated: false,
   user: null,
+  verificationData: [],
 };
 
 const authReducer = (state = initialState, action) => {
@@ -17,6 +18,10 @@ const authReducer = (state = initialState, action) => {
     case "LOGOUT":
       // Make API call for logout, update state accordingly
       return initialState;
+
+    case "FETCH_VERIFICATION_DATA_SUCCESS":
+      // Update the state with the fetched verification data
+      return { ...state, verificationData: action.payload };
 
     default:
       return state;

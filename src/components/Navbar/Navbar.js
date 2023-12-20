@@ -31,12 +31,9 @@ function Navbar() {
   const user = useSelector((state) => state.user);
   const userFirstName = user?.user?.firstName || "";
   const userLastName = user?.user?.lastName || "";
-  const userBal = user?.user?.walletBalance || "";
+  const userBal = user?.user?.walletBalance;
 
-  //   console.log(
-  //     "Redux State:",
-  //     useSelector((state) => state)
-  //   );
+  // console.log("Redux State:", userBal);
 
   const handleClick = () => setClick(!click);
 
