@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Checkbox, Alert, Spin, notification, Button } from "antd";
 import {
   BtnLink,
@@ -12,6 +12,7 @@ import {
 import { useDispatch } from "react-redux";
 import { signIn } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Context = React.createContext({
   name: "Default",
@@ -31,6 +32,8 @@ const LoginForm = () => {
 
   const [api, contextHolder] = notification.useNotification();
 
+  const [ipAddress, setIpAddress] = useState(null);
+
   const openNotification = (placement) => {
     api.info({
       message: `Notification`,
@@ -45,6 +48,20 @@ const LoginForm = () => {
     }),
     []
   );
+
+  useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        const response = await axios.get("https://api.ipify.org/?format=json");
+        setIpAddress(response.data.ip);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setIpAddress(null);
+      }
+    };
+
+    fetchIpAddress();
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -94,8 +111,14 @@ const LoginForm = () => {
       setFormErrors({});
       setLoading(true);
 
+      // Add ipAddress to the formData
+      const formDataWithIp = {
+        ...formData,
+        ipAddress,
+      };
+
       // Assuming signIn action returns a promise that resolves with the user data
-      const response = await dispatch(signIn(formData));
+      const response = await dispatch(signIn(formDataWithIp));
       const openNotification2 = (placement) => {
         api.error({
           message: `Notification`,
