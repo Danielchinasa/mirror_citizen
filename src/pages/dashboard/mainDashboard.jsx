@@ -73,34 +73,33 @@ const MainDashboard = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text) => <a href="/">{text}</a>,
+      title: "Date and Time",
+      dataIndex: "insertionDate",
+      key: "insertionDate",
+      render: (insertionDate) => {
+        const date = new Date(insertionDate);
+        const formattedDate = `${date.getFullYear()}-${
+          date.getMonth() + 1
+        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        return <span>{formattedDate}</span>;
+      },
     },
     {
-      title: "Agency",
-      dataIndex: "agency",
-      key: "agency",
+      title: "Consent Status",
+      dataIndex: "consent",
+      key: "consent",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Expires",
-      key: "expires",
-      dataIndex: "expires",
+      title: "Selected Profile",
+      dataIndex: "type",
+      key: "type",
     },
     {
       title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <a href="/">Invite {record.name}</a>
-        </Space>
-      ),
+      key: "status",
+      dataIndex: "status",
+      // render: (text) => <a href="/">status</a>,
+      // render: (_, record) => <Space size="middle">{status}</Space>,
     },
   ];
   const items = [
@@ -168,7 +167,6 @@ const MainDashboard = () => {
                 background: "#EBFFF0",
               }}
             >
-              fdojo
               <Statistic
                 title="Successful verification "
                 value={450}

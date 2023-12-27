@@ -155,7 +155,7 @@ const IndividualSignUp = () => {
         openNotification2("topRight");
       } else {
         // On successful login, navigate to the main dashboard
-        history.push("/main-dashboard");
+        history.push("/verify-otp");
       }
     } catch (error) {
       console.error("SignUp failed:", error);

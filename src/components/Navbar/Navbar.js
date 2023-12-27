@@ -70,7 +70,11 @@ function Navbar() {
     },
     {
       key: "2",
-      label: "Profile",
+      label: (
+        <a href="/profile" style={{ textDecoration: "none" }}>
+          Profile
+        </a>
+      ),
     },
     {
       key: "3",
