@@ -1,5 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from "antd";
+import { Typography } from "antd";
+
 import {
   Container,
   Heading,
@@ -13,6 +15,7 @@ import {
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -58,6 +61,17 @@ const ProfilePage = () => {
       </div>
     </div>
   );
+
+  const user = useSelector((state) => state.user);
+  const userFirstName = user?.user?.firstName || "";
+  const userLastName = user?.user?.lastName || "";
+  const userBal = user?.user?.walletBalance;
+  const email = user?.user?.email;
+  const phoneNumber = user?.user?.phoneNumber;
+  const address = user?.user?.address;
+  const userType = user?.user?.userType;
+  console.log(userType);
+  const { Title } = Typography;
   return (
     <Container>
       <InfoSec>
@@ -66,7 +80,13 @@ const ProfilePage = () => {
             width: "100%",
           }}
         >
-          <Heading>Personal Information</Heading>
+          {userType == "individual" && (
+            <Title level={4}>Personal Information</Title>
+          )}
+          {userType == "business" && (
+            <Title level={4}>Business Information</Title>
+          )}
+
           <Subtitle>Update your profile details here</Subtitle>
         </Card>
         <Row justify="space-between" style={{ marginTop: "30px" }}>
@@ -94,7 +114,7 @@ const ProfilePage = () => {
             </Upload>
           </Col>
           <Col span={12} style={{ textAlign: "end" }}>
-            <MainButton type="primary">Edit Profile</MainButton>
+            <MainButton type="primary">Update Profile</MainButton>
           </Col>
         </Row>
 
@@ -107,7 +127,7 @@ const ProfilePage = () => {
             lg={{ span: 12 }}
           >
             <StyledLabel>First Name</StyledLabel>
-            <StyledInput></StyledInput>
+            <StyledInput value={userFirstName}></StyledInput>
           </Col>
           <Col
             span={12}
@@ -117,7 +137,7 @@ const ProfilePage = () => {
             lg={{ span: 12 }}
           >
             <StyledLabel>Last Name</StyledLabel>
-            <StyledInput></StyledInput>
+            <StyledInput value={userLastName}></StyledInput>
           </Col>
           <Col
             span={12}
@@ -127,7 +147,7 @@ const ProfilePage = () => {
             lg={{ span: 12 }}
           >
             <StyledLabel>Email</StyledLabel>
-            <StyledInput></StyledInput>
+            <StyledInput value={email}></StyledInput>
           </Col>
           <Col
             span={12}
@@ -137,7 +157,7 @@ const ProfilePage = () => {
             lg={{ span: 12 }}
           >
             <StyledLabel>Phone number</StyledLabel>
-            <StyledInput></StyledInput>
+            <StyledInput value={phoneNumber}></StyledInput>
           </Col>
           <Col
             span={12}
@@ -147,7 +167,7 @@ const ProfilePage = () => {
             lg={{ span: 12 }}
           >
             <StyledLabel>Address</StyledLabel>
-            <StyledInput></StyledInput>
+            <StyledInput value={address}></StyledInput>
           </Col>
         </Row>
       </InfoSec>

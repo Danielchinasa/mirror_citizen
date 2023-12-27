@@ -133,3 +133,168 @@ export const fetchVerificationData = (token) => {
     }
   };
 };
+
+export const SendOtp = (otpString) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `http://41.184.212.26:8063/api/citizens/activation/${otpString}`
+    );
+    const userData = response.data;
+
+    dispatch({
+      type: "SEND_OTP_SUCCESS",
+      payload: response.data,
+    });
+
+    // Return the user data upon successful login
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // other than 2xx. Access response data in error.response.data
+      return error.response.data;
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("No response received:", error.request);
+      return {
+        status: "failed",
+        message: "No response received from the server",
+      };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error("Error setting up the request:", error.message);
+      return { status: "failed", message: "Error setting up the request" };
+    }
+  }
+};
+
+export const sendVerificationRequest =
+  (formData, token) => async (dispatch) => {
+    try {
+      const restructuredData = {
+        basic: {
+          phoneNumber: formData.phone || "",
+          nin: formData.nin || "",
+          dob: formData.dob || "",
+          gender: formData.gender || "",
+          firstName: formData.firstName || "",
+          lastName: formData.lastName || "",
+        },
+        business: {
+          business_name: formData.business_name || "",
+          rc: formData.rc || "",
+        },
+        financial: {
+          bvn: formData.bvn || "",
+        },
+      };
+
+      // Remove fields with empty strings from the payload
+      Object.keys(restructuredData).forEach((section) => {
+        Object.keys(restructuredData[section]).forEach((field) => {
+          if (restructuredData[section][field] === "") {
+            delete restructuredData[section][field];
+          }
+        });
+
+        // Remove the section if it has no fields
+        if (Object.keys(restructuredData[section]).length === 0) {
+          delete restructuredData[section];
+        }
+      });
+      const response = await axios.post(
+        `${baseUrl}/call-external-apis`,
+        restructuredData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the bearer token
+          },
+        }
+      );
+
+      const userData = response.data;
+
+      dispatch({
+        type: "SEND_VERIFICATION_REQUEST_SUCCESS",
+        payload: response.data,
+      });
+
+      // Return the user data upon successful verification
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // other than 2xx. Access response data in error.response.data
+        return error.response.data;
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        return {
+          status: "failed",
+          message: "No response received from the server",
+        };
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        return { status: "failed", message: "Error setting up the request" };
+      }
+    }
+  };
+
+export const ResetPassword = (emailAddress) => async (dispatch) => {
+  try {
+    const response = await axios.get(`${baseUrl}/fpassword/${emailAddress}`);
+    const userData = response.data;
+
+    dispatch({
+      type: "RESET_PASSWORD",
+      payload: response.data,
+    });
+
+    // Return the user data upon successful login
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // other than 2xx. Access response data in error.response.data
+      return error.response.data;
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("No response received:", error.request);
+      return {
+        status: "failed",
+        message: "No response received from the server",
+      };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error("Error setting up the request:", error.message);
+      return { status: "failed", message: "Error setting up the request" };
+    }
+  }
+};
+
+// actions.js
+export const fetchVerificationResult = (requestId, token) => {
+  return async (dispatch) => {
+    try {
+      // Make an API call to fetch verification data
+      const response = await axios.get(`${baseUrl}/check-consent/329`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the bearer token
+        },
+      });
+      console.log("Verification Result Response:", response);
+
+      // Dispatch the fetched data to the store
+      dispatch({
+        type: "FETCH_VERIFICATION_RESULT",
+        payload: response.data,
+      });
+    } catch (error) {
+      // Handle errors, dispatch an error action, or set an error state
+      console.error("Error fetching verification result:", error);
+    }
+  };
+};

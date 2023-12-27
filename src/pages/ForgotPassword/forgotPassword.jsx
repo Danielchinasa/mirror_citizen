@@ -1,5 +1,5 @@
-import React from "react";
-import { Col, Row } from "antd";
+import React, { useState, useEffect } from "react";
+import { Col, Row, message, Spin } from "antd";
 import {
   CenterText,
   Heading,
@@ -9,75 +9,94 @@ import {
   StyledLabel,
   MainButtonFull,
   InfoSec,
-  BtnLink,
 } from "../../globalStyles";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { ResetPassword } from "../../redux/actions";
 
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [email, setEmail] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Cleanup loading state when the component unmounts
+    return () => setLoading(false);
+  }, []);
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    try {
+      // Validate email format (you can add more validation if needed)
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        message.error("Please enter a valid email address");
+        return;
+      }
+
+      // Start loading
+      setLoading(true);
+
+      // Make API call to send email for password reset
+      const response = await dispatch(ResetPassword(email));
+      console.log("Password Reset Response:", response);
+
+      // Stop loading
+      setLoading(false);
+
+      // Handle success or failure based on the API response
+      if (response !== "user does not exist") {
+        // Return a response from the API on success
+        message.success("Password reset instructions sent to your email");
+        // Redirect or perform other actions as needed
+        history.push("/login");
+      } else {
+        // Display error message
+        message.error(response || "Failed to reset password");
+      }
+    } catch (error) {
+      // Stop loading in case of an error
+      setLoading(false);
+
+      // Handle network errors or other exceptions
+      console.error("Error resetting password:", error);
+      // Display a generic error message
+      message.error("Failed to reset password. Please try again.");
+    }
+  };
+
   return (
     <div>
       <Row justify="center">
-        <Col
-          span={4}
-          sm={{
-            span: 0,
-          }}
-          xs={{
-            span: 0,
-          }}
-          md={{
-            span: 4,
-          }}
-          lg={{
-            span: 4,
-          }}
-        ></Col>
-        <Col
-          span={8}
-          sm={{
-            span: 24,
-          }}
-          xs={{
-            span: 24,
-          }}
-          md={{
-            span: 8,
-          }}
-          lg={{
-            span: 8,
-          }}
-        >
+        <Col span={4}></Col>
+        <Col span={8}>
           <CenterText>
             <InfoSec>
               <Heading>Forgot password?</Heading>
               <Subtitle color="light">
-                Enter the email that is associated with your account and we’ll
+                Enter the email that is associated with your account, and we’ll
                 send you instructions on how to recover your account.
               </Subtitle>
-              <StyledForm>
-                <StyledLabel>Email</StyledLabel>
-                <StyledInput type="text" placeholder="Enter your email" />
-                <BtnLink to="/check-email">
-                  <MainButtonFull type="primary">Reset</MainButtonFull>
-                </BtnLink>
-              </StyledForm>
+              <Spin spinning={loading} tip="Logging in...">
+                <StyledForm>
+                  <StyledLabel>Email</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <MainButtonFull type="primary" onClick={handleResetPassword}>
+                    Reset
+                  </MainButtonFull>
+                  {/* {loading && <Spin style={{ position: "absolute" }} />} */}
+                </StyledForm>
+              </Spin>
             </InfoSec>
           </CenterText>
         </Col>
-        <Col
-          span={4}
-          sm={{
-            span: 0,
-          }}
-          xs={{
-            span: 0,
-          }}
-          md={{
-            span: 4,
-          }}
-          lg={{
-            span: 4,
-          }}
-        ></Col>
+        <Col span={4}></Col>
       </Row>
     </div>
   );

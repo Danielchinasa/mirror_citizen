@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row } from "antd";
+import { Col, Row, Alert, message } from "antd"; // Import message from Ant Design
 import {
   CenterText,
   Heading,
@@ -11,19 +11,45 @@ import {
   InfoSec,
   BtnLink,
 } from "../../globalStyles";
+import { SendOtp } from "../../redux/actions";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const VerifyOtp = () => {
-  // State to manage OTP input values
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [formErrors, setFormErrors] = useState({});
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
 
-  // Function to handle OTP input change
   const handleOtpChange = (index, value) => {
-    // Copy the current state array
     const newOtpValues = [...otpValues];
-    // Update the value at the specified index
     newOtpValues[index] = value;
-    // Update the state
     setOtpValues(newOtpValues);
+  };
+
+  const handleVerifyOTP = async (e) => {
+    e.preventDefault();
+    const otpString = otpValues.join("");
+    console.log(`Entered OTP: ${otpString}`);
+
+    try {
+      const response = await dispatch(SendOtp(otpString));
+      console.log("SendOtp Response:", response);
+
+      if (response.code === "200") {
+        // Display success message
+        message.success("OTP verification successful");
+        // Handle further actions if needed
+        history.push("/email-confirm");
+      } else {
+        // Display error message
+        message.error(response.message || "OTP verification failed");
+        // Handle further actions if needed
+      }
+    } catch (error) {
+      // Handle errors if needed
+      console.error("Error sending OTP:", error);
+    }
   };
 
   return (
@@ -67,7 +93,6 @@ const VerifyOtp = () => {
                 continuation
               </Subtitle>
               <StyledForm>
-                {/* Add 6-box OTP input */}
                 <div
                   style={{
                     display: "flex",
@@ -75,7 +100,6 @@ const VerifyOtp = () => {
                     gap: "10px",
                   }}
                 >
-                  {/* Map through the OTP input boxes */}
                   {otpValues.map((value, index) => (
                     <StyledInput
                       key={index}
@@ -90,12 +114,19 @@ const VerifyOtp = () => {
                       }}
                     />
                   ))}
+                  {formErrors.general && (
+                    <Alert
+                      message={formErrors.general}
+                      type="error"
+                      showIcon
+                      style={{ marginBottom: "16px" }}
+                    />
+                  )}
                 </div>
 
-                {/* Update the button to reflect OTP verification */}
-                <BtnLink to="/email-confirm">
-                  <MainButtonFull type="primary">Verify OTP</MainButtonFull>
-                </BtnLink>
+                <MainButtonFull type="primary" onClick={handleVerifyOTP}>
+                  Verify OTP
+                </MainButtonFull>
 
                 <p>I didn’t receive the OTP</p>
                 <p>
