@@ -37,7 +37,7 @@ const beforeUpload = (file) => {
   return isJpgOrPng && isLt2M;
 };
 
-const ProfilePage = () => {
+const UpdateProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const handleChange = (info) => {
@@ -77,11 +77,10 @@ const ProfilePage = () => {
   console.log(userType);
   const { Title } = Typography;
   const [formData, setFormData] = useState({
-    firstName: userFirstName,
-    phoneNumber: phoneNumber,
-    lastName: userLastName,
-    email: email,
-    address: address,
+    firstName: "",
+    phoneNumber: "",
+    lastName: "",
+    address: "",
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -100,24 +99,9 @@ const ProfilePage = () => {
       const response = await dispatch(updateProfile(formData, userToken));
 
       console.log(response);
-      if (response === "success") {
-        console.log(response);
+      if (response.business.message === "Awaiting Consent") {
         // Handle further actions if needed
-        // history.push("/consent");
-        dispatch({
-          type: "UPDATE_USER_DETAILS",
-          payload: {
-            user: {
-              firstName: formData.firstName,
-              lastName: formData.lastName,
-              email: formData.email,
-              phoneNumber: formData.phoneNumber,
-              address: formData.address,
-              // Add other fields as needed
-            },
-            jwtToken: userToken,
-          },
-        });
+        history.push("/consent");
       } else {
         // Display error message
         // message.error(response.message || "OTP verification failed");
@@ -181,9 +165,9 @@ const ProfilePage = () => {
           >
             <StyledLabel>First Name</StyledLabel>
             <StyledInput
-              value={formData.firstName}
+              value={userFirstName}
               name="firstName"
-              onChange={(e) => handleInputChange("firstName", e.target.value)}
+              onChange={(e) => handleInputChange("firstname", e.target.value)}
             ></StyledInput>
           </Col>
           <Col
@@ -196,6 +180,7 @@ const ProfilePage = () => {
             <StyledLabel>Last Name</StyledLabel>
             <StyledInput
               value={formData.lastName}
+              defaultValue={userLastName}
               name="lastName"
               onChange={(e) => handleInputChange("lastName", e.target.value)}
             ></StyledInput>
@@ -209,7 +194,7 @@ const ProfilePage = () => {
           >
             <StyledLabel>Email</StyledLabel>
             <StyledInput
-              value={formData.email}
+              value={email}
               name="email"
               onChange={(e) => handleInputChange("email", e.target.value)}
             ></StyledInput>
@@ -223,7 +208,7 @@ const ProfilePage = () => {
           >
             <StyledLabel>Phone number</StyledLabel>
             <StyledInput
-              value={formData.phoneNumber}
+              value={phoneNumber}
               name="phoneNumber"
               onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
             ></StyledInput>
@@ -237,7 +222,7 @@ const ProfilePage = () => {
           >
             <StyledLabel>Address</StyledLabel>
             <StyledInput
-              value={formData.address}
+              value={address}
               name="address"
               onChange={(e) => handleInputChange("address", e.target.value)}
             ></StyledInput>
@@ -258,4 +243,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default UpdateProfilePage;

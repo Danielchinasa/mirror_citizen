@@ -24,7 +24,7 @@ const Consent = ({ history }) => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `http://41.184.212.26:8063/api/v2/check-consent/329`,
+          `http://41.184.212.26:8063/api/v2/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const Consent = ({ history }) => {
           // Consent granted, redirect to result page
           setIsConsentGranted(true);
           clearInterval(intervalId); // Stop polling
-          localStorage.removeItem("verificationRequestId");
+          // localStorage.removeItem("verificationRequestId");
           history.push("/result");
         }
       } catch (error) {

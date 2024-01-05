@@ -4,6 +4,7 @@ import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { fetchVerificationData } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const data = [
   {
@@ -33,20 +34,25 @@ const onChange = (key) => {
 };
 
 const config = {
-  public_key: "FLWPUBK-**************************-X",
-  tx_ref: Date.now(),
-  amount: 100,
+  public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
+  tx_ref: "titanic-48981487343MDI0NzMx",
+  amount: 54600,
   currency: "NGN",
-  payment_options: "card,mobilemoney,ussd",
+  payment_options: "card, mobilemoneyghana, ussd",
+  redirect_url: "https://glaciers.titanic.com/handle-flutterwave-payment",
+  meta: {
+    consumer_id: 23,
+    consumer_mac: "92a3-912ba-1192a",
+  },
   customer: {
-    email: "user@gmail.com",
-    phone_number: "070********",
-    name: "john doe",
+    email: "rose@unsinkableship.com",
+    phone_number: "08102909304",
+    name: "Rose DeWitt Bukater",
   },
   customizations: {
-    title: "my Payment Title",
-    description: "Payment for items in cart",
-    logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+    title: "The Titanic Store",
+    description: "Payment for an awesome cruise",
+    logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
   },
 };
 
@@ -58,6 +64,7 @@ const MainDashboard = () => {
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
   const handleFlutterPayment = useFlutterwave(config);
+  const history = useHistory();
 
   useEffect(() => {
     // Dispatch the fetchVerificationData action with the bearer token when the component mounts
@@ -67,9 +74,27 @@ const MainDashboard = () => {
   }, [dispatch, userToken]);
 
   // Log the verificationData to the console
+
   useEffect(() => {
     console.log("Verification Data:", verificationData);
+    // const requestId = verificationData || "";
+    // localStorage.setItem("verificationRequestId", requestId);
   }, [verificationData]);
+
+  const handleViewResult = (record) => {
+    // Extract the id from the record
+    const verificationRequestId = record.id;
+    const consentStatus = record.consent;
+    // console.log("jjjj");
+    // console.log(verificationRequestId);
+    // Store the id in localStorage
+    localStorage.setItem("verificationRequestId", verificationRequestId);
+    if (consentStatus === "pending") {
+      history.push("/consent");
+    } else {
+      history.push("/result");
+    }
+  };
 
   const columns = [
     {
@@ -98,7 +123,16 @@ const MainDashboard = () => {
       title: "Action",
       key: "status",
       dataIndex: "status",
-      // render: (text) => <a href="/">status</a>,
+      render: (_, record) => (
+        <a
+          // href="/result"
+          rel="noopener noreferrer"
+          onClick={() => handleViewResult(record)}
+        >
+          View Result
+        </a>
+      ),
+      // render: (status) => <a href="/">status</a>,
       // render: (_, record) => <Space size="middle">{status}</Space>,
     },
   ];
@@ -117,7 +151,7 @@ const MainDashboard = () => {
     {
       key: "2",
       label: "Transaction Logs",
-      children: "Content of Tab Pane 2",
+      children: "Transaction Logs",
     },
   ];
   return (

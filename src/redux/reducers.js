@@ -36,6 +36,21 @@ const authReducer = (state = initialState, action) => {
       // Update the state with the send verification data
       return { ...state, otpData: action.payload };
 
+    case "SET_NEW_PASSWORD_SUCCESS":
+      // Update the state with the set New Password
+      return { ...state, otpData: action.payload };
+
+    case "UPDATE_PROFILE_SUCCESS":
+      // Update the state with the set New Password
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload,
+        },
+        otpData: action.payload, // You may adjust this as needed
+      };
+
     case "FETCH_VERIFICATION_RESULT":
       // Update the state with the fetched verification data
       return { ...state, verificationResult: action.payload };

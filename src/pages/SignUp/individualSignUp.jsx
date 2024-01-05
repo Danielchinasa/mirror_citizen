@@ -11,6 +11,7 @@ import {
   Col,
   Row,
   Checkbox,
+  Spin,
 } from "antd";
 import { useHistory } from "react-router-dom";
 
@@ -188,87 +189,102 @@ const IndividualSignUp = () => {
                 display: "flex",
               }}
             >
-              <StyledForm onSubmit={handleSignUp}>
-                {formErrors.general && (
-                  <Alert
-                    message={formErrors.general}
-                    type="error"
-                    showIcon
-                    style={{ marginBottom: "16px" }}
+              <Spin spinning={loading} tip="Logging in...">
+                <StyledForm onSubmit={handleSignUp}>
+                  {formErrors.general && (
+                    <Alert
+                      message={formErrors.general}
+                      type="error"
+                      showIcon
+                      style={{ marginBottom: "16px" }}
+                    />
+                  )}
+                  <StyledLabel>First name</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your first name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
                   />
-                )}
-                <StyledLabel>First name</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your first name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                />
-                {formErrors.firstName && (
-                  <Alert message={formErrors.firstName} type="error" showIcon />
-                )}
+                  {formErrors.firstName && (
+                    <Alert
+                      message={formErrors.firstName}
+                      type="error"
+                      showIcon
+                    />
+                  )}
 
-                <StyledLabel>Last name</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your last name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                />
-                {formErrors.lastName && (
-                  <Alert message={formErrors.lastName} type="error" showIcon />
-                )}
-                <StyledLabel>National Identification Number (NIN)</StyledLabel>
-                <StyledInput
-                  type="number"
-                  placeholder="Enter your NIN"
-                  name="nin"
-                  value={formData.nin}
-                  onChange={handleInputChange}
-                />
-                {formErrors.nin && (
-                  <Alert message={formErrors.nin} type="error" showIcon />
-                )}
-                <StyledLabel>Email address</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your Email address"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                {formErrors.email && (
-                  <Alert message={formErrors.email} type="error" showIcon />
-                )}
-                <StyledLabel>Phone number</StyledLabel>
-                <StyledInput
-                  type="number"
-                  placeholder="Enter your phone number"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                />
-                {formErrors.phoneNumber && (
-                  <Alert
-                    message={formErrors.phoneNumber}
-                    type="error"
-                    showIcon
+                  <StyledLabel>Last name</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your last name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
                   />
-                )}
-                <StyledLabel>Password</StyledLabel>
-                <StyledInput
-                  type="password"
-                  placeholder="Create a password "
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-                {formErrors.password && (
-                  <Alert message={formErrors.password} type="error" showIcon />
-                )}
-                {/* <StyledInput
+                  {formErrors.lastName && (
+                    <Alert
+                      message={formErrors.lastName}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledLabel>
+                    National Identification Number (NIN)
+                  </StyledLabel>
+                  <StyledInput
+                    type="number"
+                    placeholder="Enter your NIN"
+                    name="nin"
+                    value={formData.nin}
+                    onChange={handleInputChange}
+                  />
+                  {formErrors.nin && (
+                    <Alert message={formErrors.nin} type="error" showIcon />
+                  )}
+                  <StyledLabel>Email address</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your Email address"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
+                  {formErrors.email && (
+                    <Alert message={formErrors.email} type="error" showIcon />
+                  )}
+                  <StyledLabel>Phone number</StyledLabel>
+                  <StyledInput
+                    type="number"
+                    placeholder="Enter your phone number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                  />
+                  {formErrors.phoneNumber && (
+                    <Alert
+                      message={formErrors.phoneNumber}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledLabel>Password</StyledLabel>
+                  <StyledInput
+                    type="password"
+                    placeholder="Create a password "
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                  />
+                  {formErrors.password && (
+                    <Alert
+                      message={formErrors.password}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  {/* <StyledInput
                   type="hidden"
                   placeholder="Create a password "
                   name="userType"
@@ -280,19 +296,20 @@ const IndividualSignUp = () => {
                 {formErrors.userType && (
                   <Alert message={formErrors.userType} type="error" showIcon />
                 )} */}
-                <StyledLabel>Confirm Password</StyledLabel>
-                <StyledInput
-                  type="password"
-                  placeholder="Re-enter the password "
-                />
-                <Checkbox onChange={onChange}>
-                  I certify that I have read and accepted the e-citizen™ Privacy
-                  Policy
-                </Checkbox>
-                <MainButtonFull type="primary" htmlType="submit">
-                  Proceed
-                </MainButtonFull>
-              </StyledForm>
+                  <StyledLabel>Confirm Password</StyledLabel>
+                  <StyledInput
+                    type="password"
+                    placeholder="Re-enter the password "
+                  />
+                  <Checkbox onChange={onChange}>
+                    I certify that I have read and accepted the e-citizen™
+                    Privacy Policy
+                  </Checkbox>
+                  <MainButtonFull type="primary" htmlType="submit">
+                    Proceed
+                  </MainButtonFull>
+                </StyledForm>
+              </Spin>
               {/* <BtnLink to={"/verify-otp"}> */}
               {/* <Button type="primary" block size="large" htmlType="submit">
                 Proceed

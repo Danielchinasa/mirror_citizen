@@ -24,6 +24,7 @@ import BusinessSignUp from "./pages/SignUp/businessSignUp";
 import BusinessSignUp2 from "./pages/SignUp/businessSignUp2";
 import VerifyOtp from "./pages/otp/verifyOtp";
 import EmailVerifiedConfirm from "./pages/otp/emailVerifiedConfirm";
+import UpdateProfilePage from "./pages/profile/updateProfilePage";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
           <Route path="/consent" component={Consent} />
           <Route path="/result" component={Result} />
           <Route path="/profile" component={ProfilePage} />
+          {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
           <Route path="/main-dashboard" component={MainDashboard} />
           <Route path="/products" component={Products} />
           <Route path="/sign-up" component={SignUpPage} />

@@ -13,6 +13,7 @@ import {
   Radio,
   Form,
   Tooltip,
+  notification,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
@@ -100,8 +101,21 @@ const DashboardPage = () => {
         sendVerificationRequest(formData, userToken)
       );
 
+      console.log("response");
       console.log(response);
-      if (response.business.message === "Awaiting Consent") {
+      if (
+        (response.basic && response.basic.message === "NO_HIT") ||
+        response.business.message === "NO_HIT"
+      ) {
+        // Display Ant Design notification when NO_HIT
+        notification.error({
+          message: "Input value not found",
+          description: "Please check your input value and try again.",
+        });
+      } else if (
+        response.business &&
+        response.business.message === "Awaiting Consent"
+      ) {
         localStorage.setItem(
           "verificationRequestId",
           response.business.data.requestId
@@ -185,6 +199,38 @@ const DashboardPage = () => {
     const calculatedVat = serviceFee * 0.1;
     setVat(calculatedVat);
   }, [serviceFee]);
+
+  const [liveFaceNin, setLiveFaceNin] = useState("");
+  const [isLiveFaceNinValid, setIsLiveFaceNinValid] = useState(true);
+  const [makePaymentClicked, setMakePaymentClicked] = useState(false);
+
+  const handleLiveFaceNinChange = (e) => {
+    const value = e.target.value;
+
+    // Validate that it contains only numbers and is 11 digits
+    const isValid = /^\d{11}$/.test(value);
+
+    setLiveFaceNin(value);
+    setIsLiveFaceNinValid(isValid);
+  };
+
+  const props = {
+    name: "file",
+    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
   return (
     <Row>
       <Col>
@@ -489,11 +535,30 @@ const DashboardPage = () => {
                       type="text"
                       placeholder="Enter National Identity Number"
                       name="nin"
-                      value={formData.nin}
-                      onChange={(e) =>
-                        handleInputChange("lastName", e.target.value)
+                      value={liveFaceNin}
+                      onChange={handleLiveFaceNinChange}
+                      onChangeCapture={(e) =>
+                        handleInputChange("nin", e.target.value)
                       }
+                      // onChange={
+                      //   handleLiveFaceNinChange();
+                      //   handleInputChange("nin", e.target.value);
+                      // }}
+                      style={{
+                        borderColor: isLiveFaceNinValid ? "" : "red",
+                      }}
                     />
+                    {/* <StyledInput
+                      type="number"
+                      placeholder="Enter your Phone Number"
+                      name="nin"
+                      value={formData.nin}
+                      onChange={(e) => handleInputChange("nin", e.target.value)}
+                    /> */}
+
+                    {!isLiveFaceNinValid && (
+                      <p style={{ color: "red" }}>NIN cannot be empty</p>
+                    )}
                     <StyledLabel>
                       Upload File or take a live face capture*
                     </StyledLabel>
@@ -506,9 +571,11 @@ const DashboardPage = () => {
                         md={{ span: 12 }}
                         lg={{ span: 12 }}
                       >
-                        <Button type="primary" size="large">
-                          Browse file
-                        </Button>
+                        <Upload {...props}>
+                          <Button type="primary" size="large">
+                            Browse file
+                          </Button>
+                        </Upload>
                       </Col>
                       <Col
                         span={8}
@@ -521,8 +588,20 @@ const DashboardPage = () => {
                           type="primary"
                           icon={<CameraOutlined />}
                           size="large"
+                          onClick={() => {
+                            const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}`;
+                            if (
+                              isLiveFaceNinValid &&
+                              liveFaceNin.trim() !== ""
+                            ) {
+                              window.open(liveCaptureUrl, "_blank");
+                            }
+                          }}
+                          disabled={
+                            !isLiveFaceNinValid || liveFaceNin.trim() === ""
+                          }
                         >
-                          Capture
+                          Live Capture
                         </Button>
                       </Col>
                     </Row>

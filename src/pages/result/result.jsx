@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Divider } from "antd";
 import {
   Container,
@@ -17,150 +17,75 @@ const Result = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
-  const verificationResult = useSelector(
-    (state) => state.verificationResult.data
-  );
+  const [firstName, setFirstName] = useState("");
+  // const verificationResult = useSelector(
+  //   (state) => state.verificationResult.data
+  // );
+  const requestId = localStorage.getItem("verificationRequestId");
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("hre");
+        console.log(requestId);
+        const response = await dispatch(
+          fetchVerificationResult(requestId, userToken)
+        );
+
+        // Access the firstName from the response and store it in local state
+        const firstNameFromResponse = response.data.firstName || "";
+        setFirstName(firstNameFromResponse);
+      } catch (error) {
+        console.error("Error fetching verification result", error);
+      }
+    };
+
     // Fetch verification result when the component mounts
-    dispatch(fetchVerificationResult("329", userToken));
+    fetchData();
   }, [dispatch, userToken]);
-  const {
-    firstName,
-    lastName,
-    nin,
-    dob,
-    phoneNumber,
-    address,
-    requestId,
-    birthCountry,
-    birthState,
-    birthLGA,
-    residenceAddress,
-    phone,
-  } = verificationResult;
+  // localStorage.removeItem("verificationRequestId");
+
+  const renderDetail = (label, value) => (
+    <>
+      <StyledLabel>{label}</StyledLabel>
+      <StyledLabel>
+        <strong>{value}</strong>
+      </StyledLabel>
+    </>
+  );
+
   return (
     <Container>
       <InfoSec>
         <Link to="/dashboard">
-          <p
-            style={{
-              color: "#0DC939",
-            }}
-          >
-            Go back
-          </p>
+          <p style={{ color: "#0DC939" }}>Go back</p>
         </Link>
-        <Card
-          style={{
-            width: "100%",
-          }}
-        >
+        <Card style={{ width: "100%" }}>
           <Heading4>Verification Result</Heading4>
         </Card>
-        <Card
-          style={{
-            width: "100%",
-            marginTop: "20px",
-          }}
-        >
+        <Card style={{ width: "100%", marginTop: "20px" }}>
           <p>Personal Details</p>
-          <Row>
-            <Col
-              span={6}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 6 }}
-              lg={{ span: 6 }}
-            >
-              <Row>
-                <Col span={24}>
-                  <StyledLabel>Name</StyledLabel>
-                  <StyledLabel>
-                    <strong>
-                      {firstName} {""} {lastName}
-                    </strong>
-                  </StyledLabel>
-                </Col>
-                <Divider />
-                <Col span={24}>
-                  <StyledLabel>NIN</StyledLabel>
-                  <StyledLabel>
-                    <strong>{nin}</strong>
-                  </StyledLabel>
-                </Col>
-              </Row>
+          <Row gutter={16}>
+            <Col span={6}>
+              {renderDetail("Name", `${firstName}`)}
+              <Divider />
+              {renderDetail("NIN", `${firstName}`)}
             </Col>
-            <Col
-              span={6}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 6 }}
-              lg={{ span: 6 }}
-            >
-              <Row>
-                <Col span={24}>
-                  <StyledLabel>Date of birth</StyledLabel>
-                  <StyledLabel>
-                    <strong>{dob}</strong>
-                  </StyledLabel>
-                </Col>
-                <Divider />
-                <Col span={24}>
-                  <StyledLabel>Phone Number</StyledLabel>
-                  <StyledLabel>
-                    <strong>{phone}</strong>
-                  </StyledLabel>
-                </Col>
-              </Row>
+            <Col span={6}>
+              {renderDetail("Date of Birth", `${firstName}`)}
+              <Divider />
+              {renderDetail("Phone Number", `${firstName}`)}
             </Col>
-            <Col
-              span={6}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 6 }}
-              lg={{ span: 6 }}
-            >
-              <Row>
-                <Col span={24}>
-                  <StyledLabel>Address</StyledLabel>
-                  <StyledLabel>
-                    <strong>{residenceAddress}</strong>
-                  </StyledLabel>
-                </Col>
-                <Divider />
-                <Col span={24}>
-                  <StyledLabel>Birth Country</StyledLabel>
-                  <StyledLabel>
-                    <strong>{birthCountry}</strong>
-                  </StyledLabel>
-                </Col>
-              </Row>
+            <Col span={6}>
+              {renderDetail("Address", `${firstName}`)}
+              <Divider />
+              {renderDetail("Birth Country", `${firstName}`)}
             </Col>
-            <Col
-              span={6}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 6 }}
-              lg={{ span: 6 }}
-            >
-              <Row>
-                <Col span={24}>
-                  <StyledLabel>Birth State</StyledLabel>
-                  <StyledLabel>
-                    <strong>{birthState}</strong>
-                  </StyledLabel>
-                </Col>
-                <Divider />
-                <Col span={24}>
-                  <StyledLabel>Birth LGA </StyledLabel>
-                  <StyledLabel>
-                    <strong>{birthLGA}</strong>
-                  </StyledLabel>
-                </Col>
-              </Row>
+            <Col span={6}>
+              {renderDetail("Birth State", `${firstName}`)}
+              <Divider />
+              {renderDetail("Birth LGA", `${firstName}`)}
             </Col>
-            <Divider />
           </Row>
         </Card>
       </InfoSec>
