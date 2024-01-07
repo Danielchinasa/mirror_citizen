@@ -14,6 +14,8 @@ import {
   Form,
   Tooltip,
   notification,
+  Modal,
+  Spin,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
@@ -37,8 +39,9 @@ import { InfoCircleOutlined, CameraOutlined } from "@ant-design/icons";
 import banner from "../../images/banner.png";
 import tick from "../../images/tick.png";
 import { useDispatch, useSelector } from "react-redux";
-import { sendVerificationRequest } from "../../redux/actions";
+import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 
 const { Dragger } = Upload;
 const props = {
@@ -77,6 +80,7 @@ const DashboardPage = () => {
     rc: "",
     business_name: "",
     bvn: "",
+    vin: "",
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -91,10 +95,14 @@ const DashboardPage = () => {
 
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
+  const userEmail = user?.user?.email || "";
+  const userName = user?.user?.firstName || "";
+  const userPhone = user?.user?.phone || "";
+  const userNin = user?.user?.nin || "";
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     // Dispatch the sendVerificationRequest action with the form data
     try {
       const response = await dispatch(
@@ -104,14 +112,27 @@ const DashboardPage = () => {
       console.log("response");
       console.log(response);
       if (
-        (response.basic && response.basic.message === "NO_HIT") ||
-        response.business.message === "NO_HIT"
+        (response.basic &&
+          response.basic.message &&
+          response.basic.message === "NO_HIT") ||
+        (response.business && response.business.message === "NO_HIT")
       ) {
         // Display Ant Design notification when NO_HIT
         notification.error({
           message: "Input value not found",
           description: "Please check your input value and try again.",
         });
+      } else if (
+        response.basic &&
+        response.basic.message &&
+        response.basic.message === "Awaiting Consent"
+      ) {
+        localStorage.setItem(
+          "verificationRequestId",
+          response.basic.data.requestId
+        );
+        // Handle further actions if needed
+        history.push("/consent");
       } else if (
         response.business &&
         response.business.message === "Awaiting Consent"
@@ -151,8 +172,12 @@ const DashboardPage = () => {
   const [selectedForm, setSelectedForm] = useState("none"); // Default selected form
 
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [checkboxCheckedConfirm, setCheckboxCheckedConfirm] = useState(false);
   const onChange = (e) => {
     setCheckboxChecked(e.target.checked);
+  };
+  const onChange2 = (e) => {
+    setCheckboxCheckedConfirm(e.target.checked);
   };
 
   const handleFormChange = (e) => {
@@ -166,6 +191,8 @@ const DashboardPage = () => {
   const tooltipContentFinancial =
     "A financial credit profile is a report card that tells how responsible you are with borrowing and repaying money. It helps lenders decide if they can trust you with a loan or credit. Search parameter is bank verification number (BVN).";
 
+  const tooltipContentVehicle =
+    "Vehicle profile refers to data and information gathered about the ownership of automobiles. Search parameter is basic VIN.";
   const [serviceFee, setServiceFee] = useState(0);
   const [vat, setVat] = useState(0);
 
@@ -185,6 +212,8 @@ const DashboardPage = () => {
       setServiceFee(1000); // Set the service fee for Phone
     } else if (profile === "bvn") {
       setServiceFee(10); // Set the service fee for Phone
+    } else if (profile === "vin") {
+      setServiceFee(3000); // Set the service fee for Phone
     } else {
       setServiceFee(0); // Set a default value or handle other profiles
     }
@@ -231,6 +260,209 @@ const DashboardPage = () => {
       }
     },
   };
+
+  const config = {
+    public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
+    tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
+    amount: `${(serviceFee + vat).toFixed(2)}`,
+    currency: "NGN",
+    payment_options: "card,mobilemoney,ussd",
+    customer: {
+      email: userEmail,
+      phone_number: userPhone,
+      // name: userName,
+    },
+
+    customizations: {
+      title: `${selectedForm} Verification Payment`,
+      description: "Payment for items in cart",
+      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(config);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+  const handleMakePayment = () => {
+    // Your existing logic for handling the payment
+
+    // Show the modal
+    showModal();
+  };
+
+  const handlePaymentMethod = async () => {
+    // Check if a payment method is selected
+    if (selectedValue !== null) {
+      // Log the selected payment method
+      if (selectedValue === 1) {
+        // console.log("Payment from Wallet");
+        setLoading(true);
+        const apiUrl = "http://41.184.212.26:8063/api/v2/wallet-payment";
+
+        const requestBody = {
+          userNIN: userNin,
+          transactionID: "EA11697986831911",
+          amount: `${(serviceFee + vat).toFixed(2)}`,
+        };
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          const data = await response.text();
+
+          if (response.ok && data === "payment successful") {
+            // console.log("Payment successful. Response:", data);
+            handleCancel();
+            dispatch(fetchUserProfile(userToken));
+            handleSubmit();
+          } else {
+            console.error("Payment failed. Response:", data);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        } finally {
+          handleCancel();
+
+          setLoading(false); // Set loading to false when the request completes (either success or failure)
+        }
+      } else if (selectedValue === 2) {
+        // console.log("Instant Payment");
+        handleFlutterPayment({
+          callback: async (response) => {
+            console.log(response);
+            if (response.status === "successful") {
+              console.log("flutterWave success");
+              handleSubmit();
+            }
+            closePaymentModal();
+          },
+          onClose: () => {},
+        });
+        handleCancel();
+      }
+
+      // Close the modal
+      // handleCancel();
+    }
+    // console.log(selectedValue);
+    // You may also add an else block to handle the case when no payment method is selected
+  };
+
+  // const handleRadioChange = (e) => {
+  //   setSelectedPaymentMethod(e.target.value);
+  // };
+  const handleRadioChange = (e) => {
+    setSelectedValue(e.target.value);
+  };
+
+  const PaymentModal = () => (
+    <Modal
+      visible={modalVisible}
+      onCancel={handleCancel}
+      footer={null} // Remove the default footer
+    >
+      {/* Add your content for the modal here */}
+      <div
+        style={{
+          borderBottom: "1px solid #e8e8e8",
+          marginBottom: "15px",
+          paddingBottom: "15px",
+        }}
+      >
+        <Radio.Group
+          style={{ width: "100%" }}
+          onChange={handleRadioChange}
+          value={selectedValue}
+        >
+          <Radio
+            style={{
+              display: "block",
+              border: "1px solid #e8e8e8",
+              borderRadius: "5px",
+              padding: "10px",
+              marginBottom: "10px",
+              fontWeight: "bold", // Make the text bold
+            }}
+            value={1}
+          >
+            Payment from Wallet
+          </Radio>
+          <Radio
+            style={{
+              display: "block",
+              border: "1px solid #e8e8e8",
+              borderRadius: "5px",
+              padding: "10px",
+              fontWeight: "bold", // Make the text bold
+            }}
+            value={2}
+          >
+            Instant Payment
+          </Radio>
+        </Radio.Group>
+      </div>
+
+      {/* Checkbox and lower div */}
+      <div
+        style={{
+          marginTop: "20px",
+          background: "rgba(235, 3, 24, 0.10)",
+          border: "1px solid #EB0318",
+          padding: "15px",
+        }}
+      >
+        <Checkbox onChange={onChange2}>
+          By clicking, you indicate that you understand and accept that consent
+          is required from the data subject being verified before you can access
+          their data.
+        </Checkbox>
+      </div>
+
+      {/* Buttons */}
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
+        <Button
+          type="primary"
+          onClick={handlePaymentMethod}
+          disabled={!checkboxCheckedConfirm}
+          style={{
+            marginRight: 10,
+            backgroundColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
+            borderColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9",
+            cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+          }}
+        >
+          Confirm Payment
+        </Button>
+        <Button key="cancel" onClick={handleCancel}>
+          Cancel
+        </Button>
+      </div>
+    </Modal>
+  );
+
   return (
     <Row>
       <Col>
@@ -402,6 +634,41 @@ const DashboardPage = () => {
                         onClick={() => setSelectedForm("bvn")}
                       >
                         Bank Verification Number (BVN)
+                      </Radio>
+                    </Form>
+                  )}
+                  <Row
+                    onClick={() => setSelectedProfile("vehicle")}
+                    style={{
+                      backgroundColor:
+                        selectedProfile === "vehicle" ? "#0DC939" : "#EAFFF0",
+                      paddingTop: "30px",
+                      paddingBottom: "30px",
+                      paddingLeft: "10px",
+                      borderTopRightRadius: 50,
+                      borderBottomRightRadius: 50,
+                      color: "#000000",
+                    }}
+                  >
+                    <Col span={21}>Vehicle Profile</Col>
+                    <Col span={3}>
+                      <Tooltip title={tooltipContentVehicle} color="#F4B40F">
+                        <InfoCircleOutlined
+                          style={{
+                            fontSize: "20px",
+                          }}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                  {selectedProfile === "vehicle" && (
+                    <Form>
+                      <Radio
+                        value="vin"
+                        size="large"
+                        onClick={() => setSelectedForm("vin")}
+                      >
+                        Basic VIN
                       </Radio>
                     </Form>
                   )}
@@ -645,6 +912,18 @@ const DashboardPage = () => {
                     />
                   </>
                 )}
+                {selectedForm === "vin" && (
+                  <>
+                    <StyledLabel>Basic VIN*</StyledLabel>
+                    <StyledInput
+                      type="text"
+                      placeholder="Enter Basic VIN"
+                      name="vin"
+                      value={formData.vin}
+                      onChange={(e) => handleInputChange("vin", e.target.value)}
+                    />
+                  </>
+                )}
               </Col>
               <Col
                 span={8}
@@ -753,41 +1032,43 @@ const DashboardPage = () => {
               </Col>
             </Row>
           </InfoSec>
-          <Row
-            justify="end"
-            style={{ border: "1px solid #a9b3c1", marginBottom: "30px" }}
-          >
-            <Col
-              span={8}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 7 }}
-              lg={{ span: 7 }}
-              style={{ textAlign: "right", padding: "10px" }}
-            >
-              <strong>
-                <Checkbox onChange={onChange}>
-                  I certify that I have read and accepted the e-citizen Privacy
-                  Policy and Terms of Service
-                </Checkbox>
-              </strong>
-
-              <MainButtonFull
-                type="primary"
-                htmlType="submit"
-                onClick={handleSubmit}
-                disabled={!checkboxChecked}
-                style={{
-                  backgroundColor: checkboxChecked ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
-                  borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
-                  cursor: checkboxChecked ? "pointer" : "not-allowed", // Change cursor based on checkbox state
-                }}
-              >
-                Make Payment
-              </MainButtonFull>
-            </Col>
-          </Row>
         </StyledForm>
+        <Row
+          justify="end"
+          style={{ border: "1px solid #a9b3c1", marginBottom: "30px" }}
+        >
+          <Col
+            span={8}
+            xs={{ span: 24 }}
+            sm={{ span: 24 }}
+            md={{ span: 7 }}
+            lg={{ span: 7 }}
+            style={{ textAlign: "right", padding: "10px" }}
+          >
+            <strong>
+              <Checkbox onChange={onChange}>
+                I certify that I have read and accepted the e-citizen Privacy
+                Policy and Terms of Service
+              </Checkbox>
+            </strong>
+
+            <MainButtonFull
+              type="primary"
+              // htmlType="submit"
+              // onClick={handleSubmit}
+              onClick={handleMakePayment}
+              disabled={!checkboxChecked}
+              style={{
+                backgroundColor: checkboxChecked ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
+                borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
+                cursor: checkboxChecked ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+              }}
+            >
+              Payment
+            </MainButtonFull>
+          </Col>
+          <PaymentModal />
+        </Row>
       </Container>
     </Row>
   );

@@ -13,6 +13,7 @@ export const signIn = (credentials) => async (dispatch) => {
       type: "SIGN_IN",
       payload: userData,
     });
+    dispatch(fetchUserProfile(userData.jwtToken));
 
     // Return the user data upon successful login
     return userData;
@@ -130,6 +131,30 @@ export const fetchVerificationData = (token) => {
     } catch (error) {
       // Handle errors, dispatch an error action, or set an error state
       console.error("Error fetching verification data:", error);
+    }
+  };
+};
+
+export const fetchTransactionData = (token) => {
+  return async (dispatch) => {
+    try {
+      // Make an API call to fetch verification data
+      const response = await axios.get(`${baseUrl}/payment-history`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the bearer token
+        },
+      });
+      console.log("Transaction Data Response:", response);
+
+      // Dispatch the fetched data to the store
+      dispatch({
+        type: "FETCH_TRANSACTION_DATA_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      // Handle errors, dispatch an error action, or set an error state
+      console.error("Error fetching transaction data:", error);
     }
   };
 };
@@ -371,4 +396,43 @@ export const updateProfile = (formData, token) => async (dispatch) => {
       return { status: "failed", message: "Error setting up the request" };
     }
   }
+};
+
+export const updateUserWalletBalance = (newBalance) => ({
+  type: "UPDATE_USER_WALLET_BALANCE",
+  payload: newBalance,
+});
+
+export const fetchUserProfile = (token) => {
+  return async (dispatch) => {
+    try {
+      // Make an API call to fetch user profile data
+      const response = await axios.get(`${baseUrl}/user/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the bearer token
+        },
+      });
+
+      console.log("User Profile Data Response:", response);
+
+      // Dispatch the fetched data to the store
+      dispatch({
+        type: "FETCH_USER_PROFILE_SUCCESS",
+        payload: response.data,
+      });
+
+      // Dispatch an action to update user details separately
+      dispatch({
+        type: "UPDATE_USER_DETAILS",
+        payload: response.data,
+      });
+
+      // Return the user profile data upon successful fetch
+      return response.data;
+    } catch (error) {
+      // Handle errors, dispatch an error action, or set an error state
+      console.error("Error fetching user profile data:", error);
+    }
+  };
 };

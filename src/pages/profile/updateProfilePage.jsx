@@ -101,7 +101,7 @@ const UpdateProfilePage = () => {
       console.log(response);
       if (response.business.message === "Awaiting Consent") {
         // Handle further actions if needed
-        history.push("/consent");
+        // history.push("/consent");
       } else {
         // Display error message
         // message.error(response.message || "OTP verification failed");

@@ -15,11 +15,12 @@ import { ReactComponent as Logo } from "../../images/logo.svg";
 import { Link } from "react-router-dom";
 import { Button, Flex } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/actions";
+import { logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Space } from "antd";
+
 const { Title } = Typography;
 
 function Navbar() {
@@ -28,11 +29,13 @@ function Navbar() {
   const [button, setButton] = useState(true);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const user = useSelector((state) => state.user);
-  const userFirstName = user?.user?.firstName || "";
-  const userLastName = user?.user?.lastName || "";
-  const userBal = user?.user?.walletBalance;
+  // const user = useSelector((state) => state.user);
+  // const userFirstName = user?.user?.firstName || "";
+  // const userLastName = user?.user?.lastName || "";
+  // const userBal = user?.user?.walletBalance;
 
+  // localStorage.setItem("userBalance", JSON.stringify(userBal));
+  // const storedUserBalance = localStorage.getItem("userBalance");
   // console.log("Redux State:", userBal);
 
   const handleClick = () => setClick(!click);
@@ -116,6 +119,17 @@ function Navbar() {
       </Dropdown>
     );
   };
+
+  const userDetails = useSelector((state) => state.userDetails);
+
+  useEffect(() => {
+    // Dispatch fetchUserProfile action when component mounts
+    dispatch(fetchUserProfile(/* pass your token here */));
+  }, [dispatch]);
+
+  console.log("UserDetails");
+  console.log(userDetails);
+  const userBalance = userDetails?.user?.walletBalance || 0;
 
   return (
     <>
@@ -208,12 +222,13 @@ function Navbar() {
                         }}
                       >
                         <Title level={4}>
-                          {userFirstName} {userLastName}
+                          {userDetails?.user?.firstName}{" "}
+                          {userDetails?.user?.lastName}
                         </Title>
                         <p>
                           Bal:
                           <span style={{ color: "#0DC939" }}>
-                            ₦{userBal.toLocaleString()}
+                            ₦{userBalance.toLocaleString()}
                           </span>
                         </p>
                       </div>

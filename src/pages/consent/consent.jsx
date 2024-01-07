@@ -74,7 +74,7 @@ const Consent = ({ history }) => {
               subject's information will be retained for a period of 24 hours
               from the moment they grant consent. Thank you for your patience.
             </Subtitle>
-            <BtnLink to="/result">
+            <BtnLink to="/main-dashboard">
               <Subtitle color="primary" style={{ marginTop: "50px" }}>
                 Return to Dashboard
               </Subtitle>

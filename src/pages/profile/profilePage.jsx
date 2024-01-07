@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Row, Col } from "antd";
-import { Typography } from "antd";
+import { Typography, Input } from "antd";
 
 import {
   Container,
@@ -128,6 +128,7 @@ const ProfilePage = () => {
       console.error("Error sending verification", error);
     }
   };
+  const { TextArea } = Input;
   return (
     <Container>
       <InfoSec>
@@ -236,21 +237,22 @@ const ProfilePage = () => {
             lg={{ span: 12 }}
           >
             <StyledLabel>Address</StyledLabel>
-            <StyledInput
-              value={formData.address}
+            <TextArea
+              rows={4}
               name="address"
+              value={formData.address}
               onChange={(e) => handleInputChange("address", e.target.value)}
-            ></StyledInput>
+            />
           </Col>
         </Row>
         <MainButton
           type="primary"
           onClick={handleSubmit}
-          style={{ marginRight: "20px" }}
+          style={{ marginRight: "20px", marginTop: "20px" }}
         >
           Update Profile
         </MainButton>
-        <BtnLink to="/set-new-password">
+        <BtnLink to="/set-new-password" style={{ marginTop: "20px" }}>
           <OutlineButton type="primary">Change Password</OutlineButton>
         </BtnLink>
       </InfoSec>
