@@ -147,7 +147,13 @@ function Navbar() {
               {isAuthenticated && (
                 <NavItemBtn>
                   <NavBtnLink to="/dashboard">
-                    <MainButton type="primary">
+                    <MainButton
+                      type="primary"
+                      style={{
+                        fontFamily: "Poppins",
+                        fontWeight: "700",
+                      }}
+                    >
                       Identity Verification
                     </MainButton>
                   </NavBtnLink>
@@ -158,7 +164,15 @@ function Navbar() {
                   <NavItemBtn>
                     {button ? (
                       <NavBtnLink to="/login">
-                        <OutlineButton type="primary">LOGIN</OutlineButton>
+                        <OutlineButton
+                          type="primary"
+                          style={{
+                            fontFamily: "Poppins",
+                            fontWeight: "700",
+                          }}
+                        >
+                          LOGIN
+                        </OutlineButton>
                       </NavBtnLink>
                     ) : (
                       <NavBtnLink to="/login">
@@ -166,6 +180,10 @@ function Navbar() {
                           onClick={closeMobileMenu}
                           fontBig
                           primary
+                          style={{
+                            fontFamily: "Poppins",
+                            fontWeight: "700",
+                          }}
                         >
                           LOGIN
                         </OutlineButton>
@@ -174,12 +192,26 @@ function Navbar() {
                   </NavItemBtn>
                   <NavItemBtn>
                     {button ? (
-                      <NavBtnLink to="/sign-up">
+                      <NavBtnLink
+                        to="/sign-up"
+                        style={{
+                          fontFamily: "Poppins",
+                          fontWeight: "700",
+                        }}
+                      >
                         <MainButton type="primary">SIGN UP</MainButton>
                       </NavBtnLink>
                     ) : (
                       <NavBtnLink to="/sign-up">
-                        <MainButton onClick={closeMobileMenu} fontBig primary>
+                        <MainButton
+                          onClick={closeMobileMenu}
+                          fontBig
+                          primary
+                          style={{
+                            fontFamily: "Poppins",
+                            fontWeight: "700",
+                          }}
+                        >
                           SIGN UP
                         </MainButton>
                       </NavBtnLink>
