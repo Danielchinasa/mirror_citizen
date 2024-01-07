@@ -315,6 +315,21 @@ const MainDashboard = () => {
       setFailedVerificationCount(failedVerifications.length);
     }
   }, [verificationData]);
+  const CustomStatistic = ({ title, value, valueStyle }) => (
+    <div className="custom-statistic">
+      <div
+        className="custom-statistic-title"
+        style={{ textAlign: "center", color: "#3f8600" }}
+      >
+        {title}
+      </div>
+      <div className="custom-statistic-value" style={valueStyle}>
+        {value}
+      </div>
+    </div>
+  );
+
+  // Usage
   return (
     <Container>
       <InfoSec>
@@ -335,13 +350,15 @@ const MainDashboard = () => {
                 background: "#EBFFF0",
               }}
             >
-              <Statistic
+              <CustomStatistic
                 title="Total verification "
                 value={totalVerificationCount}
                 valueStyle={{
                   color: "#3f8600",
                   fontSize: "50px",
-                  fontWeight: "700",
+                  fontWeight: "600",
+                  fontFamily: "Poppins, sans-serif",
+                  textAlign: "center",
                 }}
               />
             </Card>
@@ -362,13 +379,15 @@ const MainDashboard = () => {
                 background: "#EBFFF0",
               }}
             >
-              <Statistic
+              <CustomStatistic
                 title="Successful verification "
                 value={completedVerificationCount}
                 valueStyle={{
                   color: "#3f8600",
                   fontSize: "50px",
-                  fontWeight: "700",
+                  fontWeight: "600",
+                  fontFamily: "Poppins, sans-serif",
+                  textAlign: "center",
                 }}
               />
             </Card>
@@ -389,13 +408,15 @@ const MainDashboard = () => {
                 background: "#EBFFF0",
               }}
             >
-              <Statistic
+              <CustomStatistic
                 title="Failed verification "
                 value={failedVerificationCount}
                 valueStyle={{
                   color: "#3f8600",
                   fontSize: "50px",
-                  fontWeight: "700",
+                  fontWeight: "600",
+                  fontFamily: "Poppins, sans-serif",
+                  textAlign: "center",
                 }}
               />
             </Card>

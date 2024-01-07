@@ -180,12 +180,30 @@ const ProfilePage = () => {
             md={{ span: 12 }}
             lg={{ span: 12 }}
           >
-            <StyledLabel>First Name</StyledLabel>
-            <StyledInput
-              value={formData.firstName}
-              name="firstName"
-              onChange={(e) => handleInputChange("firstName", e.target.value)}
-            ></StyledInput>
+            {userType == "individual" && (
+              <>
+                <StyledLabel>First Name</StyledLabel>
+                <StyledInput
+                  value={formData.firstName}
+                  name="firstName"
+                  onChange={(e) =>
+                    handleInputChange("firstName", e.target.value)
+                  }
+                ></StyledInput>
+              </>
+            )}
+            {userType == "business" && (
+              <>
+                <StyledLabel>Business Name</StyledLabel>
+                <StyledInput
+                  value={formData.businessName}
+                  name="businessName"
+                  onChange={(e) =>
+                    handleInputChange("businessName", e.target.value)
+                  }
+                ></StyledInput>
+              </>
+            )}
           </Col>
           <Col
             span={12}
@@ -194,12 +212,30 @@ const ProfilePage = () => {
             md={{ span: 12 }}
             lg={{ span: 12 }}
           >
-            <StyledLabel>Last Name</StyledLabel>
-            <StyledInput
-              value={formData.lastName}
-              name="lastName"
-              onChange={(e) => handleInputChange("lastName", e.target.value)}
-            ></StyledInput>
+            {userType == "individual" && (
+              <>
+                <StyledLabel>Last Name</StyledLabel>
+                <StyledInput
+                  value={formData.lastName}
+                  name="lastName"
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
+                ></StyledInput>
+              </>
+            )}
+            {userType == "business" && (
+              <>
+                <StyledLabel>RC Number</StyledLabel>
+                <StyledInput
+                  value={formData.rcNumber}
+                  name="rcNumber"
+                  onChange={(e) =>
+                    handleInputChange("rcNumber", e.target.value)
+                  }
+                ></StyledInput>
+              </>
+            )}
           </Col>
           <Col
             span={12}
