@@ -205,6 +205,8 @@ export const sendVerificationRequest =
           firstName: formData.firstName || "",
           lastName: formData.lastName || "",
           liveFaceNin: formData.liveFaceNin || "",
+          face: formData.face || "",
+          finger: formData.finger || "",
         },
         business: {
           business_name: formData.business_name || "",

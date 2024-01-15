@@ -18,7 +18,7 @@ import {
   Spin,
 } from "antd";
 import dayjs from "dayjs";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -33,6 +33,7 @@ import {
   StyledLabel,
   DisabledButtonFull,
   StyledForm,
+  StyledTextArea,
 } from "../../globalStyles";
 
 import { InfoCircleOutlined, CameraOutlined } from "@ant-design/icons";
@@ -42,6 +43,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+
+/* global Reach */
 
 const { Dragger } = Upload;
 const props = {
@@ -70,6 +73,7 @@ const DashboardPage = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
+  const [base64WithoutPrefix, setBase64WithoutPrefix] = useState("");
   const [formData, setFormData] = useState({
     nin: "",
     phone: "",
@@ -81,6 +85,8 @@ const DashboardPage = () => {
     business_name: "",
     bvn: "",
     vin: "",
+    face: "",
+    finger: "",
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -199,20 +205,31 @@ const DashboardPage = () => {
   const updateServiceFee = (profile) => {
     // Set the service fee based on the selected profile
     if (profile === "nin") {
+      localStorage.setItem("profile", profile);
       setServiceFee(50); // Set the service fee for NIN
     } else if (profile === "phone") {
+      localStorage.setItem("profile", profile);
       setServiceFee(50); // Set the service fee for Phone
     } else if (profile === "demographics") {
+      localStorage.setItem("profile", profile);
       setServiceFee(50); // Set the service fee for Phone
     } else if (profile === "face") {
+      localStorage.setItem("profile", profile);
+      setServiceFee(200);
+    } else if (profile === "fingerprint") {
+      localStorage.setItem("profile", profile);
       setServiceFee(200); // Set the service fee for Phone
     } else if (profile === "rc") {
+      localStorage.setItem("profile", profile);
       setServiceFee(1000); // Set the service fee for Phone
     } else if (profile === "business_name") {
+      localStorage.setItem("profile", profile);
       setServiceFee(1000); // Set the service fee for Phone
     } else if (profile === "bvn") {
+      localStorage.setItem("profile", profile);
       setServiceFee(10); // Set the service fee for Phone
     } else if (profile === "vin") {
+      localStorage.setItem("profile", profile);
       setServiceFee(3000); // Set the service fee for Phone
     } else {
       setServiceFee(0); // Set a default value or handle other profiles
@@ -230,6 +247,7 @@ const DashboardPage = () => {
   }, [serviceFee]);
 
   const [liveFaceNin, setLiveFaceNin] = useState("");
+  const [liveFaceFace, setLiveFaceFace] = useState("");
   const [isLiveFaceNinValid, setIsLiveFaceNinValid] = useState(true);
   const [makePaymentClicked, setMakePaymentClicked] = useState(false);
 
@@ -242,6 +260,17 @@ const DashboardPage = () => {
     setLiveFaceNin(value);
     setIsLiveFaceNinValid(isValid);
   };
+  const handleLiveFaceFaceChange = (e) => {
+    const value = e.target.value;
+
+    // Validate that it contains only numbers and is 11 digits
+    // const isValid = /^\d{11}$/.test(value);
+
+    setLiveFaceFace(value);
+    // setIsLiveFaceNinValid(isValid);
+  };
+
+  const [base64Image, setBase64Image] = useState(null);
 
   const props = {
     name: "file",
@@ -259,6 +288,26 @@ const DashboardPage = () => {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
+    // beforeUpload: (file) => {
+    //   const reader = new FileReader();
+
+    //   reader.onloadend = () => {
+    //     // Extract the base64 string without the data URL prefix
+    //     setBase64WithoutPrefix(reader.result.split(",")[1]);
+
+    //     // Set the base64 string in state
+    //     setBase64Image(base64WithoutPrefix);
+
+    //     // Log the base64 string without the prefix
+    //     console.log("Base64 Image:", base64WithoutPrefix);
+    //     setFormData({ ...formData, face: base64WithoutPrefix });
+    //   };
+
+    //   reader.readAsDataURL(file);
+
+    //   // Prevent default upload behavior
+    //   return false;
+    // },
   };
 
   const config = {
@@ -306,6 +355,11 @@ const DashboardPage = () => {
 
   const handlePaymentMethod = async () => {
     // Check if a payment method is selected
+    const reachScript = document.createElement("script");
+    reachScript.src = "https://clk1.reachclk.com/sdk/reach.js";
+    reachScript.async = true;
+
+    document.body.appendChild(reachScript);
     if (selectedValue !== null) {
       // Log the selected payment method
       if (selectedValue === 1) {
@@ -353,6 +407,12 @@ const DashboardPage = () => {
             console.log(response);
             if (response.status === "successful") {
               console.log("flutterWave success");
+              reachScript.onload = () => {
+                Reach.conversion({
+                  advertiser_id: 299,
+                  // ADDITIONAL PARAMETERS
+                });
+              };
               handleSubmit();
             }
             closePaymentModal();
@@ -462,6 +522,69 @@ const DashboardPage = () => {
       </div>
     </Modal>
   );
+
+  const buttonStyle = {
+    padding: "10px", // Adjust the padding as needed
+    backgroundColor: "#0DC939",
+    color: "white",
+    border: "none",
+    cursor: "pointer",
+    borderRadius: "5px",
+    cursor: "pointer",
+  };
+
+  const [base64Image2, setBase64Image2] = useState("");
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const fileInput = event.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        // Set the base64 string in state
+        setBase64Image(e.target.result);
+
+        // Remove the "data:image/png;base64," prefix and update the formData state
+        const base64WithoutPrefix = e.target.result.split(",")[1];
+        setFormData({ ...formData, face: base64WithoutPrefix });
+      };
+
+      // Read the selected file as a data URL
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  };
+
+  const handleFileSelectFinger = (event) => {
+    const fileInput = event.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        // Set the base64 string in state
+        setBase64Image(e.target.result);
+
+        // Remove the "data:image/png;base64," prefix and update the formData state
+        const base64WithoutPrefix = e.target.result.split(",")[1];
+        setFormData({ ...formData, finger: base64WithoutPrefix });
+      };
+
+      // Read the selected file as a data URL
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  };
+
+  const handleButtonClick = () => {
+    // Trigger the file input click event
+    fileInputRef.current.click();
+  };
+
+  const handleButtonClickFinger = () => {
+    // Trigger the file input click event
+    fileInputRef.current.click();
+  };
 
   return (
     <Row>
@@ -714,6 +837,15 @@ const DashboardPage = () => {
                       value={formData.nin}
                       onChange={(e) => handleInputChange("nin", e.target.value)}
                     />
+                    {/* <StyledInput
+                      type="text"
+                      placeholder="Enter your face"
+                      name="face"
+                      value={formData.face}
+                      onChange={(e) =>
+                        handleInputChange("face", e.target.value)
+                      }
+                    /> */}
                   </>
                 )}
 
@@ -807,20 +939,46 @@ const DashboardPage = () => {
                       onChangeCapture={(e) =>
                         handleInputChange("nin", e.target.value)
                       }
-                      // onChange={
-                      //   handleLiveFaceNinChange();
-                      //   handleInputChange("nin", e.target.value);
-                      // }}
                       style={{
                         borderColor: isLiveFaceNinValid ? "" : "red",
                       }}
                     />
-                    {/* <StyledInput
-                      type="number"
-                      placeholder="Enter your Phone Number"
-                      name="nin"
-                      value={formData.nin}
-                      onChange={(e) => handleInputChange("nin", e.target.value)}
+
+                    {/* <Upload
+                      customRequest={({ file, onSuccess }) => {
+                        // Simulate an upload and provide a response with a URL
+                        setTimeout(() => {
+                          onSuccess({ url: "your_uploaded_image_url" });
+                        }, 1000);
+                      }}
+                      showUploadList={false}
+                      onChange={handleFileSelect}
+                    >
+                      <Button type="primary" size="large">
+                        Browse file
+                      </Button>
+                    </Upload> */}
+
+                    {base64Image && (
+                      <div>
+                        <p>Image:</p>
+                        <img
+                          src={base64Image}
+                          alt="Uploaded"
+                          style={{ maxWidth: "50%" }}
+                        />
+                      </div>
+                    )}
+
+                    {/* <StyledTextArea
+                      type="text"
+                      placeholder="Enter your face"
+                      name="face"
+                      value={base64WithoutPrefix}
+                      onChange={handleLiveFaceFaceChange}
+                      onChangeCapture={(e) =>
+                        handleInputChange("face", e.target.value)
+                      }
                     /> */}
 
                     {!isLiveFaceNinValid && (
@@ -838,11 +996,37 @@ const DashboardPage = () => {
                         md={{ span: 12 }}
                         lg={{ span: 12 }}
                       >
-                        <Upload {...props}>
+                        {/* <input type="file" onChange={handleFileSelect} /> */}
+
+                        <input
+                          type="file"
+                          onChange={handleFileSelect}
+                          style={{ display: "none" }}
+                          ref={fileInputRef}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleButtonClick}
+                          style={buttonStyle}
+                        >
+                          Browse file
+                        </button>
+                        {/* <Upload {...props}>
                           <Button type="primary" size="large">
                             Browse file
                           </Button>
-                        </Upload>
+                        </Upload> */}
+                        {/* Display the base64 image string if available */}
+                        {/* {base64Image && (
+                          <div>
+                            <p>Base64 Image:</p>
+                            <img
+                              src={base64Image}
+                              alt="Uploaded"
+                              style={{ maxWidth: "100%" }}
+                            />
+                          </div>
+                        )} */}
                       </Col>
                       <Col
                         span={8}
@@ -870,6 +1054,64 @@ const DashboardPage = () => {
                         >
                           Live Capture
                         </Button>
+                      </Col>
+                    </Row>
+                  </>
+                )}
+                {selectedForm === "fingerprint" && (
+                  <>
+                    <StyledLabel>National Identity Number (NIN)*</StyledLabel>
+                    <StyledInput
+                      type="text"
+                      placeholder="Enter National Identity Number"
+                      name="nin"
+                      value={liveFaceNin}
+                      onChange={handleLiveFaceNinChange}
+                      onChangeCapture={(e) =>
+                        handleInputChange("nin", e.target.value)
+                      }
+                      style={{
+                        borderColor: isLiveFaceNinValid ? "" : "red",
+                      }}
+                    />
+
+                    {base64Image && (
+                      <div>
+                        <p>Image:</p>
+                        <img
+                          src={base64Image}
+                          alt="Uploaded"
+                          style={{ maxWidth: "50%" }}
+                        />
+                      </div>
+                    )}
+
+                    {!isLiveFaceNinValid && (
+                      <p style={{ color: "red" }}>NIN cannot be empty</p>
+                    )}
+                    <StyledLabel>Upload Finger Image</StyledLabel>
+
+                    <Row gutter={12}>
+                      <Col
+                        span={8}
+                        xs={{ span: 24 }}
+                        sm={{ span: 24 }}
+                        md={{ span: 12 }}
+                        lg={{ span: 12 }}
+                      >
+                        <input
+                          type="file"
+                          onChange={handleFileSelectFinger}
+                          style={{ display: "none" }}
+                          ref={fileInputRef}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleButtonClickFinger}
+                          style={buttonStyle}
+                        >
+                          Browse file
+                        </button>
                       </Col>
                     </Row>
                   </>
@@ -994,7 +1236,7 @@ const DashboardPage = () => {
                       <p>Payment Reference: </p>
                     </Col>
                     <Col>
-                      <p>9845904</p>
+                      <p>--</p>
                     </Col>
                   </Row>
                   <Row>

@@ -13,6 +13,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchVerificationResult } from "../../redux/actions";
 import axios from "axios";
+import { Typography } from "antd";
+import Icon, { RightOutlined } from "@ant-design/icons";
+
+const { Title, Text } = Typography;
 
 const Result = () => {
   const dispatch = useDispatch();
@@ -126,7 +130,7 @@ const Result = () => {
       </StyledLabel>
     </>
   );
-
+  const storedValue = localStorage.getItem("profile");
   return (
     <Container>
       <InfoSec>
@@ -137,7 +141,13 @@ const Result = () => {
           <Heading4>Verification Result</Heading4>
         </Card>
         <Card style={{ width: "100%", marginTop: "20px" }}>
-          <p>Personal Details</p>
+          <div>
+            <Text>Basic Identity Profile </Text>
+            <RightOutlined />
+            <Text>{storedValue}</Text>
+          </div>
+          <Divider />
+
           <Row gutter={16}>
             <Col span={6}>
               {renderDetail("Name", `${firstName} ${lastName}`)}

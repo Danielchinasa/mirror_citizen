@@ -121,6 +121,8 @@ const MainDashboard = () => {
       title: "Date and Time",
       dataIndex: "insertionDate",
       key: "insertionDate",
+      sorter: (a, b) => a.insertionDate - b.insertionDate,
+
       render: (insertionDate) => {
         const date = new Date(insertionDate);
         const formattedDate = `${date.getFullYear()}-${
@@ -133,11 +135,51 @@ const MainDashboard = () => {
       title: "Consent Status",
       dataIndex: "consent",
       key: "consent",
+      sorter: (a, b) => a.consent - b.consent,
+      filters: [
+        {
+          text: "granted",
+          value: "granted",
+        },
+        {
+          text: "pending",
+          value: "pending",
+        },
+      ],
+      onFilter: (value, record) => record.consent.indexOf(value) === 0,
     },
     {
       title: "Selected Profile",
       dataIndex: "type",
       key: "type",
+      sorter: (a, b) => a.type - b.type,
+      filters: [
+        {
+          text: "nin",
+          value: "nin",
+        },
+        {
+          text: "Phone number",
+          value: "Phone number",
+        },
+        {
+          text: "Demographic",
+          value: "Demographic",
+        },
+        {
+          text: "Face",
+          value: "Face",
+        },
+        {
+          text: "Finger",
+          value: "Finger",
+        },
+        {
+          text: "bvn",
+          value: "bvn",
+        },
+      ],
+      onFilter: (value, record) => record.consent.indexOf(value) === 0,
     },
     {
       title: "Action",
@@ -184,6 +226,7 @@ const MainDashboard = () => {
       title: "Status",
       key: "successful",
       dataIndex: "successful",
+      sorter: (a, b) => a.successful - b.successful,
       render: (_, record) => (
         <a rel="noopener noreferrer">
           {record.successful ? "Successful" : "Failed"}
