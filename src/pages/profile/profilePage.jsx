@@ -73,6 +73,7 @@ const ProfilePage = () => {
   const email = user?.user?.email;
   const phoneNumber = user?.user?.phoneNumber;
   const address = user?.user?.address;
+  const nin = user?.user?.nin;
   const userType = user?.user?.userType;
   console.log(userType);
   const { Title } = Typography;
@@ -82,6 +83,7 @@ const ProfilePage = () => {
     lastName: userLastName,
     email: email,
     address: address,
+    nin: nin,
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -263,6 +265,20 @@ const ProfilePage = () => {
               value={formData.phoneNumber}
               name="phoneNumber"
               onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+            ></StyledInput>
+          </Col>
+          <Col
+            span={12}
+            xs={{ span: 24 }}
+            sm={{ span: 24 }}
+            md={{ span: 12 }}
+            lg={{ span: 12 }}
+          >
+            <StyledLabel>NIN</StyledLabel>
+            <StyledInput
+              value={formData.nin}
+              name="nin"
+              onChange={(e) => handleInputChange("nin", e.target.value)}
             ></StyledInput>
           </Col>
           <Col

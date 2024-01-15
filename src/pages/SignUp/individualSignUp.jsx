@@ -42,6 +42,7 @@ const IndividualSignUp = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const [userType, setUserType] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -50,6 +51,7 @@ const IndividualSignUp = () => {
     email: "",
     password: "",
     rememberMe: false,
+    userType: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -79,6 +81,7 @@ const IndividualSignUp = () => {
     setFormData({
       ...formData,
       [name]: inputValue,
+      userType: "individual",
     });
 
     setFormErrors({
@@ -284,18 +287,22 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
-                  {/* <StyledInput
-                  type="hidden"
-                  placeholder="Create a password "
-                  name="userType"
-                  value="individual"
-                  onChange={(e) =>
-                    handleInputChange("userType", e.target.value)
-                  }
-                />
-                {formErrors.userType && (
-                  <Alert message={formErrors.userType} type="error" showIcon />
-                )} */}
+                  <StyledInput
+                    type="hidden"
+                    placeholder="Create a password "
+                    name="userType"
+                    value="individual"
+                    onChange={(e) =>
+                      handleInputChange("userType", e.target.value)
+                    }
+                  />
+                  {/* {formErrors.userType && (
+                    <Alert
+                      message={formErrors.userType}
+                      type="error"
+                      showIcon
+                    />
+                  )} */}
                   <StyledLabel>Confirm Password</StyledLabel>
                   <StyledInput
                     type="password"

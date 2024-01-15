@@ -36,8 +36,9 @@ const VerifyOtp = () => {
       const response = await dispatch(SendOtp(otpString));
       console.log("SendOtp Response:", response);
 
-      if (response.code === "200") {
+      if (response === "user activated") {
         // Display success message
+        console.log(`Entered OTP: jjjj`);
         message.success("OTP verification successful");
         // Handle further actions if needed
         history.push("/email-confirm");

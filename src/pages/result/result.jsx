@@ -134,7 +134,7 @@ const Result = () => {
   return (
     <Container>
       <InfoSec>
-        <Link to="/dashboard">
+        <Link to="/main-dashboard">
           <p style={{ color: "#0DC939" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>

@@ -100,16 +100,20 @@ const DashboardPage = () => {
   };
 
   const user = useSelector((state) => state.user);
+  const userDetails = useSelector((state) => state.userDetails);
   const userToken = user?.jwtToken || "";
   const userEmail = user?.user?.email || "";
   const userName = user?.user?.firstName || "";
   const userPhone = user?.user?.phone || "";
   const userNin = user?.user?.nin || "";
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
     // e.preventDefault();
     // Dispatch the sendVerificationRequest action with the form data
+
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -158,6 +162,16 @@ const DashboardPage = () => {
       // Handle errors if needed
       console.error("Error sending verification", error);
     }
+  };
+
+  const handleModalOk = () => {
+    // Handle the modal OK button click
+    setIsModalVisible(false);
+  };
+
+  const handleModalCancel = () => {
+    // Handle the modal cancel or close button click
+    setIsModalVisible(false);
   };
 
   const data = [
@@ -362,6 +376,8 @@ const DashboardPage = () => {
     document.body.appendChild(reachScript);
     if (selectedValue !== null) {
       // Log the selected payment method
+      const userBalance = userDetails?.user?.walletBalance || 0;
+
       if (selectedValue === 1) {
         // console.log("Payment from Wallet");
         setLoading(true);
@@ -373,32 +389,42 @@ const DashboardPage = () => {
           amount: `${(serviceFee + vat).toFixed(2)}`,
         };
 
-        try {
-          const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-            body: JSON.stringify(requestBody),
+        if (userBalance.toLocaleString() < 55) {
+          // Show the Ant Design notification
+
+          notification.error({
+            message: "Wallet Balance Warning",
+            description:
+              "Your wallet balance is low. Please recharge before making a payment.",
           });
+        } else {
+          try {
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(requestBody),
+            });
 
-          const data = await response.text();
+            const data = await response.text();
 
-          if (response.ok && data === "payment successful") {
-            // console.log("Payment successful. Response:", data);
+            if (response.ok && data === "payment successful") {
+              // console.log("Payment successful. Response:", data);
+              handleCancel();
+              dispatch(fetchUserProfile(userToken));
+              handleSubmit();
+            } else {
+              console.error("Payment failed. Response:", data);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          } finally {
             handleCancel();
-            dispatch(fetchUserProfile(userToken));
-            handleSubmit();
-          } else {
-            console.error("Payment failed. Response:", data);
-          }
-        } catch (error) {
-          console.error("Error:", error);
-        } finally {
-          handleCancel();
 
-          setLoading(false); // Set loading to false when the request completes (either success or failure)
+            setLoading(false); // Set loading to false when the request completes (either success or failure)
+          }
         }
       } else if (selectedValue === 2) {
         // console.log("Instant Payment");
@@ -625,7 +651,8 @@ const DashboardPage = () => {
                       paddingLeft: "10px",
                       borderTopRightRadius: 50,
                       borderBottomRightRadius: 50,
-                      color: "#000000",
+                      color:
+                        selectedProfile === "basic" ? "#FFFFFF" : "#000000",
                     }}
                   >
                     <Col span={21}>Basic Identity Profile</Col>
@@ -689,7 +716,8 @@ const DashboardPage = () => {
                       paddingLeft: "10px",
                       borderTopRightRadius: 50,
                       borderBottomRightRadius: 50,
-                      color: "#000000",
+                      color:
+                        selectedProfile === "business" ? "#FFFFFF" : "#000000",
                     }}
                   >
                     <Col span={21}>Business Profile</Col>
@@ -735,7 +763,8 @@ const DashboardPage = () => {
                       paddingLeft: "10px",
                       borderTopRightRadius: 50,
                       borderBottomRightRadius: 50,
-                      color: "#000000",
+                      color:
+                        selectedProfile === "financial" ? "#FFFFFF" : "#000000",
                     }}
                   >
                     <Col span={21}>Financial Credit Profile</Col>
@@ -770,7 +799,8 @@ const DashboardPage = () => {
                       paddingLeft: "10px",
                       borderTopRightRadius: 50,
                       borderBottomRightRadius: 50,
-                      color: "#000000",
+                      color:
+                        selectedProfile === "vehicle" ? "#FFFFFF" : "#000000",
                     }}
                   >
                     <Col span={21}>Vehicle Profile</Col>
@@ -804,7 +834,7 @@ const DashboardPage = () => {
                 md={{ span: 8 }}
                 lg={{ span: 8 }}
               >
-                <Heading6>Input Parameters</Heading6>
+                <Heading6>Search Options</Heading6>
                 {selectedForm === "none" && (
                   <>
                     <p>
@@ -1040,7 +1070,7 @@ const DashboardPage = () => {
                           icon={<CameraOutlined />}
                           size="large"
                           onClick={() => {
-                            const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}`;
+                            const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen`;
                             if (
                               isLiveFaceNinValid &&
                               liveFaceNin.trim() !== ""
@@ -1308,6 +1338,17 @@ const DashboardPage = () => {
             >
               Payment
             </MainButtonFull>
+            <Modal
+              title="Wallet Balance Warning"
+              visible={isModalVisible}
+              onOk={handleModalOk}
+              onCancel={handleModalCancel}
+            >
+              <p>
+                Your wallet balance is low. Please recharge before making a
+                payment.
+              </p>
+            </Modal>
           </Col>
           <PaymentModal />
         </Row>

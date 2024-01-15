@@ -60,7 +60,7 @@ const HeroSection = ({
                     {buttonLabel}
                   </MainButton>
                 </Link>
-                <Subtitle color="primary">{description}</Subtitle>
+                {/* <Subtitle color="primary">{description}</Subtitle> */}
               </TextWrapper>
             </HeroColumn>
             <HeroColumn>
