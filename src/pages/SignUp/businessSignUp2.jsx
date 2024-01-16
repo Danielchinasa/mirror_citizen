@@ -46,6 +46,7 @@ const BusinessSignUp2 = () => {
     email: "",
     password: "",
     rememberMe: false,
+    userType: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -165,7 +166,7 @@ const BusinessSignUp2 = () => {
         openNotification2("topRight");
       } else {
         // On successful login, navigate to the main dashboard
-        history.push("/main-dashboard");
+        history.push("/verify-otp");
       }
     } catch (error) {
       console.error("SignUp failed:", error);
@@ -294,7 +295,7 @@ const BusinessSignUp2 = () => {
                 )}
                 <StyledLabel>Password</StyledLabel>
                 <StyledInput
-                  type="text"
+                  type="password"
                   placeholder="Create a password "
                   name="password"
                   value={formData.password}
@@ -313,7 +314,10 @@ const BusinessSignUp2 = () => {
                   }
                 />
                 <StyledLabel>Confirm password</StyledLabel>
-                <StyledInput type="text" placeholder="Re-enter the password " />
+                <StyledInput
+                  type="password"
+                  placeholder="Re-enter the password "
+                />
                 <MainButtonFull type="primary" htmlType="submit">
                   Proceed
                 </MainButtonFull>

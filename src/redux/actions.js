@@ -200,10 +200,10 @@ export const sendVerificationRequest =
         basic: {
           phoneNumber: formData.phone || "",
           nin: formData.nin || "",
-          dob: formData.dob || "",
+          dateOfBirth: formData.dateOfBirth || "",
           gender: formData.gender || "",
-          firstName: formData.firstName || "",
-          lastName: formData.lastName || "",
+          firstname: formData.firstname || "",
+          lastname: formData.lastname || "",
           liveFaceNin: formData.liveFaceNin || "",
           face: formData.face || "",
           finger: formData.finger || "",

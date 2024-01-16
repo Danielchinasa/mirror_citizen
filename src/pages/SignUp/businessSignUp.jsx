@@ -44,7 +44,7 @@ const BusinessSignUp = () => {
   };
 
   const handleInputChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value, userType: "business" });
     setFormErrors({ ...formErrors, [name]: null });
   };
 

@@ -74,6 +74,9 @@ const ProfilePage = () => {
   const phoneNumber = user?.user?.phoneNumber;
   const address = user?.user?.address;
   const nin = user?.user?.nin;
+  const businessName = user?.user?.businessName;
+  const rcNumber = user?.user?.rcNumber;
+  const designation = user?.user?.designation;
   const userType = user?.user?.userType;
   console.log(userType);
   const { Title } = Typography;
@@ -84,6 +87,9 @@ const ProfilePage = () => {
     email: email,
     address: address,
     nin: nin,
+    businessName: businessName,
+    rcNumber: rcNumber,
+    designation: designation,
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -295,6 +301,20 @@ const ProfilePage = () => {
               value={formData.address}
               onChange={(e) => handleInputChange("address", e.target.value)}
             />
+          </Col>
+          <Col>
+            {userType == "business" && (
+              <>
+                <StyledLabel>Designation</StyledLabel>
+                <StyledInput
+                  value={formData.designation}
+                  name="designation"
+                  onChange={(e) =>
+                    handleInputChange("designation", e.target.value)
+                  }
+                ></StyledInput>
+              </>
+            )}
           </Col>
         </Row>
         <MainButton

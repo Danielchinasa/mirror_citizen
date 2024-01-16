@@ -67,7 +67,7 @@ const props = {
   },
 };
 
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = "DD/MM/YYYY";
 
 const DashboardPage = () => {
   const history = useHistory();
@@ -77,9 +77,9 @@ const DashboardPage = () => {
   const [formData, setFormData] = useState({
     nin: "",
     phone: "",
-    firstName: "",
-    lastName: "",
-    dob: "",
+    firstname: "",
+    lastname: "",
+    dateOfBirth: "",
     gender: "",
     rc: "",
     business_name: "",
@@ -96,7 +96,7 @@ const DashboardPage = () => {
   };
 
   const handleDateChange = (date, dateString) => {
-    handleInputChange("dob", dateString);
+    handleInputChange("dateOfBirth", dateString);
   };
 
   const user = useSelector((state) => state.user);
@@ -157,6 +157,11 @@ const DashboardPage = () => {
         // Display error message
         // message.error(response.message || "OTP verification failed");
         // Handle further actions if needed
+        notification.error({
+          message: "Error",
+          description:
+            "An unexpected server error occurred. Please attempt your action again",
+        });
       }
     } catch (error) {
       // Handle errors if needed
@@ -900,20 +905,20 @@ const DashboardPage = () => {
                     <StyledInput
                       type="text"
                       placeholder="Enter First Name"
-                      name="firstName"
-                      value={formData.firstName}
+                      name="firstname"
+                      value={formData.firstname}
                       onChange={(e) =>
-                        handleInputChange("firstName", e.target.value)
+                        handleInputChange("firstname", e.target.value)
                       }
                     />
                     <StyledLabel>Last Name*</StyledLabel>
                     <StyledInput
                       type="text"
                       placeholder="Enter Last Name"
-                      name="lastName"
-                      value={formData.lastName}
+                      name="lastname"
+                      value={formData.lastname}
                       onChange={(e) =>
-                        handleInputChange("lastName", e.target.value)
+                        handleInputChange("lastname", e.target.value)
                       }
                     />
                     <Row gutter={12}>
@@ -928,7 +933,7 @@ const DashboardPage = () => {
                         <DatePicker
                           format={dateFormat}
                           size="large"
-                          name="dob"
+                          name="dateOfBirth"
                           onChange={handleDateChange}
                         />
                       </Col>
