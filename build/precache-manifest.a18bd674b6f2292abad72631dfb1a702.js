@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ab847a61bda342521e940a18547add5e",
+    "revision": "b505616e494c90fe44d78cbf98a29d97",
     "url": "./index.html"
   },
   {
-    "revision": "9c7fcbdd08f2e41a159a",
-    "url": "./static/js/2.dea2c9c0.chunk.js"
+    "revision": "27c3897b585b8f909801",
+    "url": "./static/js/2.cd504b38.chunk.js"
   },
   {
     "revision": "a293ab2bbf2b87119e0ce7e31dd7e7b3",
-    "url": "./static/js/2.dea2c9c0.chunk.js.LICENSE.txt"
+    "url": "./static/js/2.cd504b38.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "28daf71453639bcbb3dc",
-    "url": "./static/js/main.d4f0a924.chunk.js"
+    "revision": "198edf9e2369da132566",
+    "url": "./static/js/main.045ae6ff.chunk.js"
   },
   {
     "revision": "a8ee77dc14a7afc62100",
@@ -26,6 +26,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "9055b56ae871dae706d1e574e07beac6",
     "url": "./static/media/banner.9055b56a.png"
+  },
+  {
+    "revision": "3132370c4e7abbdc1814a9ecbde0cbe6",
+    "url": "./static/media/car-insurance.3132370c.svg"
+  },
+  {
+    "revision": "acbe8d8e0f587748bdaeac98f3cb2b3b",
+    "url": "./static/media/credit-card.acbe8d8e.svg"
   },
   {
     "revision": "decf5bb411a541a360b8e32462257247",
