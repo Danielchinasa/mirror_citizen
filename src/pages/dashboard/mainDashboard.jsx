@@ -84,12 +84,18 @@ const MainDashboard = () => {
     // Extract the id from the record
     const verificationRequestId = record.id;
     const consentStatus = record.consent;
+    const type = record.type;
     // console.log("jjjj");
     // console.log(verificationRequestId);
     // Store the id in localStorage
     localStorage.setItem("verificationRequestId", verificationRequestId);
     if (consentStatus === "pending") {
       history.push("/consent");
+    }
+    if (type === "Vehicle profiling") {
+      history.push("/vehicle");
+    } else if (type === "Business profiling") {
+      history.push("/business");
     } else {
       history.push("/result");
     }

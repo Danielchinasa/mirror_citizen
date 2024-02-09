@@ -10,6 +10,7 @@ import {
 } from "./Footer.elements";
 
 import logo from "../../images/logo.svg";
+import NewsletterSection from "../newsletter/newsLetterSection";
 
 function Footer() {
   const date = new Date();
@@ -49,7 +50,6 @@ function Footer() {
           </div>
         </div>
       </div>
-
       <FooterContainer>
         <SocialMedia>
           <SocialMediaWrap>

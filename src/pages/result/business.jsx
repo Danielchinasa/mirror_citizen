@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Divider, Avatar, Spin } from "antd";
+import { Card, Row, Col, Divider, Avatar } from "antd";
 import {
   Container,
   Heading,
@@ -15,18 +15,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchVerificationResult } from "../../redux/actions";
 import axios from "axios";
 import { Typography } from "antd";
-import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
+import Icon, {
+  RightOutlined,
+  UserOutlined,
+  MailOutlined,
+  BankOutlined,
+  CheckCircleOutlined,
+  HomeOutlined,
+  RiseOutlined,
+  DollarOutlined,
+} from "@ant-design/icons";
 import carInsurance from "../../images/car-insurance.svg";
 import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
 
 const { Title, Text } = Typography;
 
-const Result = () => {
+const Business = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
-  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("No Data");
   const [lastName, setLastName] = useState("No Data");
   const [nin, setNin] = useState("No Data");
@@ -45,10 +53,6 @@ const Result = () => {
   const [employmentStatus, setEmploymentStatus] = useState("No Data");
   const [originLGA, setOriginLGA] = useState("No Data");
   const [photo, setPhoto] = useState("No Data");
-  const [residenceLGA, setResidenceLGA] = useState("No Data");
-  const [residenceState, setResidenceState] = useState("No Data");
-  const [height, setHeight] = useState("No Data");
-  const [title, setTitle] = useState("No Data");
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
   // );
@@ -68,15 +72,8 @@ const Result = () => {
             },
           }
         );
-        console.log("Consent Check");
-        console.log(response.data.consent);
-        if (response.data.consent === "pending") {
-          setLoading(true);
-        } else {
-          setLoading(false);
-        }
         // console.log("hre");
-        // console.log(response.data);
+        // console.log(response.data.data.firstName);
         const firstNameFromResponse = response.data.data.firstName || "";
         const lastNameFromResponse = response.data.data.lastName || "No Data";
         const ninFromResponse = response.data.data.nin || "No Data";
@@ -103,12 +100,6 @@ const Result = () => {
         const employmentSatusFromResponse =
           response.data.data.employmentSatus || "No Data";
         const photoFromResponse = response.data.data.photo || "No Data";
-        const residenceLGAFromResponse =
-          response.data.data.residenceLGA || "No Data";
-        const residenceStateFromResponse =
-          response.data.data.residenceState || "No Data";
-        const heightFromResponse = response.data.data.height || "No Data";
-        const titleFromResponse = response.data.data.title || "No Data";
         setFirstName(firstNameFromResponse);
         setLastName(lastNameFromResponse);
         setNin(ninFromResponse);
@@ -127,10 +118,6 @@ const Result = () => {
         setBirthState(birthStateFromResponse);
         setEmploymentStatus(employmentSatusFromResponse);
         setPhoto(photoFromResponse);
-        setResidenceLGA(residenceLGAFromResponse);
-        setResidenceState(residenceStateFromResponse);
-        setHeight(heightFromResponse);
-        setTitle(titleFromResponse);
       } catch (error) {
         // Handle errors if needed
         console.error("Error checking consent:", error);
@@ -142,9 +129,12 @@ const Result = () => {
   }, [dispatch, userToken]);
   // localStorage.removeItem("verificationRequestId");
 
-  const renderDetail = (label, value) => (
+  const renderDetail = (icon, label, value) => (
     <>
-      <StyledLabel>{label}</StyledLabel>
+      <StyledLabel>
+        {icon}
+        &nbsp; {label}
+      </StyledLabel>
       <StyledLabel>
         <strong>{value}</strong>
       </StyledLabel>
@@ -158,93 +148,132 @@ const Result = () => {
           <p style={{ color: "#0DC939" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>
-          <Heading4>Verification Result</Heading4>
+          <Heading4>Business Verification Result</Heading4>
         </Card>
-        <Spin spinning={loading} tip="Awaiting Consent...">
-          <Card style={{ width: "100%", marginTop: "20px" }}>
-            <div>
-              <Text>Basic Identity Profile </Text>
-              <RightOutlined />
-              {/* <Text>{storedValue}</Text> */}
-              <Text>National Identification Number (NIN)</Text>
-            </div>
+        <Card style={{ width: "100%", marginTop: "20px" }}>
+          <div>
+            <Text>Business Profile</Text>
+            <RightOutlined />
+            <Text>Business Name</Text>
+          </div>
+          <Divider />
+
+          <Row gutter={16}>
+            {/* <Col span={24}>
+              {photo ? (
+                <Avatar
+                  size={124}
+                  src={`http://41.184.212.26:8063${photo}`}
+                  alt="Avatar"
+                />
+              ) : (
+                <Avatar size={124} icon={<UserOutlined />} />
+              )}
+            </Col>
+            <Divider /> */}
+            <Col span={6}>
+              {renderDetail(<UserOutlined />, "Business Name", `No Data`)}
+              <Divider />
+              {renderDetail(<BankOutlined />, "Registration Number", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail(<MailOutlined />, "Business Email", `No Data`)}
+              <Divider />
+
+              {renderDetail(<CheckCircleOutlined />, "Status", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail(
+                <CheckCircleOutlined />,
+                "Company Status",
+                `No Data`
+              )}
+              <Divider />
+              {renderDetail(<HomeOutlined />, "Business Address", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Company Type", `No Data`)}
+              <Divider />
+              {renderDetail(
+                <RiseOutlined />,
+                "Principle Business Activity",
+                `No Data`
+              )}
+            </Col>
             <Divider />
-
-            <Row gutter={16}>
-              <Col span={24}>
-                {photo ? (
-                  <Avatar
-                    size={124}
-                    src={`http://41.184.212.26:8063${photo}`}
-                    alt="Avatar"
-                  />
-                ) : (
-                  <Avatar size={124} icon={<UserOutlined />} />
-                )}
-              </Col>
+            <Col span={6}>
+              {renderDetail(<DollarOutlined />, "Share Capital", `No Data`)}
               <Divider />
-              <Col span={6}>
-                {renderDetail("Name", `${firstName} ${lastName}`)}
-                <Divider />
-
-                {renderDetail("NIN", `${nin}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("Date of Birth", `${dob}`)}
-                <Divider />
-
-                {renderDetail("Religion", `${religion}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("Address", `${residenceAddress}`)}
-                <Divider />
-                {renderDetail("Gender", `${gender}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("Phone Number", `${phone}`)}
-                <Divider />
-                {renderDetail("Email", `${email}`)}
-              </Col>
+              {renderDetail("Incorporated on ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail(<MailOutlined />, "Postal Code", `No Data`)}
               <Divider />
-              <Col span={6}>
-                {renderDetail("Country of Birth", `${birthCountry}`)}
-                <Divider />
-                {renderDetail("Employment Status", `${employmentStatus}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("State of Birth", `${birthState}`)}
-                <Divider />
-                {renderDetail("LGA of Origin", `${originLGA}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("State of Origin", `${originState}`)}
-                <Divider />
-                {renderDetail("Marrital Status", `${maritalStatus}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("Profession", `${profession}`)}
-                <Divider />
-                {renderDetail("Education Level", `${educationLevel}`)}
-              </Col>
+              {renderDetail(<HomeOutlined />, "Head Office Address", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("", ``)}
               <Divider />
-              <Col span={6}>
-                {renderDetail("Residence LGA", `${residenceLGA}`)}
-                <Divider />
-                {renderDetail("Residence State", `${residenceState}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("Origin State", `${originState}`)}
-                <Divider />
-                {renderDetail("Origin LGA", `${originLGA}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail("Height", `${height}`)}
-                <Divider />
-                {renderDetail("Title", `${title}`)}
-              </Col>
-            </Row>
-          </Card>
-        </Spin>
+              {renderDetail("", ``)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("", ``)}
+              <Divider />
+              {renderDetail("", ``)}
+            </Col>
+          </Row>
+          <Divider />
+          <div>
+            <Text>Stakeholders Details </Text>
+          </div>
+          <Divider />
+
+          <Row gutter={16}>
+            <Col span={6}>
+              {renderDetail("Entity:", ` No Data`)}
+              <Divider />
+
+              {renderDetail("Name: ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Role: ", `No Data`)}
+              <Divider />
+
+              {renderDetail("Place of Residence: ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Gender: ", `No Data`)}
+              <Divider />
+              {renderDetail("Nationality: ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Occupation: ", `No Data`)}
+              <Divider />
+              {renderDetail("Email: ", `No Data`)}
+            </Col>
+            <Divider />
+            <Col span={6}>
+              {renderDetail("Phone Number: ", `No Data`)}
+              <Divider />
+              {renderDetail("Date of Birth: ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Identity Document Number: ", `No Data`)}
+              <Divider />
+              {renderDetail("Business contact: ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Status: ", `No Data`)}
+              <Divider />
+              {renderDetail("Appointed on: ", `No Data`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail("Date of Removal: ", `No Data`)}
+              <Divider />
+              {renderDetail("", ``)}
+            </Col>
+          </Row>
+        </Card>
         <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
@@ -288,4 +317,4 @@ const Result = () => {
   );
 };
 
-export default Result;
+export default Business;

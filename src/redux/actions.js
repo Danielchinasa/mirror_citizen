@@ -196,6 +196,7 @@ export const SendOtp = (otpString) => async (dispatch) => {
 export const sendVerificationRequest =
   (formData, token) => async (dispatch) => {
     try {
+      const CLICK_ID = localStorage.getItem("CLICK_ID");
       const restructuredData = {
         basic: {
           phoneNumber: formData.phone || "",
@@ -209,11 +210,17 @@ export const sendVerificationRequest =
           finger: formData.finger || "",
         },
         business: {
-          business_name: formData.business_name || "",
+          company_name: formData.business_name || "",
           rc: formData.rc || "",
         },
         financial: {
           bvn: formData.bvn || "",
+        },
+        reach: {
+          CLICK_ID: CLICK_ID || "",
+        },
+        vehicle: {
+          vin: formData.vin || "",
         },
       };
 

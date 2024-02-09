@@ -26,6 +26,10 @@ import VerifyOtp from "./pages/otp/verifyOtp";
 import EmailVerifiedConfirm from "./pages/otp/emailVerifiedConfirm";
 import UpdateProfilePage from "./pages/profile/updateProfilePage";
 import FaqPage from "./pages/faq/faqPage";
+import Vehicle from "./pages/result/vehicle";
+import Business from "./pages/result/business";
+import NotFoundPage from "./components/404/notFoundPage";
+import LegitCar from "./pages/result/legitCar";
 
 function App() {
   return (
@@ -47,6 +51,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/reach/:CLICK_ID" exact component={Home} />
           <Route path="/login" component={LoginPage} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOtp} />
@@ -59,12 +64,16 @@ function App() {
           <Route path="/disclaimer" component={Disclaimer} />
           <Route path="/consent" component={Consent} />
           <Route path="/result" component={Result} />
+          <Route path="/vehicle" component={Vehicle} />
+          <Route path="/legit-car" component={LegitCar} />
+          <Route path="/business" component={Business} />
           <Route path="/faq" component={FaqPage} />
           <Route path="/profile" component={ProfilePage} />
           {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
           <Route path="/main-dashboard" component={MainDashboard} />
           <Route path="/products" component={Products} />
           <Route path="/sign-up" component={SignUpPage} />
+          <Route path="/notFoundPage" component={NotFoundPage} />
           <Route path="/individual/sign-up/1" component={IndividualSignUp} />
           <Route path="/individual/sign-up/2" component={BusinessSignUp} />
           <Route path="/individual/sign-up/3" component={BusinessSignUp2} />

@@ -1,28 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HeroSection from "../../components/HeroSection/HeroSection";
+import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { homeObjOne } from "./Data";
-/* global Reach */
-
 const Home = () => {
+  const [showNewsletterModal, setShowNewsletterModal] = useState(false);
+
   useEffect(() => {
-    const reachScript = document.createElement("script");
-    reachScript.src = "https://clk1.reachclk.com/sdk/reach.js";
-    reachScript.async = true;
+    const hasVisitedBefore = localStorage.getItem("hasVisited");
 
-    document.body.appendChild(reachScript);
-
-    reachScript.onload = () => {
-      Reach.track();
-    };
-
-    return () => {
-      document.body.removeChild(reachScript);
-    };
+    if (!hasVisitedBefore) {
+      setShowNewsletterModal(true);
+      localStorage.setItem("hasVisited", "true");
+    }
   }, []);
+
+  const closeNewsletterModal = () => {
+    setShowNewsletterModal(false);
+  };
 
   return (
     <>
       <HeroSection {...homeObjOne} />
+      <NewsletterSection
+        visible={showNewsletterModal}
+        onClose={closeNewsletterModal}
+      />
     </>
   );
 };

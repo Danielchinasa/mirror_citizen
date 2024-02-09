@@ -74,6 +74,8 @@ const DashboardPage = () => {
 
   const dispatch = useDispatch();
   const [base64WithoutPrefix, setBase64WithoutPrefix] = useState("");
+
+  const [formattedTotalveri, setFormattedTotalveri] = useState("");
   const [formData, setFormData] = useState({
     nin: "",
     phone: "",
@@ -94,6 +96,32 @@ const DashboardPage = () => {
       [name]: value,
     });
   };
+  useEffect(() => {
+    // Check if nin is not an empty string
+    if (formData.nin.trim() !== "") {
+      setTotalveri(60);
+
+      // Log the total amount
+      console.log("Total Veri Amount:", totalveri);
+    }
+
+    // Check if vin is not an empty string
+    if (formData.vin.trim() !== "") {
+      // Add 3000 to totalVeri
+      setTotalveri((prevTotalVeri) => prevTotalVeri + 3000);
+
+      // Log the updated total amount
+      console.log("Updated Total Veri Amount:", totalveri);
+    }
+    // Format totalveri as currency
+    const currencyFormatter = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    });
+    const formattedTotalveri = currencyFormatter.format(totalveri);
+    setDanfee(totalveri);
+    console.log("Updated formattedTotalveri:", formattedTotalveri);
+  }, [formData.nin, formData.vin]);
 
   const handleDateChange = (date, dateString) => {
     handleInputChange("dateOfBirth", dateString);
@@ -132,6 +160,8 @@ const DashboardPage = () => {
           message: "Input value not found",
           description: "Please check your input value and try again.",
         });
+
+        history.push("/notFoundPage");
       } else if (
         response.basic &&
         response.basic.message &&
@@ -142,17 +172,34 @@ const DashboardPage = () => {
           response.basic.data.requestId
         );
         // Handle further actions if needed
-        history.push("/consent");
+        history.push("/main-dashboard");
+      } else if (
+        response.business &&
+        response.business.message === "Business API call successful"
+      ) {
+        // localStorage.setItem(
+        //   "verificationRequestId",
+        //   response.business.data.requestId
+        // );
+        // Handle further actions if needed
+        history.push("/main-dashboard");
       } else if (
         response.business &&
         response.business.message === "Awaiting Consent"
       ) {
-        localStorage.setItem(
-          "verificationRequestId",
-          response.business.data.requestId
-        );
+        // localStorage.setItem(
+        //   "verificationRequestId",
+        //   response.business.data.requestId
+        // );
         // Handle further actions if needed
-        history.push("/consent");
+        history.push("/main-dashboard");
+      } else if (
+        response.vehicle &&
+        response.vehicle.message === "Vehicle API call successful"
+      ) {
+        // Handle further actions for successful vehicle API call
+        // history.push("/vehicle");
+        history.push("/main-dashboard");
       } else {
         // Display error message
         // message.error(response.message || "OTP verification failed");
@@ -219,13 +266,15 @@ const DashboardPage = () => {
   const tooltipContentVehicle =
     "Vehicle profile refers to data and information gathered about the ownership of automobiles. Search parameter is basic VIN.";
   const [serviceFee, setServiceFee] = useState(0);
+  const [totalveri, setTotalveri] = useState(0);
+  const [danfee, setDanfee] = useState(0);
   const [vat, setVat] = useState(0);
 
   const updateServiceFee = (profile) => {
     // Set the service fee based on the selected profile
     if (profile === "nin") {
       localStorage.setItem("profile", profile);
-      setServiceFee(50); // Set the service fee for NIN
+      setServiceFee(60); // Set the service fee for NIN
     } else if (profile === "phone") {
       localStorage.setItem("profile", profile);
       setServiceFee(50); // Set the service fee for Phone
@@ -332,7 +381,7 @@ const DashboardPage = () => {
   const config = {
     public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: `${(serviceFee + vat).toFixed(2)}`,
+    amount: `${(danfee + vat).toFixed(2)}`,
     currency: "NGN",
     payment_options: "card,mobilemoney,ussd",
     customer: {
@@ -351,11 +400,15 @@ const DashboardPage = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleFace, setModalVisibleFace] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const showModal = () => {
     setModalVisible(true);
+  };
+  const showModalFace = () => {
+    setModalVisibleFace(true);
   };
 
   const handleOk = () => {
@@ -365,11 +418,17 @@ const DashboardPage = () => {
   const handleCancel = () => {
     setModalVisible(false);
   };
+  const handleCancelFace = () => {
+    setModalVisibleFace(false);
+  };
   const handleMakePayment = () => {
     // Your existing logic for handling the payment
 
     // Show the modal
     showModal();
+  };
+  const handleMakePaymentForLiveFace = () => {
+    showModalFace();
   };
 
   const handlePaymentMethod = async () => {
@@ -445,6 +504,101 @@ const DashboardPage = () => {
                 });
               };
               handleSubmit();
+            }
+            closePaymentModal();
+          },
+          onClose: () => {},
+        });
+        handleCancel();
+      }
+
+      // Close the modal
+      // handleCancel();
+    }
+    // console.log(selectedValue);
+    // You may also add an else block to handle the case when no payment method is selected
+  };
+
+  const handlePaymentMethodFace = async () => {
+    // Check if a payment method is selected
+    const reachScript = document.createElement("script");
+    reachScript.src = "https://clk1.reachclk.com/sdk/reach.js";
+    reachScript.async = true;
+
+    document.body.appendChild(reachScript);
+    if (selectedValue !== null) {
+      // Log the selected payment method
+      const userBalance = userDetails?.user?.walletBalance || 0;
+
+      if (selectedValue === 1) {
+        // console.log("Payment from Wallet");
+        setLoading(true);
+        const apiUrl = "http://41.184.212.26:8063/api/v2/wallet-payment";
+
+        const requestBody = {
+          userNIN: userNin,
+          transactionID: "EA11697986831911",
+          amount: `${(serviceFee + vat).toFixed(2)}`,
+        };
+
+        if (userBalance.toLocaleString() < 55) {
+          // Show the Ant Design notification
+
+          notification.error({
+            message: "Wallet Balance Warning",
+            description:
+              "Your wallet balance is low. Please recharge before making a payment.",
+          });
+        } else {
+          try {
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(requestBody),
+            });
+
+            const data = await response.text();
+
+            if (response.ok && data === "payment successful") {
+              // console.log("Payment successful. Response:", data);
+              handleCancelFace();
+              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+              if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
+                window.open(liveCaptureUrl, "_blank");
+              }
+              // handleSubmit();
+            } else {
+              console.error("Payment failed. Response:", data);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          } finally {
+            handleCancelFace();
+
+            setLoading(false); // Set loading to false when the request completes (either success or failure)
+          }
+        }
+      } else if (selectedValue === 2) {
+        // console.log("Instant Payment");
+        handleFlutterPayment({
+          callback: async (response) => {
+            console.log(response);
+            if (response.status === "successful") {
+              console.log("flutterWave success");
+              reachScript.onload = () => {
+                Reach.conversion({
+                  advertiser_id: 299,
+                  // ADDITIONAL PARAMETERS
+                });
+              };
+              // handleSubmit();
+              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+              if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
+                window.open(liveCaptureUrl, "_blank");
+              }
             }
             closePaymentModal();
           },
@@ -548,6 +702,93 @@ const DashboardPage = () => {
           Confirm Payment
         </Button>
         <Button key="cancel" onClick={handleCancel}>
+          Cancel
+        </Button>
+      </div>
+    </Modal>
+  );
+
+  const PaymentModalFace = () => (
+    <Modal
+      visible={modalVisibleFace}
+      onCancel={handleCancelFace}
+      footer={null} // Remove the default footer
+    >
+      {/* Add your content for the modal here */}
+      <div
+        style={{
+          borderBottom: "1px solid #e8e8e8",
+          marginBottom: "15px",
+          paddingBottom: "15px",
+        }}
+      >
+        <Radio.Group
+          style={{ width: "100%" }}
+          onChange={handleRadioChange}
+          value={selectedValue}
+        >
+          <Radio
+            style={{
+              display: "block",
+              border: "1px solid #e8e8e8",
+              borderRadius: "5px",
+              padding: "10px",
+              marginBottom: "10px",
+              fontWeight: "bold", // Make the text bold
+            }}
+            value={1}
+          >
+            Payment from Wallet
+          </Radio>
+          <Radio
+            style={{
+              display: "block",
+              border: "1px solid #e8e8e8",
+              borderRadius: "5px",
+              padding: "10px",
+              fontWeight: "bold", // Make the text bold
+            }}
+            value={2}
+          >
+            Instant Payment
+          </Radio>
+        </Radio.Group>
+      </div>
+
+      {/* Checkbox and lower div */}
+      <div
+        style={{
+          marginTop: "20px",
+          background: "rgba(235, 3, 24, 0.10)",
+          border: "1px solid #EB0318",
+          padding: "15px",
+        }}
+      >
+        <Checkbox onChange={onChange2}>
+          By clicking, you indicate that you understand and accept that consent
+          is required from the data subject being verified before you can access
+          their data.
+        </Checkbox>
+      </div>
+
+      {/* Buttons */}
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
+        <Button
+          type="primary"
+          onClick={handlePaymentMethodFace}
+          disabled={!checkboxCheckedConfirm}
+          style={{
+            marginRight: 10,
+            backgroundColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
+            borderColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9",
+            cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+          }}
+        >
+          Confirm Payment
+        </Button>
+        <Button key="cancel" onClick={handleCancelFace}>
           Cancel
         </Button>
       </div>
@@ -682,19 +923,19 @@ const DashboardPage = () => {
                           >
                             National Identity Number (NIN)
                           </Radio>
-                          <Radio
+                          {/* <Radio
                             value="phone"
                             onClick={() => setSelectedForm("phone")}
                           >
                             {" "}
                             Phone Number{" "}
-                          </Radio>
-                          <Radio
+                          </Radio> */}
+                          {/* <Radio
                             value="demographics"
                             onClick={() => setSelectedForm("demographics")}
                           >
                             Demographics
-                          </Radio>
+                          </Radio> */}
                           <Radio
                             value="face"
                             onClick={() => setSelectedForm("face")}
@@ -952,10 +1193,10 @@ const DashboardPage = () => {
                           value={formData.gender}
                         >
                           <Space>
-                            <Radio value="male" size="large">
+                            <Radio value="m" size="large">
                               Male
                             </Radio>
-                            <Radio value="female">Female</Radio>
+                            <Radio value="f">Female</Radio>
                           </Space>
                         </Radio.Group>
                       </Col>
@@ -1075,13 +1316,14 @@ const DashboardPage = () => {
                           icon={<CameraOutlined />}
                           size="large"
                           onClick={() => {
-                            const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen`;
-                            if (
-                              isLiveFaceNinValid &&
-                              liveFaceNin.trim() !== ""
-                            ) {
-                              window.open(liveCaptureUrl, "_blank");
-                            }
+                            handleMakePaymentForLiveFace();
+                            // const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+                            // if (
+                            //   isLiveFaceNinValid &&
+                            //   liveFaceNin.trim() !== ""
+                            // ) {
+                            //   window.open(liveCaptureUrl, "_blank");
+                            // }
                           }}
                           disabled={
                             !isLiveFaceNinValid || liveFaceNin.trim() === ""
@@ -1356,6 +1598,7 @@ const DashboardPage = () => {
             </Modal>
           </Col>
           <PaymentModal />
+          <PaymentModalFace />
         </Row>
       </Container>
     </Row>

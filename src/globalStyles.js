@@ -258,4 +258,11 @@ export const Img = styled.img`
   max-height: 600px;
 `;
 
+export const Img2 = styled.img`
+  border: 0;
+  max-width: 100%;
+  vertical-align: middle;
+  display: inline-block;
+  max-height: 600px;
+`;
 export default GlobalStyles;
