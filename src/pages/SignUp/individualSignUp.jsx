@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -26,6 +26,7 @@ import {
 } from "../../globalStyles";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { signUp } from "../../redux/actions";
+import axios from "axios";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -43,6 +44,8 @@ const IndividualSignUp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [userType, setUserType] = useState("");
+  const [ip, setIp] = useState("");
+  const [ipCountry, setIpCountry] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -52,6 +55,8 @@ const IndividualSignUp = () => {
     password: "",
     rememberMe: false,
     userType: "",
+    ip: "",
+    ipCountry: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -74,6 +79,21 @@ const IndividualSignUp = () => {
     []
   );
 
+  useEffect(() => {
+    const fetchIpCountry = async () => {
+      try {
+        const response = await axios.get("https://ipapi.co/json/");
+        setIpCountry(response.data.country_name);
+        setIp(response.data.ip);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setIpCountry(null);
+      }
+    };
+
+    fetchIpCountry();
+  }, []);
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     const inputValue = type === "checkbox" ? checked : value;
@@ -82,6 +102,8 @@ const IndividualSignUp = () => {
       ...formData,
       [name]: inputValue,
       userType: "individual",
+      ip: ip,
+      ipCountry: ipCountry,
     });
 
     setFormErrors({
@@ -287,7 +309,7 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
-                  <StyledInput
+                  {/* <StyledInput
                     type="hidden"
                     placeholder="Create a password "
                     name="userType"
@@ -295,7 +317,7 @@ const IndividualSignUp = () => {
                     onChange={(e) =>
                       handleInputChange("userType", e.target.value)
                     }
-                  />
+                  /> */}
                   {/* {formErrors.userType && (
                     <Alert
                       message={formErrors.userType}

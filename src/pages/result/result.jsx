@@ -19,6 +19,24 @@ import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
 import carInsurance from "../../images/car-insurance.svg";
 import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
+import {
+  FaRegUser,
+  FaCalendarAlt,
+  FaPray,
+  FaHome,
+  FaRestroom,
+  FaPhoneAlt,
+  FaGlobe,
+} from "react-icons/fa";
+import {
+  MdOutlineMail,
+  MdOutlineWorkOutline,
+  MdOutlinePinDrop,
+  MdTitle,
+} from "react-icons/md";
+import { AiOutlineFieldNumber } from "react-icons/ai";
+import { GiBigDiamondRing, GiBodyHeight } from "react-icons/gi";
+import { IoSchoolSharp } from "react-icons/io5";
 
 const { Title, Text } = Typography;
 
@@ -60,7 +78,7 @@ const Result = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `http://41.184.212.26:8063/api/v2/check-consent/${requestId}`,
+          `http://41.184.212.26:8069/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -68,8 +86,8 @@ const Result = () => {
             },
           }
         );
-        console.log("Consent Check");
-        console.log(response.data.consent);
+        // console.log("Consent Check");
+        // console.log(response.data.consent);
         if (response.data.consent === "pending") {
           setLoading(true);
         } else {
@@ -142,9 +160,12 @@ const Result = () => {
   }, [dispatch, userToken]);
   // localStorage.removeItem("verificationRequestId");
 
-  const renderDetail = (label, value) => (
+  const renderDetail = (icon, label, value) => (
     <>
-      <StyledLabel>{label}</StyledLabel>
+      <StyledLabel>
+        {icon}
+        &nbsp; {label}
+      </StyledLabel>
       <StyledLabel>
         <strong>{value}</strong>
       </StyledLabel>
@@ -171,11 +192,14 @@ const Result = () => {
             <Divider />
 
             <Row gutter={16}>
+              <StyledLabel style={{ marginBottom: "10px" }}>
+                Personal Details
+              </StyledLabel>
               <Col span={24}>
                 {photo ? (
                   <Avatar
                     size={124}
-                    src={`http://41.184.212.26:8063${photo}`}
+                    src={`http://41.184.212.26:8069${photo}`}
                     alt="Avatar"
                   />
                 ) : (
@@ -184,63 +208,111 @@ const Result = () => {
               </Col>
               <Divider />
               <Col span={6}>
-                {renderDetail("Name", `${firstName} ${lastName}`)}
+                {renderDetail(
+                  <FaRegUser />,
+                  "Name",
+                  `${firstName} ${lastName}`
+                )}
                 <Divider />
 
-                {renderDetail("NIN", `${nin}`)}
+                {renderDetail(<AiOutlineFieldNumber />, "NIN", `${nin}`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Date of Birth", `${dob}`)}
+                {renderDetail(<FaCalendarAlt />, "Date of Birth", `${dob}`)}
                 <Divider />
 
-                {renderDetail("Religion", `${religion}`)}
+                {renderDetail(<FaPray />, "Religion", `${religion}`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Address", `${residenceAddress}`)}
+                {renderDetail(<FaHome />, "Address", `${residenceAddress}`)}
                 <Divider />
-                {renderDetail("Gender", `${gender}`)}
+                {renderDetail(<FaRestroom />, "Gender", `${gender}`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Phone Number", `${phone}`)}
+                {renderDetail(<FaPhoneAlt />, "Phone Number", `${phone}`)}
                 <Divider />
-                {renderDetail("Email", `${email}`)}
+                {renderDetail(<MdOutlineMail />, "Email", `${email}`)}
               </Col>
               <Divider />
               <Col span={6}>
-                {renderDetail("Country of Birth", `${birthCountry}`)}
+                {renderDetail(
+                  <FaGlobe />,
+                  "Country of Birth",
+                  `${birthCountry}`
+                )}
                 <Divider />
-                {renderDetail("Employment Status", `${employmentStatus}`)}
+                {renderDetail(
+                  <MdOutlineWorkOutline />,
+                  "Employment Status",
+                  `${employmentStatus}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail("State of Birth", `${birthState}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "State of Birth",
+                  `${birthState}`
+                )}
                 <Divider />
-                {renderDetail("LGA of Origin", `${originLGA}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "LGA of Origin",
+                  `${originLGA}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail("State of Origin", `${originState}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "State of Origin",
+                  `${originState}`
+                )}
                 <Divider />
-                {renderDetail("Marrital Status", `${maritalStatus}`)}
+                {renderDetail(
+                  <GiBigDiamondRing />,
+                  "Marrital Status",
+                  `${maritalStatus}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail("Profession", `${profession}`)}
+                {renderDetail(<IoSchoolSharp />, "Profession", `${profession}`)}
                 <Divider />
-                {renderDetail("Education Level", `${educationLevel}`)}
+                {renderDetail(
+                  <IoSchoolSharp />,
+                  "Education Level",
+                  `${educationLevel}`
+                )}
               </Col>
               <Divider />
               <Col span={6}>
-                {renderDetail("Residence LGA", `${residenceLGA}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Residence LGA",
+                  `${residenceLGA}`
+                )}
                 <Divider />
-                {renderDetail("Residence State", `${residenceState}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Residence State",
+                  `${residenceState}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail("Origin State", `${originState}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Origin State",
+                  `${originState}`
+                )}
                 <Divider />
-                {renderDetail("Origin LGA", `${originLGA}`)}
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Origin LGA",
+                  `${originLGA}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail("Height", `${height}`)}
+                {renderDetail(<GiBodyHeight />, "Height", `${height}`)}
                 <Divider />
-                {renderDetail("Title", `${title}`)}
+                {renderDetail(<MdTitle />, "Title", `${title}`)}
               </Col>
             </Row>
           </Card>

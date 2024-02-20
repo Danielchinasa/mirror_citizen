@@ -121,15 +121,16 @@ function Navbar() {
   };
 
   const userDetails = useSelector((state) => state.userDetails);
+  const userToken = userDetails?.jwtToken || "";
 
   useEffect(() => {
     // Dispatch fetchUserProfile action when component mounts
-    dispatch(fetchUserProfile(/* pass your token here */));
+    dispatch(fetchUserProfile(userToken));
   }, [dispatch]);
 
-  console.log("UserDetails");
+  console.log("UserDetails 2");
   console.log(userDetails);
-  const userBalance = userDetails?.user?.walletBalance || 0;
+  const userBalance = userDetails?.walletBalance || 0;
 
   return (
     <>
@@ -254,8 +255,7 @@ function Navbar() {
                         }}
                       >
                         <Title level={4}>
-                          {userDetails?.user?.firstName}{" "}
-                          {userDetails?.user?.lastName}
+                          {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
                         <p>
                           Bal:

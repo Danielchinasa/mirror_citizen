@@ -5,7 +5,7 @@ import { persistor } from "../redux/store";
 
 export const signIn = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/login`, credentials);
+    const response = await axios.post(`${baseUrl}/auth/login`, credentials);
     const userData = response.data;
     console.log("User Data:", userData);
 
@@ -39,7 +39,10 @@ export const signIn = (credentials) => async (dispatch) => {
 
 export const signUp = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/registration`, credentials);
+    const response = await axios.post(
+      `${baseUrl}/auth/registration`,
+      credentials
+    );
     const userData = response.data;
 
     dispatch({
@@ -139,12 +142,15 @@ export const fetchTransactionData = (token) => {
   return async (dispatch) => {
     try {
       // Make an API call to fetch verification data
-      const response = await axios.get(`${baseUrl}/payment-history`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the bearer token
-        },
-      });
+      const response = await axios.get(
+        `${baseUrl}/transaction/payment-history`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the bearer token
+          },
+        }
+      );
       console.log("Transaction Data Response:", response);
 
       // Dispatch the fetched data to the store
@@ -162,7 +168,7 @@ export const fetchTransactionData = (token) => {
 export const SendOtp = (otpString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `http://41.184.212.26:8063/api/citizens/activation/${otpString}`
+      `http://41.184.212.26:8069/api/citizens/activation/${otpString}`
     );
     const userData = response.data;
 
@@ -214,13 +220,15 @@ export const sendVerificationRequest =
           rc: formData.rc || "",
         },
         financial: {
-          bvn: formData.bvn || "",
+          bvn: parseInt(formData.bvn) || "",
         },
         reach: {
           CLICK_ID: CLICK_ID || "",
         },
         vehicle: {
           vin: formData.vin || "",
+          stolencheck: formData.stolencheck || false,
+          license_number: formData.license_number || "",
         },
       };
 
@@ -238,7 +246,7 @@ export const sendVerificationRequest =
         }
       });
       const response = await axios.post(
-        `${baseUrl}/call-external-apis`,
+        `${baseUrl}/verification/call-external-apis`,
         restructuredData,
         {
           headers: {
@@ -279,7 +287,9 @@ export const sendVerificationRequest =
 
 export const ResetPassword = (emailAddress) => async (dispatch) => {
   try {
-    const response = await axios.get(`${baseUrl}/fpassword/${emailAddress}`);
+    const response = await axios.get(
+      `${baseUrl}/auth/fpassword/${emailAddress}`
+    );
     const userData = response.data;
 
     dispatch({
@@ -315,7 +325,7 @@ export const fetchVerificationResult = (requestId, token) => {
     try {
       // Make an API call to fetch verification data
       const response = await axios.get(
-        `${baseUrl}/check-consent/${requestId}`,
+        `${baseUrl}/verification/check-consent/${requestId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -339,7 +349,10 @@ export const fetchVerificationResult = (requestId, token) => {
 
 export const setNewPassword = (formData) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/change/password`, formData);
+    const response = await axios.post(
+      `${baseUrl}/user/change/password`,
+      formData
+    );
 
     const userData = response.data;
 
@@ -371,7 +384,7 @@ export const setNewPassword = (formData) => async (dispatch) => {
 };
 export const updateProfile = (formData, token) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/updateuser`, formData, {
+    const response = await axios.post(`${baseUrl}/user/update`, formData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`, // Include the bearer token

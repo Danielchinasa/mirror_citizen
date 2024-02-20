@@ -33,6 +33,7 @@ const LoginForm = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const [ipAddress, setIpAddress] = useState(null);
+  const [ipCountry, setIpCountry] = useState(null);
 
   const openNotification = (placement) => {
     api.info({
@@ -134,6 +135,7 @@ const LoginForm = () => {
         openNotification2("topRight");
       } else {
         // On successful login, navigate to the main dashboard
+        localStorage.setItem("IpAddress", ipAddress);
         history.push("/main-dashboard");
       }
     } catch (error) {

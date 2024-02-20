@@ -37,7 +37,7 @@ const LegitCar = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `http://41.184.212.26:8063/api/v2/check-consent/${requestId}`,
+          `http://41.184.212.26:8069/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const LegitCar = () => {
               {/* {photo ? (
                 <Avatar
                   size={124}
-                  src={`http://41.184.212.26:8063${photo}`}
+                  src={`http://41.184.212.26:8069${photo}`}
                   alt="Avatar"
                 />
               ) : (

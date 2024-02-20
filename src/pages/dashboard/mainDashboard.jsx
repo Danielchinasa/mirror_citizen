@@ -21,6 +21,7 @@ import {
 } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const data = [
   {
@@ -59,10 +60,17 @@ const MainDashboard = () => {
   const userToken = user?.jwtToken || "";
   const history = useHistory();
 
-  const userEmail = user?.user?.email || "";
-  const userName = user?.user?.firstName || "";
-  const userPhone = user?.user?.phone || "";
-  const userNin = user?.user?.nin || "";
+  const userEmail = user?.email || "";
+  const userName = user?.firstName || "";
+  const userPhone = user?.phone || "";
+  const userNin = user?.nin || "";
+  const [ninFee, setNinFee] = useState("");
+  const [faceFee, setFaceFee] = useState("");
+  const [vehicleFee, setVehicleFee] = useState("");
+  const [vinVehicleFee, setVinVehicleFee] = useState("");
+  const [businessFee, setBusinessFee] = useState("");
+  const [financialFee, setFinancialFee] = useState("");
+  const [currencyCheck, setCurrencyCheck] = useState("NGN");
 
   useEffect(() => {
     // Dispatch the fetchVerificationData action with the bearer token when the component mounts
@@ -75,6 +83,37 @@ const MainDashboard = () => {
   // Log the verificationData to the console
 
   useEffect(() => {
+    const fetchServiceFee = async () => {
+      try {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await axios.get(
+          `http://41.184.212.26:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`, // Include the bearer token
+            },
+          }
+        );
+        console.log("Service Fees");
+        console.log(response.data[0].price);
+        setNinFee(response.data[0].price);
+        setFaceFee(response.data[1].price);
+        setBusinessFee(response.data[2].price);
+        setFinancialFee(response.data[4].price);
+        setVinVehicleFee(response.data[5].price);
+        setVehicleFee(response.data[6].price);
+        setCurrencyCheck(response.data[0].currency);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setNinFee(null);
+      }
+    };
+
+    fetchServiceFee();
+  }, []);
+
+  useEffect(() => {
     console.log("Verification Data:", verificationData);
     // const requestId = verificationData || "";
     // localStorage.setItem("verificationRequestId", requestId);
@@ -85,17 +124,19 @@ const MainDashboard = () => {
     const verificationRequestId = record.id;
     const consentStatus = record.consent;
     const type = record.type;
+    const searchParameter = record.searchParameter;
     // console.log("jjjj");
     // console.log(verificationRequestId);
     // Store the id in localStorage
     localStorage.setItem("verificationRequestId", verificationRequestId);
-    if (consentStatus === "pending") {
-      history.push("/consent");
-    }
-    if (type === "Vehicle profiling") {
+    if (searchParameter === "Vehicle Registration Number") {
+      history.push("/vehicle2");
+    } else if (type === "Vehicle profiling") {
       history.push("/vehicle");
     } else if (type === "Business profiling") {
       history.push("/business");
+    } else if (type === "Financial profiling") {
+      history.push("/financial");
     } else {
       history.push("/result");
     }
@@ -105,7 +146,7 @@ const MainDashboard = () => {
     public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}TP",
     amount: "1000",
-    currency: "NGN",
+    currency: currencyCheck == "USD" ? "USD" : "NGN",
     payment_options: "card,mobilemoney,ussd",
     customer: {
       email: userEmail,
@@ -289,7 +330,7 @@ const MainDashboard = () => {
         console.log(response);
         if (response.status === "successful") {
           try {
-            const apiUrl = "http://41.184.212.26:8063/api/v2/topup";
+            const apiUrl = "http://41.184.212.26:8069/api/v2/topup";
             const requestData = {
               userNIN: userNin,
               email: userEmail,
@@ -312,7 +353,7 @@ const MainDashboard = () => {
               dispatch(fetchUserProfile(userToken));
               // Fetch the updated wallet balance after the successful top-up
               const apiUrlBalance =
-                "http://41.184.212.26:8063/api/v2/wallet-balance";
+                "http://41.184.212.26:8069/api/v2/user/wallet-balance";
               const walletBalanceResponse = await fetch(apiUrlBalance, {
                 method: "GET",
                 headers: {

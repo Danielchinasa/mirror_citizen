@@ -17,7 +17,7 @@ import {
   Modal,
   Spin,
 } from "antd";
-import dayjs from "dayjs";
+import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -39,6 +39,7 @@ import {
 import { InfoCircleOutlined, CameraOutlined } from "@ant-design/icons";
 import banner from "../../images/banner.png";
 import tick from "../../images/tick.png";
+import clearvin from "../../images/clearvin.png";
 import { useDispatch, useSelector } from "react-redux";
 import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -74,8 +75,24 @@ const DashboardPage = () => {
 
   const dispatch = useDispatch();
   const [base64WithoutPrefix, setBase64WithoutPrefix] = useState("");
+  const [isClearVinOn, setIsClearVinOn] = useState(false);
 
   const [formattedTotalveri, setFormattedTotalveri] = useState("");
+  const [exchangeRate, setExchangeRate] = useState("");
+  const [ninFee, setNinFee] = useState("");
+  const [ninUsdFee, setNinUsdFee] = useState("");
+  const [faceFee, setFaceFee] = useState("");
+  const [faceUsdFee, setFaceUsdFee] = useState("");
+  const [vehicleFee, setVehicleFee] = useState("");
+  const [vehicleUsdFee, setVehicleUsdFee] = useState("");
+  const [vinVehicleFee, setVinVehicleFee] = useState("");
+  const [vinVehicleUsdFee, setVinVehicleUsdFee] = useState("");
+  const [businessFee, setBusinessFee] = useState("");
+  const [businessUsdFee, setBusinessUsdFee] = useState("");
+  const [financialFee, setFinancialFee] = useState("");
+  const [financialUsdFee, setFinancialUsdFee] = useState("");
+  const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const [value, setValue] = useState(1);
   const [formData, setFormData] = useState({
     nin: "",
     phone: "",
@@ -87,41 +104,100 @@ const DashboardPage = () => {
     business_name: "",
     bvn: "",
     vin: "",
+    stolencheck: "",
+    license_number: "",
     face: "",
     finger: "",
   });
+  const currencyOnChange = (e) => {
+    console.log("radio checked", e.target.value);
+    setValue(e.target.value);
+
+    if (e.target.value == 2) {
+      setCurrencyCheck("USD");
+    } else {
+      setCurrencyCheck("NGN");
+    }
+  };
   const handleInputChange = (name, value) => {
     setFormData({
       ...formData,
       [name]: value,
     });
   };
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setIsChecked(isChecked);
+    handleInputChange("stolencheck", isChecked ? true : false); // Set stolencheck to true when checked, false otherwise
+  };
   useEffect(() => {
-    // Check if nin is not an empty string
-    if (formData.nin.trim() !== "") {
-      setTotalveri(60);
+    const fetchServiceFee = async () => {
+      try {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await axios.get(
+          `http://41.184.212.26:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`, // Include the bearer token
+            },
+          }
+        );
+        console.log("Service Fees");
+        console.log(response.data.data[0].price);
+        setExchangeRate(response.data.rate);
+        setNinFee(response.data.data[0].price);
+        setNinUsdFee(response.data.data[0].price2);
+        setFaceFee(response.data.data[1].price);
+        setFaceUsdFee(response.data.data[1].price2);
+        setBusinessFee(response.data.data[2].price);
+        setBusinessUsdFee(response.data.data[2].price2);
+        setFinancialFee(response.data.data[4].price);
+        setFinancialUsdFee(response.data.data[4].price2);
+        setVinVehicleFee(response.data.data[5].price);
+        setVinVehicleUsdFee(response.data.data[5].price2);
+        setVehicleFee(response.data.data[6].price);
+        setVehicleUsdFee(response.data.data[6].price2);
+        // setCurrencyCheck(response.data.data[0].currency);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setNinFee(null);
+      }
+    };
 
-      // Log the total amount
-      console.log("Total Veri Amount:", totalveri);
-    }
+    fetchServiceFee();
+  }, []);
+  // useEffect(() => {
+  //   // Check if nin is not an empty string
+  //   if (formData.nin.trim() !== "") {
+  //     setTotalveri(ninFee);
+  //     setIsClearVinOn(false);
+  //     // Log the total amount
+  //     console.log("Total Veri Amount:", totalveri);
+  //   }
 
-    // Check if vin is not an empty string
-    if (formData.vin.trim() !== "") {
-      // Add 3000 to totalVeri
-      setTotalveri((prevTotalVeri) => prevTotalVeri + 3000);
+  //   // Check if vin is not an empty string
+  //   if (formData.vin.trim() !== "") {
+  //     setIsClearVinOn(true);
+  //     // Add 3000 to totalVeri
+  //     setTotalveri((prevTotalVeri) => prevTotalVeri + vinVehicleFee);
 
-      // Log the updated total amount
-      console.log("Updated Total Veri Amount:", totalveri);
-    }
-    // Format totalveri as currency
-    const currencyFormatter = new Intl.NumberFormat("en-NG", {
-      style: "currency",
-      currency: "NGN",
-    });
-    const formattedTotalveri = currencyFormatter.format(totalveri);
-    setDanfee(totalveri);
-    console.log("Updated formattedTotalveri:", formattedTotalveri);
-  }, [formData.nin, formData.vin]);
+  //     // Log the updated total amount
+  //     console.log("Updated Total Veri Amount:", totalveri);
+  //     console.log("isClearVinOn", isClearVinOn);
+  //   } else {
+  //     setIsClearVinOn(false);
+  //   }
+  //   // Format totalveri as currency
+  //   const currencyFormatter = new Intl.NumberFormat("en-NG", {
+  //     style: "currency",
+  //     currency: "NGN",
+  //   });
+  //   const formattedTotalveri = currencyFormatter.format(totalveri);
+  //   checkStolen ? setDanfee(totalveri) : setDanfee(totalveri + 30);
+
+  //   console.log("Updated formattedTotalveri:", formattedTotalveri);
+  // }, [formData.nin, formData.vin]);
 
   const handleDateChange = (date, dateString) => {
     handleInputChange("dateOfBirth", dateString);
@@ -130,10 +206,10 @@ const DashboardPage = () => {
   const user = useSelector((state) => state.user);
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = user?.jwtToken || "";
-  const userEmail = user?.user?.email || "";
-  const userName = user?.user?.firstName || "";
-  const userPhone = user?.user?.phone || "";
-  const userNin = user?.user?.nin || "";
+  const userEmail = user?.email || "";
+  const userName = user?.firstName || "";
+  const userPhone = user?.phone || "";
+  const userNin = user?.nin || "";
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -200,6 +276,22 @@ const DashboardPage = () => {
         // Handle further actions for successful vehicle API call
         // history.push("/vehicle");
         history.push("/main-dashboard");
+      } else if (
+        response.vehicle &&
+        response.vehicle.message &&
+        response.vehicle.message === "successful"
+      ) {
+        localStorage.setItem(
+          "verificationRequestId",
+          response.vehicle.data.requestId
+        );
+        // Handle further actions if needed
+        history.push("/main-dashboard");
+      } else if (
+        response.financial &&
+        response.financial.message === "Financial API call successful"
+      ) {
+        history.push("/main-dashboard");
       } else {
         // Display error message
         // message.error(response.message || "OTP verification failed");
@@ -245,9 +337,29 @@ const DashboardPage = () => {
 
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [checkboxCheckedConfirm, setCheckboxCheckedConfirm] = useState(false);
-  const onChange = (e) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkStolen, setCheckStolen] = useState(false);
+
+  const onChangePayment = (e) => {
     setCheckboxChecked(e.target.checked);
   };
+  const onChange = (e) => {
+    e.preventDefault();
+
+    setIsChecked(e.target.checked);
+  };
+  useEffect(() => {
+    if (isChecked) {
+      console.log("isChecked");
+
+      setCheckStolen(true);
+      console.log(checkStolen);
+    } else {
+      console.log("isCheckedNOT");
+      console.log(checkStolen);
+      setCheckStolen(false);
+    }
+  }, [isChecked]);
   const onChange2 = (e) => {
     setCheckboxCheckedConfirm(e.target.checked);
   };
@@ -266,51 +378,87 @@ const DashboardPage = () => {
   const tooltipContentVehicle =
     "Vehicle profile refers to data and information gathered about the ownership of automobiles. Search parameter is basic VIN.";
   const [serviceFee, setServiceFee] = useState(0);
-  const [totalveri, setTotalveri] = useState(0);
-  const [danfee, setDanfee] = useState(0);
+
   const [vat, setVat] = useState(0);
+  const [profile, setProfile] = useState("");
+  const [usdFee, setUsdFee] = useState("");
 
   const updateServiceFee = (profile) => {
     // Set the service fee based on the selected profile
+    const formDataFees = {
+      nin: ninFee,
+      vin: vinVehicleFee,
+      license_number: vehicleFee,
+      rc: businessFee,
+      business_name: businessFee,
+      bvn: financialFee,
+      face: faceFee,
+    };
+
+    // Calculate total veri based on form data
+    let calculatedTotalveri = 0;
+
+    // Update totalveri state with the calculated value
+    setTotalveri(calculatedTotalveri);
     if (profile === "nin") {
       localStorage.setItem("profile", profile);
-      setServiceFee(60); // Set the service fee for NIN
-    } else if (profile === "phone") {
-      localStorage.setItem("profile", profile);
-      setServiceFee(50); // Set the service fee for Phone
-    } else if (profile === "demographics") {
-      localStorage.setItem("profile", profile);
-      setServiceFee(50); // Set the service fee for Phone
+      setServiceFee(ninFee); // Set the service fee for NIN
+      setProfile("nin");
+      setUsdFee(ninUsdFee);
     } else if (profile === "face") {
       localStorage.setItem("profile", profile);
-      setServiceFee(200);
+      setServiceFee(faceFee);
+      setProfile("face");
+
+      setUsdFee(faceUsdFee);
     } else if (profile === "fingerprint") {
       localStorage.setItem("profile", profile);
       setServiceFee(200); // Set the service fee for Phone
     } else if (profile === "rc") {
       localStorage.setItem("profile", profile);
-      setServiceFee(1000); // Set the service fee for Phone
+      setServiceFee(businessFee); // Set the service fee for Phone
+      setProfile("rc");
+      setUsdFee(businessUsdFee);
     } else if (profile === "business_name") {
       localStorage.setItem("profile", profile);
-      setServiceFee(1000); // Set the service fee for Phone
+      setServiceFee(businessFee); // Set the service fee for Phone
+      setProfile("business_name");
+      setUsdFee(businessUsdFee);
     } else if (profile === "bvn") {
       localStorage.setItem("profile", profile);
-      setServiceFee(10); // Set the service fee for Phone
+      setServiceFee(financialFee); // Set the service fee for Phone
+      setProfile("bvn");
+      setUsdFee(financialUsdFee);
     } else if (profile === "vin") {
       localStorage.setItem("profile", profile);
-      setServiceFee(3000); // Set the service fee for Phone
+      setServiceFee(vinVehicleFee); // Set the service fee for Phone
+      setProfile("vin");
+      setUsdFee(vinVehicleUsdFee);
     } else {
       setServiceFee(0); // Set a default value or handle other profiles
     }
-    const calculatedVat = serviceFee * 0.1;
+    const calculatedVat = serviceFee * 0.075;
     setVat(calculatedVat);
   };
+
+  function RadioComponent({ profile, usdFee }) {
+    return (
+      <Radio value={2}>
+        {profile === "nin" && `USD ${usdFee}`}
+        {profile === "face" && `USD ${usdFee}`}
+        {profile === "rc" && `USD ${usdFee}`}
+        {profile === "business_name" && `USD ${usdFee}`}
+        {profile === "bvn" && `USD ${usdFee}`}
+        {profile === "vin" && `USD ${usdFee}`}
+      </Radio>
+    );
+  }
   useEffect(() => {
     updateServiceFee(selectedForm);
   }, [selectedForm]);
   useEffect(() => {
     // Calculate VAT as 10% of the service fee
-    const calculatedVat = serviceFee * 0.1;
+    const calculatedVat = serviceFee * 0.075;
     setVat(calculatedVat);
   }, [serviceFee]);
 
@@ -318,6 +466,7 @@ const DashboardPage = () => {
   const [liveFaceFace, setLiveFaceFace] = useState("");
   const [isLiveFaceNinValid, setIsLiveFaceNinValid] = useState(true);
   const [makePaymentClicked, setMakePaymentClicked] = useState(false);
+  const [danfee, setDanfee] = useState(0);
 
   const handleLiveFaceNinChange = (e) => {
     const value = e.target.value;
@@ -356,33 +505,16 @@ const DashboardPage = () => {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    // beforeUpload: (file) => {
-    //   const reader = new FileReader();
-
-    //   reader.onloadend = () => {
-    //     // Extract the base64 string without the data URL prefix
-    //     setBase64WithoutPrefix(reader.result.split(",")[1]);
-
-    //     // Set the base64 string in state
-    //     setBase64Image(base64WithoutPrefix);
-
-    //     // Log the base64 string without the prefix
-    //     console.log("Base64 Image:", base64WithoutPrefix);
-    //     setFormData({ ...formData, face: base64WithoutPrefix });
-    //   };
-
-    //   reader.readAsDataURL(file);
-
-    //   // Prevent default upload behavior
-    //   return false;
-    // },
   };
 
   const config = {
     public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: `${(danfee + vat).toFixed(2)}`,
-    currency: "NGN",
+    amount:
+      currencyCheck == "USD"
+        ? `${danfee.toFixed(2)}`
+        : `${(danfee + vat).toFixed(2)}`,
+    currency: currencyCheck == "USD" ? "USD" : "NGN",
     payment_options: "card,mobilemoney,ussd",
     customer: {
       email: userEmail,
@@ -403,8 +535,11 @@ const DashboardPage = () => {
   const [modalVisibleFace, setModalVisibleFace] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [totalveri, setTotalveri] = useState(0);
 
   const showModal = () => {
+    console.log("currencyCheck");
+    console.log(currencyCheck);
     setModalVisible(true);
   };
   const showModalFace = () => {
@@ -421,13 +556,140 @@ const DashboardPage = () => {
   const handleCancelFace = () => {
     setModalVisibleFace(false);
   };
+
+  useEffect(() => {
+    console.log("Total Veri Amount next:", totalveri);
+    checkStolen ? setDanfee(totalveri + 30) : setDanfee(totalveri);
+  }, [totalveri]);
+
   const handleMakePayment = () => {
     // Your existing logic for handling the payment
+    // Calculate total veri based on form data
+    const formDataFees = {
+      nin: ninFee,
+      vin: vinVehicleFee,
+      license_number: vehicleFee,
+      rc: businessFee,
+      business_name: businessFee,
+      bvn: financialFee,
+      face: faceFee,
+    };
+
+    const formDataUsdFees = {
+      nin: ninUsdFee,
+      vin: vinVehicleUsdFee,
+      license_number: vehicleUsdFee,
+      rc: businessUsdFee,
+      business_name: businessUsdFee,
+      bvn: financialUsdFee,
+      face: faceUsdFee,
+    };
+
+    // Calculate total veri based on form data
+    let calculatedTotalveri = 0;
+
+    if (currencyCheck === "USD") {
+      Object.keys(formData).forEach((field) => {
+        // Check if the field has data and if there's a corresponding fee
+        if (
+          typeof formData[field] === "string" && // Check if it's a string
+          formData[field].trim() !== "" &&
+          formDataUsdFees[field] !== undefined
+        ) {
+          // Add the fee for this field to the totalveri
+          setIsClearVinOn(false);
+          calculatedTotalveri += formDataUsdFees[field];
+          setTotalveri(calculatedTotalveri);
+        }
+      });
+
+      // Check if 'vin' is a string and has a fee
+      if (
+        typeof formData.vin === "string" &&
+        formData.vin.trim() !== "" &&
+        formDataUsdFees.vin !== undefined
+      ) {
+        setIsClearVinOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+
+      // Update totalveri state with the calculated value
+      setTotalveri(calculatedTotalveri);
+    } else {
+      Object.keys(formData).forEach((field) => {
+        // Check if the field has data and if there's a corresponding fee
+        if (
+          typeof formData[field] === "string" && // Check if it's a string
+          formData[field].trim() !== "" &&
+          formDataFees[field] !== undefined
+        ) {
+          // Add the fee for this field to the totalveri
+          setIsClearVinOn(false);
+          calculatedTotalveri += formDataFees[field];
+          setTotalveri(calculatedTotalveri);
+        }
+      });
+
+      // Check if 'vin' is a string and has a fee
+      if (
+        typeof formData.vin === "string" &&
+        formData.vin.trim() !== "" &&
+        formDataFees.vin !== undefined
+      ) {
+        setIsClearVinOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+
+      // Update totalveri state with the calculated value
+      setTotalveri(calculatedTotalveri);
+    }
+
+    // Loop through all form data fields
+
+    const currencyFormatter = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    });
+    const formattedTotalveri = currencyFormatter.format(totalveri);
 
     // Show the modal
     showModal();
   };
   const handleMakePaymentForLiveFace = () => {
+    const formDataFees = {
+      nin: ninFee + 100,
+      vin: vinVehicleFee,
+      rc: businessFee,
+      license_number: vehicleFee,
+      business_name: businessFee,
+      bvn: financialFee,
+      face: faceFee,
+    };
+
+    // Calculate total veri based on form data
+    let calculatedTotalveri = 0;
+
+    // Loop through all form data fields
+    Object.keys(formData).forEach((field) => {
+      // Check if the field has data and if there's a corresponding fee
+      if (formData[field].trim() !== "" && formDataFees[field] !== undefined) {
+        // Add the fee for this field to the totalveri
+        calculatedTotalveri += formDataFees[field];
+      }
+    });
+
+    // Update totalveri state with the calculated value
+    setTotalveri(calculatedTotalveri);
+
+    const currencyFormatter = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    });
+    const formattedTotalveri = currencyFormatter.format(totalveri);
     showModalFace();
   };
 
@@ -440,12 +702,13 @@ const DashboardPage = () => {
     document.body.appendChild(reachScript);
     if (selectedValue !== null) {
       // Log the selected payment method
-      const userBalance = userDetails?.user?.walletBalance || 0;
+      const userBalance = userDetails?.walletBalance || 0;
 
       if (selectedValue === 1) {
         // console.log("Payment from Wallet");
         setLoading(true);
-        const apiUrl = "http://41.184.212.26:8063/api/v2/wallet-payment";
+        const apiUrl =
+          "http://41.184.212.26:8069/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,
@@ -528,12 +791,13 @@ const DashboardPage = () => {
     document.body.appendChild(reachScript);
     if (selectedValue !== null) {
       // Log the selected payment method
-      const userBalance = userDetails?.user?.walletBalance || 0;
+      const userBalance = userDetails?.walletBalance || 0;
 
       if (selectedValue === 1) {
         // console.log("Payment from Wallet");
         setLoading(true);
-        const apiUrl = "http://41.184.212.26:8063/api/v2/wallet-payment";
+        const apiUrl =
+          "http://41.184.212.26:8069/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,
@@ -604,7 +868,7 @@ const DashboardPage = () => {
           },
           onClose: () => {},
         });
-        handleCancel();
+        handleCancelFace();
       }
 
       // Close the modal
@@ -621,11 +885,20 @@ const DashboardPage = () => {
     setSelectedValue(e.target.value);
   };
 
+  const handleRadioChangeStolen = (e) => {
+    handleInputChange("stolencheck", false);
+  };
+
   const PaymentModal = () => (
     <Modal
       visible={modalVisible}
       onCancel={handleCancel}
       footer={null} // Remove the default footer
+      width={isClearVinOn ? 1000 : 500}
+      bodyStyle={{ overflowX: "scroll" }}
+      style={{
+        top: 20,
+      }}
     >
       {/* Add your content for the modal here */}
       <div
@@ -667,22 +940,109 @@ const DashboardPage = () => {
           </Radio>
         </Radio.Group>
       </div>
-
       {/* Checkbox and lower div */}
-      <div
-        style={{
-          marginTop: "20px",
-          background: "rgba(235, 3, 24, 0.10)",
-          border: "1px solid #EB0318",
-          padding: "15px",
-        }}
-      >
-        <Checkbox onChange={onChange2}>
-          By clicking, you indicate that you understand and accept that consent
-          is required from the data subject being verified before you can access
-          their data.
-        </Checkbox>
-      </div>
+      {!isClearVinOn ? (
+        <div
+          style={{
+            marginTop: "20px",
+            background: "rgba(235, 3, 24, 0.10)",
+            border: "1px solid #EB0318",
+            padding: "15px",
+          }}
+        >
+          <Checkbox onChange={onChange2}>
+            By clicking, you indicate that you understand and accept that
+            consent is required from the data subject being verified before you
+            can access their data.
+          </Checkbox>
+        </div>
+      ) : (
+        ""
+      )}
+      {isClearVinOn ? (
+        <div
+          style={{
+            marginTop: "20px",
+            background: "rgba(235, 3, 24, 0.10)",
+            border: "1px solid #EB0318",
+            padding: "15px",
+          }}
+        >
+          <Checkbox onChange={onChange2}>
+            By clicking, you indicate that:
+            <ul>
+              <li>
+                You understand and accept that{" "}
+                <b>
+                  consent is required from the data subject being verified
+                  before you can access their data.
+                </b>
+              </li>
+              <li>
+                You understand and accept the following{" "}
+                <b>
+                  terms and conditions pertaining to ClearVIN’s vehicle history
+                  data (Licensed Data):
+                </b>
+                <ol>
+                  <li>You may not provide Licensed Data to other persons</li>
+                  <li>
+                    You may only use Licensed Data for your internal business
+                    purposes or provide Licensed Data to other organizations for
+                    the internal business uses of those organizations.
+                  </li>
+                  <li>
+                    You warrant that you shall not furnish or sell Licensed Data
+                    to members of the public.
+                  </li>
+                  <li>You understand that</li>
+                  <ol type="a">
+                    <li>
+                      e-citizen’s vendor, ClearVin, LLC (“CV”), is an approved
+                      NMVTIS Data Provider,
+                    </li>
+                    <li>
+                      some state data pertaining to a VIN may not be contained
+                      in or available through NMVTIS,
+                    </li>
+                    <li>
+                      some state data is provided to NMVTIS via a daily, weekly
+                      or monthly format and therefore may not be current,
+                    </li>
+                    <li>
+                      some of the entities which report data to NMVTIS may have
+                      failed to provide such data for incorporation in NMVTIS,
+                      and
+                    </li>
+                    <li>
+                      AAMVA, CV’s vendor, and CV have no control over the
+                      accuracy or completeness of data contained in NMVTIS and
+                      shall not have any liability to any Licensee, Affiliate,
+                      user or third party concerning the quality, completeness
+                      or accuracy of Licensed Data.
+                    </li>
+                  </ol>
+                  <li>You understand that:</li>
+                  <ol type="a">
+                    <li>e-citizen™ is not an Approved NMVTIS Data Provider,</li>
+                    <li>
+                      e-citizen™ has obtained the NMVTIS data contained in the
+                      Licensed Data from an Approved NMVTIS Data Provider, and
+                    </li>
+                    <li>
+                      CV as the Approved NMVTIS Data Provider from which the
+                      NMVTIS Reseller has obtained the NMVTIS data used in such
+                      Licensed Data.
+                    </li>
+                  </ol>
+                </ol>
+              </li>
+            </ul>
+          </Checkbox>
+        </div>
+      ) : (
+        ""
+      )}
 
       {/* Buttons */}
       <div
@@ -1067,7 +1427,19 @@ const DashboardPage = () => {
                         size="large"
                         onClick={() => setSelectedForm("vin")}
                       >
-                        Basic VIN
+                        Vehicle History (VIN)
+                        <img src={clearvin} alt="" width={150} />
+                      </Radio>
+                    </Form>
+                  )}
+                  {selectedProfile === "vehicle" && (
+                    <Form>
+                      <Radio
+                        value="license_number"
+                        size="large"
+                        onClick={() => setSelectedForm("license_number")}
+                      >
+                        Vehicle Registration Number
                       </Radio>
                     </Form>
                   )}
@@ -1423,7 +1795,7 @@ const DashboardPage = () => {
                   <>
                     <StyledLabel>Bank Verification Number (BVN)*</StyledLabel>
                     <StyledInput
-                      type="text"
+                      type="number"
                       placeholder="Enter Bank Verification Number"
                       name="bvn"
                       value={formData.bvn}
@@ -1433,13 +1805,51 @@ const DashboardPage = () => {
                 )}
                 {selectedForm === "vin" && (
                   <>
-                    <StyledLabel>Basic VIN*</StyledLabel>
+                    <StyledLabel>Vehicle History (VIN)*</StyledLabel>
                     <StyledInput
                       type="text"
-                      placeholder="Enter Basic VIN"
+                      placeholder="Enter Vehicle History (VIN)"
                       name="vin"
                       value={formData.vin}
                       onChange={(e) => handleInputChange("vin", e.target.value)}
+                    />
+
+                    <Checkbox
+                      onChange={handleCheckboxChange}
+                      checked={isChecked}
+                    >
+                      Also search Stolen Vehicles database? (Extra charge)
+                    </Checkbox>
+                    {/* {checkStolen ? (
+                      <input
+                        type="radio"
+                        id="stolencheck"
+                        name="stolencheck"
+                        checked={isChecked}
+                        onChange={handleRadioChangeStolen} // Call handleRadioChange function when the radio button is clicked
+                      />
+                    ) : (
+                      <input
+                        type="radio"
+                        id="stolencheck"
+                        name="stolencheck"
+                        checked={false}
+                        onChange={handleRadioChangeStolen} // Call handleRadioChange function when the radio button is clicked
+                      />
+                    )} */}
+                  </>
+                )}
+                {selectedForm === "license_number" && (
+                  <>
+                    <StyledLabel>Vehicle Registration Number*</StyledLabel>
+                    <StyledInput
+                      type="text"
+                      placeholder="Vehicle Registration Number"
+                      name="license_number"
+                      value={formData.license_number}
+                      onChange={(e) =>
+                        handleInputChange("license_number", e.target.value)
+                      }
                     />
                   </>
                 )}
@@ -1525,7 +1935,7 @@ const DashboardPage = () => {
                       lg={{ span: 20 }}
                       style={{ textAlign: "left" }}
                     >
-                      <p>VAT (Value Added Tax): </p>
+                      <p>Tax: </p>
                     </Col>
                     <Col style={{ textAlign: "right" }}>
                       <p>₦{vat.toFixed(2)}</p>
@@ -1547,6 +1957,25 @@ const DashboardPage = () => {
                       <p>{`₦${(serviceFee + vat).toFixed(2)}`}</p>
                     </Col>
                   </Row>
+                  <Divider />
+                  <p>Select payment currency </p>
+                  <p>Currency Calculator</p>
+                  <Radio.Group onChange={currencyOnChange} value={value}>
+                    <Radio value={1}>
+                      Naira ₦{(serviceFee + vat).toFixed(2)}
+                    </Radio>
+                    <RadioComponent profile={profile} usdFee={usdFee} />
+                  </Radio.Group>
+                  <Divider />
+                  <p>Exchange rate</p>
+                  <p>
+                    $1 USD =
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(exchangeRate)}{" "}
+                    Naira{" "}
+                  </p>
                 </div>
               </Col>
             </Row>
@@ -1565,7 +1994,7 @@ const DashboardPage = () => {
             style={{ textAlign: "right", padding: "10px" }}
           >
             <strong>
-              <Checkbox onChange={onChange}>
+              <Checkbox onChange={onChangePayment}>
                 I certify that I have read and accepted the e-citizen Privacy
                 Policy and Terms of Service
               </Checkbox>

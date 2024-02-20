@@ -67,13 +67,13 @@ const UpdateProfilePage = () => {
   );
 
   const user = useSelector((state) => state.user);
-  const userFirstName = user?.user?.firstName || "";
-  const userLastName = user?.user?.lastName || "";
-  const userBal = user?.user?.walletBalance;
-  const email = user?.user?.email;
-  const phoneNumber = user?.user?.phoneNumber;
-  const address = user?.user?.address;
-  const userType = user?.user?.userType;
+  const userFirstName = user?.firstName || "";
+  const userLastName = user?.lastName || "";
+  const userBal = user?.walletBalance;
+  const email = user?.email;
+  const phoneNumber = user?.phoneNumber;
+  const address = user?.address;
+  const userType = user?.userType;
   console.log(userType);
   const { Title } = Typography;
   const [formData, setFormData] = useState({

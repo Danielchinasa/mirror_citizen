@@ -67,17 +67,18 @@ const ProfilePage = () => {
   );
 
   const user = useSelector((state) => state.user);
-  const userFirstName = user?.user?.firstName || "";
-  const userLastName = user?.user?.lastName || "";
-  const userBal = user?.user?.walletBalance;
-  const email = user?.user?.email;
-  const phoneNumber = user?.user?.phoneNumber;
-  const address = user?.user?.address;
-  const nin = user?.user?.nin;
-  const businessName = user?.user?.businessName;
-  const rcNumber = user?.user?.rcNumber;
-  const designation = user?.user?.designation;
-  const userType = user?.user?.userType;
+  const userFirstName = user?.firstName || "";
+  const userLastName = user?.lastName || "";
+  const userBal = user?.walletBalance;
+  const email = user?.email;
+  const phoneNumber = user?.phoneNumber;
+  const address = user?.address;
+  const nin = user?.nin;
+  const businessName = user?.businessName;
+  const rcNumber = user?.rcNumber;
+  const designation = user?.designation;
+  const walletBalance = user?.walletBalance;
+  const userType = user?.userType;
   console.log(userType);
   const { Title } = Typography;
   const [formData, setFormData] = useState({
@@ -90,6 +91,7 @@ const ProfilePage = () => {
     businessName: businessName,
     rcNumber: rcNumber,
     designation: designation,
+    walletBalance: walletBalance,
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -123,6 +125,9 @@ const ProfilePage = () => {
               address: formData.address,
               // Add other fields as needed
             },
+            walletBalance: formData.walletBalance,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
             jwtToken: userToken,
           },
         });
@@ -257,6 +262,14 @@ const ProfilePage = () => {
               value={formData.email}
               name="email"
               onChange={(e) => handleInputChange("email", e.target.value)}
+            ></StyledInput>
+            <StyledInput
+              value={formData.walletBalance}
+              name="walletBalance"
+              hidden="true"
+              onChange={(e) =>
+                handleInputChange("walletBalance", e.target.value)
+              }
             ></StyledInput>
           </Col>
           <Col

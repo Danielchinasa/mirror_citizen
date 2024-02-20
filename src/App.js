@@ -27,9 +27,11 @@ import EmailVerifiedConfirm from "./pages/otp/emailVerifiedConfirm";
 import UpdateProfilePage from "./pages/profile/updateProfilePage";
 import FaqPage from "./pages/faq/faqPage";
 import Vehicle from "./pages/result/vehicle";
+import Vehicle2 from "./pages/result/vehicle2";
 import Business from "./pages/result/business";
 import NotFoundPage from "./components/404/notFoundPage";
 import LegitCar from "./pages/result/legitCar";
+import Financial from "./pages/result/financial";
 
 function App() {
   return (
@@ -65,8 +67,10 @@ function App() {
           <Route path="/consent" component={Consent} />
           <Route path="/result" component={Result} />
           <Route path="/vehicle" component={Vehicle} />
+          <Route path="/vehicle2" component={Vehicle2} />
           <Route path="/legit-car" component={LegitCar} />
           <Route path="/business" component={Business} />
+          <Route path="/financial" component={Financial} />
           <Route path="/faq" component={FaqPage} />
           <Route path="/profile" component={ProfilePage} />
           {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}

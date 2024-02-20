@@ -23,6 +23,23 @@ import Icon, {
 import carInsurance from "../../images/car-insurance.svg";
 import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
+import {
+  FaTeethOpen,
+  FaCalendarAlt,
+  FaCarAlt,
+  FaGlobe,
+  FaCarSide,
+  FaFileInvoice,
+  FaRegCheckCircle,
+} from "react-icons/fa";
+import { PiEngineLight } from "react-icons/pi";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { TbSteeringWheel } from "react-icons/tb";
+import { GiCarWheel, GiChemicalTank } from "react-icons/gi";
+import { AiOutlineColumnWidth } from "react-icons/ai";
+import { LuCar } from "react-icons/lu";
+import { IoMdSpeedometer } from "react-icons/io";
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 
 const { Title, Text } = Typography;
 
@@ -57,7 +74,7 @@ const Vehicle = () => {
       try {
         // Make a new API post request independently of the consent status
         // const postResponse = await axios.post(
-        //   "http://41.184.212.26:8063/api/v2/call-external-apis",
+        //   "http://41.184.212.26:8069/api/v2/call-external-apis",
         //   {
         //     vehicle: {
         //       vin: "5TDYK3DC8DS290235",
@@ -74,7 +91,7 @@ const Vehicle = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const postResponse = await axios.get(
-          `http://41.184.212.26:8063/api/v2/check-consent/${requestId}`,
+          `http://41.184.212.26:8069/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -100,6 +117,7 @@ const Vehicle = () => {
         const msrp = vehicleData.msrp || "No Data";
         const image = vehicleData.previewImageURL || "No Data";
         const pdfUri = vehicleData.pdfUri || "No Data";
+        const stolen = vehicleData.stolen || "No Data";
         setVin(vinSpec);
         setYear(year);
         setMadeIn(madein);
@@ -112,6 +130,7 @@ const Vehicle = () => {
         setMsrp(msrp);
         setImage(image);
         setpdfUri(pdfUri);
+        setStolen(stolen);
 
         // Your existing code for handling response data from the consent status check
       } catch (error) {
@@ -124,9 +143,12 @@ const Vehicle = () => {
     fetchData();
   }, [dispatch, userToken]);
 
-  const renderDetail = (label, value) => (
+  const renderDetail = (icon, label, value) => (
     <>
-      <StyledLabel>{label}</StyledLabel>
+      <StyledLabel>
+        {icon}
+        &nbsp; {label}
+      </StyledLabel>
       <StyledLabel>
         <strong>{value}</strong>
       </StyledLabel>
@@ -141,7 +163,7 @@ const Vehicle = () => {
           <p style={{ color: "#0DC939" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>
-          <Heading4>Vehicle Verification Result</Heading4>
+          <Heading4>Verification Result</Heading4>
         </Card>
         <Spin spinning={loading} tip="Loading Data...">
           <Card style={{ width: "100%", marginTop: "20px" }}>
@@ -155,29 +177,48 @@ const Vehicle = () => {
               <div>
                 <Text>Vehicle History Profile </Text>
                 <RightOutlined />
-                <Text>Vehicle Identification Number (VIN)</Text>
+                <Text>Vehicle History (VIN)</Text>
                 {/* <RightOutlined />
                 <Text>Clear VIN</Text> */}
               </div>
+            </div>
+            <Divider />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
+              <div>
+                <Text>CLEAR VIN PREVIEW REPORT</Text>
+                {/* <RightOutlined />
+                <Text>Clear VIN</Text> */}
+              </div>
+
               <div>
                 <a
-                  href={`http://41.184.212.26:8063${pdfUri}`}
+                  href={`http://41.184.212.26:8069${pdfUri}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
                     textAlign: "right",
-                    fontSize: "20px",
+                    fontSize: "15px",
                     color: "#09C93A",
                     textDecoration: "none",
                     cursor: "pointer",
+                    padding: "6px",
+                    border: "2px solid #09C93A",
+                    borderRadius: "5px",
                   }}
                 >
                   <DownloadOutlined /> Download PDF for Full Report
                 </a>
               </div>
             </div>
-            <Divider />
 
+            <Divider />
             <Row gutter={16}>
               <Col span={24}>
                 {/* {image ? (
@@ -189,58 +230,70 @@ const Vehicle = () => {
                   square
                 />
               ) : ( */}
-                <Avatar size={124} icon={<CarOutlined />} />
+                {/* <Avatar size={124} icon={<CarOutlined />} /> */}
+                Vehicle Specification
                 {/* )} */}
               </Col>
-              <Divider />
               <Col span={6}>
-                {renderDetail("Vin", `${vin}`)}
+                {renderDetail(<FaTeethOpen />, "Vin", `${vin}`)}
                 <Divider />
 
-                {renderDetail("Year", `${year}`)}
+                {renderDetail(<FaCalendarAlt />, "Year", `${year}`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Made In", `${madeIn}`)}
+                {renderDetail(<FaGlobe />, "Made In", `${madeIn}`)}
                 <Divider />
 
-                {renderDetail("Model", `${model}`)}
+                {renderDetail(<FaCarAlt />, "Model", `${model}`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Trim", `${trim}`)}
+                {renderDetail(<FaCarSide />, "Trim", `${trim}`)}
                 <Divider />
-                {renderDetail("Engine", `${engine}`)}
+                {renderDetail(<PiEngineLight />, "Engine", `${engine}`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Make", `${make}`)}
+                {renderDetail(<FaCarAlt />, "Make", `${make}`)}
                 <Divider />
-                {renderDetail("Style", `${style}`)}
+                {renderDetail(<FaCarAlt />, "Style", `${style}`)}
               </Col>
               <Divider />
               <Col span={6}>
-                {renderDetail("Msrp", `${msrp}`)}
+                {renderDetail(<LiaFileInvoiceDollarSolid />, "Msrp", `${msrp}`)}
                 <Divider />
-                {renderDetail("Invoice", `${invoice}`)}
+                {renderDetail(
+                  <LiaFileInvoiceDollarSolid />,
+                  "Invoice",
+                  `${invoice}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail("Steering Type", `No Data`)}
+                {renderDetail(<TbSteeringWheel />, "Steering Type", `No Data`)}
                 <Divider />
-                {renderDetail("Tires", `No Data`)}
+                {renderDetail(<GiCarWheel />, "Tires", `No Data`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Tank Size", `No Data`)}
+                {renderDetail(<GiChemicalTank />, "Tank Size", `No Data`)}
                 <Divider />
-                {renderDetail("Wheel drive", `No Data`)}
+                {renderDetail(<LuCar />, "Wheel drive", `No Data`)}
               </Col>
               <Col span={6}>
-                {renderDetail("Overall Width", `No Data`)}
+                {renderDetail(
+                  <AiOutlineColumnWidth />,
+                  "Overall Width",
+                  `No Data`
+                )}
                 <Divider />
-                {renderDetail("Highway Mileage", `No Data`)}
+                {renderDetail(
+                  <IoMdSpeedometer />,
+                  "Highway Mileage",
+                  `No Data`
+                )}
               </Col>
             </Row>
             <Divider />
             {/* <div>
               <a
-                href={`http://41.184.212.26:8063${pdfUri}`}
+                href={`http://41.184.212.26:8069${pdfUri}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -270,7 +323,7 @@ const Vehicle = () => {
                 {/* {photo ? (
                 <Avatar
                   size={124}
-                  src={`http://41.184.212.26:8063${photo}`}
+                  src={`http://41.184.212.26:8069${photo}`}
                   alt="Avatar"
                 />
               ) : (
@@ -278,12 +331,90 @@ const Vehicle = () => {
               )} */}
               </Col>
               <Divider />
-              <Col span={6}>
-                {renderDetail("Chassis Number", `${chasisNumber}`)}
+              {/* <Col span={6}>
+                {renderDetail(
+                  <PiEngineLight />,
+                  "Chassis Number",
+                  `${chasisNumber}`
+                )}
               </Col>
-              <Col span={6}>{renderDetail("Stolen", `${stolen}`)}</Col>
-              <Col span={6}>{renderDetail("Stolen Reports", `${report}`)}</Col>
+              <Col span={6}>
+                {renderDetail(<FaFileInvoice />, "Stolen", `${stolen}`)}
+              </Col>
+              <Col span={6}>
+                {renderDetail(<FaFileInvoice />, "Stolen Reports", `${report}`)}
+              </Col> */}
             </Row>
+
+            {!stolen ? (
+              <Row justify="center">
+                <Col span={24}>
+                  <div style={{ textAlign: "center" }}>
+                    <IoIosInformationCircleOutline
+                      style={{
+                        fontSize: "40px",
+                        paddingBottom: "10px",
+                        color: "#E2574C",
+                      }}
+                    />
+                    {/* Adjust margin as needed */}
+                    <span
+                      style={{
+                        fontSize: "23px",
+                        color: "#E2574C",
+                        fontWeight: "bolder",
+                      }}
+                    >
+                      This vehicle is in our database of stolen vehicles
+                      <br />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          color: "#354138",
+                        }}
+                      >
+                        As of January 4, 2024, 12:45Am
+                      </span>
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+            ) : (
+              <Row justify="center">
+                <Col span={24}>
+                  <div style={{ textAlign: "center" }}>
+                    <FaRegCheckCircle
+                      style={{
+                        fontSize: "40px",
+                        paddingBottom: "10px",
+                        color: "#11AF59",
+                      }}
+                    />
+                    {/* Adjust margin as needed */}
+                    <span
+                      style={{
+                        fontSize: "23px",
+                        color: "#000000",
+                        fontWeight: "bolder",
+                      }}
+                    >
+                      This vehicle is not found in our database of stolen
+                      vehicles
+                      <br />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          color: "#354138",
+                        }}
+                      >
+                        As of January 4, 2024, 12:45Am
+                      </span>
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+            )}
+
             {/* <Row gutter={16}>
             <Divider />
             <Col span={6}>
