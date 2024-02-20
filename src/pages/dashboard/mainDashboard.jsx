@@ -330,7 +330,7 @@ const MainDashboard = () => {
         console.log(response);
         if (response.status === "successful") {
           try {
-            const apiUrl = "http://41.184.212.26:8069/api/v2/topup";
+            const apiUrl = "http://41.184.212.26:8069/api/v2/transaction/topup";
             const requestData = {
               userNIN: userNin,
               email: userEmail,

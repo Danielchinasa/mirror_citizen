@@ -80,17 +80,41 @@ const DashboardPage = () => {
   const [formattedTotalveri, setFormattedTotalveri] = useState("");
   const [exchangeRate, setExchangeRate] = useState("");
   const [ninFee, setNinFee] = useState("");
+  const [ninServiceFee, setNinServiceFee] = useState("");
+  const [ninUsdServiceFee, setUsdNinServiceFee] = useState("");
+  const [ninVatFee, setNinVatFee] = useState("");
   const [ninUsdFee, setNinUsdFee] = useState("");
+  const [ninUsdVatFee, setNinUsdVatFee] = useState("");
   const [faceFee, setFaceFee] = useState("");
+  const [faceServiceFee, setfaceServiceFee] = useState("");
+  const [faceUsdServiceFee, setfaceUsdServiceFee] = useState("");
+  const [faceVatFee, setFaceVatFee] = useState("");
   const [faceUsdFee, setFaceUsdFee] = useState("");
+  const [faceUsdVatFee, setFaceUsdVatFee] = useState("");
   const [vehicleFee, setVehicleFee] = useState("");
+  const [vehicleServiceFee, setvehicleServiceFee] = useState("");
+  const [vehicleUsdServiceFee, setvehicleUsdServiceFee] = useState("");
+  const [vehicleVatFee, setVehicleVatFee] = useState("");
   const [vehicleUsdFee, setVehicleUsdFee] = useState("");
+  const [vehicleUsdVatFee, setVehicleUsdVatFee] = useState("");
   const [vinVehicleFee, setVinVehicleFee] = useState("");
+  const [vinVehicleServiceFee, setvinVehicleServiceFee] = useState("");
+  const [vinVehicleUsdServiceFee, setvinVehicleUsdServiceFee] = useState("");
+  const [vinVehicleVatFee, setVinVehicleVatFee] = useState("");
   const [vinVehicleUsdFee, setVinVehicleUsdFee] = useState("");
+  const [vinVehicleUsdVatFee, setVinVehicleUsdVatFee] = useState("");
   const [businessFee, setBusinessFee] = useState("");
+  const [businessServiceFee, setbusinessServiceFee] = useState("");
+  const [businessUsdServiceFee, setbusinessUsdServiceFee] = useState("");
+  const [businessVatFee, setBusinessVatFee] = useState("");
   const [businessUsdFee, setBusinessUsdFee] = useState("");
+  const [businessUsdVatFee, setBusinessUsdVatFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
+  const [financialServiceFee, setfinancialServiceFee] = useState("");
+  const [financialUsdServiceFee, setfinancialUsdServiceFee] = useState("");
+  const [financialVatFee, setFinancialVatFee] = useState("");
   const [financialUsdFee, setFinancialUsdFee] = useState("");
+  const [financialUsdVatFee, setFinancialUsdVatFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const [value, setValue] = useState(1);
   const [formData, setFormData] = useState({
@@ -147,18 +171,42 @@ const DashboardPage = () => {
         console.log(response.data.data[0].price);
         setExchangeRate(response.data.rate);
         setNinFee(response.data.data[0].price);
+        setNinServiceFee(response.data.data[0].serviceFee);
+        setUsdNinServiceFee(response.data.data[0].serviceFee2);
+        setNinVatFee(response.data.data[0].VAT);
         setNinUsdFee(response.data.data[0].price2);
+        setNinUsdVatFee(response.data.data[0].VAT2);
         setFaceFee(response.data.data[1].price);
+        setfaceServiceFee(response.data.data[1].serviceFee);
+        setfaceUsdServiceFee(response.data.data[1].serviceFee2);
+        setFaceVatFee(response.data.data[1].VAT);
         setFaceUsdFee(response.data.data[1].price2);
+        setFaceUsdVatFee(response.data.data[1].VAT2);
         setBusinessFee(response.data.data[2].price);
+        setbusinessServiceFee(response.data.data[2].serviceFee);
+        setbusinessUsdServiceFee(response.data.data[2].serviceFee2);
+        setBusinessVatFee(response.data.data[2].VAT);
         setBusinessUsdFee(response.data.data[2].price2);
+        setBusinessUsdVatFee(response.data.data[2].VAT2);
         setFinancialFee(response.data.data[4].price);
+        setfinancialServiceFee(response.data.data[4].serviceFee);
+        setfinancialUsdServiceFee(response.data.data[4].serviceFee2);
+        setFinancialVatFee(response.data.data[4].VAT);
         setFinancialUsdFee(response.data.data[4].price2);
+        setFinancialUsdVatFee(response.data.data[4].VAT2);
         setVinVehicleFee(response.data.data[5].price);
+        setvinVehicleServiceFee(response.data.data[5].serviceFee);
+        setvinVehicleUsdServiceFee(response.data.data[5].serviceFee2);
+        setVinVehicleVatFee(response.data.data[5].VAT);
         setVinVehicleUsdFee(response.data.data[5].price2);
+        setVinVehicleUsdVatFee(response.data.data[5].VAT2);
         setVehicleFee(response.data.data[6].price);
+        setvehicleServiceFee(response.data.data[6].serviceFee);
+        setvehicleUsdServiceFee(response.data.data[6].serviceFee2);
+        setVehicleVatFee(response.data.data[6].VAT);
         setVehicleUsdFee(response.data.data[6].price2);
-        // setCurrencyCheck(response.data.data[0].currency);
+        setVehicleUsdVatFee(response.data.data[6].VAT2);
+        setCurrencyCheck(response.data.data[0].currency);
       } catch (error) {
         console.error("Error fetching IP address:", error);
         setNinFee(null);
@@ -378,6 +426,8 @@ const DashboardPage = () => {
   const tooltipContentVehicle =
     "Vehicle profile refers to data and information gathered about the ownership of automobiles. Search parameter is basic VIN.";
   const [serviceFee, setServiceFee] = useState(0);
+  const [rawServiceFee, setRawServiceFee] = useState(0);
+  const [rawUsdFee, setRawUsdFee] = useState(0);
 
   const [vat, setVat] = useState(0);
   const [profile, setProfile] = useState("");
@@ -402,43 +452,62 @@ const DashboardPage = () => {
     setTotalveri(calculatedTotalveri);
     if (profile === "nin") {
       localStorage.setItem("profile", profile);
-      setServiceFee(ninFee); // Set the service fee for NIN
+      setServiceFee(ninServiceFee); // Set the service fee for NIN
       setProfile("nin");
       setUsdFee(ninUsdFee);
+      setVat(ninVatFee);
+      setRawServiceFee(ninFee);
     } else if (profile === "face") {
       localStorage.setItem("profile", profile);
-      setServiceFee(faceFee);
+      setServiceFee(faceServiceFee);
       setProfile("face");
 
       setUsdFee(faceUsdFee);
+      setVat(faceVatFee);
+      setRawServiceFee(faceFee);
     } else if (profile === "fingerprint") {
       localStorage.setItem("profile", profile);
-      setServiceFee(200); // Set the service fee for Phone
+      // setServiceFee(200); // Set the service fee for Phone
     } else if (profile === "rc") {
       localStorage.setItem("profile", profile);
-      setServiceFee(businessFee); // Set the service fee for Phone
+      setServiceFee(businessServiceFee); // Set the service fee for Phone
       setProfile("rc");
       setUsdFee(businessUsdFee);
+      setVat(businessVatFee);
+      setRawServiceFee(businessFee);
     } else if (profile === "business_name") {
       localStorage.setItem("profile", profile);
-      setServiceFee(businessFee); // Set the service fee for Phone
+      setServiceFee(businessServiceFee); // Set the service fee for Phone
       setProfile("business_name");
       setUsdFee(businessUsdFee);
+      setVat(businessVatFee);
+      setRawServiceFee(businessFee);
     } else if (profile === "bvn") {
       localStorage.setItem("profile", profile);
-      setServiceFee(financialFee); // Set the service fee for Phone
+      setServiceFee(financialServiceFee); // Set the service fee for Phone
       setProfile("bvn");
       setUsdFee(financialUsdFee);
+      setVat(financialVatFee);
+      setRawServiceFee(financialFee);
     } else if (profile === "vin") {
       localStorage.setItem("profile", profile);
-      setServiceFee(vinVehicleFee); // Set the service fee for Phone
+      setServiceFee(vinVehicleServiceFee); // Set the service fee for Phone
       setProfile("vin");
       setUsdFee(vinVehicleUsdFee);
+      setVat(vinVehicleVatFee);
+      setRawServiceFee(vinVehicleFee);
+    } else if (profile === "license_number") {
+      localStorage.setItem("profile", profile);
+      setServiceFee(vehicleServiceFee); // Set the service fee for Phone
+      setProfile("license_number");
+      setUsdFee(vehicleUsdFee);
+      setVat(vehicleVatFee);
+      setRawServiceFee(vehicleFee);
     } else {
       setServiceFee(0); // Set a default value or handle other profiles
     }
-    const calculatedVat = serviceFee * 0.075;
-    setVat(calculatedVat);
+    // const calculatedVat = serviceFee * 0.075;
+    // setVat(calculatedVat);
   };
 
   function RadioComponent({ profile, usdFee }) {
@@ -459,7 +528,7 @@ const DashboardPage = () => {
   useEffect(() => {
     // Calculate VAT as 10% of the service fee
     const calculatedVat = serviceFee * 0.075;
-    setVat(calculatedVat);
+    // setVat(calculatedVat);
   }, [serviceFee]);
 
   const [liveFaceNin, setLiveFaceNin] = useState("");
@@ -1422,27 +1491,28 @@ const DashboardPage = () => {
                   </Row>
                   {selectedProfile === "vehicle" && (
                     <Form>
-                      <Radio
-                        value="vin"
-                        size="large"
-                        onClick={() => setSelectedForm("vin")}
-                      >
-                        Vehicle History (VIN)
-                        <img src={clearvin} alt="" width={150} />
-                      </Radio>
+                      <Radio.Group>
+                        <Space direction="vertical">
+                          <Radio
+                            value="vin"
+                            size="large"
+                            onClick={() => setSelectedForm("vin")}
+                          >
+                            Vehicle History (VIN)
+                            <img src={clearvin} alt="" width={150} />
+                          </Radio>
+                          <Radio
+                            value="license_number"
+                            size="large"
+                            onClick={() => setSelectedForm("license_number")}
+                          >
+                            Vehicle Registration Number
+                          </Radio>
+                        </Space>
+                      </Radio.Group>
                     </Form>
                   )}
-                  {selectedProfile === "vehicle" && (
-                    <Form>
-                      <Radio
-                        value="license_number"
-                        size="large"
-                        onClick={() => setSelectedForm("license_number")}
-                      >
-                        Vehicle Registration Number
-                      </Radio>
-                    </Form>
-                  )}
+                  {/* {selectedProfile === "vehicle" && <Form></Form>} */}
                 </Space>
               </Col>
               <Col
@@ -1880,7 +1950,6 @@ const DashboardPage = () => {
                       <p>{selectedProfile}</p>
                     </Col>
                   </Row>
-
                   <Row>
                     <Col
                       span={8}
@@ -1954,19 +2023,23 @@ const DashboardPage = () => {
                       <p>Total Amount Due: </p>
                     </Col>
                     <Col>
-                      <p>{`₦${(serviceFee + vat).toFixed(2)}`}</p>
+                      <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
                     </Col>
                   </Row>
                   <Divider />
-                  <p>Select payment currency </p>
-                  <p>Currency Calculator</p>
-                  <Radio.Group onChange={currencyOnChange} value={value}>
-                    <Radio value={1}>
-                      Naira ₦{(serviceFee + vat).toFixed(2)}
-                    </Radio>
-                    <RadioComponent profile={profile} usdFee={usdFee} />
-                  </Radio.Group>
-                  <Divider />
+                  {currencyCheck == "USD" ? (
+                    <>
+                      <p>Select payment currency </p>
+                      <p>Currency Calculator</p>
+                      <Radio.Group onChange={currencyOnChange} value={value}>
+                        <Radio value={1}>Naira ₦{serviceFee.toFixed(2)}</Radio>
+                        <RadioComponent profile={profile} usdFee={usdFee} />
+                      </Radio.Group>
+                      <Divider />
+                    </>
+                  ) : (
+                    ""
+                  )}
                   <p>Exchange rate</p>
                   <p>
                     $1 USD =

@@ -227,7 +227,7 @@ export const sendVerificationRequest =
         },
         vehicle: {
           vin: formData.vin || "",
-          stolencheck: formData.stolencheck || false,
+          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
         },
       };
