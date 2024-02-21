@@ -39,6 +39,10 @@ const authReducer = (state = initialState, action) => {
       // Update the state with the fetched otp data
       return { ...state, otpData: action.payload };
 
+    case "RESEND_OTP_SUCCESS":
+      // Update the state with the fetched otp data
+      return { ...state, otpData: action.payload };
+
     case "RESET_PASSWORD":
       // Update the state with the reset password data
       return { ...state, otpData: action.payload };

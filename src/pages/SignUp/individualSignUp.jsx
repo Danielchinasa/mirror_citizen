@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -44,8 +44,15 @@ const IndividualSignUp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [userType, setUserType] = useState("");
-  const [ip, setIp] = useState("");
+  const [ipAddress, setIpAddress] = useState("");
   const [ipCountry, setIpCountry] = useState("");
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const ninRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneNumberRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [reenterPassword, setReenterPassword] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -55,12 +62,13 @@ const IndividualSignUp = () => {
     password: "",
     rememberMe: false,
     userType: "",
-    ip: "",
+    ipAddress: "",
     ipCountry: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState(null);
 
   const [api, contextHolder] = notification.useNotification();
 
@@ -79,12 +87,37 @@ const IndividualSignUp = () => {
     []
   );
 
+  const focusOnErrorField = (fieldName) => {
+    switch (fieldName) {
+      case "firstName":
+        firstNameRef.current.focus();
+        break;
+      case "lastName":
+        lastNameRef.current.focus();
+        break;
+      case "nin":
+        ninRef.current.focus();
+        break;
+      case "email":
+        emailRef.current.focus();
+        break;
+      case "phoneNumber":
+        phoneNumberRef.current.focus();
+        break;
+      case "password":
+        passwordRef.current.focus();
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     const fetchIpCountry = async () => {
       try {
         const response = await axios.get("https://ipapi.co/json/");
         setIpCountry(response.data.country_name);
-        setIp(response.data.ip);
+        setIpAddress(response.data.ip);
       } catch (error) {
         console.error("Error fetching IP address:", error);
         setIpCountry(null);
@@ -98,11 +131,15 @@ const IndividualSignUp = () => {
     const { name, value, type, checked } = event.target;
     const inputValue = type === "checkbox" ? checked : value;
 
+    if (name === "reenterPassword") {
+      setReenterPassword(value);
+    }
+
     setFormData({
       ...formData,
       [name]: inputValue,
       userType: "individual",
-      ip: ip,
+      ipAddress: ipAddress,
       ipCountry: ipCountry,
     });
 
@@ -158,6 +195,14 @@ const IndividualSignUp = () => {
       const errors = validateForm();
       if (Object.keys(errors).length > 0) {
         setFormErrors(errors);
+        const firstErrorField = Object.keys(errors)[0];
+        focusOnErrorField(firstErrorField); // Focus on the first error field
+        return;
+      }
+
+      if (formData.password !== reenterPassword) {
+        setFormErrors({ reenterPassword: "Passwords do not match" });
+        focusOnErrorField("reenterPassword");
         return;
       }
 
@@ -173,15 +218,17 @@ const IndividualSignUp = () => {
           placement,
         });
       };
-
+      setLoading(true);
+      localStorage.setItem("formData", JSON.stringify(formData));
       console.log("Response from signUp:", response);
 
-      if (response.status === "failed") {
+      if (response === "success") {
+        // On successful login, navigate to the main dashboard
+        // console.log("I reach here");
+        history.push("/verify-otp");
+      } else {
         setFormErrors({ general: response.message }); // Set error message
         openNotification2("topRight");
-      } else {
-        // On successful login, navigate to the main dashboard
-        history.push("/verify-otp");
       }
     } catch (error) {
       console.error("SignUp failed:", error);
@@ -189,6 +236,7 @@ const IndividualSignUp = () => {
       setLoading(false);
     }
   };
+
   return (
     <>
       <Row>
@@ -202,6 +250,7 @@ const IndividualSignUp = () => {
                 style={{
                   fontSize: "25px",
                   color: "#000",
+                  cursor: "pointer",
                 }}
               />
             </BtnLink>
@@ -214,7 +263,7 @@ const IndividualSignUp = () => {
                 display: "flex",
               }}
             >
-              <Spin spinning={loading} tip="Logging in...">
+              <Spin spinning={loading} tip="Signing Up...">
                 <StyledForm onSubmit={handleSignUp}>
                   {formErrors.general && (
                     <Alert
@@ -231,6 +280,7 @@ const IndividualSignUp = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
+                    ref={firstNameRef}
                   />
                   {formErrors.firstName && (
                     <Alert
@@ -247,6 +297,7 @@ const IndividualSignUp = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
+                    ref={lastNameRef}
                   />
                   {formErrors.lastName && (
                     <Alert
@@ -259,11 +310,14 @@ const IndividualSignUp = () => {
                     National Identification Number (NIN)
                   </StyledLabel>
                   <StyledInput
-                    type="number"
+                    type="text"
                     placeholder="Enter your NIN"
                     name="nin"
                     value={formData.nin}
                     onChange={handleInputChange}
+                    pattern="[0-9]*" // Allow only numbers
+                    title="Please enter only numbers"
+                    ref={ninRef}
                   />
                   {formErrors.nin && (
                     <Alert message={formErrors.nin} type="error" showIcon />
@@ -275,17 +329,21 @@ const IndividualSignUp = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    ref={emailRef}
                   />
                   {formErrors.email && (
                     <Alert message={formErrors.email} type="error" showIcon />
                   )}
                   <StyledLabel>Phone number</StyledLabel>
                   <StyledInput
-                    type="number"
+                    type="text"
                     placeholder="Enter your phone number"
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
+                    pattern="[0-9]*" // Allow only numbers
+                    title="Please enter only numbers"
+                    ref={phoneNumberRef}
                   />
                   {formErrors.phoneNumber && (
                     <Alert
@@ -301,6 +359,7 @@ const IndividualSignUp = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    ref={passwordRef}
                   />
                   {formErrors.password && (
                     <Alert
@@ -309,41 +368,33 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
-                  {/* <StyledInput
-                    type="hidden"
-                    placeholder="Create a password "
-                    name="userType"
-                    value="individual"
-                    onChange={(e) =>
-                      handleInputChange("userType", e.target.value)
-                    }
-                  /> */}
-                  {/* {formErrors.userType && (
-                    <Alert
-                      message={formErrors.userType}
-                      type="error"
-                      showIcon
-                    />
-                  )} */}
+
                   <StyledLabel>Confirm Password</StyledLabel>
                   <StyledInput
                     type="password"
                     placeholder="Re-enter the password "
+                    name="reenterPassword"
+                    value={reenterPassword}
+                    onChange={handleInputChange}
                   />
+                  {formErrors.reenterPassword && (
+                    <Alert
+                      message={formErrors.reenterPassword}
+                      type="error"
+                      showIcon
+                    />
+                  )}
                   <Checkbox onChange={onChange}>
-                    I certify that I have read and accepted the e-citizen™
-                    Privacy Policy
+                    I certify that I have read and accepted the{" "}
+                    <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                      e-citizen™ Privacy Policy
+                    </span>
                   </Checkbox>
                   <MainButtonFull type="primary" htmlType="submit">
                     Proceed
                   </MainButtonFull>
                 </StyledForm>
               </Spin>
-              {/* <BtnLink to={"/verify-otp"}> */}
-              {/* <Button type="primary" block size="large" htmlType="submit">
-                Proceed
-              </Button> */}
-              {/* </BtnLink> */}
             </Space>
           </div>
         </Col>

@@ -74,7 +74,10 @@ export const signUp = (credentials) => async (dispatch) => {
 
 export const BusinessSignUp = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/registration`, credentials);
+    const response = await axios.post(
+      `${baseUrl}/auth/registration`,
+      credentials
+    );
     const userData = response.data;
 
     dispatch({
@@ -168,12 +171,46 @@ export const fetchTransactionData = (token) => {
 export const SendOtp = (otpString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `http://41.184.212.26:8069/api/citizens/activation/${otpString}`
+      `http://41.184.212.26:8069/api/v2/auth/activation/${otpString}`
     );
     const userData = response.data;
 
     dispatch({
       type: "SEND_OTP_SUCCESS",
+      payload: response.data,
+    });
+
+    // Return the user data upon successful login
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // other than 2xx. Access response data in error.response.data
+      return error.response.data;
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("No response received:", error.request);
+      return {
+        status: "failed",
+        message: "No response received from the server",
+      };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error("Error setting up the request:", error.message);
+      return { status: "failed", message: "Error setting up the request" };
+    }
+  }
+};
+
+export const ReSendOtp = (emailString) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `http://41.184.212.26:8069/api/v2/auth/resendtotp/${emailString}`
+    );
+    const userData = response.data;
+
+    dispatch({
+      type: "RESEND_OTP_SUCCESS",
       payload: response.data,
     });
 

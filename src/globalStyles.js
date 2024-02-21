@@ -7,21 +7,28 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-family: 'Nunito';
+    cursor: default;
 }
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+  cursor: default;
 }
 *::-webkit-scrollbar {
   width: 0.5px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
+  cursor: default;
 }
 *::-webkit-scrollbar-thumb {
   background: rgba(155, 155, 155, 0.5);
   border-radius: 20px;
   border: transparent;
+  cursor: default;
+}
+a {
+  cursor: pointer;
 }
 `;
 
@@ -44,7 +51,7 @@ const buttonBaseStyles = createGlobalStyle`
     font-family: Arial;
     font-weight: 900;
     :hover {
-        cursor: pointer;
+      cursor: default;
     }
 `;
 
@@ -247,6 +254,10 @@ export const StyledTextArea = styled.textarea`
 export const BtnLink = styled(Link)`
   text-decoration: none;
   color: #09c93a;
+  &:hover {
+    cursor: pointer;
+    color: #09c93a;
+  }
 `;
 
 export const Img = styled.img`

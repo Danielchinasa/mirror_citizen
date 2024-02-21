@@ -35,6 +35,7 @@ const SignUpMode = () => {
             borderRadius: "10px",
             padding: "20px",
             background: selectedDiv === 1 ? "#EBFFF0" : "white",
+            cursor: "pointer",
           }}
           onClick={() => handleDivClick(1)}
         >
@@ -42,10 +43,20 @@ const SignUpMode = () => {
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item, index) => (
-              <List.Item>
+              <List.Item style={{ cursor: "pointer" }}>
                 <List.Item.Meta
-                  avatar={<Avatar size={64} src={individual} />}
-                  title={<Title level={3}>Individual</Title>}
+                  avatar={
+                    <Avatar
+                      size={64}
+                      src={individual}
+                      style={{ cursor: "pointer" }}
+                    />
+                  }
+                  title={
+                    <Title level={3} style={{ cursor: "pointer" }}>
+                      Individual
+                    </Title>
+                  }
                   description="Select this if you are not a registered business and wish to
               perform verifications."
                 />
@@ -59,6 +70,7 @@ const SignUpMode = () => {
             borderRadius: "10px",
             padding: "20px",
             background: selectedDiv === 2 ? "#EBFFF0" : "white",
+            cursor: "pointer",
           }}
           onClick={() => handleDivClick(2)}
         >
@@ -68,8 +80,19 @@ const SignUpMode = () => {
             renderItem={(item, index) => (
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Image width={60} src={Corporate} preview={false} />}
-                  title={<Title level={3}>Business</Title>}
+                  avatar={
+                    <Image
+                      width={60}
+                      src={Corporate}
+                      preview={false}
+                      style={{ cursor: "pointer" }}
+                    />
+                  }
+                  title={
+                    <Title level={3} style={{ cursor: "pointer" }}>
+                      Business
+                    </Title>
+                  }
                   description="Select this if your organisation is registered with CAC and you
                   have a valid RC Number."
                 />

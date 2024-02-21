@@ -237,6 +237,7 @@ const MainDashboard = () => {
           // href="/result"
           rel="noopener noreferrer"
           onClick={() => handleViewResult(record)}
+          style={{ cursor: "pointer" }}
         >
           View Result
         </a>

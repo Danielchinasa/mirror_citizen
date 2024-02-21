@@ -11,7 +11,7 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
-import { ReactComponent as Logo } from "../../images/logo.svg";
+import Logo from "../../images/logo.png";
 import { Link } from "react-router-dom";
 import { Button, Flex } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -138,7 +138,13 @@ function Navbar() {
         <Nav>
           <NavbarContainer>
             <Link to="/">
-              <Logo style={{ marginTop: "10px" }} />
+              {/* <Logo style={{ marginTop: "10px" }} /> */}
+              <img
+                src={Logo}
+                alt="Logo"
+                width={230}
+                style={{ marginTop: "10px" }}
+              />
             </Link>
             <HamburgerIcon onClick={handleClick}>
               {click ? <FaTimes /> : <FaBars />}

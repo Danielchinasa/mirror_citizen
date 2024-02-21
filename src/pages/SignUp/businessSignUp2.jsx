@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 import {
   Image,
   Typography,
@@ -11,6 +12,7 @@ import {
   Col,
   Row,
   Alert,
+  Spin,
 } from "antd";
 import reg from "../../images/reg.jpg";
 import slide2 from "../../images/slide2.svg";
@@ -38,6 +40,16 @@ const BusinessSignUp2 = () => {
   };
   const dispatch = useDispatch();
   const history = useHistory();
+  const [ipAddress, setIpAddress] = useState("");
+  const [ipCountry, setIpCountry] = useState("");
+  const designationRef = useRef(null);
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const ninRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneNumberRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [reenterPassword, setReenterPassword] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -47,6 +59,8 @@ const BusinessSignUp2 = () => {
     password: "",
     rememberMe: false,
     userType: "",
+    ipAddress: "",
+    ipCountry: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -69,13 +83,63 @@ const BusinessSignUp2 = () => {
     []
   );
 
+  const focusOnErrorField = (fieldName) => {
+    switch (fieldName) {
+      case "designation":
+        designationRef.current.focus();
+        break;
+      case "firstName":
+        firstNameRef.current.focus();
+        break;
+      case "lastName":
+        lastNameRef.current.focus();
+        break;
+      case "nin":
+        ninRef.current.focus();
+        break;
+      case "email":
+        emailRef.current.focus();
+        break;
+      case "phoneNumber":
+        phoneNumberRef.current.focus();
+        break;
+      case "password":
+        passwordRef.current.focus();
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    const fetchIpCountry = async () => {
+      try {
+        const response = await axios.get("https://ipapi.co/json/");
+        setIpCountry(response.data.country_name);
+        setIpAddress(response.data.ip);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setIpCountry(null);
+      }
+    };
+
+    fetchIpCountry();
+  }, []);
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     const inputValue = type === "checkbox" ? checked : value;
 
+    if (name === "reenterPassword") {
+      setReenterPassword(value);
+    }
+
     setFormData({
       ...formData,
       [name]: inputValue,
+      userType: "business",
+      ipAddress: ipAddress,
+      ipCountry: ipCountry,
     });
 
     setFormErrors({
@@ -134,6 +198,14 @@ const BusinessSignUp2 = () => {
       const errors = validateForm();
       if (Object.keys(errors).length > 0) {
         setFormErrors(errors);
+        const firstErrorField = Object.keys(errors)[0];
+        focusOnErrorField(firstErrorField);
+        return;
+      }
+
+      if (formData.password !== reenterPassword) {
+        setFormErrors({ reenterPassword: "Passwords do not match" });
+        focusOnErrorField("reenterPassword");
         return;
       }
 
@@ -159,14 +231,17 @@ const BusinessSignUp2 = () => {
         });
       };
 
+      setLoading(true);
+      localStorage.setItem("formData", JSON.stringify(formData));
       console.log("Response from signUp:", response);
 
-      if (response.status === "failed") {
+      if (response === "success") {
+        // On successful login, navigate to the main dashboard
+        // console.log("I reach here");
+        history.push("/verify-otp");
+      } else {
         setFormErrors({ general: response.message }); // Set error message
         openNotification2("topRight");
-      } else {
-        // On successful login, navigate to the main dashboard
-        history.push("/verify-otp");
       }
     } catch (error) {
       console.error("SignUp failed:", error);
@@ -197,7 +272,11 @@ const BusinessSignUp2 = () => {
               </Col>
               <Col span={6} sm={24} xs={24} md={6} lg={6}>
                 <BtnLink to="/individual/sign-up/2">
-                  <Image src={slide2} preview={false} />
+                  <Image
+                    src={slide2}
+                    preview={false}
+                    style={{ cursor: "pointer" }}
+                  />
                 </BtnLink>
               </Col>
             </Row>
@@ -210,118 +289,155 @@ const BusinessSignUp2 = () => {
                 display: "flex",
               }}
             >
-              <StyledForm onSubmit={handleSignUp}>
-                {formErrors.general && (
-                  <Alert
-                    message={formErrors.general}
-                    type="error"
-                    showIcon
-                    style={{ marginBottom: "16px" }}
+              <Spin spinning={loading} tip="Signing Up...">
+                <StyledForm onSubmit={handleSignUp}>
+                  {formErrors.general && (
+                    <Alert
+                      message={formErrors.general}
+                      type="error"
+                      showIcon
+                      style={{ marginBottom: "16px" }}
+                    />
+                  )}
+                  <StyledLabel>Designation</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Admin Officer"
+                    name="designation"
+                    value={formData.designation}
+                    onChange={handleInputChange}
+                    ref={designationRef}
                   />
-                )}
-                <StyledLabel>Designation</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Admin Officer"
-                  name="designation"
-                  value={formData.designation}
-                  onChange={handleInputChange}
-                />
-                {formErrors.designation && (
-                  <Alert
-                    message={formErrors.designation}
-                    type="error"
-                    showIcon
+                  {formErrors.designation && (
+                    <Alert
+                      message={formErrors.designation}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledLabel>First name</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your first name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    ref={firstNameRef}
                   />
-                )}
-                <StyledLabel>First name</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your first name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                />
-                {formErrors.firstName && (
-                  <Alert message={formErrors.firstName} type="error" showIcon />
-                )}
-                <StyledLabel>Last name</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your last name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                />
-                {formErrors.lastName && (
-                  <Alert message={formErrors.lastName} type="error" showIcon />
-                )}
-                <StyledLabel>National Identification Number (NIN)</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your NIN"
-                  name="nin"
-                  value={formData.nin}
-                  onChange={handleInputChange}
-                />
-                {formErrors.nin && (
-                  <Alert message={formErrors.nin} type="error" showIcon />
-                )}
-                <StyledLabel>Email address</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter your Email address"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                {formErrors.email && (
-                  <Alert message={formErrors.email} type="error" showIcon />
-                )}
-                <StyledLabel>Phone number</StyledLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="Enter phone number"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                />
-                {formErrors.phoneNumber && (
-                  <Alert
-                    message={formErrors.phoneNumber}
-                    type="error"
-                    showIcon
+                  {formErrors.firstName && (
+                    <Alert
+                      message={formErrors.firstName}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledLabel>Last name</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your last name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    ref={lastNameRef}
                   />
-                )}
-                <StyledLabel>Password</StyledLabel>
-                <StyledInput
-                  type="password"
-                  placeholder="Create a password "
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-                {formErrors.password && (
-                  <Alert message={formErrors.password} type="error" showIcon />
-                )}
-                <StyledInput
-                  type="hidden"
-                  placeholder="Create a password "
-                  name="userType"
-                  value="business"
-                  onChange={(e) =>
-                    handleInputChange("userType", e.target.value)
-                  }
-                />
-                <StyledLabel>Confirm password</StyledLabel>
-                <StyledInput
-                  type="password"
-                  placeholder="Re-enter the password "
-                />
-                <MainButtonFull type="primary" htmlType="submit">
-                  Proceed
-                </MainButtonFull>
-              </StyledForm>
+                  {formErrors.lastName && (
+                    <Alert
+                      message={formErrors.lastName}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledLabel>
+                    National Identification Number (NIN)
+                  </StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your NIN"
+                    name="nin"
+                    value={formData.nin}
+                    onChange={handleInputChange}
+                    pattern="[0-9]*" // Allow only numbers
+                    title="Please enter only numbers"
+                    ref={ninRef}
+                  />
+                  {formErrors.nin && (
+                    <Alert message={formErrors.nin} type="error" showIcon />
+                  )}
+                  <StyledLabel>Email address</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter your Email address"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    ref={emailRef}
+                  />
+                  {formErrors.email && (
+                    <Alert message={formErrors.email} type="error" showIcon />
+                  )}
+                  <StyledLabel>Phone number</StyledLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="Enter phone number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    pattern="[0-9]*" // Allow only numbers
+                    title="Please enter only numbers"
+                    ref={phoneNumberRef}
+                  />
+                  {formErrors.phoneNumber && (
+                    <Alert
+                      message={formErrors.phoneNumber}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledLabel>Password</StyledLabel>
+                  <StyledInput
+                    type="password"
+                    placeholder="Create a password "
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    ref={passwordRef}
+                  />
+                  {formErrors.password && (
+                    <Alert
+                      message={formErrors.password}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <StyledInput
+                    type="hidden"
+                    placeholder="Create a password "
+                    name="userType"
+                    value="business"
+                    onChange={(e) =>
+                      handleInputChange("userType", e.target.value)
+                    }
+                  />
+                  <StyledLabel>Confirm password</StyledLabel>
+                  <StyledInput
+                    type="password"
+                    placeholder="Re-enter the password "
+                    name="reenterPassword"
+                    value={reenterPassword}
+                    onChange={handleInputChange}
+                  />
+                  {formErrors.reenterPassword && (
+                    <Alert
+                      message={formErrors.reenterPassword}
+                      type="error"
+                      showIcon
+                    />
+                  )}
+                  <MainButtonFull type="primary" htmlType="submit">
+                    Proceed
+                  </MainButtonFull>
+                </StyledForm>
+              </Spin>
             </Space>
           </div>
         </Col>

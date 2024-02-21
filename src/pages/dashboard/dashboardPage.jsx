@@ -898,7 +898,7 @@ const DashboardPage = () => {
             if (response.ok && data === "payment successful") {
               // console.log("Payment successful. Response:", data);
               handleCancelFace();
-              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen-web/${userToken}`;
               if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
                 window.open(liveCaptureUrl, "_blank");
               }
@@ -928,7 +928,7 @@ const DashboardPage = () => {
                 });
               };
               // handleSubmit();
-              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen-web/${userToken}`;
               if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
                 window.open(liveCaptureUrl, "_blank");
               }
@@ -2068,8 +2068,14 @@ const DashboardPage = () => {
           >
             <strong>
               <Checkbox onChange={onChangePayment}>
-                I certify that I have read and accepted the e-citizen Privacy
-                Policy and Terms of Service
+                I certify that I have read and accepted the{" "}
+                <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                  e-citizen™ Privacy Policy
+                </span>{" "}
+                and{" "}
+                <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                  Terms of Service
+                </span>
               </Checkbox>
             </strong>
 

@@ -194,7 +194,9 @@ const LoginForm = () => {
             <Subtitle color="light">
               Don’t have an account?{" "}
               <BtnLink to="/sign-up">
-                <span style={{ color: "#09C93A" }}>Register here</span>
+                <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                  Register here
+                </span>
               </BtnLink>
             </Subtitle>
             <Subtitle color="light">

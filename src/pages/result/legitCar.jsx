@@ -77,7 +77,7 @@ const LegitCar = () => {
     <Container>
       <InfoSec>
         <Link to="/main-dashboard">
-          <p style={{ color: "#0DC939" }}>Go back</p>
+          <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>
           <Heading4>Vehicle Verification Result</Heading4>

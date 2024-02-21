@@ -89,7 +89,11 @@ const BusinessSignUp = () => {
               </Col>
               <Col span={6} sm={24} xs={24} md={6} lg={6}>
                 <BtnLink to="/individual/sign-up/3">
-                  <Image src={slide} preview={false} />
+                  <Image
+                    src={slide}
+                    preview={false}
+                    style={{ cursor: "pointer" }}
+                  />
                 </BtnLink>
               </Col>
             </Row>
