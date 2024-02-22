@@ -222,9 +222,9 @@ const IndividualSignUp = () => {
       setLoading(true);
       localStorage.setItem("formData", JSON.stringify(formData));
       console.log("Response from signUp:", response);
-      if (response.status !== 200) {
-        throw new Error(response); // Throw an error with the response status text
-      }
+      // if (response.status !== 200) {
+      //   throw new Error(response); // Throw an error with the response status text
+      // }
 
       if (response === "success") {
         // On successful login, navigate to the main dashboard
