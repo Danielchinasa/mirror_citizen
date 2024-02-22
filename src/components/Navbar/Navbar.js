@@ -164,7 +164,7 @@ function Navbar() {
                 src={Logo}
                 alt="Logo"
                 width={230}
-                style={{ marginTop: "10px" }}
+                style={{ marginTop: "10px", cursor: "pointer" }}
               />
             </Link>
             <HamburgerIcon onClick={handleClick}>

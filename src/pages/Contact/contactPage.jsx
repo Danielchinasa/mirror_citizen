@@ -25,11 +25,11 @@ const ContactPage = () => {
             md={{ span: 12 }}
             lg={{ span: 12 }}
           >
-            <Heading>We’ll love to hear from you</Heading>
+            <Heading>We will love to hear from you</Heading>
             <Subtitle color="light">
               We value your feedback and look forward to hearing from you. Don't
               hesitate to get in touch with us through any of the contact
-              methods provided below. Thank you for considering us!"
+              methods provided below. Thank you for considering us
             </Subtitle>
             <Row>
               <Col>
@@ -46,28 +46,12 @@ const ContactPage = () => {
             </Row>
             <Row>
               <Col>
-                <Space direction="horizontal" size={10}>
-                  <PhoneFilled
-                    style={{
-                      fontSize: "22px",
-                      color: "#09c93a",
-                    }}
-                  />
-                  <h5> +234(0) 818-437-2194</h5>
-                </Space>
+                <Space direction="horizontal" size={10}></Space>
               </Col>
             </Row>
             <Row>
               <Col>
-                <Space direction="horizontal" size={10}>
-                  <PhoneFilled
-                    style={{
-                      fontSize: "22px",
-                      color: "#09c93a",
-                    }}
-                  />
-                  <h5> +234(0) 815-534-3718</h5>
-                </Space>
+                <Space direction="horizontal" size={10}></Space>
               </Col>
             </Row>
           </Col>

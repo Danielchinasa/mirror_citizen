@@ -14,6 +14,13 @@ import NewsletterSection from "../newsletter/newsLetterSection";
 
 function Footer() {
   const date = new Date();
+  const handleClickPrivacyPolicy = () => {
+    // Import the PDF file using require
+    const pdf = require("../../images/e-citizen - Data Protection and Privacy Policy.pdf");
+
+    // Open the PDF in a new tab
+    window.open(pdf, "_blank");
+  };
 
   return (
     <>
@@ -28,10 +35,12 @@ function Footer() {
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
               <FooterLinkItems>
-                <FooterLink to="/">Privacy policy</FooterLink>
+                <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
+                  Privacy policy
+                </FooterLink>
               </FooterLinkItems>
               <FooterLinkItems>
-                <FooterLink to="/faq">FQAs</FooterLink>
+                <FooterLink to="/faq">FAQ</FooterLink>
               </FooterLinkItems>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
@@ -40,9 +49,7 @@ function Footer() {
               </FooterLinkItems>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems>
-                <FooterLink to="/">+234(0) 818-437-2194</FooterLink>
-              </FooterLinkItems>
+              <FooterLinkItems></FooterLinkItems>
               <FooterLinkItems>
                 <FooterLink to="/">info@e-citizen.ng</FooterLink>
               </FooterLinkItems>
