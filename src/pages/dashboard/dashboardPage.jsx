@@ -582,7 +582,8 @@ const DashboardPage = () => {
     amount:
       currencyCheck == "USD" ? `${danfee.toFixed(2)}` : `${danfee.toFixed(2)}`,
     currency: currencyCheck == "USD" ? "USD" : "NGN",
-    payment_options: "card,mobilemoney,ussd",
+    payment_options:
+      "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
       email: userEmail,
       phone_number: userPhone,

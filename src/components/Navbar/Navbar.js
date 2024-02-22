@@ -256,7 +256,7 @@ function Navbar() {
                         style={{
                           marginTop: "20px",
                           textAlign: "end",
-                          paddingLeft: "15px",
+                          paddingLeft: "35px",
                           paddingRight: "15px",
                         }}
                       >
@@ -264,8 +264,9 @@ function Navbar() {
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
                         <p>
-                          Bal:
+                          Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
+                            {" "}
                             ₦{userBalance.toLocaleString()}
                           </span>
                         </p>
