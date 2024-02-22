@@ -12,6 +12,7 @@ import {
   Row,
   Checkbox,
   Spin,
+  message,
 } from "antd";
 import { useHistory } from "react-router-dom";
 
@@ -221,6 +222,9 @@ const IndividualSignUp = () => {
       setLoading(true);
       localStorage.setItem("formData", JSON.stringify(formData));
       console.log("Response from signUp:", response);
+      if (response.status !== 200) {
+        throw new Error(response); // Throw an error with the response status text
+      }
 
       if (response === "success") {
         // On successful login, navigate to the main dashboard
@@ -232,6 +236,10 @@ const IndividualSignUp = () => {
       }
     } catch (error) {
       console.error("SignUp failed:", error);
+      notification.error({
+        message: "Server Error",
+        description: error.message || "An error occurred while signing up.",
+      });
     } finally {
       setLoading(false);
     }

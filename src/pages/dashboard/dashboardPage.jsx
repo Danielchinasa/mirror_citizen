@@ -580,9 +580,7 @@ const DashboardPage = () => {
     public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount:
-      currencyCheck == "USD"
-        ? `${danfee.toFixed(2)}`
-        : `${(danfee + vat).toFixed(2)}`,
+      currencyCheck == "USD" ? `${danfee.toFixed(2)}` : `${danfee.toFixed(2)}`,
     currency: currencyCheck == "USD" ? "USD" : "NGN",
     payment_options: "card,mobilemoney,ussd",
     customer: {
