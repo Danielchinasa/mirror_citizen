@@ -13,6 +13,7 @@ import {
   Row,
   Alert,
   Spin,
+  Checkbox,
 } from "antd";
 import reg from "../../images/reg.jpg";
 import slide2 from "../../images/slide2.svg";
@@ -256,6 +257,13 @@ const BusinessSignUp2 = () => {
       setLoading(false);
     }
   };
+  const handleClickPrivacyPolicy = () => {
+    // Import the PDF file using require
+    const pdf = require("../../images/e-citizen - Data Protection and Privacy Policy.pdf");
+
+    // Open the PDF in a new tab
+    window.open(pdf, "_blank");
+  };
   return (
     <>
       <Row>
@@ -440,6 +448,15 @@ const BusinessSignUp2 = () => {
                       showIcon
                     />
                   )}
+                  <Checkbox onChange={onChange}>
+                    I certify that I have read and accepted the{" "}
+                    <span
+                      style={{ color: "#09C93A", cursor: "pointer" }}
+                      onClick={handleClickPrivacyPolicy}
+                    >
+                      e-citizen™ Privacy Policy
+                    </span>
+                  </Checkbox>
                   <MainButtonFull type="primary" htmlType="submit">
                     Proceed
                   </MainButtonFull>

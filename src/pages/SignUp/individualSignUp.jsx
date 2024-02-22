@@ -244,6 +244,13 @@ const IndividualSignUp = () => {
       setLoading(false);
     }
   };
+  const handleClickPrivacyPolicy = () => {
+    // Import the PDF file using require
+    const pdf = require("../../images/e-citizen - Data Protection and Privacy Policy.pdf");
+
+    // Open the PDF in a new tab
+    window.open(pdf, "_blank");
+  };
 
   return (
     <>
@@ -394,7 +401,10 @@ const IndividualSignUp = () => {
                   )}
                   <Checkbox onChange={onChange}>
                     I certify that I have read and accepted the{" "}
-                    <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                    <span
+                      style={{ color: "#09C93A", cursor: "pointer" }}
+                      onClick={handleClickPrivacyPolicy}
+                    >
                       e-citizen™ Privacy Policy
                     </span>
                   </Checkbox>
