@@ -1044,7 +1044,10 @@ const DashboardPage = () => {
           <Checkbox onChange={onChange2}>
             By clicking, you indicate that you understand and accept that
             consent is required from the data subject being verified before you
-            can access their data.
+            can access their data. <br />
+            Disclaimer - You confirm that search details are correct, and you
+            confirm that you will not be refunded for incorrect information or
+            lack of consent
           </Checkbox>
         </div>
       ) : (
