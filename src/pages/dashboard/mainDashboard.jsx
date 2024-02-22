@@ -22,6 +22,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import "./emergency.css";
 
 const data = [
   {
@@ -167,6 +168,10 @@ const MainDashboard = () => {
 
   const handleFlutterPayment = useFlutterwave(config);
 
+  const handleRowClick = (record) => {
+    // Handle row click event here
+    console.log("Clicked row:", record);
+  };
   const columns = [
     {
       title: "Date and Time",
@@ -299,6 +304,12 @@ const MainDashboard = () => {
             <Table
               columns={columns}
               dataSource={verificationData && verificationData.reverse()}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: () => handleViewResult(record),
+                  style: { cursor: "pointer" },
+                };
+              }}
             />
           </Col>
         </Row>
