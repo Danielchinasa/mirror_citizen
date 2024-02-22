@@ -804,7 +804,7 @@ const DashboardPage = () => {
         const requestBody = {
           userNIN: userNin,
           transactionID: "EA11697986831911",
-          amount: `${(serviceFee + vat).toFixed(2)}`,
+          amount: `${danfee.toFixed(2)}`,
         };
 
         if (userBalance.toLocaleString() < 55) {
@@ -893,7 +893,7 @@ const DashboardPage = () => {
         const requestBody = {
           userNIN: userNin,
           transactionID: "EA11697986831911",
-          amount: `${(serviceFee + vat).toFixed(2)}`,
+          amount: `${danfee.toFixed(2)}`,
         };
 
         if (userBalance.toLocaleString() < 55) {
