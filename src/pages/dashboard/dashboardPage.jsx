@@ -921,6 +921,7 @@ const DashboardPage = () => {
             if (response.ok && data === "payment successful") {
               // console.log("Payment successful. Response:", data);
               handleCancelFace();
+              dispatch(fetchUserProfile(userToken));
               const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen-web/${userToken}`;
               if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
                 window.open(liveCaptureUrl, "_blank");
