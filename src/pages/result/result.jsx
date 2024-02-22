@@ -317,7 +317,7 @@ const Result = () => {
             </Row>
           </Card>
         </Spin>
-        <Title level={5} style={{ marginTop: "20px" }}>
+        {/* <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
         <Row gutter={30}>
@@ -354,7 +354,7 @@ const Result = () => {
               content="Credit Cards handpicked for you"
             />
           </Col>
-        </Row>
+        </Row> */}
       </InfoSec>
     </Container>
   );
