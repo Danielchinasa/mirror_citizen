@@ -798,6 +798,7 @@ const DashboardPage = () => {
       if (selectedValue === 1) {
         // console.log("Payment from Wallet");
         setLoading(true);
+        handleCancel();
         const apiUrl =
           "http://41.184.212.26:8069/api/v2/transaction/wallet-payment";
 
@@ -809,7 +810,7 @@ const DashboardPage = () => {
 
         if (userBalance.toLocaleString() < 55) {
           // Show the Ant Design notification
-
+          handleCancel();
           notification.error({
             message: "Wallet Balance Warning",
             description:

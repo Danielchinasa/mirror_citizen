@@ -84,13 +84,34 @@ function Navbar() {
       label: <span onClick={handleLogout}>LogOut</span>,
     },
   ];
+  const [visible, setVisible] = useState(false);
+
+  const handleVisibleChange = (flag) => {
+    setVisible(flag);
+  };
+
+  const menu = (
+    <Menu>
+      {items.map((item) => (
+        <Menu.Item key={item.key} onClick={closeMobileMenu}>
+          {item.label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   const UserDropdown = () => {
     return (
       <Dropdown
-        menu={{
-          items,
-        }}
+        // menu={{
+        //   items,
+        // }}
+        // placement="bottomLeft"
+        // arrow
+        overlay={menu}
+        trigger={["click"]}
+        visible={visible}
+        onVisibleChange={handleVisibleChange}
         placement="bottomLeft"
         arrow
       >
