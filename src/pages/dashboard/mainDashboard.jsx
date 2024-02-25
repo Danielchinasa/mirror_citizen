@@ -132,11 +132,11 @@ const MainDashboard = () => {
     localStorage.setItem("verificationRequestId", verificationRequestId);
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle2");
-    } else if (type === "Vehicle profiling") {
+    } else if (type === "Vehicle profile") {
       history.push("/vehicle");
-    } else if (type === "Business profiling") {
+    } else if (type === "Business profile") {
       history.push("/business");
-    } else if (type === "Financial profiling") {
+    } else if (type === "Financial profile") {
       history.push("/financial");
     } else {
       history.push("/result");

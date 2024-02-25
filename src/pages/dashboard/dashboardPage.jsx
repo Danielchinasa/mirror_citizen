@@ -35,6 +35,7 @@ import {
   StyledForm,
   StyledTextArea,
 } from "../../globalStyles";
+import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 
 import { InfoCircleOutlined, CameraOutlined } from "@ant-design/icons";
 import banner from "../../images/banner.png";
@@ -76,6 +77,9 @@ const DashboardPage = () => {
   const dispatch = useDispatch();
   const [base64WithoutPrefix, setBase64WithoutPrefix] = useState("");
   const [isClearVinOn, setIsClearVinOn] = useState(false);
+  const [isBasicOn, setIsBasicOn] = useState(false);
+  const [isVehicleOn, setIsVehicleOn] = useState(false);
+  const [isFinancialOn, setIsFinancialOn] = useState(false);
 
   const [formattedTotalveri, setFormattedTotalveri] = useState("");
   const [exchangeRate, setExchangeRate] = useState("");
@@ -149,7 +153,91 @@ const DashboardPage = () => {
       setCurrencyCheck("NGN");
     }
   };
+
+  const [ninFilled, setNinFilled] = useState(false);
+  const [rcFilled, setRcFilled] = useState(false);
+  const [businessNameFilled, setBusinessNameFilled] = useState(false);
+  const [bvnFilled, setBvnFilled] = useState(false);
+  const [vinFilled, setVinFilled] = useState(false);
+  const [licenseNumberFilled, setLicenseNumberFilled] = useState(false);
+  const [totalVAT, setTotalVAT] = useState(0);
+  const [totalServiceCost, setTotalServiceCost] = useState(0);
+  const formatToNaira = (value) => {
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(value);
+  };
   const handleInputChange = (name, value) => {
+    const hadPreviousValue = formData[name].trim() !== "";
+    if (name === "nin") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setNinFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setNinFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - ninFee);
+        setTotalServiceCost(
+          (prevTotalFees) => prevTotalFees - (ninServiceFee + ninProcessingFee)
+        );
+      }
+    }
+    if (name === "rc") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setRcFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setRcFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
+      }
+    }
+    if (name === "business_name") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setBusinessNameFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setBusinessNameFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
+      }
+    }
+    if (name === "bvn") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setBvnFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + financialVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + financialFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setBvnFilled(false);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - financialFee);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - financialVatFee);
+      }
+    }
+    if (name === "vin") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setVinFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + vinVehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + vinVehicleFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setVinFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - vinVehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - vinVehicleFee);
+      }
+    }
+    if (name === "license_number") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setLicenseNumberFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + vehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + vehicleFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setLicenseNumberFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - vehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - vehicleFee);
+      }
+    }
     setFormData({
       ...formData,
       [name]: value,
@@ -420,9 +508,9 @@ const DashboardPage = () => {
       setCheckStolen(false);
     }
   }, [isChecked]);
-  const onChange2 = (e) => {
-    setCheckboxCheckedConfirm(e.target.checked);
-  };
+  // const onChange2 = (e) => {
+  //   setCheckboxCheckedConfirm(e.target.checked);
+  // };
 
   const handleFormChange = (e) => {
     setSelectedForm(e.target.value);
@@ -533,12 +621,12 @@ const DashboardPage = () => {
   function RadioComponent({ profile, usdFee }) {
     return (
       <Radio value={2}>
-        {profile === "nin" && `USD ${usdFee}`}
-        {profile === "face" && `USD ${usdFee}`}
-        {profile === "rc" && `USD ${usdFee}`}
-        {profile === "business_name" && `USD ${usdFee}`}
-        {profile === "bvn" && `USD ${usdFee}`}
-        {profile === "vin" && `USD ${usdFee}`}
+        {profile === "nin" && `$ ${usdFee}`}
+        {profile === "face" && `$ ${usdFee}`}
+        {profile === "rc" && `$ ${usdFee}`}
+        {profile === "business_name" && `$ ${usdFee}`}
+        {profile === "bvn" && `$ ${usdFee}`}
+        {profile === "vin" && `$ ${usdFee}`}
       </Radio>
     );
   }
@@ -598,9 +686,9 @@ const DashboardPage = () => {
 
   const config = {
     //live key
-    public_key: "FLWPUBK-6f8762e460e0a984f90b300be5d7a343-X",
+    // public_key: "FLWPUBK-6f8762e460e0a984f90b300be5d7a343-X",
     //test key
-    // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
+    public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount:
       currencyCheck == "USD" ? `${danfee.toFixed(2)}` : `${danfee.toFixed(2)}`,
@@ -689,6 +777,9 @@ const DashboardPage = () => {
         ) {
           // Add the fee for this field to the totalveri
           setIsClearVinOn(false);
+          setIsBasicOn(false);
+          setIsVehicleOn(false);
+          setIsFinancialOn(false);
           calculatedTotalveri += formDataUsdFees[field];
           setTotalveri(calculatedTotalveri);
         }
@@ -703,6 +794,26 @@ const DashboardPage = () => {
         setIsClearVinOn(true);
         // Add the fee for 'vin' to the totalveri
         calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.nin === "string" &&
+        formData.nin.trim() !== "" &&
+        formDataUsdFees.nin !== undefined
+      ) {
+        setIsBasicOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.bvn === "string" &&
+        formData.bvn.trim() !== "" &&
+        formDataUsdFees.bvn !== undefined
+      ) {
+        setIsFinancialOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.bvn;
         setTotalveri(calculatedTotalveri);
       }
 
@@ -732,6 +843,26 @@ const DashboardPage = () => {
         setIsClearVinOn(true);
         // Add the fee for 'vin' to the totalveri
         calculatedTotalveri += formDataFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.nin === "string" &&
+        formData.nin.trim() !== "" &&
+        formDataUsdFees.nin !== undefined
+      ) {
+        setIsBasicOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.bvn === "string" &&
+        formData.bvn.trim() !== "" &&
+        formDataUsdFees.bvn !== undefined
+      ) {
+        setIsFinancialOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.bvn;
         setTotalveri(calculatedTotalveri);
       }
 
@@ -976,6 +1107,7 @@ const DashboardPage = () => {
   // };
   const handleRadioChange = (e) => {
     setSelectedValue(e.target.value);
+    setCheckboxCheckedConfirm(true);
   };
 
   const handleRadioChangeStolen = (e) => {
@@ -986,15 +1118,16 @@ const DashboardPage = () => {
     <Modal
       visible={modalVisible}
       onCancel={handleCancel}
+      title="Disclaimer"
       footer={null} // Remove the default footer
-      width={isClearVinOn ? 1000 : 500}
+      width={isClearVinOn ? 1000 : 700}
       bodyStyle={{ overflowX: "scroll" }}
       style={{
         top: 20,
       }}
     >
       {/* Add your content for the modal here */}
-      <div
+      {/* <div
         style={{
           borderBottom: "1px solid #e8e8e8",
           marginBottom: "15px",
@@ -1032,7 +1165,7 @@ const DashboardPage = () => {
             Instant Payment
           </Radio>
         </Radio.Group>
-      </div>
+      </div> */}
       {/* Checkbox and lower div */}
       {!isClearVinOn ? (
         <div
@@ -1043,14 +1176,26 @@ const DashboardPage = () => {
             padding: "15px",
           }}
         >
-          <Checkbox onChange={onChange2}>
-            By clicking, you indicate that you understand and accept that
-            consent is required from the data subject being verified before you
-            can access their data. <br />
-            Disclaimer - You confirm that search details are correct, and you
-            confirm that you will not be refunded for incorrect information or
-            lack of consent
-          </Checkbox>
+          {/* <Checkbox onChange={onChange2}> */}
+          <ul>
+            {isBasicOn || isFinancialOn ? (
+              <li>
+                By clicking, you indicate that you understand and accept that
+                consent is required from the data subject being verified before
+                you can access their data.
+              </li>
+            ) : (
+              ""
+            )}
+
+            <li>
+              You confirm that search details are correct, and you confirm that
+              you will not be refunded for incorrect information or lack of
+              consent
+            </li>
+          </ul>
+
+          {/* </Checkbox> */}
         </div>
       ) : (
         ""
@@ -1064,77 +1209,83 @@ const DashboardPage = () => {
             padding: "15px",
           }}
         >
-          <Checkbox onChange={onChange2}>
-            By clicking, you indicate that:
-            <ul>
+          {/* <Checkbox onChange={onChange2}> */}
+          By clicking, you indicate that:
+          <ul>
+            {isBasicOn || isFinancialOn ? (
               <li>
-                You understand and accept that{" "}
-                <b>
-                  consent is required from the data subject being verified
-                  before you can access their data.
-                </b>
+                By clicking, you indicate that you understand and accept that
+                consent is required from the data subject being verified before
+                you can access their data.
               </li>
-              <li>
-                You understand and accept the following{" "}
-                <b>
-                  terms and conditions pertaining to ClearVIN’s vehicle history
-                  data (Licensed Data):
-                </b>
-                <ol>
-                  <li>You may not provide Licensed Data to other persons</li>
+            ) : (
+              ""
+            )}
+            <li>
+              You confirm that search details are correct, and you confirm that
+              you will not be refunded for incorrect information or lack of
+              consent
+            </li>
+            <li>
+              You understand and accept the following{" "}
+              <b>
+                terms and conditions pertaining to ClearVIN’s vehicle history
+                data (Licensed Data):
+              </b>
+              <ol>
+                <li>You may not provide Licensed Data to other persons</li>
+                <li>
+                  You may only use Licensed Data for your internal business
+                  purposes or provide Licensed Data to other organizations for
+                  the internal business uses of those organizations.
+                </li>
+                <li>
+                  You warrant that you shall not furnish or sell Licensed Data
+                  to members of the public.
+                </li>
+                <li>You understand that</li>
+                <ol type="a">
                   <li>
-                    You may only use Licensed Data for your internal business
-                    purposes or provide Licensed Data to other organizations for
-                    the internal business uses of those organizations.
+                    e-citizen’s vendor, ClearVin, LLC (“CV”), is an approved
+                    NMVTIS Data Provider,
                   </li>
                   <li>
-                    You warrant that you shall not furnish or sell Licensed Data
-                    to members of the public.
+                    some state data pertaining to a VIN may not be contained in
+                    or available through NMVTIS,
                   </li>
-                  <li>You understand that</li>
-                  <ol type="a">
-                    <li>
-                      e-citizen’s vendor, ClearVin, LLC (“CV”), is an approved
-                      NMVTIS Data Provider,
-                    </li>
-                    <li>
-                      some state data pertaining to a VIN may not be contained
-                      in or available through NMVTIS,
-                    </li>
-                    <li>
-                      some state data is provided to NMVTIS via a daily, weekly
-                      or monthly format and therefore may not be current,
-                    </li>
-                    <li>
-                      some of the entities which report data to NMVTIS may have
-                      failed to provide such data for incorporation in NMVTIS,
-                      and
-                    </li>
-                    <li>
-                      AAMVA, CV’s vendor, and CV have no control over the
-                      accuracy or completeness of data contained in NMVTIS and
-                      shall not have any liability to any Licensee, Affiliate,
-                      user or third party concerning the quality, completeness
-                      or accuracy of Licensed Data.
-                    </li>
-                  </ol>
-                  <li>You understand that:</li>
-                  <ol type="a">
-                    <li>e-citizen™ is not an Approved NMVTIS Data Provider,</li>
-                    <li>
-                      e-citizen™ has obtained the NMVTIS data contained in the
-                      Licensed Data from an Approved NMVTIS Data Provider, and
-                    </li>
-                    <li>
-                      CV as the Approved NMVTIS Data Provider from which the
-                      NMVTIS Reseller has obtained the NMVTIS data used in such
-                      Licensed Data.
-                    </li>
-                  </ol>
+                  <li>
+                    some state data is provided to NMVTIS via a daily, weekly or
+                    monthly format and therefore may not be current,
+                  </li>
+                  <li>
+                    some of the entities which report data to NMVTIS may have
+                    failed to provide such data for incorporation in NMVTIS, and
+                  </li>
+                  <li>
+                    AAMVA, CV’s vendor, and CV have no control over the accuracy
+                    or completeness of data contained in NMVTIS and shall not
+                    have any liability to any Licensee, Affiliate, user or third
+                    party concerning the quality, completeness or accuracy of
+                    Licensed Data.
+                  </li>
                 </ol>
-              </li>
-            </ul>
-          </Checkbox>
+                <li>You understand that:</li>
+                <ol type="a">
+                  <li>e-citizen™ is not an Approved NMVTIS Data Provider,</li>
+                  <li>
+                    e-citizen™ has obtained the NMVTIS data contained in the
+                    Licensed Data from an Approved NMVTIS Data Provider, and
+                  </li>
+                  <li>
+                    CV as the Approved NMVTIS Data Provider from which the
+                    NMVTIS Reseller has obtained the NMVTIS data used in such
+                    Licensed Data.
+                  </li>
+                </ol>
+              </ol>
+            </li>
+          </ul>
+          {/* </Checkbox> */}
         </div>
       ) : (
         ""
@@ -1220,11 +1371,19 @@ const DashboardPage = () => {
           padding: "15px",
         }}
       >
-        <Checkbox onChange={onChange2}>
-          By clicking, you indicate that you understand and accept that consent
-          is required from the data subject being verified before you can access
-          their data.
-        </Checkbox>
+        <ul>
+          <li>
+            By clicking, you indicate that you understand and accept that
+            consent is required from the data subject being verified before you
+            can access their data.
+          </li>
+
+          <li>
+            You confirm that search details are correct, and you confirm that
+            you will not be refunded for incorrect information or lack of
+            consent
+          </li>
+        </ul>
       </div>
 
       {/* Buttons */}
@@ -1316,7 +1475,7 @@ const DashboardPage = () => {
 
   const handleClickPrivacyPolicy = () => {
     // Import the PDF file using require
-    const pdf = require("../../images/e-citizen - Data Protection and Privacy Policy.pdf");
+    const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
 
     // Open the PDF in a new tab
     window.open(pdf, "_blank");
@@ -1585,7 +1744,7 @@ const DashboardPage = () => {
                     <StyledLabel>National Identification Number*</StyledLabel>
                     <StyledInput
                       type="text"
-                      placeholder="Enter your nin"
+                      placeholder="Enter your NIN"
                       name="nin"
                       value={formData.nin}
                       onChange={(e) => handleInputChange("nin", e.target.value)}
@@ -1687,7 +1846,7 @@ const DashboardPage = () => {
                     </StyledLabel>
                     <StyledInput
                       type="text"
-                      placeholder="Enter National Identification Number"
+                      placeholder="Enter your NIN"
                       name="nin"
                       value={liveFaceNin}
                       onChange={handleLiveFaceNinChange}
@@ -1902,10 +2061,12 @@ const DashboardPage = () => {
                   <>
                     <StyledLabel>Bank Verification Number (BVN)*</StyledLabel>
                     <StyledInput
-                      type="number"
+                      type="text"
                       placeholder="Enter Bank Verification Number"
                       name="bvn"
                       value={formData.bvn}
+                      pattern="[0-9]*" // Allow only numbers
+                      title="Please enter only numbers"
                       onChange={(e) => handleInputChange("bvn", e.target.value)}
                     />
                   </>
@@ -1972,7 +2133,7 @@ const DashboardPage = () => {
                 <div style={{ backgroundColor: "#FAFBFC", padding: "15px" }}>
                   <p>Financial summary services</p>
                   <Divider />
-                  <Row>
+                  {/* <Row>
                     <Col
                       span={8}
                       xs={{ span: 12 }}
@@ -1986,8 +2147,168 @@ const DashboardPage = () => {
                     <Col>
                       <p>{selectedProfile}</p>
                     </Col>
-                  </Row>
-                  <Row>
+                  </Row> */}
+                  <p>Processing fees:</p>
+
+                  {ninFilled ? (
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p> NIN: </p>
+                      </Col>
+                      <Col>
+                        <p>
+                          {" "}
+                          {currencyCheck === "USD"
+                            ? "$" + (ninServiceFee + ninProcessingFee)
+                            : formatToNaira(ninServiceFee + ninProcessingFee)}
+                        </p>
+                      </Col>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+
+                  {rcFilled ? (
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p>RC Number: </p>
+                      </Col>
+                      <Col>
+                        <p>
+                          {" "}
+                          {currencyCheck === "USD"
+                            ? "$" + (businessServiceFee + businessProcessingFee)
+                            : formatToNaira(
+                                businessServiceFee + businessProcessingFee
+                              )}
+                        </p>
+                      </Col>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                  {businessNameFilled ? (
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p> Business Name: </p>
+                      </Col>
+                      <Col>
+                        <p>
+                          {" "}
+                          {currencyCheck === "USD"
+                            ? "$" + (businessServiceFee + businessProcessingFee)
+                            : formatToNaira(
+                                businessServiceFee + businessProcessingFee
+                              )}
+                        </p>
+                      </Col>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                  {bvnFilled ? (
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p> BVN: </p>
+                      </Col>
+                      <Col>
+                        <p>
+                          {" "}
+                          {currencyCheck === "USD"
+                            ? "$" +
+                              (financialServiceFee + financialProcessingFee)
+                            : formatToNaira(
+                                financialServiceFee + financialProcessingFee
+                              )}
+                        </p>
+                      </Col>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                  {vinFilled ? (
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p> VIN </p>
+                      </Col>
+                      <Col>
+                        <p>
+                          {" "}
+                          {currencyCheck === "USD"
+                            ? "$" +
+                              (vinVehicleServiceFee + vinVehicleProcessingFee)
+                            : formatToNaira(
+                                vinVehicleServiceFee + vinVehicleProcessingFee
+                              )}
+                        </p>
+                      </Col>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                  {licenseNumberFilled ? (
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p> Registration Number </p>
+                      </Col>
+                      <Col>
+                        <p>
+                          {" "}
+                          {currencyCheck === "USD"
+                            ? "$" + (vehicleServiceFee + vehicleProcessingFee)
+                            : formatToNaira(
+                                vehicleServiceFee + vehicleProcessingFee
+                              )}
+                        </p>
+                      </Col>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                  <Divider />
+                  {/* <Row>
                     <Col
                       span={8}
                       xs={{ span: 12 }}
@@ -2001,8 +2322,8 @@ const DashboardPage = () => {
                     <Col>
                       <p>{selectedForm}</p>
                     </Col>
-                  </Row>
-                  <Row>
+                  </Row> */}
+                  {/* <Row>
                     <Col
                       span={8}
                       xs={{ span: 12 }}
@@ -2011,13 +2332,17 @@ const DashboardPage = () => {
                       lg={{ span: 15 }}
                       style={{ textAlign: "left" }}
                     >
-                      <p>Service Fee: </p>
+                      <p>Service Charge: </p>
                     </Col>
                     <Col>
-                      <p>₦{serviceFee.toFixed(2)}</p>
+                      {currencyCheck === "USD" ? (
+                        <p>${serviceFee}</p>
+                      ) : (
+                        <p>₦{serviceFee}</p>
+                      )}
                     </Col>
-                  </Row>
-                  <Row>
+                  </Row> */}
+                  {/* <Row>
                     <Col
                       span={8}
                       xs={{ span: 12 }}
@@ -2029,9 +2354,13 @@ const DashboardPage = () => {
                       <p>Processing Fee: </p>
                     </Col>
                     <Col>
-                      <p>₦{processingFee.toFixed(2)}</p>
+                      {currencyCheck === "USD" ? (
+                        <p>${processingFee}</p>
+                      ) : (
+                        <p>₦{processingFee}</p>
+                      )}
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row>
                     <Col
                       span={8}
@@ -2041,10 +2370,14 @@ const DashboardPage = () => {
                       lg={{ span: 15 }}
                       style={{ textAlign: "left" }}
                     >
-                      <p>Tax: </p>
+                      <p>Tax & charges: </p>
                     </Col>
                     <Col style={{ textAlign: "right" }}>
-                      <p>₦{vat.toFixed(2)}</p>
+                      {currencyCheck === "USD" ? (
+                        <p>${totalVAT}</p>
+                      ) : (
+                        <p>{formatToNaira(totalVAT)}</p>
+                      )}
                     </Col>
                   </Row>
                   <Divider />
@@ -2059,7 +2392,16 @@ const DashboardPage = () => {
                       <p>Total Amount Due: </p>
                     </Col>
                     <Col>
-                      <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
+                      {/* {currencyCheck === "USD" ? (
+                        <p>{`$${rawServiceFee.toFixed(2)}`}</p>
+                      ) : (
+                        <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
+                      )} */}
+                      {currencyCheck === "USD" ? (
+                        <p>{`$${totalServiceCost.toFixed(2)}`}</p>
+                      ) : (
+                        <p>{`₦${totalServiceCost.toFixed(2)}`}</p>
+                      )}
                     </Col>
                   </Row>
                   <Divider />
@@ -2068,8 +2410,11 @@ const DashboardPage = () => {
                       <p>Select payment currency </p>
                       <p>Currency Calculator</p>
                       <Radio.Group onChange={currencyOnChange} value={value}>
-                        <Radio value={1}>Naira ₦{serviceFee.toFixed(2)}</Radio>
-                        <RadioComponent profile={profile} usdFee={usdFee} />
+                        <Radio value={1}> ₦{usdFee}</Radio>
+                        <RadioComponent
+                          profile={profile}
+                          usdFee={rawServiceFee}
+                        />
                       </Radio.Group>
                       <Divider />
                     </>
@@ -2100,7 +2445,66 @@ const DashboardPage = () => {
             sm={{ span: 24 }}
             md={{ span: 7 }}
             lg={{ span: 7 }}
-            style={{ textAlign: "right", padding: "10px" }}
+            style={{
+              textAlign: "left",
+              padding: "10px",
+            }}
+          >
+            <strong>Select payment method:</strong>
+            <div
+              style={{
+                borderRight: "1px solid #e8e8e8",
+                marginBottom: "15px",
+                paddingBottom: "15px",
+                paddingRight: "30px",
+              }}
+            >
+              <Radio.Group
+                style={{ width: "100%" }}
+                onChange={handleRadioChange}
+                value={selectedValue}
+              >
+                <Radio
+                  style={{
+                    display: "block",
+                    border: "1px solid #e8e8e8",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    marginBottom: "10px",
+                    fontWeight: "bold", // Make the text bold
+                  }}
+                  value={1}
+                >
+                  Payment from Wallet
+                </Radio>
+                <Radio
+                  style={{
+                    display: "block",
+                    border: "1px solid #e8e8e8",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    fontWeight: "bold", // Make the text bold
+                  }}
+                  value={2}
+                >
+                  Instant Payment
+                  <Img
+                    src={flutterwave}
+                    alt={"flutter wave"}
+                    width={100}
+                    style={{ float: "right", paddingTop: "10px" }}
+                  />
+                </Radio>
+              </Radio.Group>
+            </div>
+          </Col>
+          <Col
+            span={8}
+            xs={{ span: 24 }}
+            sm={{ span: 24 }}
+            md={{ span: 7 }}
+            lg={{ span: 7 }}
+            style={{ textAlign: "right", padding: "10px", paddingLeft: "30px" }}
           >
             <strong>
               <Checkbox onChange={onChangePayment}>

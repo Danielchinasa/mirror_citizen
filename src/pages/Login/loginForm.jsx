@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { signIn } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Context = React.createContext({
   name: "Default",
@@ -62,6 +63,15 @@ const LoginForm = () => {
     };
 
     fetchIpAddress();
+
+    // Retrieve email from cookie and set in state when component mounts
+    const rememberedEmail = Cookies.get("rememberedEmail");
+    if (rememberedEmail) {
+      setFormData((prevState) => ({
+        ...prevState,
+        email: rememberedEmail,
+      }));
+    }
   }, []);
 
   const handleInputChange = (event) => {
@@ -99,9 +109,21 @@ const LoginForm = () => {
     return errors;
   };
 
+  const handleRememberMeChange = (e) => {
+    const { checked } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      rememberMe: checked,
+    }));
+  };
+
   const handleSignIn = async (event) => {
     event.preventDefault();
-
+    if (formData.rememberMe) {
+      Cookies.set("rememberedEmail", formData.email, { expires: 7 }); // Store email in cookie for 7 days
+    } else {
+      Cookies.remove("rememberedEmail");
+    }
     try {
       const errors = validateForm();
       if (Object.keys(errors).length > 0) {
@@ -183,7 +205,7 @@ const LoginForm = () => {
               <Alert message={formErrors.password} type="error" showIcon />
             )}
             <Checkbox
-              onChange={handleInputChange}
+              onChange={handleRememberMeChange}
               checked={formData.rememberMe}
             >
               Remember me

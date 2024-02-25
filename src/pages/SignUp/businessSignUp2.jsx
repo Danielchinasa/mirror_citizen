@@ -259,7 +259,7 @@ const BusinessSignUp2 = () => {
   };
   const handleClickPrivacyPolicy = () => {
     // Import the PDF file using require
-    const pdf = require("../../images/e-citizen - Data Protection and Privacy Policy.pdf");
+    const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
 
     // Open the PDF in a new tab
     window.open(pdf, "_blank");
