@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e0c83685eaf46802865d49cce51b33d6",
+    "revision": "8488bbd1fbcaa07ccdfcc71cecf0df63",
     "url": "./index.html"
   },
   {
-    "revision": "4d7a5622955cbaa37644",
+    "revision": "8499eca9956224ecfd31",
     "url": "./static/css/main.5ef0c905.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./static/js/2.c5a2c0d2.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "4d7a5622955cbaa37644",
-    "url": "./static/js/main.3ac57190.chunk.js"
+    "revision": "8499eca9956224ecfd31",
+    "url": "./static/js/main.79763ecb.chunk.js"
   },
   {
     "revision": "a8ee77dc14a7afc62100",
@@ -28,8 +28,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./static/media/Corporate.83116b9d.svg"
   },
   {
-    "revision": "9055b56ae871dae706d1e574e07beac6",
-    "url": "./static/media/banner.9055b56a.png"
+    "revision": "dfc673b153f3f4275652ce15bf398b5a",
+    "url": "./static/media/banner.dfc673b1.png"
   },
   {
     "revision": "3132370c4e7abbdc1814a9ecbde0cbe6",
@@ -52,8 +52,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png"
   },
   {
-    "revision": "decf5bb411a541a360b8e32462257247",
-    "url": "./static/media/hero-2.decf5bb4.svg"
+    "revision": "d6d926fc6afefa16277eeea777153926",
+    "url": "./static/media/hero-2.d6d926fc.png"
   },
   {
     "revision": "6bec09d44fc68cc55da28be10f203731",
