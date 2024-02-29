@@ -28,6 +28,9 @@ import {
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { signUp } from "../../redux/actions";
 import axios from "axios";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "../../index.css";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -54,6 +57,7 @@ const IndividualSignUp = () => {
   const phoneNumberRef = useRef(null);
   const passwordRef = useRef(null);
   const [reenterPassword, setReenterPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -70,6 +74,20 @@ const IndividualSignUp = () => {
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
+
+  const handlePhoneChange = (phone) => {
+    // Update state using setPhone
+
+    setPhone(phone);
+    setFormData({
+      ...formData,
+      phoneNumber: phone,
+    });
+  };
+  const [isFocused, setIsFocused] = useState(false);
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
 
   const [api, contextHolder] = notification.useNotification();
 
@@ -102,9 +120,9 @@ const IndividualSignUp = () => {
       case "email":
         emailRef.current.focus();
         break;
-      case "phoneNumber":
-        phoneNumberRef.current.focus();
-        break;
+      // case "phoneNumber":
+      //   phoneNumberRef.current.focus();
+      //   break;
       case "password":
         passwordRef.current.focus();
         break;
@@ -176,9 +194,9 @@ const IndividualSignUp = () => {
       errors.email = "Invalid email format";
     }
     // Phone Number
-    if (!formData.phoneNumber) {
-      errors.phoneNumber = "Please enter your phone number";
-    }
+    // if (!formData.phoneNumber) {
+    //   errors.phoneNumber = "Please enter your phone number";
+    // }
 
     if (!formData.password) {
       errors.password = "Please enter your password";
@@ -350,7 +368,21 @@ const IndividualSignUp = () => {
                     <Alert message={formErrors.email} type="error" showIcon />
                   )}
                   <StyledLabel>Phone number</StyledLabel>
-                  <StyledInput
+                  <PhoneInput
+                    country={"ng"}
+                    value={formData.phoneNumber}
+                    onChange={handlePhoneChange}
+                    enableSearch
+                    onFocus={handleFocus}
+                    className={"input-phone-number mb-3"}
+                    inputStyle={{
+                      width: "100%",
+                      borderColor: isFocused ? "#09c93a" : "",
+                      borderRadius: "5px",
+                      background: "rgba(53, 65, 56, 0.1)",
+                    }}
+                  />
+                  {/* <StyledInput
                     type="text"
                     placeholder="Enter your phone number"
                     name="phoneNumber"
@@ -359,7 +391,7 @@ const IndividualSignUp = () => {
                     pattern="[0-9]*" // Allow only numbers
                     title="Please enter only numbers"
                     ref={phoneNumberRef}
-                  />
+                  /> */}
                   {formErrors.phoneNumber && (
                     <Alert
                       message={formErrors.phoneNumber}

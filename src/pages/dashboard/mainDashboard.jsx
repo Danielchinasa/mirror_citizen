@@ -457,7 +457,7 @@ const MainDashboard = () => {
               }}
             >
               <CustomStatistic
-                title="Total verification "
+                title="Total verifications "
                 value={totalVerificationCount}
                 valueStyle={{
                   color: "#3f8600",
@@ -486,7 +486,7 @@ const MainDashboard = () => {
               }}
             >
               <CustomStatistic
-                title="Successful verification "
+                title="Successful verifications "
                 value={completedVerificationCount}
                 valueStyle={{
                   color: "#3f8600",
@@ -515,7 +515,7 @@ const MainDashboard = () => {
               }}
             >
               <CustomStatistic
-                title="Failed verification "
+                title="Failed verifications "
                 value={failedVerificationCount}
                 valueStyle={{
                   color: "#3f8600",

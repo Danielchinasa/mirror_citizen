@@ -81,7 +81,7 @@ function Navbar() {
     },
     {
       key: "3",
-      label: <span onClick={handleLogout}>LogOut</span>,
+      label: <span onClick={handleLogout}>Logout</span>,
     },
   ];
   const [visible, setVisible] = useState(false);
@@ -265,7 +265,7 @@ function Navbar() {
                       <NavItemBtn>
                         <NavBtnLink>
                           <OutlineButton type="primary" onClick={handleLogout}>
-                            LogOut
+                            Logout
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>

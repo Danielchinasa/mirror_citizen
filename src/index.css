@@ -15,3 +15,12 @@ a {
   cursor: pointer;
 }
 
+.input-phone-number input{
+  height: 45px !important;
+}
+.input-phone-number input:focus{
+  outline: none !important;
+  border:none !important;
+  box-shadow: none !important;
+ 
+}
