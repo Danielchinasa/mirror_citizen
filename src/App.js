@@ -32,6 +32,7 @@ import Business from "./pages/result/business";
 import NotFoundPage from "./components/404/notFoundPage";
 import LegitCar from "./pages/result/legitCar";
 import Financial from "./pages/result/financial";
+import CookieConsent from "react-cookie-consent";
 
 function App() {
   return (
@@ -83,6 +84,23 @@ function App() {
           <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
         </Switch>
         <Footer />
+        <CookieConsent
+          location="bottom"
+          buttonText="Accept All Cookies"
+          cookieName="myAwesomeCookieName2"
+          style={{ background: "#2B373B" }}
+          buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+          expires={150}
+        >
+          Our website uses cookies to enhance your browsing experience and
+          provide personalized content and targeted advertising. <br />
+          We may collect information about your visit to our website, including
+          your IP address, browser type, device identifiers, and browsing
+          behavior, to analyze traffic and improve our services.
+          <br />
+          By clicking "Accept All Cookies" or continuing to use our website, you
+          agree to our use of cookies and the terms of our Privacy Policy.
+        </CookieConsent>
       </ConfigProvider>
     </Router>
   );

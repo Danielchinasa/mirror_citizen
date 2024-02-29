@@ -258,10 +258,40 @@ function Navbar() {
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
-                        <NavBtnLink to="/main-dashboard">
+                        <NavBtnLink to="/profile">
                           <MainButton type="primary">Profile</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
+                      <NavItemBtn>
+                        <NavBtnLink to="/contact">
+                          <MainButton type="primary">Contact Us</MainButton>
+                        </NavBtnLink>
+                      </NavItemBtn>
+                      <NavItemBtn>
+                        <NavBtnLink to="/faq">
+                          <MainButton type="primary">FAQ</MainButton>
+                        </NavBtnLink>
+                      </NavItemBtn>
+                      <div
+                        style={{
+                          marginTop: "20px",
+                          textAlign: "center",
+                          paddingLeft: "35px",
+                          paddingRight: "15px",
+                          color: "#FFFFFF",
+                        }}
+                      >
+                        <Title level={4} style={{ color: "#FFFFFF" }}>
+                          {userDetails?.firstName} {userDetails?.lastName}
+                        </Title>
+                        <p>
+                          Wallet Balance:
+                          <span style={{ color: "#0DC939" }}>
+                            {" "}
+                            ₦{userBalance.toLocaleString()}
+                          </span>
+                        </p>
+                      </div>
                       <NavItemBtn>
                         <NavBtnLink>
                           <OutlineButton type="primary" onClick={handleLogout}>

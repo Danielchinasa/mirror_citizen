@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FooterContainer,
   FooterLinkItems,
@@ -11,15 +11,24 @@ import {
 
 import logo from "../../images/logo.svg";
 import NewsletterSection from "../newsletter/newsLetterSection";
+import { Modal } from "antd";
+import privacyPolicy from "../../privacyPolicy";
 
 function Footer() {
   const date = new Date();
-  const handleClickPrivacyPolicy = () => {
-    // Import the PDF file using require
-    const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
+  const [isOpen, setIsOpen] = useState(false);
 
-    // Open the PDF in a new tab
-    window.open(pdf, "_blank");
+  const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
+  const handleClickPrivacyPolicy = () => {
+    // // Import the PDF file using require
+    // const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
+
+    // // Open the PDF in a new tab
+    // window.open(pdf, "_blank");
+    setIsOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -38,6 +47,17 @@ function Footer() {
                 <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
                   Privacy policy
                 </FooterLink>
+                <Modal
+                  title="Privacy Policy"
+                  visible={isOpen}
+                  centered
+                  // open={open}
+                  onOk={() => setIsOpen(false)}
+                  onCancel={() => setIsOpen(false)}
+                  width={1000}
+                >
+                  <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                </Modal>
               </FooterLinkItems>
               <FooterLinkItems>
                 <FooterLink to="/faq">FAQ</FooterLink>

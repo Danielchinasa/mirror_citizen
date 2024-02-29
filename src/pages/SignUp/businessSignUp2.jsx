@@ -5,8 +5,6 @@ import axios from "axios";
 import {
   Image,
   Typography,
-  Button,
-  Avatar,
   notification,
   Space,
   Col,
@@ -37,7 +35,6 @@ const BusinessSignUp2 = () => {
       title: "Ant Design Title 1",
     },
   ];
-  const [selectedDiv, setSelectedDiv] = useState(null);
 
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);

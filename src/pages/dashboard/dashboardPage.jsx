@@ -468,15 +468,16 @@ const DashboardPage = () => {
 
   const data = [
     {
-      title:
-        "The parameter(s) you select will appear here for you to input your search data.",
+      title: "Choose one or more profiles to verify",
     },
     {
-      title: "Multiple Profiles may be selected as required.",
+      title: "Input the information you want to search",
     },
     {
-      title:
-        "When you have completed your selection(s), input your search data and proceed to payment.",
+      title: "Make a payment",
+    },
+    {
+      title: "View results",
     },
   ];
 
@@ -816,6 +817,16 @@ const DashboardPage = () => {
         calculatedTotalveri += formDataUsdFees.bvn;
         setTotalveri(calculatedTotalveri);
       }
+      if (
+        typeof formData.license_number === "string" &&
+        formData.license_number.trim() !== "" &&
+        formDataUsdFees.license_number !== undefined
+      ) {
+        setIsVehicleOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.license_number;
+        setTotalveri(calculatedTotalveri);
+      }
 
       // Update totalveri state with the calculated value
       setTotalveri(calculatedTotalveri);
@@ -863,6 +874,16 @@ const DashboardPage = () => {
         setIsFinancialOn(true);
         // Add the fee for 'vin' to the totalveri
         calculatedTotalveri += formDataUsdFees.bvn;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.license_number === "string" &&
+        formData.license_number.trim() !== "" &&
+        formDataUsdFees.license_number !== undefined
+      ) {
+        setIsVehicleOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.license_number;
         setTotalveri(calculatedTotalveri);
       }
 
@@ -1187,6 +1208,13 @@ const DashboardPage = () => {
             ) : (
               ""
             )}
+            {isVehicleOn ? (
+              <li>
+                Please enter the registration number without spaces or hyphens.
+              </li>
+            ) : (
+              ""
+            )}
 
             <li>
               You confirm that search details are correct, and you confirm that
@@ -1217,6 +1245,13 @@ const DashboardPage = () => {
                 By clicking, you indicate that you understand and accept that
                 consent is required from the data subject being verified before
                 you can access their data.
+              </li>
+            ) : (
+              ""
+            )}
+            {isVehicleOn ? (
+              <li>
+                Please enter the registration number without spaces or hyphens.
               </li>
             ) : (
               ""
@@ -1499,6 +1534,32 @@ const DashboardPage = () => {
                 md={{ span: 8 }}
                 lg={{ span: 8 }}
               >
+                {window.innerWidth < 960 ? (
+                  <>
+                    <Heading6>How to verify</Heading6>
+                    <>
+                      <p>
+                        Select a Profile to verify and the parameter(s) you want
+                        to search with.
+                      </p>
+
+                      <List
+                        itemLayout="horizontal"
+                        dataSource={data}
+                        renderItem={(item, index) => (
+                          <List.Item>
+                            <List.Item.Meta
+                              avatar={<Avatar src={tick} />}
+                              title={item.title}
+                            />
+                          </List.Item>
+                        )}
+                      />
+                    </>
+                  </>
+                ) : (
+                  ""
+                )}
                 {/* <MainButtonFull type="primary">Step 1</MainButtonFull> */}
 
                 <Heading6> Select Profile</Heading6>
@@ -1716,8 +1777,36 @@ const DashboardPage = () => {
                 md={{ span: 8 }}
                 lg={{ span: 8 }}
               >
-                <Heading6>Search Options</Heading6>
-                {selectedForm === "none" && (
+                {window.innerWidth < 960 ? (
+                  ""
+                ) : (
+                  <>
+                    <Heading6>How to verify</Heading6>
+                    {selectedForm === "none" && (
+                      <>
+                        <p>
+                          Select a Profile to verify and the parameter(s) you
+                          want to search with.
+                        </p>
+
+                        <List
+                          itemLayout="horizontal"
+                          dataSource={data}
+                          renderItem={(item, index) => (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={tick} />}
+                                title={item.title}
+                              />
+                            </List.Item>
+                          )}
+                        />
+                      </>
+                    )}
+                  </>
+                )}
+
+                {/* {selectedForm === "none" && (
                   <>
                     <p>
                       Select a Profile to verify and the parameter(s) you want
@@ -1737,7 +1826,7 @@ const DashboardPage = () => {
                       )}
                     />
                   </>
-                )}
+                )} */}
 
                 {selectedForm === "nin" && (
                   <>

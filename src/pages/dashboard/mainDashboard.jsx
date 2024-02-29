@@ -188,6 +188,11 @@ const MainDashboard = () => {
       },
     },
     {
+      title: "Search Parameter",
+      dataIndex: "searchParameter",
+      key: "searchParameter",
+    },
+    {
       title: "Consent Status",
       dataIndex: "consent",
       key: "consent",
