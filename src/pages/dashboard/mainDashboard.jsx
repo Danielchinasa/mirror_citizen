@@ -304,20 +304,21 @@ const MainDashboard = () => {
       key: "1",
       label: "Verification History",
       children: (
-        <Row>
-          <Col span={24}>
-            <Table
-              columns={columns}
-              dataSource={verificationData && verificationData.reverse()}
-              onRow={(record, rowIndex) => {
-                return {
-                  onClick: () => handleViewResult(record),
-                  style: { cursor: "pointer" },
-                };
-              }}
-            />
-          </Col>
-        </Row>
+        <Table
+          expandable
+          columns={columns}
+          dataSource={verificationData && verificationData.reverse()}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: () => handleViewResult(record),
+              style: { cursor: "pointer" },
+            };
+          }}
+          pagination={{
+            position: ["bottomCenter"],
+            className: "ant-pagination ant-pagination-item",
+          }}
+        />
       ),
     },
     {
@@ -555,10 +556,9 @@ const MainDashboard = () => {
               onChange={(e) => setAmount(e.target.value)}
             />
           </Modal>
-
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         </div>
       </InfoSec>
+      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
     </Container>
   );
 };

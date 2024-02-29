@@ -24,3 +24,21 @@ a {
   box-shadow: none !important;
  
 }
+
+.horizontal-pagination .ant-pagination-prev,
+.horizontal-pagination .ant-pagination-next {
+  display: inline-block; /* Display previous and next buttons inline */
+  vertical-align: middle; /* Align buttons vertically */
+  margin-right: 10px; /* Add some margin between buttons */
+}
+
+@media only screen and (max-width: 768px) {
+  .ant-pagination {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .ant-pagination-item {
+    margin: 0 5px;
+  }
+}
