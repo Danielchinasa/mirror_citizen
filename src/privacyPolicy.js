@@ -1,4 +1,5 @@
 const privacyPolicy = `
+<h6>Overview </h6>
 <p>In order to provide verification services to e-citizenTM users, Biosec Solutions Limited (“Biosec” or “the Company”) collects and/or processes certain types of information (such as name, telephone numbers, address etc.) of individuals that makes them easily identifiable. These individuals include users signing up to e-citizenTM as well as individuals whose personal details are verified (with their consent) by e-citizenTM users, jointly and/or severally (“Data Subjects”).</p>
 <p>This Privacy Policy applies to all forms of systems, operations, and processes within the e- citizenTM environment that involve the collection, storage, use, transmission, and disposal of Personal Data.</p>
 <h6>Category of Data Collected and Processed</h6>
@@ -82,5 +83,21 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
 <h6>Transfer of Personal data to Foreign Country</h6>
 <p>
 Transfer of Personal Data out of Nigeria would be in accordance with the provisions of the NDPA. The Company will record the basis for any transfer and take all necessary steps to ensure that the Personal Data is transmitted in a safe and secure manner. Details of the protection given to your information when it is transferred outside Nigeria shall be provided to you upon request.</p>
+<h6>Changes to the Policy </h6>
+<p>The Company reserves the right to change, amend or alter this Policy at any point in time. If we amend this Policy, we will provide you with the updated version.  </p>
+<h6>Glossary </h6>
+<h6>Consent</h6>
+<p>means any freely given, specific, informed, and unambiguous indication of the Data Subject's wishes by which he or she, through a statement or a clear affirmative action, signifies agreement to the processing of Personal Data relating to him or her. </p>
+<h6>Database</h6>
+<p>means a collection of data organized in a manner that allows access, retrieval, deletion, and processing of that data; it includes but not limited to structured, unstructured, cached and file system type Databases.</p>
+<h6>Data Processor</h6>
+<p>means a person or organization that processes Personal Data on behalf and on instructions of the Company.  </p>
+<h6>Data Subject</h6>
+<p>means any person who can be identified, directly or indirectly, by reference to an identification number or to one or more factors specific to his physical, physiological, mental, economic, cultural, or social identity.</p>
+<h6>NDPA</h6>
+<p>means the Nigeria Data Protection Act, 2023. </p>
+<h6>Personal Data</h6>
+<p>means any information relating to an identified or identifiable natural person (‘Data Subject’); an identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person; It can be anything from a name, address, a photo, an email address, bank details, posts on social networking websites, medical information, and other unique identifier such as but not limited to MAC address, IP address, IMEI number, IMSI number, SIM, Personal Identifiable Information (PII) and others. </p>
+
 `;
 export default privacyPolicy;

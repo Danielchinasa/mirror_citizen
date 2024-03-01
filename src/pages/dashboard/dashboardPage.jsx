@@ -46,6 +46,7 @@ import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import privacyPolicy from "../../privacyPolicy";
+import termsOfService from "../../termsOfService";
 
 /* global Reach */
 
@@ -1510,6 +1511,7 @@ const DashboardPage = () => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
   const handleClickPrivacyPolicy = () => {
     // Import the PDF file using require
     // const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
@@ -1517,6 +1519,9 @@ const DashboardPage = () => {
     // // Open the PDF in a new tab
     // window.open(pdf, "_blank");
     setIsOpen(true);
+  };
+  const handleClickTerms = () => {
+    setIsOpen2(true);
   };
 
   return (
@@ -2608,7 +2613,10 @@ const DashboardPage = () => {
                   e-citizen™ Privacy Policy
                 </span>{" "}
                 and{" "}
-                <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                <span
+                  style={{ color: "#09C93A", cursor: "pointer" }}
+                  onClick={handleClickTerms}
+                >
                   Terms of Service
                 </span>
               </Checkbox>
@@ -2622,6 +2630,17 @@ const DashboardPage = () => {
                 width={1000}
               >
                 <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+              </Modal>
+              <Modal
+                title="Terms of Service"
+                visible={isOpen2}
+                centered
+                // open={open}
+                onOk={() => setIsOpen2(false)}
+                onCancel={() => setIsOpen2(false)}
+                width={1000}
+              >
+                <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
               </Modal>
             </strong>
 
