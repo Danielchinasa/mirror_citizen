@@ -31,6 +31,8 @@ import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../index.css";
+import privacyPolicy from "../../privacyPolicy";
+import { Modal } from "antd";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -262,12 +264,14 @@ const IndividualSignUp = () => {
       setLoading(false);
     }
   };
+  const [isOpen, setIsOpen] = useState(false);
   const handleClickPrivacyPolicy = () => {
     // Import the PDF file using require
-    const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
+    // const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
 
-    // Open the PDF in a new tab
-    window.open(pdf, "_blank");
+    // // Open the PDF in a new tab
+    // window.open(pdf, "_blank");
+    setIsOpen(true);
   };
 
   return (
@@ -440,6 +444,17 @@ const IndividualSignUp = () => {
                       e-citizen™ Privacy Policy
                     </span>
                   </Checkbox>
+                  <Modal
+                    title="Privacy Policy"
+                    visible={isOpen}
+                    centered
+                    // open={open}
+                    onOk={() => setIsOpen(false)}
+                    onCancel={() => setIsOpen(false)}
+                    width={1000}
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                  </Modal>
                   <MainButtonFull type="primary" htmlType="submit">
                     Proceed
                   </MainButtonFull>
