@@ -152,6 +152,12 @@ function Navbar() {
   console.log("UserDetails 2");
   console.log(userDetails);
   const userBalance = userDetails?.walletBalance || 0;
+  const formatToNaira = (value) => {
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(value);
+  };
 
   return (
     <>
@@ -288,7 +294,8 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
-                            ₦{userBalance.toLocaleString()}
+                            {/* ₦{userBalance.toLocaleString()} */}
+                            {formatToNaira(userBalance)}
                           </span>
                         </p>
                       </div>
@@ -318,7 +325,8 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
-                            ₦{userBalance.toLocaleString()}
+                            {/* ₦{userBalance.toLocaleString()} */}
+                            {formatToNaira(userBalance)}
                           </span>
                         </p>
                       </div>

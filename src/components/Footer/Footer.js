@@ -81,7 +81,7 @@ function Footer() {
         <SocialMedia>
           <SocialMediaWrap>
             <WebsiteRights>
-              E-citizen © Biosec {date.getFullYear()}, All Rights Reserved.{" "}
+              E-citizen © {date.getFullYear()}, All Rights Reserved.{" "}
             </WebsiteRights>
           </SocialMediaWrap>
         </SocialMedia>
