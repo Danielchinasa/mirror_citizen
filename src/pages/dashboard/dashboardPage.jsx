@@ -1695,7 +1695,7 @@ const DashboardPage = () => {
                 ) : (
                   <>
                     <Heading6>How to verify</Heading6>
-                    <Flex gap="small" wrap="wrap">
+                    {/* <Flex gap="small" wrap="wrap">
                       <Tag
                         closeIcon={<CloseCircleOutlined />}
                         onClose={console.log}
@@ -1703,7 +1703,7 @@ const DashboardPage = () => {
                       >
                         Tag 2
                       </Tag>
-                    </Flex>
+                    </Flex> */}
                     {selectedForm === "none" && (
                       <>
                         <List

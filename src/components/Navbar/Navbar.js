@@ -164,7 +164,7 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav>
           <NavbarContainer>
-            <Link to="/">
+            <Link to={isAuthenticated ? "/main-dashboard" : "/"}>
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
                 src={Logo}
