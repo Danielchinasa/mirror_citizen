@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./globalStyles";
 import { Navbar, Footer } from "./components";
@@ -32,9 +32,86 @@ import Business from "./pages/result/business";
 import NotFoundPage from "./components/404/notFoundPage";
 import LegitCar from "./pages/result/legitCar";
 import Financial from "./pages/result/financial";
-import CookieConsent from "react-cookie-consent";
+// import CookieConsent from "react-cookie-consent";
+
+import "vanilla-cookieconsent/dist/cookieconsent.css";
+import * as CookieConsent from "vanilla-cookieconsent";
 
 function App() {
+  useEffect(() => {
+    CookieConsent.run({
+      categories: {
+        necessary: {
+          enabled: true, // this category is enabled by default
+          readOnly: true, // this category cannot be disabled
+        },
+        analytics: {},
+      },
+      guiOptions: {
+        consentModal: {
+          layout: "box",
+          position: "bottom left",
+          flipButtons: false,
+          equalWeightButtons: true,
+        },
+        preferencesModal: {
+          layout: "box",
+          // position: "left right",
+          flipButtons: false,
+          equalWeightButtons: true,
+        },
+      },
+
+      language: {
+        default: "en",
+        translations: {
+          en: {
+            consentModal: {
+              title: "We respect your privacy",
+              description:
+                "Cookies are small pieces of data that websites store on your browser when you visit them. We use necessary cookies to ensure our website and services are able to function properly. Analytics and marketing cookies are optional, they help us to improve your experience and support our marketing Set preference by managing the cookles settings or accept both by selecting 'Accept'.",
+              acceptAllBtn: "Accept all",
+              acceptNecessaryBtn: "Reject all",
+              showPreferencesBtn: "Manage Individual preferences",
+            },
+            preferencesModal: {
+              title: "Manage cookie preferences",
+              acceptAllBtn: "Accept all",
+              acceptNecessaryBtn: "Reject all",
+              savePreferencesBtn: "Accept current selection",
+              closeIconLabel: "Close modal",
+              sections: [
+                // {
+                //   title: "Somebody said ... cookies?",
+                //   description: "I want one!",
+                // },
+                {
+                  title: "Strictly Necessary cookies",
+                  description:
+                    "These cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions made by you which amount to a request for services, such as setting your privacy preferences, logging in or filling in forms. You can set your browser to block or alert you about these cookies, but some parts of the site will not then work. These cookies do not store any personally identifiable information.",
+
+                  //this field will generate a toggle linked to the 'necessary' category
+                  linkedCategory: "necessary",
+                },
+                {
+                  title: "Performance and Analytics",
+                  description:
+                    "These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. They help us to know which pages are the most and least popular and see how visitors move around the site. All information these cookies collect is aggregated and therefore anonymous. If you do not allow these cookies we will not know when you have visited our site, and will not be able to monitor its performance.",
+                  linkedCategory: "analytics",
+                },
+                {
+                  title: "More information",
+                  description:
+                    'Please feel free to <a href="/contact">contact us</a> for any inquiries regarding our cookie policy and your options.',
+                },
+              ],
+            },
+          },
+        },
+      },
+    });
+  }, []);
+
   return (
     <Router>
       <ConfigProvider
@@ -84,7 +161,7 @@ function App() {
           <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
         </Switch>
         <Footer />
-        <CookieConsent
+        {/* <CookieConsent
           location="bottom"
           buttonText="Accept All Cookies"
           cookieName="myAwesomeCookieName2"
@@ -100,7 +177,7 @@ function App() {
           <br />
           By clicking "Accept All Cookies" or continuing to use our website, you
           agree to our use of cookies and the terms of our Privacy Policy.
-        </CookieConsent>
+        </CookieConsent> */}
       </ConfigProvider>
     </Router>
   );

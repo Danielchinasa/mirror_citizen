@@ -80,9 +80,7 @@ function Footer() {
       <FooterContainer>
         <SocialMedia>
           <SocialMediaWrap>
-            <WebsiteRights>
-              E-citizen © {date.getFullYear()}, All Rights Reserved.{" "}
-            </WebsiteRights>
+            <WebsiteRights>© e-citizen {date.getFullYear()}</WebsiteRights>
           </SocialMediaWrap>
         </SocialMedia>
       </FooterContainer>

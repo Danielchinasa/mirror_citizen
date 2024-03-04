@@ -15,7 +15,8 @@ import {
   Tooltip,
   notification,
   Modal,
-  Spin,
+  Flex,
+  Tag,
 } from "antd";
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
@@ -37,7 +38,11 @@ import {
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 
-import { InfoCircleOutlined, CameraOutlined } from "@ant-design/icons";
+import {
+  InfoCircleOutlined,
+  CameraOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import banner from "../../images/banner.png";
 import tick from "../../images/tick.png";
 import clearvin from "../../images/clearvin.png";
@@ -317,37 +322,6 @@ const DashboardPage = () => {
 
     fetchServiceFee();
   }, []);
-  // useEffect(() => {
-  //   // Check if nin is not an empty string
-  //   if (formData.nin.trim() !== "") {
-  //     setTotalveri(ninFee);
-  //     setIsClearVinOn(false);
-  //     // Log the total amount
-  //     console.log("Total Veri Amount:", totalveri);
-  //   }
-
-  //   // Check if vin is not an empty string
-  //   if (formData.vin.trim() !== "") {
-  //     setIsClearVinOn(true);
-  //     // Add 3000 to totalVeri
-  //     setTotalveri((prevTotalVeri) => prevTotalVeri + vinVehicleFee);
-
-  //     // Log the updated total amount
-  //     console.log("Updated Total Veri Amount:", totalveri);
-  //     console.log("isClearVinOn", isClearVinOn);
-  //   } else {
-  //     setIsClearVinOn(false);
-  //   }
-  //   // Format totalveri as currency
-  //   const currencyFormatter = new Intl.NumberFormat("en-NG", {
-  //     style: "currency",
-  //     currency: "NGN",
-  //   });
-  //   const formattedTotalveri = currencyFormatter.format(totalveri);
-  //   checkStolen ? setDanfee(totalveri) : setDanfee(totalveri + 30);
-
-  //   console.log("Updated formattedTotalveri:", formattedTotalveri);
-  // }, [formData.nin, formData.vin]);
 
   const handleDateChange = (date, dateString) => {
     handleInputChange("dateOfBirth", dateString);
@@ -1121,13 +1095,8 @@ const DashboardPage = () => {
       // Close the modal
       // handleCancel();
     }
-    // console.log(selectedValue);
-    // You may also add an else block to handle the case when no payment method is selected
   };
 
-  // const handleRadioChange = (e) => {
-  //   setSelectedPaymentMethod(e.target.value);
-  // };
   const handleRadioChange = (e) => {
     setSelectedValue(e.target.value);
     setCheckboxCheckedConfirm(true);
@@ -1149,46 +1118,6 @@ const DashboardPage = () => {
         top: 20,
       }}
     >
-      {/* Add your content for the modal here */}
-      {/* <div
-        style={{
-          borderBottom: "1px solid #e8e8e8",
-          marginBottom: "15px",
-          paddingBottom: "15px",
-        }}
-      >
-        <Radio.Group
-          style={{ width: "100%" }}
-          onChange={handleRadioChange}
-          value={selectedValue}
-        >
-          <Radio
-            style={{
-              display: "block",
-              border: "1px solid #e8e8e8",
-              borderRadius: "5px",
-              padding: "10px",
-              marginBottom: "10px",
-              fontWeight: "bold", // Make the text bold
-            }}
-            value={1}
-          >
-            Payment from Wallet
-          </Radio>
-          <Radio
-            style={{
-              display: "block",
-              border: "1px solid #e8e8e8",
-              borderRadius: "5px",
-              padding: "10px",
-              fontWeight: "bold", // Make the text bold
-            }}
-            value={2}
-          >
-            Instant Payment
-          </Radio>
-        </Radio.Group>
-      </div> */}
       {/* Checkbox and lower div */}
       {!isClearVinOn ? (
         <div
@@ -1343,7 +1272,7 @@ const DashboardPage = () => {
             cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
           }}
         >
-          Confirm Payment
+          Confirm
         </Button>
         <Button key="cancel" onClick={handleCancel}>
           Cancel
@@ -1438,7 +1367,7 @@ const DashboardPage = () => {
             cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
           }}
         >
-          Confirm Payment
+          Confirm
         </Button>
         <Button key="cancel" onClick={handleCancelFace}>
           Cancel
@@ -1457,7 +1386,6 @@ const DashboardPage = () => {
     cursor: "pointer",
   };
 
-  const [base64Image2, setBase64Image2] = useState("");
   const fileInputRef = useRef(null);
 
   const handleFileSelect = (event) => {
@@ -1513,15 +1441,17 @@ const DashboardPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const handleClickPrivacyPolicy = () => {
-    // Import the PDF file using require
-    // const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
-
-    // // Open the PDF in a new tab
-    // window.open(pdf, "_blank");
     setIsOpen(true);
   };
   const handleClickTerms = () => {
     setIsOpen2(true);
+  };
+
+  const [mystatus, setMyStatus] = useState(false);
+
+  const handleMyChange = (e) => {
+    setMyStatus(!mystatus);
+    console.log(mystatus ? "Off" : "On");
   };
 
   return (
@@ -1546,11 +1476,6 @@ const DashboardPage = () => {
                   <>
                     <Heading6>How to verify</Heading6>
                     <>
-                      <p>
-                        Select a Profile to verify and the parameter(s) you want
-                        to search with.
-                      </p>
-
                       <List
                         itemLayout="horizontal"
                         dataSource={data}
@@ -1568,8 +1493,6 @@ const DashboardPage = () => {
                 ) : (
                   ""
                 )}
-                {/* <MainButtonFull type="primary">Step 1</MainButtonFull> */}
-
                 <Heading6> Select Profile</Heading6>
 
                 <Space
@@ -1615,31 +1538,13 @@ const DashboardPage = () => {
                           >
                             National Identification Number (NIN)
                           </Radio>
-                          {/* <Radio
-                            value="phone"
-                            onClick={() => setSelectedForm("phone")}
-                          >
-                            {" "}
-                            Phone Number{" "}
-                          </Radio> */}
-                          {/* <Radio
-                            value="demographics"
-                            onClick={() => setSelectedForm("demographics")}
-                          >
-                            Demographics
-                          </Radio> */}
+
                           <Radio
                             value="face"
                             onClick={() => setSelectedForm("face")}
                           >
                             National Identification Number (NIN) + Face{" "}
                           </Radio>
-                          {/* <Radio
-                            value="fingerprint"
-                            onClick={() => setSelectedForm("fingerprint")}
-                          >
-                            Fingerprint
-                          </Radio> */}
                         </Space>
                       </Radio.Group>
                     </Form>
@@ -1790,13 +1695,17 @@ const DashboardPage = () => {
                 ) : (
                   <>
                     <Heading6>How to verify</Heading6>
+                    <Flex gap="small" wrap="wrap">
+                      <Tag
+                        closeIcon={<CloseCircleOutlined />}
+                        onClose={console.log}
+                        color="#0DC939"
+                      >
+                        Tag 2
+                      </Tag>
+                    </Flex>
                     {selectedForm === "none" && (
                       <>
-                        <p>
-                          Select a Profile to verify and the parameter(s) you
-                          want to search with.
-                        </p>
-
                         <List
                           itemLayout="horizontal"
                           dataSource={data}
@@ -1814,28 +1723,6 @@ const DashboardPage = () => {
                   </>
                 )}
 
-                {/* {selectedForm === "none" && (
-                  <>
-                    <p>
-                      Select a Profile to verify and the parameter(s) you want
-                      to search with.
-                    </p>
-
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={data}
-                      renderItem={(item, index) => (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar src={tick} />}
-                            title={item.title}
-                          />
-                        </List.Item>
-                      )}
-                    />
-                  </>
-                )} */}
-
                 {selectedForm === "nin" && (
                   <>
                     <StyledLabel>National Identification Number*</StyledLabel>
@@ -1846,15 +1733,6 @@ const DashboardPage = () => {
                       value={formData.nin}
                       onChange={(e) => handleInputChange("nin", e.target.value)}
                     />
-                    {/* <StyledInput
-                      type="text"
-                      placeholder="Enter your face"
-                      name="face"
-                      value={formData.face}
-                      onChange={(e) =>
-                        handleInputChange("face", e.target.value)
-                      }
-                    /> */}
                   </>
                 )}
 
@@ -1955,21 +1833,6 @@ const DashboardPage = () => {
                       }}
                     />
 
-                    {/* <Upload
-                      customRequest={({ file, onSuccess }) => {
-                        // Simulate an upload and provide a response with a URL
-                        setTimeout(() => {
-                          onSuccess({ url: "your_uploaded_image_url" });
-                        }, 1000);
-                      }}
-                      showUploadList={false}
-                      onChange={handleFileSelect}
-                    >
-                      <Button type="primary" size="large">
-                        Browse file
-                      </Button>
-                    </Upload> */}
-
                     {base64Image && (
                       <div>
                         <p>Image:</p>
@@ -1980,17 +1843,6 @@ const DashboardPage = () => {
                         />
                       </div>
                     )}
-
-                    {/* <StyledTextArea
-                      type="text"
-                      placeholder="Enter your face"
-                      name="face"
-                      value={base64WithoutPrefix}
-                      onChange={handleLiveFaceFaceChange}
-                      onChangeCapture={(e) =>
-                        handleInputChange("face", e.target.value)
-                      }
-                    /> */}
 
                     {!isLiveFaceNinValid && (
                       <p style={{ color: "red" }}>NIN cannot be empty</p>
@@ -2007,8 +1859,6 @@ const DashboardPage = () => {
                         md={{ span: 12 }}
                         lg={{ span: 12 }}
                       >
-                        {/* <input type="file" onChange={handleFileSelect} /> */}
-
                         <input
                           type="file"
                           onChange={handleFileSelect}
@@ -2022,22 +1872,6 @@ const DashboardPage = () => {
                         >
                           Browse file
                         </button>
-                        {/* <Upload {...props}>
-                          <Button type="primary" size="large">
-                            Browse file
-                          </Button>
-                        </Upload> */}
-                        {/* Display the base64 image string if available */}
-                        {/* {base64Image && (
-                          <div>
-                            <p>Base64 Image:</p>
-                            <img
-                              src={base64Image}
-                              alt="Uploaded"
-                              style={{ maxWidth: "100%" }}
-                            />
-                          </div>
-                        )} */}
                       </Col>
                       <Col
                         span={8}
@@ -2185,23 +2019,6 @@ const DashboardPage = () => {
                     >
                       Also search Stolen Vehicles database? (Extra charge)
                     </Checkbox>
-                    {/* {checkStolen ? (
-                      <input
-                        type="radio"
-                        id="stolencheck"
-                        name="stolencheck"
-                        checked={isChecked}
-                        onChange={handleRadioChangeStolen} // Call handleRadioChange function when the radio button is clicked
-                      />
-                    ) : (
-                      <input
-                        type="radio"
-                        id="stolencheck"
-                        name="stolencheck"
-                        checked={false}
-                        onChange={handleRadioChangeStolen} // Call handleRadioChange function when the radio button is clicked
-                      />
-                    )} */}
                   </>
                 )}
                 {selectedForm === "license_number" && (
@@ -2228,23 +2045,6 @@ const DashboardPage = () => {
               >
                 <Heading6>Payment Summary</Heading6>
                 <div style={{ backgroundColor: "#FAFBFC", padding: "15px" }}>
-                  <p>Financial summary services</p>
-                  <Divider />
-                  {/* <Row>
-                    <Col
-                      span={8}
-                      xs={{ span: 12 }}
-                      sm={{ span: 12 }}
-                      md={{ span: 15 }}
-                      lg={{ span: 15 }}
-                      style={{ textAlign: "left" }}
-                    >
-                      <p>Profile: </p>
-                    </Col>
-                    <Col>
-                      <p>{selectedProfile}</p>
-                    </Col>
-                  </Row> */}
                   <p>Processing fees:</p>
 
                   {ninFilled ? (
@@ -2405,59 +2205,7 @@ const DashboardPage = () => {
                     ""
                   )}
                   <Divider />
-                  {/* <Row>
-                    <Col
-                      span={8}
-                      xs={{ span: 12 }}
-                      sm={{ span: 12 }}
-                      md={{ span: 15 }}
-                      lg={{ span: 15 }}
-                      style={{ textAlign: "left" }}
-                    >
-                      <p>Service: </p>
-                    </Col>
-                    <Col>
-                      <p>{selectedForm}</p>
-                    </Col>
-                  </Row> */}
-                  {/* <Row>
-                    <Col
-                      span={8}
-                      xs={{ span: 12 }}
-                      sm={{ span: 12 }}
-                      md={{ span: 15 }}
-                      lg={{ span: 15 }}
-                      style={{ textAlign: "left" }}
-                    >
-                      <p>Service Charge: </p>
-                    </Col>
-                    <Col>
-                      {currencyCheck === "USD" ? (
-                        <p>${serviceFee}</p>
-                      ) : (
-                        <p>₦{serviceFee}</p>
-                      )}
-                    </Col>
-                  </Row> */}
-                  {/* <Row>
-                    <Col
-                      span={8}
-                      xs={{ span: 12 }}
-                      sm={{ span: 12 }}
-                      md={{ span: 15 }}
-                      lg={{ span: 15 }}
-                      style={{ textAlign: "left" }}
-                    >
-                      <p>Processing Fee: </p>
-                    </Col>
-                    <Col>
-                      {currencyCheck === "USD" ? (
-                        <p>${processingFee}</p>
-                      ) : (
-                        <p>₦{processingFee}</p>
-                      )}
-                    </Col>
-                  </Row> */}
+
                   <Row>
                     <Col
                       span={8}
@@ -2518,15 +2266,21 @@ const DashboardPage = () => {
                   ) : (
                     ""
                   )}
-                  <p>Exchange rate</p>
-                  <p>
-                    $1 USD =
-                    {new Intl.NumberFormat("en-NG", {
-                      style: "currency",
-                      currency: "NGN",
-                    }).format(exchangeRate)}{" "}
-                    Naira{" "}
-                  </p>
+                  {currencyCheck == "USD" ? (
+                    <>
+                      <p>Exchange rate</p>
+                      <p>
+                        $1 USD =
+                        {new Intl.NumberFormat("en-NG", {
+                          style: "currency",
+                          currency: "NGN",
+                        }).format(exchangeRate)}{" "}
+                        Naira{" "}
+                      </p>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </Col>
             </Row>

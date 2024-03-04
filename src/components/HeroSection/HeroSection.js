@@ -11,6 +11,7 @@ import {
 } from "./HeroSection.elements";
 import { Container, MainButton } from "../../globalStyles";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const HeroSection = ({
   lightBg,
@@ -23,6 +24,7 @@ const HeroSection = ({
   imgStart,
   start,
 }) => {
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   return (
     <>
       <HeroSec lightBg={lightBg}>
@@ -47,7 +49,7 @@ const HeroSection = ({
                   </span>{" "}
                   for identity verification
                 </Heading>
-                <Link to="/login">
+                <Link to={isAuthenticated ? "/dashboard" : "/login"}>
                   <MainButton
                     big
                     fontBig
