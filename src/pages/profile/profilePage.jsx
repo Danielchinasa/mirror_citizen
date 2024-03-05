@@ -148,6 +148,7 @@ const ProfilePage = () => {
         <Card
           style={{
             width: "100%",
+            marginBottom: "30px",
           }}
         >
           {userType == "individual" && (
