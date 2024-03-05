@@ -45,6 +45,27 @@ const FaqPage = () => {
     },
     {
       key: "3",
+      title: "How does consent work? ",
+      content: (
+        <>
+          <p>
+            Certain information is considered private according to GDPR and
+            NDPA, and this data requires your express consent to be viewed by a
+            third party. Your privacy is important to us!
+          </p>
+          <p>
+            Basic Identity profile: The consent request is sent to the
+            registered SMS and email (where available) attached to the data
+            subject’s NIN in the national identity system. Financial Credit
+            profile: The consent request is sent to the registered SMS and email
+            (where available) attached to the data subject’s BVN in the
+            NIBSS/BVN database.
+          </p>
+        </>
+      ),
+    },
+    {
+      key: "4",
       title: "What is a NIN?",
       content: (
         <p>
@@ -56,7 +77,7 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "4",
+      key: "5",
       title: "Why do I need to pay before verifying a NIN?",
       content: (
         <p>
@@ -67,7 +88,7 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "5",
+      key: "6",
       title: "Why do I need to register before verifying a NIN?",
       content: (
         <p>
@@ -77,19 +98,25 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "6",
+      key: "7",
       title: "Is my verification result saved on e-Citizen™.ng website?",
       content: (
-        <p>
-          Verification results are temporarily stored to the user’s account so
-          they can view their search history later. However, search results will
-          be deleted after the data retention period as specified in our data
-          retention policy at e-citizen.ng.
-        </p>
+        <>
+          <p>
+            Verification results are temporarily stored to the user’s account so
+            they can view their search history later. However, search results
+            will be deleted after the data retention period as specified in our
+            data retention policy at e-citizen.ng.
+          </p>
+          <p>
+            If your question is not answered above, please feel free to write us
+            from our contact page or send an email to info@e-citizen.ng{" "}
+          </p>
+        </>
       ),
     },
     {
-      key: "7",
+      key: "8",
       title: "What do I do if my information is not correct?",
       content: (
         <p>
@@ -115,7 +142,10 @@ const FaqPage = () => {
           affects the ability to borrow money and the interest rates offered.
           The credit profile is compiled by credit bureaus based on information
           from various sources, including banks, credit card companies, and
-          other financial institutions.
+          other financial institutions. Data from credit bureaus is what is
+          reported by banks and other lenders. Therefore, if a person has not
+          taken a loan before, or if the credit bureau has not been updated with
+          their records, there would be no data returned for them.
         </p>
       ),
     },
@@ -155,7 +185,11 @@ const FaqPage = () => {
           consumers. This information is used to create credit reports, which
           include details of an individual's credit history, like loan
           repayments and credit card usage. Lenders use these reports to assess
-          creditworthiness when deciding on loan applications.
+          creditworthiness when deciding on loan applications. Credit bureaus
+          get their information from various sources, including banks, credit
+          card companies, and other financial institutions. The main purpose of
+          a credit bureau is to provide accurate and up-to-date data that helps
+          in making informed lending decisions.
         </p>
       ),
     },
@@ -166,6 +200,7 @@ const FaqPage = () => {
         <div>
           <p>1. First Central Credit Bureau </p>
           <p>2. CRC Credit Bureau</p>
+          <p>3. Credit Registry </p>
         </div>
       ),
     },
@@ -204,6 +239,21 @@ const FaqPage = () => {
     },
     {
       key: "9",
+      title: "Types of loans you’re likely to be approved for with bad credit ",
+      content: (
+        <p>
+          There are lenders who specialize in 'bad credit loans' for individuals
+          with a poor credit history. These loans usually come with higher
+          interest rates and lower borrowing limits due to the increased risk
+          perceived by the lender. However, it's important to note that lenders
+          don't solely focus on credit history; they also consider factors like
+          employment, income, stability, and other assets, including property
+          ownership.
+        </p>
+      ),
+    },
+    {
+      key: "10",
       title: "How long can it take to improve my credit score?",
       content: (
         <p>
@@ -215,6 +265,11 @@ const FaqPage = () => {
           short period.
         </p>
       ),
+    },
+    {
+      key: "11",
+      title: "Is consent required to view my credit profile? ",
+      content: <p>Yes</p>,
     },
   ];
 
@@ -268,6 +323,9 @@ const FaqPage = () => {
           <p>5. Principal Business Activity</p>
           <p>6. Share Capital</p>
           <p>7. Date of Incorporation</p>
+          <p>8. Company Status </p>
+          <p>9. Details of Officers/Directors </p>
+          <p>10. Details of Persons with Significant Control </p>
         </div>
       ),
     },
@@ -276,29 +334,7 @@ const FaqPage = () => {
   const vehicleItems = [
     {
       key: "1",
-      title: "What information does a VIN check provide?",
-      content: (
-        <p>
-          A VIN check provides information such as accident history, title
-          history, outstanding recalls, odometer readings, ownership history,
-          service history, and more.
-        </p>
-      ),
-    },
-    {
-      key: "2",
-      title: "Is a VIN check reliable?",
-      content: (
-        <p>
-          Yes, a VIN check is a reliable source of information about a vehicle's
-          history, but it's important to keep in mind that not all information
-          may be available. Some information may be missing or outdated.
-        </p>
-      ),
-    },
-    {
-      key: "3",
-      title: "What is a Vehicle History Report",
+      title: "What is a Vehicle History Report ",
       content: (
         <p>
           This service is most suitable for buyers of foreign-used vehicles that
@@ -310,7 +346,61 @@ const FaqPage = () => {
       ),
     },
     {
+      key: "2",
+      title: "What is a Vehicle Registration Number Search",
+      content: (
+        <p>
+          This service is uses a Nigerian vehicle registration number to verify
+          if the vehicle is registered in Nigeria, and whether or not a vehicle
+          has been reported as stolen or missing.
+        </p>
+      ),
+    },
+    {
+      key: "3",
+      title: "What information does a VIN check provide? ",
+      content: (
+        <p>
+          A VIN check provides information such as accident history, title
+          history, outstanding recalls, odometer readings, ownership history,
+          service history, and more.
+        </p>
+      ),
+    },
+    {
       key: "4",
+      title: "Is a VIN check reliable?",
+      content: (
+        <p>
+          Yes, a VIN check is a reliable source of information about a vehicle's
+          history, but it's important to keep in mind that not all information
+          may be available. Some information may be missing or outdated.
+        </p>
+      ),
+    },
+    {
+      key: "5",
+      title: "What is a ClearVin Vehicle History Report? ",
+      content: (
+        <>
+          <p>
+            ClearVin specializes in providing both commercial and public
+            customers with vehicle history information by VIN number.
+          </p>
+          <p>
+            ClearVin is an authorized data provider of National Motor Vehicle
+            Title Information System (NMVTIS) that consolidates the vehicle
+            records from U.S. state Department of Motor Vehicles (DMVs),
+            insurance carriers, auto recyclers, junk and salvage yards.
+            Additionally, ClearVin obtains information from salvage auctions,
+            economic reports, government agencies, and other proprietary sources
+            to provide comprehensive and accurate VIN check.
+          </p>
+        </>
+      ),
+    },
+    {
+      key: "7",
       title: "How often should I check a VIN?",
       content: (
         <p>
@@ -321,23 +411,24 @@ const FaqPage = () => {
         </p>
       ),
     },
+
     {
-      key: "5",
+      key: "6",
+      title: "How long does it take to get a vehicle history report? ",
+      content: (
+        <p>
+          Our vehicle history reports are instant. This implies that you get
+          your report as soon as you make payment.
+        </p>
+      ),
+    },
+    {
+      key: "8",
       title: "Can a VIN check tell if a car has been stolen?",
       content: (
         <p>
           Yes, a VIN check can provide information on whether a vehicle has been
           reported stolen or if it has been recovered from theft.
-        </p>
-      ),
-    },
-    {
-      key: "6",
-      title: "How long does it take to get a CARFAX vehicle history report?",
-      content: (
-        <p>
-          Our vehicle history reports are instant. This implies that you get
-          your report as soon as you make payment.
         </p>
       ),
     },
