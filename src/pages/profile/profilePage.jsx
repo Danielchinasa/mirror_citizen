@@ -159,7 +159,7 @@ const ProfilePage = () => {
 
           <Subtitle>Update your profile details here</Subtitle>
         </Card>
-        <Row justify="space-between" style={{ marginTop: "30px" }}>
+        {/* <Row justify="space-between" style={{ marginTop: "30px" }}>
           <Col span={12}>
             <Upload
               name="avatar"
@@ -183,7 +183,7 @@ const ProfilePage = () => {
               )}
             </Upload>
           </Col>
-        </Row>
+        </Row> */}
 
         <Row gutter={40}>
           <Col
