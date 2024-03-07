@@ -10,6 +10,7 @@ import {
   Tabs,
   Modal,
   Input,
+  message,
 } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
@@ -121,14 +122,23 @@ const MainDashboard = () => {
   }, [verificationData, transactionData]);
 
   const handleViewResult = (record) => {
-    // Extract the id from the record
+    const { insertionDate } = record;
+    const currentDate = new Date();
+    const twentyFourHoursAgo = new Date(
+      currentDate.getTime() - 24 * 60 * 60 * 1000
+    ); // 24 hours in milliseconds
+
+    if (new Date(insertionDate) < twentyFourHoursAgo) {
+      message.error("Verification Result or Consent Expired");
+      return;
+    }
+
+    // If action is not expired, continue with navigation
     const verificationRequestId = record.id;
     const consentStatus = record.consent;
     const type = record.type;
     const searchParameter = record.searchParameter;
-    // console.log("jjjj");
-    // console.log(verificationRequestId);
-    // Store the id in localStorage
+
     localStorage.setItem("verificationRequestId", verificationRequestId);
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle2");
@@ -242,22 +252,58 @@ const MainDashboard = () => {
       ],
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
     },
+    // {
+    //   title: "Action",
+    //   key: "status",
+    //   dataIndex: "status",
+    //   render: (_, record) => (
+    //     <a
+    //       // href="/result"
+    //       rel="noopener noreferrer"
+    //       onClick={() => handleViewResult(record)}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       View Result
+    //     </a>
+    //   ),
+    //   // render: (status) => <a href="/">status</a>,
+    //   // render: (_, record) => <Space size="middle">{status}</Space>,
+    // },
     {
       title: "Action",
       key: "status",
       dataIndex: "status",
-      render: (_, record) => (
-        <a
-          // href="/result"
-          rel="noopener noreferrer"
-          onClick={() => handleViewResult(record)}
-          style={{ cursor: "pointer" }}
-        >
-          View Result
-        </a>
-      ),
-      // render: (status) => <a href="/">status</a>,
-      // render: (_, record) => <Space size="middle">{status}</Space>,
+      render: (text, record) => {
+        const { insertionDate, type, consent } = record;
+        const currentDate = new Date();
+        const twentyFourHoursAgo = new Date(
+          currentDate.getTime() - 24 * 60 * 60 * 1000
+        ); // 24 hours in milliseconds
+        const fortyEightHoursAgo = new Date(
+          currentDate.getTime() - 48 * 60 * 60 * 1000
+        ); // 48 hours in milliseconds
+
+        if (
+          ((type === "Basic Profile" || type === "Financial Profile") &&
+            new Date(insertionDate) < fortyEightHoursAgo) ||
+          (consent === "pending" &&
+            new Date(insertionDate) < twentyFourHoursAgo)
+        ) {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+          );
+        } else {
+          return (
+            <a
+              rel="noopener noreferrer"
+              onClick={() => handleViewResult(record)}
+              style={{ cursor: "pointer" }}
+            >
+              View Result
+            </a>
+          );
+        }
+      },
     },
   ];
   const columns2 = [

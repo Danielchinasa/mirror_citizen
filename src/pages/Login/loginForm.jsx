@@ -14,6 +14,7 @@ import { signIn } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Context = React.createContext({
   name: "Default",
@@ -54,11 +55,22 @@ const LoginForm = () => {
   useEffect(() => {
     const fetchIpAddress = async () => {
       try {
-        const response = await axios.get("https://api.ipify.org/?format=json");
+        // Attempt to fetch IP address from the first URL
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
         setIpAddress(response.data.ip);
-      } catch (error) {
-        console.error("Error fetching IP address:", error);
-        setIpAddress(null);
+      } catch (error1) {
+        console.error("Error fetching IP address from primary URL:", error1);
+        try {
+          // Attempt to fetch IP address from the second URL if the first one fails
+          const response = await axios.get("https://ipapi.co/json/");
+          setIpAddress(response.data.ip);
+        } catch (error2) {
+          console.error(
+            "Error fetching IP address from secondary URL:",
+            error2
+          );
+          setIpAddress(null); // Set IP address to null if both URLs fail
+        }
       }
     };
 
@@ -145,20 +157,38 @@ const LoginForm = () => {
       const openNotification2 = (placement) => {
         api.error({
           message: `Notification`,
-          description: response.message,
+          description: response,
+          placement,
+        });
+      };
+      const openNotification3 = (placement) => {
+        api.error({
+          message: `Notification`,
+          description:
+            "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time.",
           placement,
         });
       };
 
-      console.log("Response from signIn:", response);
+      console.log("Response from signIn:", response.status);
 
-      if (response.status === "failed") {
-        setFormErrors({ general: response.message }); // Set error message
-        openNotification2("topRight");
-      } else {
-        // On successful login, navigate to the main dashboard
+      if (response.jwtToken) {
+        // On successful login with jwtToken, navigate to the main dashboard
         localStorage.setItem("IpAddress", ipAddress);
         history.push("/main-dashboard");
+      } else if (response === "Incorrect email or password") {
+        setFormErrors({ general: response }); // Set error message
+        openNotification2("topRight");
+      } else if (response === "IP address not provided in payload") {
+        setFormErrors({
+          general:
+            "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
+        }); // Set error message
+        openNotification3("topRight");
+      } else {
+        // On successful login, navigate to the main dashboard
+        setFormErrors({ general: "Login Failed" }); // Set error message
+        openNotification2("topRight");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -210,6 +240,7 @@ const LoginForm = () => {
             >
               Remember me
             </Checkbox>
+            <ReCAPTCHA sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT" />,
             <MainButtonFull type="primary" htmlType="submit">
               Login
             </MainButtonFull>

@@ -2664,8 +2664,8 @@ const DashboardPage = () => {
               <MainButtonFull
                 type="primary"
                 // htmlType="submit"
-                onClick={handleSubmit}
-                // onClick={handleMakePayment}
+                // onClick={handleSubmit}
+                onClick={handleMakePayment}
                 disabled={!checkboxChecked}
                 style={{
                   backgroundColor: checkboxChecked ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state

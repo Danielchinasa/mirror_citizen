@@ -86,7 +86,7 @@ export const FooterLinksWrapper = styled.div`
 export const FooterLinkItems = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   margin-top: 10px;
   text-align: left;
   width: 100%;
@@ -106,14 +106,21 @@ export const FooterLinkTitle = styled.h2`
 
 export const FooterLogoArea = styled.img`
   padding-left: 15px;
-  padding-bottom: 8px;
-  padding-right: 15px;
-  padding-top: 50px;
+  padding-bottom: 25px;
+  padding-right: 5px;
+  padding-top: 70px;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   max-width: 100%;
   background-color: #ffffff;
   margin-bottom: 10px;
+`;
+export const FooterLogoArea2 = styled.img`
+  padding-bottom: 8px;
+  padding-right: 5px;
+  margin-top: 45px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 `;
 
 export const FooterLink = styled(Link)`

@@ -69,6 +69,7 @@ const BusinessSignUp2 = () => {
 
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  console.log("IPADDRESS", "response");
 
   const [api, contextHolder] = notification.useNotification();
   const handlePhoneChange = (phone) => {
@@ -131,7 +132,8 @@ const BusinessSignUp2 = () => {
   useEffect(() => {
     const fetchIpCountry = async () => {
       try {
-        const response = await axios.get("https://ipapi.co/json/");
+        // const response = await axios.get("https://ipapi.co/json/");
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
         setIpCountry(response.data.country_name);
         setIpAddress(response.data.ip);
       } catch (error) {

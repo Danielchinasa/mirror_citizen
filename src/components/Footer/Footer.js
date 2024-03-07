@@ -3,6 +3,7 @@ import {
   FooterContainer,
   FooterLinkItems,
   FooterLogoArea,
+  FooterLogoArea2,
   FooterLink,
   SocialMedia,
   SocialMediaWrap,
@@ -10,6 +11,8 @@ import {
 } from "./Footer.elements";
 
 import logo from "../../images/logo.svg";
+import osia from "../../images/osia.png";
+import ndpr from "../../images/ndpr.png";
 import NewsletterSection from "../newsletter/newsLetterSection";
 import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
@@ -34,13 +37,36 @@ function Footer() {
   return (
     <>
       <div style={{ backgroundColor: "#354138" }}>
-        <div class="container text-center">
+        <div class="container text-left">
           <div class="row" style={{ borderBottom: "1px solid #fff" }}>
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLogoArea
-                src={logo}
-                style={{ width: 120 }}
-              ></FooterLogoArea>
+            <div class="col-md-5 col-sm-12 col-xs-12">
+              <a href="/" style={{ cursor: "pointer" }}>
+                <FooterLogoArea
+                  src={logo}
+                  style={{ width: 120, cursor: "pointer" }}
+                ></FooterLogoArea>
+              </a>
+              <a
+                href="https://secureidentityalliance.org/osia"
+                target="none"
+                style={{ cursor: "pointer" }}
+              >
+                <FooterLogoArea2
+                  src={osia}
+                  style={{ width: 100, cursor: "pointer" }}
+                ></FooterLogoArea2>
+              </a>
+
+              <a
+                href="https://www.ndpc.gov.ng/#"
+                target="none"
+                style={{ cursor: "pointer" }}
+              >
+                <FooterLogoArea2
+                  src={ndpr}
+                  style={{ width: 100, cursor: "pointer" }}
+                ></FooterLogoArea2>
+              </a>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
               <FooterLinkItems>
@@ -67,13 +93,14 @@ function Footer() {
               <FooterLinkItems>
                 <FooterLink to="/contact">Contact</FooterLink>
               </FooterLinkItems>
-            </div>
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems></FooterLinkItems>
               <FooterLinkItems>
                 <FooterLink to="/">info@e-citizen.ng</FooterLink>
               </FooterLinkItems>
             </div>
+            {/* <div class="col-md-3 col-sm-12 col-xs-12">
+              <FooterLinkItems></FooterLinkItems>
+              
+            </div> */}
           </div>
         </div>
       </div>
