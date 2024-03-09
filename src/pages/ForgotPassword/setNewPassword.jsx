@@ -108,7 +108,7 @@ const SetNewPassword = () => {
               <Subtitle color="light">
                 Your new password must be different to previously used passwords
               </Subtitle>
-              <Spin spinning={loading} tip="Logging in...">
+              <Spin spinning={loading} tip="Processing...">
                 <StyledForm>
                   <StyledLabel>Old Password</StyledLabel>
                   <StyledInput
