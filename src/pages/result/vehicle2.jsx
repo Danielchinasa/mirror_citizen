@@ -79,7 +79,7 @@ const Vehicle2 = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const postResponse = await axios.get(
-          `https://41.184.212.26:8443/api/v2/verification/check-consent/${requestId}`,
+          `https://41.184.212.26:8069/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -196,7 +196,7 @@ const Vehicle2 = () => {
 
               {/* <div>
                 <a
-                  href={`https://41.184.212.26:8443${pdfUri}`}
+                  href={`https://41.184.212.26:8069${pdfUri}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
