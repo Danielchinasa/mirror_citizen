@@ -325,7 +325,7 @@ const DashboardPage = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `http://41.184.212.26:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -798,7 +798,8 @@ const DashboardPage = () => {
     //test key
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: currencyCheck == "USD" ? `${ServiceCostt}` : `${ServiceCostt}`,
+    amount:
+      currencyCheck == "USD" ? `${totalServiceCost}` : `${totalServiceCost}`,
     currency: flutterWaveCurrency,
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
@@ -1067,7 +1068,7 @@ const DashboardPage = () => {
         setLoading(true);
         handleCancel();
         const apiUrl =
-          "http://41.184.212.26:8069/api/v2/transaction/wallet-payment";
+          "https://e-citizen.ng:8069/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,
@@ -1165,7 +1166,7 @@ const DashboardPage = () => {
         // console.log("Payment from Wallet");
         setLoading(true);
         const apiUrl =
-          "http://41.184.212.26:8069/api/v2/transaction/wallet-payment";
+          "https://e-citizen.ng:8069/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,

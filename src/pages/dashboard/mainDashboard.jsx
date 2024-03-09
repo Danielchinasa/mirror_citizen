@@ -90,7 +90,7 @@ const MainDashboard = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `http://41.184.212.26:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -446,7 +446,7 @@ const MainDashboard = () => {
         console.log(response);
         if (response.status === "successful") {
           try {
-            const apiUrl = "http://41.184.212.26:8069/api/v2/transaction/topup";
+            const apiUrl = "https://e-citizen.ng:8069/api/v2/transaction/topup";
             const requestData = {
               userNIN: userNin,
               email: userEmail,
@@ -469,7 +469,7 @@ const MainDashboard = () => {
               dispatch(fetchUserProfile(userToken));
               // Fetch the updated wallet balance after the successful top-up
               const apiUrlBalance =
-                "http://41.184.212.26:8069/api/v2/user/wallet-balance";
+                "https://e-citizen.ng:8069/api/v2/user/wallet-balance";
               const walletBalanceResponse = await fetch(apiUrlBalance, {
                 method: "GET",
                 headers: {

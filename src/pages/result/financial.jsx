@@ -137,7 +137,7 @@ const Financial = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `http://41.184.212.26:8069/api/v2/verification/check-consent/${requestId}`,
+          `https://e-citizen.ng:8069/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
