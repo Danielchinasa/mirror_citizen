@@ -12,6 +12,7 @@ import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
 import Logo from "../../images/logo.png";
+import defaultDp from "../../images/defaultDp.png";
 import { Link } from "react-router-dom";
 import { Button, Flex } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -126,7 +127,7 @@ function Navbar() {
           size={20}
         >
           <img
-            src="https://placekitten.com/40/40" // Replace with your circular image URL
+            src={defaultDp || defaultDp}
             alt="User Avatar"
             style={{
               width: "40px",
@@ -152,6 +153,7 @@ function Navbar() {
   console.log("UserDetails 2");
   console.log(userDetails);
   const userBalance = userDetails?.walletBalance || 0;
+  const userCurrency = userDetails?.currency || "";
   const formatToNaira = (value) => {
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -326,7 +328,9 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {formatToNaira(userBalance)}
+                            {userCurrency === "ngn"
+                              ? formatToNaira(userBalance)
+                              : `$${userBalance}`}
                           </span>
                         </p>
                       </div>

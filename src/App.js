@@ -36,6 +36,7 @@ import Financial from "./pages/result/financial";
 
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import * as CookieConsent from "vanilla-cookieconsent";
+import LiveFaceScreen from "./pages/liveFace/liveFace";
 
 function App() {
   useEffect(() => {
@@ -143,6 +144,7 @@ function App() {
           <Route path="/dashboard" component={DashboardPage} />
           <Route path="/disclaimer" component={Disclaimer} />
           <Route path="/consent" component={Consent} />
+          <Route path="/liveFace" component={LiveFaceScreen} />
           <Route path="/result" component={Result} />
           <Route path="/vehicle" component={Vehicle} />
           <Route path="/vehicle2" component={Vehicle2} />

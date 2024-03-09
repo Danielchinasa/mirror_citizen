@@ -11,6 +11,7 @@ import {
   Modal,
   Input,
   message,
+  notification,
 } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
@@ -128,7 +129,11 @@ const MainDashboard = () => {
       currentDate.getTime() - 24 * 60 * 60 * 1000
     ); // 24 hours in milliseconds
 
-    if (new Date(insertionDate) < twentyFourHoursAgo) {
+    if (
+      (record.type === "Basic Profile" ||
+        record.type === "Financial Profile") &&
+      new Date(insertionDate) < twentyFourHoursAgo
+    ) {
       message.error("Verification Result or Consent Expired");
       return;
     }
@@ -142,11 +147,11 @@ const MainDashboard = () => {
     localStorage.setItem("verificationRequestId", verificationRequestId);
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle2");
-    } else if (type === "Vehicle profile") {
+    } else if (type === "Vehicle Profile") {
       history.push("/vehicle");
-    } else if (type === "Business profile") {
+    } else if (type === "Business Profile") {
       history.push("/business");
-    } else if (type === "Financial profile") {
+    } else if (type === "Financial Profile") {
       history.push("/financial");
     } else {
       history.push("/result");
@@ -198,10 +203,53 @@ const MainDashboard = () => {
       },
     },
     {
-      title: "Search Parameter",
+      title: "Search Parameter (Value)",
       dataIndex: "searchParameter",
       key: "searchParameter",
+      render: (text, record) => {
+        const currentDate = new Date();
+        const twentyFourHoursAgo = new Date(
+          currentDate.getTime() - 24 * 60 * 60 * 1000
+        ); // 24 hours in milliseconds
+        const fortyEightHoursAgo = new Date(
+          currentDate.getTime() - 48 * 60 * 60 * 1000
+        ); // 48 hours in milliseconds
+
+        let formattedValue = record.searchValue;
+
+        if (
+          formattedValue &&
+          (((record.type === "Basic Profile" ||
+            record.type === "Financial Profile") &&
+            new Date(record.insertionDate) < fortyEightHoursAgo) ||
+            (record.consent === "pending" &&
+              (record.type === "Basic Profile" ||
+                record.type === "Financial Profile") &&
+              new Date(record.insertionDate) < twentyFourHoursAgo))
+        ) {
+          // If searchValue is expired (red) and not null, cover the real value with asterisks
+          formattedValue = formattedValue.replace(/.(?=.{2,}$)/g, "*"); // Replace all characters except the first two and last two with "*"
+        }
+
+        const isRed = formattedValue !== record.searchValue;
+
+        return (
+          <span>
+            <b>{record.searchParameter}</b> (
+            <span
+              style={{
+                color: isRed ? "red" : "green",
+                fontWeight: isRed ? "bold" : "normal",
+              }}
+            >
+              {formattedValue ? formattedValue : "NO DATA"}
+            </span>
+            )
+          </span>
+        );
+      },
     },
+
     {
       title: "Consent Status",
       dataIndex: "consent",
@@ -435,7 +483,11 @@ const MainDashboard = () => {
 
                 // Update the user state with the new wallet balance
                 dispatch(updateUserWalletBalance(updatedWalletBalance));
-
+                notification.success({
+                  message: "Success",
+                  description: "Wallet topup successful",
+                  duration: 10, // Duration in seconds
+                });
                 // Update the local state if needed
                 // setUserBal(updatedWalletBalance.walletBalance);
               }
@@ -504,8 +556,8 @@ const MainDashboard = () => {
                 marginTop: "10px",
                 border: "3px #0DC939 solid",
                 borderRadius: "12px",
-                border: "5px solid #09C93A",
                 background: "#EBFFF0",
+                boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
               }}
             >
               <CustomStatistic
@@ -533,8 +585,8 @@ const MainDashboard = () => {
                 marginTop: "10px",
                 border: "3px #0DC939 solid",
                 borderRadius: "12px",
-                border: "5px solid #09C93A",
                 background: "#EBFFF0",
+                boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
               }}
             >
               <CustomStatistic
@@ -562,8 +614,8 @@ const MainDashboard = () => {
                 marginTop: "10px",
                 border: "3px #0DC939 solid",
                 borderRadius: "12px",
-                border: "5px solid #09C93A",
                 background: "#EBFFF0",
+                boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
               }}
             >
               <CustomStatistic

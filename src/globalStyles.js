@@ -82,6 +82,7 @@ export const MainButton = styled.button`
   white-space: nowrap;
   font-size: ${({ fontBig }) => (fontBig ? "20px" : "16px")};
   padding: ${({ big }) => (big ? "12px 64px" : "10px 20px")};
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3); /* Increased blur and darkness */
   :hover {
     transition: all 0.3s ease-out;
     background-color: ${({ type }) => hoverColors[type]};
@@ -103,6 +104,7 @@ export const MainButtonFull = styled.button`
   white-space: nowrap;
   font-size: ${({ fontBig }) => (fontBig ? "20px" : "16px")};
   padding: ${({ big }) => (big ? "12px 64px" : "10px 20px")};
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3); /* Increased blur and darkness */
   :hover {
     transition: all 0.3s ease-out;
     background-color: ${({ type }) => hoverColors[type]};
@@ -139,6 +141,7 @@ export const OutlineButton = styled.button`
   white-space: nowrap;
   font-size: ${({ fontBig }) => (fontBig ? "20px" : "16px")};
   padding: ${({ big }) => (big ? "12px 64px" : "10px 20px")};
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3); /* Increased blur and darkness */
   :hover {
     transition: all 0.3s ease-out;
     color: ${({ type }) => hoverColors[type]};

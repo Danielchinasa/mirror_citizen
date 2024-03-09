@@ -16,10 +16,12 @@ import ndpr from "../../images/ndpr.png";
 import NewsletterSection from "../newsletter/newsLetterSection";
 import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
+import termsOfService from "../../termsOfService";
 
 function Footer() {
   const date = new Date();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
 
   const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
   const handleClickPrivacyPolicy = () => {
@@ -29,6 +31,9 @@ function Footer() {
     // // Open the PDF in a new tab
     // window.open(pdf, "_blank");
     setIsOpen(true);
+  };
+  const handleClickTermsofService = () => {
+    setIsOpen2(true);
   };
   const handleCloseModal = () => {
     setIsOpen(false);
@@ -83,6 +88,22 @@ function Footer() {
                   width={1000}
                 >
                   <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                </Modal>
+              </FooterLinkItems>
+              <FooterLinkItems>
+                <FooterLink to="/" onClick={handleClickTermsofService}>
+                  Terms of Service
+                </FooterLink>
+                <Modal
+                  title="Terms of Service"
+                  visible={isOpen2}
+                  centered
+                  // open={open}
+                  onOk={() => setIsOpen2(false)}
+                  onCancel={() => setIsOpen2(false)}
+                  width={1000}
+                >
+                  <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
                 </Modal>
               </FooterLinkItems>
               <FooterLinkItems>

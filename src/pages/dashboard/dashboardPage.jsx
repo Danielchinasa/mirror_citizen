@@ -18,6 +18,7 @@ import {
   Flex,
   Tag,
   Alert,
+  Spin,
 } from "antd";
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
@@ -136,6 +137,7 @@ const DashboardPage = () => {
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const [flutterWaveCurrency, setFlutterWaveCurrency] = useState("NGN");
   const [value, setValue] = useState(1);
+  const [stolenCheckFee, setStolenCheckFee] = useState("");
   const [formData, setFormData] = useState({
     nin: "",
     phone: "",
@@ -173,6 +175,7 @@ const DashboardPage = () => {
   const [licenseNumberFilled, setLicenseNumberFilled] = useState(false);
   const [totalVAT, setTotalVAT] = useState(0);
   const [totalServiceCost, setTotalServiceCost] = useState(0);
+  const [newTotalServiceCost, setNewTotalServiceCost] = useState(0);
   const formatToNaira = (value) => {
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -180,7 +183,9 @@ const DashboardPage = () => {
     }).format(value);
   };
   const handleInputChange = (name, value) => {
-    const hadPreviousValue = formData[name].trim() !== "";
+    // const hadPreviousValue = formData[name].trim() !== "";
+    const hadPreviousValue =
+      typeof formData[name] === "string" && formData[name].trim() !== "";
     if (name === "nin") {
       if (!hadPreviousValue && value.trim() !== "") {
         setNinFilled(true);
@@ -330,6 +335,7 @@ const DashboardPage = () => {
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);
+
         setExchangeRate(response.data.rate);
         setNinFee(response.data.data[0].price);
         setNinServiceFee(response.data.data[0].serviceFee);
@@ -374,6 +380,7 @@ const DashboardPage = () => {
         setVehicleUsdVatFee(response.data.data[6].VAT2);
         setVehicleProcessingFee(response.data.data[6].processingFee);
         setCurrencyCheck(response.data.data[0].currency);
+        setStolenCheckFee(response.data.data[7].price);
       } catch (error) {
         console.error("Error fetching IP address:", error);
         setNinFee(null);
@@ -396,12 +403,13 @@ const DashboardPage = () => {
   const userNin = user?.nin || "";
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
     // e.preventDefault();
     // Dispatch the sendVerificationRequest action with the form data
-
+    setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -422,17 +430,49 @@ const DashboardPage = () => {
         });
 
         history.push("/notFoundPage");
-      } else if (
+      }
+      // else if (
+      //   response.basic &&
+      //   response.basic.message &&
+      //   response.basic.message === "Awaiting Consent"
+      // ) {
+      //   localStorage.setItem(
+      //     "verificationRequestId",
+      //     response.basic.data.requestId
+      //   );
+      //   // Handle further actions if needed
+      //   history.push("/main-dashboard");
+      // }
+      else if (
         response.basic &&
-        response.basic.message &&
-        response.basic.message === "Awaiting Consent"
+        response.basic.success &&
+        response.basic.success === true
       ) {
         localStorage.setItem(
           "verificationRequestId",
           response.basic.data.requestId
         );
+        notification.info({
+          message: "Message",
+          description: response.basic.message,
+          duration: 20, // Duration in seconds
+        });
         // Handle further actions if needed
         history.push("/main-dashboard");
+      } else if (
+        response &&
+        response.basic &&
+        typeof response.basic.success === "boolean" &&
+        response.basic.success === false
+      ) {
+        notification.error({
+          message: "Error",
+          description:
+            "Oops! We encountered an issue while processing your request. It seems that the data we expected to find is missing. Please try again later",
+          duration: 20, // Duration in seconds
+        });
+        // Handle further actions if needed
+        return;
       } else if (
         response.business &&
         response.business.message === "Business API call successful"
@@ -443,52 +483,81 @@ const DashboardPage = () => {
         // );
         // Handle further actions if needed
         history.push("/main-dashboard");
-      } else if (
-        response.business &&
-        response.business.message === "Awaiting Consent"
-      ) {
+      } else if (response.business && response.business.success === true) {
         // localStorage.setItem(
         //   "verificationRequestId",
         //   response.business.data.requestId
         // );
         // Handle further actions if needed
+        notification.info({
+          message: "Message",
+          description: "Successful",
+          duration: 5, // Duration in seconds
+        });
         history.push("/main-dashboard");
-      } else if (
-        response.vehicle &&
-        response.vehicle.message === "Vehicle API call successful"
-      ) {
-        // Handle further actions for successful vehicle API call
-        // history.push("/vehicle");
+      } else if (response.vehicle && response.vehicle.success === true) {
+        notification.info({
+          message: "Message",
+          description: "Successful",
+          duration: 5, // Duration in seconds
+        });
         history.push("/main-dashboard");
-      } else if (
-        response.vehicle &&
-        response.vehicle.message &&
-        response.vehicle.message === "successful"
-      ) {
-        localStorage.setItem(
-          "verificationRequestId",
-          response.vehicle.data.requestId
-        );
-        // Handle further actions if needed
+      } else if (response.vehicle && response.vehicle.success === false) {
+        notification.error({
+          message: "Error",
+          description:
+            "An error occurred with the Vehicle verification. Please try again later.",
+          duration: 20, // Duration in seconds
+        });
+        return;
+      }
+      // else if (
+      //   response.vehicle &&
+      //   response.vehicle.message &&
+      //   response.vehicle.message === "successful"
+      // ) {
+      //   localStorage.setItem(
+      //     "verificationRequestId",
+      //     response.vehicle.data.requestId
+      //   );
+      //   // Handle further actions if needed
+      //   history.push("/main-dashboard");
+      // }
+      // else if (
+      //   response.financial &&
+      //   response.financial.message === "Financial API call successful"
+      // ) {
+      //   history.push("/main-dashboard");
+      // }
+      else if (response.financial && response.financial.success === true) {
+        notification.info({
+          message: "Message",
+          description: response.financial.message,
+          duration: 20, // Duration in seconds
+        });
         history.push("/main-dashboard");
-      } else if (
-        response.financial &&
-        response.financial.message === "Financial API call successful"
-      ) {
-        history.push("/main-dashboard");
+      } else if (response.financial && response.financial.success === false) {
+        notification.error({
+          message: "Message",
+          description:
+            "An error occurred with the Financial verification. Please try again later.",
+          duration: 20, // Duration in seconds
+        });
+        return;
       } else {
-        // Display error message
-        // message.error(response.message || "OTP verification failed");
-        // Handle further actions if needed
         notification.error({
           message: "Error",
           description:
             "An unexpected server error occurred. Please attempt your action again",
+          duration: 20,
         });
       }
     } catch (error) {
       // Handle errors if needed
+      setLoading(false);
       console.error("Error sending verification", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -720,15 +789,16 @@ const DashboardPage = () => {
       }
     },
   };
+  const deduction = totalServiceCost * (1.4 / 100);
 
+  const ServiceCostt = totalServiceCost - deduction;
   const config = {
     //live key
     public_key: "FLWPUBK-6f8762e460e0a984f90b300be5d7a343-X",
     //test key
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount:
-      currencyCheck == "USD" ? `${totalServiceCost}` : `${totalServiceCost}`,
+    amount: currencyCheck == "USD" ? `${ServiceCostt}` : `${ServiceCostt}`,
     currency: flutterWaveCurrency,
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
@@ -776,8 +846,15 @@ const DashboardPage = () => {
 
   useEffect(() => {
     console.log("Total Veri Amount next:", totalveri);
-    checkStolen ? setDanfee(totalveri + 30) : setDanfee(totalveri);
-  }, [totalveri]);
+
+    // Check if checkStolen is true
+    if (checkStolen === true) {
+      // Add 4000 to totalServiceCost if checkStolen is true
+      setTotalServiceCost(
+        (prevTotalServiceCost) => prevTotalServiceCost + 4000
+      );
+    }
+  }, [checkStolen]);
 
   const handleMakePayment = () => {
     // Your existing logic for handling the payment
@@ -995,11 +1072,16 @@ const DashboardPage = () => {
         const requestBody = {
           userNIN: userNin,
           transactionID: "EA11697986831911",
-          amount: `${danfee.toFixed(2)}`,
+          // amount: `${danfee.toFixed(2)}`,
+          amount:
+            currencyCheck == "USD"
+              ? `${totalServiceCost}`
+              : `${totalServiceCost}`,
         };
 
         if (userBalance.toLocaleString() < 55) {
           // Show the Ant Design notification
+
           handleCancel();
           notification.error({
             message: "Wallet Balance Warning",
@@ -1008,6 +1090,7 @@ const DashboardPage = () => {
           });
         } else {
           try {
+            setLoading(true);
             const response = await fetch(apiUrl, {
               method: "POST",
               headers: {
@@ -1023,6 +1106,7 @@ const DashboardPage = () => {
               // console.log("Payment successful. Response:", data);
               handleCancel();
               dispatch(fetchUserProfile(userToken));
+              setLoading(true);
               handleSubmit();
             } else {
               console.error("Payment failed. Response:", data);
@@ -1037,6 +1121,7 @@ const DashboardPage = () => {
         }
       } else if (selectedValue === 2) {
         // console.log("Instant Payment");
+        // setLoading(true);
         handleFlutterPayment({
           callback: async (response) => {
             console.log(response);
@@ -1048,6 +1133,7 @@ const DashboardPage = () => {
                   // ADDITIONAL PARAMETERS
                 });
               };
+              setLoading(true);
               handleSubmit();
             }
             closePaymentModal();
@@ -1084,7 +1170,11 @@ const DashboardPage = () => {
         const requestBody = {
           userNIN: userNin,
           transactionID: "EA11697986831911",
-          amount: `${danfee.toFixed(2)}`,
+          // amount: `${danfee.toFixed(2)}`,
+          amount:
+            currencyCheck == "USD"
+              ? `${totalServiceCost}`
+              : `${totalServiceCost}`,
         };
 
         if (userBalance.toLocaleString() < 55) {
@@ -1643,276 +1733,32 @@ const DashboardPage = () => {
     return true;
   };
 
+  const [modal1Open, setModal1Open] = useState(false);
+  const liveCaptureUrl = `https://41.184.212.26/`;
+
   return (
     <Row>
       <Col>
         <Img src={banner} />
       </Col>
+
       <Container>
-        <StyledForm>
-          <InfoSec>
-            <Heading>Identity Verification Service</Heading>
+        <Spin spinning={loading} tip="Verification in progress...">
+          <StyledForm>
+            <InfoSec>
+              <Heading>Identity Verification Service</Heading>
 
-            <Row gutter={[50, 50]}>
-              <Col
-                span={8}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                {window.innerWidth < 960 ? (
-                  <>
-                    <Heading6>How to verify</Heading6>
-                    <>
-                      <List
-                        itemLayout="horizontal"
-                        dataSource={data}
-                        renderItem={(item, index) => (
-                          <List.Item>
-                            <List.Item.Meta
-                              avatar={<Avatar src={tick} />}
-                              title={item.title}
-                            />
-                          </List.Item>
-                        )}
-                      />
-                    </>
-                  </>
-                ) : (
-                  ""
-                )}
-                <Heading6> Select Profile</Heading6>
-
-                <Space
-                  direction="vertical"
-                  size="middle"
-                  style={{
-                    display: "flex",
-                  }}
+              <Row gutter={[50, 50]}>
+                <Col
+                  span={8}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
                 >
-                  <Row
-                    onClick={() => setSelectedProfile("basic")}
-                    style={{
-                      backgroundColor:
-                        selectedProfile === "basic" ? "#0DC939" : "#EAFFF0",
-                      paddingTop: "30px",
-                      paddingBottom: "30px",
-                      paddingLeft: "10px",
-                      borderTopRightRadius: 50,
-                      borderBottomRightRadius: 50,
-                      color:
-                        selectedProfile === "basic" ? "#FFFFFF" : "#000000",
-                    }}
-                  >
-                    <Col span={21}>Basic Identity Profile</Col>
-                    <Col span={3}>
-                      <Tooltip title={tooltipContentBasic} color="#F4B40F">
-                        <InfoCircleOutlined
-                          style={{
-                            fontSize: "20px",
-                          }}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-
-                  <Form hidden={selectedProfile == "basic" ? false : true}>
-                    <Radio.Group
-                      value={selectedValue}
-                      onChange={(e) =>
-                        handleBasicProfileRadioChange(e.target.value)
-                      }
-                    >
-                      <Space direction="vertical">
-                        <Radio
-                          value="nin"
-                          size="large"
-                          onClick={() => setSelectedForm("nin")}
-                        >
-                          National Identification Number (NIN)
-                        </Radio>
-
-                        <Radio
-                          value="face"
-                          onClick={() => setSelectedForm("face")}
-                        >
-                          National Identification Number (NIN) + Face{" "}
-                        </Radio>
-                      </Space>
-                    </Radio.Group>
-                  </Form>
-                  <Row
-                    onClick={() => setSelectedProfile("business")}
-                    style={{
-                      backgroundColor:
-                        selectedProfile === "business" ? "#0DC939" : "#EAFFF0",
-                      paddingTop: "30px",
-                      paddingBottom: "30px",
-                      paddingLeft: "10px",
-                      borderTopRightRadius: 50,
-                      borderBottomRightRadius: 50,
-                      color:
-                        selectedProfile === "business" ? "#FFFFFF" : "#000000",
-                    }}
-                  >
-                    <Col span={21}>Business Profile</Col>
-                    <Col span={3}>
-                      <Tooltip title={tooltipContentBusiness} color="#F4B40F">
-                        <InfoCircleOutlined
-                          style={{
-                            fontSize: "20px",
-                          }}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-
-                  <Form hidden={selectedProfile == "business" ? false : true}>
-                    <Radio.Group
-                      value={businessSelectedValue}
-                      onChange={(e) =>
-                        handleBusinessProfileRadioChange(e.target.value)
-                      }
-                    >
-                      <Space direction="vertical">
-                        <Radio
-                          value="rc"
-                          size="large"
-                          onClick={() => setSelectedForm("rc")}
-                        >
-                          Registration Number (RC)
-                        </Radio>
-                        <Radio
-                          value="business_name"
-                          onClick={() => setSelectedForm("business_name")}
-                        >
-                          {" "}
-                          Business Name{" "}
-                        </Radio>
-                      </Space>
-                    </Radio.Group>
-                  </Form>
-
-                  <Row
-                    onClick={() => setSelectedProfile("financial")}
-                    style={{
-                      backgroundColor:
-                        selectedProfile === "financial" ? "#0DC939" : "#EAFFF0",
-                      paddingTop: "30px",
-                      paddingBottom: "30px",
-                      paddingLeft: "10px",
-                      borderTopRightRadius: 50,
-                      borderBottomRightRadius: 50,
-                      color:
-                        selectedProfile === "financial" ? "#FFFFFF" : "#000000",
-                    }}
-                  >
-                    <Col span={21}>Financial Credit Profile</Col>
-                    <Col span={3}>
-                      <Tooltip title={tooltipContentFinancial} color="#F4B40F">
-                        <InfoCircleOutlined
-                          style={{
-                            fontSize: "20px",
-                          }}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-
-                  <Form hidden={selectedProfile == "financial" ? false : true}>
-                    <Radio.Group
-                      value={financialSelectedValue}
-                      onChange={(e) =>
-                        handleFinancialProfileRadioChange(e.target.value)
-                      }
-                    >
-                      <Radio
-                        value="bvn"
-                        size="large"
-                        onClick={() => setSelectedForm("bvn")}
-                      >
-                        Bank Verification Number (BVN)
-                      </Radio>
-                    </Radio.Group>
-                  </Form>
-
-                  <Row
-                    onClick={() => setSelectedProfile("vehicle")}
-                    style={{
-                      backgroundColor:
-                        selectedProfile === "vehicle" ? "#0DC939" : "#EAFFF0",
-                      paddingTop: "30px",
-                      paddingBottom: "30px",
-                      paddingLeft: "10px",
-                      borderTopRightRadius: 50,
-                      borderBottomRightRadius: 50,
-                      color:
-                        selectedProfile === "vehicle" ? "#FFFFFF" : "#000000",
-                    }}
-                  >
-                    <Col span={21}>Vehicle Profile</Col>
-                    <Col span={3}>
-                      <Tooltip title={tooltipContentVehicle} color="#F4B40F">
-                        <InfoCircleOutlined
-                          style={{
-                            fontSize: "20px",
-                          }}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-
-                  <Form hidden={selectedProfile == "vehicle" ? false : true}>
-                    <Radio.Group
-                      value={vehicleSelectedValue}
-                      onChange={(e) =>
-                        handleVehicleProfileRadioChange(e.target.value)
-                      }
-                    >
-                      <Space direction="vertical">
-                        <Radio
-                          value="vin"
-                          size="large"
-                          onClick={() => setSelectedForm("vin")}
-                        >
-                          Vehicle History (VIN)
-                          <img src={clearvin} alt="" width={150} />
-                        </Radio>
-                        <Radio
-                          value="license_number"
-                          size="large"
-                          onClick={() => setSelectedForm("license_number")}
-                        >
-                          Vehicle Registration Number
-                        </Radio>
-                      </Space>
-                    </Radio.Group>
-                  </Form>
-                </Space>
-              </Col>
-              <Col
-                span={8}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                {window.innerWidth < 960 ? (
-                  ""
-                ) : (
-                  <>
-                    <Heading6>How to verify</Heading6>
-                    {/* <Flex gap="small" wrap="wrap">
-                      <Tag
-                        closeIcon={<CloseCircleOutlined />}
-                        onClose={console.log}
-                        color="#0DC939"
-                      >
-                        Tag 2
-                      </Tag>
-                    </Flex> */}
-                    {selectedForm === "none" && (
+                  {window.innerWidth < 960 ? (
+                    <>
+                      <Heading6>How to verify</Heading6>
                       <>
                         <List
                           itemLayout="horizontal"
@@ -1927,770 +1773,1075 @@ const DashboardPage = () => {
                           )}
                         />
                       </>
-                    )}
-                  </>
-                )}
-                <Form>
-                  {/* {selectedForm === "nin" && ( */}
-                  {basicProfileArray.includes("nin") && (
-                    <div>
-                      <StyledLabel>National Identification Number*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter your NIN"
-                        name="nin"
-                        value={formData.nin}
-                        onChange={(e) =>
-                          handleInputChange("nin", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
-                  {/* {selectedForm === "phone" && ( */}
-                  <div hidden={selectedForm === "phone" ? false : true}>
-                    <StyledLabel>Phone Number*</StyledLabel>
-                    <StyledInput
-                      type="number"
-                      placeholder="Enter your Phone Number"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        handleInputChange("phone", e.target.value)
-                      }
-                    />
-                  </div>
-                  {/* )} */}
-                  {selectedForm === "demographics" && (
-                    <>
-                      <StyledLabel>First Name*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter First Name"
-                        name="firstname"
-                        value={formData.firstname}
-                        onChange={(e) =>
-                          handleInputChange("firstname", e.target.value)
-                        }
-                      />
-                      <StyledLabel>Last Name*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter Last Name"
-                        name="lastname"
-                        value={formData.lastname}
-                        onChange={(e) =>
-                          handleInputChange("lastname", e.target.value)
-                        }
-                      />
-                      <Row gutter={12}>
-                        <Col
-                          span={8}
-                          xs={{ span: 24 }}
-                          sm={{ span: 24 }}
-                          md={{ span: 12 }}
-                          lg={{ span: 12 }}
-                        >
-                          <StyledLabel>Date of Birth*</StyledLabel>
-                          <DatePicker
-                            format={dateFormat}
-                            size="large"
-                            name="dateOfBirth"
-                            onChange={handleDateChange}
-                          />
-                        </Col>
-                        <Col
-                          span={8}
-                          xs={{ span: 24 }}
-                          sm={{ span: 24 }}
-                          md={{ span: 12 }}
-                          lg={{ span: 12 }}
-                        >
-                          <StyledLabel>Gender*</StyledLabel>
-                          <Radio.Group
-                            onChange={(e) =>
-                              handleInputChange("gender", e.target.value)
-                            }
-                            value={formData.gender}
-                          >
-                            <Space>
-                              <Radio value="m" size="large">
-                                Male
-                              </Radio>
-                              <Radio value="f">Female</Radio>
-                            </Space>
-                          </Radio.Group>
-                        </Col>
-                      </Row>
                     </>
+                  ) : (
+                    ""
                   )}
-                  {/* {selectedForm === "face" && ( */}
-                  {basicProfileArray.includes("face") && (
-                    <div>
-                      <StyledLabel>
-                        National Identification Number (NIN)*
-                      </StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter your NIN"
-                        name="nin"
-                        value={liveFaceNin}
-                        onChange={handleLiveFaceNinChange}
-                        onChangeCapture={(e) =>
-                          handleInputChange("nin", e.target.value)
-                        }
-                        style={{
-                          borderColor: isLiveFaceNinValid ? "" : "red",
-                        }}
-                      />
+                  <Heading6> Select Profile</Heading6>
 
-                      {base64Image && (
-                        <div>
-                          <p>Image:</p>
-                          <img
-                            src={base64Image}
-                            alt="Uploaded"
-                            style={{ maxWidth: "50%" }}
-                          />
-                        </div>
-                      )}
-
-                      {!isLiveFaceNinValid && (
-                        <p style={{ color: "red" }}>NIN cannot be empty</p>
-                      )}
-                      <StyledLabel>
-                        Upload File or take a live face capture*
-                      </StyledLabel>
-
-                      <Row gutter={12}>
-                        <Col
-                          span={8}
-                          xs={{ span: 24 }}
-                          sm={{ span: 24 }}
-                          md={{ span: 12 }}
-                          lg={{ span: 12 }}
-                        >
-                          <input
-                            type="file"
-                            onChange={handleFileSelect}
-                            style={{ display: "none" }}
-                            ref={fileInputRef}
-                          />
-                          <button
-                            type="button"
-                            onClick={handleButtonClick}
-                            style={buttonStyle}
-                          >
-                            Browse file
-                          </button>
-                        </Col>
-                        <Col
-                          span={8}
-                          xs={{ span: 24 }}
-                          sm={{ span: 24 }}
-                          md={{ span: 12 }}
-                          lg={{ span: 12 }}
-                        >
-                          <Button
-                            type="primary"
-                            icon={<CameraOutlined />}
-                            size="large"
-                            onClick={() => {
-                              handleMakePaymentForLiveFace();
-                              // const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
-                              // if (
-                              //   isLiveFaceNinValid &&
-                              //   liveFaceNin.trim() !== ""
-                              // ) {
-                              //   window.open(liveCaptureUrl, "_blank");
-                              // }
+                  <Space
+                    direction="vertical"
+                    size="middle"
+                    style={{
+                      display: "flex",
+                    }}
+                  >
+                    <Row
+                      onClick={() => setSelectedProfile("basic")}
+                      style={{
+                        backgroundColor:
+                          selectedProfile === "basic" ? "#0DC939" : "#EAFFF0",
+                        paddingTop: "30px",
+                        paddingBottom: "30px",
+                        paddingLeft: "10px",
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        color:
+                          selectedProfile === "basic" ? "#FFFFFF" : "#000000",
+                        boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Adding the boxShadow property for the shadow effect
+                      }}
+                    >
+                      <Col span={21}>Basic Identity Profile</Col>
+                      <Col span={3}>
+                        <Tooltip title={tooltipContentBasic} color="#F4B40F">
+                          <InfoCircleOutlined
+                            style={{
+                              fontSize: "20px",
                             }}
-                            disabled={
-                              !isLiveFaceNinValid || liveFaceNin.trim() === ""
-                            }
-                          >
-                            Live Capture
-                          </Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  )}
-                  {/* )} */}
-                  {selectedForm === "fingerprint" && (
-                    <>
-                      <StyledLabel>National Identification Number*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter National Identification Number"
-                        name="nin"
-                        value={liveFaceNin}
-                        onChange={handleLiveFaceNinChange}
-                        onChangeCapture={(e) =>
-                          handleInputChange("nin", e.target.value)
+                          />
+                        </Tooltip>
+                      </Col>
+                    </Row>
+
+                    <Form hidden={selectedProfile == "basic" ? false : true}>
+                      <Radio.Group
+                        value={selectedValue}
+                        onChange={(e) =>
+                          handleBasicProfileRadioChange(e.target.value)
                         }
-                        style={{
-                          borderColor: isLiveFaceNinValid ? "" : "red",
-                        }}
-                      />
-
-                      {base64Image && (
-                        <div>
-                          <p>Image:</p>
-                          <img
-                            src={base64Image}
-                            alt="Uploaded"
-                            style={{ maxWidth: "50%" }}
-                          />
-                        </div>
-                      )}
-
-                      {!isLiveFaceNinValid && (
-                        <p style={{ color: "red" }}>NIN cannot be empty</p>
-                      )}
-                      <StyledLabel>Upload Finger Image</StyledLabel>
-
-                      <Row gutter={12}>
-                        <Col
-                          span={8}
-                          xs={{ span: 24 }}
-                          sm={{ span: 24 }}
-                          md={{ span: 12 }}
-                          lg={{ span: 12 }}
-                        >
-                          <input
-                            type="file"
-                            onChange={handleFileSelectFinger}
-                            style={{ display: "none" }}
-                            ref={fileInputRef}
-                          />
-                          <button
-                            type="button"
-                            onClick={handleButtonClickFinger}
-                            style={buttonStyle}
+                      >
+                        <Space direction="vertical">
+                          <Radio
+                            value="nin"
+                            size="large"
+                            onClick={() => setSelectedForm("nin")}
                           >
-                            Browse file
-                          </button>
-                        </Col>
-                      </Row>
+                            National Identification Number (NIN)
+                          </Radio>
+
+                          <Radio
+                            value="face"
+                            onClick={() => setSelectedForm("face")}
+                          >
+                            National Identification Number (NIN) + Face{" "}
+                          </Radio>
+                        </Space>
+                      </Radio.Group>
+                    </Form>
+                    <Row
+                      onClick={() => setSelectedProfile("business")}
+                      style={{
+                        backgroundColor:
+                          selectedProfile === "business"
+                            ? "#0DC939"
+                            : "#EAFFF0",
+                        paddingTop: "30px",
+                        paddingBottom: "30px",
+                        paddingLeft: "10px",
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        color:
+                          selectedProfile === "business"
+                            ? "#FFFFFF"
+                            : "#000000",
+                        boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)",
+                      }}
+                    >
+                      <Col span={21}>Business Profile</Col>
+                      <Col span={3}>
+                        <Tooltip title={tooltipContentBusiness} color="#F4B40F">
+                          <InfoCircleOutlined
+                            style={{
+                              fontSize: "20px",
+                            }}
+                          />
+                        </Tooltip>
+                      </Col>
+                    </Row>
+
+                    <Form hidden={selectedProfile == "business" ? false : true}>
+                      <Radio.Group
+                        value={businessSelectedValue}
+                        onChange={(e) =>
+                          handleBusinessProfileRadioChange(e.target.value)
+                        }
+                      >
+                        <Space direction="vertical">
+                          <Radio
+                            value="rc"
+                            size="large"
+                            onClick={() => setSelectedForm("rc")}
+                          >
+                            Registration Number (RC)
+                          </Radio>
+                          <Radio
+                            value="business_name"
+                            onClick={() => setSelectedForm("business_name")}
+                          >
+                            {" "}
+                            Business Name{" "}
+                          </Radio>
+                        </Space>
+                      </Radio.Group>
+                    </Form>
+
+                    <Row
+                      onClick={() => setSelectedProfile("financial")}
+                      style={{
+                        backgroundColor:
+                          selectedProfile === "financial"
+                            ? "#0DC939"
+                            : "#EAFFF0",
+                        paddingTop: "30px",
+                        paddingBottom: "30px",
+                        paddingLeft: "10px",
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        color:
+                          selectedProfile === "financial"
+                            ? "#FFFFFF"
+                            : "#000000",
+                        boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)",
+                      }}
+                    >
+                      <Col span={21}>Financial Credit Profile</Col>
+                      <Col span={3}>
+                        <Tooltip
+                          title={tooltipContentFinancial}
+                          color="#F4B40F"
+                        >
+                          <InfoCircleOutlined
+                            style={{
+                              fontSize: "20px",
+                            }}
+                          />
+                        </Tooltip>
+                      </Col>
+                    </Row>
+
+                    <Form
+                      hidden={selectedProfile == "financial" ? false : true}
+                    >
+                      <Radio.Group
+                        value={financialSelectedValue}
+                        onChange={(e) =>
+                          handleFinancialProfileRadioChange(e.target.value)
+                        }
+                      >
+                        <Radio
+                          value="bvn"
+                          size="large"
+                          onClick={() => setSelectedForm("bvn")}
+                        >
+                          Bank Verification Number (BVN)
+                        </Radio>
+                      </Radio.Group>
+                    </Form>
+
+                    <Row
+                      onClick={() => setSelectedProfile("vehicle")}
+                      style={{
+                        backgroundColor:
+                          selectedProfile === "vehicle" ? "#0DC939" : "#EAFFF0",
+                        paddingTop: "30px",
+                        paddingBottom: "30px",
+                        paddingLeft: "10px",
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        color:
+                          selectedProfile === "vehicle" ? "#FFFFFF" : "#000000",
+                        boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)",
+                      }}
+                    >
+                      <Col span={21}>Vehicle Profile</Col>
+                      <Col span={3}>
+                        <Tooltip title={tooltipContentVehicle} color="#F4B40F">
+                          <InfoCircleOutlined
+                            style={{
+                              fontSize: "20px",
+                            }}
+                          />
+                        </Tooltip>
+                      </Col>
+                    </Row>
+
+                    <Form hidden={selectedProfile == "vehicle" ? false : true}>
+                      <Radio.Group
+                        value={vehicleSelectedValue}
+                        onChange={(e) =>
+                          handleVehicleProfileRadioChange(e.target.value)
+                        }
+                      >
+                        <Space direction="vertical">
+                          <Radio
+                            value="vin"
+                            size="large"
+                            onClick={() => setSelectedForm("vin")}
+                          >
+                            Vehicle History (VIN)
+                            <img src={clearvin} alt="" width={150} />
+                          </Radio>
+                          <Radio
+                            value="license_number"
+                            size="large"
+                            onClick={() => setSelectedForm("license_number")}
+                          >
+                            Vehicle Registration Number
+                          </Radio>
+                        </Space>
+                      </Radio.Group>
+                    </Form>
+                  </Space>
+                </Col>
+                <Col
+                  span={8}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
+                >
+                  {window.innerWidth < 960 ? (
+                    ""
+                  ) : (
+                    <>
+                      <Heading6>How to verify</Heading6>
+                      {/* <Flex gap="small" wrap="wrap">
+                      <Tag
+                        closeIcon={<CloseCircleOutlined />}
+                        onClose={console.log}
+                        color="#0DC939"
+                      >
+                        Tag 2
+                      </Tag>
+                    </Flex> */}
+                      {selectedForm === "none" && (
+                        <>
+                          <List
+                            itemLayout="horizontal"
+                            dataSource={data}
+                            renderItem={(item, index) => (
+                              <List.Item>
+                                <List.Item.Meta
+                                  avatar={<Avatar src={tick} />}
+                                  title={item.title}
+                                />
+                              </List.Item>
+                            )}
+                          />
+                        </>
+                      )}
                     </>
                   )}
-                  {/* {selectedForm === "rc" && ( */}
-                  {businessProfileArray.includes("rc") && (
-                    <div>
-                      <StyledLabel>Registration Number (RC)*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter Registration Number"
-                        name="rc"
-                        value={formData.rc}
-                        onChange={(e) =>
-                          handleInputChange("rc", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
-                  {/* {selectedForm === "business_name" && ( */}
-                  {businessProfileArray.includes("business_name") && (
-                    <div>
-                      <StyledLabel>Business Name*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter Business Name"
-                        name="business_name"
-                        value={formData.business_name}
-                        onChange={(e) =>
-                          handleInputChange("business_name", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
-                  {/* {selectedForm === "bvn" && ( */}
-                  {financialProfileArray.includes("bvn") && (
-                    <div>
-                      <StyledLabel>Bank Verification Number (BVN)*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter Bank Verification Number"
-                        name="bvn"
-                        value={formData.bvn}
-                        pattern="[0-9]*" // Allow only numbers
-                        title="Please enter only numbers"
-                        onChange={(e) =>
-                          handleInputChange("bvn", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
-                  {/* {selectedForm === "vin" && ( */}
-                  {vehicleProfileArray.includes("vin") && (
-                    <div>
-                      <StyledLabel>Vehicle History (VIN)*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Enter Vehicle History (VIN)"
-                        name="vin"
-                        value={formData.vin}
-                        onChange={(e) =>
-                          handleInputChange("vin", e.target.value)
-                        }
-                      />
-
-                      <Checkbox
-                        onChange={handleCheckboxChange}
-                        checked={isChecked}
-                      >
-                        Also search Stolen Vehicles database? (Extra charge)
-                      </Checkbox>
-                    </div>
-                  )}
-                  {/* {selectedForm === "license_number" && ( */}
-                  {vehicleProfileArray.includes("license_number") && (
-                    <div>
-                      <StyledLabel>Vehicle Registration Number*</StyledLabel>
-                      <StyledInput
-                        type="text"
-                        placeholder="Vehicle Registration Number"
-                        name="license_number"
-                        value={formData.license_number}
-                        onChange={(e) =>
-                          handleInputChange("license_number", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
-                </Form>
-              </Col>
-              <Col
-                span={8}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Heading6>Payment Summary</Heading6>
-                <div style={{ backgroundColor: "#FAFBFC", padding: "15px" }}>
-                  <p>Processing fees:</p>
-
-                  {ninFilled ? (
-                    <Row>
-                      <Col
-                        span={8}
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 15 }}
-                        lg={{ span: 15 }}
-                        style={{ textAlign: "left" }}
-                      >
-                        <p> NIN: </p>
-                      </Col>
-                      <Col>
-                        <p>
-                          {" "}
-                          {currencyCheck === "USD"
-                            ? "$" + (ninServiceFee + ninProcessingFee)
-                            : formatToNaira(ninServiceFee + ninProcessingFee)}
-                        </p>
-                      </Col>
-                      <Col style={{ marginLeft: "20px", color: "red" }}>
-                        <CloseSquareOutlined onClick={clearInputNin} />
-                      </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-
-                  {rcFilled ? (
-                    <Row>
-                      <Col
-                        span={8}
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 15 }}
-                        lg={{ span: 15 }}
-                        style={{ textAlign: "left" }}
-                      >
-                        <p>RC Number: </p>
-                      </Col>
-                      <Col>
-                        <p>
-                          {" "}
-                          {currencyCheck === "USD"
-                            ? "$" + (businessServiceFee + businessProcessingFee)
-                            : formatToNaira(
-                                businessServiceFee + businessProcessingFee
-                              )}
-                        </p>
-                      </Col>
-                      <Col style={{ marginLeft: "20px", color: "red" }}>
-                        <CloseSquareOutlined onClick={clearInputBusinessrc} />
-                      </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-                  {businessNameFilled ? (
-                    <Row>
-                      <Col
-                        span={8}
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 15 }}
-                        lg={{ span: 15 }}
-                        style={{ textAlign: "left" }}
-                      >
-                        <p> Business Name: </p>
-                      </Col>
-                      <Col>
-                        <p>
-                          {" "}
-                          {currencyCheck === "USD"
-                            ? "$" + (businessServiceFee + businessProcessingFee)
-                            : formatToNaira(
-                                businessServiceFee + businessProcessingFee
-                              )}
-                        </p>
-                      </Col>
-                      <Col style={{ marginLeft: "20px", color: "red" }}>
-                        <CloseSquareOutlined
-                          onClick={clearInputBusinessbusiness_name}
+                  <Form>
+                    {/* {selectedForm === "nin" && ( */}
+                    {basicProfileArray.includes("nin") && (
+                      <div>
+                        <StyledLabel>
+                          National Identification Number*
+                        </StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter your NIN"
+                          name="nin"
+                          value={formData.nin}
+                          onChange={(e) =>
+                            handleInputChange("nin", e.target.value)
+                          }
                         />
-                      </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-                  {bvnFilled ? (
-                    <Row>
-                      <Col
-                        span={8}
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 15 }}
-                        lg={{ span: 15 }}
-                        style={{ textAlign: "left" }}
-                      >
-                        <p> BVN: </p>
-                      </Col>
-                      <Col>
-                        <p>
-                          {" "}
-                          {currencyCheck === "USD"
-                            ? "$" +
-                              (financialServiceFee + financialProcessingFee)
-                            : formatToNaira(
-                                financialServiceFee + financialProcessingFee
-                              )}
-                        </p>
-                      </Col>
-                      <Col style={{ marginLeft: "20px", color: "red" }}>
-                        <CloseSquareOutlined onClick={clearInputFinancial} />
-                      </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-                  {vinFilled ? (
-                    <Row>
-                      <Col
-                        span={8}
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 15 }}
-                        lg={{ span: 15 }}
-                        style={{ textAlign: "left" }}
-                      >
-                        <p> VIN </p>
-                      </Col>
-                      <Col>
-                        <p>
-                          {" "}
-                          {currencyCheck === "USD"
-                            ? "$" +
-                              (vinVehicleServiceFee + vinVehicleProcessingFee)
-                            : formatToNaira(
-                                vinVehicleServiceFee + vinVehicleProcessingFee
-                              )}
-                        </p>
-                      </Col>
-                      <Col style={{ marginLeft: "20px", color: "red" }}>
-                        <CloseSquareOutlined onClick={clearInputVehiclevin} />
-                      </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-                  {licenseNumberFilled ? (
-                    <Row>
-                      <Col
-                        span={8}
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 15 }}
-                        lg={{ span: 15 }}
-                        style={{ textAlign: "left" }}
-                      >
-                        <p> Registration Number </p>
-                      </Col>
-                      <Col>
-                        <p>
-                          {" "}
-                          {currencyCheck === "USD"
-                            ? "$" + (vehicleServiceFee + vehicleProcessingFee)
-                            : formatToNaira(
-                                vehicleServiceFee + vehicleProcessingFee
-                              )}
-                        </p>
-                      </Col>
-                      <Col
-                        style={{
-                          marginLeft: "20px",
-                          color: "red",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <CloseSquareOutlined
-                          onClick={clearInputVehiclelicense_number}
+                      </div>
+                    )}
+                    {/* {selectedForm === "phone" && ( */}
+                    <div hidden={selectedForm === "phone" ? false : true}>
+                      <StyledLabel>Phone Number*</StyledLabel>
+                      <StyledInput
+                        type="number"
+                        placeholder="Enter your Phone Number"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          handleInputChange("phone", e.target.value)
+                        }
+                      />
+                    </div>
+                    {/* )} */}
+                    {selectedForm === "demographics" && (
+                      <>
+                        <StyledLabel>First Name*</StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter First Name"
+                          name="firstname"
+                          value={formData.firstname}
+                          onChange={(e) =>
+                            handleInputChange("firstname", e.target.value)
+                          }
                         />
+                        <StyledLabel>Last Name*</StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter Last Name"
+                          name="lastname"
+                          value={formData.lastname}
+                          onChange={(e) =>
+                            handleInputChange("lastname", e.target.value)
+                          }
+                        />
+                        <Row gutter={12}>
+                          <Col
+                            span={8}
+                            xs={{ span: 24 }}
+                            sm={{ span: 24 }}
+                            md={{ span: 12 }}
+                            lg={{ span: 12 }}
+                          >
+                            <StyledLabel>Date of Birth*</StyledLabel>
+                            <DatePicker
+                              format={dateFormat}
+                              size="large"
+                              name="dateOfBirth"
+                              onChange={handleDateChange}
+                            />
+                          </Col>
+                          <Col
+                            span={8}
+                            xs={{ span: 24 }}
+                            sm={{ span: 24 }}
+                            md={{ span: 12 }}
+                            lg={{ span: 12 }}
+                          >
+                            <StyledLabel>Gender*</StyledLabel>
+                            <Radio.Group
+                              onChange={(e) =>
+                                handleInputChange("gender", e.target.value)
+                              }
+                              value={formData.gender}
+                            >
+                              <Space>
+                                <Radio value="m" size="large">
+                                  Male
+                                </Radio>
+                                <Radio value="f">Female</Radio>
+                              </Space>
+                            </Radio.Group>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                    {/* {selectedForm === "face" && ( */}
+                    {basicProfileArray.includes("face") && (
+                      <div>
+                        <StyledLabel>
+                          National Identification Number (NIN)*
+                        </StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter your NIN"
+                          name="nin"
+                          value={liveFaceNin}
+                          onChange={handleLiveFaceNinChange}
+                          onChangeCapture={(e) =>
+                            handleInputChange("nin", e.target.value)
+                          }
+                          style={{
+                            borderColor: isLiveFaceNinValid ? "" : "red",
+                          }}
+                        />
+
+                        {base64Image && (
+                          <div>
+                            <p>Image:</p>
+                            <img
+                              src={base64Image}
+                              alt="Uploaded"
+                              style={{ maxWidth: "50%" }}
+                            />
+                          </div>
+                        )}
+
+                        {!isLiveFaceNinValid && (
+                          <p style={{ color: "red" }}>NIN cannot be empty</p>
+                        )}
+                        <StyledLabel>
+                          Upload File or take a live face capture*
+                        </StyledLabel>
+
+                        <Row gutter={12}>
+                          <Col
+                            span={8}
+                            xs={{ span: 24 }}
+                            sm={{ span: 24 }}
+                            md={{ span: 12 }}
+                            lg={{ span: 12 }}
+                          >
+                            <input
+                              type="file"
+                              onChange={handleFileSelect}
+                              style={{ display: "none" }}
+                              ref={fileInputRef}
+                            />
+                            <button
+                              type="button"
+                              onClick={handleButtonClick}
+                              style={buttonStyle}
+                            >
+                              Browse file
+                            </button>
+                          </Col>
+                          <Col
+                            span={8}
+                            xs={{ span: 24 }}
+                            sm={{ span: 24 }}
+                            md={{ span: 12 }}
+                            lg={{ span: 12 }}
+                          >
+                            <Button
+                              type="primary"
+                              icon={<CameraOutlined />}
+                              size="large"
+                              onClick={() => {
+                                // handleMakePaymentForLiveFace();
+                                const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+                                // if (
+                                //   isLiveFaceNinValid &&
+                                //   liveFaceNin.trim() !== ""
+                                // ) {
+                                //   window.open(liveCaptureUrl, "_blank");
+                                // }
+                                // history.push("/liveFace");
+                                setModal1Open(true);
+                              }}
+                              disabled={
+                                !isLiveFaceNinValid || liveFaceNin.trim() === ""
+                              }
+                            >
+                              Live Capture
+                            </Button>
+                            <Modal
+                              title="live Face Capture"
+                              style={{
+                                top: 20,
+                              }}
+                              width={1000}
+                              open={modal1Open}
+                              onOk={() => setModal1Open(false)}
+                              onCancel={() => setModal1Open(false)}
+                            >
+                              <iframe
+                                id="inlineFrameExample"
+                                title="Inline Frame Example"
+                                width="100%"
+                                height="500"
+                                src={liveCaptureUrl}
+                              ></iframe>
+                            </Modal>
+                          </Col>
+                        </Row>
+                      </div>
+                    )}
+                    {/* )} */}
+                    {selectedForm === "fingerprint" && (
+                      <>
+                        <StyledLabel>
+                          National Identification Number*
+                        </StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter National Identification Number"
+                          name="nin"
+                          value={liveFaceNin}
+                          onChange={handleLiveFaceNinChange}
+                          onChangeCapture={(e) =>
+                            handleInputChange("nin", e.target.value)
+                          }
+                          style={{
+                            borderColor: isLiveFaceNinValid ? "" : "red",
+                          }}
+                        />
+
+                        {base64Image && (
+                          <div>
+                            <p>Image:</p>
+                            <img
+                              src={base64Image}
+                              alt="Uploaded"
+                              style={{ maxWidth: "50%" }}
+                            />
+                          </div>
+                        )}
+
+                        {!isLiveFaceNinValid && (
+                          <p style={{ color: "red" }}>NIN cannot be empty</p>
+                        )}
+                        <StyledLabel>Upload Finger Image</StyledLabel>
+
+                        <Row gutter={12}>
+                          <Col
+                            span={8}
+                            xs={{ span: 24 }}
+                            sm={{ span: 24 }}
+                            md={{ span: 12 }}
+                            lg={{ span: 12 }}
+                          >
+                            <input
+                              type="file"
+                              onChange={handleFileSelectFinger}
+                              style={{ display: "none" }}
+                              ref={fileInputRef}
+                            />
+                            <button
+                              type="button"
+                              onClick={handleButtonClickFinger}
+                              style={buttonStyle}
+                            >
+                              Browse file
+                            </button>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                    {/* {selectedForm === "rc" && ( */}
+                    {businessProfileArray.includes("rc") && (
+                      <div>
+                        <StyledLabel>Registration Number (RC)*</StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter Registration Number"
+                          name="rc"
+                          value={formData.rc}
+                          onChange={(e) =>
+                            handleInputChange("rc", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
+                    {/* {selectedForm === "business_name" && ( */}
+                    {businessProfileArray.includes("business_name") && (
+                      <div>
+                        <StyledLabel>Business Name*</StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter Business Name"
+                          name="business_name"
+                          value={formData.business_name}
+                          onChange={(e) =>
+                            handleInputChange("business_name", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
+                    {/* {selectedForm === "bvn" && ( */}
+                    {financialProfileArray.includes("bvn") && (
+                      <div>
+                        <StyledLabel>
+                          Bank Verification Number (BVN)*
+                        </StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter Bank Verification Number"
+                          name="bvn"
+                          value={formData.bvn}
+                          pattern="[0-9]*" // Allow only numbers
+                          title="Please enter only numbers"
+                          onChange={(e) =>
+                            handleInputChange("bvn", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
+                    {/* {selectedForm === "vin" && ( */}
+                    {vehicleProfileArray.includes("vin") && (
+                      <div>
+                        <StyledLabel>Vehicle History (VIN)*</StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Enter Vehicle History (VIN)"
+                          name="vin"
+                          value={formData.vin}
+                          onChange={(e) =>
+                            handleInputChange("vin", e.target.value)
+                          }
+                        />
+
+                        <Checkbox
+                          onChange={handleCheckboxChange}
+                          checked={isChecked}
+                        >
+                          Also search Stolen Vehicles database? (Extra charge)
+                        </Checkbox>
+                      </div>
+                    )}
+                    {/* {selectedForm === "license_number" && ( */}
+                    {vehicleProfileArray.includes("license_number") && (
+                      <div>
+                        <StyledLabel>Vehicle Registration Number*</StyledLabel>
+                        <StyledInput
+                          type="text"
+                          placeholder="Vehicle Registration Number"
+                          name="license_number"
+                          value={formData.license_number}
+                          onChange={(e) =>
+                            handleInputChange("license_number", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
+                  </Form>
+                </Col>
+                <Col
+                  span={8}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
+                >
+                  <Heading6>Payment Summary</Heading6>
+                  <div
+                    style={{
+                      backgroundColor: "#FAFBFC",
+                      padding: "15px",
+                      boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <p>Processing fees:</p>
+
+                    {ninFilled ? (
+                      <Row>
+                        <Col
+                          span={8}
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 15 }}
+                          lg={{ span: 15 }}
+                          style={{ textAlign: "left" }}
+                        >
+                          <p> NIN: </p>
+                        </Col>
+                        <Col>
+                          <p>
+                            {" "}
+                            {currencyCheck === "USD"
+                              ? "$" + (ninServiceFee + ninProcessingFee)
+                              : formatToNaira(ninServiceFee + ninProcessingFee)}
+                          </p>
+                        </Col>
+                        <Col style={{ marginLeft: "20px", color: "red" }}>
+                          <CloseSquareOutlined onClick={clearInputNin} />
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+
+                    {rcFilled ? (
+                      <Row>
+                        <Col
+                          span={8}
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 15 }}
+                          lg={{ span: 15 }}
+                          style={{ textAlign: "left" }}
+                        >
+                          <p>RC Number: </p>
+                        </Col>
+                        <Col>
+                          <p>
+                            {" "}
+                            {currencyCheck === "USD"
+                              ? "$" +
+                                (businessServiceFee + businessProcessingFee)
+                              : formatToNaira(
+                                  businessServiceFee + businessProcessingFee
+                                )}
+                          </p>
+                        </Col>
+                        <Col style={{ marginLeft: "20px", color: "red" }}>
+                          <CloseSquareOutlined onClick={clearInputBusinessrc} />
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+                    {businessNameFilled ? (
+                      <Row>
+                        <Col
+                          span={8}
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 15 }}
+                          lg={{ span: 15 }}
+                          style={{ textAlign: "left" }}
+                        >
+                          <p> Business Name: </p>
+                        </Col>
+                        <Col>
+                          <p>
+                            {" "}
+                            {currencyCheck === "USD"
+                              ? "$" +
+                                (businessServiceFee + businessProcessingFee)
+                              : formatToNaira(
+                                  businessServiceFee + businessProcessingFee
+                                )}
+                          </p>
+                        </Col>
+                        <Col style={{ marginLeft: "20px", color: "red" }}>
+                          <CloseSquareOutlined
+                            onClick={clearInputBusinessbusiness_name}
+                          />
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+                    {bvnFilled ? (
+                      <Row>
+                        <Col
+                          span={8}
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 15 }}
+                          lg={{ span: 15 }}
+                          style={{ textAlign: "left" }}
+                        >
+                          <p> BVN: </p>
+                        </Col>
+                        <Col>
+                          <p>
+                            {" "}
+                            {currencyCheck === "USD"
+                              ? "$" +
+                                (financialServiceFee + financialProcessingFee)
+                              : formatToNaira(
+                                  financialServiceFee + financialProcessingFee
+                                )}
+                          </p>
+                        </Col>
+                        <Col style={{ marginLeft: "20px", color: "red" }}>
+                          <CloseSquareOutlined onClick={clearInputFinancial} />
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+                    {vinFilled ? (
+                      <Row>
+                        <Col
+                          span={8}
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 15 }}
+                          lg={{ span: 15 }}
+                          style={{ textAlign: "left" }}
+                        >
+                          <p> VIN </p>
+                        </Col>
+                        <Col>
+                          <p>
+                            {" "}
+                            {currencyCheck === "USD"
+                              ? "$" +
+                                (vinVehicleServiceFee + vinVehicleProcessingFee)
+                              : formatToNaira(
+                                  vinVehicleServiceFee + vinVehicleProcessingFee
+                                )}
+                          </p>
+                        </Col>
+                        <Col style={{ marginLeft: "20px", color: "red" }}>
+                          <CloseSquareOutlined onClick={clearInputVehiclevin} />
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+                    {licenseNumberFilled ? (
+                      <Row>
+                        <Col
+                          span={8}
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 15 }}
+                          lg={{ span: 15 }}
+                          style={{ textAlign: "left" }}
+                        >
+                          <p> Registration Number </p>
+                        </Col>
+                        <Col>
+                          <p>
+                            {" "}
+                            {currencyCheck === "USD"
+                              ? "$" + (vehicleServiceFee + vehicleProcessingFee)
+                              : formatToNaira(
+                                  vehicleServiceFee + vehicleProcessingFee
+                                )}
+                          </p>
+                        </Col>
+                        <Col
+                          style={{
+                            marginLeft: "20px",
+                            color: "red",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <CloseSquareOutlined
+                            onClick={clearInputVehiclelicense_number}
+                          />
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+                    <Divider />
+
+                    <Row>
+                      <Col
+                        span={8}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p>Tax & charges: </p>
+                      </Col>
+                      <Col style={{ textAlign: "right" }}>
+                        {currencyCheck === "USD" ? (
+                          <p>${totalVAT}</p>
+                        ) : (
+                          <p>{formatToNaira(totalVAT)}</p>
+                        )}
                       </Col>
                     </Row>
-                  ) : (
-                    ""
-                  )}
-                  <Divider />
-
-                  <Row>
-                    <Col
-                      span={8}
-                      xs={{ span: 12 }}
-                      sm={{ span: 12 }}
-                      md={{ span: 15 }}
-                      lg={{ span: 15 }}
-                      style={{ textAlign: "left" }}
-                    >
-                      <p>Tax & charges: </p>
-                    </Col>
-                    <Col style={{ textAlign: "right" }}>
-                      {currencyCheck === "USD" ? (
-                        <p>${totalVAT}</p>
-                      ) : (
-                        <p>{formatToNaira(totalVAT)}</p>
-                      )}
-                    </Col>
-                  </Row>
-                  <Divider />
-                  <Row>
-                    <Col
-                      xs={{ span: 12 }}
-                      sm={{ span: 12 }}
-                      md={{ span: 15 }}
-                      lg={{ span: 15 }}
-                      style={{ textAlign: "left" }}
-                    >
-                      <p>Total Amount Due: </p>
-                    </Col>
-                    <Col>
-                      {/* {currencyCheck === "USD" ? (
+                    <Divider />
+                    <Row>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
+                        md={{ span: 15 }}
+                        lg={{ span: 15 }}
+                        style={{ textAlign: "left" }}
+                      >
+                        <p>Total Amount Due: </p>
+                      </Col>
+                      <Col>
+                        {/* {currencyCheck === "USD" ? (
                         <p>{`$${rawServiceFee.toFixed(2)}`}</p>
                       ) : (
                         <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
                       )} */}
 
-                      {currencyCheck === "USD" ? (
-                        <p>{`$${totalServiceCost}`}</p>
-                      ) : (
-                        <p>{formatToNaira(totalServiceCost)}</p>
-                      )}
-                    </Col>
-                  </Row>
-                  <Divider />
-                  {currencyCheck == "USD" ? (
-                    <>
-                      <p>Select payment currency </p>
-                      <p>Currency Calculator</p>
-                      <Radio.Group onChange={currencyOnChange} value={value}>
-                        <Radio value={1}>
-                          {" "}
-                          {formatToNaira(totalveriNiara)}
-                        </Radio>
-                        <RadioComponent
-                          profile={profile}
-                          usdFee={totalServiceCost}
-                        />
-                      </Radio.Group>
-                      <Divider />
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  {currencyCheck == "USD" ? (
-                    <>
-                      <p>Exchange rate</p>
-                      <p>
-                        $1 USD =
-                        {new Intl.NumberFormat("en-NG", {
-                          style: "currency",
-                          currency: "NGN",
-                        }).format(exchangeRate)}{" "}
-                        Naira{" "}
-                      </p>
-                    </>
-                  ) : (
-                    ""
-                  )}
+                        {currencyCheck === "USD" ? (
+                          <p>{`$${totalServiceCost}`}</p>
+                        ) : (
+                          <p>{formatToNaira(totalServiceCost)}</p>
+                        )}
+                      </Col>
+                    </Row>
+                    <Divider />
+                    {currencyCheck == "USD" ? (
+                      <>
+                        <p>Select payment currency </p>
+                        <p>Currency Calculator</p>
+                        <Radio.Group onChange={currencyOnChange} value={value}>
+                          <Radio value={1}>
+                            {" "}
+                            {formatToNaira(totalveriNiara)}
+                          </Radio>
+                          <RadioComponent
+                            profile={profile}
+                            usdFee={totalServiceCost}
+                          />
+                        </Radio.Group>
+                        <Divider />
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    {currencyCheck == "USD" ? (
+                      <>
+                        <p>Exchange rate</p>
+                        <p>
+                          $1 USD =
+                          {new Intl.NumberFormat("en-NG", {
+                            style: "currency",
+                            currency: "NGN",
+                          }).format(exchangeRate)}{" "}
+                          Naira{" "}
+                        </p>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </InfoSec>
+          </StyledForm>
+
+          {isFormDataEmpty() ? (
+            ""
+          ) : (
+            <Row
+              justify="end"
+              style={{ border: "1px solid #a9b3c1", marginBottom: "30px" }}
+            >
+              <Col
+                span={8}
+                xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                md={{ span: 7 }}
+                lg={{ span: 7 }}
+                style={{
+                  textAlign: "left",
+                  padding: "10px",
+                }}
+              >
+                <strong>Select payment method:</strong>
+                <div
+                  style={{
+                    borderRight: "1px solid #e8e8e8",
+                    marginBottom: "15px",
+                    paddingBottom: "15px",
+                    paddingRight: "30px",
+                  }}
+                >
+                  <Radio.Group
+                    style={{ width: "100%" }}
+                    onChange={handleRadioChange}
+                    value={selectedValue}
+                  >
+                    <Radio
+                      style={{
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        fontWeight: "bold", // Make the text bold
+                      }}
+                      value={1}
+                    >
+                      Payment from Wallet
+                    </Radio>
+                    <Radio
+                      style={{
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        fontWeight: "bold", // Make the text bold
+                      }}
+                      value={2}
+                    >
+                      Instant Payment
+                      <Img
+                        src={flutterwave}
+                        alt={"flutter wave"}
+                        width={100}
+                        style={{ float: "right", paddingTop: "10px" }}
+                      />
+                    </Radio>
+                  </Radio.Group>
                 </div>
               </Col>
+              <Col
+                span={8}
+                xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                md={{ span: 7 }}
+                lg={{ span: 7 }}
+                style={{
+                  textAlign: "right",
+                  padding: "10px",
+                  paddingLeft: "30px",
+                }}
+              >
+                <strong>
+                  <Checkbox onChange={onChangePayment}>
+                    I certify that I have read and accepted the{" "}
+                    <span
+                      style={{ color: "#09C93A", cursor: "pointer" }}
+                      onClick={handleClickPrivacyPolicy}
+                    >
+                      e-citizen™ Privacy Policy
+                    </span>{" "}
+                    and{" "}
+                    <span
+                      style={{ color: "#09C93A", cursor: "pointer" }}
+                      onClick={handleClickTerms}
+                    >
+                      Terms of Service
+                    </span>
+                  </Checkbox>
+                  <Modal
+                    title="Privacy Policy"
+                    visible={isOpen}
+                    centered
+                    // open={open}
+                    onOk={() => setIsOpen(false)}
+                    onCancel={() => setIsOpen(false)}
+                    width={1000}
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                  </Modal>
+                  <Modal
+                    title="Terms of Service"
+                    visible={isOpen2}
+                    centered
+                    // open={open}
+                    onOk={() => setIsOpen2(false)}
+                    onCancel={() => setIsOpen2(false)}
+                    width={1000}
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+                  </Modal>
+                </strong>
+
+                {loading ? (
+                  <Spin spinning={loading}></Spin>
+                ) : (
+                  <MainButtonFull
+                    type="primary"
+                    // htmlType="submit"
+                    // onClick={handleSubmit}
+                    onClick={handleMakePayment}
+                    disabled={!checkboxChecked}
+                    style={{
+                      backgroundColor: checkboxChecked ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
+                      borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
+                      cursor: checkboxChecked ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+                    }}
+                  >
+                    Payment
+                  </MainButtonFull>
+                )}
+                <Modal
+                  title="Wallet Balance Warning"
+                  visible={isModalVisible}
+                  onOk={handleModalOk}
+                  onCancel={handleModalCancel}
+                >
+                  <p>
+                    Your wallet balance is low. Please recharge before making a
+                    payment.
+                  </p>
+                </Modal>
+              </Col>
+              <PaymentModal />
+              <PaymentModalFace />
             </Row>
-          </InfoSec>
-        </StyledForm>
-
-        {isFormDataEmpty() ? (
-          ""
-        ) : (
-          <Row
-            justify="end"
-            style={{ border: "1px solid #a9b3c1", marginBottom: "30px" }}
-          >
-            <Col
-              span={8}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 7 }}
-              lg={{ span: 7 }}
-              style={{
-                textAlign: "left",
-                padding: "10px",
-              }}
-            >
-              <strong>Select payment method:</strong>
-              <div
-                style={{
-                  borderRight: "1px solid #e8e8e8",
-                  marginBottom: "15px",
-                  paddingBottom: "15px",
-                  paddingRight: "30px",
-                }}
-              >
-                <Radio.Group
-                  style={{ width: "100%" }}
-                  onChange={handleRadioChange}
-                  value={selectedValue}
-                >
-                  <Radio
-                    style={{
-                      display: "block",
-                      border: "1px solid #e8e8e8",
-                      borderRadius: "5px",
-                      padding: "10px",
-                      marginBottom: "10px",
-                      fontWeight: "bold", // Make the text bold
-                    }}
-                    value={1}
-                  >
-                    Payment from Wallet
-                  </Radio>
-                  <Radio
-                    style={{
-                      display: "block",
-                      border: "1px solid #e8e8e8",
-                      borderRadius: "5px",
-                      padding: "10px",
-                      fontWeight: "bold", // Make the text bold
-                    }}
-                    value={2}
-                  >
-                    Instant Payment
-                    <Img
-                      src={flutterwave}
-                      alt={"flutter wave"}
-                      width={100}
-                      style={{ float: "right", paddingTop: "10px" }}
-                    />
-                  </Radio>
-                </Radio.Group>
-              </div>
-            </Col>
-            <Col
-              span={8}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 7 }}
-              lg={{ span: 7 }}
-              style={{
-                textAlign: "right",
-                padding: "10px",
-                paddingLeft: "30px",
-              }}
-            >
-              <strong>
-                <Checkbox onChange={onChangePayment}>
-                  I certify that I have read and accepted the{" "}
-                  <span
-                    style={{ color: "#09C93A", cursor: "pointer" }}
-                    onClick={handleClickPrivacyPolicy}
-                  >
-                    e-citizen™ Privacy Policy
-                  </span>{" "}
-                  and{" "}
-                  <span
-                    style={{ color: "#09C93A", cursor: "pointer" }}
-                    onClick={handleClickTerms}
-                  >
-                    Terms of Service
-                  </span>
-                </Checkbox>
-                <Modal
-                  title="Privacy Policy"
-                  visible={isOpen}
-                  centered
-                  // open={open}
-                  onOk={() => setIsOpen(false)}
-                  onCancel={() => setIsOpen(false)}
-                  width={1000}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
-                </Modal>
-                <Modal
-                  title="Terms of Service"
-                  visible={isOpen2}
-                  centered
-                  // open={open}
-                  onOk={() => setIsOpen2(false)}
-                  onCancel={() => setIsOpen2(false)}
-                  width={1000}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
-                </Modal>
-              </strong>
-
-              <MainButtonFull
-                type="primary"
-                // htmlType="submit"
-                // onClick={handleSubmit}
-                onClick={handleMakePayment}
-                disabled={!checkboxChecked}
-                style={{
-                  backgroundColor: checkboxChecked ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
-                  borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
-                  cursor: checkboxChecked ? "pointer" : "not-allowed", // Change cursor based on checkbox state
-                }}
-              >
-                Payment
-              </MainButtonFull>
-              <Modal
-                title="Wallet Balance Warning"
-                visible={isModalVisible}
-                onOk={handleModalOk}
-                onCancel={handleModalCancel}
-              >
-                <p>
-                  Your wallet balance is low. Please recharge before making a
-                  payment.
-                </p>
-              </Modal>
-            </Col>
-            <PaymentModal />
-            <PaymentModalFace />
-          </Row>
-        )}
+          )}
+        </Spin>
       </Container>
     </Row>
   );

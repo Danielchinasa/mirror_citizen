@@ -39,7 +39,8 @@ const beforeUpload = (file) => {
 
 const ProfilePage = () => {
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [profileImage, setProfileImage] = useState("");
+  const [uploadedImage, setUploadedImage] = useState();
   const handleChange = (info) => {
     if (info.file.status === "uploading") {
       setLoading(true);
@@ -49,7 +50,11 @@ const ProfilePage = () => {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false);
-        setImageUrl(url);
+        setProfileImage(url);
+        setFormData({
+          ...formData,
+          profileImage: url.replace(/^data:image\/[a-z]+;base64,/, ""),
+        });
       });
     }
   };
@@ -89,6 +94,7 @@ const ProfilePage = () => {
     address: address,
     nin: nin,
     businessName: businessName,
+    profileImage: profileImage,
     rcNumber: rcNumber,
     designation: designation,
     walletBalance: walletBalance,
@@ -160,20 +166,24 @@ const ProfilePage = () => {
 
           <Subtitle>Update your profile details here</Subtitle>
         </Card>
-        {/* <Row justify="space-between" style={{ marginTop: "30px" }}>
+        <Row
+          justify="space-between"
+          style={{ marginTop: "30px", marginBottom: "20px" }}
+        >
           <Col span={12}>
             <Upload
               name="avatar"
               listType="picture-circle"
               className="avatar-uploader"
+              style={{ marginBottom: "20px" }}
               showUploadList={false}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
               beforeUpload={beforeUpload}
               onChange={handleChange}
             >
-              {imageUrl ? (
+              {profileImage ? (
                 <img
-                  src={imageUrl}
+                  src={profileImage}
                   alt="avatar"
                   style={{
                     width: "100%",
@@ -183,8 +193,18 @@ const ProfilePage = () => {
                 uploadButton
               )}
             </Upload>
+            <Subtitle style={{ marginTop: "20px" }}>
+              Update your profile image here {profileImage}
+            </Subtitle>
+            <StyledInput
+              value={formData.profileImage}
+              name="profileImage"
+              onChange={(e) =>
+                setFormData({ ...formData, profileImage: e.target.value })
+              }
+            />
           </Col>
-        </Row> */}
+        </Row>
 
         <Row gutter={40}>
           <Col

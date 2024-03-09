@@ -197,6 +197,12 @@ const LoginForm = () => {
     }
   };
 
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+
+  const handleCaptchaVerify = () => {
+    setIsCaptchaVerified(true);
+  };
+
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
@@ -240,8 +246,25 @@ const LoginForm = () => {
             >
               Remember me
             </Checkbox>
-            <ReCAPTCHA sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT" />,
-            <MainButtonFull type="primary" htmlType="submit">
+            <ReCAPTCHA
+              sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+              onChange={handleCaptchaVerify}
+            />
+            ,
+            <MainButtonFull
+              type="primary"
+              htmlType="submit"
+              disabled={!isCaptchaVerified}
+              style={
+                isCaptchaVerified
+                  ? {}
+                  : {
+                      backgroundColor: "gray",
+                      color: "white",
+                      cursor: "not-allowed",
+                    }
+              }
+            >
               Login
             </MainButtonFull>
             <Subtitle color="light">

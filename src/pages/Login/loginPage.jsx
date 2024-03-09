@@ -2,7 +2,7 @@ import { Col, Row } from "antd";
 import React from "react";
 
 import { Img } from "../../globalStyles";
-import lady from "../../images/lady.svg";
+import lady from "../../images/lady.png";
 import LoginForm from "./loginForm";
 
 const LoginPage = () => {
