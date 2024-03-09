@@ -1,6 +1,9 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, fetchUserProfile } from "../../redux/actions";
+import { useHistory } from "react-router-dom";
 import {
   BtnLink,
   CenterText,
@@ -12,6 +15,13 @@ import {
 } from "../../globalStyles";
 
 const PasswordResetConfirm = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    // Dispatch the logout action when the user clicks the logout button
+    dispatch(logout());
+    history.push("/");
+  };
   return (
     <div>
       <Row justify="center">
@@ -55,9 +65,11 @@ const PasswordResetConfirm = () => {
                 Your password has been successfully reset, Click below to log in
               </Subtitle>
               <StyledForm>
-                <BtnLink to="/main-dashboard">
-                  <MainButtonFull type="primary">Continue</MainButtonFull>
-                </BtnLink>
+                {/* <BtnLink to="/login"> */}
+                <MainButtonFull type="primary" onClick={handleLogout}>
+                  Continue
+                </MainButtonFull>
+                {/* </BtnLink> */}
               </StyledForm>
             </InfoSec>
           </CenterText>

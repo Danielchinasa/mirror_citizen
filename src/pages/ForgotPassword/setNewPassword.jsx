@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row, Spin } from "antd";
+import { Col, Row, Spin, message, notification } from "antd";
 import {
   CenterText,
   Heading,
@@ -20,6 +20,8 @@ const SetNewPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const userToken = user?.jwtToken || "";
   const [formData, setFormData] = useState({
     oldPassword: "",
     newPassword: "",
@@ -35,18 +37,36 @@ const SetNewPassword = () => {
     // Dispatch the sendVerificationRequest action with the form data
     setLoading(true);
     try {
-      const response = await dispatch(setNewPassword(formData));
+      const response = await dispatch(setNewPassword(formData, userToken));
       setLoading(false);
 
       console.log(response);
-      if (response === "success") {
+      if (response === "incorrect old password") {
+        message.error(response);
+        notification.error({
+          message: "Error",
+          description: response,
+          duration: 10, // Duration in seconds
+        });
         // Handle further actions if needed
-        history.push("/password-confirm");
       } else {
+        message.success("Password Update Successful");
+        notification.success({
+          message: "Success",
+          description: "Password Update Successful",
+          duration: 10, // Duration in seconds
+        });
+        history.push("/password-confirm");
       }
     } catch (error) {
       // Handle errors if needed
-      console.error("Error sending verification", error);
+      message.error(error);
+      notification.error({
+        message: "Error",
+        description: error,
+        duration: 10, // Duration in seconds
+      });
+      console.error("Error updating password", error);
     }
   };
   return (
@@ -90,20 +110,20 @@ const SetNewPassword = () => {
               </Subtitle>
               <Spin spinning={loading} tip="Logging in...">
                 <StyledForm>
-                  <StyledLabel>Password</StyledLabel>
+                  <StyledLabel>Old Password</StyledLabel>
                   <StyledInput
                     type="password"
-                    placeholder="Enter your new password"
+                    placeholder="Enter your old password"
                     name="oldPassword"
                     value={formData.oldPassword}
                     onChange={(e) =>
                       handleInputChange("oldPassword", e.target.value)
                     }
                   />
-                  <StyledLabel>Confirm password</StyledLabel>
+                  <StyledLabel>New password</StyledLabel>
                   <StyledInput
                     type="password"
-                    placeholder="Confirm password"
+                    placeholder="Enter your new password"
                     name="newPassword"
                     value={formData.newPassword}
                     onChange={(e) =>

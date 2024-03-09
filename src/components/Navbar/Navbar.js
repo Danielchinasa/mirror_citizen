@@ -30,6 +30,8 @@ function Navbar() {
   const [button, setButton] = useState(true);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const userDetails = useSelector((state) => state.userDetails);
+  const userToken = userDetails?.jwtToken || "";
   // const user = useSelector((state) => state.user);
   // const userFirstName = user?.user?.firstName || "";
   // const userLastName = user?.user?.lastName || "";
@@ -101,6 +103,11 @@ function Navbar() {
     </Menu>
   );
 
+  console.log(
+    "userDetails?.profileImageLocation",
+    userDetails?.profileImageLocation
+  );
+
   const UserDropdown = () => {
     return (
       <Dropdown
@@ -127,7 +134,15 @@ function Navbar() {
           size={20}
         >
           <img
-            src={defaultDp || defaultDp}
+            src={
+              userDetails && userDetails?.profileImageLocation
+                ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                : defaultDp
+            }
+            // src={
+            //   "https://e-citizen.ng:8443" + userDetails?.profileImageLocation ||
+            //   defaultDp
+            // }
             alt="User Avatar"
             style={{
               width: "40px",
@@ -141,9 +156,6 @@ function Navbar() {
       </Dropdown>
     );
   };
-
-  const userDetails = useSelector((state) => state.userDetails);
-  const userToken = userDetails?.jwtToken || "";
 
   useEffect(() => {
     // Dispatch fetchUserProfile action when component mounts
@@ -328,9 +340,10 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "ngn"
-                              ? formatToNaira(userBalance)
-                              : `$${userBalance}`}
+                            {formatToNaira(userBalance)}
+                            {/* {userCurrency === "ngn"
+                              ? 
+                              : `$${userBalance}`} */}
                           </span>
                         </p>
                       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Row, Col } from "antd";
+import { Card, Row, Col, notification } from "antd";
 import { Typography, Input } from "antd";
 
 import {
@@ -118,8 +118,11 @@ const ProfilePage = () => {
       console.log(response);
       if (response === "success") {
         console.log(response);
-        // Handle further actions if needed
-        // history.push("/consent");
+        notification.success({
+          message: "Success",
+          description: "Successfully updated profile",
+          duration: 10, // Duration in seconds
+        });
         dispatch({
           type: "UPDATE_USER_DETAILS",
           payload: {
@@ -194,9 +197,10 @@ const ProfilePage = () => {
               )}
             </Upload>
             <Subtitle style={{ marginTop: "20px" }}>
-              Update your profile image here {profileImage}
+              Update your profile image here
             </Subtitle>
             <StyledInput
+              hidden={true}
               value={formData.profileImage}
               name="profileImage"
               onChange={(e) =>

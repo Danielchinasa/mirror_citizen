@@ -325,7 +325,7 @@ const DashboardPage = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `https://e-citizen.ng:8069/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -1068,7 +1068,7 @@ const DashboardPage = () => {
         setLoading(true);
         handleCancel();
         const apiUrl =
-          "https://e-citizen.ng:8069/api/v2/transaction/wallet-payment";
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,
@@ -1166,7 +1166,7 @@ const DashboardPage = () => {
         // console.log("Payment from Wallet");
         setLoading(true);
         const apiUrl =
-          "https://e-citizen.ng:8069/api/v2/transaction/wallet-payment";
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,

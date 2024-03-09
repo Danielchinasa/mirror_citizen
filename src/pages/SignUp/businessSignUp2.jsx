@@ -245,7 +245,7 @@ const BusinessSignUp2 = () => {
       const openNotification2 = (placement) => {
         api.error({
           message: `Notification`,
-          description: response.message,
+          description: response,
           placement,
         });
       };
@@ -260,9 +260,19 @@ const BusinessSignUp2 = () => {
       if (response === "success") {
         // On successful login, navigate to the main dashboard
         // console.log("I reach here");
+        notification.success({
+          message: "Success",
+          description: "Registration Successful",
+          duration: 10, // Duration in seconds
+        });
         history.push("/verify-otp");
       } else {
-        setFormErrors({ general: response.message }); // Set error message
+        notification.error({
+          message: "Error",
+          description: response,
+          duration: 10, // Duration in seconds
+        });
+        setFormErrors({ general: response }); // Set error message
         openNotification2("topRight");
       }
     } catch (error) {
@@ -284,6 +294,14 @@ const BusinessSignUp2 = () => {
     // window.open(pdf, "_blank");
     setIsOpen(true);
   };
+
+  const [isAccepted, setIsAccepted] = useState(false);
+
+  const onChangeIsAccepted = (e) => {
+    console.log(`onChangeIsAccepted = ${e.target.checked}`);
+    e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
+  };
+
   return (
     <>
       <Row>
@@ -482,7 +500,7 @@ const BusinessSignUp2 = () => {
                       showIcon
                     />
                   )}
-                  <Checkbox onChange={onChange}>
+                  <Checkbox onChange={onChangeIsAccepted}>
                     I certify that I have read and accepted the{" "}
                     <span
                       style={{ color: "#09C93A", cursor: "pointer" }}
@@ -502,7 +520,21 @@ const BusinessSignUp2 = () => {
                   >
                     <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
                   </Modal>
-                  <MainButtonFull type="primary" htmlType="submit">
+                  <MainButtonFull
+                    type="primary"
+                    htmlType="submit"
+                    disabled={!isAccepted}
+                    style={
+                      isAccepted
+                        ? {}
+                        : {
+                            marginTop: "10px",
+                            backgroundColor: "gray",
+                            color: "white",
+                            cursor: "not-allowed",
+                          }
+                    }
+                  >
                     Proceed
                   </MainButtonFull>
                 </StyledForm>

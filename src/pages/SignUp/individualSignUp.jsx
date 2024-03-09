@@ -43,10 +43,6 @@ const IndividualSignUp = () => {
   ];
   // const [selectedDiv, setSelectedDiv] = useState(null);
 
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
-
   const dispatch = useDispatch();
   const history = useHistory();
   const [userType, setUserType] = useState("");
@@ -273,6 +269,14 @@ const IndividualSignUp = () => {
     // window.open(pdf, "_blank");
     setIsOpen(true);
   };
+  const [isAccepted, setIsAccepted] = useState(false);
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+  const onChangeIsAccepted = (e) => {
+    console.log(`onChangeIsAccepted = ${e.target.checked}`);
+    e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
+  };
 
   return (
     <>
@@ -435,7 +439,7 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
-                  <Checkbox onChange={onChange}>
+                  <Checkbox onChange={onChangeIsAccepted}>
                     I certify that I have read and accepted the{" "}
                     <span
                       style={{ color: "#09C93A", cursor: "pointer" }}
@@ -455,7 +459,21 @@ const IndividualSignUp = () => {
                   >
                     <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
                   </Modal>
-                  <MainButtonFull type="primary" htmlType="submit">
+                  <MainButtonFull
+                    type="primary"
+                    htmlType="submit"
+                    disabled={!isAccepted}
+                    style={
+                      isAccepted
+                        ? {}
+                        : {
+                            marginTop: "10px",
+                            backgroundColor: "gray",
+                            color: "white",
+                            cursor: "not-allowed",
+                          }
+                    }
+                  >
                     Proceed
                   </MainButtonFull>
                 </StyledForm>

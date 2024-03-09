@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, message, Spin } from "antd";
+import { Col, Row, message, Spin, notification } from "antd";
 import {
   CenterText,
   Heading,
@@ -45,11 +45,26 @@ const ForgotPassword = () => {
       setLoading(false);
 
       // Handle success or failure based on the API response
-      if (response !== "user does not exist") {
+      if (response == "success") {
         // Return a response from the API on success
         message.success("Password reset instructions sent to your email");
+        notification.success({
+          message: "Success",
+          description: "Password reset instructions sent to your email",
+          duration: 10, // Duration in seconds
+        });
         // Redirect or perform other actions as needed
         history.push("/login");
+      } else if (response == "user does not exist") {
+        // Return a response from the API on success
+        message.error(response);
+        notification.error({
+          message: "Error",
+          description: response,
+          duration: 10, // Duration in seconds
+        });
+        // Redirect or perform other actions as needed
+        return;
       } else {
         // Display error message
         message.error(response || "Failed to reset password");
@@ -77,7 +92,7 @@ const ForgotPassword = () => {
                 Enter the email that is associated with your account, and we’ll
                 send you instructions on how to recover your account.
               </Subtitle>
-              <Spin spinning={loading} tip="Logging in...">
+              <Spin spinning={loading} tip="Processing...">
                 <StyledForm>
                   <StyledLabel>Email</StyledLabel>
                   <StyledInput
