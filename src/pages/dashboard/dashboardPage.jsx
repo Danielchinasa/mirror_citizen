@@ -136,7 +136,7 @@ const DashboardPage = () => {
   const [financialProcessingFee, setFinancialProcessingFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const [flutterWaveCurrency, setFlutterWaveCurrency] = useState("NGN");
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState();
   const [stolenCheckFee, setStolenCheckFee] = useState("");
   const [formData, setFormData] = useState({
     nin: "",
@@ -154,17 +154,6 @@ const DashboardPage = () => {
     face: "",
     finger: "",
   });
-  const currencyOnChange = (e) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
-
-    if (e.target.value == 2) {
-      setFlutterWaveCurrency("USD");
-    } else {
-      // setCurrencyCheck("NGN");
-      setFlutterWaveCurrency("NGN");
-    }
-  };
 
   const [ninFilled, setNinFilled] = useState(false);
   const [faceFilled, setFaceFilled] = useState(false);
@@ -792,6 +781,25 @@ const DashboardPage = () => {
   const deduction = totalServiceCost * (1.4 / 100);
 
   const ServiceCostt = totalServiceCost - deduction;
+  const [outsideNgWithNiara, setOutsideNgWithNiara] = useState(false);
+  const [outsideNgWithNiaraPrice, setOutsideNgWithNiaraPrice] = useState(0);
+  const currencyOnChange = (e) => {
+    console.log("radio checked", e.target.value);
+    setValue(e.target.value);
+
+    if (e.target.value == 2) {
+      setFlutterWaveCurrency("USD");
+    } else if (e.target.value == 1) {
+      // setCurrencyCheck("NGN");
+      setFlutterWaveCurrency("NGN");
+      setOutsideNgWithNiara(true);
+      // console.log("totalveriNiara:", totalveriNiara);
+      setOutsideNgWithNiaraPrice(totalveriNiara);
+      // setTotalServiceCost(totalveriNiara);
+      // console.log("totalServiceCost after update:", totalServiceCost);
+    }
+  };
+
   const config = {
     //live key
     public_key: "FLWPUBK-6f8762e460e0a984f90b300be5d7a343-X",
@@ -799,7 +807,11 @@ const DashboardPage = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount:
-      currencyCheck == "USD" ? `${totalServiceCost}` : `${totalServiceCost}`,
+      currencyCheck == "USD"
+        ? outsideNgWithNiara == true
+          ? `${outsideNgWithNiaraPrice}`
+          : `${totalServiceCost}`
+        : `${totalServiceCost}`,
     currency: flutterWaveCurrency,
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
