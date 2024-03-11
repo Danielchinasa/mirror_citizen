@@ -485,6 +485,7 @@ const DashboardPage = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
+        history.push("/dashboard");
         // notification.error({
         //   message: "Error",
         //   description:
@@ -492,7 +493,7 @@ const DashboardPage = () => {
         //   duration: 20, // Duration in seconds
         // });
         // Handle further actions if needed
-        return;
+        // return;
       }
       // else if (
       //   response.business &&
@@ -569,13 +570,14 @@ const DashboardPage = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
+        history.push("/dashboard");
         // notification.error({
         //   message: "Error",
         //   description:
         //     "An error occurred with the Vehicle verification. Please try again later.",
         //   duration: 20, // Duration in seconds
         // });
-        return;
+        // return;
       }
       // else if (
       //   response.vehicle &&
@@ -619,13 +621,14 @@ const DashboardPage = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
+        history.push("/dashboard");
         // notification.error({
         //   message: "Message",
         //   description:
         //     "An error occurred with the Financial verification. Please try again later.",
         //   duration: 20, // Duration in seconds
         // });
-        return;
+        // return;
       } else {
         Swal.fire({
           title: "Error",
