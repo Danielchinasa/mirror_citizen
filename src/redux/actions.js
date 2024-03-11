@@ -254,7 +254,7 @@ export const sendVerificationRequest =
         },
         business: {
           company_name: formData.business_name || "",
-          rc: formData.rc || "",
+          rc_number: parseInt(formData.rc) || "",
         },
         financial: {
           bvn: parseInt(formData.bvn) || "",
