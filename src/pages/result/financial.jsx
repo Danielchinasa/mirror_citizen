@@ -40,6 +40,7 @@ import {
 import { MdOutlineMail, MdOutlineWorkOutline } from "react-icons/md";
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import { GiBigDiamondRing } from "react-icons/gi";
+import Swal from "sweetalert2";
 
 const { Title, Text } = Typography;
 
@@ -152,6 +153,7 @@ const Financial = () => {
         } else {
           setLoading(false);
         }
+
         const crc = "crc-data";
         const firstCentral = "firstCentral-data";
         const firstNameFromResponse =
@@ -339,6 +341,18 @@ const Financial = () => {
     </>
   );
   const storedValue = localStorage.getItem("profile");
+  if (loading) {
+    Swal.fire({
+      title: "Hmmm...",
+      text: "Awaiting Consent",
+      icon: "info",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      // allowOutsideClick: false,
+      // allowEscapeKey: false,
+    });
+  }
   return (
     <Container>
       <InfoSec>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Divider, Avatar, Spin } from "antd";
+import { Card, Row, Col, Divider, Avatar } from "antd";
 import {
   Container,
   Heading,
@@ -15,11 +15,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchVerificationResult } from "../../redux/actions";
 import axios from "axios";
 import { Typography } from "antd";
-import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
+import Icon, {
+  RightOutlined,
+  UserOutlined,
+  MailOutlined,
+  BankOutlined,
+  CheckCircleOutlined,
+  HomeOutlined,
+  RiseOutlined,
+  DollarOutlined,
+} from "@ant-design/icons";
 import carInsurance from "../../images/car-insurance.svg";
 import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
-import "../dashboard/emergency.css";
 import {
   FaRegUser,
   FaCalendarAlt,
@@ -35,18 +43,13 @@ import {
   MdOutlinePinDrop,
   MdTitle,
 } from "react-icons/md";
-import { AiOutlineFieldNumber } from "react-icons/ai";
-import { GiBigDiamondRing, GiBodyHeight } from "react-icons/gi";
-import { IoSchoolSharp } from "react-icons/io5";
-import Swal from "sweetalert2";
 
 const { Title, Text } = Typography;
 
-const Result = () => {
+const Business = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
-  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("No Data");
   const [lastName, setLastName] = useState("No Data");
   const [nin, setNin] = useState("No Data");
@@ -65,15 +68,13 @@ const Result = () => {
   const [employmentStatus, setEmploymentStatus] = useState("No Data");
   const [originLGA, setOriginLGA] = useState("No Data");
   const [photo, setPhoto] = useState("No Data");
-  const [residenceLGA, setResidenceLGA] = useState("No Data");
-  const [residenceState, setResidenceState] = useState("No Data");
-  const [height, setHeight] = useState("No Data");
-  const [title, setTitle] = useState("No Data");
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
   // );
   const requestId = localStorage.getItem("verificationRequestId");
-  console.log("photo", photo);
+
+  const [surname, setSurname] = useState("No Data");
+  const [shareholdersData, setShareholdersData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,34 +90,26 @@ const Result = () => {
             },
           }
         );
-        // console.log("Consent Check");
-        // console.log(response.data.consent);
-        if (response.data.consent === "pending") {
-          setLoading(true);
-        } else {
-          setLoading(false);
-        }
-        // console.log("hre");
-        // console.log(response.data);
-        const firstNameFromResponse = response.data.data.firstName || "";
-        const lastNameFromResponse = response.data.data.lastName || "No Data";
+        console.log("hre");
+        console.log(response);
+        const firstNameFromResponse = response.data.data.approvedName || "";
+        const lastNameFromResponse = response.data.data.rcNumber || "No Data";
         const ninFromResponse = response.data.data.nin || "No Data";
         const dobFromResponse = response.data.data.dob || "No Data";
         const genderFromResponse = response.data.data.gender || "No Data";
         const residenceAddressFromResponse =
-          response.data.data.residenceAddress || "No Data";
+          response.data.data.address || "No Data";
         const phoneFromResponse = response.data.data.phone || "No Data";
         const maritalStatusFromResponse =
-          response.data.data.maritalStatus || "No Data";
+          response.data.data.companyStatus || "No Data";
         const religionFromResponse = response.data.data.religion || "No Data";
         const educationLevelFromResponse =
           response.data.data.educationLevel || "No Data";
         const professionFromResponse =
-          response.data.data.profession || "No Data";
+          response.data.data.companyStatus || "No Data";
         const emailFromResponse = response.data.data.email || "No Data";
-        const originLGAFromResponse = response.data.data.originLGA || "No Data";
-        const originStateFromResponse =
-          response.data.data.originState || "No Data";
+        const originLGAFromResponse = response.data.data.state || "No Data";
+        const originStateFromResponse = response.data.data.city || "No Data";
         const birthCountryFromResponse =
           response.data.data.birthCountry || "No Data";
         const birthStateFromResponse =
@@ -124,12 +117,6 @@ const Result = () => {
         const employmentSatusFromResponse =
           response.data.data.employmentSatus || "No Data";
         const photoFromResponse = response.data.data.photo || "No Data";
-        const residenceLGAFromResponse =
-          response.data.data.residenceLGA || "No Data";
-        const residenceStateFromResponse =
-          response.data.data.residenceState || "No Data";
-        const heightFromResponse = response.data.data.height || "No Data";
-        const titleFromResponse = response.data.data.title || "No Data";
         setFirstName(firstNameFromResponse);
         setLastName(lastNameFromResponse);
         setNin(ninFromResponse);
@@ -148,10 +135,12 @@ const Result = () => {
         setBirthState(birthStateFromResponse);
         setEmploymentStatus(employmentSatusFromResponse);
         setPhoto(photoFromResponse);
-        setResidenceLGA(residenceLGAFromResponse);
-        setResidenceState(residenceStateFromResponse);
-        setHeight(heightFromResponse);
-        setTitle(titleFromResponse);
+
+        const crc = "shareholders-data";
+        const shareholdersDataresp = response.data[`${crc}`];
+        const surenameresp = response.data.data[`${crc}`].surname || "No Data";
+        setSurname(surenameresp);
+        setShareholdersData(shareholdersDataresp);
       } catch (error) {
         // Handle errors if needed
         console.error("Error checking consent:", error);
@@ -176,18 +165,6 @@ const Result = () => {
   );
   const storedValue = localStorage.getItem("profile");
 
-  if (loading) {
-    Swal.fire({
-      title: "Hmmm...",
-      text: "Awaiting Consent",
-      icon: "info",
-      didOpen: () => {
-        Swal.showLoading();
-      },
-      // allowOutsideClick: false,
-      // allowEscapeKey: false,
-    });
-  }
   return (
     <Container>
       <InfoSec>
@@ -195,145 +172,174 @@ const Result = () => {
           <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>
-          <Heading4>Verification Result</Heading4>
+          <Heading4>Business Verification Result</Heading4>
         </Card>
-        <Spin spinning={loading} tip="Awaiting Consent...">
-          <Card style={{ width: "100%", marginTop: "20px" }}>
-            <div>
-              <Text>Basic Identity Profile </Text>
-              <RightOutlined />
-              {/* <Text>{storedValue}</Text> */}
-              <Text>National Identification Number (NIN)</Text>
-            </div>
+        <Card style={{ width: "100%", marginTop: "20px" }}>
+          <div>
+            <Text>Business Profile</Text>
+            <RightOutlined />
+            <Text>Business Name</Text>
+          </div>
+          <Divider />
+
+          <Row gutter={16}>
+            {/* <Col span={24}>
+              {photo ? (
+                <Avatar
+                  size={124}
+                  src={`https://e-citizen.ng:8443${photo}`}
+                  alt="Avatar"
+                />
+              ) : (
+                <Avatar size={124} icon={<UserOutlined />} />
+              )}
+            </Col>
+            <Divider /> */}
+            <Col span={6}>
+              {renderDetail(<UserOutlined />, "Business Name", `${firstName}`)}
+              <Divider />
+              {renderDetail(
+                <BankOutlined />,
+                "Registration Number",
+                `${lastName}`
+              )}
+            </Col>
+            <Col span={6}>
+              {renderDetail(<MailOutlined />, "Business Email", `${email}`)}
+              <Divider />
+
+              {renderDetail(<MdOutlinePinDrop />, "State", `${originLGA}`)}
+            </Col>
+            <Col span={6}>
+              {renderDetail(
+                <CheckCircleOutlined />,
+                "Company Status",
+                `${profession}`
+              )}
+              <Divider />
+              {renderDetail(
+                <HomeOutlined />,
+                "Business Address",
+                `${residenceAddress}`
+              )}
+            </Col>
+            <Col span={6}>
+              {renderDetail(
+                <UserOutlined />,
+                "Approved Name: ",
+                `${firstName}`
+              )}
+              <Divider />
+              {renderDetail(
+                <HomeOutlined />,
+                "Branch Address",
+                `${residenceAddress}`
+              )}
+            </Col>
             <Divider />
-
-            <Row gutter={16}>
-              <StyledLabel style={{ marginBottom: "10px" }}>
-                Personal Details
-              </StyledLabel>
-              <Col span={24}>
-                {photo ? (
-                  <Avatar
-                    size={124}
-                    src={`https://e-citizen.ng:8443${photo}`}
-                    alt="Avatar"
-                  />
-                ) : (
-                  <Avatar size={124} icon={<UserOutlined />} />
-                )}
-              </Col>
+            <Col span={6}>
+              {renderDetail(<HomeOutlined />, "City", `${originState}`)}
               <Divider />
-              <Col span={6}>
-                {renderDetail(
-                  <FaRegUser />,
-                  "Name",
-                  `${firstName} ${lastName}`
-                )}
-                <Divider />
-
-                {renderDetail(<AiOutlineFieldNumber />, "NIN", `${nin}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaCalendarAlt />, "Date of Birth", `${dob}`)}
-                <Divider />
-
-                {renderDetail(<FaPray />, "Religion", `${religion}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaHome />, "Address", `${residenceAddress}`)}
-                <Divider />
-                {renderDetail(<FaRestroom />, "Gender", `${gender}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaPhoneAlt />, "Phone Number", `${phone}`)}
-                <Divider />
-                {renderDetail(<MdOutlineMail />, "Email", `${email}`)}
-              </Col>
+            </Col>
+            <Col span={6}>
+              {renderDetail(<MailOutlined />, "Postal Code", `No Data`)}
               <Divider />
+            </Col>
+          </Row>
+          <Divider />
+          <div>
+            <Text>Stakeholders Details </Text>
+          </div>
+          <Divider />
+
+          {shareholdersData.map((shareholder, index) => (
+            <Row key={index} gutter={16}>
               <Col span={6}>
                 {renderDetail(
-                  <FaGlobe />,
-                  "Country of Birth",
-                  `${birthCountry}`
+                  "Entity:",
+                  shareholder.corporation_name
+                    ? shareholder.corporation_name
+                    : "No Data"
                 )}
                 <Divider />
                 {renderDetail(
-                  <MdOutlineWorkOutline />,
-                  "Employment Status",
-                  `${employmentStatus}`
+                  "Name: ",
+                  `${shareholder.firstname} ${shareholder.surname}`
+                )}
+              </Col>
+              <Col span={6}>
+                {renderDetail("Role: ", "No Data")}
+                <Divider />
+                {renderDetail(
+                  "Place of Residence: ",
+                  shareholder.address ? shareholder.address : "No Data"
                 )}
               </Col>
               <Col span={6}>
                 {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "State of Birth",
-                  `${birthState}`
+                  "Gender: ",
+                  shareholder.gender ? shareholder.gender : "No Data"
                 )}
                 <Divider />
                 {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "LGA of Origin",
-                  `${originLGA}`
+                  "Nationality: ",
+                  shareholder.nationality ? shareholder.nationality : "No Data"
+                )}
+              </Col>
+              <Col span={6}>
+                {renderDetail("Occupation: ", "No Data")}
+                <Divider />
+                {renderDetail(
+                  "Email: ",
+                  shareholder.email ? shareholder.email : "No Data"
                 )}
               </Col>
               <Col span={6}>
                 {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "State of Origin",
-                  `${originState}`
+                  "Phone Number: ",
+                  shareholder.phone_number
+                    ? shareholder.phone_number
+                    : "No Data"
                 )}
                 <Divider />
                 {renderDetail(
-                  <GiBigDiamondRing />,
-                  "Marrital Status",
-                  `${maritalStatus}`
+                  "Date of Birth: ",
+                  shareholder.date_of_birth
+                    ? shareholder.date_of_birth
+                    : "No Data"
                 )}
               </Col>
               <Col span={6}>
-                {renderDetail(<IoSchoolSharp />, "Profession", `${profession}`)}
+                {renderDetail("Identity Document Number: ", "No Data")}
                 <Divider />
-                {renderDetail(
-                  <IoSchoolSharp />,
-                  "Education Level",
-                  `${educationLevel}`
-                )}
+                {renderDetail("Business contact: ", "No Data")}
               </Col>
-              <Divider />
               <Col span={6}>
                 {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Residence LGA",
-                  `${residenceLGA}`
+                  "Status: ",
+                  shareholder.status ? shareholder.status : "No Data"
                 )}
                 <Divider />
                 {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Residence State",
-                  `${residenceState}`
+                  "Appointed on: ",
+                  shareholder.date_of_appointment
+                    ? shareholder.date_of_appointment
+                    : "No Data"
                 )}
               </Col>
               <Col span={6}>
                 {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Origin State",
-                  `${originState}`
+                  "Date of Removal: ",
+                  shareholder.date_of_termination
+                    ? shareholder.date_of_termination
+                    : "No Data"
                 )}
                 <Divider />
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Origin LGA",
-                  `${originLGA}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<GiBodyHeight />, "Height", `${height}`)}
-                <Divider />
-                {renderDetail(<MdTitle />, "Title", `${title}`)}
               </Col>
             </Row>
-          </Card>
-        </Spin>
-        {/* <Title level={5} style={{ marginTop: "20px" }}>
+          ))}
+        </Card>
+        <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
         <Row gutter={30}>
@@ -370,10 +376,10 @@ const Result = () => {
               content="Credit Cards handpicked for you"
             />
           </Col>
-        </Row> */}
+        </Row>
       </InfoSec>
     </Container>
   );
 };
 
-export default Result;
+export default Business;

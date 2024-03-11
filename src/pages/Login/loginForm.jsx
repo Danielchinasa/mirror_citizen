@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
+import Swal from "sweetalert2";
 
 const Context = React.createContext({
   name: "Default",
@@ -175,22 +176,63 @@ const LoginForm = () => {
       if (response.jwtToken) {
         // On successful login with jwtToken, navigate to the main dashboard
         localStorage.setItem("IpAddress", ipAddress);
+        setLoading(false);
         history.push("/main-dashboard");
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: response }); // Set error message
-        openNotification2("topRight");
+        Swal.fire({
+          title: "Error",
+          text: "Incorrect email or password",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        // openNotification2("topRight");
       } else if (response === "IP address not provided in payload") {
         setFormErrors({
           general:
             "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
         }); // Set error message
-        openNotification3("topRight");
+        Swal.fire({
+          title: "Error",
+          text: "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        // openNotification3("topRight");
       } else {
         // On successful login, navigate to the main dashboard
         setFormErrors({ general: "Login Failed" }); // Set error message
-        openNotification2("topRight");
+        Swal.fire({
+          title: "Error",
+          text: "Login Failed",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        // openNotification2("topRight");
       }
     } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Login Failed",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
       console.error("Login failed:", error);
     } finally {
       setLoading(false);

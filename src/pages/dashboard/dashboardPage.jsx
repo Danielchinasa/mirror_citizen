@@ -54,6 +54,7 @@ import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
+import Swal from "sweetalert2";
 
 /* global Reach */
 
@@ -413,9 +414,19 @@ const DashboardPage = () => {
         (response.business && response.business.message === "NO_HIT")
       ) {
         // Display Ant Design notification when NO_HIT
-        notification.error({
-          message: "Input value not found",
-          description: "Please check your input value and try again.",
+        // notification.error({
+        //   message: "Input value not found",
+        //   description: "Please check your input value and try again.",
+        // });
+        Swal.fire({
+          title: "Error",
+          text: "Input value not found",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
 
         history.push("/notFoundPage");
@@ -441,11 +452,21 @@ const DashboardPage = () => {
           "verificationRequestId",
           response.basic.data.requestId
         );
-        notification.info({
-          message: "Message",
-          description: response.basic.message,
-          duration: 20, // Duration in seconds
+        Swal.fire({
+          title: "Success",
+          text: response.basic.message,
+          icon: "info",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.info({
+        //   message: "Message",
+        //   description: response.basic.message,
+        //   duration: 20, // Duration in seconds
+        // });
         // Handle further actions if needed
         history.push("/main-dashboard");
       } else if (
@@ -454,50 +475,106 @@ const DashboardPage = () => {
         typeof response.basic.success === "boolean" &&
         response.basic.success === false
       ) {
-        notification.error({
-          message: "Error",
-          description:
-            "Oops! We encountered an issue while processing your request. It seems that the data we expected to find is missing. Please try again later",
-          duration: 20, // Duration in seconds
+        Swal.fire({
+          title: "Error",
+          text: "Oops! We encountered an issue while processing your request. It seems that the data we expected to find is missing. Please try again later",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.error({
+        //   message: "Error",
+        //   description:
+        //     "Oops! We encountered an issue while processing your request. It seems that the data we expected to find is missing. Please try again later",
+        //   duration: 20, // Duration in seconds
+        // });
         // Handle further actions if needed
         return;
-      } else if (
-        response.business &&
-        response.business.message === "Business API call successful"
-      ) {
-        // localStorage.setItem(
-        //   "verificationRequestId",
-        //   response.business.data.requestId
-        // );
-        // Handle further actions if needed
-        history.push("/main-dashboard");
-      } else if (response.business && response.business.success === true) {
-        // localStorage.setItem(
-        //   "verificationRequestId",
-        //   response.business.data.requestId
-        // );
-        // Handle further actions if needed
-        notification.info({
-          message: "Message",
-          description: "Successful",
-          duration: 5, // Duration in seconds
+      }
+      // else if (
+      //   response.business &&
+      //   response.business.message === "Business API call successful"
+      // ) {
+      //   // localStorage.setItem(
+      //   //   "verificationRequestId",
+      //   //   response.business.data.requestId
+      //   // );
+      //   // Handle further actions if needed
+      //   history.push("/main-dashboard");
+      // }
+      else if (response.business && response.business.success === false) {
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred with the business verification. Please try again later.",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+
+        // notification.info({
+        //   message: "Message",
+        //   description: "Successful",
+        //   duration: 5, // Duration in seconds
+        // });
+        history.push("/dashboard");
+      } else if (response.business && response.business.success === true) {
+        Swal.fire({
+          title: "Success",
+          text: "Your busness verification request was successful.",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
+        // notification.info({
+        //   message: "Message",
+        //   description: "Successful",
+        //   duration: 5, // Duration in seconds
+        // });
         history.push("/main-dashboard");
       } else if (response.vehicle && response.vehicle.success === true) {
-        notification.info({
-          message: "Message",
-          description: "Successful",
-          duration: 5, // Duration in seconds
+        Swal.fire({
+          title: "Success",
+          text: "Your vehicle verification request was successful.",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.info({
+        //   message: "Message",
+        //   description: "Successful",
+        //   duration: 5, // Duration in seconds
+        // });
         history.push("/main-dashboard");
       } else if (response.vehicle && response.vehicle.success === false) {
-        notification.error({
-          message: "Error",
-          description:
-            "An error occurred with the Vehicle verification. Please try again later.",
-          duration: 20, // Duration in seconds
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred with the Vehicle verification. Please try again later.",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.error({
+        //   message: "Error",
+        //   description:
+        //     "An error occurred with the Vehicle verification. Please try again later.",
+        //   duration: 20, // Duration in seconds
+        // });
         return;
       }
       // else if (
@@ -519,32 +596,68 @@ const DashboardPage = () => {
       //   history.push("/main-dashboard");
       // }
       else if (response.financial && response.financial.success === true) {
-        notification.info({
-          message: "Message",
-          description: response.financial.message,
-          duration: 20, // Duration in seconds
+        Swal.fire({
+          title: "Success",
+          text: response.financial.message,
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+
         history.push("/main-dashboard");
       } else if (response.financial && response.financial.success === false) {
-        notification.error({
-          message: "Message",
-          description:
-            "An error occurred with the Financial verification. Please try again later.",
-          duration: 20, // Duration in seconds
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred with the Financial verification. Please try again later.",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.error({
+        //   message: "Message",
+        //   description:
+        //     "An error occurred with the Financial verification. Please try again later.",
+        //   duration: 20, // Duration in seconds
+        // });
         return;
       } else {
-        notification.error({
-          message: "Error",
-          description:
-            "An unexpected server error occurred. Please attempt your action again",
-          duration: 20,
+        Swal.fire({
+          title: "Error",
+          text: "An unexpected server error occurred. Please attempt your action again",
+          icon: "question",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.error({
+        //   message: "Error",
+        //   description:
+        //     "An unexpected server error occurred. Please attempt your action again",
+        //   duration: 20,
+        // });
       }
     } catch (error) {
       // Handle errors if needed
       setLoading(false);
       console.error("Error sending verification", error);
+      Swal.fire({
+        title: "Error",
+        text: "An unexpected server error occurred. Please attempt your action again",
+        icon: "question",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
     } finally {
       setLoading(false);
     }
@@ -1096,11 +1209,21 @@ const DashboardPage = () => {
           // Show the Ant Design notification
 
           handleCancel();
-          notification.error({
-            message: "Wallet Balance Warning",
-            description:
-              "Your wallet balance is low. Please recharge before making a payment.",
+          Swal.fire({
+            title: "Wallet Balance Warning",
+            text: "Your wallet balance is low. Please recharge before making a payment.",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
+          // notification.error({
+          //   message: "Wallet Balance Warning",
+          //   description:
+          //     "Your wallet balance is low. Please recharge before making a payment.",
+          // });
         } else {
           try {
             setLoading(true);
@@ -1192,12 +1315,21 @@ const DashboardPage = () => {
 
         if (userBalance.toLocaleString() < 55) {
           // Show the Ant Design notification
-
-          notification.error({
-            message: "Wallet Balance Warning",
-            description:
-              "Your wallet balance is low. Please recharge before making a payment.",
+          Swal.fire({
+            title: "Wallet Balance Warning",
+            text: "Your wallet balance is low. Please recharge before making a payment.",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
+          // notification.error({
+          //   message: "Wallet Balance Warning",
+          //   description:
+          //     "Your wallet balance is low. Please recharge before making a payment.",
+          // });
         } else {
           try {
             const response = await fetch(apiUrl, {
@@ -1749,6 +1881,22 @@ const DashboardPage = () => {
   const [modal1Open, setModal1Open] = useState(false);
   const liveCaptureUrl = `https://41.184.212.26/`;
 
+  if (loading) {
+    Swal.fire({
+      title: "Hmmm...",
+      text: "Verification in progress",
+      icon: "info",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      customClass: {
+        confirmButton: "custom-swal-button",
+      },
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
+  }
+
   return (
     <Row>
       <Col>
@@ -2027,7 +2175,6 @@ const DashboardPage = () => {
                     ""
                   ) : (
                     <>
-                      <Heading6>How to verify</Heading6>
                       {/* <Flex gap="small" wrap="wrap">
                       <Tag
                         closeIcon={<CloseCircleOutlined />}
@@ -2039,6 +2186,7 @@ const DashboardPage = () => {
                     </Flex> */}
                       {selectedForm === "none" && (
                         <>
+                          <Heading6>How to verify</Heading6>
                           <List
                             itemLayout="horizontal"
                             dataSource={data}

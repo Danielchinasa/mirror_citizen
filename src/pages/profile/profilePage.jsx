@@ -20,6 +20,7 @@ import { LoadingOutlined, ManOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -117,12 +118,20 @@ const ProfilePage = () => {
 
       console.log(response);
       if (response === "success") {
-        console.log(response);
-        notification.success({
-          message: "Success",
-          description: "Successfully updated profile",
-          duration: 10, // Duration in seconds
+        // console.log(response);
+        Swal.fire({
+          title: "Success",
+          text: "Successfully updated profile",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
         });
+        // notification.success({
+        //   message: "Success",
+        //   description: "Successfully updated profile",
+        //   duration: 10, // Duration in seconds
+        // });
         dispatch({
           type: "UPDATE_USER_DETAILS",
           payload: {

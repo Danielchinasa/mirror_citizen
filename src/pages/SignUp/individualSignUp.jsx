@@ -33,6 +33,7 @@ import "react-phone-input-2/lib/style.css";
 import "../../index.css";
 import privacyPolicy from "../../privacyPolicy";
 import { Modal } from "antd";
+import Swal from "sweetalert2";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -248,14 +249,34 @@ const IndividualSignUp = () => {
         history.push("/verify-otp");
       } else {
         setFormErrors({ general: response.message }); // Set error message
-        openNotification2("topRight");
+        // openNotification2("topRight");
+        Swal.fire({
+          title: "Error",
+          text: response.message,
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
       }
     } catch (error) {
       console.error("SignUp failed:", error);
-      notification.error({
-        message: "Server Error",
-        description: error.message || "An error occurred while signing up.",
+      Swal.fire({
+        title: "Error",
+        text: error.message || "An error occurred while signing up.",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
+      // notification.error({
+      //   message: "Server Error",
+      //   description: error.message || "An error occurred while signing up.",
+      // });
     } finally {
       setLoading(false);
     }
@@ -271,10 +292,10 @@ const IndividualSignUp = () => {
   };
   const [isAccepted, setIsAccepted] = useState(false);
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+    // console.log(`checked = ${e.target.checked}`);
   };
   const onChangeIsAccepted = (e) => {
-    console.log(`onChangeIsAccepted = ${e.target.checked}`);
+    // console.log(`onChangeIsAccepted = ${e.target.checked}`);
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
 

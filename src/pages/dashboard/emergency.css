@@ -1,3 +1,7 @@
 .clickable-row {
     cursor: pointer !important;
   }
+  .custom-swal-button {
+    background-color: #0DC939 !important; /* Example color */
+    color: white; /* Text color */
+  }

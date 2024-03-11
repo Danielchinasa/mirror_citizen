@@ -29,6 +29,7 @@ import "react-phone-input-2/lib/style.css";
 import "../../index.css";
 import privacyPolicy from "../../privacyPolicy";
 import { Modal } from "antd";
+import Swal from "sweetalert2";
 const { Title } = Typography;
 
 const BusinessSignUp2 = () => {
@@ -260,27 +261,57 @@ const BusinessSignUp2 = () => {
       if (response === "success") {
         // On successful login, navigate to the main dashboard
         // console.log("I reach here");
-        notification.success({
-          message: "Success",
-          description: "Registration Successful",
-          duration: 10, // Duration in seconds
+        Swal.fire({
+          title: "Success",
+          text: "Registration Successful",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.success({
+        //   message: "Success",
+        //   description: "Registration Successful",
+        //   duration: 10, // Duration in seconds
+        // });
         history.push("/verify-otp");
       } else {
-        notification.error({
-          message: "Error",
-          description: response,
-          duration: 10, // Duration in seconds
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred while signing up. Try again later",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
+        // notification.error({
+        //   message: "Error",
+        //   description: response,
+        //   duration: 10, // Duration in seconds
+        // });
         setFormErrors({ general: response }); // Set error message
-        openNotification2("topRight");
+        // openNotification2("topRight");
       }
     } catch (error) {
       console.error("SignUp failed:", error);
-      notification.error({
-        message: "Server Error",
-        description: error.message || "An error occurred while signing up.",
+      Swal.fire({
+        title: "Error",
+        text: error.message || "An error occurred while signing up.",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
+      // notification.error({
+      //   message: "Server Error",
+      //   description: error.message || "An error occurred while signing up.",
+      // });
     } finally {
       setLoading(false);
     }

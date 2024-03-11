@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   Row,
@@ -25,6 +25,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./emergency.css";
+import Swal from "sweetalert2";
+import { SearchOutlined } from "@ant-design/icons";
+import { useReactToPrint } from "react-to-print";
 
 const data = [
   {
@@ -81,6 +84,14 @@ const MainDashboard = () => {
       dispatch(fetchVerificationData(userToken));
       dispatch(fetchTransactionData(userToken));
     }
+    const interval = setInterval(() => {
+      if (userToken) {
+        dispatch(fetchVerificationData(userToken));
+      }
+    }, 5000); // 3000 milliseconds = 3 seconds
+
+    // Clean up the interval to avoid memory leaks
+    return () => clearInterval(interval);
   }, [dispatch, userToken]);
 
   // Log the verificationData to the console
@@ -115,51 +126,109 @@ const MainDashboard = () => {
 
     fetchServiceFee();
   }, []);
+  const [openedVerifications, setOpenedVerifications] = useState([]);
 
-  useEffect(() => {
-    console.log("Verification Data:", verificationData);
-    // const requestId = verificationData || "";
-    // localStorage.setItem("verificationRequestId", requestId);
-  }, [verificationData, transactionData]);
+  //!! Update the verification open array to know which verification is opened
+  // useEffect(() => {
+  //   // Load opened verifications from storage or any other source
+  //   const savedOpenedVerifications = localStorage.getItem(
+  //     "openedVerifications"
+  //   );
+  //   if (savedOpenedVerifications) {
+  //     setOpenedVerifications(JSON.parse(savedOpenedVerifications));
+  //   }
+  // }, []);
 
   const handleViewResult = (record) => {
-    const { insertionDate } = record;
+    const { id, insertionDate, consent } = record;
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
       currentDate.getTime() - 48 * 60 * 60 * 1000
     );
     const twentyFourHoursAgo = new Date(
       currentDate.getTime() - 24 * 60 * 60 * 1000
-    ); // 24 hours in milliseconds
+    );
 
-    if (
-      (record.type === "Basic Profile" ||
-        record.type === "Financial Profile") &&
-      new Date(insertionDate) < fortyEightHoursAgo
-    ) {
-      message.error("Verification Result or Consent Expired");
-      return;
-    }
+    // Check if the verification ID is not in the list of opened verifications
+    if (!openedVerifications.includes(id)) {
+      // Add the verification ID to the list of opened verifications
+      setOpenedVerifications((prevVerifications) => [...prevVerifications, id]);
+      localStorage.setItem(
+        "openedVerifications",
+        JSON.stringify([...openedVerifications, id])
+      );
 
-    // If action is not expired, continue with navigation
-    const verificationRequestId = record.id;
-    const consentStatus = record.consent;
-    const type = record.type;
-    const searchParameter = record.searchParameter;
+      // Your existing logic for handling different scenarios
+      if (
+        ((record.type === "Basic Profile" ||
+          record.type === "Financial Profile") &&
+          new Date(insertionDate) < fortyEightHoursAgo) ||
+        (record.consent === "pending" &&
+          new Date(insertionDate) < twentyFourHoursAgo)
+      ) {
+        // message.error("Verification Result or Consent Expired");
+        Swal.fire({
+          title: "Error",
+          text: "Verification Result or Consent expired",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+        });
+        return;
+      }
 
-    localStorage.setItem("verificationRequestId", verificationRequestId);
-    if (searchParameter === "Vehicle Registration Number") {
-      history.push("/vehicle2");
-    } else if (type === "Vehicle Profile") {
-      history.push("/vehicle");
-    } else if (type === "Business Profile") {
-      history.push("/business");
-    } else if (type === "Financial Profile") {
-      history.push("/financial");
-    } else {
-      history.push("/result");
+      if (consent === "denied") {
+        Swal.fire({
+          title: "Error",
+          text: "Consent Denied",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+        });
+        return;
+      }
+
+      // If action is not expired, continue with navigation
+      const searchParameter = record.searchParameter;
+      localStorage.setItem("verificationRequestId", id);
+      if (searchParameter === "Vehicle Registration Number") {
+        history.push("/vehicle2");
+      } else if (record.type === "Vehicle Profile") {
+        history.push("/vehicle");
+      } else if (record.type === "Business Profile") {
+        history.push("/business");
+      } else if (record.type === "Financial Profile") {
+        history.push("/financial");
+      } else {
+        history.push("/result");
+      }
     }
   };
+
+  //!! Check for first three verifications and display an alert
+  // useEffect(() => {
+  //   console.log("Verification Data:", openedVerifications);
+
+  //   if (verificationData && verificationData.length > 0) {
+  //     const firstThreeItems = verificationData.slice(0, 3);
+  //     console.log(
+  //       "Last three consents:",
+  //       firstThreeItems.map((item) => item.consent)
+  //     );
+  //     const unopenedLastThree = firstThreeItems.filter(
+  //       (item) => !openedVerifications.includes(item.id)
+  //     );
+  //     const anyGranted = unopenedLastThree.some(
+  //       (item) => item.consent === "granted"
+  //     );
+
+  //     if (anyGranted) {
+  //       alert("Yes");
+  //     }
+  //   }
+  // }, [verificationData, openedVerifications, transactionData]);
 
   const config = {
     //live key
@@ -190,6 +259,38 @@ const MainDashboard = () => {
     // Handle row click event here
     console.log("Clicked row:", record);
   };
+
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+  const list = [
+    { category: "credit", amount: 200 },
+    { category: "debit", amount: 100 },
+    { category: "debit", amount: 100 },
+  ];
+
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearchText(value);
+  };
+
+  const filteredData =
+    verificationData &&
+    verificationData.filter((record) => {
+      return Object.keys(record).some(
+        (key) =>
+          record[key] &&
+          record[key]
+            .toString()
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
+      );
+    });
+
   const columns = [
     {
       title: "Date and Time",
@@ -209,6 +310,33 @@ const MainDashboard = () => {
       title: "Search Parameter (Value)",
       dataIndex: "searchParameter",
       key: "searchParameter",
+      filters: [
+        {
+          text: "NIN",
+          value: "NIN",
+        },
+        {
+          text: "BVN",
+          value: "BVN",
+        },
+        {
+          text: "Face+NIN",
+          value: "Face+NIN",
+        },
+        {
+          text: "COMPANY NAME",
+          value: "COMPANY NAME",
+        },
+        {
+          text: "Vehicle Registration Number",
+          value: "Vehicle Registration Number",
+        },
+        {
+          text: "VIN",
+          value: "VIN",
+        },
+      ],
+      onFilter: (value, record) => record.searchParameter.indexOf(value) === 0,
       render: (text, record) => {
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
@@ -257,7 +385,7 @@ const MainDashboard = () => {
       title: "Consent Status",
       dataIndex: "consent",
       key: "consent",
-      sorter: (a, b) => a.consent - b.consent,
+      // sorter: (a, b) => a.consent.localeCompare(b.consent),
       filters: [
         {
           text: "granted",
@@ -269,39 +397,38 @@ const MainDashboard = () => {
         },
       ],
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
+      render: (text, record) => {
+        let color = ""; // Default color
+        if (record.consent === "denied") {
+          color = "red"; // Change color to red if consent is denied
+        }
+        return <span style={{ color }}>{text}</span>;
+      },
     },
     {
       title: "Selected Profile",
       dataIndex: "type",
       key: "type",
-      sorter: (a, b) => a.type - b.type,
+      // sorter: (a, b) => a.type - b.type,
       filters: [
         {
-          text: "nin",
-          value: "nin",
+          text: "Basic Profile",
+          value: "Basic Profile",
         },
         {
-          text: "Phone number",
-          value: "Phone number",
+          text: "Business Profile",
+          value: "Business Profile",
         },
         {
-          text: "Demographic",
-          value: "Demographic",
+          text: "Financial Profile",
+          value: "Financial Profile",
         },
         {
-          text: "Face",
-          value: "Face",
-        },
-        {
-          text: "Finger",
-          value: "Finger",
-        },
-        {
-          text: "bvn",
-          value: "bvn",
+          text: "Vehicle Profile",
+          value: "Vehicle Profile",
         },
       ],
-      onFilter: (value, record) => record.consent.indexOf(value) === 0,
+      onFilter: (value, record) => record.type.indexOf(value) === 0,
     },
     // {
     //   title: "Action",
@@ -343,6 +470,14 @@ const MainDashboard = () => {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
           );
+        } else if (consent === "denied") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              Consent Denied
+            </span>
+          );
+        } else if (consent === "pending") {
+          return <span style={{ fontWeight: "bold" }}>Awaiting Consent</span>;
         } else {
           return (
             <a
@@ -350,7 +485,7 @@ const MainDashboard = () => {
               onClick={() => handleViewResult(record)}
               style={{ cursor: "pointer" }}
             >
-              View Result
+              <span style={{ fontWeight: "bold" }}> View Result</span>
             </a>
           );
         }
@@ -401,21 +536,42 @@ const MainDashboard = () => {
       key: "1",
       label: "Verification History",
       children: (
-        <Table
-          expandable
-          columns={columns}
-          dataSource={verificationData && verificationData.reverse()}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: () => handleViewResult(record),
-              style: { cursor: "pointer" },
-            };
-          }}
-          pagination={{
-            position: ["bottomCenter"],
-            className: "ant-pagination ant-pagination-item",
-          }}
-        />
+        <>
+          <Input
+            placeholder="Search..."
+            prefix={<SearchOutlined />}
+            onChange={handleSearch}
+            style={{ marginBottom: 8, width: 200 }}
+          />
+          <MainButton
+            onClick={handlePrint}
+            type="primary"
+            hidden
+            style={{ float: "right", width: 150, marginBottom: "20px" }}
+          >
+            {" "}
+            Export to PDF{" "}
+          </MainButton>
+          <div ref={componentRef}>
+            {list && (
+              <Table
+                expandable
+                columns={columns}
+                dataSource={filteredData && filteredData.reverse()}
+                onRow={(record, rowIndex) => {
+                  return {
+                    onClick: () => handleViewResult(record),
+                    style: { cursor: "pointer" },
+                  };
+                }}
+                pagination={{
+                  position: ["bottomCenter"],
+                  className: "ant-pagination ant-pagination-item",
+                }}
+              />
+            )}
+          </div>
+        </>
       ),
     },
     {
@@ -486,11 +642,19 @@ const MainDashboard = () => {
 
                 // Update the user state with the new wallet balance
                 dispatch(updateUserWalletBalance(updatedWalletBalance));
-                notification.success({
-                  message: "Success",
-                  description: "Wallet topup successful",
-                  duration: 10, // Duration in seconds
+                Swal.fire({
+                  title: "Success",
+                  text: "Wallet topup was successful",
+                  icon: "success",
+                  customClass: {
+                    confirmButton: "custom-swal-button",
+                  },
                 });
+                // notification.success({
+                //   message: "Success",
+                //   description: "Wallet topup successful",
+                //   duration: 10, // Duration in seconds
+                // });
                 // Update the local state if needed
                 // setUserBal(updatedWalletBalance.walletBalance);
               }
@@ -541,6 +705,8 @@ const MainDashboard = () => {
       </div>
     </div>
   );
+
+  const pdfRef = useRef();
 
   // Usage
   return (
@@ -622,7 +788,7 @@ const MainDashboard = () => {
               }}
             >
               <CustomStatistic
-                title="Failed verifications "
+                title="Unsuccessful verifications "
                 value={failedVerificationCount}
                 valueStyle={{
                   color: "#3f8600",

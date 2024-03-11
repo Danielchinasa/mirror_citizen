@@ -15,6 +15,7 @@ import { SendOtp, ReSendOtp } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import OtpInput from "react-otp-input";
+import Swal from "sweetalert2";
 
 const VerifyOtp = () => {
   const dispatch = useDispatch();
@@ -53,20 +54,50 @@ const VerifyOtp = () => {
       if (response === "user activated") {
         // Display success message
         setLoading(false);
-        console.log(`Entered OTP: jjjj`);
-        message.success("OTP verification successful", 10);
+        // console.log(`Entered OTP: jjjj`);
+        // message.success("OTP verification successful", 10);
+        Swal.fire({
+          title: "Success",
+          text: "OTP verification successful",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
 
         // Handle further actions if needed
         history.push("/email-confirm");
       } else {
         setLoading(false);
         // Display error message
-        message.error(response.message || "OTP verification failed", 10);
+        Swal.fire({
+          title: "Error",
+          text: response.message || "OTP verification failed",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        // message.error(response.message || "OTP verification failed", 10);
         // Handle further actions if needed
       }
     } catch (error) {
       // Handle errors if needed
       setLoading(false);
+      Swal.fire({
+        title: "Error",
+        text: "Error sending OTP",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
       console.error("Error sending OTP:", error);
     }
   };
@@ -82,19 +113,48 @@ const VerifyOtp = () => {
       if (response === "success") {
         // Display success message
         setLoading2(false);
-
-        message.success("OTP Sent Successful");
+        Swal.fire({
+          title: "Success",
+          text: "OTP Sent Successfully",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        // message.success("OTP Sent Successful");
         // Handle further actions if needed
         history.push("/verify-otp");
       } else {
         setLoading2(false);
         // Display error message
-        message.error(response.message || "OTP Resend failed");
+        Swal.fire({
+          title: "Error",
+          text: response.message || "OTP Resend failed",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        // message.error(response.message || "OTP Resend failed");
         // Handle further actions if needed
       }
     } catch (error) {
       // Handle errors if needed
       setLoading2(false);
+      Swal.fire({
+        title: "Error",
+        text: "Error sending OTP",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
       console.error("Error sending OTP:", error);
     }
   };
