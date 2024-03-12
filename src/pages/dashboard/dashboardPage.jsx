@@ -2148,6 +2148,7 @@ const DashboardPage = () => {
                       >
                         <Space direction="vertical">
                           <Radio
+                            disabled
                             value="vin"
                             size="large"
                             onClick={() => setSelectedForm("vin")}

@@ -70,6 +70,7 @@ const MainDashboard = () => {
   const userName = user?.firstName || "";
   const userPhone = user?.phone || "";
   const userNin = user?.nin || "";
+  const userCurrency = user?.currency || "";
   const [ninFee, setNinFee] = useState("");
   const [faceFee, setFaceFee] = useState("");
   const [vehicleFee, setVehicleFee] = useState("");
@@ -240,7 +241,7 @@ const MainDashboard = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}TP",
     amount: "1000",
-    currency: currencyCheck == "USD" ? "USD" : "NGN",
+    currency: userCurrency == "usd" ? "USD" : "NGN",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {

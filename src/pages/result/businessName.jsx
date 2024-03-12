@@ -42,6 +42,36 @@ const BusinessName = () => {
   const [loading, setLoading] = useState(false);
   const userEmail = user?.email || "";
   const userPhone = user?.phone || "";
+  const [stakeHolderFeeUsd, setStakeHolderFeeUsd] = useState("");
+  const [stakeHolderFeeNgn, setStakeHolderFeeNgn] = useState("");
+  const userCurrency = user?.currency || "";
+
+  useEffect(() => {
+    const fetchServiceFee = async () => {
+      try {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await axios.get(
+          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`, // Include the bearer token
+            },
+          }
+        );
+        console.log("Stake Fees");
+        console.log(response.data.data[8].price);
+
+        setStakeHolderFeeUsd(response.data.data[8].price);
+        setStakeHolderFeeNgn(response.data.data[8].price2);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setStakeHolderFeeUsd(null);
+      }
+    };
+
+    fetchServiceFee();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,8 +106,8 @@ const BusinessName = () => {
     //test key
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: 900,
-    currency: "NGN",
+    amount: userCurrency == "usd" ? stakeHolderFeeUsd : stakeHolderFeeNgn,
+    currency: userCurrency == "usd" ? "USD" : "NGN",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
@@ -291,7 +321,11 @@ const BusinessName = () => {
                     onClick={() => handleButtonClick(business.data.cacid)}
                   >
                     <SearchOutlined /> Lookup Stakeholder for only{" "}
-                    <span style={{ fontWeight: "bold" }}>₦900</span>
+                    <span style={{ fontWeight: "bold" }}>
+                      {userCurrency == "usd"
+                        ? "$" + stakeHolderFeeUsd
+                        : "₦" + stakeHolderFeeNgn}
+                    </span>
                   </MainButton>
                 ) : business["shareholders-data"].length > 0 ? (
                   <div>

@@ -20,7 +20,6 @@ const InactivityDetector = () => {
       console.log("Logging out...");
       // Redirect to login page
       //   history.push("/login");
-      window.location.href = "https://e-citizen.ng/login";
       console.log("Redirecting to login...");
     }, 10 * 60 * 1000); // 10 seconds in milliseconds
   };
