@@ -127,6 +127,8 @@ const MainDashboard = () => {
     fetchServiceFee();
   }, []);
   const [openedVerifications, setOpenedVerifications] = useState([]);
+  console.log("currencyCheck");
+  console.log(currencyCheck);
 
   //!! Update the verification open array to know which verification is opened
   // useEffect(() => {
@@ -198,7 +200,11 @@ const MainDashboard = () => {
       } else if (record.type === "Vehicle Profile") {
         history.push("/vehicle");
       } else if (record.type === "Business Profile") {
-        history.push("/business");
+        if (record.searchParameter === "Company Name") {
+          history.push("/business");
+        } else {
+          history.push("/business");
+        }
       } else if (record.type === "Financial Profile") {
         history.push("/financial");
       } else {

@@ -64,7 +64,7 @@ const SignUpMode = () => {
             )}
           />
         </div>
-        <div
+        {/* <div
           style={{
             border: "2px #000 solid",
             borderRadius: "10px",
@@ -99,7 +99,7 @@ const SignUpMode = () => {
               </List.Item>
             )}
           />
-        </div>
+        </div> */}
         <BtnLink to={"/individual/sign-up/" + selectedDiv}>
           <Button
             type={selectedDiv !== null ? "primary" : "default"}

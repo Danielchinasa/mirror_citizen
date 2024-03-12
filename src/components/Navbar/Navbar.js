@@ -32,6 +32,7 @@ function Navbar() {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = userDetails?.jwtToken || "";
+  const userCurrency = userDetails?.currency || "";
   // const user = useSelector((state) => state.user);
   // const userFirstName = user?.user?.firstName || "";
   // const userLastName = user?.user?.lastName || "";
@@ -39,7 +40,7 @@ function Navbar() {
 
   // localStorage.setItem("userBalance", JSON.stringify(userBal));
   // const storedUserBalance = localStorage.getItem("userBalance");
-  // console.log("Redux State:", userBal);
+  // console.log("Redux State:", userCurrency);
 
   const handleClick = () => setClick(!click);
 
@@ -165,7 +166,6 @@ function Navbar() {
   console.log("UserDetails 2");
   console.log(userDetails);
   const userBalance = userDetails?.walletBalance || 0;
-  const userCurrency = userDetails?.currency || "";
   const formatToNaira = (value) => {
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -178,7 +178,7 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav>
           <NavbarContainer>
-            <Link to={isAuthenticated ? "/main-dashboard" : "/"}>
+            <Link to={isAuthenticated ? "/dashboard" : "/"}>
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
                 src={Logo}
@@ -309,7 +309,9 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {formatToNaira(userBalance)}
+                            {userCurrency === "ngn"
+                              ? formatToNaira(userBalance)
+                              : `$${userBalance}`}
                           </span>
                         </p>
                       </div>
@@ -340,10 +342,9 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {formatToNaira(userBalance)}
-                            {/* {userCurrency === "ngn"
-                              ? 
-                              : `$${userBalance}`} */}
+                            {userCurrency === "ngn"
+                              ? formatToNaira(userBalance)
+                              : `$${userBalance}`}
                           </span>
                         </p>
                       </div>

@@ -37,6 +37,7 @@ import Financial from "./pages/result/financial";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import * as CookieConsent from "vanilla-cookieconsent";
 import LiveFaceScreen from "./pages/liveFace/liveFace";
+import BusinessName from "./pages/result/businessName";
 
 function App() {
   useEffect(() => {
@@ -149,6 +150,7 @@ function App() {
           <Route path="/vehicle" component={Vehicle} />
           <Route path="/vehicle2" component={Vehicle2} />
           <Route path="/legit-car" component={LegitCar} />
+          <Route path="/businessName" component={BusinessName} />
           <Route path="/business" component={Business} />
           <Route path="/financial" component={Financial} />
           <Route path="/faq" component={FaqPage} />

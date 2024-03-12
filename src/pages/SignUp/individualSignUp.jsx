@@ -299,6 +299,22 @@ const IndividualSignUp = () => {
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
 
+  const beforeMaskedValueChange = (newState, oldState, userInput) => {
+    let { value } = newState;
+    let inputValue = userInput;
+
+    // If the input value starts with zero, remove it
+    if (inputValue.startsWith("0")) {
+      inputValue = inputValue.substring(1);
+    }
+
+    // You can also add additional validation or manipulation here if needed
+
+    return {
+      ...newState,
+      value: inputValue,
+    };
+  };
   return (
     <>
       <Row>
@@ -368,7 +384,7 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
-                  <StyledLabel>
+                  {/* <StyledLabel>
                     National Identification Number (NIN)
                   </StyledLabel>
                   <StyledInput
@@ -383,7 +399,7 @@ const IndividualSignUp = () => {
                   />
                   {formErrors.nin && (
                     <Alert message={formErrors.nin} type="error" showIcon />
-                  )}
+                  )} */}
                   <StyledLabel>Email address</StyledLabel>
                   <StyledInput
                     type="text"
@@ -396,7 +412,9 @@ const IndividualSignUp = () => {
                   {formErrors.email && (
                     <Alert message={formErrors.email} type="error" showIcon />
                   )}
-                  <StyledLabel>Phone number</StyledLabel>
+                  <StyledLabel>
+                    Phone number (E.g: +234 81 XXX XXX X)
+                  </StyledLabel>
                   <PhoneInput
                     country={"ng"}
                     value={formData.phoneNumber}
@@ -410,6 +428,7 @@ const IndividualSignUp = () => {
                       borderRadius: "5px",
                       background: "rgba(53, 65, 56, 0.1)",
                     }}
+                    beforeMaskedValueChange={beforeMaskedValueChange}
                   />
                   {/* <StyledInput
                     type="text"

@@ -735,7 +735,7 @@ const DashboardPage = () => {
     "A financial credit profile is a report card that tells how responsible you are with borrowing and repaying money. It helps lenders decide if they can trust you with a loan or credit. Search parameter is bank verification number (BVN).";
 
   const tooltipContentVehicle =
-    "Vehicle profile refers to data and information gathered about the ownership of automobiles. Search parameter is basic VIN.";
+    "VIN: Choose this option to search for a vehicle's original information using a VIN. This includes the option of the stolen status of the vehicle. Registration: Choose this option to search for a vehicle's registration information in Nigeria using the vehicle registration number (license plate)";
   const [serviceFee, setServiceFee] = useState(0);
   const [processingFee, setProcessingFee] = useState(0);
   const [rawServiceFee, setRawServiceFee] = useState(0);
