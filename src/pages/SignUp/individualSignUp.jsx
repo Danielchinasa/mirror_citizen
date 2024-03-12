@@ -167,6 +167,33 @@ const IndividualSignUp = () => {
     });
   };
 
+  const validatePassword = (password) => {
+    const errors = [];
+
+    if (!password) {
+      errors.push("Please enter your password");
+    }
+    if (password.length < 8) {
+      errors.push("Password must be 8 characters or more");
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Password must contain at least one capital letter");
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push("Password must contain at least one lowercase letter");
+    }
+    if (!/\d/.test(password)) {
+      errors.push("Password must contain at least one number");
+    }
+    if (!/[^a-zA-Z0-9]/.test(password)) {
+      errors.push("Password must contain at least one special character");
+    }
+
+    return errors.join(". "); // Join errors into a single string with a dot and space separator
+  };
+
+  const passwordErrorMessage = validatePassword(formData.password);
+
   const validateForm = () => {
     const errors = {};
     // First Name
@@ -201,6 +228,14 @@ const IndividualSignUp = () => {
       errors.password = "Please enter your password";
     } else if (formData.password.length < 8) {
       errors.password = "Password must be 8 characters or more";
+    } else if (!/[A-Z]/.test(formData.password)) {
+      errors.password = "Password must contain at least one capital letter";
+    } else if (!/[a-z]/.test(formData.password)) {
+      errors.password = "Password must contain at least one lowercase letter";
+    } else if (!/\d/.test(formData.password)) {
+      errors.password = "Password must contain at least one number";
+    } else if (!/[^a-zA-Z0-9]/.test(formData.password)) {
+      errors.password = "Password must contain at least one special character";
     }
 
     return errors;
@@ -440,9 +475,10 @@ const IndividualSignUp = () => {
                     onChange={handleInputChange}
                     ref={passwordRef}
                   />
+
                   {formErrors.password && (
                     <Alert
-                      message={formErrors.password}
+                      message={passwordErrorMessage}
                       type="error"
                       showIcon
                     />
