@@ -77,6 +77,31 @@ const MainDashboard = () => {
   const [businessFee, setBusinessFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  useEffect(() => {
+    const fetchServiceFee = async () => {
+      try {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await axios.get(
+          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`, // Include the bearer token
+            },
+          }
+        );
+        console.log("Service Fees");
+        console.log(response.data.data[0].price);
+
+        setCurrencyCheck(response.data.data[0].currency);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+        setNinFee(null);
+      }
+    };
+
+    fetchServiceFee();
+  }, []);
 
   useEffect(() => {
     // Dispatch the fetchVerificationData action with the bearer token when the component mounts
@@ -96,36 +121,6 @@ const MainDashboard = () => {
 
   // Log the verificationData to the console
 
-  useEffect(() => {
-    const fetchServiceFee = async () => {
-      try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
-        );
-        console.log("Service Fees");
-        console.log(response.data[0].price);
-        setNinFee(response.data[0].price);
-        setFaceFee(response.data[1].price);
-        setBusinessFee(response.data[2].price);
-        setFinancialFee(response.data[4].price);
-        setVinVehicleFee(response.data[5].price);
-        setVehicleFee(response.data[6].price);
-        setCurrencyCheck(response.data[0].currency);
-      } catch (error) {
-        console.error("Error fetching IP address:", error);
-        setNinFee(null);
-      }
-    };
-
-    fetchServiceFee();
-  }, []);
   const [openedVerifications, setOpenedVerifications] = useState([]);
   console.log("currencyCheck");
   console.log(currencyCheck);
@@ -235,7 +230,8 @@ const MainDashboard = () => {
   //     }
   //   }
   // }, [verificationData, openedVerifications, transactionData]);
-
+  console.log("NEEWWWWWW");
+  console.log(currencyCheck);
   const config = {
     //live key
     public_key: "FLWPUBK-6f8762e460e0a984f90b300be5d7a343-X",
