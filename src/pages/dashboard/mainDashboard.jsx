@@ -77,6 +77,7 @@ const MainDashboard = () => {
   const [businessFee, setBusinessFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
+
   useEffect(() => {
     const fetchServiceFee = async () => {
       try {
@@ -196,9 +197,9 @@ const MainDashboard = () => {
         history.push("/vehicle");
       } else if (record.type === "Business Profile") {
         if (record.searchParameter === "Company Name") {
-          history.push("/business");
+          history.push("/businessName");
         } else {
-          history.push("/business");
+          history.push("/businessName");
         }
       } else if (record.type === "Financial Profile") {
         history.push("/financial");

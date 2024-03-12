@@ -183,30 +183,35 @@ const ProfilePage = () => {
           style={{ marginTop: "30px", marginBottom: "20px" }}
         >
           <Col span={12}>
-            <Upload
-              name="avatar"
-              listType="picture-circle"
-              className="avatar-uploader"
-              style={{ marginBottom: "20px" }}
-              showUploadList={false}
-              action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
-            >
-              {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="avatar"
-                  style={{
-                    width: "100%",
-                  }}
-                />
-              ) : (
-                uploadButton
-              )}
-            </Upload>
+            <div style={{ display: "inline-block", position: "relative" }}>
+              <Upload
+                name="avatar"
+                listType="picture-circle"
+                className="avatar-uploader"
+                style={{ marginBottom: "20px" }}
+                showUploadList={false}
+                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                beforeUpload={beforeUpload}
+                onChange={handleChange}
+              >
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="avatar"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                    }}
+                  />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </div>
             <Subtitle style={{ marginTop: "20px" }}>
-              Update your profile image here
+              Update your profile image here (Max Size: 800kb)
             </Subtitle>
             <StyledInput
               hidden={true}

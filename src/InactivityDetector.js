@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { logout } from "./redux/actions"; // Assuming this is where your logout action is defined
+import { logout } from "./redux/actions";
+import { useHistory } from "react-router-dom";
 
 const InactivityDetector = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   let inactivityTimer;
 
@@ -15,6 +17,11 @@ const InactivityDetector = () => {
     inactivityTimer = setTimeout(() => {
       // Trigger logout action after 10 seconds of inactivity (for testing)
       dispatch(logout());
+      console.log("Logging out...");
+      // Redirect to login page
+      //   history.push("/login");
+      window.location.href = "https://e-citizen.ng/login";
+      console.log("Redirecting to login...");
     }, 10 * 60 * 1000); // 10 seconds in milliseconds
   };
 
@@ -32,7 +39,7 @@ const InactivityDetector = () => {
       window.removeEventListener("keypress", handleUserActivity);
       clearTimeout(inactivityTimer);
     };
-  }, [dispatch]);
+  }, [dispatch, history]);
 
   return null; // This component doesn't render anything
 };
