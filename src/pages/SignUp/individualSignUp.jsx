@@ -180,11 +180,11 @@ const IndividualSignUp = () => {
     }
 
     // NIN
-    if (!formData.nin) {
-      errors.nin = "Please enter your National Identification Number (NIN)";
-    } else if (formData.nin.length != 11) {
-      errors.nin = "NIN must be 11 characters";
-    }
+    // if (!formData.nin) {
+    //   errors.nin = "Please enter your National Identification Number (NIN)";
+    // } else if (formData.nin.length != 11) {
+    //   errors.nin = "NIN must be 11 characters";
+    // }
     if (!formData.email) {
       errors.email = "Please enter your email";
     } else if (
@@ -252,7 +252,7 @@ const IndividualSignUp = () => {
         // openNotification2("topRight");
         Swal.fire({
           title: "Error",
-          text: response.message,
+          text: response,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -265,7 +265,7 @@ const IndividualSignUp = () => {
       console.error("SignUp failed:", error);
       Swal.fire({
         title: "Error",
-        text: error.message || "An error occurred while signing up.",
+        text: response,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -299,22 +299,6 @@ const IndividualSignUp = () => {
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
 
-  const beforeMaskedValueChange = (newState, oldState, userInput) => {
-    let { value } = newState;
-    let inputValue = userInput;
-
-    // If the input value starts with zero, remove it
-    if (inputValue.startsWith("0")) {
-      inputValue = inputValue.substring(1);
-    }
-
-    // You can also add additional validation or manipulation here if needed
-
-    return {
-      ...newState,
-      value: inputValue,
-    };
-  };
   return (
     <>
       <Row>
@@ -386,8 +370,9 @@ const IndividualSignUp = () => {
                   )}
                   {/* <StyledLabel>
                     National Identification Number (NIN)
-                  </StyledLabel>
+                  </StyledLabel> */}
                   <StyledInput
+                    hidden
                     type="text"
                     placeholder="Enter your NIN"
                     name="nin"
@@ -397,7 +382,7 @@ const IndividualSignUp = () => {
                     title="Please enter only numbers"
                     ref={ninRef}
                   />
-                  {formErrors.nin && (
+                  {/* {formErrors.nin && (
                     <Alert message={formErrors.nin} type="error" showIcon />
                   )} */}
                   <StyledLabel>Email address</StyledLabel>
@@ -413,7 +398,7 @@ const IndividualSignUp = () => {
                     <Alert message={formErrors.email} type="error" showIcon />
                   )}
                   <StyledLabel>
-                    Phone number (E.g: +234 81 XXX XXX X)
+                    Phone number (E.g: +234 81X XXX XXX X)
                   </StyledLabel>
                   <PhoneInput
                     country={"ng"}
@@ -428,7 +413,6 @@ const IndividualSignUp = () => {
                       borderRadius: "5px",
                       background: "rgba(53, 65, 56, 0.1)",
                     }}
-                    beforeMaskedValueChange={beforeMaskedValueChange}
                   />
                   {/* <StyledInput
                     type="text"

@@ -58,7 +58,7 @@ const VerifyOtp = () => {
         // message.success("OTP verification successful", 10);
         Swal.fire({
           title: "Success",
-          text: "OTP verification successful",
+          text: "OTP verification successful. Proceed to Sign In",
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -68,7 +68,7 @@ const VerifyOtp = () => {
         });
 
         // Handle further actions if needed
-        history.push("/email-confirm");
+        history.push("/login");
       } else {
         setLoading(false);
         // Display error message

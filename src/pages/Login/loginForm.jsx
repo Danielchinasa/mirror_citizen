@@ -239,7 +239,7 @@ const LoginForm = () => {
     }
   };
 
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
 
   const handleCaptchaVerify = () => {
     setIsCaptchaVerified(true);
