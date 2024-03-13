@@ -28,6 +28,7 @@ import "./emergency.css";
 import Swal from "sweetalert2";
 import { SearchOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
+import Notification from "../../Notification";
 
 const data = [
   {
@@ -111,14 +112,15 @@ const MainDashboard = () => {
       dispatch(fetchVerificationData(userToken));
       dispatch(fetchTransactionData(userToken));
     }
-    const interval = setInterval(() => {
-      if (userToken) {
-        dispatch(fetchVerificationData(userToken));
-      }
-    }, 5000); // 3000 milliseconds = 3 seconds
+    //!! Verification refresh timer
+    // const interval = setInterval(() => {
+    //   if (userToken) {
+    //     dispatch(fetchVerificationData(userToken));
+    //   }
+    // }, 5000); // 3000 milliseconds = 3 seconds
 
     // Clean up the interval to avoid memory leaks
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, [dispatch, userToken]);
 
   // Log the verificationData to the console
@@ -830,6 +832,7 @@ const MainDashboard = () => {
         </div>
       </InfoSec>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Notification />
     </Container>
   );
 };

@@ -1228,12 +1228,12 @@ const DashboardPage = () => {
               : `${totalServiceCost}`,
         };
 
-        if (userBalance.toLocaleString() < 55) {
+        if (userBalance.toLocaleString() < 100) {
           // Show the Ant Design notification
-
+          setLoading(false);
           handleCancel();
           Swal.fire({
-            title: "Wallet Balance Warning",
+            title: "Wallet Balance Error",
             text: "Your wallet balance is low. Please recharge before making a payment.",
             icon: "error",
             customClass: {
@@ -2397,14 +2397,14 @@ const DashboardPage = () => {
                                 // handleMakePaymentForLiveFace();
                                 const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
-                                // if (
-                                //   isLiveFaceNinValid &&
-                                //   liveFaceNin.trim() !== ""
-                                // ) {
-                                //   window.open(liveCaptureUrl, "_blank");
-                                // }
+                                if (
+                                  isLiveFaceNinValid &&
+                                  liveFaceNin.trim() !== ""
+                                ) {
+                                  window.open(liveCaptureUrl, "_blank");
+                                }
                                 // history.push("/liveFace");
-                                setModal1Open(true);
+                                // setModal1Open(true);
                               }}
                               disabled={
                                 !isLiveFaceNinValid || liveFaceNin.trim() === ""
