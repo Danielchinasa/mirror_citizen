@@ -1032,8 +1032,10 @@ const DashboardPage = () => {
           amount:
             userCurrency == "NGN" && currencyCheck === "NGN"
               ? totalServiceCost
-              : userCurrency == "NGN" && currencyCheck != "NGN"
+              : currencyCheck === "USD" && userCurrency === "ngn"
               ? totalveriNiara
+              : userCurrency == "NGN" && currencyCheck != "NGN"
+              ? outsideNgWithNiaraPrice
               : // : userCurrency == "USD" && currencyCheck === "USD"
                 // ? totalServiceCost
                 totalServiceCost,
@@ -1313,6 +1315,14 @@ const DashboardPage = () => {
   };
 
   const handleRadioChange = (e) => {
+    console.log("Payment from Wallet");
+    console.log(currencyCheck);
+    console.log("UserCurrency");
+    console.log(userCurrency);
+    console.log("Payment");
+    console.log(totalServiceCost);
+    console.log(totalveriNiara);
+
     setSelectedValue(e.target.value);
     setCheckboxCheckedConfirm(true);
   };
