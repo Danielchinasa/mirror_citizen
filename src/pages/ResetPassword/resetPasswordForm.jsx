@@ -21,11 +21,12 @@ const Context = React.createContext({
   name: "Default",
 });
 
-const ResetPasswordForm = ({ email }) => {
+const ResetPasswordForm = ({ email, token }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [formData, setFormData] = useState({
     email: email,
+    token: token,
     newpassword: "",
     confirmpassword: "",
     // rememberMe: false,
@@ -209,7 +210,7 @@ const ResetPasswordForm = ({ email }) => {
         setFormErrors({ general: "Reset password Failed" }); // Set error message
         Swal.fire({
           title: "Error",
-          text: "Reset password Failed",
+          text: "Invalid Reset Password Link",
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",

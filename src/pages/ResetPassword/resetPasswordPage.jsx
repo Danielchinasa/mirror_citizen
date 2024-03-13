@@ -7,7 +7,7 @@ import ResetPasswordForm from "./resetPasswordForm";
 import { useParams } from "react-router-dom";
 
 const ResetPasswordPage = () => {
-  const { email } = useParams();
+  const { email, token } = useParams();
   return (
     <Row>
       <Col
@@ -26,7 +26,7 @@ const ResetPasswordPage = () => {
         md={{ span: 10 }}
         lg={{ span: 10 }}
       >
-        <ResetPasswordForm email={email} />
+        <ResetPasswordForm email={email} token={token} />
       </Col>
     </Row>
   );

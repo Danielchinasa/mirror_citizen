@@ -164,7 +164,7 @@ function App() {
           <Route path="/individual/sign-up/1" component={IndividualSignUp} />
           <Route path="/individual/sign-up/2" component={BusinessSignUp} />
           <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
-          <Route path="/reset-password/:email" exact component={ResetPasswordPage} />
+          <Route path="/reset-password/:email/:token" exact component={ResetPasswordPage} />
         </Switch>
         <Footer />
         {/* <CookieConsent

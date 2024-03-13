@@ -5,7 +5,7 @@ import { persistor } from "../redux/store";
 
 export const updatePassword = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/form/reset-password/${credentials.email}/password`, {"newPassword":credentials.newpassword});
+    const response = await axios.post(`${baseUrl}/form/reset-password/${credentials.email}/password`, {"newPassword":credentials.newpassword, "token":credentials.token});
     const userData = response.data;
     console.log("Reset password response:", userData);
 
