@@ -28,6 +28,8 @@ import AdsCard from "../../components/ads/adsCard";
 
 import { MdOutlinePinDrop } from "react-icons/md";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+import Swal from "sweetalert2";
+import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
 
 const { Title, Text } = Typography;
 
@@ -46,6 +48,8 @@ const BusinessName = () => {
   const [stakeHolderFeeNgn, setStakeHolderFeeNgn] = useState("");
   const userCurrency = user?.currency || "";
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const userNin = user?.nin || "";
+  const userBalance = user?.walletBalance || 0;
 
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -172,59 +176,187 @@ const BusinessName = () => {
   const storedValue = localStorage.getItem("profile");
 
   const handleButtonClick = async (cacid) => {
-    handleFlutterPayment({
-      callback: async (response) => {
-        console.log(response);
-        if (response.status === "successful") {
-          console.log("flutterWave success");
+    Swal.fire({
+      title: "Select Payment Method",
+      input: "radio",
+      inputOptions: {
+        "Payment from Wallet": "Payment from Wallet",
+        "Instant Payment": "Instant Payment",
+      },
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      confirmButtonColor: "#0DC939",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You must select a payment method";
+        }
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Handle the selected payment method here
+        // console.log("Selected payment method:", stakeHolderFeeUsd);
 
-          setLoading(true);
-          try {
-            setLoading(true);
-            // Prepare the request body
-            const requestBody = {
-              business: {
-                requestId: parseInt(requestId),
-                cacId: parseInt(cacid),
+        if (result.value === "Payment from Wallet") {
+          const apiUrl =
+            "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
+
+          const requestBody = {
+            userNIN: userNin,
+            transactionID: "EA11697986831911",
+            // amount: `${danfee.toFixed(2)}`,
+
+            amount:
+              currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+          };
+
+          if (userBalance.toLocaleString() < 100) {
+            // Show the Ant Design notification
+            setLoading(false);
+            // handleCancel();
+            Swal.fire({
+              title: "Wallet Balance Error",
+              text: "Your wallet balance is low. Please recharge before making a payment.",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
               },
-            };
-            // Make an API request to call external APIs
-            const response = await axios.post(
-              "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
-              requestBody,
-              {
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            // notification.error({
+            //   message: "Wallet Balance Warning",
+            //   description:
+            //     "Your wallet balance is low. Please recharge before making a payment.",
+            // });
+          } else {
+            try {
+              setLoading(true);
+              const response = await fetch(apiUrl, {
+                method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${userToken}`, // Include the bearer token
+                  Authorization: `Bearer ${userToken}`,
                 },
+                body: JSON.stringify(requestBody),
+              });
+
+              const data = await response.text();
+
+              if (response.ok && data === "payment successful") {
+                // console.log("Payment successful. Response:", data);
+                // handleCancel();
+                dispatch(fetchUserProfile(userToken));
+                setLoading(true);
+                try {
+                  setLoading(true);
+                  // Prepare the request body
+                  const requestBody = {
+                    business: {
+                      requestId: parseInt(requestId),
+                      cacId: parseInt(cacid),
+                    },
+                  };
+                  // Make an API request to call external APIs
+                  const response = await axios.post(
+                    "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                    requestBody,
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${userToken}`, // Include the bearer token
+                      },
+                    }
+                  );
+                  // Handle response if needed
+                  console.log("External API call response:", response.data);
+                  // setBusinessData((prevBusinessData) => [
+                  //   ...prevBusinessData,
+                  //   response.data.data,
+                  // ]);
+                  if (
+                    response.data.business &&
+                    Array.isArray(response.data.business.data)
+                  ) {
+                    // Update businessData state with the data array
+                    setBusinessData(response.data.business.data);
+                  } else {
+                    console.error("Invalid response structure:", response.data);
+                  }
+                  // setBusinessData(response.data.data);
+                  setLoading(false);
+                } catch (error) {
+                  // Handle errors if needed
+                  console.error("Error calling external APIs:", error);
+                  setLoading(false);
+                }
+              } else {
+                console.error("Payment failed. Response:", data);
               }
-            );
-            // Handle response if needed
-            console.log("External API call response:", response.data);
-            // setBusinessData((prevBusinessData) => [
-            //   ...prevBusinessData,
-            //   response.data.data,
-            // ]);
-            if (
-              response.data.business &&
-              Array.isArray(response.data.business.data)
-            ) {
-              // Update businessData state with the data array
-              setBusinessData(response.data.business.data);
-            } else {
-              console.error("Invalid response structure:", response.data);
+            } catch (error) {
+              console.error("Error:", error);
+            } finally {
+              // handleCancel();
+
+              setLoading(false); // Set loading to false when the request completes (either success or failure)
             }
-            // setBusinessData(response.data.data);
-            setLoading(false);
-          } catch (error) {
-            // Handle errors if needed
-            console.error("Error calling external APIs:", error);
-            setLoading(false);
           }
+        } else if (result.value === "Instant Payment") {
+          handleFlutterPayment({
+            callback: async (response) => {
+              console.log(response);
+              if (response.status === "successful") {
+                console.log("flutterWave success");
+                setLoading(true);
+                try {
+                  setLoading(true);
+                  // Prepare the request body
+                  const requestBody = {
+                    business: {
+                      requestId: parseInt(requestId),
+                      cacId: parseInt(cacid),
+                    },
+                  };
+                  // Make an API request to call external APIs
+                  const response = await axios.post(
+                    "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                    requestBody,
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${userToken}`, // Include the bearer token
+                      },
+                    }
+                  );
+                  // Handle response if needed
+                  console.log("External API call response:", response.data);
+                  // setBusinessData((prevBusinessData) => [
+                  //   ...prevBusinessData,
+                  //   response.data.data,
+                  // ]);
+                  if (
+                    response.data.business &&
+                    Array.isArray(response.data.business.data)
+                  ) {
+                    // Update businessData state with the data array
+                    setBusinessData(response.data.business.data);
+                  } else {
+                    console.error("Invalid response structure:", response.data);
+                  }
+                  // setBusinessData(response.data.data);
+                  setLoading(false);
+                } catch (error) {
+                  // Handle errors if needed
+                  console.error("Error calling external APIs:", error);
+                  setLoading(false);
+                }
+              }
+              closePaymentModal();
+            },
+            onClose: () => {},
+          });
         }
-        closePaymentModal();
-      },
-      onClose: () => {},
+        // Add your logic here for handling the selected payment method
+      }
     });
   };
 
