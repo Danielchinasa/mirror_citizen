@@ -1228,12 +1228,12 @@ const DashboardPage = () => {
               : `${totalServiceCost}`,
         };
 
-        if (userBalance.toLocaleString() < 55) {
+        if (userBalance.toLocaleString() < 100) {
           // Show the Ant Design notification
-
+          setLoading(false);
           handleCancel();
           Swal.fire({
-            title: "Wallet Balance Warning",
+            title: "Wallet Balance Error",
             text: "Your wallet balance is low. Please recharge before making a payment.",
             icon: "error",
             customClass: {
