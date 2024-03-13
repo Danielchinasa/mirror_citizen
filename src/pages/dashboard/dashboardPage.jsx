@@ -1007,6 +1007,116 @@ const DashboardPage = () => {
     }
   }, [checkStolen]);
 
+  const handlePaymentMethod = async () => {
+    if (selectedValue !== null) {
+      // Log the selected payment method
+      const userBalance = userDetails?.walletBalance || 0;
+
+      if (selectedValue === 1) {
+        // console.log("Payment from Wallet");
+        setLoading(true);
+        handleCancel();
+
+        const apiUrl =
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
+
+        const requestBody = {
+          userNIN: userNin,
+          transactionID: "EA11697986831911",
+          // amount: `${danfee.toFixed(2)}`,
+          // amount:
+          //   currencyCheck == "USD"
+          //     ? `${totalServiceCost}`
+          //     : `${totalServiceCost}`,
+
+          amount:
+            userCurrency == "NGN" && currencyCheck === "NGN"
+              ? totalServiceCost
+              : userCurrency == "NGN" && currencyCheck != "NGN"
+              ? totalveriNiara
+              : // : userCurrency == "USD" && currencyCheck === "USD"
+                // ? totalServiceCost
+                totalServiceCost,
+          // totalveriNiara,
+          //!! Look at the wallet payment condtion. the wallet only allows payment with user Currency
+          // currencyCheck == "USD"
+          //   ? outsideNgWithNiara == true
+          //     ? `${outsideNgWithNiaraPrice}`
+          //     : `${totalServiceCost}`
+          //   : `${totalServiceCost}`,
+        };
+
+        if (userBalance.toLocaleString() < 100) {
+          // Show the Ant Design notification
+          setLoading(false);
+          handleCancel();
+          Swal.fire({
+            title: "Wallet Balance Error",
+            text: "Your wallet balance is low. Please recharge before making a payment.",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          // notification.error({
+          //   message: "Wallet Balance Warning",
+          //   description:
+          //     "Your wallet balance is low. Please recharge before making a payment.",
+          // });
+        } else {
+          try {
+            setLoading(true);
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(requestBody),
+            });
+
+            const data = await response.text();
+
+            if (response.ok && data === "payment successful") {
+              // console.log("Payment successful. Response:", data);
+              handleCancel();
+              dispatch(fetchUserProfile(userToken));
+              setLoading(true);
+              handleSubmit();
+            } else {
+              console.error("Payment failed. Response:", data);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          } finally {
+            handleCancel();
+
+            setLoading(false); // Set loading to false when the request completes (either success or failure)
+          }
+        }
+      } else if (selectedValue === 2) {
+        // console.log("Instant Payment");
+        // setLoading(true);
+        handleFlutterPayment({
+          callback: async (response) => {
+            console.log(response);
+            if (response.status === "successful") {
+              console.log("flutterWave success");
+
+              setLoading(true);
+              handleSubmit();
+            }
+            closePaymentModal();
+          },
+          onClose: () => {},
+        });
+        handleCancel();
+      }
+    }
+  };
+
   const handleMakePayment = () => {
     // Your existing logic for handling the payment
     // Calculate total veri based on form data
@@ -1703,115 +1813,6 @@ const DashboardPage = () => {
       allowEscapeKey: false,
     });
   }
-
-  const handlePaymentMethod = async () => {
-    if (selectedValue !== null) {
-      // Log the selected payment method
-      const userBalance = userDetails?.walletBalance || 0;
-
-      if (selectedValue === 1) {
-        // console.log("Payment from Wallet");
-        setLoading(true);
-        handleCancel();
-
-        const apiUrl =
-          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
-
-        const requestBody = {
-          userNIN: userNin,
-          transactionID: "EA11697986831911",
-          // amount: `${danfee.toFixed(2)}`,
-          // amount:
-          //   currencyCheck == "USD"
-          //     ? `${totalServiceCost}`
-          //     : `${totalServiceCost}`,
-
-          amount:
-            userCurrency == "NGN" && currencyCheck === "NGN"
-              ? totalServiceCost
-              : userCurrency == "NGN" && currencyCheck === "USD"
-              ? totalServiceCost
-              : // : userCurrency == "USD" && currencyCheck === "USD"
-                // ? totalServiceCost
-                totalveriNiara,
-          //!! Look at the wallet payment condtion. the wallet only allows payment with user Currency
-          // currencyCheck == "USD"
-          //   ? outsideNgWithNiara == true
-          //     ? `${outsideNgWithNiaraPrice}`
-          //     : `${totalServiceCost}`
-          //   : `${totalServiceCost}`,
-        };
-
-        if (userBalance.toLocaleString() < 100) {
-          // Show the Ant Design notification
-          setLoading(false);
-          handleCancel();
-          Swal.fire({
-            title: "Wallet Balance Error",
-            text: "Your wallet balance is low. Please recharge before making a payment.",
-            icon: "error",
-            customClass: {
-              confirmButton: "custom-swal-button",
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-          // notification.error({
-          //   message: "Wallet Balance Warning",
-          //   description:
-          //     "Your wallet balance is low. Please recharge before making a payment.",
-          // });
-        } else {
-          try {
-            setLoading(true);
-            const response = await fetch(apiUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userToken}`,
-              },
-              body: JSON.stringify(requestBody),
-            });
-
-            const data = await response.text();
-
-            if (response.ok && data === "payment successful") {
-              // console.log("Payment successful. Response:", data);
-              handleCancel();
-              dispatch(fetchUserProfile(userToken));
-              setLoading(true);
-              handleSubmit();
-            } else {
-              console.error("Payment failed. Response:", data);
-            }
-          } catch (error) {
-            console.error("Error:", error);
-          } finally {
-            handleCancel();
-
-            setLoading(false); // Set loading to false when the request completes (either success or failure)
-          }
-        }
-      } else if (selectedValue === 2) {
-        // console.log("Instant Payment");
-        // setLoading(true);
-        handleFlutterPayment({
-          callback: async (response) => {
-            console.log(response);
-            if (response.status === "successful") {
-              console.log("flutterWave success");
-
-              setLoading(true);
-              handleSubmit();
-            }
-            closePaymentModal();
-          },
-          onClose: () => {},
-        });
-        handleCancel();
-      }
-    }
-  };
 
   return (
     <Row>
