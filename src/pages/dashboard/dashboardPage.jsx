@@ -1902,7 +1902,7 @@ const DashboardPage = () => {
   };
 
   const [modal1Open, setModal1Open] = useState(false);
-  const liveCaptureUrl = `https://41.184.212.26/`;
+  const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
   if (loading) {
     Swal.fire({
@@ -2395,7 +2395,8 @@ const DashboardPage = () => {
                               size="large"
                               onClick={() => {
                                 // handleMakePaymentForLiveFace();
-                                const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen/${userToken}`;
+                                const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
+
                                 // if (
                                 //   isLiveFaceNinValid &&
                                 //   liveFaceNin.trim() !== ""
@@ -2411,7 +2412,8 @@ const DashboardPage = () => {
                             >
                               Live Capture
                             </Button>
-                            <Modal
+                            ;
+                            {/* <Modal
                               title="live Face Capture"
                               style={{
                                 top: 20,
@@ -2428,7 +2430,7 @@ const DashboardPage = () => {
                                 height="500"
                                 src={liveCaptureUrl}
                               ></iframe>
-                            </Modal>
+                            </Modal> */}
                           </Col>
                         </Row>
                       </div>

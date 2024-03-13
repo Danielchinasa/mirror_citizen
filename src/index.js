@@ -11,7 +11,7 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router>
-        <InactivityDetector />
+        {/* <InactivityDetector /> */}
         <App />
       </Router>
     </PersistGate>
