@@ -54,7 +54,7 @@ const InactivityDetector = () => {
             handleUserActivity();
           }
         });
-      }, 9 * 1000); // Show the dialog 9 seconds before logout
+      }, 10 * 60 * 1000); // Show the dialog 9 seconds before logout
     }
   };
 
