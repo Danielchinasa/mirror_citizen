@@ -4,7 +4,7 @@ import React from "react";
 import { Img } from "../../globalStyles";
 import lady from "../../images/lady.png";
 import ResetPasswordForm from "./resetPasswordForm";
-import { useParams } from "react-router-dom"; // Import useParams
+import { useParams } from "react-router-dom";
 
 const ResetPasswordPage = () => {
   const { email } = useParams();

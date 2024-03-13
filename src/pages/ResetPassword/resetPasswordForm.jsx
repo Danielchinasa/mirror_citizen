@@ -7,14 +7,14 @@ import {
   StyledForm,
   StyledInput,
   StyledLabel,
-  Subtitle,
+  // Subtitle,
 } from "../../globalStyles";
 import { useDispatch } from "react-redux";
 import { updatePassword } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
-import ReCAPTCHA from "react-google-recaptcha";
+// import axios from "axios";
+// import Cookies from "js-cookie";
+// import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
 
 const Context = React.createContext({
@@ -37,16 +37,16 @@ const ResetPasswordForm = ({ email }) => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const [ipAddress, setIpAddress] = useState(null);
-  const [ipCountry, setIpCountry] = useState(null);
+  // const [ipAddress, setIpAddress] = useState(null);
+  // const [ipCountry, setIpCountry] = useState(null);
 
-  const openNotification = (placement) => {
-    api.info({
-      message: `Notification`,
-      description: "response.message",
-      placement,
-    });
-  };
+  // const openNotification = (placement) => {
+  //   api.info({
+  //     message: `Notification`,
+  //     description: "response.message",
+  //     placement,
+  //   });
+  // };
 
   const contextValue = useMemo(
     () => ({
@@ -188,19 +188,6 @@ const ResetPasswordForm = ({ email }) => {
           allowEscapeKey: false,
         });
         history.push("/login");
-      } else if (response === "Incorrect email or password") {
-        setFormErrors({ general: response }); // Set error message
-        Swal.fire({
-          title: "Error",
-          text: "Incorrect email or password",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        });
-        // openNotification2("topRight");
       } else if (response === "IP address not provided in payload") {
         setFormErrors({
           general:
@@ -251,9 +238,9 @@ const ResetPasswordForm = ({ email }) => {
 
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
 
-  const handleCaptchaVerify = () => {
-    setIsCaptchaVerified(true);
-  };
+  // const handleCaptchaVerify = () => {
+  //   setIsCaptchaVerified(true);
+  // };
 
   return (
     <Context.Provider value={contextValue}>
