@@ -511,7 +511,9 @@ const BusinessName = () => {
                         >
                           {shareholder.stake}
                           {shareholder.corporation_name == null ||
-                          shareholder.corporation_name == "null"
+                          shareholder.corporation_name == "null" ||
+                          shareholder.corporation_name === "" ||
+                          !shareholder.corporation_name
                             ? ""
                             : " - " + shareholder.corporation_name}
                         </Text>
