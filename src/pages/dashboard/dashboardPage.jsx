@@ -1216,6 +1216,20 @@ const DashboardPage = () => {
         // console.log("Payment from Wallet");
         setLoading(true);
         handleCancel();
+        if (flutterWaveCurrency === "USD") {
+          setLoading(false);
+          Swal.fire({
+            title: "Error",
+            text: "Sorry you can not make wallet payment using a wrong currency",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          return;
+        }
         const apiUrl =
           "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
@@ -1223,9 +1237,16 @@ const DashboardPage = () => {
           userNIN: userNin,
           transactionID: "EA11697986831911",
           // amount: `${danfee.toFixed(2)}`,
+          // amount:
+          //   currencyCheck == "USD"
+          //     ? `${totalServiceCost}`
+          //     : `${totalServiceCost}`,
+
           amount:
             currencyCheck == "USD"
-              ? `${totalServiceCost}`
+              ? outsideNgWithNiara == true
+                ? `${outsideNgWithNiaraPrice}`
+                : `${totalServiceCost}`
               : `${totalServiceCost}`,
         };
 
@@ -1324,6 +1345,20 @@ const DashboardPage = () => {
       if (selectedValue === 1) {
         // console.log("Payment from Wallet");
         setLoading(true);
+        if (flutterWaveCurrency === "USD") {
+          setLoading(false);
+          Swal.fire({
+            title: "Error",
+            text: "Sorry you can not make wallet payment using a wrong currency",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          return;
+        }
         const apiUrl =
           "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
@@ -1907,7 +1942,7 @@ const DashboardPage = () => {
 
   if (loading) {
     Swal.fire({
-      title: "Hmmm...",
+      title: "Please Wait",
       text: "Verification in progress",
       icon: "info",
       didOpen: () => {

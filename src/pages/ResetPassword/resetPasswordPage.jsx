@@ -26,7 +26,7 @@ const ResetPasswordPage = () => {
         md={{ span: 10 }}
         lg={{ span: 10 }}
       >
-        <ResetPasswordForm email={email} />
+        {/* <ResetPasswordForm email={email} /> */}
       </Col>
     </Row>
   );
