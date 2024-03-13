@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "./static/css/main.d54bfbb9.chunk.css",
-    "main.js": "./static/js/main.9061a387.chunk.js",
-    "main.js.map": "./static/js/main.9061a387.chunk.js.map",
+    "main.js": "./static/js/main.dfbc50c0.chunk.js",
+    "main.js.map": "./static/js/main.dfbc50c0.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.71d77cd9.js",
     "runtime-main.js.map": "./static/js/runtime-main.71d77cd9.js.map",
     "static/css/2.ec61a722.chunk.css": "./static/css/2.ec61a722.chunk.css",
-    "static/js/2.95d4681a.chunk.js": "./static/js/2.95d4681a.chunk.js",
-    "static/js/2.95d4681a.chunk.js.map": "./static/js/2.95d4681a.chunk.js.map",
+    "static/js/2.c839de72.chunk.js": "./static/js/2.c839de72.chunk.js",
+    "static/js/2.c839de72.chunk.js.map": "./static/js/2.c839de72.chunk.js.map",
     "index.html": "./index.html",
-    "precache-manifest.227b71be60b4f02d77fc3559b1862fc8.js": "./precache-manifest.227b71be60b4f02d77fc3559b1862fc8.js",
+    "precache-manifest.ae78c3950c8f1baa5762b47ca3f94d08.js": "./precache-manifest.ae78c3950c8f1baa5762b47ca3f94d08.js",
     "service-worker.js": "./service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "./static/css/2.ec61a722.chunk.css.map",
     "static/css/main.d54bfbb9.chunk.css.map": "./static/css/main.d54bfbb9.chunk.css.map",
-    "static/js/2.95d4681a.chunk.js.LICENSE.txt": "./static/js/2.95d4681a.chunk.js.LICENSE.txt",
+    "static/js/2.c839de72.chunk.js.LICENSE.txt": "./static/js/2.c839de72.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "./static/media/Corporate.83116b9d.svg",
     "static/media/banner.png": "./static/media/banner.dfc673b1.png",
     "static/media/car-insurance.svg": "./static/media/car-insurance.3132370c.svg",
@@ -40,8 +40,8 @@
   "entrypoints": [
     "static/js/runtime-main.71d77cd9.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.95d4681a.chunk.js",
+    "static/js/2.c839de72.chunk.js",
     "static/css/main.d54bfbb9.chunk.css",
-    "static/js/main.9061a387.chunk.js"
+    "static/js/main.dfbc50c0.chunk.js"
   ]
 }
