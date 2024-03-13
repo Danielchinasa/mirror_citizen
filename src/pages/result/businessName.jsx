@@ -45,6 +45,32 @@ const BusinessName = () => {
   const [stakeHolderFeeUsd, setStakeHolderFeeUsd] = useState("");
   const [stakeHolderFeeNgn, setStakeHolderFeeNgn] = useState("");
   const userCurrency = user?.currency || "";
+  const [currencyCheck, setCurrencyCheck] = useState("NGN");
+
+  useEffect(() => {
+    const fetchServiceFee = async () => {
+      try {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await axios.get(
+          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`, // Include the bearer token
+            },
+          }
+        );
+        console.log("Service Fees");
+        console.log(response.data.data[0].price);
+
+        setCurrencyCheck(response.data.data[8].currency);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+      }
+    };
+
+    fetchServiceFee();
+  }, []);
 
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -63,10 +89,9 @@ const BusinessName = () => {
         console.log(response.data.data[8].price);
 
         setStakeHolderFeeUsd(response.data.data[8].price);
-        setStakeHolderFeeNgn(response.data.data[8].price2);
+        // setStakeHolderFeeNgn(response.data.data[8].price);
       } catch (error) {
         console.error("Error fetching IP address:", error);
-        setStakeHolderFeeUsd(null);
       }
     };
 
@@ -106,8 +131,8 @@ const BusinessName = () => {
     //test key
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: userCurrency == "usd" ? stakeHolderFeeUsd : stakeHolderFeeNgn,
-    currency: userCurrency == "usd" ? "USD" : "NGN",
+    amount: currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+    currency: currencyCheck === "USD" ? "USD" : "NGN",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
@@ -201,6 +226,13 @@ const BusinessName = () => {
       },
       onClose: () => {},
     });
+  };
+
+  const formatToNaira = (value) => {
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(value);
   };
 
   return (
@@ -322,9 +354,9 @@ const BusinessName = () => {
                   >
                     <SearchOutlined /> Lookup Stakeholder for only{" "}
                     <span style={{ fontWeight: "bold" }}>
-                      {userCurrency == "usd"
+                      {currencyCheck == "USD"
                         ? "$" + stakeHolderFeeUsd
-                        : "₦" + stakeHolderFeeNgn}
+                        : formatToNaira(stakeHolderFeeUsd)}
                     </span>
                   </MainButton>
                 ) : business["shareholders-data"].length > 0 ? (

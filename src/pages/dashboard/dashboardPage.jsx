@@ -128,6 +128,17 @@ const DashboardPage = () => {
   const [businessUsdFee, setBusinessUsdFee] = useState("");
   const [businessUsdVatFee, setBusinessUsdVatFee] = useState("");
   const [businessProcessingFee, setBusinessProcessingFee] = useState("");
+
+  const [businessNameFee, setBusinessNameFee] = useState("");
+  const [businessNameServiceFee, setbusinessNameServiceFee] = useState("");
+  const [businessNameUsdServiceFee, setbusinessNameUsdServiceFee] =
+    useState("");
+  const [businessNameVatFee, setBusinessNameVatFee] = useState("");
+  const [businessNameUsdFee, setBusinessNameUsdFee] = useState("");
+  const [businessNameUsdVatFee, setBusinessNameUsdVatFee] = useState("");
+  const [businessNameProcessingFee, setBusinessNameProcessingFee] =
+    useState("");
+
   const [financialFee, setFinancialFee] = useState("");
   const [financialServiceFee, setfinancialServiceFee] = useState("");
   const [financialUsdServiceFee, setfinancialUsdServiceFee] = useState("");
@@ -235,17 +246,17 @@ const DashboardPage = () => {
     if (name === "business_name") {
       if (!hadPreviousValue && value.trim() !== "") {
         setBusinessNameFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessFee);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessNameVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessNameFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + businessUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + businessNameUsdFee
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setBusinessNameFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessNameVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessNameFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - businessUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - businessNameUsdFee
         );
       }
     }
@@ -348,6 +359,15 @@ const DashboardPage = () => {
         setBusinessUsdFee(response.data.data[2].price2);
         setBusinessUsdVatFee(response.data.data[2].VAT2);
         setBusinessProcessingFee(response.data.data[2].processingFee);
+
+        setBusinessNameFee(response.data.data[3].price);
+        setbusinessNameServiceFee(response.data.data[3].serviceFee);
+        setbusinessNameUsdServiceFee(response.data.data[3].serviceFee2);
+        setBusinessNameVatFee(response.data.data[3].VAT);
+        setBusinessNameUsdFee(response.data.data[3].price2);
+        setBusinessNameUsdVatFee(response.data.data[3].VAT2);
+        setBusinessNameProcessingFee(response.data.data[3].processingFee);
+
         setFinancialFee(response.data.data[4].price);
         setfinancialServiceFee(response.data.data[4].serviceFee);
         setfinancialUsdServiceFee(response.data.data[4].serviceFee2);
@@ -2654,9 +2674,11 @@ const DashboardPage = () => {
                             {" "}
                             {currencyCheck === "USD"
                               ? "$" +
-                                (businessServiceFee + businessProcessingFee)
+                                (businessNameServiceFee +
+                                  businessNameProcessingFee)
                               : formatToNaira(
-                                  businessServiceFee + businessProcessingFee
+                                  businessNameServiceFee +
+                                    businessNameProcessingFee
                                 )}
                           </p>
                         </Col>
