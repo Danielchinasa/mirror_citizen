@@ -151,65 +151,76 @@ const MainDashboard = () => {
     );
 
     // Check if the verification ID is not in the list of opened verifications
-    if (!openedVerifications.includes(id)) {
-      // Add the verification ID to the list of opened verifications
-      setOpenedVerifications((prevVerifications) => [...prevVerifications, id]);
-      localStorage.setItem(
-        "openedVerifications",
-        JSON.stringify([...openedVerifications, id])
-      );
+    // if (!openedVerifications.includes(id)) {
+    //   // Add the verification ID to the list of opened verifications
+    //   setOpenedVerifications((prevVerifications) => [...prevVerifications, id]);
+    //   localStorage.setItem(
+    //     "openedVerifications",
+    //     JSON.stringify([...openedVerifications, id])
+    //   );
 
-      // Your existing logic for handling different scenarios
-      if (
-        ((record.type === "Basic Profile" ||
-          record.type === "Financial Profile") &&
-          new Date(insertionDate) < fortyEightHoursAgo) ||
-        (record.consent === "pending" &&
-          new Date(insertionDate) < twentyFourHoursAgo)
-      ) {
-        // message.error("Verification Result or Consent Expired");
-        Swal.fire({
-          title: "Error",
-          text: "Verification Result or Consent expired",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-        });
-        return;
-      }
-
-      if (consent === "denied") {
-        Swal.fire({
-          title: "Error",
-          text: "Consent Denied",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-        });
-        return;
-      }
-
-      // If action is not expired, continue with navigation
-      const searchParameter = record.searchParameter;
-      localStorage.setItem("verificationRequestId", id);
-      if (searchParameter === "Vehicle Registration Number") {
-        history.push("/vehicle2");
-      } else if (record.type === "Vehicle Profile") {
-        history.push("/vehicle");
-      } else if (record.type === "Business Profile") {
-        if (record.searchParameter === "Company Name") {
-          history.push("/businessName");
-        } else {
-          history.push("/business");
-        }
-      } else if (record.type === "Financial Profile") {
-        history.push("/financial");
-      } else {
-        history.push("/result");
-      }
+    // Your existing logic for handling different scenarios
+    if (
+      ((record.type === "Basic Profile" ||
+        record.type === "Financial Profile") &&
+        new Date(insertionDate) < fortyEightHoursAgo) ||
+      (record.consent === "pending" &&
+        new Date(insertionDate) < twentyFourHoursAgo)
+    ) {
+      // message.error("Verification Result or Consent Expired");
+      Swal.fire({
+        title: "Error",
+        text: "Verification Result or Consent expired",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
     }
+
+    if (consent === "denied") {
+      Swal.fire({
+        title: "Error",
+        text: "Consent Denied",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
+    }
+    if (consent === "pending") {
+      Swal.fire({
+        title: "Info",
+        text: "Awaiting Consent",
+        icon: "info",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
+    }
+
+    // If action is not expired, continue with navigation
+    const searchParameter = record.searchParameter;
+    localStorage.setItem("verificationRequestId", id);
+    if (searchParameter === "Vehicle Registration Number") {
+      history.push("/vehicle2");
+    } else if (record.type === "Vehicle Profile") {
+      history.push("/vehicle");
+    } else if (record.type === "Business Profile") {
+      if (record.searchParameter === "Company Name") {
+        history.push("/businessName");
+      } else {
+        history.push("/business");
+      }
+    } else if (record.type === "Financial Profile") {
+      history.push("/financial");
+    } else {
+      history.push("/result");
+    }
+    // }
   };
 
   //!! Check for first three verifications and display an alert
