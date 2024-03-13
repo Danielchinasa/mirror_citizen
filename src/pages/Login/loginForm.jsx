@@ -148,13 +148,14 @@ const LoginForm = () => {
       setLoading(true);
 
       // Add ipAddress to the formData
-      const formDataWithIp = {
+      const formDataWithIpAndToken = {
         ...formData,
         ipAddress,
+        deviceToken: localStorage.getItem("clientToken"),
       };
 
       // Assuming signIn action returns a promise that resolves with the user data
-      const response = await dispatch(signIn(formDataWithIp));
+      const response = await dispatch(signIn(formDataWithIpAndToken));
       const openNotification2 = (placement) => {
         api.error({
           message: `Notification`,

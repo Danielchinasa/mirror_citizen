@@ -2397,14 +2397,14 @@ const DashboardPage = () => {
                                 // handleMakePaymentForLiveFace();
                                 const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
-                                // if (
-                                //   isLiveFaceNinValid &&
-                                //   liveFaceNin.trim() !== ""
-                                // ) {
-                                //   window.open(liveCaptureUrl, "_blank");
-                                // }
+                                if (
+                                  isLiveFaceNinValid &&
+                                  liveFaceNin.trim() !== ""
+                                ) {
+                                  window.open(liveCaptureUrl, "_blank");
+                                }
                                 // history.push("/liveFace");
-                                setModal1Open(true);
+                                // setModal1Open(true);
                               }}
                               disabled={
                                 !isLiveFaceNinValid || liveFaceNin.trim() === ""
