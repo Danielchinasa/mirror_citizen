@@ -411,6 +411,7 @@ const DashboardPage = () => {
   const userName = user?.firstName || "";
   const userPhone = user?.phone || "";
   const userNin = user?.nin || "";
+  const userCurrency = userDetails?.currency || "";
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
@@ -1216,20 +1217,20 @@ const DashboardPage = () => {
         // console.log("Payment from Wallet");
         setLoading(true);
         handleCancel();
-        if (flutterWaveCurrency === "USD") {
-          setLoading(false);
-          Swal.fire({
-            title: "Error",
-            text: "Sorry you can not make wallet payment using a wrong currency",
-            icon: "error",
-            customClass: {
-              confirmButton: "custom-swal-button",
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-          return;
-        }
+        // if (flutterWaveCurrency === "USD") {
+        //   setLoading(false);
+        //   Swal.fire({
+        //     title: "Error",
+        //     text: "Sorry you can not make wallet payment using a wrong currency",
+        //     icon: "error",
+        //     customClass: {
+        //       confirmButton: "custom-swal-button",
+        //     },
+        //     allowOutsideClick: false,
+        //     allowEscapeKey: false,
+        //   });
+        //   return;
+        // }
         const apiUrl =
           "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
@@ -1242,12 +1243,13 @@ const DashboardPage = () => {
           //     ? `${totalServiceCost}`
           //     : `${totalServiceCost}`,
 
-          amount:
-            currencyCheck == "USD"
-              ? outsideNgWithNiara == true
-                ? `${outsideNgWithNiaraPrice}`
-                : `${totalServiceCost}`
-              : `${totalServiceCost}`,
+          amount: userCurrency === "ngn" ? totalveriNiara : totalServiceCost,
+          //!! Look at the wallet payment condtion. the wallet only allows payment with user Currency
+          // currencyCheck == "USD"
+          //   ? outsideNgWithNiara == true
+          //     ? `${outsideNgWithNiaraPrice}`
+          //     : `${totalServiceCost}`
+          //   : `${totalServiceCost}`,
         };
 
         if (userBalance.toLocaleString() < 100) {
@@ -2877,7 +2879,46 @@ const DashboardPage = () => {
                       <>
                         <p>Select payment currency </p>
                         <p>Currency Calculator</p>
-                        <Radio.Group onChange={currencyOnChange} value={value}>
+                        {selectedValue != 1 ? (
+                          <>
+                            <Radio.Group
+                              onChange={currencyOnChange}
+                              value={value}
+                            >
+                              <Radio value={1}>
+                                {" "}
+                                {formatToNaira(totalveriNiara)}
+                              </Radio>
+                              <RadioComponent
+                                profile={profile}
+                                usdFee={totalServiceCost}
+                              />
+                            </Radio.Group>
+                          </>
+                        ) : (
+                          <Radio.Group
+                            onChange={currencyOnChange}
+                            value={userCurrency === "ngn" ? 1 : 2}
+                          >
+                            {userCurrency === "ngn" ? (
+                              <Radio value={1}>
+                                {" "}
+                                {formatToNaira(totalveriNiara)}
+                              </Radio>
+                            ) : userCurrency === "usd" ? (
+                              // <Radio value={2}>
+                              <RadioComponent
+                                profile={profile}
+                                usdFee={totalServiceCost}
+                              />
+                            ) : (
+                              // </Radio>
+                              ""
+                            )}
+                          </Radio.Group>
+                        )}
+
+                        {/* <Radio.Group onChange={currencyOnChange} value={value}>
                           <Radio value={1}>
                             {" "}
                             {formatToNaira(totalveriNiara)}
@@ -2886,7 +2927,7 @@ const DashboardPage = () => {
                             profile={profile}
                             usdFee={totalServiceCost}
                           />
-                        </Radio.Group>
+                        </Radio.Group> */}
                         <Divider />
                       </>
                     ) : (
