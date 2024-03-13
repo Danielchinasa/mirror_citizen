@@ -925,6 +925,7 @@ const DashboardPage = () => {
 
     if (e.target.value == 2) {
       setFlutterWaveCurrency("USD");
+      setOutsideNgWithNiara(false);
     } else if (e.target.value == 1) {
       // setCurrencyCheck("NGN");
       setFlutterWaveCurrency("NGN");
