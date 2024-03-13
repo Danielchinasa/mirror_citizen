@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { updatePassword } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 // import axios from "axios";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 // import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
 

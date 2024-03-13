@@ -4,10 +4,10 @@ import React from "react";
 import { Img } from "../../globalStyles";
 import lady from "../../images/lady.png";
 import ResetPasswordForm from "./resetPasswordForm";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ResetPasswordPage = () => {
-  // const { email } = useParams();
+  const { email } = useParams();
   return (
     <Row>
       <Col
@@ -26,7 +26,7 @@ const ResetPasswordPage = () => {
         md={{ span: 10 }}
         lg={{ span: 10 }}
       >
-        {/* <ResetPasswordForm email={email} /> */}
+        <ResetPasswordForm email={email} />
       </Col>
     </Row>
   );
