@@ -1202,259 +1202,6 @@ const DashboardPage = () => {
     showModalFace();
   };
 
-  const handlePaymentMethod = async () => {
-    // Check if a payment method is selected
-    const reachScript = document.createElement("script");
-    reachScript.src = "https://clk1.reachclk.com/sdk/reach.js";
-    reachScript.async = true;
-
-    document.body.appendChild(reachScript);
-    if (selectedValue !== null) {
-      // Log the selected payment method
-      const userBalance = userDetails?.walletBalance || 0;
-
-      if (selectedValue === 1) {
-        // console.log("Payment from Wallet");
-        setLoading(true);
-        handleCancel();
-        // if (flutterWaveCurrency === "USD") {
-        //   setLoading(false);
-        //   Swal.fire({
-        //     title: "Error",
-        //     text: "Sorry you can not make wallet payment using a wrong currency",
-        //     icon: "error",
-        //     customClass: {
-        //       confirmButton: "custom-swal-button",
-        //     },
-        //     allowOutsideClick: false,
-        //     allowEscapeKey: false,
-        //   });
-        //   return;
-        // }
-        const apiUrl =
-          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
-
-        const requestBody = {
-          userNIN: userNin,
-          transactionID: "EA11697986831911",
-          // amount: `${danfee.toFixed(2)}`,
-          // amount:
-          //   currencyCheck == "USD"
-          //     ? `${totalServiceCost}`
-          //     : `${totalServiceCost}`,
-
-          amount: userCurrency === "ngn" ? totalveriNiara : totalServiceCost,
-          //!! Look at the wallet payment condtion. the wallet only allows payment with user Currency
-          // currencyCheck == "USD"
-          //   ? outsideNgWithNiara == true
-          //     ? `${outsideNgWithNiaraPrice}`
-          //     : `${totalServiceCost}`
-          //   : `${totalServiceCost}`,
-        };
-
-        if (userBalance.toLocaleString() < 100) {
-          // Show the Ant Design notification
-          setLoading(false);
-          handleCancel();
-          Swal.fire({
-            title: "Wallet Balance Error",
-            text: "Your wallet balance is low. Please recharge before making a payment.",
-            icon: "error",
-            customClass: {
-              confirmButton: "custom-swal-button",
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-          // notification.error({
-          //   message: "Wallet Balance Warning",
-          //   description:
-          //     "Your wallet balance is low. Please recharge before making a payment.",
-          // });
-        } else {
-          try {
-            setLoading(true);
-            const response = await fetch(apiUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userToken}`,
-              },
-              body: JSON.stringify(requestBody),
-            });
-
-            const data = await response.text();
-
-            if (response.ok && data === "payment successful") {
-              // console.log("Payment successful. Response:", data);
-              handleCancel();
-              dispatch(fetchUserProfile(userToken));
-              setLoading(true);
-              handleSubmit();
-            } else {
-              console.error("Payment failed. Response:", data);
-            }
-          } catch (error) {
-            console.error("Error:", error);
-          } finally {
-            handleCancel();
-
-            setLoading(false); // Set loading to false when the request completes (either success or failure)
-          }
-        }
-      } else if (selectedValue === 2) {
-        // console.log("Instant Payment");
-        // setLoading(true);
-        handleFlutterPayment({
-          callback: async (response) => {
-            console.log(response);
-            if (response.status === "successful") {
-              console.log("flutterWave success");
-              reachScript.onload = () => {
-                Reach.conversion({
-                  advertiser_id: 299,
-                  // ADDITIONAL PARAMETERS
-                });
-              };
-              setLoading(true);
-              handleSubmit();
-            }
-            closePaymentModal();
-          },
-          onClose: () => {},
-        });
-        handleCancel();
-      }
-
-      // Close the modal
-      // handleCancel();
-    }
-    // console.log(selectedValue);
-    // You may also add an else block to handle the case when no payment method is selected
-  };
-
-  const handlePaymentMethodFace = async () => {
-    // Check if a payment method is selected
-    const reachScript = document.createElement("script");
-    reachScript.src = "https://clk1.reachclk.com/sdk/reach.js";
-    reachScript.async = true;
-
-    document.body.appendChild(reachScript);
-    if (selectedValue !== null) {
-      // Log the selected payment method
-      const userBalance = userDetails?.walletBalance || 0;
-
-      if (selectedValue === 1) {
-        // console.log("Payment from Wallet");
-        setLoading(true);
-        if (flutterWaveCurrency === "USD") {
-          setLoading(false);
-          Swal.fire({
-            title: "Error",
-            text: "Sorry you can not make wallet payment using a wrong currency",
-            icon: "error",
-            customClass: {
-              confirmButton: "custom-swal-button",
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-          return;
-        }
-        const apiUrl =
-          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
-
-        const requestBody = {
-          userNIN: userNin,
-          transactionID: "EA11697986831911",
-          // amount: `${danfee.toFixed(2)}`,
-          amount:
-            currencyCheck == "USD"
-              ? `${totalServiceCost}`
-              : `${totalServiceCost}`,
-        };
-
-        if (userBalance.toLocaleString() < 55) {
-          // Show the Ant Design notification
-          Swal.fire({
-            title: "Wallet Balance Warning",
-            text: "Your wallet balance is low. Please recharge before making a payment.",
-            icon: "error",
-            customClass: {
-              confirmButton: "custom-swal-button",
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-          // notification.error({
-          //   message: "Wallet Balance Warning",
-          //   description:
-          //     "Your wallet balance is low. Please recharge before making a payment.",
-          // });
-        } else {
-          try {
-            const response = await fetch(apiUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userToken}`,
-              },
-              body: JSON.stringify(requestBody),
-            });
-
-            const data = await response.text();
-
-            if (response.ok && data === "payment successful") {
-              // console.log("Payment successful. Response:", data);
-              handleCancelFace();
-              dispatch(fetchUserProfile(userToken));
-              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen-web/${userToken}`;
-              if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
-                window.open(liveCaptureUrl, "_blank");
-              }
-              // handleSubmit();
-            } else {
-              console.error("Payment failed. Response:", data);
-            }
-          } catch (error) {
-            console.error("Error:", error);
-          } finally {
-            handleCancelFace();
-
-            setLoading(false); // Set loading to false when the request completes (either success or failure)
-          }
-        }
-      } else if (selectedValue === 2) {
-        // console.log("Instant Payment");
-        handleFlutterPayment({
-          callback: async (response) => {
-            console.log(response);
-            if (response.status === "successful") {
-              console.log("flutterWave success");
-              reachScript.onload = () => {
-                Reach.conversion({
-                  advertiser_id: 299,
-                  // ADDITIONAL PARAMETERS
-                });
-              };
-              // handleSubmit();
-              const liveCaptureUrl = `https://41.184.212.26/${liveFaceNin}/ecitizen-web/${userToken}`;
-              if (isLiveFaceNinValid && liveFaceNin.trim() !== "") {
-                window.open(liveCaptureUrl, "_blank");
-              }
-            }
-            closePaymentModal();
-          },
-          onClose: () => {},
-        });
-        handleCancelFace();
-      }
-
-      // Close the modal
-      // handleCancel();
-    }
-  };
-
   const handleRadioChange = (e) => {
     setSelectedValue(e.target.value);
     setCheckboxCheckedConfirm(true);
@@ -1723,7 +1470,6 @@ const DashboardPage = () => {
       >
         <Button
           type="primary"
-          onClick={handlePaymentMethodFace}
           disabled={!checkboxCheckedConfirm}
           style={{
             marginRight: 10,
@@ -1957,6 +1703,115 @@ const DashboardPage = () => {
       allowEscapeKey: false,
     });
   }
+
+  const handlePaymentMethod = async () => {
+    if (selectedValue !== null) {
+      // Log the selected payment method
+      const userBalance = userDetails?.walletBalance || 0;
+
+      if (selectedValue === 1) {
+        // console.log("Payment from Wallet");
+        setLoading(true);
+        handleCancel();
+
+        const apiUrl =
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
+
+        const requestBody = {
+          userNIN: userNin,
+          transactionID: "EA11697986831911",
+          // amount: `${danfee.toFixed(2)}`,
+          // amount:
+          //   currencyCheck == "USD"
+          //     ? `${totalServiceCost}`
+          //     : `${totalServiceCost}`,
+
+          amount:
+            userCurrency == "NGN" && currencyCheck === "NGN"
+              ? totalServiceCost
+              : userCurrency == "NGN" && currencyCheck === "USD"
+              ? totalServiceCost
+              : // : userCurrency == "USD" && currencyCheck === "USD"
+                // ? totalServiceCost
+                totalveriNiara,
+          //!! Look at the wallet payment condtion. the wallet only allows payment with user Currency
+          // currencyCheck == "USD"
+          //   ? outsideNgWithNiara == true
+          //     ? `${outsideNgWithNiaraPrice}`
+          //     : `${totalServiceCost}`
+          //   : `${totalServiceCost}`,
+        };
+
+        if (userBalance.toLocaleString() < 100) {
+          // Show the Ant Design notification
+          setLoading(false);
+          handleCancel();
+          Swal.fire({
+            title: "Wallet Balance Error",
+            text: "Your wallet balance is low. Please recharge before making a payment.",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          // notification.error({
+          //   message: "Wallet Balance Warning",
+          //   description:
+          //     "Your wallet balance is low. Please recharge before making a payment.",
+          // });
+        } else {
+          try {
+            setLoading(true);
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(requestBody),
+            });
+
+            const data = await response.text();
+
+            if (response.ok && data === "payment successful") {
+              // console.log("Payment successful. Response:", data);
+              handleCancel();
+              dispatch(fetchUserProfile(userToken));
+              setLoading(true);
+              handleSubmit();
+            } else {
+              console.error("Payment failed. Response:", data);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          } finally {
+            handleCancel();
+
+            setLoading(false); // Set loading to false when the request completes (either success or failure)
+          }
+        }
+      } else if (selectedValue === 2) {
+        // console.log("Instant Payment");
+        // setLoading(true);
+        handleFlutterPayment({
+          callback: async (response) => {
+            console.log(response);
+            if (response.status === "successful") {
+              console.log("flutterWave success");
+
+              setLoading(true);
+              handleSubmit();
+            }
+            closePaymentModal();
+          },
+          onClose: () => {},
+        });
+        handleCancel();
+      }
+    }
+  };
 
   return (
     <Row>
