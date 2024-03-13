@@ -136,7 +136,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/reach/:CLICK_ID" exact component={Home} />
           <Route path="/login" component={LoginPage} />
-          <Route path="/reset-password/:email" component={ResetPasswordPage} />
+          <Route path="/reset-password" component={ResetPasswordPage} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOtp} />
           <Route path="/email-confirm" component={EmailVerifiedConfirm} />
