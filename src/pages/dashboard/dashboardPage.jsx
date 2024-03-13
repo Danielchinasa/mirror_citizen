@@ -1908,6 +1908,7 @@ const DashboardPage = () => {
 
                           <Radio
                             value="face"
+                            disabled
                             onClick={() => setSelectedForm("face")}
                           >
                             National Identification Number (NIN) + Face{" "}
