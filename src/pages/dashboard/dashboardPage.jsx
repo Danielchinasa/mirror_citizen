@@ -2412,8 +2412,8 @@ const DashboardPage = () => {
                             >
                               Live Capture
                             </Button>
-                            ;
-                            {/* <Modal
+
+                            <Modal
                               title="live Face Capture"
                               style={{
                                 top: 20,
@@ -2430,7 +2430,7 @@ const DashboardPage = () => {
                                 height="500"
                                 src={liveCaptureUrl}
                               ></iframe>
-                            </Modal> */}
+                            </Modal>
                           </Col>
                         </Row>
                       </div>
