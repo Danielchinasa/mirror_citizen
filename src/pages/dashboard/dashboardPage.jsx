@@ -1034,6 +1034,8 @@ const DashboardPage = () => {
               ? totalServiceCost
               : currencyCheck === "USD" && userCurrency === "ngn"
               ? totalveriNiara
+              : currencyCheck === "USD" && userCurrency === "usd"
+              ? totalServiceCost
               : userCurrency == "NGN" && currencyCheck != "NGN"
               ? outsideNgWithNiaraPrice
               : // : userCurrency == "USD" && currencyCheck === "USD"
