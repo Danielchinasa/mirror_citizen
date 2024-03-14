@@ -1730,71 +1730,133 @@ const DashboardPage = () => {
   };
 
   const clearInputNin = () => {
-    setBasicProfileArray([]);
-    setFormData({ ...formData, nin: "" });
-    setSelectedValue(null);
-    setNinFilled(false);
-    setFaceFilled(false);
-    setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
-    setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
-    setTotalveriNiara((prevTotalFees) => prevTotalFees - ninUsdFee);
+    setBasicProfileArray([]); // Clears basic profile array
+    setFormData({ ...formData, nin: "" }); // Clears the nin field in the form data
+    setSelectedValue(null); // Clears selected value
+    setNinFilled(false); // Sets ninFilled state to false
+    setFaceFilled(false); // Sets faceFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - ninVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - ninFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - ninUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
   };
 
   const clearInputBusinessrc = () => {
-    setBusinessProfileArray([]);
-    setFormData({ ...formData, rc: "" });
-    setBusinessSelectedValue(null);
-    setRcFilled(false);
-    setBusinessNameFilled(false);
-    setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
-    setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
-    setTotalveriNiara((prevTotalFees) => prevTotalFees - businessUsdFee);
+    setBusinessProfileArray([]); // Clears business profile array
+    setFormData({ ...formData, rc: "" }); // Clears the rc field in the form data
+    setBusinessSelectedValue(null); // Clears business selected value
+    setRcFilled(false); // Sets rcFilled state to false
+    setBusinessNameFilled(false); // Sets businessNameFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - businessVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - businessFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - businessUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
   };
   const clearInputBusinessbusiness_name = () => {
-    setBusinessProfileArray([]);
-    setFormData({ ...formData, business_name: "" });
-    setBusinessSelectedValue(null);
-    setRcFilled(false);
-    setBusinessNameFilled(false);
-    setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
-    setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
-    setTotalveriNiara((prevTotalFees) => prevTotalFees - businessUsdFee);
+    setBusinessProfileArray([]); // Clears business profile array
+    setFormData({ ...formData, business_name: "" }); // Clears the business_name field in the form data
+    setBusinessSelectedValue(null); // Clears business selected value
+    setRcFilled(false); // Sets rcFilled state to false
+    setBusinessNameFilled(false); // Sets businessNameFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - businessVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - businessFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - businessUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
   };
 
   const clearInputFinancial = () => {
-    setFinancialProfileArray([]);
-    setFormData({ ...formData, bvn: "" });
-    setFinancialSelectedValue(null);
-    setBvnFilled(false);
-    setTotalVAT((prevTotalVAT) => prevTotalVAT - financialVatFee);
-    setTotalServiceCost((prevTotalFees) => prevTotalFees - financialFee);
-    setTotalveriNiara((prevTotalFees) => prevTotalFees - financialUsdFee);
+    setFinancialProfileArray([]); // Clears financial profile array
+    setFormData({ ...formData, bvn: "" }); // Clears the bvn field in the form data
+    setFinancialSelectedValue(null); // Clears financial selected value
+    setBvnFilled(false); // Sets bvnFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - financialVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - financialFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - financialUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
   };
 
   const clearInputVehiclelicense_number = () => {
-    setVehicleProfileArray([]);
-    setFormData({ ...formData, license_number: "" });
-    setVehicleSelectedValue(null);
-    setVinFilled(false);
-    setLicenseNumberFilled(false);
-    setTotalVAT((prevTotalVAT) => prevTotalVAT - vehicleVatFee);
-    setTotalServiceCost((prevTotalFees) => prevTotalFees - vehicleFee);
-    setTotalveriNiara((prevTotalFees) => prevTotalFees - vehicleUsdFee);
+    setVehicleProfileArray([]); // Clears vehicle profile array
+    setFormData({ ...formData, license_number: "" }); // Clears the license_number field in the form data
+    setVehicleSelectedValue(null); // Clears vehicle selected value
+    setVinFilled(false); // Sets vinFilled state to false
+    setLicenseNumberFilled(false); // Sets licenseNumberFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - vehicleVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - vehicleFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - vehicleUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
   };
+
   const clearInputVehiclevin = () => {
-    setVehicleProfileArray([]);
-    setFormData({ ...formData, vin: "" });
-    setVehicleSelectedValue(null);
-    setVinFilled(false);
-    setLicenseNumberFilled(false);
+    setVehicleProfileArray([]); // Clears vehicle profile array
+    setFormData({ ...formData, vin: "" }); // Clears the vin field in the form data
+    setVehicleSelectedValue(null); // Clears vehicle selected value
+    setVinFilled(false); // Sets vinFilled state to false
+    setLicenseNumberFilled(false); // Sets licenseNumberFilled state to false
+
+    // Check if currency is USD, then subtract fees accordingly
     if (currencyCheck === "USD") {
-      setTotalVAT((prevTotalVAT) => prevTotalVAT - vinVehicleVatFee);
-      setTotalServiceCost((prevTotalFees) => prevTotalFees - vinVehicleFee);
+      setTotalVAT((prevTotalVAT) => {
+        const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+        return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+      });
+      setTotalServiceCost((prevTotalFees) => {
+        const newTotalFees = prevTotalFees - vinVehicleFee;
+        return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+      });
     } else {
-      setTotalVAT((prevTotalVAT) => prevTotalVAT - vinVehicleVatFee);
-      setTotalServiceCost((prevTotalFees) => prevTotalFees - vinVehicleFee);
+      // If currency is not USD, subtract fees similarly
+      setTotalVAT((prevTotalVAT) => {
+        const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+        return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+      });
+      setTotalServiceCost((prevTotalFees) => {
+        const newTotalFees = prevTotalFees - vinVehicleFee;
+        return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+      });
     }
 
+    // Subtract USD fees
     setTotalveriNiara((prevTotalFees) => prevTotalFees - vinVehicleUsdFee);
   };
 
