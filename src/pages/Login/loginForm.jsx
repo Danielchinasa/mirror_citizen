@@ -293,7 +293,7 @@ const LoginForm = () => {
               sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
               onChange={handleCaptchaVerify}
             />
-            ,
+
             <MainButtonFull
               type="primary"
               htmlType="submit"

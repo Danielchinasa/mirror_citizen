@@ -574,7 +574,7 @@ const MainDashboard = () => {
               <Table
                 expandable
                 columns={columns}
-                dataSource={filteredData && filteredData.reverse()}
+                dataSource={filteredData && filteredData}
                 onRow={(record, rowIndex) => {
                   return {
                     onClick: () => handleViewResult(record),
@@ -599,7 +599,7 @@ const MainDashboard = () => {
           <Col span={24}>
             <Table
               columns={columns2}
-              dataSource={transactionData && transactionData}
+              dataSource={transactionData && transactionData.reverse()}
             />
           </Col>
         </Row>

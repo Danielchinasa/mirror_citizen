@@ -39,6 +39,7 @@ import "vanilla-cookieconsent/dist/cookieconsent.css";
 import * as CookieConsent from "vanilla-cookieconsent";
 import LiveFaceScreen from "./pages/liveFace/liveFace";
 import BusinessName from "./pages/result/businessName";
+import AppLogout from "./components/AppLogOut";
 
 function App() {
   useEffect(() => {
@@ -132,40 +133,48 @@ function App() {
         <GlobalStyles />
         <ScrollToTop />
         <Navbar />
+
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/reach/:CLICK_ID" exact component={Home} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/forgot-password" component={ForgotPassword} />
-          <Route path="/verify-otp" component={VerifyOtp} />
-          <Route path="/email-confirm" component={EmailVerifiedConfirm} />
-          <Route path="/check-email" component={CheckPasswordResetLink} />
-          <Route path="/set-new-password" component={SetNewPassword} />
-          <Route path="/password-confirm" component={PasswordResetConfirm} />
-          <Route path="/contact" component={ContactPage} />
-          <Route path="/dashboard" component={DashboardPage} />
-          <Route path="/disclaimer" component={Disclaimer} />
-          <Route path="/consent" component={Consent} />
-          <Route path="/liveFace" component={LiveFaceScreen} />
-          <Route path="/result" component={Result} />
-          <Route path="/vehicle" component={Vehicle} />
-          <Route path="/vehicle2" component={Vehicle2} />
-          <Route path="/legit-car" component={LegitCar} />
-          <Route path="/businessName" component={BusinessName} />
-          <Route path="/business" component={Business} />
-          <Route path="/financial" component={Financial} />
-          <Route path="/faq" component={FaqPage} />
-          <Route path="/profile" component={ProfilePage} />
-          {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
-          <Route path="/main-dashboard" component={MainDashboard} />
-          <Route path="/products" component={Products} />
-          <Route path="/sign-up" component={SignUpPage} />
-          <Route path="/notFoundPage" component={NotFoundPage} />
-          <Route path="/individual/sign-up/1" component={IndividualSignUp} />
-          <Route path="/individual/sign-up/2" component={BusinessSignUp} />
-          <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
-          <Route path="/reset-password/:email/:token" exact component={ResetPasswordPage} />
+          <AppLogout>
+            <Route path="/" exact component={Home} />
+            <Route path="/reach/:CLICK_ID" exact component={Home} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/verify-otp" component={VerifyOtp} />
+            <Route path="/email-confirm" component={EmailVerifiedConfirm} />
+            <Route path="/check-email" component={CheckPasswordResetLink} />
+            <Route path="/set-new-password" component={SetNewPassword} />
+            <Route path="/password-confirm" component={PasswordResetConfirm} />
+            <Route path="/contact" component={ContactPage} />
+            <Route path="/dashboard" component={DashboardPage} />
+            <Route path="/disclaimer" component={Disclaimer} />
+            <Route path="/consent" component={Consent} />
+            <Route path="/liveFace" component={LiveFaceScreen} />
+            <Route path="/result" component={Result} />
+            <Route path="/vehicle" component={Vehicle} />
+            <Route path="/vehicle2" component={Vehicle2} />
+            <Route path="/legit-car" component={LegitCar} />
+            <Route path="/businessName" component={BusinessName} />
+            <Route path="/business" component={Business} />
+            <Route path="/financial" component={Financial} />
+            <Route path="/faq" component={FaqPage} />
+            <Route path="/profile" component={ProfilePage} />
+            {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
+            <Route path="/main-dashboard" component={MainDashboard} />
+            <Route path="/products" component={Products} />
+            <Route path="/sign-up" component={SignUpPage} />
+            <Route path="/notFoundPage" component={NotFoundPage} />
+            <Route path="/individual/sign-up/1" component={IndividualSignUp} />
+            <Route path="/individual/sign-up/2" component={BusinessSignUp} />
+            <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
+            <Route
+              path="/reset-password/:email/:token"
+              exact
+              component={ResetPasswordPage}
+            />
+          </AppLogout>
         </Switch>
+
         <Footer />
         {/* <CookieConsent
           location="bottom"
