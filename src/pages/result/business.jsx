@@ -175,7 +175,11 @@ const Business = () => {
     handleFlutterPayment({
       callback: async (response) => {
         console.log(response);
-        if (response.status === "successful") {
+        if (
+          response.status === "successful" ||
+          response.status === "success" ||
+          response.status === "completed"
+        ) {
           console.log("flutterWave success");
 
           setLoading(true);

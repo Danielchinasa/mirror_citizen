@@ -197,6 +197,34 @@ const BusinessName = () => {
         // console.log("Selected payment method:", stakeHolderFeeUsd);
 
         if (result.value === "Payment from Wallet") {
+          if (currencyCheck === "NGN" && userCurrency === "usd") {
+            setLoading(false);
+            Swal.fire({
+              title: "Error",
+              text: "Wallet currency doesn't match purchase currency. Please use a Naira wallet for this transaction.",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
+          if (currencyCheck === "USD" && userCurrency === "ngn") {
+            setLoading(false);
+            Swal.fire({
+              title: "Error",
+              text: "Wallet currency doesn't match purchase currency. Please use a USD wallet for this transaction.",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
           const apiUrl =
             "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
@@ -304,7 +332,11 @@ const BusinessName = () => {
           handleFlutterPayment({
             callback: async (response) => {
               console.log(response);
-              if (response.status === "successful") {
+              if (
+                response.status === "successful" ||
+                response.status === "success" ||
+                response.status === "completed"
+              ) {
                 console.log("flutterWave success");
                 setLoading(true);
                 try {

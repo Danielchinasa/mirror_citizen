@@ -40,6 +40,7 @@ import * as CookieConsent from "vanilla-cookieconsent";
 import LiveFaceScreen from "./pages/liveFace/liveFace";
 import BusinessName from "./pages/result/businessName";
 import AppLogout from "./components/AppLogOut";
+import ProtectedRoute from "./protectedRoute";
 
 function App() {
   useEffect(() => {
@@ -146,21 +147,21 @@ function App() {
             <Route path="/set-new-password" component={SetNewPassword} />
             <Route path="/password-confirm" component={PasswordResetConfirm} />
             <Route path="/contact" component={ContactPage} />
-            <Route path="/dashboard" component={DashboardPage} />
+            <ProtectedRoute path="/dashboard" component={DashboardPage} />
             <Route path="/disclaimer" component={Disclaimer} />
-            <Route path="/consent" component={Consent} />
-            <Route path="/liveFace" component={LiveFaceScreen} />
-            <Route path="/result" component={Result} />
-            <Route path="/vehicle" component={Vehicle} />
-            <Route path="/vehicle2" component={Vehicle2} />
-            <Route path="/legit-car" component={LegitCar} />
-            <Route path="/businessName" component={BusinessName} />
-            <Route path="/business" component={Business} />
-            <Route path="/financial" component={Financial} />
+            <ProtectedRoute path="/consent" component={Consent} />
+            <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />
+            <ProtectedRoute path="/result" component={Result} />
+            <ProtectedRoute path="/vehicle" component={Vehicle} />
+            <ProtectedRoute path="/vehicle2" component={Vehicle2} />
+            <ProtectedRoute path="/legit-car" component={LegitCar} />
+            <ProtectedRoute path="/businessName" component={BusinessName} />
+            <ProtectedRoute path="/business" component={Business} />
+            <ProtectedRoute path="/financial" component={Financial} />
             <Route path="/faq" component={FaqPage} />
-            <Route path="/profile" component={ProfilePage} />
+            <ProtectedRoute path="/profile" component={ProfilePage} />
             {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
-            <Route path="/main-dashboard" component={MainDashboard} />
+            <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
             <Route path="/products" component={Products} />
             <Route path="/sign-up" component={SignUpPage} />
             <Route path="/notFoundPage" component={NotFoundPage} />

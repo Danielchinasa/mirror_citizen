@@ -748,6 +748,10 @@ const DashboardPage = () => {
     setSelectedForm(e.target.value);
   };
 
+  const tooltipContentVehicle = [
+    "VIN: Choose this option to search for a vehicle's original information using a VIN. This includes the option of the stolen status of the vehicle.",
+    "Registration: Choose this option to search for a vehicle's registration information in Nigeria using the vehicle registration number (license plate)",
+  ];
   const tooltipContentBasic =
     "A Basic Identity Profile gives the distinct characteristics, attributes and information that uniquely identifies an individual. Searchable parameters are NIN, demographics, face, fingerprint, and phone number.";
   const tooltipContentBusiness =
@@ -755,8 +759,6 @@ const DashboardPage = () => {
   const tooltipContentFinancial =
     "A financial credit profile is a report card that tells how responsible you are with borrowing and repaying money. It helps lenders decide if they can trust you with a loan or credit. Search parameter is bank verification number (BVN).";
 
-  const tooltipContentVehicle =
-    "VIN: Choose this option to search for a vehicle's original information using a VIN. This includes the option of the stolen status of the vehicle. Registration: Choose this option to search for a vehicle's registration information in Nigeria using the vehicle registration number (license plate)";
   const [serviceFee, setServiceFee] = useState(0);
   const [processingFee, setProcessingFee] = useState(0);
   const [rawServiceFee, setRawServiceFee] = useState(0);
@@ -1119,7 +1121,11 @@ const DashboardPage = () => {
         handleFlutterPayment({
           callback: async (response) => {
             console.log(response);
-            if (response.status === "successful") {
+            if (
+              response.status === "successful" ||
+              response.status === "success" ||
+              response.status === "completed"
+            ) {
               console.log("flutterWave success");
 
               setLoading(true);
@@ -2131,7 +2137,18 @@ const DashboardPage = () => {
                     >
                       <Col span={21}>Vehicle Profile</Col>
                       <Col span={3}>
-                        <Tooltip title={tooltipContentVehicle} color="#F4B40F">
+                        <Tooltip
+                          title={
+                            <>
+                              {tooltipContentVehicle.map((content, index) => (
+                                <p key={index} style={{ fontWeight: "bold" }}>
+                                  {content}
+                                </p>
+                              ))}
+                            </>
+                          }
+                          color="#F4B40F"
+                        >
                           <InfoCircleOutlined
                             style={{
                               fontSize: "20px",

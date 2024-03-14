@@ -255,8 +255,7 @@ const MainDashboard = () => {
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}TP",
     amount: "1000",
     currency: userCurrency == "usd" ? "USD" : "NGN",
-    payment_options:
-      "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
+    payment_options: "card,ussd, account, banktransfer, barter, nqr",
     customer: {
       email: userEmail,
       phone_number: userPhone,
@@ -278,6 +277,7 @@ const MainDashboard = () => {
   };
 
   const [searchText, setSearchText] = useState("");
+  const [searchTextTransaction, setSearchTextTransaction] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const componentRef = useRef();
 
@@ -294,6 +294,10 @@ const MainDashboard = () => {
     const { value } = e.target;
     setSearchText(value);
   };
+  const handleSearchTransaction = (e) => {
+    const { value } = e.target;
+    setSearchTextTransaction(value);
+  };
 
   const filteredData =
     verificationData &&
@@ -305,6 +309,19 @@ const MainDashboard = () => {
             .toString()
             .toLowerCase()
             .includes(searchText.toLowerCase())
+      );
+    });
+
+  const filteredDataTransaction =
+    transactionData &&
+    transactionData.filter((record) => {
+      return Object.keys(record).some(
+        (key) =>
+          record[key] &&
+          record[key]
+            .toString()
+            .toLowerCase()
+            .includes(searchTextTransaction.toLowerCase())
       );
     });
 
@@ -514,11 +531,13 @@ const MainDashboard = () => {
       title: "Transaction ID",
       dataIndex: "transactionID",
       key: "transactionID",
+      sorter: (a, b) => a.transactionID - b.transactionID,
     },
     {
       title: "Date and Time",
       dataIndex: "transactionDate",
       key: "transactionDate",
+      sorter: (a, b) => b.transactionDate - a.transactionDate,
       render: (transactionDate) => {
         const date = new Date(transactionDate);
         const formattedDate = `${date.getFullYear()}-${
@@ -532,20 +551,43 @@ const MainDashboard = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      sorter: (a, b) => a.amount - b.amount,
     },
     {
       title: "Status",
       key: "successful",
+      filters: [
+        {
+          text: "Successful",
+          value: "successful",
+        },
+        {
+          text: "Failed",
+          value: "Failed",
+        },
+      ],
+      onFilter: (value, record) => {
+        if (value === "successful") {
+          return record.successful;
+        } else {
+          return !record.successful;
+        }
+      },
       dataIndex: "successful",
-      sorter: (a, b) => a.successful - b.successful,
+      sorter: (a, b) => {
+        if (a.successful && b.successful) {
+          return 0;
+        } else if (a.successful) {
+          return 1;
+        } else {
+          return -1;
+        }
+      },
       render: (_, record) => (
         <a rel="noopener noreferrer">
           {record.successful ? "Successful" : "Failed"}
         </a>
       ),
-
-      // render: (status) => <a href="/">status</a>,
-      // render: (_, record) => <Space size="middle">{status}</Space>,
     },
   ];
   const items = [
@@ -595,14 +637,25 @@ const MainDashboard = () => {
       key: "2",
       label: "Transaction Logs",
       children: (
-        <Row>
-          <Col span={24}>
-            <Table
-              columns={columns2}
-              dataSource={transactionData && transactionData.reverse()}
-            />
-          </Col>
-        </Row>
+        <>
+          <Input
+            placeholder="Search..."
+            prefix={<SearchOutlined />}
+            onChange={handleSearchTransaction}
+            style={{ marginBottom: 8, width: 200 }}
+          />
+          <Row>
+            <Col span={24}>
+              <Table
+                columns={columns2.reverse()} // Reverse the order of columns
+                dataSource={
+                  filteredDataTransaction &&
+                  filteredDataTransaction.slice().reverse()
+                } // Reverse the order of the dataSource array
+              />
+            </Col>
+          </Row>
+        </>
       ),
     },
   ];
@@ -620,7 +673,11 @@ const MainDashboard = () => {
     handleFlutterPayment({
       callback: async (response) => {
         console.log(response);
-        if (response.status === "successful") {
+        if (
+          response.status === "successful" ||
+          response.status === "success" ||
+          response.status === "completed"
+        ) {
           try {
             const apiUrl = "https://e-citizen.ng:8443/api/v2/transaction/topup";
             const requestData = {
