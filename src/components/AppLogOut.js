@@ -25,7 +25,7 @@ const AppLogout = ({ children }) => {
       Swal.fire({
         title: "You have been inactive for 10 minutes",
         html: "The system will log you out in <b></b> seconds.",
-        timer: 10 * 60 * 10000, // Set timer to 10 seconds
+        timer: 10000, // Set timer to 10 seconds
         timerProgressBar: true,
         showCancelButton: false,
         showConfirmButton: true,
@@ -68,7 +68,7 @@ const AppLogout = ({ children }) => {
           console.log(isAuthenticated);
           showLogoutAlert();
         }
-      }, 10 * 60 * 10000); // 10000ms = 10secs. You can change the time.
+      }, 10000); // 10000ms = 10secs. You can change the time.
     };
 
     // Function to logout user
