@@ -11,6 +11,14 @@ const Notification = () => {
       title: notification.title,
       text: notification.body,
       icon: "info",
+      showConfirmButton: true,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#0DC939",
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
     });
   };
 

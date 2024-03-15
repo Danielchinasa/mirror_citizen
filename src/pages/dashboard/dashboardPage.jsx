@@ -1032,6 +1032,7 @@ const DashboardPage = () => {
           });
           return;
         }
+
         const apiUrl =
           "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
@@ -1065,7 +1066,20 @@ const DashboardPage = () => {
           //   : `${totalServiceCost}`,
         };
 
-        if (userBalance.toLocaleString() < 100) {
+        if (
+          userBalance.toLocaleString() <
+          (userCurrency == "NGN" && currencyCheck === "NGN"
+            ? totalServiceCost
+            : currencyCheck === "USD" && userCurrency === "ngn"
+            ? totalveriNiara
+            : currencyCheck === "USD" && userCurrency === "usd"
+            ? totalServiceCost
+            : userCurrency == "NGN" && currencyCheck != "NGN"
+            ? outsideNgWithNiaraPrice
+            : // : userCurrency == "USD" && currencyCheck === "USD"
+              // ? totalServiceCost
+              totalServiceCost)
+        ) {
           // Show the Ant Design notification
           setLoading(false);
           handleCancel();
@@ -2628,7 +2642,7 @@ const DashboardPage = () => {
                       ""
                     )}
 
-                    {rcFilled ? (
+                    {rcFilled && businessProfileArray.includes("rc") ? (
                       <Row>
                         <Col
                           span={8}

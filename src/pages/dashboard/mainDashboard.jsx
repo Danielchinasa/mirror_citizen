@@ -664,6 +664,10 @@ const MainDashboard = () => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const handleCancel = () => {
+    setAmount("");
+    setIsModalVisible(false);
+  };
   const handleOk = () => {
     // Perform any validation on the amount if needed
     // Save the amount to the config or use it as needed
@@ -742,13 +746,14 @@ const MainDashboard = () => {
           }
         }
         closePaymentModal();
+        handleCancel();
       },
-      onClose: () => {},
+      onClose: () => {
+        handleCancel();
+      },
     });
   };
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+
   const [totalVerificationCount, setTotalVerificationCount] = useState(0);
   const [completedVerificationCount, setCompletedVerificationCount] =
     useState(0);
@@ -781,6 +786,15 @@ const MainDashboard = () => {
   );
 
   const pdfRef = useRef();
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    // Validate if the input is a positive number
+    if (/^[1-9]\d*\.?\d*$/.test(value) || value === "") {
+      setAmount(value); // Set the amount only if it's a positive number greater than zero
+    }
+  };
 
   // Usage
   return (
@@ -889,12 +903,13 @@ const MainDashboard = () => {
             visible={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
+            width={300}
           >
             <Input
-              type="number"
+              type="text"
               placeholder="Enter amount"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={handleChange}
             />
           </Modal>
         </div>
