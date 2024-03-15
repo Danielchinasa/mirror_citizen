@@ -12,6 +12,7 @@ import {
   Input,
   message,
   notification,
+  Divider,
 } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
@@ -29,6 +30,8 @@ import Swal from "sweetalert2";
 import { SearchOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import Notification from "../../Notification";
+import { Typography } from "antd";
+const { Title } = Typography;
 
 const data = [
   {
@@ -263,7 +266,7 @@ const MainDashboard = () => {
     },
 
     customizations: {
-      title: "my Payment for Verification",
+      title: "Funding e-citizen wallet",
       description: "Payment for verification service",
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },
@@ -661,6 +664,7 @@ const MainDashboard = () => {
   ];
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const userDetails = useSelector((state) => state.userDetails);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -796,6 +800,14 @@ const MainDashboard = () => {
     }
   };
 
+  const userBalance = userDetails?.walletBalance || 0;
+  const formatToNaira = (value) => {
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(value);
+  };
+
   // Usage
   return (
     <Container>
@@ -896,15 +908,25 @@ const MainDashboard = () => {
             style={{ float: "right" }}
             onClick={showModal}
           >
-            Fund Wallet
+            View Wallet
           </MainButton>
           <Modal
-            title="Enter Amount to Fund Wallet"
+            title="User Wallet"
             visible={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
             width={300}
           >
+            <Title level={5}> Wallet Balance:</Title>
+            <Title level={3} style={{ color: "#0DC939" }}>
+              {userCurrency === "ngn"
+                ? formatToNaira(userBalance)
+                : `$${userBalance}`}
+            </Title>
+
+            <Divider style={{ border: "1px solid #D9D9D9" }} />
+            <Title level={5}>Fund Wallet</Title>
+            <p>Enter Amount to Fund Wallet</p>
             <Input
               type="text"
               placeholder="Enter amount"

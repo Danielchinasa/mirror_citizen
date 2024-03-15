@@ -309,9 +309,9 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "ngn"
-                              ? formatToNaira(userBalance)
-                              : `$${userBalance}`}
+                            {userCurrency === "usd"
+                              ? `$${userBalance}`
+                              : formatToNaira(userBalance)}
                           </span>
                         </p>
                       </div>
@@ -342,9 +342,9 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "ngn"
-                              ? formatToNaira(userBalance)
-                              : `$${userBalance}`}
+                            {userCurrency === "usd"
+                              ? `$${userBalance}`
+                              : formatToNaira(userBalance)}
                           </span>
                         </p>
                       </div>

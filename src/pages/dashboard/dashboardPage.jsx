@@ -197,10 +197,8 @@ const DashboardPage = () => {
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setNinFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - ninFee);
-        setTotalServiceCost(
-          (prevTotalFees) => prevTotalFees - (ninServiceFee + ninProcessingFee)
-        );
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
         setTotalveriNiara(
           (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee
         );
@@ -1269,6 +1267,7 @@ const DashboardPage = () => {
         calculatedTotalveri += formDataFees.vin;
         setTotalveri(calculatedTotalveri);
       }
+      //!! LOOK HERE
       if (
         typeof formData.nin === "string" &&
         formData.nin.trim() !== "" &&
@@ -1722,6 +1721,60 @@ const DashboardPage = () => {
   const [vehicleSelectedValue, setVehicleSelectedValue] = useState(null);
 
   const handleBasicProfileRadioChange = (value) => {
+    if (basicProfileArray.length > 0) {
+      // Log the value being removed
+      console.log(
+        "Removing value:",
+        basicProfileArray[basicProfileArray.length - 1]
+      );
+      if (basicProfileArray[basicProfileArray.length - 1] === "nin") {
+        setNinFilled(false);
+        if (formData.nin !== "") {
+          // Update total VAT
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - ninVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - ninFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+          setTotalveriNiara((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - ninUsdFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+          });
+        }
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          nin: "", // Assuming "rc" is the name of the field you want to set to empty string
+        }));
+      }
+      if (basicProfileArray[basicProfileArray.length - 1] === "nin") {
+        setFaceFilled(false);
+        if (formData.nin !== "") {
+          // Update total VAT
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - ninVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - ninFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+          setTotalveriNiara((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - ninUsdFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+          });
+        }
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          nin: "", // Assuming "rc" is the name of the field you want to set to empty string
+        }));
+      }
+    }
+
     setSelectedValue(value);
     if (basicProfileArray.length > 0) {
       const newArray = [...basicProfileArray];
@@ -1732,7 +1785,72 @@ const DashboardPage = () => {
     }
   };
   const handleBusinessProfileRadioChange = (value) => {
+    if (businessProfileArray.length > 0) {
+      // Log the value being removed
+      console.log(
+        "Removing value:",
+        businessProfileArray[businessProfileArray.length - 1]
+      );
+
+      // Check if the value being removed is "rc"
+      if (businessProfileArray[businessProfileArray.length - 1] === "rc") {
+        setRcFilled(false);
+
+        if (formData.rc !== "") {
+          // Update total VAT
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - businessVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+
+          // Update total service cost
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - businessFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+
+          // Update total verification cost
+          setTotalveriNiara((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - businessUsdFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+          });
+        }
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          rc: "", // Assuming "rc" is the name of the field you want to set to empty string
+        }));
+      }
+      if (
+        businessProfileArray[businessProfileArray.length - 1] ===
+        "business_name"
+      ) {
+        setBusinessNameFilled(false);
+
+        if (formData.business_name !== "") {
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - businessNameVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - businessNameFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+          setTotalveriNiara((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - businessNameUsdFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+          });
+        }
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          business_name: "", // Assuming "rc" is the name of the field you want to set to empty string
+        }));
+      }
+    }
+
+    // Set the new value
     setBusinessSelectedValue(value);
+
+    // Update the array
     if (businessProfileArray.length > 0) {
       const newArray = [...businessProfileArray];
       newArray[businessProfileArray.length - 1] = value;
@@ -1741,6 +1859,7 @@ const DashboardPage = () => {
       setBusinessProfileArray([value]);
     }
   };
+
   const handleFinancialProfileRadioChange = (value) => {
     setFinancialSelectedValue(value);
     if (financialProfileArray.length > 0) {
@@ -1752,6 +1871,63 @@ const DashboardPage = () => {
     }
   };
   const handleVehicleProfileRadioChange = (value) => {
+    if (vehicleProfileArray.length > 0) {
+      // Log the value being removed
+      console.log(
+        "Removing value:",
+        vehicleProfileArray[vehicleProfileArray.length - 1]
+      );
+
+      // Check if the value being removed is "rc"
+      if (vehicleProfileArray[vehicleProfileArray.length - 1] === "vin") {
+        setVinFilled(false);
+
+        if (formData.vin !== "") {
+          // Update total VAT
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - vinVehicleFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+          // Subtract USD fees
+          setTotalveriNiara((prevTotalFees) => prevTotalFees - vinVehicleFee);
+        }
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          vin: "", // Assuming "rc" is the name of the field you want to set to empty string
+        }));
+      }
+      if (
+        vehicleProfileArray[vehicleProfileArray.length - 1] === "license_number"
+      ) {
+        setLicenseNumberFilled(false);
+
+        if (formData.license_number !== "") {
+          // Update total VAT
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - vehicleVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - vehicleFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+          setTotalveriNiara((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - vehicleUsdFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+          });
+        }
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          license_number: "", // Assuming "rc" is the name of the field you want to set to empty string
+        }));
+      }
+    }
     setVehicleSelectedValue(value);
     if (vehicleProfileArray.length > 0) {
       const newArray = [...vehicleProfileArray];
@@ -1807,6 +1983,7 @@ const DashboardPage = () => {
     setBusinessSelectedValue(null); // Clears business selected value
     setRcFilled(false); // Sets rcFilled state to false
     setBusinessNameFilled(false); // Sets businessNameFilled state to false
+
     setTotalVAT((prevTotalVAT) => {
       const newTotalVAT = prevTotalVAT - businessVatFee;
       return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
@@ -1920,6 +2097,21 @@ const DashboardPage = () => {
       allowEscapeKey: false,
     });
   }
+
+  const autoRemoveBusinessName = () => {
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - businessVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - businessFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - businessUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
+  };
 
   return (
     <Row>
@@ -2672,7 +2864,8 @@ const DashboardPage = () => {
                     ) : (
                       ""
                     )}
-                    {businessNameFilled ? (
+                    {businessNameFilled &&
+                    businessProfileArray.includes("business_name") ? (
                       <Row>
                         <Col
                           span={8}

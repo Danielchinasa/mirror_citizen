@@ -85,6 +85,7 @@ const ProfilePage = () => {
   const designation = user?.designation;
   const walletBalance = user?.walletBalance;
   const userType = user?.userType;
+  const userImage = user?.profileImageLocation;
   console.log(userType);
   const { Title } = Typography;
   const [formData, setFormData] = useState({
