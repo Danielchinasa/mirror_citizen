@@ -1,6 +1,7 @@
 const privacyPolicy = `
 <h6>Overview </h6>
-<p>In order to provide verification services to e-citizenTM users, Biosec Solutions Limited (“Biosec” or “the Company”) collects and/or processes certain types of information (such as name, telephone numbers, address etc.) of individuals that makes them easily identifiable. These individuals include users signing up to e-citizenTM as well as individuals whose personal details are verified (with their consent) by e-citizenTM users, jointly and/or severally (“Data Subjects”).</p>
+<p>In order to provide verification services to e-citizen™ users, Biosec Solutions Limited (“Biosec” or “the Company”) collects and/or processes  certain  types  of  information  (such  as  name, telephone  numbers,  address   etc.)  of  individuals  that  makes  them  easily  identifiable.  These individuals include users  signing  up to e-citizen™ as well as individuals  whose personal  details are verified (with their consent) by e-citizen™ users, jointly and/or severally (“Data Subjects”). </p>
+
 <p>This Privacy Policy applies to all forms of systems, operations, and processes within the e- citizenTM environment that involve the collection, storage, use, transmission, and disposal of Personal Data.</p>
 <h6>Category of Data Collected and Processed</h6>
 <p>We only collect and use your Personal data if we have obtained your prior consent or have a lawful and legitimate interest to do so. You are at liberty to withdraw your consent at any time by contacting the Data Protection Officer at info@biosec.com.ng. The following are data collected and processed for e-citizenTM use:</p>
@@ -46,16 +47,17 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
   <li>whether the Company has another lawful basis for retaining that information beyond the period for which it is necessary to serve the original purpose.</li>
 </ul>
 <p>Notwithstanding the foregoing and pursuant to the NDPA, the Company shall be entitled to retain and process Personal Data for archiving, scientific research, historical research, or statistical purposes for public interest.</p>
+
 <p>The Company would forthwith delete Personal Data in the Company’s possession where such Personal Data is no longer required for e-citizenTM access or in line with the Company’s Retention Policy, provided no law or regulation being in force requires the Company to retain such Personal Data.</p>
-<h6>Personal Data Retention for e-citizenTM Verification Process</h6>
-<p>Personal Data retrieved for transmission as part of an e-citizenTM verification process shall be retained for a maximum of 24 hours while awaiting the Data Subject’s consent, and a maximum of a further 24 hours after consent has been granted, during which time the e- citizenTM user who requested the data will be able to access it.</p>
-<p>The Company would forthwith delete Personal Data retrieved as part of an e-citizenTM verification process once 24 hours have elapsed from when consent was granted by the Data Subject.</p>
+<p>Personal  Data from  the  NIMC  system retrieved  for  transmission  as  part  of  an e-citizen™ verification process shall be retained for a maximum of 24 hours while awaiting the Data Subject’s consent, and a maximum of a further 24 hours after consent has been granted, during which time the e-citizen™ user who requested the data will be able to access </p>
+
+<p>The  Company would  forthwith  delete Personal Data  retrieved as  part  of  an e-citizen™ verification process once 24 hours have elapsed from when consent was granted by the Data Subject.  Vehicle data shall be retained for a maximum of 7 days. Financial credit data from credit bureaus shall be retained for a maximum of 7 days</p>
+
+
 <h6>Data Security</h6>
-<p>The Company considers Personal Data confidential and as such must be adequately protected from unauthorized use and/or disclosure.</p>
-<p>The Company has established adequate controls in order to protect the integrity and confidentiality of Personal Data, and to prevent personal data from being accidentally or deliberately compromised.</p>
-<p>All data processed by e-citizenTM is encrypted both in storage and in transit. However, it must be noted that no security measures are completely foolproof. The risk of a breach, although diminished, is still present.</p>
+<p>The  Company considers  Personal Data confidential  and  as  such  must  be  adequately protected from unauthorized use and/or disclosure.  The  Company has  established adequate controls in  order  to  protect the  integrity and confidentiality of Personal Data, and to prevent personal data from being accidentally or deliberately compromised.</p><p> All data processed by e-citizen™ is encrypted both in storage and in transit. However, it must be  noted  that  no  security  measures  are  completely foolproof. The  risk  of  a  breach, although diminished, is still present.<p>
 <h6>Data Breach Management Procedure</h6>
-<p>A data breach procedure is established and maintained in order to deal with incidents concerning Personal Data or privacy practices leading to the accidental or unlawful destruction, loss, alteration, unauthorized disclosure of, or access to, Personal Data transmitted, stored or otherwise processed.</p>
+<p>A data breach procedure is established and maintained in order to deal with incidents concerning Personal  Data  or  privacy  practices  leading  to  the  accidental  or  unlawful  destruction,  loss, alteration,   unauthorized  disclosure  of,  or  access  to,  Personal  Data transmitted,  stored   or otherwise processed</p>
 <h6>Consent</h6>
 <p>Consent is required for the processing of Personal Data on e-citizenTM. The Company shall obtain the requisite consent of Data Subjects at the time of collection or processing of Personal Data. In this regard, the Company will ensure:</p>
 <ul>
