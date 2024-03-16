@@ -25,16 +25,18 @@ const AppLogout = ({ children }) => {
       Swal.fire({
         title: "You have been inactive for 10 minutes",
         html: "The system will log you out in <b></b> seconds.",
-        timer: 10 * 60 * 10000, // Set timer to 10 seconds
+        timer: 1 * 60 * 1000, // Set timer to 10 seconds
         timerProgressBar: true,
         showCancelButton: false,
         showConfirmButton: true,
         confirmButtonColor: "#0DC939",
         confirmButtonText: "Stay logged in",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
 
         didOpen: () => {
           const timer = Swal.getPopup().querySelector("b");
-          let remainingTime = 10; // Set initial remaining time to 10 seconds
+          let remainingTime = 60; // Set initial remaining time to 10 seconds
           timerInterval = setInterval(() => {
             timer.textContent = `${remainingTime--}`; // Decrease remaining time by 1 second
           }, 1000); // Update interval every 1000 milliseconds (1 second)
@@ -64,11 +66,10 @@ const AppLogout = ({ children }) => {
     const handleLogoutTimer = () => {
       timer = setTimeout(() => {
         if (isAuthenticated === true) {
-          console.log("isAuthenticated at this point22");
-          console.log(isAuthenticated);
           showLogoutAlert();
         }
-      }, 10 * 60 * 10000); // 10000ms = 10secs. You can change the time.
+        // console.log("Start counting");
+      }, 9 * 60 * 1000); // 10000ms = 10secs. You can change the time.
     };
 
     // Function to logout user
