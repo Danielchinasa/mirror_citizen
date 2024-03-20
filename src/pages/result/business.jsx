@@ -638,45 +638,78 @@ const Business = () => {
         ) : (
           <Spin size="large" />
         )}
-        <Title level={5} style={{ marginTop: "20px" }}>
-          Your Offers
-        </Title>
-        <Row gutter={30}>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#DDF9EA"
-              title="Car Finance"
-              imageSrc={creditCard}
-              content="Credit Cards handpicked for you"
-            />
-          </Col>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#ECF5F8"
-              title="Car Insurance"
-              imageSrc={carInsurance}
-              content="Borrow from 100,000 with monthly repayments of to 7 years."
-            />
-          </Col>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#DDF9EA"
-              title="Finance your Next Car"
-              imageSrc={creditCard}
-              content="Find financial offers that are 
-              tailored to your credit score. "
-            />
-          </Col>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#ECF5F8"
-              title="Credit Cards"
-              imageSrc={carInsurance}
-              content="Credit Cards handpicked for you"
-            />
-          </Col>
-        </Row>
       </InfoSec>
+      <Title level={5} style={{ marginTop: "20px" }}>
+        Your Offers
+      </Title>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+            <div class="card">
+              <div class="card-header">Car Finance</div>
+              <div
+                class="card-body"
+                style={{
+                  paddingTop: "30px",
+                  paddingBottom: "30px",
+                  backgroundColor: "#DDF9EA",
+                }}
+              >
+                <p class="card-text">Credit Cards handpicked for you</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+            <div class="card">
+              <div class="card-header">Car Insurance</div>
+              <div
+                class="card-body"
+                style={{
+                  paddingTop: "30px",
+                  paddingBottom: "30px",
+                  backgroundColor: "#ECF5F8",
+                }}
+              >
+                <p class="card-text">
+                  Borrow from 100,000 with monthly repayments of to 7 years.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+            <div class="card">
+              <div class="card-header">Finance your Next Car</div>
+              <div
+                class="card-body"
+                style={{
+                  paddingTop: "30px",
+                  paddingBottom: "30px",
+                  backgroundColor: "#DDF9EA",
+                }}
+              >
+                <p class="card-text">
+                  Find financial offers that are tailored to your credit score.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+            <div class="card">
+              <div class="card-header">Credit Cards</div>
+              <div
+                class="card-body"
+                style={{
+                  paddingTop: "30px",
+                  paddingBottom: "30px",
+                  backgroundColor: "#ECF5F8",
+                }}
+              >
+                <p class="card-text">Credit Cards handpicked for you</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </Container>
   );
 };

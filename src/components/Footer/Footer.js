@@ -106,17 +106,17 @@ function Footer() {
                   <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
                 </Modal>
               </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink to="/faq">FAQ</FooterLink>
-              </FooterLinkItems>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
               <FooterLinkItems>
                 <FooterLink to="/contact">Contact</FooterLink>
               </FooterLinkItems>
               <FooterLinkItems>
-                <FooterLink to="/">info@e-citizen.ng</FooterLink>
+                <FooterLink to="/faq">FAQ</FooterLink>
               </FooterLinkItems>
+              {/* <FooterLinkItems>
+                <FooterLink to="/">info@e-citizen.ng</FooterLink>
+              </FooterLinkItems> */}
             </div>
             {/* <div class="col-md-3 col-sm-12 col-xs-12">
               <FooterLinkItems></FooterLinkItems>

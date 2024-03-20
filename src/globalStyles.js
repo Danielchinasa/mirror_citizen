@@ -173,7 +173,7 @@ export const OutlineButtonFull = styled.button`
 `;
 export const InfoSec = styled.div`
   padding-top: 80px;
-  padding-bottom: 80px;
+  padding-bottom: 50px;
   background: #fff;
 `;
 

@@ -333,44 +333,6 @@ const Result = () => {
             </Row>
           </Card>
         </Spin>
-        {/* <Title level={5} style={{ marginTop: "20px" }}>
-          Your Offers
-        </Title>
-        <Row gutter={30}>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#DDF9EA"
-              title="Car Finance"
-              imageSrc={creditCard}
-              content="Credit Cards handpicked for you"
-            />
-          </Col>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#ECF5F8"
-              title="Car Insurance"
-              imageSrc={carInsurance}
-              content="Borrow from 100,000 with monthly repayments of to 7 years."
-            />
-          </Col>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#DDF9EA"
-              title="Finance your Next Car"
-              imageSrc={creditCard}
-              content="Find financial offers that are 
-              tailored to your credit score. "
-            />
-          </Col>
-          <Col span={6}>
-            <AdsCard
-              backgroundColor="#ECF5F8"
-              title="Credit Cards"
-              imageSrc={carInsurance}
-              content="Credit Cards handpicked for you"
-            />
-          </Col>
-        </Row> */}
       </InfoSec>
     </Container>
   );

@@ -152,6 +152,9 @@ const MainDashboard = () => {
     const twentyFourHoursAgo = new Date(
       currentDate.getTime() - 24 * 60 * 60 * 1000
     );
+    const sevenDaysAgo = new Date(
+      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+    );
 
     // Check if the verification ID is not in the list of opened verifications
     // if (!openedVerifications.includes(id)) {
@@ -168,7 +171,9 @@ const MainDashboard = () => {
         record.type === "Financial Profile") &&
         new Date(insertionDate) < fortyEightHoursAgo) ||
       (record.consent === "pending" &&
-        new Date(insertionDate) < twentyFourHoursAgo)
+        new Date(insertionDate) < twentyFourHoursAgo) ||
+      (record.type === "Vehicle Profile" &&
+        new Date(insertionDate) < sevenDaysAgo)
     ) {
       // message.error("Verification Result or Consent Expired");
       Swal.fire({
@@ -226,30 +231,6 @@ const MainDashboard = () => {
     // }
   };
 
-  //!! Check for first three verifications and display an alert
-  // useEffect(() => {
-  //   console.log("Verification Data:", openedVerifications);
-
-  //   if (verificationData && verificationData.length > 0) {
-  //     const firstThreeItems = verificationData.slice(0, 3);
-  //     console.log(
-  //       "Last three consents:",
-  //       firstThreeItems.map((item) => item.consent)
-  //     );
-  //     const unopenedLastThree = firstThreeItems.filter(
-  //       (item) => !openedVerifications.includes(item.id)
-  //     );
-  //     const anyGranted = unopenedLastThree.some(
-  //       (item) => item.consent === "granted"
-  //     );
-
-  //     if (anyGranted) {
-  //       alert("Yes");
-  //     }
-  //   }
-  // }, [verificationData, openedVerifications, transactionData]);
-  console.log("NEEWWWWWW");
-  console.log(currencyCheck);
   const config = {
     //live key
     public_key: "FLWPUBK-3364bb9fdcbd08a92bbccbbcce686d40-X",
@@ -497,12 +478,16 @@ const MainDashboard = () => {
         const fortyEightHoursAgo = new Date(
           currentDate.getTime() - 48 * 60 * 60 * 1000
         ); // 48 hours in milliseconds
+        const sevenDaysAgo = new Date(
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+        );
 
         if (
           ((type === "Basic Profile" || type === "Financial Profile") &&
             new Date(insertionDate) < fortyEightHoursAgo) ||
           (consent === "pending" &&
-            new Date(insertionDate) < twentyFourHoursAgo)
+            new Date(insertionDate) < twentyFourHoursAgo) ||
+          (type === "Vehicle Profile" && new Date(insertionDate) < sevenDaysAgo)
         ) {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
@@ -732,13 +717,6 @@ const MainDashboard = () => {
                     confirmButton: "custom-swal-button",
                   },
                 });
-                // notification.success({
-                //   message: "Success",
-                //   description: "Wallet topup successful",
-                //   duration: 10, // Duration in seconds
-                // });
-                // Update the local state if needed
-                // setUserBal(updatedWalletBalance.walletBalance);
               }
             } else {
               console.error("POST request failed");
