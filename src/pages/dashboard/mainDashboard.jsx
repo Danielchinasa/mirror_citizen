@@ -861,8 +861,8 @@ const MainDashboard = () => {
           <Modal
             title="User Wallet"
             visible={isModalVisible}
-            // onOk={handleOk}
-            onOk={""}
+            onOk={handleOk}
+            // onOk={""}
             onCancel={handleCancel}
             width={300}
           >
