@@ -363,6 +363,9 @@ const MainDashboard = () => {
         const fortyEightHoursAgo = new Date(
           currentDate.getTime() - 48 * 60 * 60 * 1000
         ); // 48 hours in milliseconds
+        const sevenDaysAgo = new Date(
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+        );
 
         let formattedValue = record.searchValue;
 
@@ -374,7 +377,9 @@ const MainDashboard = () => {
             (record.consent === "pending" &&
               (record.type === "Basic Profile" ||
                 record.type === "Financial Profile") &&
-              new Date(record.insertionDate) < twentyFourHoursAgo))
+              new Date(record.insertionDate) < twentyFourHoursAgo) ||
+            (record.type === "Vehicle Profile" &&
+              new Date(record.insertionDate) < sevenDaysAgo))
         ) {
           // If searchValue is expired (red) and not null, cover the real value with asterisks
           formattedValue = formattedValue.replace(/.(?=.{2,}$)/g, "*"); // Replace all characters except the first two and last two with "*"
@@ -657,83 +662,43 @@ const MainDashboard = () => {
     setAmount("");
     setIsModalVisible(false);
   };
-  const handleOk = () => {
-    // Perform any validation on the amount if needed
-    // Save the amount to the config or use it as needed
-    config.amount = amount;
+  const handleOk = async () => {
+    try {
+      // Assuming postData is the data you want to send to the endpoint
+      const postData = {
+        amount: "500",
+        currency: userCurrency,
+        country: "NG",
+        description: "Wallet top up",
+        payment_method: "card,mobilemoney,ussd",
+        type: "TOPUP",
+      };
 
-    setIsModalVisible(false);
-    handleFlutterPayment({
-      callback: async (response) => {
-        console.log(response);
-        if (
-          response.status === "successful" ||
-          response.status === "success" ||
-          response.status === "completed"
-        ) {
-          try {
-            const apiUrl = "https://e-citizen.ng:8443/api/v2/transaction/topup";
-            const requestData = {
-              userNIN: userNin,
-              email: userEmail,
-              transactionID: response.transaction_id,
-              successful: true,
-              amount: response.amount,
-            };
-
-            const postResponse = await fetch(apiUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userToken}`,
-              },
-              body: JSON.stringify(requestData),
-            });
-
-            if (postResponse.ok) {
-              console.log("POST request successful");
-              dispatch(fetchUserProfile(userToken));
-              // Fetch the updated wallet balance after the successful top-up
-              const apiUrlBalance =
-                "https://e-citizen.ng:8443/api/v2/user/wallet-balance";
-              const walletBalanceResponse = await fetch(apiUrlBalance, {
-                method: "GET",
-                headers: {
-                  Authorization: `Bearer ${userToken}`,
-                },
-              });
-
-              if (walletBalanceResponse.ok) {
-                const updatedWalletBalance = await walletBalanceResponse.json();
-                console.log("Updated Wallet Balance:", updatedWalletBalance);
-
-                // Update the user state with the new wallet balance
-                dispatch(updateUserWalletBalance(updatedWalletBalance));
-                Swal.fire({
-                  title: "Success",
-                  text: "Wallet topup was successful",
-                  icon: "success",
-                  customClass: {
-                    confirmButton: "custom-swal-button",
-                  },
-                });
-              }
-            } else {
-              console.error("POST request failed");
-              // Handle failure if needed
-            }
-          } catch (error) {
-            console.error("Error in POST request", error);
-            // Handle error if needed
-          }
+      const response = await fetch(
+        "https://e-citizen.ng:8443/api/v2/payment/initiate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify(postData),
         }
-        closePaymentModal();
-        handleCancel();
-      },
-      onClose: () => {
-        handleCancel();
-      },
-    });
+      );
+
+      // Check if the request was successful (status code 200-299)
+      if (response.ok) {
+        // Handle successful response here
+        console.log("Data successfully posted");
+        console.log(response);
+      } else {
+        // Handle errors here
+        console.error("Failed to post data:", response.statusText);
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error("An error occurred:", error);
+    }
   };
 
   const [totalVerificationCount, setTotalVerificationCount] = useState(0);
@@ -891,7 +856,8 @@ const MainDashboard = () => {
           <Modal
             title="User Wallet"
             visible={isModalVisible}
-            onOk={handleOk}
+            // onOk={handleOk}
+            onOk={""}
             onCancel={handleCancel}
             width={300}
           >
