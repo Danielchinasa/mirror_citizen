@@ -656,6 +656,8 @@ const MainDashboard = () => {
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const userDetails = useSelector((state) => state.userDetails);
+  const [modal1Open, setModal1Open] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -663,21 +665,28 @@ const MainDashboard = () => {
     setAmount("");
     setIsModalVisible(false);
   };
+  const handleModalOk = () => {
+    dispatch(fetchUserProfile(userToken));
+    setModal1Open(false);
+  };
   const handleOk = async () => {
     ReactGA.event({
       category: "User",
       action: "Topped up wallet",
     });
+
+    setIsModalVisible(false);
     try {
       // Assuming postData is the data you want to send to the endpoint
       const postData = {
-        amount: "500",
+        amount: amount,
         currency: userCurrency,
         country: "NG",
         description: "Wallet top up",
         payment_method: "card,mobilemoney,ussd",
         type: "TOPUP",
       };
+      setAmount("");
 
       const response = await fetch(
         "https://e-citizen.ng:8443/api/v2/payment/initiate",
@@ -694,8 +703,16 @@ const MainDashboard = () => {
       // Check if the request was successful (status code 200-299)
       if (response.ok) {
         // Handle successful response here
-        console.log("Data successfully posted");
-        console.log(response);
+
+        const responseData = await response.json();
+        console.log(responseData.data.link);
+        if (responseData.data && responseData.data.link) {
+          console.log("Embedding URL:", responseData.data.link);
+          setPaymentUrl(responseData.data.link);
+          setModal1Open(true);
+        } else {
+          console.error("Response data does not contain a link");
+        }
       } else {
         // Handle errors here
         console.error("Failed to post data:", response.statusText);
@@ -862,7 +879,6 @@ const MainDashboard = () => {
             title="User Wallet"
             visible={isModalVisible}
             onOk={handleOk}
-            // onOk={""}
             onCancel={handleCancel}
             width={300}
           >
@@ -887,6 +903,24 @@ const MainDashboard = () => {
       </InfoSec>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       <Notification />
+      <Modal
+        title="Complete Wallet TopUp"
+        style={{
+          top: 20,
+        }}
+        width={1000}
+        open={modal1Open}
+        onOk={handleModalOk}
+        onCancel={handleModalOk}
+      >
+        <iframe
+          id="inlineFrameExample"
+          title="Inline Frame Example"
+          width="100%"
+          height="500"
+          src={paymentUrl}
+        ></iframe>
+      </Modal>
     </Container>
   );
 };
