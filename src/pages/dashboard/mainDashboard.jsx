@@ -31,6 +31,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import Notification from "../../Notification";
 import { Typography } from "antd";
+import ReactGA from "react-ga4";
 const { Title } = Typography;
 
 const data = [
@@ -663,6 +664,10 @@ const MainDashboard = () => {
     setIsModalVisible(false);
   };
   const handleOk = async () => {
+    ReactGA.event({
+      category: "User",
+      action: "Topped up wallet",
+    });
     try {
       // Assuming postData is the data you want to send to the endpoint
       const postData = {

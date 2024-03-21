@@ -41,8 +41,13 @@ import LiveFaceScreen from "./pages/liveFace/liveFace";
 import BusinessName from "./pages/result/businessName";
 import AppLogout from "./components/AppLogOut";
 import ProtectedRoute from "./protectedRoute";
+import ReactGA from "react-ga4";
 
 function App() {
+  ReactGA.initialize("G-28ZN6L737E");
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
   useEffect(() => {
     CookieConsent.run({
       categories: {
