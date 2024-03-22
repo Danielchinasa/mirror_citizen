@@ -55,6 +55,7 @@ import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 import Swal from "sweetalert2";
+import ReactGA from "react-ga4";
 
 /* global Reach */
 
@@ -388,6 +389,7 @@ const DashboardPage = () => {
         setVehicleUsdVatFee(response.data.data[6].VAT2);
         setVehicleProcessingFee(response.data.data[6].processingFee);
         setCurrencyCheck(response.data.data[0].currency);
+
         setStolenCheckFee(response.data.data[7].price);
       } catch (error) {
         console.error("Error fetching IP address:", error);
@@ -397,6 +399,12 @@ const DashboardPage = () => {
 
     fetchServiceFee();
   }, []);
+
+  useEffect(() => {
+    //!! HEREEEE
+    // Store currencyCheck in localStorage
+    localStorage.setItem("currencyCheck", currencyCheck);
+  }, [currencyCheck]);
 
   const handleDateChange = (date, dateString) => {
     handleInputChange("dateOfBirth", dateString);
@@ -496,7 +504,7 @@ const DashboardPage = () => {
       ) {
         Swal.fire({
           title: "Error",
-          text: "Oops! We encountered an issue while processing your request. It seems that the data we expected to find is missing. Please try again later",
+          text: response.basic.message,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -504,7 +512,7 @@ const DashboardPage = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-        history.push("/dashboard");
+        // history.push("/dashboard");
         // notification.error({
         //   message: "Error",
         //   description:
@@ -994,6 +1002,10 @@ const DashboardPage = () => {
   const handleCancelFace = () => {
     setModalVisibleFace(false);
   };
+  const handleModalNewOk = () => {
+    // dispatch(fetchUserProfile(userToken));
+    setModal2Open(false);
+  };
 
   useEffect(() => {
     console.log("Total Veri Amount next:", totalveri);
@@ -1016,6 +1028,10 @@ const DashboardPage = () => {
         // console.log("Payment from Wallet");
         setLoading(true);
         handleCancel();
+        ReactGA.event({
+          category: "User",
+          action: "Made Wallet payment for verification",
+        });
         if (currencyCheck === "NGN" && userCurrency === "usd") {
           setLoading(false);
           Swal.fire({
@@ -1130,6 +1146,11 @@ const DashboardPage = () => {
       } else if (selectedValue === 2) {
         // console.log("Instant Payment");
         // setLoading(true);
+        ReactGA.event({
+          category: "User",
+          action: "Made direct payment for verification",
+        });
+        //!! OLD PAYMENT METHOD
         handleFlutterPayment({
           callback: async (response) => {
             console.log(response);
@@ -1147,7 +1168,54 @@ const DashboardPage = () => {
           },
           onClose: () => {},
         });
-        handleCancel();
+
+        //!NEW PAYMENT METHOD
+        // handleCancel();
+        // try {
+        //   // Assuming postData is the data you want to send to the endpoint
+        //   const postData = {
+        //     amount: "600",
+        //     currency: "ngn",
+        //     country: "NG",
+        //     description: "Wallet top up",
+        //     payment_method: "card,mobilemoney,ussd",
+        //     type: "VERIFICATION",
+        //   };
+
+        //   const response = await fetch(
+        //     "https://e-citizen.ng:8443/api/v2/payment/initiate",
+        //     {
+        //       method: "POST",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${userToken}`,
+        //       },
+        //       body: JSON.stringify(postData),
+        //     }
+        //   );
+
+        //   // Check if the request was successful (status code 200-299)
+        //   if (response.ok) {
+        //     // Handle successful response here
+
+        //     const responseData = await response.json();
+        //     console.log(responseData.data.link);
+        //     if (responseData.data && responseData.data.link) {
+        //       console.log("Embedding URL:", responseData.data.link);
+        //       setPaymentUrl(responseData.data.link);
+        //       setModal2Open(true);
+        //     } else {
+        //       console.error("Response data does not contain a link");
+        //     }
+        //   } else {
+        //     // Handle errors here
+        //     console.error("Failed to post data:", response.statusText);
+        //   }
+        // } catch (error) {
+        //   // Handle any unexpected errors
+        //   console.error("An error occurred:", error);
+        // }
+        // handleCancel();
       }
     }
   };
@@ -2080,6 +2148,8 @@ const DashboardPage = () => {
   };
 
   const [modal1Open, setModal1Open] = useState(false);
+  const [modal2Open, setModal2Open] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
   const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
   if (loading) {
@@ -3273,6 +3343,33 @@ const DashboardPage = () => {
               </Col>
               <PaymentModal />
               <PaymentModalFace />
+              <Modal
+                // title="Complete Wallet TopUp"
+                style={{
+                  top: 20,
+                }}
+                width={1000}
+                open={modal2Open}
+                onOk={handleModalNewOk}
+                onCancel={handleModalNewOk}
+                maskClosable={false}
+                footer={[
+                  <Button danger type="dashed" onClick={handleModalNewOk}>
+                    Close
+                  </Button>,
+                ]}
+              >
+                <iframe
+                  id="inlineFrameExample"
+                  title="Inline Frame Example"
+                  width="100%"
+                  height="600"
+                  src={paymentUrl}
+                  // ref={iframeRef}
+                  // onLoad={handleIframeLoad}
+                ></iframe>
+                {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+              </Modal>
             </Row>
           )}
         </Spin>

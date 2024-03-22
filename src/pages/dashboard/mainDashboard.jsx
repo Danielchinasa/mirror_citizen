@@ -11,7 +11,7 @@ import {
   Modal,
   Input,
   message,
-  notification,
+  Button,
   Divider,
 } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
@@ -723,6 +723,90 @@ const MainDashboard = () => {
     }
   };
 
+  // const handleOk = () => {
+  //   // Perform any validation on the amount if needed
+  //   // Save the amount to the config or use it as needed
+
+  //   config.amount = amount;
+
+  //   setIsModalVisible(false);
+  //   handleFlutterPayment({
+  //     callback: async (response) => {
+  //       console.log(response);
+  //       if (
+  //         response.status === "successful" ||
+  //         response.status === "success" ||
+  //         response.status === "completed"
+  //       ) {
+  //         try {
+  //           const apiUrl = "https://e-citizen.ng:8443/api/v2/transaction/topup";
+  //           const requestData = {
+  //             userNIN: userNin,
+  //             email: userEmail,
+  //             transactionID: response.transaction_id,
+  //             successful: true,
+  //             amount: response.amount,
+  //           };
+
+  //           const postResponse = await fetch(apiUrl, {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //               Authorization: `Bearer ${userToken}`,
+  //             },
+  //             body: JSON.stringify(requestData),
+  //           });
+
+  //           if (postResponse.ok) {
+  //             console.log("POST request successful");
+  //             ReactGA.event({
+  //               category: "User",
+  //               action: "Topped up wallet",
+  //             });
+  //             dispatch(fetchUserProfile(userToken));
+  //             // Fetch the updated wallet balance after the successful top-up
+  //             const apiUrlBalance =
+  //               "https://e-citizen.ng:8443/api/v2/user/wallet-balance";
+  //             const walletBalanceResponse = await fetch(apiUrlBalance, {
+  //               method: "GET",
+  //               headers: {
+  //                 Authorization: `Bearer ${userToken}`,
+  //               },
+  //             });
+
+  //             if (walletBalanceResponse.ok) {
+  //               const updatedWalletBalance = await walletBalanceResponse.json();
+  //               console.log("Updated Wallet Balance:", updatedWalletBalance);
+
+  //               // Update the user state with the new wallet balance
+  //               dispatch(updateUserWalletBalance(updatedWalletBalance));
+  //               Swal.fire({
+  //                 title: "Success",
+  //                 text: "Wallet topup was successful",
+  //                 icon: "success",
+  //                 customClass: {
+  //                   confirmButton: "custom-swal-button",
+  //                 },
+  //               });
+  //             }
+  //           } else {
+  //             console.error("POST request failed");
+  //             // Handle failure if needed
+  //           }
+  //         } catch (error) {
+  //           console.error("Error in POST request", error);
+  //           // Handle error if needed
+  //         }
+  //       }
+  //       closePaymentModal();
+  //       handleCancel();
+  //     },
+  //     onClose: () => {
+  //       handleCancel();
+  //     },
+  //   });
+  // };
+
   const [totalVerificationCount, setTotalVerificationCount] = useState(0);
   const [completedVerificationCount, setCompletedVerificationCount] =
     useState(0);
@@ -772,6 +856,31 @@ const MainDashboard = () => {
       currency: "NGN",
     }).format(value);
   };
+
+  // const handleIframeLoad = () => {
+  //   // Access the content of the iframe
+  //   const iframe = document.getElementById("inlineFrameExample");
+  //   const iframeDocument =
+  //     iframe.contentDocument || iframe.contentWindow.document; // Handle cross-origin frame access
+  //   const jsonText = iframeDocument.body.textContent;
+  //   const jsonData = JSON.parse(jsonText);
+
+  //   // Send JSON data to parent window
+  //   window.parent.postMessage(jsonData, "*");
+  // };
+
+  // const iframeRef = useRef(null);
+  // const getContentFromIframe = () => {
+  //   // Check if the iframe ref is set
+  //   if (iframeRef.current) {
+  //     // Access the contentWindow property of the iframe to get its document
+  //     const iframeDocument = iframeRef.current.contentWindow.document;
+
+  //     // Now you can access the content inside the iframe
+  //     // For example, let's log the innerHTML of the body of the iframe
+  //     console.log(iframeDocument.body.innerHTML);
+  //   }
+  // };
 
   // Usage
   return (
@@ -904,7 +1013,7 @@ const MainDashboard = () => {
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       <Notification />
       <Modal
-        title="Complete Wallet TopUp"
+        // title="Complete Wallet TopUp"
         style={{
           top: 20,
         }}
@@ -912,14 +1021,23 @@ const MainDashboard = () => {
         open={modal1Open}
         onOk={handleModalOk}
         onCancel={handleModalOk}
+        maskClosable={false}
+        footer={[
+          <Button danger type="dashed" onClick={handleModalOk}>
+            Close
+          </Button>,
+        ]}
       >
         <iframe
           id="inlineFrameExample"
           title="Inline Frame Example"
           width="100%"
-          height="500"
+          height="600"
           src={paymentUrl}
+          // ref={iframeRef}
+          // onLoad={handleIframeLoad}
         ></iframe>
+        {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
       </Modal>
     </Container>
   );
