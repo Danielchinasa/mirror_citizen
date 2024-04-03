@@ -149,10 +149,13 @@ function App() {
             <Route path="/verify-otp" component={VerifyOtp} />
             <Route path="/email-confirm" component={EmailVerifiedConfirm} />
             <Route path="/check-email" component={CheckPasswordResetLink} />
-            <Route path="/set-new-password" component={SetNewPassword} />
+            <ProtectedRoute
+              path="/set-new-password"
+              component={SetNewPassword}
+            />
             <Route path="/password-confirm" component={PasswordResetConfirm} />
             <Route path="/contact" component={ContactPage} />
-            <ProtectedRoute path="/dashboard" component={DashboardPage} />
+            <Route path="/dashboard" component={DashboardPage} />
             <Route path="/disclaimer" component={Disclaimer} />
             <ProtectedRoute path="/consent" component={Consent} />
             <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />

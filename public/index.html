@@ -16,7 +16,7 @@
       gtag("config", "G-28ZN6L737E");
     </script>
     <!-- Google Tag Manager -->
-    <script>
+    <!-- <script>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
@@ -27,6 +27,35 @@
         j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
         f.parentNode.insertBefore(j, f);
       })(window, document, "script", "dataLayer", "GTM-M4ZVHSBZ");
+    </script> -->
+    <script>
+      // Function to check if user has consented to analytics
+      function hasAnalyticsConsent(cookieValue) {
+        if (!cookieValue) return false; // If cookie value is empty, assume no consent
+        try {
+          var consentData = JSON.parse(decodeURIComponent(cookieValue));
+          return consentData.services.analytics.length > 0; // Check if analytics consent is present
+        } catch (error) {
+          console.error("Error parsing consent data:", error);
+          return false;
+        }
+      }
+
+      // Load Google Tag Manager if user has consented to analytics
+      if (
+        hasAnalyticsConsent(document.cookie.match(/(^| )cc_cookie=([^;]+)/))
+      ) {
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", "GTM-M4ZVHSBZ");
+      }
     </script>
     <!-- End Google Tag Manager -->
     <meta charset="utf-8" />

@@ -234,9 +234,9 @@ const MainDashboard = () => {
 
   const config = {
     //live key
-    public_key: "FLWPUBK-3364bb9fdcbd08a92bbccbbcce686d40-X",
+    // public_key: "FLWPUBK-3364bb9fdcbd08a92bbccbbcce686d40-X",
     //test key
-    // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
+    public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}TP",
     amount: "1000",
     currency: userCurrency == "usd" ? "USD" : "NGN",

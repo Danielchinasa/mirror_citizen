@@ -1002,10 +1002,6 @@ const DashboardPage = () => {
   const handleCancelFace = () => {
     setModalVisibleFace(false);
   };
-  const handleModalNewOk = () => {
-    // dispatch(fetchUserProfile(userToken));
-    setModal2Open(false);
-  };
 
   useEffect(() => {
     console.log("Total Veri Amount next:", totalveri);
@@ -1151,71 +1147,78 @@ const DashboardPage = () => {
           action: "Made direct payment for verification",
         });
         //!! OLD PAYMENT METHOD
-        handleFlutterPayment({
-          callback: async (response) => {
-            console.log(response);
-            if (
-              response.status === "successful" ||
-              response.status === "success" ||
-              response.status === "completed"
-            ) {
-              console.log("flutterWave success");
+        // handleFlutterPayment({
+        //   callback: async (response) => {
+        //     console.log(response);
+        //     if (
+        //       response.status === "successful" ||
+        //       response.status === "success" ||
+        //       response.status === "completed"
+        //     ) {
+        //       console.log("flutterWave success");
 
-              setLoading(true);
-              handleSubmit();
-            }
-            closePaymentModal();
-          },
-          onClose: () => {},
-        });
+        //       setLoading(true);
+        //       handleSubmit();
+        //     }
+        //     closePaymentModal();
+        //   },
+        //   onClose: () => {},
+        // });
 
         //!NEW PAYMENT METHOD
-        // handleCancel();
-        // try {
-        //   // Assuming postData is the data you want to send to the endpoint
-        //   const postData = {
-        //     amount: "600",
-        //     currency: "ngn",
-        //     country: "NG",
-        //     description: "Wallet top up",
-        //     payment_method: "card,mobilemoney,ussd",
-        //     type: "VERIFICATION",
-        //   };
+        handleCancel();
+        try {
+          // Assuming postData is the data you want to send to the endpoint
+          const postData = {
+            amount:
+              currencyCheck == "USD"
+                ? outsideNgWithNiara == true
+                  ? `${outsideNgWithNiaraPrice}`
+                  : `${totalServiceCost}`
+                : `${totalServiceCost}`,
+            currency: currencyCheck,
+            country: "NG",
+            description: "Payment for verification",
+            payment_method: "card,mobilemoney,ussd",
+            type: "VERIFICATION",
+          };
 
-        //   const response = await fetch(
-        //     "https://e-citizen.ng:8443/api/v2/payment/initiate",
-        //     {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: `Bearer ${userToken}`,
-        //       },
-        //       body: JSON.stringify(postData),
-        //     }
-        //   );
+          const response = await fetch(
+            "https://e-citizen.ng:8443/api/v2/payment/initiate",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(postData),
+            }
+          );
 
-        //   // Check if the request was successful (status code 200-299)
-        //   if (response.ok) {
-        //     // Handle successful response here
+          // Check if the request was successful (status code 200-299)
+          if (response.ok) {
+            // Handle successful response here
 
-        //     const responseData = await response.json();
-        //     console.log(responseData.data.link);
-        //     if (responseData.data && responseData.data.link) {
-        //       console.log("Embedding URL:", responseData.data.link);
-        //       setPaymentUrl(responseData.data.link);
-        //       setModal2Open(true);
-        //     } else {
-        //       console.error("Response data does not contain a link");
-        //     }
-        //   } else {
-        //     // Handle errors here
-        //     console.error("Failed to post data:", response.statusText);
-        //   }
-        // } catch (error) {
-        //   // Handle any unexpected errors
-        //   console.error("An error occurred:", error);
-        // }
-        // handleCancel();
+            const responseData = await response.json();
+            console.log(responseData.data.link);
+            console.log(responseData.data.txRef);
+            if (responseData.data && responseData.data.link) {
+              console.log("Embedding URL:", responseData.data.link);
+              setPaymentUrl(responseData.data.link);
+              setTransactionRef(responseData.data.txRef);
+              setModal2Open(true);
+            } else {
+              console.error("Response data does not contain a link");
+            }
+          } else {
+            // Handle errors here
+            console.error("Failed to post data:", response.statusText);
+          }
+        } catch (error) {
+          // Handle any unexpected errors
+          console.error("An error occurred:", error);
+        }
+        handleCancel();
       }
     }
   };
@@ -2150,6 +2153,7 @@ const DashboardPage = () => {
   const [modal1Open, setModal1Open] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
+  const [transactionRef, setTransactionRef] = useState("");
   const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
   if (loading) {
@@ -2181,6 +2185,54 @@ const DashboardPage = () => {
       const newTotalFees = prevTotalFees - businessUsdFee;
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
     });
+  };
+
+  const onChangeCheckBox = (checkedValues) => {
+    console.log("checked = ", checkedValues);
+  };
+
+  // const handleModalNewOk = () => {
+  //   // dispatch(fetchUserProfile(userToken));
+
+  //   handleSubmit();
+  //   setModal2Open(false);
+  // };
+  const handleModalNewOk = () => {
+    // dispatch(fetchUserProfile(userToken));
+
+    // Add API call
+    fetch(
+      `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Handle the response data here
+        console.log(data); // For example, logging the response data
+        if (data.status == "success") {
+          handleSubmit();
+          setModal2Open(false);
+        } else {
+          setModal2Open(false);
+        }
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+        // Handle errors here
+      });
+
+    setModal2Open(false);
   };
 
   return (
@@ -2818,6 +2870,30 @@ const DashboardPage = () => {
                             handleInputChange("bvn", e.target.value)
                           }
                         />
+                        <u>Credit Bereau</u>
+
+                        <Checkbox.Group
+                          style={{
+                            width: "100%",
+                          }}
+                          onChange={onChangeCheckBox}
+                        >
+                          <Row>
+                            <Col span={24}>
+                              <Checkbox value="firstCentral">
+                                First Central
+                              </Checkbox>
+                            </Col>
+                            <Col span={24}>
+                              <Checkbox value="crc">
+                                Credit Risk Certification (CRC)
+                              </Checkbox>
+                            </Col>
+                            <Col span={24}>
+                              <Checkbox value="C">Credit Registery</Checkbox>
+                            </Col>
+                          </Row>
+                        </Checkbox.Group>
                       </div>
                     )}
                     {/* {selectedForm === "vin" && ( */}
