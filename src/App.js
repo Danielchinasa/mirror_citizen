@@ -155,7 +155,7 @@ function App() {
             />
             <Route path="/password-confirm" component={PasswordResetConfirm} />
             <Route path="/contact" component={ContactPage} />
-            <Route path="/dashboard" component={DashboardPage} />
+            <ProtectedRoute path="/dashboard" component={DashboardPage} />
             <Route path="/disclaimer" component={Disclaimer} />
             <ProtectedRoute path="/consent" component={Consent} />
             <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />
