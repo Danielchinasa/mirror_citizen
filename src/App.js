@@ -50,13 +50,38 @@ function App() {
   }, []);
   useEffect(() => {
     CookieConsent.run({
+      page_scripts: true,
       categories: {
         necessary: {
           enabled: true, // this category is enabled by default
           readOnly: true, // this category cannot be disabled
         },
-        analytics: {},
+        analytics: {
+          autoClear: {
+            cookies: [
+              {
+                name: /^_ga/, // regex: match all cookies starting with '_ga'
+              },
+              {
+                name: "_gid", // string: exact cookie name
+              },
+            ],
+          },
+          services: {
+            ga: {
+              label: "Google Analytics",
+              onAccept: () => {},
+              onReject: () => {},
+            },
+            youtube: {
+              label: "Youtube Embed",
+              onAccept: () => {},
+              onReject: () => {},
+            },
+          },
+        },
       },
+
       guiOptions: {
         consentModal: {
           layout: "box",
@@ -70,6 +95,29 @@ function App() {
           flipButtons: false,
           equalWeightButtons: true,
         },
+      },
+      onFirstConsent: ({ cookie }) => {
+        console.log("onFirstConsent fired", cookie);
+      },
+
+      onConsent: ({ cookie }) => {
+        console.log("onConsent fired!", cookie);
+      },
+
+      onChange: ({ changedCategories, changedServices }) => {
+        console.log("onChange fired!", changedCategories, changedServices);
+      },
+
+      onModalReady: ({ modalName }) => {
+        console.log("ready:", modalName);
+      },
+
+      onModalShow: ({ modalName }) => {
+        console.log("visible:", modalName);
+      },
+
+      onModalHide: ({ modalName }) => {
+        console.log("hidden:", modalName);
       },
 
       language: {

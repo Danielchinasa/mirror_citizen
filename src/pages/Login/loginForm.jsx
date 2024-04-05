@@ -16,6 +16,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
+import ReactGA from "react-ga4";
 
 const Context = React.createContext({
   name: "Default",
@@ -131,6 +132,10 @@ const LoginForm = () => {
   };
 
   const handleSignIn = async (event) => {
+    ReactGA.event({
+      category: "User",
+      action: "Attempt Login",
+    });
     event.preventDefault();
     if (formData.rememberMe) {
       Cookies.set("rememberedEmail", formData.email, { expires: 7 }); // Store email in cookie for 7 days

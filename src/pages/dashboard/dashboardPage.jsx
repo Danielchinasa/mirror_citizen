@@ -166,6 +166,9 @@ const DashboardPage = () => {
     license_number: "",
     face: "",
     finger: "",
+    crc: "",
+    firstCentral: "",
+    creditRegistry: "",
   });
 
   const [ninFilled, setNinFilled] = useState(false);
@@ -319,6 +322,21 @@ const DashboardPage = () => {
     const isChecked = e.target.checked;
     setIsChecked(isChecked);
     handleInputChange("stolencheck", isChecked ? true : false); // Set stolencheck to true when checked, false otherwise
+  };
+  const handleCheckboxChangeCrc = (e) => {
+    const isCheckedCrc = e.target.checked;
+    setIsCheckedCrc(isCheckedCrc);
+    handleInputChange("crc", isCheckedCrc ? true : false); // Set stolencheck to true when checked, false otherwise
+  };
+  const handleCheckboxChangeFirstCentral = (e) => {
+    const isCheckedFirstCentral = e.target.checked;
+    setIsCheckedFirstCentral(isCheckedFirstCentral);
+    handleInputChange("firstCentral", isCheckedFirstCentral ? true : false); // Set stolencheck to true when checked, false otherwise
+  };
+  const handleCheckboxChangeCreditRegistry = (e) => {
+    const isCheckedCreditRegistry = e.target.checked;
+    setIsCheckedCreditRegistry(isCheckedCreditRegistry);
+    handleInputChange("creditRegistry", isCheckedCreditRegistry ? true : false); // Set stolencheck to true when checked, false otherwise
   };
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -724,6 +742,9 @@ const DashboardPage = () => {
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [checkboxCheckedConfirm, setCheckboxCheckedConfirm] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedCrc, setIsCheckedCrc] = useState(false);
+  const [isCheckedFirstCentral, setIsCheckedFirstCentral] = useState(false);
+  const [isCheckedCreditRegistry, setIsCheckedCreditRegistry] = useState(false);
   const [checkStolen, setCheckStolen] = useState(false);
 
   const onChangePayment = (e) => {
@@ -1019,8 +1040,31 @@ const DashboardPage = () => {
     if (selectedValue !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
+      const areNoneChecked = () => {
+        return (
+          !isCheckedCrc && !isCheckedFirstCentral && !isCheckedCreditRegistry
+        );
+      };
 
       if (selectedValue === 1) {
+        if (selectedProfile == "financial") {
+          if (areNoneChecked()) {
+            // None of the checkboxes are checked
+
+            setLoading(false);
+            Swal.fire({
+              title: "Error",
+              text: "At least one Credit Bereau must be selected",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
+        }
         // console.log("Payment from Wallet");
         setLoading(true);
         handleCancel();
@@ -1140,6 +1184,25 @@ const DashboardPage = () => {
           }
         }
       } else if (selectedValue === 2) {
+        if (selectedProfile == "financial") {
+          if (areNoneChecked()) {
+            // None of the checkboxes are checked
+
+            setLoading(false);
+            Swal.fire({
+              title: "Error",
+              text: "At least one Credit Bereau must be selected",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
+        }
+
         // console.log("Instant Payment");
         // setLoading(true);
         ReactGA.event({
@@ -2187,16 +2250,20 @@ const DashboardPage = () => {
     });
   };
 
+  // const onChangeCheckBox = (checkedValues) => {
+  //   console.log("checked = ", checkedValues);
+  // };
   const onChangeCheckBox = (checkedValues) => {
+    const updatedFormData = {
+      ...formData,
+      crc: checkedValues.includes("crc"),
+      creditRegistry: checkedValues.includes("creditRegistry"),
+      firstCentral: checkedValues.includes("firstCentral"),
+    };
     console.log("checked = ", checkedValues);
+    console.log("formData = ", updatedFormData);
   };
 
-  // const handleModalNewOk = () => {
-  //   // dispatch(fetchUserProfile(userToken));
-
-  //   handleSubmit();
-  //   setModal2Open(false);
-  // };
   const handleModalNewOk = () => {
     // dispatch(fetchUserProfile(userToken));
 
@@ -2871,29 +2938,27 @@ const DashboardPage = () => {
                           }
                         />
                         <u>Credit Bereau</u>
-
-                        <Checkbox.Group
-                          style={{
-                            width: "100%",
-                          }}
-                          onChange={onChangeCheckBox}
+                        <br></br>
+                        <Checkbox
+                          onChange={handleCheckboxChangeCrc}
+                          checked={isCheckedCrc}
                         >
-                          <Row>
-                            <Col span={24}>
-                              <Checkbox value="firstCentral">
-                                First Central
-                              </Checkbox>
-                            </Col>
-                            <Col span={24}>
-                              <Checkbox value="crc">
-                                Credit Risk Certification (CRC)
-                              </Checkbox>
-                            </Col>
-                            <Col span={24}>
-                              <Checkbox value="C">Credit Registery</Checkbox>
-                            </Col>
-                          </Row>
-                        </Checkbox.Group>
+                          Credit Risk Certification (CRC)
+                        </Checkbox>
+                        <br></br>
+                        <Checkbox
+                          onChange={handleCheckboxChangeFirstCentral}
+                          checked={isCheckedFirstCentral}
+                        >
+                          First Central
+                        </Checkbox>
+                        <br></br>
+                        <Checkbox
+                          onChange={handleCheckboxChangeCreditRegistry}
+                          checked={isCheckedCreditRegistry}
+                        >
+                          Credit Registery
+                        </Checkbox>
                       </div>
                     )}
                     {/* {selectedForm === "vin" && ( */}

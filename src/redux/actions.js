@@ -300,6 +300,11 @@ export const sendVerificationRequest =
         },
         financial: {
           bvn: parseInt(formData.bvn) || "",
+          ...(formData.bvn && {
+            crc: formData.crc || false,
+            firstCentral: formData.firstCentral || false,
+            creditRegistry: formData.creditRegistry || false,
+          }),
         },
         reach: {
           CLICK_ID: CLICK_ID || "",
