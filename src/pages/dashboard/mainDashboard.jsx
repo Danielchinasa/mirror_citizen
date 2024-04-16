@@ -393,11 +393,11 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: isRed ? "red" : "green",
-                fontWeight: isRed ? "bold" : "normal",
+                color: "green",
+                fontWeight: "bold",
               }}
             >
-              {formattedValue ? formattedValue : "NO DATA"}
+              {record.searchValue ? record.searchValue : "NO DATA"}
             </span>
             )
           </span>
