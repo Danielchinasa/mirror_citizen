@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Divider, Avatar, Spin } from "antd";
+import { Card, Row, Col, Divider, Avatar, Spin, Modal, Button } from "antd";
 import {
   Container,
   Heading4,
@@ -25,6 +25,7 @@ import Icon, {
 import carInsurance from "../../images/car-insurance.svg";
 import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
+import "../dashboard/emergency.css";
 
 import { MdOutlinePinDrop } from "react-icons/md";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
@@ -40,7 +41,8 @@ const BusinessName = () => {
   const [businessData, setBusinessData] = useState([]);
   const [shareholdersData, setShareholdersData] = useState([]);
   const requestId = localStorage.getItem("verificationRequestId");
-  const [cacId, setCacId] = useState();
+  const myCacic = localStorage.getItem("verificationRequestCacid");
+
   const [loading, setLoading] = useState(false);
   const userEmail = user?.email || "";
   const userPhone = user?.phone || "";
@@ -50,6 +52,14 @@ const BusinessName = () => {
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const userNin = user?.nin || "";
   const userBalance = user?.walletBalance || 0;
+  const [modal2Open, setModal2Open] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
+  const [transactionRef, setTransactionRef] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
 
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -174,6 +184,7 @@ const BusinessName = () => {
     </>
   );
   const storedValue = localStorage.getItem("profile");
+  const [cacId, setCacId] = useState(null);
 
   const handleButtonClick = async (cacid) => {
     Swal.fire({
@@ -183,6 +194,7 @@ const BusinessName = () => {
         "Payment from Wallet": "Payment from Wallet",
         "Instant Payment": "Instant Payment",
       },
+      customClass: "swal-wide",
       showCancelButton: true,
       confirmButtonText: "Confirm",
       confirmButtonColor: "#0DC939",
@@ -197,6 +209,7 @@ const BusinessName = () => {
         // console.log("Selected payment method:", stakeHolderFeeUsd);
 
         if (result.value === "Payment from Wallet") {
+          setLoading(true);
           if (currencyCheck === "NGN" && userCurrency === "usd") {
             setLoading(false);
             Swal.fire({
@@ -279,6 +292,9 @@ const BusinessName = () => {
                   setLoading(true);
                   // Prepare the request body
                   const requestBody = {
+                    payment: {
+                      currency: currencyCheck || "ngn",
+                    },
                     business: {
                       requestId: parseInt(requestId),
                       cacId: parseInt(cacid),
@@ -329,63 +345,120 @@ const BusinessName = () => {
             }
           }
         } else if (result.value === "Instant Payment") {
-          handleFlutterPayment({
-            callback: async (response) => {
-              console.log(response);
-              if (
-                response.status === "successful" ||
-                response.status === "success" ||
-                response.status === "completed"
-              ) {
-                console.log("flutterWave success");
-                setLoading(true);
-                try {
-                  setLoading(true);
-                  // Prepare the request body
-                  const requestBody = {
-                    business: {
-                      requestId: parseInt(requestId),
-                      cacId: parseInt(cacid),
-                    },
-                  };
-                  // Make an API request to call external APIs
-                  const response = await axios.post(
-                    "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
-                    requestBody,
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${userToken}`, // Include the bearer token
-                      },
-                    }
-                  );
-                  // Handle response if needed
-                  console.log("External API call response:", response.data);
-                  // setBusinessData((prevBusinessData) => [
-                  //   ...prevBusinessData,
-                  //   response.data.data,
-                  // ]);
-                  if (
-                    response.data.business &&
-                    Array.isArray(response.data.business.data)
-                  ) {
-                    // Update businessData state with the data array
-                    setBusinessData(response.data.business.data);
-                  } else {
-                    console.error("Invalid response structure:", response.data);
-                  }
-                  // setBusinessData(response.data.data);
-                  setLoading(false);
-                } catch (error) {
-                  // Handle errors if needed
-                  console.error("Error calling external APIs:", error);
-                  setLoading(false);
-                }
+          setLoading(true);
+          //!! old payment method
+          // handleFlutterPayment({
+          //   callback: async (response) => {
+          //     console.log(response);
+          //     if (
+          //       response.status === "successful" ||
+          //       response.status === "success" ||
+          //       response.status === "completed"
+          //     ) {
+          //       console.log("flutterWave success");
+          //       setLoading(true);
+          //       try {
+          //         setLoading(true);
+          //         // Prepare the request body
+          //         const requestBody = {
+          //           business: {
+          //             requestId: parseInt(requestId),
+          //             cacId: parseInt(cacid),
+          //           },
+          //         };
+          //         // Make an API request to call external APIs
+          //         const response = await axios.post(
+          //           "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+          //           requestBody,
+          //           {
+          //             headers: {
+          //               "Content-Type": "application/json",
+          //               Authorization: `Bearer ${userToken}`, // Include the bearer token
+          //             },
+          //           }
+          //         );
+          //         // Handle response if needed
+          //         console.log("External API call response:", response.data);
+          //         // setBusinessData((prevBusinessData) => [
+          //         //   ...prevBusinessData,
+          //         //   response.data.data,
+          //         // ]);
+          //         if (
+          //           response.data.business &&
+          //           Array.isArray(response.data.business.data)
+          //         ) {
+          //           // Update businessData state with the data array
+          //           setBusinessData(response.data.business.data);
+          //         } else {
+          //           console.error("Invalid response structure:", response.data);
+          //         }
+          //         // setBusinessData(response.data.data);
+          //         setLoading(false);
+          //       } catch (error) {
+          //         // Handle errors if needed
+          //         console.error("Error calling external APIs:", error);
+          //         setLoading(false);
+          //       }
+          //     }
+          //     closePaymentModal();
+          //   },
+          //   onClose: () => {},
+          // });
+
+          //!!NEW PAYMENT METHOD
+
+          handleCancel();
+          try {
+            setCacId(cacid);
+            // Assuming postData is the data you want to send to the endpoint
+            const postData = {
+              amount:
+                currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+              currency: currencyCheck,
+              country: "NG",
+              description: "Payment for StakeHolder verification",
+              payment_method: "card,mobilemoney,ussd",
+              type: "VERIFICATION",
+            };
+
+            const response = await fetch(
+              "https://e-citizen.ng:8443/api/v2/payment/initiate",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${userToken}`,
+                },
+                body: JSON.stringify(postData),
               }
-              closePaymentModal();
-            },
-            onClose: () => {},
-          });
+            );
+
+            // console.log("response", response);
+
+            // Check if the request was successful (status code 200-299)
+            if (response.ok) {
+              // Handle successful response here
+
+              const responseData = await response.json();
+              console.log(responseData.data.link);
+              console.log(responseData.data.txRef);
+              if (responseData.data && responseData.data.link) {
+                console.log("Embedding URL:", responseData.data.link);
+                setPaymentUrl(responseData.data.link);
+                setTransactionRef(responseData.data.txRef);
+                setModal2Open(true);
+              } else {
+                console.error("Response data does not contain a link");
+              }
+            } else {
+              // Handle errors here
+              console.error("Failed to post data:", response.statusText);
+            }
+          } catch (error) {
+            // Handle any unexpected errors
+            console.error("An error occurred:", error);
+          }
+          handleCancel();
         }
         // Add your logic here for handling the selected payment method
       }
@@ -397,6 +470,106 @@ const BusinessName = () => {
       style: "currency",
       currency: "NGN",
     }).format(value);
+  };
+
+  const handleModalNewOk = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log(data);
+      setLoading(true);
+
+      if (loading) {
+        Swal.fire({
+          title: "Please Wait",
+          text: "Verification in progress",
+          icon: "info",
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      }
+      setModal2Open(false);
+
+      if (data.status === "success") {
+        setLoading(true);
+        const requestBody = {
+          payment: {
+            currency: currencyCheck || "ngn",
+          },
+          business: {
+            requestId: parseInt(requestId),
+            cacId: parseInt(cacId),
+          },
+        };
+        const externalApiResponse = await axios.post(
+          "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+          requestBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
+        console.log("External API call response:", externalApiResponse.data);
+        if (
+          externalApiResponse.data.business &&
+          externalApiResponse.data.business.success == false
+        ) {
+          setLoading(false);
+          Swal.fire({
+            title: "Verification Error",
+            text: externalApiResponse.data.business.message,
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+        }
+        if (
+          externalApiResponse.data.business &&
+          Array.isArray(externalApiResponse.data.business.data)
+        ) {
+          setBusinessData(externalApiResponse.data.business.data);
+        } else {
+          console.error(
+            "Invalid response structure:",
+            externalApiResponse.data
+          );
+        }
+        setLoading(false);
+        setModal2Open(false);
+      } else {
+        setModal2Open(false);
+      }
+    } catch (error) {
+      console.error("Error handling modal new OK:", error);
+      // Handle errors here
+    }
+  };
+  const handleCancel2 = () => {
+    setModal2Open(false);
   };
 
   return (
@@ -426,7 +599,7 @@ const BusinessName = () => {
               </div>
               <Divider />
               <Row gutter={16}>
-                <Col span={6}>
+                <Col span={8}>
                   {renderDetail(
                     <UserOutlined />,
                     "Business Name",
@@ -446,6 +619,7 @@ const BusinessName = () => {
                     "City",
                     business.data.city ? business.data.city : `No Data`
                   )}
+                  <Divider />
                 </Col>
                 <Col span={6}>
                   {renderDetail(
@@ -480,8 +654,10 @@ const BusinessName = () => {
                   <Divider />
                   {renderDetail(
                     <HomeOutlined />,
-                    "Business Address",
-                    business.data.address ? business.data.address : `No Data`
+                    "Branch Address",
+                    business.data.branchAddress
+                      ? business.data.branchAddress
+                      : `No Data`
                   )}
                   <Divider />
                   {renderDetail(
@@ -500,29 +676,32 @@ const BusinessName = () => {
                       ? business.data.approvedName
                       : `No Data`
                   )}
-                  <Divider />
+                </Col>
+                <Col span={9}>
                   {renderDetail(
                     <HomeOutlined />,
-                    "Branch Address",
-                    business.data.branchAddress
-                      ? business.data.branchAddress
-                      : `No Data`
+                    "Business Address",
+                    business.data.address ? business.data.address : "No Data"
                   )}
                 </Col>
                 <Divider />
                 {business["shareholders-data"] == null ? (
-                  <MainButton
-                    type="primary"
-                    style={{ paddingRight: "50px", paddingLeft: "50px" }}
-                    onClick={() => handleButtonClick(business.data.cacid)}
-                  >
-                    <SearchOutlined /> Lookup Stakeholder for only{" "}
-                    <span style={{ fontWeight: "bold" }}>
-                      {currencyCheck == "USD"
-                        ? "$" + stakeHolderFeeUsd
-                        : formatToNaira(stakeHolderFeeUsd)}
-                    </span>
-                  </MainButton>
+                  loading ? (
+                    <Spin size="large" tip="Loading" />
+                  ) : (
+                    <MainButton
+                      type="primary"
+                      style={{ paddingRight: "50px", paddingLeft: "50px" }}
+                      onClick={() => handleButtonClick(business.data.cacid)}
+                    >
+                      <SearchOutlined /> Lookup Stakeholder for only{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {currencyCheck == "USD"
+                          ? "$" + stakeHolderFeeUsd
+                          : formatToNaira(stakeHolderFeeUsd)}
+                      </span>
+                    </MainButton>
+                  )
                 ) : business["shareholders-data"].length > 0 ? (
                   <div>
                     {business["shareholders-data"].map((shareholder, index) => (
@@ -921,6 +1100,33 @@ const BusinessName = () => {
               </div>
             </div>
           </div>
+          <Modal
+            // title="Complete Wallet TopUp"
+            style={{
+              top: 20,
+            }}
+            width={1000}
+            open={modal2Open}
+            onOk={handleModalNewOk}
+            onCancel={handleCancel2}
+            maskClosable={false}
+            footer={[
+              <Button danger type="dashed" onClick={handleModalNewOk}>
+                Close
+              </Button>,
+            ]}
+          >
+            <iframe
+              id="inlineFrameExample"
+              title="Inline Frame Example"
+              width="100%"
+              height="600"
+              src={paymentUrl}
+              // ref={iframeRef}
+              // onLoad={handleIframeLoad}
+            ></iframe>
+            {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+          </Modal>
         </div>
       </div>
     </Container>

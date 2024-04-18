@@ -266,7 +266,7 @@ const Business = () => {
               </div>
               <Divider />
               <Row gutter={16}>
-                <Col span={6}>
+                <Col span={8}>
                   {renderDetail(
                     <UserOutlined />,
                     "Business Name",
@@ -286,6 +286,7 @@ const Business = () => {
                     "City",
                     business.data.city ? business.data.city : `No Data`
                   )}
+                  <Divider />
                 </Col>
                 <Col span={6}>
                   {renderDetail(
@@ -308,6 +309,7 @@ const Business = () => {
                       ? business.data.postalCode
                       : `No Data`
                   )}
+                  <Divider />
                 </Col>
                 <Col span={6}>
                   {renderDetail(
@@ -320,8 +322,10 @@ const Business = () => {
                   <Divider />
                   {renderDetail(
                     <HomeOutlined />,
-                    "Business Address",
-                    business.data.address ? business.data.address : `No Data`
+                    "Branch Address",
+                    business.data.branchAddress
+                      ? business.data.branchAddress
+                      : `No Data`
                   )}
                   <Divider />
                   {renderDetail(
@@ -331,6 +335,7 @@ const Business = () => {
                       ? business.data.postalCode
                       : `No Data`
                   )}
+                  <Divider />
                 </Col>
                 <Col span={6}>
                   {renderDetail(
@@ -341,12 +346,12 @@ const Business = () => {
                       : `No Data`
                   )}
                   <Divider />
+                </Col>
+                <Col span={9}>
                   {renderDetail(
                     <HomeOutlined />,
-                    "Branch Address",
-                    business.data.branchAddress
-                      ? business.data.branchAddress
-                      : `No Data`
+                    "Business Address",
+                    business.data.address ? business.data.address : "No Data"
                   )}
                 </Col>
                 <Divider />

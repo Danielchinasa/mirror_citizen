@@ -4,6 +4,7 @@ import {
   FooterLinkItems,
   FooterLogoArea,
   FooterLogoArea2,
+  FooterLogoArea3,
   FooterLink,
   SocialMedia,
   SocialMediaWrap,
@@ -13,6 +14,8 @@ import {
 import logo from "../../images/logo.svg";
 import osia from "../../images/osia.png";
 import ndpr from "../../images/ndpr.png";
+import playStore from "../../images/playstore.png";
+import appStore from "../../images/appStore.png";
 import NewsletterSection from "../newsletter/newsLetterSection";
 import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
@@ -106,6 +109,22 @@ function Footer() {
                   <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
                 </Modal>
               </FooterLinkItems>
+              <FooterLinkItems>
+                <FooterLink>
+                  <a href="#" target="none" style={{ cursor: "pointer" }}>
+                    <FooterLogoArea3
+                      src={playStore}
+                      style={{ width: 100, cursor: "pointer" }}
+                    ></FooterLogoArea3>
+                  </a>
+                  <a href="#" target="none" style={{ cursor: "pointer" }}>
+                    <FooterLogoArea3
+                      src={appStore}
+                      style={{ width: 100, cursor: "pointer" }}
+                    ></FooterLogoArea3>
+                  </a>
+                </FooterLink>
+              </FooterLinkItems>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
               <FooterLinkItems>
@@ -114,6 +133,7 @@ function Footer() {
               <FooterLinkItems>
                 <FooterLink to="/faq">FAQ</FooterLink>
               </FooterLinkItems>
+
               {/* <FooterLinkItems>
                 <FooterLink to="/">info@e-citizen.ng</FooterLink>
               </FooterLinkItems> */}

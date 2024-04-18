@@ -5,3 +5,6 @@
     background-color: #0DC939 !important; /* Example color */
     color: white; /* Text color */
   }
+  .swal-wide{
+    width:auto !important;
+}

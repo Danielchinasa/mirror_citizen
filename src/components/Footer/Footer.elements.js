@@ -123,6 +123,13 @@ export const FooterLogoArea2 = styled.img`
   border-bottom-left-radius: 10px;
 `;
 
+export const FooterLogoArea3 = styled.img`
+  padding-bottom: 8px;
+  padding-right: 5px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+`;
+
 export const FooterLink = styled(Link)`
   color: #fff;
   text-decoration: none;

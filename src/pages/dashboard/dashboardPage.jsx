@@ -493,10 +493,12 @@ const DashboardPage = () => {
         response.basic.success &&
         response.basic.success === true
       ) {
+        console.log("response.basic.data", response.basic.data);
         localStorage.setItem(
           "verificationRequestId",
           response.basic.data.requestId
         );
+
         Swal.fire({
           title: "Success",
           text: response.basic.message,
@@ -2937,7 +2939,7 @@ const DashboardPage = () => {
                             handleInputChange("bvn", e.target.value)
                           }
                         />
-                        <u>Credit Bereau</u>
+                        <u>Select one or more Credit Bureaus</u>
                         <br></br>
                         <Checkbox
                           onChange={handleCheckboxChangeCrc}
