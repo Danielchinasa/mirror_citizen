@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.d54bfbb9.chunk.css",
-    "main.js": "/static/js/main.73ba7e48.chunk.js",
-    "main.js.map": "/static/js/main.73ba7e48.chunk.js.map",
+    "main.css": "/static/css/main.0fb76ced.chunk.css",
+    "main.js": "/static/js/main.4d6d26df.chunk.js",
+    "main.js.map": "/static/js/main.4d6d26df.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.49d9e619.chunk.js": "/static/js/2.49d9e619.chunk.js",
-    "static/js/2.49d9e619.chunk.js.map": "/static/js/2.49d9e619.chunk.js.map",
+    "static/js/2.8099078b.chunk.js": "/static/js/2.8099078b.chunk.js",
+    "static/js/2.8099078b.chunk.js.map": "/static/js/2.8099078b.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.4b5b935ea280361e7203622ef47655bd.js": "/precache-manifest.4b5b935ea280361e7203622ef47655bd.js",
+    "precache-manifest.c2f391f0d9baf58a78ee1a4b758795e9.js": "/precache-manifest.c2f391f0d9baf58a78ee1a4b758795e9.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
-    "static/css/main.d54bfbb9.chunk.css.map": "/static/css/main.d54bfbb9.chunk.css.map",
-    "static/js/2.49d9e619.chunk.js.LICENSE.txt": "/static/js/2.49d9e619.chunk.js.LICENSE.txt",
+    "static/css/main.0fb76ced.chunk.css.map": "/static/css/main.0fb76ced.chunk.css.map",
+    "static/js/2.8099078b.chunk.js.LICENSE.txt": "/static/js/2.8099078b.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/banner.png": "/static/media/banner.dfc673b1.png",
     "static/media/car-insurance.svg": "/static/media/car-insurance.3132370c.svg",
@@ -29,6 +29,7 @@
     "static/media/lady.png": "/static/media/lady.e1e01b75.png",
     "static/media/logo.svg": "/static/media/logo.4c3da6f1.svg",
     "static/media/ndpr.png": "/static/media/ndpr.411010b5.png",
+    "static/media/playstore.png": "/static/media/playstore.11964970.png",
     "static/media/profile.jpg": "/static/media/profile.79ba2002.jpg",
     "static/media/reg.jpg": "/static/media/reg.0eb72260.jpg",
     "static/media/slide.svg": "/static/media/slide.25167a53.svg",
@@ -40,8 +41,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.49d9e619.chunk.js",
-    "static/css/main.d54bfbb9.chunk.css",
-    "static/js/main.73ba7e48.chunk.js"
+    "static/js/2.8099078b.chunk.js",
+    "static/css/main.0fb76ced.chunk.css",
+    "static/js/main.4d6d26df.chunk.js"
   ]
 }
