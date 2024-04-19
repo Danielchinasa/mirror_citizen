@@ -222,7 +222,8 @@ const MainDashboard = () => {
       if (record.searchParameter === "Company Name") {
         history.push("/businessName");
       } else {
-        history.push("/business");
+        // history.push("/business");
+        history.push("/businessName");
       }
     } else if (record.type === "Financial Profile") {
       history.push("/financial");

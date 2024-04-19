@@ -187,137 +187,7 @@ const DashboardPage = () => {
       currency: "NGN",
     }).format(value);
   };
-  const handleInputChange = (name, value) => {
-    // const hadPreviousValue = formData[name].trim() !== "";
-    const hadPreviousValue =
-      typeof formData[name] === "string" && formData[name].trim() !== "";
-    if (name === "nin") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setNinFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
-        );
-      } else if (hadPreviousValue && value.trim() === "") {
-        setNinFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee
-        );
-      }
-    }
-    if (name === "face") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setFaceFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + faceVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + faceFee);
-      } else if (hadPreviousValue && value.trim() === "") {
-        setFaceFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - faceFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + faceUsdFee
-        );
-        setTotalServiceCost(
-          (prevTotalFees) =>
-            prevTotalFees - (faceServiceFee + faceProcessingFee)
-        );
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - faceUsdFee
-        );
-      }
-    }
-    if (name === "rc") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setRcFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + businessUsdFee
-        );
-      } else if (hadPreviousValue && value.trim() === "") {
-        setRcFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - businessUsdFee
-        );
-      }
-    }
-    if (name === "business_name") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setBusinessNameFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessNameVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessNameFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + businessNameUsdFee
-        );
-      } else if (hadPreviousValue && value.trim() === "") {
-        setBusinessNameFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessNameVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessNameFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - businessNameUsdFee
-        );
-      }
-    }
-    if (name === "bvn") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setBvnFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + financialVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + financialFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + financialUsdFee
-        );
-      } else if (hadPreviousValue && value.trim() === "") {
-        setBvnFilled(false);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - financialFee);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - financialVatFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - financialUsdFee
-        );
-      }
-    }
-    if (name === "vin") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setVinFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + vinVehicleVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + vinVehicleFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + vinVehicleUsdFee
-        );
-      } else if (hadPreviousValue && value.trim() === "") {
-        setVinFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - vinVehicleVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - vinVehicleFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - vinVehicleUsdFee
-        );
-      }
-    }
-    if (name === "license_number") {
-      if (!hadPreviousValue && value.trim() !== "") {
-        setLicenseNumberFilled(true);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + vehicleVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees + vehicleFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + vehicleUsdFee
-        );
-      } else if (hadPreviousValue && value.trim() === "") {
-        setLicenseNumberFilled(false);
-        setTotalVAT((prevTotalVAT) => prevTotalVAT - vehicleVatFee);
-        setTotalServiceCost((prevTotalFees) => prevTotalFees - vehicleFee);
-        setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - vehicleUsdFee
-        );
-      }
-    }
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked;
     setIsChecked(isChecked);
@@ -326,6 +196,15 @@ const DashboardPage = () => {
   const handleCheckboxChangeCrc = (e) => {
     const isCheckedCrc = e.target.checked;
     setIsCheckedCrc(isCheckedCrc);
+    //!! HERE 2
+    // if (isCheckedCrc == true) {
+    //   setTotalVAT((prevTotalVAT) => totalVAT * 2);
+    //   setTotalServiceCost((prevTotalFees) => totalServiceCost * 2);
+    // } else {
+    //   setTotalServiceCost((prevTotalFees) => totalServiceCost / 2);
+    //   setTotalVAT((prevTotalVAT) => totalVAT / 2);
+    // }
+
     handleInputChange("crc", isCheckedCrc ? true : false); // Set stolencheck to true when checked, false otherwise
   };
   const handleCheckboxChangeFirstCentral = (e) => {
@@ -748,6 +627,8 @@ const DashboardPage = () => {
   const [isCheckedFirstCentral, setIsCheckedFirstCentral] = useState(false);
   const [isCheckedCreditRegistry, setIsCheckedCreditRegistry] = useState(false);
   const [checkStolen, setCheckStolen] = useState(false);
+
+  const [enableCrc, setEnableCrc] = useState(true);
 
   const onChangePayment = (e) => {
     setCheckboxChecked(e.target.checked);
@@ -1403,7 +1284,6 @@ const DashboardPage = () => {
         calculatedTotalveri += formDataFees.vin;
         setTotalveri(calculatedTotalveri);
       }
-      //!! LOOK HERE
       if (
         typeof formData.nin === "string" &&
         formData.nin.trim() !== "" &&
@@ -2139,14 +2019,41 @@ const DashboardPage = () => {
     setFormData({ ...formData, bvn: "" }); // Clears the bvn field in the form data
     setFinancialSelectedValue(null); // Clears financial selected value
     setBvnFilled(false); // Sets bvnFilled state to false
+    setPrevNumberOfCheckedCheckboxes(0);
+    setIsCheckedCrc(false);
+    setIsCheckedCreditRegistry(false);
+    setIsCheckedFirstCentral(false);
+    // setTotalVAT((prevTotalVAT) => {
+    //   const newTotalVAT = prevTotalVAT - financialVatFee;
+    //   return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    // });
     setTotalVAT((prevTotalVAT) => {
-      const newTotalVAT = prevTotalVAT - financialVatFee;
-      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+      const newTotalVAT =
+        prevNumberOfCheckedCheckboxes === 2
+          ? prevTotalVAT - 226
+          : prevNumberOfCheckedCheckboxes === 3
+          ? prevTotalVAT - 339
+          : prevTotalVAT - financialVatFee;
+
+      const totalVAT = newTotalVAT < 0 ? 0 : newTotalVAT;
+      return totalVAT;
     });
+    // setTotalServiceCost((prevTotalFees) => {
+    //   const newTotalFees = prevTotalFees - financialFee;
+    //   return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    // });
     setTotalServiceCost((prevTotalFees) => {
-      const newTotalFees = prevTotalFees - financialFee;
-      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+      const newTotalFees =
+        prevNumberOfCheckedCheckboxes === 2
+          ? prevTotalFees - 3000
+          : prevNumberOfCheckedCheckboxes === 3
+          ? prevTotalFees - 4500
+          : prevTotalFees - financialFee; // Subtract financialVatFee otherwise
+
+      const totalVAT = newTotalFees < 0 ? 0 : newTotalFees;
+      return totalVAT;
     });
+
     setTotalveriNiara((prevTotalFees) => {
       const newTotalFees = prevTotalFees - financialUsdFee;
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
@@ -2302,6 +2209,233 @@ const DashboardPage = () => {
       });
 
     setModal2Open(false);
+  };
+
+  const [prevNumberOfCheckedCheckboxes, setPrevNumberOfCheckedCheckboxes] =
+    useState(0);
+
+  // Check the status of checkboxes
+  useEffect(() => {
+    // Define a function to count the checked checkboxes
+    function checkCheckedCheckboxes() {
+      let checkedCount = 0;
+
+      if (isCheckedCrc) {
+        checkedCount++;
+      }
+
+      if (isCheckedFirstCentral) {
+        checkedCount++;
+      }
+
+      if (isCheckedCreditRegistry) {
+        checkedCount++;
+      }
+
+      // Return the number of checked checkboxes
+      return checkedCount;
+    }
+
+    // Call the function to check the number of checked checkboxes
+    const numberOfCheckedCheckboxes = checkCheckedCheckboxes();
+
+    // Check if all three checkboxes are checked
+    const allThreeChecked = numberOfCheckedCheckboxes === 3;
+
+    // Update state based on checkbox status
+    if (numberOfCheckedCheckboxes >= 2 && !allThreeChecked) {
+      console.log("Two or more checkboxes are checked.");
+      if (prevNumberOfCheckedCheckboxes === 1) {
+        // When moving from 1 to 2 or more, double the state values
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + 113);
+        setTotalServiceCost(
+          (prevTotalServiceCost) => prevTotalServiceCost + 1500
+        );
+      }
+    } else if (
+      prevNumberOfCheckedCheckboxes >= 2 &&
+      numberOfCheckedCheckboxes < 2
+    ) {
+      // When moving from 2 or more to less than 2, divide by 2 to restore previous values
+      setTotalVAT((prevTotalVAT) => prevTotalVAT - 113);
+      setTotalServiceCost(
+        (prevTotalServiceCost) => prevTotalServiceCost - 1500
+      );
+    }
+
+    if (
+      numberOfCheckedCheckboxes === 3 &&
+      prevNumberOfCheckedCheckboxes !== 3
+    ) {
+      console.log("All three checkboxes are checked.");
+      // Multiply the state values by 3
+      setTotalVAT((prevTotalVAT) => prevTotalVAT + 113);
+      setTotalServiceCost(
+        (prevTotalServiceCost) => prevTotalServiceCost + 1500
+      );
+    } else if (
+      prevNumberOfCheckedCheckboxes === 3 &&
+      numberOfCheckedCheckboxes !== 3
+    ) {
+      // When moving from 3 to less than 3, divide by 3 to restore previous values
+      setTotalVAT((prevTotalVAT) => prevTotalVAT - 113);
+      setTotalServiceCost(
+        (prevTotalServiceCost) => prevTotalServiceCost - 1500
+      );
+    }
+
+    // Update previous number of checked checkboxes
+    setPrevNumberOfCheckedCheckboxes(numberOfCheckedCheckboxes);
+
+    // Log the state changes for debugging
+    console.log("Total VAT:", totalVAT);
+    console.log("Total service cost:", totalServiceCost);
+  }, [
+    isCheckedCrc,
+    isCheckedFirstCentral,
+    isCheckedCreditRegistry,
+    prevNumberOfCheckedCheckboxes,
+    totalVAT,
+    totalServiceCost,
+  ]);
+
+  const handleInputChange = (name, value) => {
+    // const hadPreviousValue = formData[name].trim() !== "";
+    const hadPreviousValue =
+      typeof formData[name] === "string" && formData[name].trim() !== "";
+    if (name === "nin") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setNinFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setNinFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee
+        );
+      }
+    }
+    if (name === "face") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setFaceFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + faceVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + faceFee);
+      } else if (hadPreviousValue && value.trim() === "") {
+        setFaceFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - faceFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + faceUsdFee
+        );
+        setTotalServiceCost(
+          (prevTotalFees) =>
+            prevTotalFees - (faceServiceFee + faceProcessingFee)
+        );
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - faceUsdFee
+        );
+      }
+    }
+    if (name === "rc") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setRcFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + businessUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setRcFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - businessUsdFee
+        );
+      }
+    }
+    if (name === "business_name") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setBusinessNameFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + businessNameVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + businessNameFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + businessNameUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setBusinessNameFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - businessNameVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - businessNameFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - businessNameUsdFee
+        );
+      }
+    }
+    if (name === "bvn") {
+      // Update state based on 'hadPreviousValue' and 'value'
+      if (!hadPreviousValue && value.trim() !== "") {
+        setEnableCrc(false);
+        setBvnFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + financialVatFee);
+        setTotalServiceCost(
+          (prevTotalServiceCost) => prevTotalServiceCost + financialFee
+        );
+        setTotalveriNiara(
+          (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setBvnFilled(false);
+        setTotalServiceCost(
+          (prevTotalServiceCost) => prevTotalServiceCost - financialFee
+        );
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - financialVatFee);
+        setTotalveriNiara(
+          (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee
+        );
+      }
+    }
+
+    if (name === "vin") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setVinFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + vinVehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + vinVehicleFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + vinVehicleUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setVinFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - vinVehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - vinVehicleFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - vinVehicleUsdFee
+        );
+      }
+    }
+    if (name === "license_number") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setLicenseNumberFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + vehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + vehicleFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + vehicleUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setLicenseNumberFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - vehicleVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - vehicleFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - vehicleUsdFee
+        );
+      }
+    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   return (
@@ -2942,6 +3076,7 @@ const DashboardPage = () => {
                         <u>Select one or more Credit Bureaus</u>
                         <br></br>
                         <Checkbox
+                          disabled={enableCrc}
                           onChange={handleCheckboxChangeCrc}
                           checked={isCheckedCrc}
                         >
@@ -2949,6 +3084,7 @@ const DashboardPage = () => {
                         </Checkbox>
                         <br></br>
                         <Checkbox
+                          disabled={enableCrc}
                           onChange={handleCheckboxChangeFirstCentral}
                           checked={isCheckedFirstCentral}
                         >
@@ -2956,6 +3092,7 @@ const DashboardPage = () => {
                         </Checkbox>
                         <br></br>
                         <Checkbox
+                          disabled={enableCrc}
                           onChange={handleCheckboxChangeCreditRegistry}
                           checked={isCheckedCreditRegistry}
                         >
@@ -3126,13 +3263,34 @@ const DashboardPage = () => {
                         </Col>
                         <Col>
                           <p>
-                            {" "}
-                            {currencyCheck === "USD"
+                            {prevNumberOfCheckedCheckboxes == 2
+                              ? currencyCheck === "USD"
+                                ? "$" +
+                                  (financialServiceFee +
+                                    financialProcessingFee) *
+                                    2
+                                : formatToNaira(
+                                    (financialServiceFee +
+                                      financialProcessingFee) *
+                                      2
+                                  )
+                              : prevNumberOfCheckedCheckboxes == 3
+                              ? currencyCheck === "USD"
+                                ? "$" +
+                                  (financialServiceFee +
+                                    financialProcessingFee) *
+                                    3
+                                : formatToNaira(
+                                    (financialServiceFee +
+                                      financialProcessingFee) *
+                                      3
+                                  )
+                              : currencyCheck === "USD"
                               ? "$" +
                                 (financialServiceFee + financialProcessingFee)
                               : formatToNaira(
                                   financialServiceFee + financialProcessingFee
-                                )}
+                                )}{" "}
                           </p>
                         </Col>
                         <Col style={{ marginLeft: "20px", color: "red" }}>
