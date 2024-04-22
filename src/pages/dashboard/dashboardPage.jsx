@@ -23,6 +23,7 @@ import {
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import Notification from "../../Notification";
 import {
   Container,
   Heading,
@@ -539,7 +540,7 @@ const DashboardPage = () => {
       } else if (response.financial && response.financial.success === false) {
         Swal.fire({
           title: "Error",
-          text: "An error occurred with the Financial verification. Please try again later.",
+          text: response.financial.message,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -555,7 +556,28 @@ const DashboardPage = () => {
         //   duration: 20, // Duration in seconds
         // });
         // return;
-      } else {
+      }
+      // else if (response.financial && response.financial.success === false) {
+      //   Swal.fire({
+      //     title: "Error",
+      //     text: "An error occurred with the Financial verification. Please try again later.",
+      //     icon: "error",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //   });
+      //   history.push("/dashboard");
+      //   // notification.error({
+      //   //   message: "Message",
+      //   //   description:
+      //   //     "An error occurred with the Financial verification. Please try again later.",
+      //   //   duration: 20, // Duration in seconds
+      //   // });
+      //   // return;
+      // }
+      else {
         Swal.fire({
           title: "Error",
           text: "An unexpected server error occurred. Please attempt your action again",
@@ -1021,7 +1043,7 @@ const DashboardPage = () => {
           setLoading(false);
           handleCancel();
           Swal.fire({
-            title: "Wallet Balance Error",
+            title: "Wallet Balance Low",
             text: "Your wallet balance is low. Please recharge before making a payment.",
             icon: "error",
             customClass: {
@@ -2480,6 +2502,7 @@ const DashboardPage = () => {
                     ""
                   )}
                   <Heading6> Select Profile</Heading6>
+                  <Notification />
 
                   <Space
                     direction="vertical"

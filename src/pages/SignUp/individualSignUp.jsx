@@ -466,6 +466,13 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
+
+                  <small style={{ color: "#42B7FF" }}>
+                    Password must be 8 characters or more, contain at least one
+                    capital letter, <br /> contain at least one lowercase
+                    letter, contain at least one number, contain at least one
+                    special character.
+                  </small>
                   <StyledLabel>Password</StyledLabel>
                   <StyledInput
                     type="password"

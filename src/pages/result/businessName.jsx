@@ -250,12 +250,12 @@ const BusinessName = () => {
               currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
           };
 
-          if (userBalance.toLocaleString() < 100) {
+          if (userBalance.toLocaleString() < stakeHolderFeeUsd) {
             // Show the Ant Design notification
             setLoading(false);
             // handleCancel();
             Swal.fire({
-              title: "Wallet Balance Error",
+              title: "Wallet Balance Low",
               text: "Your wallet balance is low. Please recharge before making a payment.",
               icon: "error",
               customClass: {
@@ -569,6 +569,7 @@ const BusinessName = () => {
     }
   };
   const handleCancel2 = () => {
+    setLoading(false);
     setModal2Open(false);
   };
 

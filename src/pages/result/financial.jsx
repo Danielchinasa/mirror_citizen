@@ -55,12 +55,21 @@ const Financial = () => {
   const userToken = user?.jwtToken || "";
   const [loading, setLoading] = useState(false);
   const [basicData, setBasicData] = useState(null);
+  const [ficoData, setFicoData] = useState(null);
   const [crcData, setCrcData] = useState(null);
   const [crcDataStats, setCrcDataStats] = useState(null);
   const [creditRegistryData, setCreditRegistryData] = useState(null);
   const [creditRegistryDataStats, setCreditRegistryDataStats] = useState(null);
   const [firstCentralData, setFirstCentralData] = useState(null);
   const [firstCentralDataStats, setFirstCentralDataStats] = useState(null);
+  const [ficoDataStats, setFicoDataStats] = useState(null);
+  const [checkFirstCentralDataStats, setCheckFirstCentralDataStats] =
+    useState(false);
+  const [checkCreditRegistryDataStats, setCheckCreditRegistryDataStats] =
+    useState(false);
+  const [checkCrcDataStats, setCheckCrcDataStats] = useState(false);
+  const [checkFicoDataStats, setCheckFicoDataStats] = useState(false);
+
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
   // );
@@ -90,10 +99,15 @@ const Financial = () => {
 
         const crc = "crc-data";
         const basic = "basic-data";
+        const fico = "FICO-Score";
         const firstCentral = "firstCentral-data";
         const creditRegistry = "creditRegistry-data";
         if ("basic-data" in response.data) {
           setBasicData(response.data["basic-data"]);
+        }
+        if ("FICO-Score" in response.data) {
+          setCheckFicoDataStats(true);
+          setFicoData(response.data["FICO-Score"]);
         }
         if ("crc-data" in response.data) {
           setCrcData(response.data["crc-data"]);
@@ -104,11 +118,23 @@ const Financial = () => {
         if ("creditRegistry-data" in response.data) {
           setCreditRegistryData(response.data["creditRegistry-data"]);
         }
-        // setCrcDataStats(response.data["crc-data"]["data"]);
-        // setFirstCentralDataStats(response.data["firstCentral-data"]["data"]);
-        // setCreditRegistryDataStats(
-        //   response.data["creditRegistry-data"]["data"]
-        // );
+
+        if ("creditRegistry-data" in response.data) {
+          setCheckCreditRegistryDataStats(true);
+          setCreditRegistryDataStats(
+            response.data["creditRegistry-data"]["data"]
+          );
+        }
+        if ("firstCentral-data" in response.data) {
+          setCheckFirstCentralDataStats(true);
+          setFirstCentralDataStats(response.data["firstCentral-data"]["data"]);
+        }
+        if ("crc-data" in response.data) {
+          setCheckCrcDataStats(true);
+          setCrcDataStats(response.data["crc-data"]["data"]);
+        }
+
+        setFicoDataStats(response.data["FICO-Score"]);
       } catch (error) {
         // Handle errors if needed
         console.error("Error checking consent:", error);
@@ -152,17 +178,30 @@ const Financial = () => {
     "requestId",
     "id",
   ];
+  if (checkCrcDataStats == true) {
+    if (!crcDataStats || typeof crcDataStats !== "object") {
+      return null; // or return a message indicating that the object is invalid
+    }
+  }
+  if (checkFicoDataStats == true) {
+    if (!ficoDataStats || typeof ficoDataStats !== "object") {
+      return null; // or return a message indicating that the object is invalid
+    }
+  }
+  if (checkFirstCentralDataStats == true) {
+    if (!firstCentralDataStats || typeof firstCentralDataStats !== "object") {
+      return null; // or return a message indicating that the object is invalid
+    }
+  }
 
-  // if (!crcDataStats || typeof crcDataStats !== "object") {
-  //   return null; // or return a message indicating that the object is invalid
-  // }
-
-  // if (!firstCentralDataStats || typeof firstCentralDataStats !== "object") {
-  //   return null; // or return a message indicating that the object is invalid
-  // }
-  // if (!creditRegistryDataStats || typeof creditRegistryDataStats !== "object") {
-  //   return null; // or return a message indicating that the object is invalid
-  // }
+  if (checkCreditRegistryDataStats == true) {
+    if (
+      !creditRegistryDataStats ||
+      typeof creditRegistryDataStats !== "object"
+    ) {
+      return null; // or return a message indicating that the object is invalid
+    }
+  }
 
   return (
     <Container>
@@ -170,11 +209,19 @@ const Financial = () => {
         <Link to="/main-dashboard">
           <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
         </Link>
-        <Card style={{ width: "100%" }}>
+        <Card
+          style={{ width: "100%", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }}
+        >
           <Heading4>Verification Result</Heading4>
         </Card>
         <Spin spinning={loading} tip="Awaiting Consent...">
-          <Card style={{ width: "100%", marginTop: "20px" }}>
+          <Card
+            style={{
+              width: "100%",
+              marginTop: "20px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+          >
             <div>
               <Text>Financial Credit Profile</Text>
               <RightOutlined />
@@ -184,7 +231,12 @@ const Financial = () => {
           </Card>
           {basicData && (
             <Card
-              style={{ width: "100%", marginBottom: "20px", marginTop: "20px" }}
+              style={{
+                width: "100%",
+                marginBottom: "20px",
+                marginTop: "20px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              }}
             >
               <div>
                 <Text>Basic Data </Text>
@@ -204,96 +256,144 @@ const Financial = () => {
               </Row>
             </Card>
           )}
+          {ficoData && (
+            <Card
+              style={{
+                width: "100%",
+                marginBottom: "20px",
+                marginTop: "20px",
+                background: "rgba(13, 201, 57, 0.3)",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <div>
+                <Text>Credit Score </Text>
+              </div>
+              <Divider />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                {Object.entries(ficoDataStats)
+                  .filter(([key]) => !excludedFields.includes(key))
+                  .map(([key, value]) => (
+                    <Card
+                      key={key}
+                      style={{ width: "auto", marginBottom: "20px" }}
+                    >
+                      <p>{key}</p>
+                      <h6>{value}</h6>
+                    </Card>
+                  ))}
+              </div>
+            </Card>
+          )}
           <Card
             style={{
               width: "100%",
               marginBottom: "20px",
               marginTop: "20px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
             <Tabs defaultActiveKey="1">
-              <TabPane tab="First Central" key="1">
-                {/* <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                  {Object.entries(firstCentralDataStats)
-                    .filter(([key]) => !excludedFields.includes(key))
-                    .map(([key, value]) => (
-                      <Card
-                        key={key}
-                        style={{ width: 250, marginBottom: "20px" }}
-                      >
-                        <p>{key}</p>
-                        <h6>{value}</h6>
-                      </Card>
-                    ))}
-                </div> */}
-                {firstCentralData &&
-                  Object.entries(firstCentralData).map(([key, value]) => {
-                    if (Array.isArray(value)) {
-                      return (
-                        <div key={key}>
-                          <Text>{key} </Text>
-                          {renderTable(value)}
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-              </TabPane>
-              <TabPane tab="CRC" key="2">
-                {/* <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                  {Object.entries(crcDataStats)
-                    .filter(([key]) => !excludedFields.includes(key))
-                    .map(([key, value]) => (
-                      <Card
-                        key={key}
-                        style={{ width: 250, marginBottom: "20px" }}
-                      >
-                        <p>{key}</p>
-                        <h6>{value}</h6>
-                      </Card>
-                    ))}
-                </div> */}
+              {checkFirstCentralDataStats == true ? (
+                <TabPane tab="First Central" key="1">
+                  <div
+                    style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+                  >
+                    {Object.entries(firstCentralDataStats)
+                      .filter(([key]) => !excludedFields.includes(key))
+                      .map(([key, value]) => (
+                        <Card
+                          key={key}
+                          style={{ width: "auto", marginBottom: "20px" }}
+                        >
+                          <p>{key}</p>
+                          <h6>{value}</h6>
+                        </Card>
+                      ))}
+                  </div>
+                  {firstCentralData &&
+                    Object.entries(firstCentralData).map(([key, value]) => {
+                      if (Array.isArray(value)) {
+                        return (
+                          <div key={key}>
+                            <Text>{key} </Text>
+                            {renderTable(value)}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                </TabPane>
+              ) : (
+                ""
+              )}
+              {checkCrcDataStats == true ? (
+                <TabPane tab="CRC" key="2">
+                  <div
+                    style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+                  >
+                    {Object.entries(crcDataStats)
+                      .filter(([key]) => !excludedFields.includes(key))
+                      .map(([key, value]) => (
+                        <Card
+                          key={key}
+                          style={{ width: "auto", marginBottom: "20px" }}
+                        >
+                          <p>{key}</p>
+                          <h6>{value}</h6>
+                        </Card>
+                      ))}
+                  </div>
 
-                {crcData &&
-                  Object.entries(crcData).map(([key, value]) => {
-                    if (Array.isArray(value)) {
-                      return (
-                        <div key={key}>
-                          <Text>{key} </Text>
-                          {renderTable(value)}
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-              </TabPane>
-              <TabPane tab="Credit Registry" key="3">
-                {/* <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                  {Object.entries(creditRegistryDataStats)
-                    .filter(([key]) => !excludedFields.includes(key))
-                    .map(([key, value]) => (
-                      <Card
-                        key={key}
-                        style={{ width: 250, marginBottom: "20px" }}
-                      >
-                        <p>{key}</p>
-                        <h6>{value}</h6>
-                      </Card>
-                    ))}
-                </div> */}
-                {creditRegistryData &&
-                  Object.entries(creditRegistryData).map(([key, value]) => {
-                    if (Array.isArray(value)) {
-                      return (
-                        <div key={key}>
-                          <Text>{key} </Text>
-                          {renderTable(value)}
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-              </TabPane>
+                  {crcData &&
+                    Object.entries(crcData).map(([key, value]) => {
+                      if (Array.isArray(value)) {
+                        return (
+                          <div key={key}>
+                            <Text>{key} </Text>
+                            {renderTable(value)}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                </TabPane>
+              ) : (
+                ""
+              )}
+              {checkCreditRegistryDataStats == true ? (
+                <TabPane tab="Credit Registry" key="3">
+                  <div
+                    style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+                  >
+                    {Object.entries(creditRegistryDataStats)
+                      .filter(([key]) => !excludedFields.includes(key))
+                      .map(([key, value]) => (
+                        <Card
+                          key={key}
+                          style={{ width: "auto", marginBottom: "20px" }}
+                        >
+                          <p>{key}</p>
+                          <h6>{value}</h6>
+                        </Card>
+                      ))}
+                  </div>
+                  {creditRegistryData &&
+                    Object.entries(creditRegistryData).map(([key, value]) => {
+                      if (Array.isArray(value)) {
+                        return (
+                          <div key={key}>
+                            <Text>{key} </Text>
+                            {renderTable(value)}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                </TabPane>
+              ) : (
+                ""
+              )}
             </Tabs>
           </Card>
         </Spin>

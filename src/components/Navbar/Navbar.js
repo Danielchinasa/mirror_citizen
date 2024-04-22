@@ -14,13 +14,14 @@ import { MainButton, OutlineButton } from "../../globalStyles";
 import Logo from "../../images/logo.png";
 import defaultDp from "../../images/defaultDp.png";
 import { Link } from "react-router-dom";
-import { Button, Flex } from "antd";
+import { Button, Flex, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Menu, Dropdown, Space } from "antd";
+import { Menu, Dropdown, Space, Divider, Input } from "antd";
+import ReactGA from "react-ga4";
 
 const { Title } = Typography;
 
@@ -33,6 +34,8 @@ function Navbar() {
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = userDetails?.jwtToken || "";
   const userCurrency = userDetails?.currency || "";
+  const user = useSelector((state) => state.user);
+  const userToken2 = user?.jwtToken || "";
   // const user = useSelector((state) => state.user);
   // const userFirstName = user?.user?.firstName || "";
   // const userLastName = user?.user?.lastName || "";
@@ -172,6 +175,83 @@ function Navbar() {
       currency: "NGN",
     }).format(value);
   };
+  const [amount, setAmount] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modal1Open, setModal1Open] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const handleCancel = () => {
+    setAmount("");
+    setIsModalVisible(false);
+  };
+  const handleModalOk = () => {
+    dispatch(fetchUserProfile(userToken2));
+    setModal1Open(false);
+  };
+  const handleOk = async () => {
+    ReactGA.event({
+      category: "User",
+      action: "Topped up wallet",
+    });
+
+    setIsModalVisible(false);
+    try {
+      // Assuming postData is the data you want to send to the endpoint
+      const postData = {
+        amount: amount,
+        currency: userCurrency,
+        country: "NG",
+        description: "Wallet top up",
+        payment_method: "card,mobilemoney,ussd",
+        type: "TOPUP",
+      };
+      setAmount("");
+
+      const response = await fetch(
+        "https://e-citizen.ng:8443/api/v2/payment/initiate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken2}`,
+          },
+          body: JSON.stringify(postData),
+        }
+      );
+      console.log("Nav wallet resposne", response);
+      // Check if the request was successful (status code 200-299)
+      if (response.ok) {
+        // Handle successful response here
+
+        const responseData = await response.json();
+        console.log(responseData.data.link);
+        if (responseData.data && responseData.data.link) {
+          console.log("Embedding URL:", responseData.data.link);
+          setPaymentUrl(responseData.data.link);
+          setModal1Open(true);
+        } else {
+          console.error("Response data does not contain a link");
+        }
+      } else {
+        // Handle errors here
+        console.error("Failed to post data:", response.statusText);
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error("An error occurred:", error);
+    }
+  };
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    // Validate if the input is a positive number
+    if (/^[1-9]\d*\.?\d*$/.test(value) || value === "") {
+      setAmount(value); // Set the amount only if it's a positive number greater than zero
+    }
+  };
 
   return (
     <>
@@ -304,7 +384,7 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p>
+                        <p onClick={showModal}>
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
@@ -314,7 +394,63 @@ function Navbar() {
                               : formatToNaira(userBalance)}
                           </span>
                         </p>
+                        <Modal
+                          title="User Wallet"
+                          visible={isModalVisible}
+                          onOk={handleOk}
+                          onCancel={handleCancel}
+                          width={300}
+                        >
+                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={3} style={{ color: "#0DC939" }}>
+                            {userCurrency === "ngn"
+                              ? formatToNaira(userBalance)
+                              : `$${userBalance}`}
+                          </Title>
+
+                          <Divider style={{ border: "1px solid #D9D9D9" }} />
+                          <Title level={5}>Fund Wallet</Title>
+                          <p>Enter Amount to Fund Wallet</p>
+                          <Input
+                            type="text"
+                            placeholder="Enter amount"
+                            value={amount}
+                            onChange={handleChange}
+                          />
+                        </Modal>
+                        <Modal
+                          // title="Complete Wallet TopUp"
+                          style={{
+                            top: 20,
+                          }}
+                          width={1000}
+                          open={modal1Open}
+                          onOk={handleModalOk}
+                          onCancel={handleModalOk}
+                          maskClosable={false}
+                          footer={[
+                            <Button
+                              danger
+                              type="dashed"
+                              onClick={handleModalOk}
+                            >
+                              Close
+                            </Button>,
+                          ]}
+                        >
+                          <iframe
+                            id="inlineFrameExample"
+                            title="Inline Frame Example"
+                            width="100%"
+                            height="600"
+                            src={paymentUrl}
+                            // ref={iframeRef}
+                            // onLoad={handleIframeLoad}
+                          ></iframe>
+                          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+                        </Modal>
                       </div>
+
                       <NavItemBtn>
                         <NavBtnLink>
                           <OutlineButton type="primary" onClick={handleLogout}>
@@ -337,7 +473,7 @@ function Navbar() {
                         <Title level={4}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p>
+                        <p onClick={showModal}>
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
@@ -347,6 +483,61 @@ function Navbar() {
                               : formatToNaira(userBalance)}
                           </span>
                         </p>
+                        <Modal
+                          title="User Wallet"
+                          visible={isModalVisible}
+                          onOk={handleOk}
+                          onCancel={handleCancel}
+                          width={300}
+                        >
+                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={3} style={{ color: "#0DC939" }}>
+                            {userCurrency === "ngn"
+                              ? formatToNaira(userBalance)
+                              : `$${userBalance}`}
+                          </Title>
+
+                          <Divider style={{ border: "1px solid #D9D9D9" }} />
+                          <Title level={5}>Fund Wallet</Title>
+                          <p>Enter Amount to Fund Wallet</p>
+                          <Input
+                            type="text"
+                            placeholder="Enter amount"
+                            value={amount}
+                            onChange={handleChange}
+                          />
+                        </Modal>
+                        <Modal
+                          // title="Complete Wallet TopUp"
+                          style={{
+                            top: 20,
+                          }}
+                          width={1000}
+                          open={modal1Open}
+                          onOk={handleModalOk}
+                          onCancel={handleModalOk}
+                          maskClosable={false}
+                          footer={[
+                            <Button
+                              danger
+                              type="dashed"
+                              onClick={handleModalOk}
+                            >
+                              Close
+                            </Button>,
+                          ]}
+                        >
+                          <iframe
+                            id="inlineFrameExample"
+                            title="Inline Frame Example"
+                            width="100%"
+                            height="600"
+                            src={paymentUrl}
+                            // ref={iframeRef}
+                            // onLoad={handleIframeLoad}
+                          ></iframe>
+                          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+                        </Modal>
                       </div>
                       <UserDropdown />
                     </>
