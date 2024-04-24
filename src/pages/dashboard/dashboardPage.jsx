@@ -218,6 +218,7 @@ const DashboardPage = () => {
     setIsCheckedCreditRegistry(isCheckedCreditRegistry);
     handleInputChange("creditRegistry", isCheckedCreditRegistry ? true : false); // Set stolencheck to true when checked, false otherwise
   };
+
   useEffect(() => {
     const fetchServiceFee = async () => {
       try {
@@ -411,6 +412,15 @@ const DashboardPage = () => {
           },
           allowOutsideClick: false,
           allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
         });
         // history.push("/dashboard");
         // notification.error({
@@ -436,13 +446,22 @@ const DashboardPage = () => {
       else if (response.business && response.business.success === false) {
         Swal.fire({
           title: "Error",
-          text: "An error occurred with the business verification. Please try again later.",
+          text: response.business.message,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
           },
           allowOutsideClick: false,
           allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
         });
 
         // notification.info({
@@ -454,7 +473,7 @@ const DashboardPage = () => {
       } else if (response.business && response.business.success === true) {
         Swal.fire({
           title: "Success",
-          text: "Your busness verification request was successful.",
+          text: "Your business verification request was successful.",
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -489,15 +508,22 @@ const DashboardPage = () => {
       } else if (response.vehicle && response.vehicle.success === false) {
         Swal.fire({
           title: "Error",
-          text: "An error occurred with the Vehicle verification. Please try again later.",
+          text: response.vehicle.message,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
           },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
         });
-        history.push("/dashboard");
+        // history.push("/dashboard");
         // notification.error({
         //   message: "Error",
         //   description:
@@ -539,7 +565,7 @@ const DashboardPage = () => {
         history.push("/main-dashboard");
       } else if (response.financial && response.financial.success === false) {
         Swal.fire({
-          title: "Error",
+          title: "Oops!",
           text: response.financial.message,
           icon: "error",
           customClass: {
@@ -547,8 +573,17 @@ const DashboardPage = () => {
           },
           allowOutsideClick: false,
           allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
         });
-        history.push("/dashboard");
+        // history.push("/dashboard");
         // notification.error({
         //   message: "Message",
         //   description:
@@ -580,13 +615,22 @@ const DashboardPage = () => {
       else {
         Swal.fire({
           title: "Error",
-          text: "An unexpected server error occurred. Please attempt your action again",
-          icon: "question",
+          text: "An unexpected server error occurred. A refund has been initiated",
+          icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
           },
           allowOutsideClick: false,
           allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
         });
         // notification.error({
         //   message: "Error",
@@ -601,13 +645,22 @@ const DashboardPage = () => {
       console.error("Error sending verification", error);
       Swal.fire({
         title: "Error",
-        text: "An unexpected server error occurred. Please attempt your action again",
-        icon: "question",
+        text: "An unexpected server error occurred. A refund has been initiated",
+        icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
         },
         allowOutsideClick: false,
         allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.isConfirmed) {
+          // dispatch(fetchUserProfile(userToken));
+          window.location.reload();
+        }
       });
     } finally {
       setLoading(false);
@@ -941,6 +994,15 @@ const DashboardPage = () => {
     }
   }, [checkStolen]);
 
+  function generateTransactionId() {
+    const length = 16; // total length including "EA"
+    let transactionId = "EA";
+    for (let i = 0; i < length - 2; i++) {
+      transactionId += Math.floor(Math.random() * 10); // Append random number between 0 and 9
+    }
+    return transactionId;
+  }
+  const randomTransactionId = generateTransactionId();
   const handlePaymentMethod = async () => {
     if (selectedValue !== null) {
       // Log the selected payment method
@@ -997,7 +1059,7 @@ const DashboardPage = () => {
 
         const requestBody = {
           userNIN: userNin,
-          transactionID: "EA11697986831911",
+          transactionID: randomTransactionId,
           // amount: `${danfee.toFixed(2)}`,
           // amount:
           //   currencyCheck == "USD"

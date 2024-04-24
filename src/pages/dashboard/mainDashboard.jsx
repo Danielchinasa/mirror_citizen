@@ -133,18 +133,7 @@ const MainDashboard = () => {
   console.log("currencyCheck");
   console.log(currencyCheck);
 
-  //!! Update the verification open array to know which verification is opened
-  // useEffect(() => {
-  //   // Load opened verifications from storage or any other source
-  //   const savedOpenedVerifications = localStorage.getItem(
-  //     "openedVerifications"
-  //   );
-  //   if (savedOpenedVerifications) {
-  //     setOpenedVerifications(JSON.parse(savedOpenedVerifications));
-  //   }
-  // }, []);
-
-  const handleViewResult = (record) => {
+  const handleViewResult = async (record) => {
     const { id, insertionDate, consent } = record;
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
@@ -156,15 +145,6 @@ const MainDashboard = () => {
     const sevenDaysAgo = new Date(
       currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
     );
-
-    // Check if the verification ID is not in the list of opened verifications
-    // if (!openedVerifications.includes(id)) {
-    //   // Add the verification ID to the list of opened verifications
-    //   setOpenedVerifications((prevVerifications) => [...prevVerifications, id]);
-    //   localStorage.setItem(
-    //     "openedVerifications",
-    //     JSON.stringify([...openedVerifications, id])
-    //   );
 
     // Your existing logic for handling different scenarios
     if (
@@ -211,26 +191,72 @@ const MainDashboard = () => {
       return;
     }
 
-    // If action is not expired, continue with navigation
+    try {
+      const response = await fetch(
+        `https://e-citizen.ng:8443/api/v2/verification/check-consent/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        // Proceed with navigation only if there is no data in the response
+        if (!data) {
+          console.log("NO DATA");
+          Swal.fire({
+            title: "Oops!",
+            text: "Sorry, No record was returned",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+          });
+          return;
+        } else if (
+          data &&
+          data.error === true &&
+          data.message === "No value present"
+        ) {
+          Swal.fire({
+            title: "Oops!",
+            text: "Sorry, No record was returned",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+          });
+          return;
+
+          return;
+        } else {
+          navigateToResultPage(record);
+          console.log("Consent data found:", data);
+        }
+      } else {
+        // Handle the case where the API call fails
+        console.error("Failed to fetch consent data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching consent data:", error);
+    }
+    // }
+  };
+  const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
-    localStorage.setItem("verificationRequestId", id);
+    localStorage.setItem("verificationRequestId", record.id);
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle2");
     } else if (record.type === "Vehicle Profile") {
       history.push("/vehicle");
     } else if (record.type === "Business Profile") {
-      if (record.searchParameter === "Company Name") {
-        history.push("/businessName");
-      } else {
-        // history.push("/business");
-        history.push("/businessName");
-      }
+      history.push("/businessName"); // Assuming it's "/businessName" for both cases
     } else if (record.type === "Financial Profile") {
       history.push("/financial");
     } else {
       history.push("/result");
     }
-    // }
   };
 
   const config = {
@@ -549,6 +575,13 @@ const MainDashboard = () => {
       sorter: (a, b) => a.amount - b.amount,
     },
     {
+      title: "Transaction Type",
+      dataIndex: "transactionType",
+      key: "transactionType",
+      sorter: (a, b) => a.transactionType - b.transactionType,
+    },
+
+    {
       title: "Status",
       key: "successful",
       filters: [
@@ -813,18 +846,29 @@ const MainDashboard = () => {
     useState(0);
   const [failedVerificationCount, setFailedVerificationCount] = useState(0);
   useEffect(() => {
+    console.log("transactionData:", transactionData);
     if (verificationData) {
       setTotalVerificationCount(verificationData.length);
       const completedVerifications = verificationData.filter(
-        (verification) => verification.consent !== "pending"
-      );
-      const failedVerifications = verificationData.filter(
-        (verification) => verification.consent == "pending"
+        (verification) => verification.consent !== "terminated"
       );
       setCompletedVerificationCount(completedVerifications.length);
+
+      const failedVerifications = verificationData.filter(
+        (verification) => verification.successful == "terminated"
+      );
       setFailedVerificationCount(failedVerifications.length);
     }
-  }, [verificationData]);
+    // if (transactionData) {
+    //   const failedVerifications = transactionData.filter(
+    //     (transaction) =>
+    //       transaction.successful == false &&
+    //       transaction.transactionType === "VERIFICATION"
+    //   );
+    //   console.log("failedVerifications:", failedVerifications);
+    //   setFailedVerificationCount(failedVerifications.length);
+    // }
+  }, [verificationData, transactionData]);
   const CustomStatistic = ({ title, value, valueStyle }) => (
     <div className="custom-statistic">
       <div
@@ -1011,7 +1055,17 @@ const MainDashboard = () => {
           </Modal>
         </div>
       </InfoSec>
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Tabs
+        defaultActiveKey="1"
+        items={items}
+        onChange={onChange}
+        style={{
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
+          padding: "20px",
+          marginTop: "40px",
+          marginBottom: "40px",
+        }}
+      />
       <Notification />
       <Modal
         // title="Complete Wallet TopUp"
