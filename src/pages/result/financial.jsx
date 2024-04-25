@@ -35,13 +35,29 @@ const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
 const renderTable = (dataArray) => {
+  // Function to convert camelCase key to separate words
+  const getKeyText = (key) => {
+    return key
+      .replace("-", "")
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
+      .replace(/^./, function (str) {
+        return str.toUpperCase();
+      });
+  };
+
   const excludedColumns = ["insertionDate", "lastUpdatedAt"];
   const columns =
     dataArray.length > 0
       ? Object.keys(dataArray[0])
           .filter((key) => !excludedColumns.includes(key)) // Exclude specified columns
-          .map((key) => ({ title: key, dataIndex: key, key: key }))
+          .map((key) => ({
+            title: getKeyText(key), // Convert camelCase key to separate words
+            dataIndex: key,
+            key: key,
+          }))
       : [];
+
   return (
     <div style={{ overflowX: "auto", maxWidth: "100%" }}>
       <Table dataSource={dataArray} columns={columns} scroll={{ x: true }} />
@@ -123,7 +139,9 @@ const Financial = () => {
           setBasicData(response.data["basic-data"]);
         }
         if ("FICO-Score" in response.data) {
-          setCheckFicoDataStats(true);
+          // if (response.data["FICO-Score"] !== "null") {
+          // setCheckFicoDataStats(true);
+          // }
           setFicoData(response.data["FICO-Score"]);
         }
         if ("crc-data" in response.data) {
@@ -137,21 +155,38 @@ const Financial = () => {
         }
 
         if ("creditRegistry-data" in response.data) {
-          setCheckCreditRegistryDataStats(true);
-          setCreditRegistryDataStats(
-            response.data["creditRegistry-data"]["data"]
-          );
+          if (
+            response.data["creditRegistry-data"] !== null ||
+            response.data["creditRegistry-data"].length !== 0
+          ) {
+            setCheckCreditRegistryDataStats(true);
+            setCreditRegistryDataStats(
+              response.data["creditRegistry-data"]["data"]
+            );
+          }
         }
         if ("firstCentral-data" in response.data) {
-          setCheckFirstCentralDataStats(true);
-          setFirstCentralDataStats(response.data["firstCentral-data"]["data"]);
+          if (
+            response.data["firstCentral-data"] !== null ||
+            response.data["firstCentral-data"].length !== 0
+          ) {
+            setCheckFirstCentralDataStats(true);
+            setFirstCentralDataStats(
+              response.data["firstCentral-data"]["data"]
+            );
+          }
         }
         if ("crc-data" in response.data) {
-          setCheckCrcDataStats(true);
-          setCrcDataStats(response.data["crc-data"]["data"]);
+          if (
+            response.data["crc-data"] !== null ||
+            response.data["crc-data"].length !== 0
+          ) {
+            setCheckCrcDataStats(true);
+            setCrcDataStats(response.data["crc-data"]["data"]);
+          }
         }
 
-        setFicoDataStats(response.data["FICO-Score"]);
+        // setFicoDataStats(response.data["FICO-Score"]);
       } catch (error) {
         // Handle errors if needed
         console.error("Error checking consent:", error);
@@ -424,40 +459,42 @@ const Financial = () => {
                       </div>
                     </>
                   )}
+                  {!ficoData && (
+                    <>
+                      <GaugeChart
+                        id="gauge-chart2"
+                        nrOfLevels={1000}
+                        arcsLength={[0.9, 0.4, 0.1, 0.1, 0.2]}
+                        colors={[
+                          "#CC440B",
+                          "#E57E0D",
+                          "#FCCF38",
+                          "#67F351",
+                          "#186609",
+                        ]}
+                        percent={0.0}
+                        arcPadding={0.006}
+                        hideText={true}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "20px",
+                          fontSize: "25px",
+                        }}
+                      >
+                        <span style={{ color: "#126609" }}>Credit Score:</span>
+                        &nbsp;
+                        <span style={{ fontWeight: "bold" }}> No Record</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
           </Card>
 
-          {/* {ficoData && (
-            <Card
-              style={{
-                width: "100%",
-                marginBottom: "20px",
-                marginTop: "20px",
-                background: "rgba(13, 201, 57, 0.3)",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <div>
-                <Text>Credit Score </Text>
-              </div>
-              <Divider />
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                {Object.entries(ficoDataStats)
-                  .filter(([key]) => !excludedFields.includes(key))
-                  .map(([key, value]) => (
-                    <Card
-                      key={key}
-                      style={{ width: "auto", marginBottom: "20px" }}
-                    >
-                      <p>{key}</p>
-                      <h6>{value}</h6>
-                    </Card>
-                  ))}
-              </div>
-            </Card>
-          )} */}
           <Card
             style={{
               width: "100%",
@@ -467,22 +504,12 @@ const Financial = () => {
             }}
           >
             <Tabs defaultActiveKey="1">
+              //!checkFirstCentralDataStats comes here
               {checkFirstCentralDataStats == true ? (
                 <TabPane tab="First Central" key="1">
                   <div
                     style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
                   >
-                    {/* {Object.entries(firstCentralDataStats)
-                      .filter(([key]) => !excludedFields.includes(key))
-                      .map(([key, value], index) => (
-                        <Card
-                          key={key}
-                          style={{ width: "auto", marginBottom: "20px" }}
-                        >
-                          <p>{customTexts[index]}</p>
-                          <h6>{value}</h6>
-                        </Card>
-                      ))} */}
                     <Card
                       className="text-center"
                       style={{
@@ -499,8 +526,9 @@ const Financial = () => {
                       <p style={{ fontWeight: "bold" }}>Highest Loan Request</p>
                       <h6>
                         {" "}
-                        {summaryData &&
-                          formatAmountToNaira(summaryData.highestLoanAmount)}
+                        {summaryData && summaryData.highestLoanAmount !== null
+                          ? formatAmountToNaira(summaryData.highestLoanAmount)
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -521,7 +549,10 @@ const Financial = () => {
                       </p>
                       <h6>
                         {" "}
-                        {summaryData && summaryData.totalNoOfInstitutions}
+                        {summaryData &&
+                        summaryData.totalNoOfInstitutions !== null
+                          ? summaryData.totalNoOfInstitutions
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -540,8 +571,9 @@ const Financial = () => {
                       <p style={{ fontWeight: "bold" }}>Total due (Overdue)</p>
                       <h6>
                         {" "}
-                        {summaryData &&
-                          formatAmountToNaira(summaryData.totalOverdue)}
+                        {summaryData && summaryData.totalOverdue !== null
+                          ? formatAmountToNaira(summaryData.totalOverdue)
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -560,8 +592,9 @@ const Financial = () => {
                       <p style={{ fontWeight: "bold" }}>Total loan value</p>
                       <h6>
                         {" "}
-                        {summaryData &&
-                          formatAmountToNaira(summaryData.totalBorrowed)}
+                        {summaryData && summaryData.totalBorrowed !== null
+                          ? formatAmountToNaira(summaryData.totalBorrowed)
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -582,8 +615,9 @@ const Financial = () => {
                       </p>
                       <h6>
                         {" "}
-                        {summaryData &&
-                          formatAmountToNaira(summaryData.totalOutstanding)}
+                        {summaryData && summaryData.totalOutstanding !== null
+                          ? formatAmountToNaira(summaryData.totalOutstanding)
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -602,7 +636,12 @@ const Financial = () => {
                       <p style={{ fontWeight: "bold" }}>
                         Total no: of credit loans
                       </p>
-                      <h6> {summaryData && summaryData.totalNoOfLoans}</h6>
+                      <h6>
+                        {" "}
+                        {summaryData && summaryData.totalNoOfLoans !== null
+                          ? summaryData.totalNoOfLoans
+                          : "No Data"}
+                      </h6>
                     </Card>
                     <Card
                       className="text-center"
@@ -622,7 +661,10 @@ const Financial = () => {
                       </p>
                       <h6>
                         {" "}
-                        {summaryData && summaryData.totalNoOfActiveLoans}
+                        {summaryData &&
+                        summaryData.totalNoOfActiveLoans !== null
+                          ? summaryData.totalNoOfActiveLoans
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -644,7 +686,9 @@ const Financial = () => {
                       <h6>
                         {" "}
                         {summaryData &&
-                          summaryData.totalNoOfDelinquentFacilities}
+                        summaryData.totalNoOfDelinquentFacilities !== null
+                          ? summaryData.totalNoOfDelinquentFacilities
+                          : "No Data"}
                       </h6>
                     </Card>
                     <Card
@@ -665,7 +709,7 @@ const Financial = () => {
                       </p>
                       <h6>
                         {" "}
-                        {summaryData && summaryData.maxNoOfDays !== "null"
+                        {summaryData && summaryData.maxNoOfDays !== null
                           ? summaryData.maxNoOfDays
                           : "no data"}
                       </h6>
@@ -689,7 +733,7 @@ const Financial = () => {
                       <h6>
                         {" "}
                         {summaryData &&
-                        summaryData.totalNoOfClosedLoans !== "null"
+                        summaryData.totalNoOfClosedLoans !== null
                           ? summaryData.totalNoOfClosedLoans
                           : "no data"}
                       </h6>
@@ -738,22 +782,12 @@ const Financial = () => {
               ) : (
                 ""
               )}
+              //!checkFirstCentralDataStats ends here //!checkCrcDataStats comes
               {checkCrcDataStats == true ? (
                 <TabPane tab="CRC" key="2">
                   <div
                     style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
                   >
-                    {/* {Object.entries(crcDataStats)
-                      .filter(([key]) => !excludedFields.includes(key))
-                      .map(([key, value]) => (
-                        <Card
-                          key={key}
-                          style={{ width: "auto", marginBottom: "20px" }}
-                        >
-                          <p>{key}</p>
-                          <h6>{value}</h6>
-                        </Card>
-                      ))} */}
                     <Card
                       className="text-center"
                       style={{
@@ -1032,22 +1066,12 @@ const Financial = () => {
               ) : (
                 ""
               )}
+              //!checkCrcDataStats ends here //!checkCreditRegistryDataStats
               {checkCreditRegistryDataStats == true ? (
                 <TabPane tab="Credit Registry" key="3">
                   <div
                     style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
                   >
-                    {/* {Object.entries(creditRegistryDataStats)
-                      .filter(([key]) => !excludedFields.includes(key))
-                      .map(([key, value]) => (
-                        <Card
-                          key={key}
-                          style={{ width: "auto", marginBottom: "20px" }}
-                        >
-                          <p>{key}</p>
-                          <h6>{value}</h6>
-                        </Card>
-                      ))} */}
                     <Card
                       className="text-center"
                       style={{
@@ -1335,6 +1359,7 @@ const Financial = () => {
               ) : (
                 ""
               )}
+              //!checkCreditRegistryDataStats ends here
             </Tabs>
           </Card>
         </Spin>

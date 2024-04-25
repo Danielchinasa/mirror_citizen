@@ -36,22 +36,14 @@ function Navbar() {
   const userCurrency = userDetails?.currency || "";
   const user = useSelector((state) => state.user);
   const userToken2 = user?.jwtToken || "";
-  // const user = useSelector((state) => state.user);
-  // const userFirstName = user?.user?.firstName || "";
-  // const userLastName = user?.user?.lastName || "";
-  // const userBal = user?.user?.walletBalance;
-
-  // localStorage.setItem("userBalance", JSON.stringify(userBal));
-  // const storedUserBalance = localStorage.getItem("userBalance");
-  // console.log("Redux State:", userCurrency);
 
   const handleClick = () => setClick(!click);
 
   const closeMobileMenu = () => setClick(false);
 
   const showButton = () => {
-    // so if the screensize is <= 960px then set button state to false
-    if (window.innerwidth <= 960) {
+    // Correct the typo from innerwidth to innerWidth
+    if (window.innerWidth <= 960) {
       setButton(false);
     } else {
       setButton(true);

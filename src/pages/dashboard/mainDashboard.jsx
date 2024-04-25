@@ -621,7 +621,7 @@ const MainDashboard = () => {
   const items = [
     {
       key: "1",
-      label: "Verification History",
+      label: <span style={{ fontWeight: "bold" }}>Verification History</span>,
       children: (
         <>
           <Input
@@ -663,7 +663,7 @@ const MainDashboard = () => {
     },
     {
       key: "2",
-      label: "Transaction Logs",
+      label: <span style={{ fontWeight: "bold" }}>Transaction Logs</span>,
       children: (
         <>
           <Input

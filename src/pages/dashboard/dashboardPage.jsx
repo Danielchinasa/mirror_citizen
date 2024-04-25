@@ -1492,30 +1492,35 @@ const DashboardPage = () => {
           }}
         >
           {/* <Checkbox onChange={onChange2}> */}
-          <ul>
+          <ol style={{ fontSize: "17px" }}>
             {isBasicOn || isFinancialOn ? (
               <li>
-                By clicking, you indicate that you understand and accept that
-                consent is required from the data subject being verified before
-                you can access their data.
-              </li>
-            ) : (
-              ""
-            )}
-            {isVehicleOn ? (
-              <li>
-                Please enter the registration number without spaces or hyphens.
+                You confirm that you understand and accept that{" "}
+                <span style={{ fontWeight: "bold" }}>consent is required</span>{" "}
+                from the data subject being verified before you can access their
+                data, and you accept that will not be refunded if consent is
+                withheld.
               </li>
             ) : (
               ""
             )}
 
             <li>
-              You confirm that search details are correct, and you confirm that
-              you will not be refunded for incorrect information or lack of
-              consent
+              You confirm and accept that the{" "}
+              <span style={{ fontWeight: "bold" }}>
+                search details are correct
+              </span>
+              , and you accept that you will not be refunded for incorrect
+              information
             </li>
-          </ul>
+            <li>
+              You understand and accept that{" "}
+              <span style={{ fontWeight: "bold" }}>
+                search details may come back without any data
+              </span>
+              , and you accept that you will not be refunded
+            </li>
+          </ol>
 
           {/* </Checkbox> */}
         </div>
@@ -1543,13 +1548,7 @@ const DashboardPage = () => {
             ) : (
               ""
             )}
-            {isVehicleOn ? (
-              <li>
-                Please enter the registration number without spaces or hyphens.
-              </li>
-            ) : (
-              ""
-            )}
+
             <li>
               You confirm that search details are correct, and you confirm that
               you will not be refunded for incorrect information or lack of
@@ -3211,6 +3210,10 @@ const DashboardPage = () => {
                     {vehicleProfileArray.includes("license_number") && (
                       <div>
                         <StyledLabel>Vehicle Registration Number*</StyledLabel>
+                        <span style={{ color: "grey" }}>
+                          ( Input the vehicle registration number without any
+                          space or hyphens e.g KUJ467SB )
+                        </span>
                         <StyledInput
                           type="text"
                           placeholder="Vehicle Registration Number"

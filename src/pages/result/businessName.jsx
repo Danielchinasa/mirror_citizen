@@ -837,9 +837,17 @@ const BusinessName = () => {
                                       }}
                                     >
                                       <div style={{ fontWeight: "bold" }}>
-                                        {`${shareholder.firstname || ""} ${
+                                        {/* {`${shareholder.firstname || ""} ${
                                           shareholder.surname || ""
-                                        }`}
+                                        }`} */}
+                                        {shareholder &&
+                                        shareholder.corporation_name == null
+                                          ? `${shareholder.firstname || ""} ${
+                                              shareholder.surname || ""
+                                            }`
+                                          : `${shareholder.corporation_name} ${
+                                              shareholder.firstname || ""
+                                            } ${shareholder.surname || ""}`}
                                       </div>
                                       <div
                                         style={{
@@ -1220,9 +1228,14 @@ const BusinessName = () => {
                                       }}
                                     >
                                       <div style={{ fontWeight: "bold" }}>
-                                        {`${shareholder.firstname || ""} ${
-                                          shareholder.surname || ""
-                                        }`}
+                                        {shareholder &&
+                                        shareholder.corporation_name == null
+                                          ? `${shareholder.firstname || ""} ${
+                                              shareholder.surname || ""
+                                            }`
+                                          : `${shareholder.corporation_name} ${
+                                              shareholder.firstname || ""
+                                            } ${shareholder.surname || ""}`}
                                       </div>
                                       <div
                                         style={{
