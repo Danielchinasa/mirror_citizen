@@ -42,6 +42,7 @@ import BusinessName from "./pages/result/businessName";
 import AppLogout from "./components/AppLogOut";
 import ProtectedRoute from "./protectedRoute";
 import ReactGA from "react-ga4";
+import Sms from "./pages/sms/sms";
 
 function App() {
   ReactGA.initialize("G-28ZN6L737E");
@@ -191,6 +192,7 @@ function App() {
         <Switch>
           <AppLogout>
             <Route path="/" exact component={Home} />
+            <Route path="/sms/:from/:message" exact component={Sms} />
             <Route path="/reach/:CLICK_ID" exact component={Home} />
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPassword} />
