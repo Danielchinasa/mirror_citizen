@@ -8,7 +8,7 @@ const Sms = () => {
   useEffect(() => {
     const postData = async () => {
       try {
-        const response = await axios.post(
+        const response = await axios.get(
           `/sms/receive?from=${from}&message=${message}`
         );
         console.log(response.data); // Log the response data
