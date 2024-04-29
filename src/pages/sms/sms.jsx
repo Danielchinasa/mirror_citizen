@@ -9,9 +9,9 @@ const Sms = () => {
     const postData = async () => {
       try {
         const response = await axios.get(
-          `/sms/receive?from=${from}&message=${message}`
+          `https://e-citizen.ng:8443/api/v2/sms/receive?from=${from}&message=${message}`
         );
-        console.log(response.data); // Log the response data
+        console.log(response); // Log the response data
       } catch (error) {
         console.error("Error sending data:", error);
       }
