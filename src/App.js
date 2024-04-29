@@ -192,7 +192,7 @@ function App() {
         <Switch>
           <AppLogout>
             <Route path="/" exact component={Home} />
-            <Route path="/sms/:from/:message" exact component={Sms} />
+            <Route path="/sms" exact component={Sms} />
             <Route path="/reach/:CLICK_ID" exact component={Home} />
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPassword} />
