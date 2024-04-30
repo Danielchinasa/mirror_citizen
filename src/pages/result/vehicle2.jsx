@@ -12,7 +12,11 @@ import {
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchVerificationResult } from "../../redux/actions";
+import {
+  fetchVerificationResult,
+  logout,
+  fetchUserProfile,
+} from "../../redux/actions";
 import axios from "axios";
 import { Typography, Image } from "antd";
 import Icon, {
@@ -42,6 +46,7 @@ import { AiOutlineColumnWidth } from "react-icons/ai";
 import { LuCar } from "react-icons/lu";
 import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+import { useHistory } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -49,6 +54,8 @@ const Vehicle2 = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
+  const tokenExpire = user?.expirationDate || "";
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [vin, setVin] = useState("No Data");
   const [model, setModel] = useState("No Data");
@@ -73,6 +80,27 @@ const Vehicle2 = () => {
   // );
   const requestId = localStorage.getItem("verificationRequestId");
 
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    // Compare the current date with the expiration date
+    if (currentDate >= expireDate) {
+      // If the current date is greater than or equal to the expiration date,
+      // it means the token has expired
+      dispatch(logout());
+      history.push("/");
+    } else {
+      // Token is still valid
+      // You may want to handle this case differently
+    }
+  }, []);
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {

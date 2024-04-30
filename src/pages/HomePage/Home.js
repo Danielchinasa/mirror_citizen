@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { homeObjOne } from "./Data";
+
 const Home = () => {
   const [showNewsletterModal, setShowNewsletterModal] = useState(false);
 
   useEffect(() => {
     const hasVisitedBefore = localStorage.getItem("hasVisited");
 
-    if (!hasVisitedBefore) {
+    if (!hasVisitedBefore || hasVisitedBefore !== "true") {
       setShowNewsletterModal(true);
       localStorage.setItem("hasVisited", "true");
     }

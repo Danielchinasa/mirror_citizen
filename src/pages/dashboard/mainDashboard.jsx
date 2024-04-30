@@ -21,6 +21,7 @@ import {
   fetchTransactionData,
   updateUserWalletBalance,
   fetchUserProfile,
+  logout,
 } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -70,6 +71,7 @@ const MainDashboard = () => {
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
   const history = useHistory();
+  const tokenExpire = user?.expirationDate || "";
 
   const userEmail = user?.email || "";
   const userName = user?.firstName || "";
@@ -83,6 +85,30 @@ const MainDashboard = () => {
   const [businessFee, setBusinessFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
+
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    // Compare the current date with the expiration date
+    if (currentDate >= expireDate) {
+      // If the current date is greater than or equal to the expiration date,
+      // it means the token has expired
+      dispatch(logout());
+      history.push("/");
+      // console.log("Time don pass well");
+    } else {
+      // Token is still valid
+      // You may want to handle this case differently
+    }
+  }, []);
 
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -433,7 +459,7 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Consent Status",
+      title: "Status",
       dataIndex: "consent",
       key: "consent",
       // sorter: (a, b) => a.consent.localeCompare(b.consent),

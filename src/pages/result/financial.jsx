@@ -23,6 +23,11 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Typography } from "antd";
 import { RightOutlined } from "@ant-design/icons";
+import {
+  sendVerificationRequest,
+  fetchUserProfile,
+  logout,
+} from "../../redux/actions";
 
 import Swal from "sweetalert2";
 import GaugeChart from "react-gauge-chart";
@@ -30,6 +35,7 @@ import { FaRegMoneyBillAlt, FaRegCalendarTimes } from "react-icons/fa";
 import { CiWallet } from "react-icons/ci";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { RiHomeOfficeLine } from "react-icons/ri";
+import { useHistory } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -84,6 +90,8 @@ const Financial = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
+  const history = useHistory();
+  const tokenExpire = user?.expirationDate || "";
   const [loading, setLoading] = useState(false);
   const [basicData, setBasicData] = useState(null);
   const [ficoData, setFicoData] = useState(null);
@@ -106,6 +114,29 @@ const Financial = () => {
   //   (state) => state.verificationResult.data
   // );
   const requestId = localStorage.getItem("verificationRequestId");
+
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    // Compare the current date with the expiration date
+    if (currentDate >= expireDate) {
+      // If the current date is greater than or equal to the expiration date,
+      // it means the token has expired
+      dispatch(logout());
+      history.push("/");
+    } else {
+      // Token is still valid
+      // You may want to handle this case differently
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

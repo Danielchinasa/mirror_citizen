@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Row, Col, notification } from "antd";
 import { Typography, Input } from "antd";
 
@@ -13,7 +13,7 @@ import {
   OutlineButton,
   BtnLink,
 } from "../../globalStyles";
-import { updateProfile } from "../../redux/actions";
+import { updateProfile, logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
 import { LoadingOutlined, ManOutlined, PlusOutlined } from "@ant-design/icons";
@@ -121,8 +121,33 @@ const ProfilePage = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
-  const userToken = user?.jwtToken || "";
+
   const userDetails = useSelector((state) => state.userDetails);
+  const userToken = user?.jwtToken || "";
+  const tokenExpire = user?.expirationDate || "";
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
+
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    // Compare the current date with the expiration date
+    if (currentDate >= expireDate) {
+      // If the current date is greater than or equal to the expiration date,
+      // it means the token has expired
+      dispatch(logout());
+      history.push("/");
+    } else {
+      // Token is still valid
+      // You may want to handle this case differently
+    }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Dispatch the sendVerificationRequest action with the form data

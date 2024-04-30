@@ -13,7 +13,6 @@ import {
   Radio,
   Form,
   Tooltip,
-  notification,
   Modal,
   Flex,
   Tag,
@@ -27,17 +26,13 @@ import Notification from "../../Notification";
 import {
   Container,
   Heading,
-  Heading4,
   Heading6,
   Img,
   InfoSec,
   MainButtonFull,
-  OutlineButtonFull,
   StyledInput,
   StyledLabel,
-  DisabledButtonFull,
   StyledForm,
-  StyledTextArea,
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 
@@ -50,7 +45,11 @@ import banner from "../../images/banner.png";
 import tick from "../../images/tick.png";
 import clearvin from "../../images/clearvin.png";
 import { useDispatch, useSelector } from "react-redux";
-import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
+import {
+  sendVerificationRequest,
+  fetchUserProfile,
+  logout,
+} from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import privacyPolicy from "../../privacyPolicy";
@@ -87,6 +86,7 @@ const DashboardPage = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
+
   const [base64WithoutPrefix, setBase64WithoutPrefix] = useState("");
   const [isClearVinOn, setIsClearVinOn] = useState(false);
   const [isBasicOn, setIsBasicOn] = useState(false);
@@ -182,6 +182,11 @@ const DashboardPage = () => {
   const [totalVAT, setTotalVAT] = useState(0);
   const [totalServiceCost, setTotalServiceCost] = useState(0);
   const [newTotalServiceCost, setNewTotalServiceCost] = useState(0);
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
+
   const formatToNaira = (value) => {
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -197,14 +202,6 @@ const DashboardPage = () => {
   const handleCheckboxChangeCrc = (e) => {
     const isCheckedCrc = e.target.checked;
     setIsCheckedCrc(isCheckedCrc);
-    //!! HERE 2
-    // if (isCheckedCrc == true) {
-    //   setTotalVAT((prevTotalVAT) => totalVAT * 2);
-    //   setTotalServiceCost((prevTotalFees) => totalServiceCost * 2);
-    // } else {
-    //   setTotalServiceCost((prevTotalFees) => totalServiceCost / 2);
-    //   setTotalVAT((prevTotalVAT) => totalVAT / 2);
-    // }
 
     handleInputChange("crc", isCheckedCrc ? true : false); // Set stolencheck to true when checked, false otherwise
   };
@@ -312,6 +309,7 @@ const DashboardPage = () => {
   const user = useSelector((state) => state.user);
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = user?.jwtToken || "";
+  const tokenExpire = user?.expirationDate || "";
   const userEmail = user?.email || "";
   const userName = user?.firstName || "";
   const userPhone = user?.phone || "";
@@ -321,60 +319,38 @@ const DashboardPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    // Compare the current date with the expiration date
+    if (currentDate >= expireDate) {
+      // If the current date is greater than or equal to the expiration date,
+      // it means the token has expired
+      dispatch(logout());
+      history.push("/");
+    } else {
+    }
+  }, []);
+
+  //!---------- Performing the Verification --------- //
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // Dispatch the sendVerificationRequest action with the form data
-    setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
       );
-
-      console.log("response");
-      console.log(response);
+      setLoading(false);
+      dispatch(fetchUserProfile(userToken));
       if (
-        (response.basic &&
-          response.basic.message &&
-          response.basic.message === "NO_HIT") ||
-        (response.business && response.business.message === "NO_HIT")
-      ) {
-        // Display Ant Design notification when NO_HIT
-        // notification.error({
-        //   message: "Input value not found",
-        //   description: "Please check your input value and try again.",
-        // });
-        Swal.fire({
-          title: "Error",
-          text: "Input value not found",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        });
-
-        history.push("/notFoundPage");
-      }
-      // else if (
-      //   response.basic &&
-      //   response.basic.message &&
-      //   response.basic.message === "Awaiting Consent"
-      // ) {
-      //   localStorage.setItem(
-      //     "verificationRequestId",
-      //     response.basic.data.requestId
-      //   );
-      //   // Handle further actions if needed
-      //   history.push("/main-dashboard");
-      // }
-      else if (
         response.basic &&
         response.basic.success &&
         response.basic.success === true
       ) {
-        console.log("response.basic.data", response.basic.data);
         localStorage.setItem(
           "verificationRequestId",
           response.basic.data.requestId
@@ -390,12 +366,7 @@ const DashboardPage = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-        // notification.info({
-        //   message: "Message",
-        //   description: response.basic.message,
-        //   duration: 20, // Duration in seconds
-        // });
-        // Handle further actions if needed
+
         history.push("/main-dashboard");
       } else if (
         response &&
@@ -422,28 +393,7 @@ const DashboardPage = () => {
             window.location.reload();
           }
         });
-        // history.push("/dashboard");
-        // notification.error({
-        //   message: "Error",
-        //   description:
-        //     "Oops! We encountered an issue while processing your request. It seems that the data we expected to find is missing. Please try again later",
-        //   duration: 20, // Duration in seconds
-        // });
-        // Handle further actions if needed
-        // return;
-      }
-      // else if (
-      //   response.business &&
-      //   response.business.message === "Business API call successful"
-      // ) {
-      //   // localStorage.setItem(
-      //   //   "verificationRequestId",
-      //   //   response.business.data.requestId
-      //   // );
-      //   // Handle further actions if needed
-      //   history.push("/main-dashboard");
-      // }
-      else if (response.business && response.business.success === false) {
+      } else if (response.business && response.business.success === false) {
         Swal.fire({
           title: "Error",
           text: response.business.message,
@@ -457,18 +407,11 @@ const DashboardPage = () => {
           confirmButtonText: "OK",
           confirmButtonColor: "#0DC939",
         }).then((result) => {
-          /* Read more about handling dismissals below */
           if (result.isConfirmed) {
-            // dispatch(fetchUserProfile(userToken));
             window.location.reload();
           }
         });
 
-        // notification.info({
-        //   message: "Message",
-        //   description: "Successful",
-        //   duration: 5, // Duration in seconds
-        // });
         history.push("/dashboard");
       } else if (response.business && response.business.success === true) {
         Swal.fire({
@@ -482,11 +425,6 @@ const DashboardPage = () => {
           allowEscapeKey: false,
         });
 
-        // notification.info({
-        //   message: "Message",
-        //   description: "Successful",
-        //   duration: 5, // Duration in seconds
-        // });
         history.push("/main-dashboard");
       } else if (response.vehicle && response.vehicle.success === true) {
         Swal.fire({
@@ -499,11 +437,7 @@ const DashboardPage = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-        // notification.info({
-        //   message: "Message",
-        //   description: "Successful",
-        //   duration: 5, // Duration in seconds
-        // });
+
         history.push("/main-dashboard");
       } else if (response.vehicle && response.vehicle.success === false) {
         Swal.fire({
@@ -519,38 +453,10 @@ const DashboardPage = () => {
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
-            // dispatch(fetchUserProfile(userToken));
             window.location.reload();
           }
         });
-        // history.push("/dashboard");
-        // notification.error({
-        //   message: "Error",
-        //   description:
-        //     "An error occurred with the Vehicle verification. Please try again later.",
-        //   duration: 20, // Duration in seconds
-        // });
-        // return;
-      }
-      // else if (
-      //   response.vehicle &&
-      //   response.vehicle.message &&
-      //   response.vehicle.message === "successful"
-      // ) {
-      //   localStorage.setItem(
-      //     "verificationRequestId",
-      //     response.vehicle.data.requestId
-      //   );
-      //   // Handle further actions if needed
-      //   history.push("/main-dashboard");
-      // }
-      // else if (
-      //   response.financial &&
-      //   response.financial.message === "Financial API call successful"
-      // ) {
-      //   history.push("/main-dashboard");
-      // }
-      else if (response.financial && response.financial.success === true) {
+      } else if (response.financial && response.financial.success === true) {
         Swal.fire({
           title: "Success",
           text: response.financial.message,
@@ -583,36 +489,7 @@ const DashboardPage = () => {
             window.location.reload();
           }
         });
-        // history.push("/dashboard");
-        // notification.error({
-        //   message: "Message",
-        //   description:
-        //     "An error occurred with the Financial verification. Please try again later.",
-        //   duration: 20, // Duration in seconds
-        // });
-        // return;
-      }
-      // else if (response.financial && response.financial.success === false) {
-      //   Swal.fire({
-      //     title: "Error",
-      //     text: "An error occurred with the Financial verification. Please try again later.",
-      //     icon: "error",
-      //     customClass: {
-      //       confirmButton: "custom-swal-button",
-      //     },
-      //     allowOutsideClick: false,
-      //     allowEscapeKey: false,
-      //   });
-      //   history.push("/dashboard");
-      //   // notification.error({
-      //   //   message: "Message",
-      //   //   description:
-      //   //     "An error occurred with the Financial verification. Please try again later.",
-      //   //   duration: 20, // Duration in seconds
-      //   // });
-      //   // return;
-      // }
-      else {
+      } else {
         Swal.fire({
           title: "Error",
           text: "An unexpected server error occurred. A refund has been initiated",
@@ -632,12 +509,6 @@ const DashboardPage = () => {
             window.location.reload();
           }
         });
-        // notification.error({
-        //   message: "Error",
-        //   description:
-        //     "An unexpected server error occurred. Please attempt your action again",
-        //   duration: 20,
-        // });
       }
     } catch (error) {
       // Handle errors if needed
@@ -658,7 +529,6 @@ const DashboardPage = () => {
       }).then((result) => {
         /* Read more about handling dismissals below */
         if (result.isConfirmed) {
-          // dispatch(fetchUserProfile(userToken));
           window.location.reload();
         }
       });
@@ -666,6 +536,8 @@ const DashboardPage = () => {
       setLoading(false);
     }
   };
+
+  //!---------- Performing the Verification --------- //
 
   const handleModalOk = () => {
     // Handle the modal OK button click
@@ -957,7 +829,7 @@ const DashboardPage = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleFace, setModalVisibleFace] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [paymentMethod, setPaymentmethod] = useState(null);
   const [loading, setLoading] = useState(false);
   const [totalveri, setTotalveri] = useState(0);
   const [totalveriNiara, setTotalveriNiara] = useState(0);
@@ -1003,8 +875,9 @@ const DashboardPage = () => {
     return transactionId;
   }
   const randomTransactionId = generateTransactionId();
+
   const handlePaymentMethod = async () => {
-    if (selectedValue !== null) {
+    if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
       const areNoneChecked = () => {
@@ -1013,11 +886,29 @@ const DashboardPage = () => {
         );
       };
 
-      if (selectedValue === 1) {
+      //!!WALLET PAYMENT START
+
+      if (paymentMethod === 1) {
+        setLoading(true);
+        const apiUrl =
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
+        const requestBody = {
+          userNIN: userNin,
+          transactionID: randomTransactionId,
+          amount:
+            userCurrency == "NGN" && currencyCheck === "NGN"
+              ? totalServiceCost
+              : currencyCheck === "USD" && userCurrency === "ngn"
+              ? totalveriNiara
+              : currencyCheck === "USD" && userCurrency === "usd"
+              ? totalServiceCost
+              : userCurrency == "NGN" && currencyCheck != "NGN"
+              ? outsideNgWithNiaraPrice
+              : totalServiceCost,
+        };
+
         if (selectedProfile == "financial") {
           if (areNoneChecked()) {
-            // None of the checkboxes are checked
-
             setLoading(false);
             Swal.fire({
               title: "Error",
@@ -1032,61 +923,30 @@ const DashboardPage = () => {
             return;
           }
         }
-        // console.log("Payment from Wallet");
-        setLoading(true);
-        handleCancel();
-        ReactGA.event({
-          category: "User",
-          action: "Made Wallet payment for verification",
-        });
         if (currencyCheck === "NGN" && userCurrency === "usd") {
           setLoading(false);
+          handleCancel();
           Swal.fire({
             title: "Error",
-            text: "Wallet currency doesn't match purchase currency. Please use a Naira wallet for this transaction.",
+            text: "Wallet currency doesn't match purchase currency. Please use the right currency for this transaction.",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
             },
             allowOutsideClick: false,
             allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
           });
           return;
         }
 
-        const apiUrl =
-          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
-
-        const requestBody = {
-          userNIN: userNin,
-          transactionID: randomTransactionId,
-          // amount: `${danfee.toFixed(2)}`,
-          // amount:
-          //   currencyCheck == "USD"
-          //     ? `${totalServiceCost}`
-          //     : `${totalServiceCost}`,
-
-          amount:
-            userCurrency == "NGN" && currencyCheck === "NGN"
-              ? totalServiceCost
-              : currencyCheck === "USD" && userCurrency === "ngn"
-              ? totalveriNiara
-              : currencyCheck === "USD" && userCurrency === "usd"
-              ? totalServiceCost
-              : userCurrency == "NGN" && currencyCheck != "NGN"
-              ? outsideNgWithNiaraPrice
-              : // : userCurrency == "USD" && currencyCheck === "USD"
-                // ? totalServiceCost
-                totalServiceCost,
-          // totalveriNiara,
-          //!! Look at the wallet payment condtion. the wallet only allows payment with user Currency
-          // currencyCheck == "USD"
-          //   ? outsideNgWithNiara == true
-          //     ? `${outsideNgWithNiaraPrice}`
-          //     : `${totalServiceCost}`
-          //   : `${totalServiceCost}`,
-        };
-
+        //!!-------------------- Check for Wallet balance ------------------//
         if (
           userBalance.toLocaleString() <
           (userCurrency == "NGN" && currencyCheck === "NGN"
@@ -1097,11 +957,8 @@ const DashboardPage = () => {
             ? totalServiceCost
             : userCurrency == "NGN" && currencyCheck != "NGN"
             ? outsideNgWithNiaraPrice
-            : // : userCurrency == "USD" && currencyCheck === "USD"
-              // ? totalServiceCost
-              totalServiceCost)
+            : totalServiceCost)
         ) {
-          // Show the Ant Design notification
           setLoading(false);
           handleCancel();
           Swal.fire({
@@ -1113,48 +970,99 @@ const DashboardPage = () => {
             },
             allowOutsideClick: false,
             allowEscapeKey: false,
-          });
-          // notification.error({
-          //   message: "Wallet Balance Warning",
-          //   description:
-          //     "Your wallet balance is low. Please recharge before making a payment.",
-          // });
-        } else {
-          try {
-            setLoading(true);
-            const response = await fetch(apiUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userToken}`,
-              },
-              body: JSON.stringify(requestBody),
-            });
-
-            const data = await response.text();
-
-            if (response.ok && data === "payment successful") {
-              // console.log("Payment successful. Response:", data);
-              handleCancel();
-              dispatch(fetchUserProfile(userToken));
-              setLoading(true);
-              handleSubmit();
-            } else {
-              console.error("Payment failed. Response:", data);
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
             }
-          } catch (error) {
-            console.error("Error:", error);
-          } finally {
-            handleCancel();
-
-            setLoading(false); // Set loading to false when the request completes (either success or failure)
-          }
+          });
+          return;
         }
-      } else if (selectedValue === 2) {
+        //!!-------------------- Check for Wallet balance End ------------------//
+
+        try {
+          handleCancel();
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          const data = await response.text();
+
+          if (response.ok && data === "payment successful") {
+            //!------------------- Do the Verification ------------------------//
+            handleSubmit();
+            //!------------------- Do the Verification End ------------------------//
+          } else {
+            setLoading(false);
+            Swal.fire({
+              title: "Payment failed",
+              text: data,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          setLoading(false);
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        } finally {
+          handleCancel();
+
+          setLoading(false);
+        }
+      } //!!WALLET PAYMENT ENDS
+      else if (paymentMethod === 2) {
+        //!!LIVE PAYMENT START
+        const postData = {
+          amount:
+            currencyCheck == "USD"
+              ? outsideNgWithNiara == true
+                ? `${outsideNgWithNiaraPrice}`
+                : `${totalServiceCost}`
+              : `${totalServiceCost}`,
+          currency: currencyCheck,
+          country: "NG",
+          description: "Payment for verification",
+          payment_method: "card,mobilemoney,ussd",
+          type: "VERIFICATION",
+        };
+
         if (selectedProfile == "financial") {
           if (areNoneChecked()) {
-            // None of the checkboxes are checked
-
             setLoading(false);
             Swal.fire({
               title: "Error",
@@ -1169,50 +1077,8 @@ const DashboardPage = () => {
             return;
           }
         }
-
-        // console.log("Instant Payment");
-        // setLoading(true);
-        ReactGA.event({
-          category: "User",
-          action: "Made direct payment for verification",
-        });
-        //!! OLD PAYMENT METHOD
-        // handleFlutterPayment({
-        //   callback: async (response) => {
-        //     console.log(response);
-        //     if (
-        //       response.status === "successful" ||
-        //       response.status === "success" ||
-        //       response.status === "completed"
-        //     ) {
-        //       console.log("flutterWave success");
-
-        //       setLoading(true);
-        //       handleSubmit();
-        //     }
-        //     closePaymentModal();
-        //   },
-        //   onClose: () => {},
-        // });
-
-        //!NEW PAYMENT METHOD
         handleCancel();
         try {
-          // Assuming postData is the data you want to send to the endpoint
-          const postData = {
-            amount:
-              currencyCheck == "USD"
-                ? outsideNgWithNiara == true
-                  ? `${outsideNgWithNiaraPrice}`
-                  : `${totalServiceCost}`
-                : `${totalServiceCost}`,
-            currency: currencyCheck,
-            country: "NG",
-            description: "Payment for verification",
-            payment_method: "card,mobilemoney,ussd",
-            type: "VERIFICATION",
-          };
-
           const response = await fetch(
             "https://e-citizen.ng:8443/api/v2/payment/initiate",
             {
@@ -1227,33 +1093,108 @@ const DashboardPage = () => {
 
           // Check if the request was successful (status code 200-299)
           if (response.ok) {
-            // Handle successful response here
-
             const responseData = await response.json();
-            console.log(responseData.data.link);
-            console.log(responseData.data.txRef);
-            if (responseData.data && responseData.data.link) {
-              console.log("Embedding URL:", responseData.data.link);
-              setPaymentUrl(responseData.data.link);
-              setTransactionRef(responseData.data.txRef);
-              setModal2Open(true);
+            if (responseData.status === "success") {
+              if (responseData.data && responseData.data.link) {
+                console.log("Embedding URL:", responseData.data.link);
+                setPaymentUrl(responseData.data.link);
+                setTransactionRef(responseData.data.txRef);
+
+                //!------------- Open the FlutterWave modal for payment --------------//
+                setOpenFlutterwaveModal(true);
+                //!------------- Open the FlutterWave modal for payment End --------------//
+              } else {
+                console.error("Response data does not contain a link");
+                Swal.fire({
+                  title: "Error",
+                  text: "Response data does not contain a link",
+                  icon: "error",
+                  customClass: {
+                    confirmButton: "custom-swal-button",
+                  },
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                  showConfirmButton: true,
+                  confirmButtonText: "OK",
+                  confirmButtonColor: "#0DC939",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+                return;
+              }
             } else {
-              console.error("Response data does not contain a link");
+              Swal.fire({
+                title: "Error",
+                text: "Failed to initialize payment",
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0DC939",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
+              return;
             }
           } else {
             // Handle errors here
             console.error("Failed to post data:", response.statusText);
+            Swal.fire({
+              title: "Error",
+              text: "Failed to initialize payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
           }
         } catch (error) {
-          // Handle any unexpected errors
           console.error("An error occurred:", error);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to initialize payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
         }
         handleCancel();
       }
+      //!!LIVE PAYMENT ENDS
     }
   };
 
   const handleMakePayment = () => {
+    dispatch(fetchUserProfile(userToken));
     // Your existing logic for handling the payment
     // Calculate total veri based on form data
     const formDataFees = {
@@ -1449,15 +1390,15 @@ const DashboardPage = () => {
   };
 
   const handleRadioChange = (e) => {
-    console.log("Payment from Wallet");
-    console.log(currencyCheck);
-    console.log("UserCurrency");
-    console.log(userCurrency);
-    console.log("Payment");
-    console.log(totalServiceCost);
-    console.log(totalveriNiara);
+    // console.log("Payment from Wallet");
+    // console.log(currencyCheck);
+    // console.log("UserCurrency");
+    // console.log(userCurrency);
+    // console.log("Payment");
+    // console.log(totalServiceCost);
+    // console.log(totalveriNiara);
 
-    setSelectedValue(e.target.value);
+    setPaymentmethod(e.target.value);
     setCheckboxCheckedConfirm(true);
   };
 
@@ -1494,7 +1435,7 @@ const DashboardPage = () => {
           {/* <Checkbox onChange={onChange2}> */}
           <ol style={{ fontSize: "17px" }}>
             {isBasicOn || isFinancialOn ? (
-              <li>
+              <li style={{ padding: "20px" }}>
                 You confirm that you understand and accept that{" "}
                 <span style={{ fontWeight: "bold" }}>consent is required</span>{" "}
                 from the data subject being verified before you can access their
@@ -1505,7 +1446,7 @@ const DashboardPage = () => {
               ""
             )}
 
-            <li>
+            <li style={{ padding: "20px" }}>
               You confirm and accept that the{" "}
               <span style={{ fontWeight: "bold" }}>
                 search details are correct
@@ -1513,7 +1454,7 @@ const DashboardPage = () => {
               , and you accept that you will not be refunded for incorrect
               information
             </li>
-            <li>
+            <li style={{ padding: "20px" }}>
               You understand and accept that{" "}
               <span style={{ fontWeight: "bold" }}>
                 search details may come back without any data
@@ -1540,7 +1481,7 @@ const DashboardPage = () => {
           By clicking, you indicate that:
           <ul>
             {isBasicOn || isFinancialOn ? (
-              <li>
+              <li style={{ padding: "20px" }}>
                 By clicking, you indicate that you understand and accept that
                 consent is required from the data subject being verified before
                 you can access their data.
@@ -1549,47 +1490,49 @@ const DashboardPage = () => {
               ""
             )}
 
-            <li>
+            <li style={{ padding: "20px" }}>
               You confirm that search details are correct, and you confirm that
               you will not be refunded for incorrect information or lack of
               consent
             </li>
-            <li>
+            <li style={{ padding: "20px" }}>
               You understand and accept the following{" "}
               <b>
                 terms and conditions pertaining to ClearVIN’s vehicle history
                 data (Licensed Data):
               </b>
               <ol>
-                <li>You may not provide Licensed Data to other persons</li>
-                <li>
+                <li style={{ padding: "20px" }}>
+                  You may not provide Licensed Data to other persons
+                </li>
+                <li style={{ padding: "20px" }}>
                   You may only use Licensed Data for your internal business
                   purposes or provide Licensed Data to other organizations for
                   the internal business uses of those organizations.
                 </li>
-                <li>
+                <li style={{ padding: "20px" }}>
                   You warrant that you shall not furnish or sell Licensed Data
                   to members of the public.
                 </li>
                 <li>You understand that</li>
                 <ol type="a">
-                  <li>
+                  <li style={{ padding: "20px" }}>
                     e-citizen’s vendor, ClearVin, LLC (“CV”), is an approved
                     NMVTIS Data Provider,
                   </li>
-                  <li>
+                  <li style={{ padding: "20px" }}>
                     some state data pertaining to a VIN may not be contained in
                     or available through NMVTIS,
                   </li>
-                  <li>
+                  <li style={{ padding: "20px" }}>
                     some state data is provided to NMVTIS via a daily, weekly or
                     monthly format and therefore may not be current,
                   </li>
-                  <li>
+                  <li style={{ padding: "20px" }}>
                     some of the entities which report data to NMVTIS may have
                     failed to provide such data for incorporation in NMVTIS, and
                   </li>
-                  <li>
+                  <li style={{ padding: "20px" }}>
                     AAMVA, CV’s vendor, and CV have no control over the accuracy
                     or completeness of data contained in NMVTIS and shall not
                     have any liability to any Licensee, Affiliate, user or third
@@ -1599,12 +1542,14 @@ const DashboardPage = () => {
                 </ol>
                 <li>You understand that:</li>
                 <ol type="a">
-                  <li>e-citizen™ is not an Approved NMVTIS Data Provider,</li>
-                  <li>
+                  <li style={{ padding: "20px" }}>
+                    e-citizen™ is not an Approved NMVTIS Data Provider,
+                  </li>
+                  <li style={{ padding: "20px" }}>
                     e-citizen™ has obtained the NMVTIS data contained in the
                     Licensed Data from an Approved NMVTIS Data Provider, and
                   </li>
-                  <li>
+                  <li style={{ padding: "20px" }}>
                     CV as the Approved NMVTIS Data Provider from which the
                     NMVTIS Reseller has obtained the NMVTIS data used in such
                     Licensed Data.
@@ -1663,7 +1608,7 @@ const DashboardPage = () => {
         <Radio.Group
           style={{ width: "100%" }}
           onChange={handleRadioChange}
-          value={selectedValue}
+          value={paymentMethod}
         >
           <Radio
             style={{
@@ -1703,13 +1648,13 @@ const DashboardPage = () => {
         }}
       >
         <ul>
-          <li>
+          <li style={{ padding: "20px" }}>
             By clicking, you indicate that you understand and accept that
             consent is required from the data subject being verified before you
             can access their data.
           </li>
 
-          <li>
+          <li style={{ padding: "20px" }}>
             You confirm that search details are correct, and you confirm that
             you will not be refunded for incorrect information or lack of
             consent
@@ -1874,7 +1819,7 @@ const DashboardPage = () => {
       }
     }
 
-    setSelectedValue(value);
+    setPaymentmethod(value);
     if (basicProfileArray.length > 0) {
       const newArray = [...basicProfileArray];
       newArray[basicProfileArray.length - 1] = value;
@@ -2040,7 +1985,7 @@ const DashboardPage = () => {
   const clearInputNin = () => {
     setBasicProfileArray([]); // Clears basic profile array
     setFormData({ ...formData, nin: "" }); // Clears the nin field in the form data
-    setSelectedValue(null); // Clears selected value
+    setPaymentmethod(null); // Clears selected value
     setNinFilled(false); // Sets ninFilled state to false
     setFaceFilled(false); // Sets faceFilled state to false
     setTotalVAT((prevTotalVAT) => {
@@ -2206,7 +2151,7 @@ const DashboardPage = () => {
   };
 
   const [modal1Open, setModal1Open] = useState(false);
-  const [modal2Open, setModal2Open] = useState(false);
+  const [openFlutterwaveModal, setOpenFlutterwaveModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
   const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
@@ -2222,8 +2167,6 @@ const DashboardPage = () => {
       customClass: {
         confirmButton: "custom-swal-button",
       },
-      allowOutsideClick: false,
-      allowEscapeKey: false,
     });
   }
 
@@ -2256,42 +2199,132 @@ const DashboardPage = () => {
     console.log("formData = ", updatedFormData);
   };
 
-  const handleModalNewOk = () => {
-    // dispatch(fetchUserProfile(userToken));
+  const handleModalNewOk = async () => {
+    setOpenFlutterwaveModal(false);
 
-    // Add API call
-    fetch(
-      `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
+    try {
+      const response = await fetch(
+        `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+
+      // Check if the request was successful (status code 200-299)
+      if (!response.ok) {
+        Swal.fire({
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
       }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+      if (response.ok) {
+        setLoading(true);
+        const responseData = await response.json();
+        if (responseData.status === "success") {
+          console.log("Checking payment status");
+          console.log(responseData.data);
+          if (
+            responseData.data &&
+            (responseData.data.status === "success" ||
+              responseData.data.status === "successful")
+          ) {
+            //!--------- Performing the verification only when payment is successfull -------//
+            // dispatch(fetchUserProfile(userToken));
+            handleSubmit();
+            //!--------- Performing the verification only when payment is successfull end -------//
+          } else {
+            Swal.fire({
+              title: "Failed Payment",
+              text: responseData.data.processor_response,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
         }
-        return response.json();
-      })
-      .then((data) => {
-        // Handle the response data here
-        console.log(data); // For example, logging the response data
-        if (data.status == "success") {
-          handleSubmit();
-          setModal2Open(false);
-        } else {
-          setModal2Open(false);
+      }
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      Swal.fire({
+        title: "Error",
+        text: "There was an issue making payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
         }
-      })
-      .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
-        // Handle errors here
       });
+      return;
+    }
+    // fetch(
+    //   `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${userToken}`,
+    //     },
+    //   }
+    // )
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error("Network response was not ok");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     // Handle the response data here
+    //     console.log(data); // For example, logging the response data
+    //     if (data.status == "success") {
+    //       handleSubmit();
+    //       setOpenFlutterwaveModal(false);
+    //     } else {
+    //       setOpenFlutterwaveModal(false);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("There was a problem with the fetch operation:", error);
+    //     // Handle errors here
+    //   });
 
-    setModal2Open(false);
+    // setOpenFlutterwaveModal(false);
   };
 
   const [prevNumberOfCheckedCheckboxes, setPrevNumberOfCheckedCheckboxes] =
@@ -2601,7 +2634,7 @@ const DashboardPage = () => {
 
                     <Form hidden={selectedProfile == "basic" ? false : true}>
                       <Radio.Group
-                        value={selectedValue}
+                        value={paymentMethod}
                         onChange={(e) =>
                           handleBasicProfileRadioChange(e.target.value)
                         }
@@ -3211,8 +3244,8 @@ const DashboardPage = () => {
                       <div>
                         <StyledLabel>Vehicle Registration Number*</StyledLabel>
                         <span style={{ color: "grey" }}>
-                          ( Input the vehicle registration number without any
-                          space or hyphens e.g KUJ467SB )
+                          Input the vehicle registration number without any
+                          space or hyphens e.g KUJ467SB
                         </span>
                         <StyledInput
                           type="text"
@@ -3506,7 +3539,7 @@ const DashboardPage = () => {
                       <>
                         <p>Select payment currency </p>
                         <p>Currency Calculator</p>
-                        {selectedValue != 1 ? (
+                        {paymentMethod != 1 ? (
                           <>
                             <Radio.Group
                               onChange={currencyOnChange}
@@ -3545,16 +3578,6 @@ const DashboardPage = () => {
                           </Radio.Group>
                         )}
 
-                        {/* <Radio.Group onChange={currencyOnChange} value={value}>
-                          <Radio value={1}>
-                            {" "}
-                            {formatToNaira(totalveriNiara)}
-                          </Radio>
-                          <RadioComponent
-                            profile={profile}
-                            usdFee={totalServiceCost}
-                          />
-                        </Radio.Group> */}
                         <Divider />
                       </>
                     ) : (
@@ -3611,7 +3634,7 @@ const DashboardPage = () => {
                   <Radio.Group
                     style={{ width: "100%" }}
                     onChange={handleRadioChange}
-                    value={selectedValue}
+                    value={paymentMethod}
                   >
                     <Radio
                       style={{
@@ -3738,7 +3761,7 @@ const DashboardPage = () => {
                   top: 20,
                 }}
                 width={1000}
-                open={modal2Open}
+                open={openFlutterwaveModal}
                 onOk={handleModalNewOk}
                 onCancel={handleModalNewOk}
                 maskClosable={false}
@@ -3754,10 +3777,7 @@ const DashboardPage = () => {
                   width="100%"
                   height="600"
                   src={paymentUrl}
-                  // ref={iframeRef}
-                  // onLoad={handleIframeLoad}
                 ></iframe>
-                {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
               </Modal>
             </Row>
           )}

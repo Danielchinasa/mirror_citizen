@@ -12,7 +12,11 @@ import {
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchVerificationResult } from "../../redux/actions";
+import {
+  fetchVerificationResult,
+  logout,
+  fetchUserProfile,
+} from "../../redux/actions";
 import axios from "axios";
 import { Typography } from "antd";
 import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
@@ -39,6 +43,7 @@ import { AiOutlineFieldNumber } from "react-icons/ai";
 import { GiBigDiamondRing, GiBodyHeight } from "react-icons/gi";
 import { IoSchoolSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -46,6 +51,8 @@ const Result = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
+  const history = useHistory();
+  const tokenExpire = user?.expirationDate || "";
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("No Data");
   const [lastName, setLastName] = useState("No Data");
@@ -74,6 +81,29 @@ const Result = () => {
   // );
   const requestId = localStorage.getItem("verificationRequestId");
   console.log("photo", photo);
+
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    // Compare the current date with the expiration date
+    if (currentDate >= expireDate) {
+      // If the current date is greater than or equal to the expiration date,
+      // it means the token has expired
+      dispatch(logout());
+      history.push("/");
+    } else {
+      // Token is still valid
+      // You may want to handle this case differently
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

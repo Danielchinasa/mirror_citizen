@@ -37,7 +37,12 @@ import "../dashboard/emergency.css";
 import { MdOutlinePinDrop } from "react-icons/md";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import Swal from "sweetalert2";
-import { sendVerificationRequest, fetchUserProfile } from "../../redux/actions";
+import {
+  sendVerificationRequest,
+  fetchUserProfile,
+  logout,
+} from "../../redux/actions";
+import { useHistory } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -46,6 +51,8 @@ const BusinessName = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
+  const history = useHistory();
+  const tokenExpire = user?.expirationDate || "";
   const [businessData, setBusinessData] = useState([]);
   const [shareholdersData, setShareholdersData] = useState([]);
   const requestId = localStorage.getItem("verificationRequestId");
@@ -60,7 +67,7 @@ const BusinessName = () => {
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const userNin = user?.nin || "";
   const userBalance = user?.walletBalance || 0;
-  const [modal2Open, setModal2Open] = useState(false);
+  const [openFlutterwaveModal, setOpenFlutterwaveModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -68,6 +75,25 @@ const BusinessName = () => {
   const handleCancel = () => {
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
+
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    if (currentDate >= expireDate) {
+      dispatch(logout());
+      history.push("/");
+      // console.log("Time don pass well");
+    } else {
+    }
+  }, []);
 
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -205,6 +231,7 @@ const BusinessName = () => {
   const randomTransactionId = generateTransactionId();
 
   const handleButtonClick = async (cacid) => {
+    dispatch(fetchUserProfile(userToken));
     Swal.fire({
       title: "Select Payment Method",
       input: "radio",
@@ -223,22 +250,34 @@ const BusinessName = () => {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
-        // Handle the selected payment method here
-        // console.log("Selected payment method:", stakeHolderFeeUsd);
+        const apiUrl =
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
+        const requestBody = {
+          userNIN: userNin,
+          transactionID: randomTransactionId,
+
+          amount: stakeHolderFeeUsd,
+        };
         if (result.value === "Payment from Wallet") {
-          setLoading(true);
           if (currencyCheck === "NGN" && userCurrency === "usd") {
             setLoading(false);
             Swal.fire({
               title: "Error",
-              text: "Wallet currency doesn't match purchase currency. Please use a Naira wallet for this transaction.",
+              text: "Wallet currency doesn't match purchase currency. Please use the right currency for this  transaction.",
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
               },
               allowOutsideClick: false,
               allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
             });
             return;
           }
@@ -246,32 +285,25 @@ const BusinessName = () => {
             setLoading(false);
             Swal.fire({
               title: "Error",
-              text: "Wallet currency doesn't match purchase currency. Please use a USD wallet for this transaction.",
+              text: "Wallet currency doesn't match purchase currency. Please use the right currency for this  transaction.",
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
               },
               allowOutsideClick: false,
               allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
             });
             return;
           }
-          const apiUrl =
-            "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
-
-          const requestBody = {
-            userNIN: userNin,
-            transactionID: randomTransactionId,
-            // amount: `${danfee.toFixed(2)}`,
-
-            amount:
-              currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
-          };
 
           if (userBalance.toLocaleString() < stakeHolderFeeUsd) {
-            // Show the Ant Design notification
-            setLoading(false);
-            // handleCancel();
             Swal.fire({
               title: "Wallet Balance Low",
               text: "Your wallet balance is low. Please recharge before making a payment.",
@@ -281,149 +313,177 @@ const BusinessName = () => {
               },
               allowOutsideClick: false,
               allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
             });
-            // notification.error({
-            //   message: "Wallet Balance Warning",
-            //   description:
-            //     "Your wallet balance is low. Please recharge before making a payment.",
-            // });
-          } else {
-            try {
-              setLoading(true);
-              const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${userToken}`,
-                },
-                body: JSON.stringify(requestBody),
-              });
+            return;
+          }
 
-              const data = await response.text();
+          try {
+            setLoading(true);
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(requestBody),
+            });
 
-              if (response.ok && data === "payment successful") {
-                // console.log("Payment successful. Response:", data);
-                // handleCancel();
+            const data = await response.text();
+
+            if (response.ok && data === "payment successful") {
+              try {
                 dispatch(fetchUserProfile(userToken));
-                setLoading(true);
-                try {
-                  setLoading(true);
-                  // Prepare the request body
-                  const requestBody = {
-                    payment: {
-                      currency: currencyCheck || "ngn",
+
+                const requestBody = {
+                  payment: {
+                    currency: currencyCheck || "ngn",
+                  },
+                  business: {
+                    requestId: parseInt(requestId),
+                    cacId: parseInt(cacid),
+                  },
+                };
+                // Make an API request to call external APIs
+                const response = await axios.post(
+                  "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                  requestBody,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${userToken}`, // Include the bearer token
                     },
-                    business: {
-                      requestId: parseInt(requestId),
-                      cacId: parseInt(cacid),
-                    },
-                  };
-                  // Make an API request to call external APIs
-                  const response = await axios.post(
-                    "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
-                    requestBody,
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${userToken}`, // Include the bearer token
-                      },
-                    }
-                  );
-                  // Handle response if needed
-                  console.log("External API call response:", response.data);
-                  // setBusinessData((prevBusinessData) => [
-                  //   ...prevBusinessData,
-                  //   response.data.data,
-                  // ]);
+                  }
+                );
+
+                if (
+                  response.data.business &&
+                  response.data.business.success == true
+                ) {
+                  setLoading(false);
                   if (
                     response.data.business &&
                     Array.isArray(response.data.business.data)
                   ) {
+                    setLoading(false);
                     // Update businessData state with the data array
                     setBusinessData(response.data.business.data);
                   } else {
                     console.error("Invalid response structure:", response.data);
+                    Swal.fire({
+                      title: "Error",
+                      text: "Error fetching Stake Holders",
+                      icon: "error",
+                      customClass: {
+                        confirmButton: "custom-swal-button",
+                      },
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
+                      showConfirmButton: true,
+                      confirmButtonText: "OK",
+                      confirmButtonColor: "#0DC939",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        window.location.reload();
+                      }
+                    });
                   }
-                  // setBusinessData(response.data.data);
+                } else {
                   setLoading(false);
-                } catch (error) {
-                  // Handle errors if needed
-                  console.error("Error calling external APIs:", error);
-                  setLoading(false);
+                  Swal.fire({
+                    title: "Error",
+                    text: response.data.business.message,
+                    icon: "error",
+                    customClass: {
+                      confirmButton: "custom-swal-button",
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0DC939",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.reload();
+                    }
+                  });
                 }
-              } else {
-                console.error("Payment failed. Response:", data);
-              }
-            } catch (error) {
-              console.error("Error:", error);
-            } finally {
-              // handleCancel();
 
-              setLoading(false); // Set loading to false when the request completes (either success or failure)
+                // setBusinessData(response.data.data);
+              } catch (error) {
+                setLoading(false);
+                // Handle errors if needed
+                console.error("Error calling external APIs:", error);
+                Swal.fire({
+                  title: "Error",
+                  text: error,
+                  icon: "error",
+                  customClass: {
+                    confirmButton: "custom-swal-button",
+                  },
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                  showConfirmButton: true,
+                  confirmButtonText: "OK",
+                  confirmButtonColor: "#0DC939",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+              }
+            } else {
+              setLoading(false);
+              console.error("Payment failed. Response:", data);
+              Swal.fire({
+                title: "Error",
+                text: "Payment Failed",
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0DC939",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
             }
+          } catch (error) {
+            setLoading(false);
+            console.error("Error:", error);
+            Swal.fire({
+              title: "Error",
+              text: error,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          } finally {
+            setLoading(false); // Set loading to false when the request completes (either success or failure)
           }
         } else if (result.value === "Instant Payment") {
-          setLoading(true);
-          //!! old payment method
-          // handleFlutterPayment({
-          //   callback: async (response) => {
-          //     console.log(response);
-          //     if (
-          //       response.status === "successful" ||
-          //       response.status === "success" ||
-          //       response.status === "completed"
-          //     ) {
-          //       console.log("flutterWave success");
-          //       setLoading(true);
-          //       try {
-          //         setLoading(true);
-          //         // Prepare the request body
-          //         const requestBody = {
-          //           business: {
-          //             requestId: parseInt(requestId),
-          //             cacId: parseInt(cacid),
-          //           },
-          //         };
-          //         // Make an API request to call external APIs
-          //         const response = await axios.post(
-          //           "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
-          //           requestBody,
-          //           {
-          //             headers: {
-          //               "Content-Type": "application/json",
-          //               Authorization: `Bearer ${userToken}`, // Include the bearer token
-          //             },
-          //           }
-          //         );
-          //         // Handle response if needed
-          //         console.log("External API call response:", response.data);
-          //         // setBusinessData((prevBusinessData) => [
-          //         //   ...prevBusinessData,
-          //         //   response.data.data,
-          //         // ]);
-          //         if (
-          //           response.data.business &&
-          //           Array.isArray(response.data.business.data)
-          //         ) {
-          //           // Update businessData state with the data array
-          //           setBusinessData(response.data.business.data);
-          //         } else {
-          //           console.error("Invalid response structure:", response.data);
-          //         }
-          //         // setBusinessData(response.data.data);
-          //         setLoading(false);
-          //       } catch (error) {
-          //         // Handle errors if needed
-          //         console.error("Error calling external APIs:", error);
-          //         setLoading(false);
-          //       }
-          //     }
-          //     closePaymentModal();
-          //   },
-          //   onClose: () => {},
-          // });
-
-          //!!NEW PAYMENT METHOD
+          //!!LIVE PAYMENT START
 
           handleCancel();
           try {
@@ -451,34 +511,85 @@ const BusinessName = () => {
               }
             );
 
-            // console.log("response", response);
-
-            // Check if the request was successful (status code 200-299)
             if (response.ok) {
               // Handle successful response here
 
               const responseData = await response.json();
-              console.log(responseData.data.link);
-              console.log(responseData.data.txRef);
-              if (responseData.data && responseData.data.link) {
-                console.log("Embedding URL:", responseData.data.link);
-                setPaymentUrl(responseData.data.link);
-                setTransactionRef(responseData.data.txRef);
-                setModal2Open(true);
-              } else {
-                console.error("Response data does not contain a link");
+              if (responseData.status === "success") {
+                if (responseData.data && responseData.data.link) {
+                  console.log("Embedding URL:", responseData.data.link);
+                  setPaymentUrl(responseData.data.link);
+                  setTransactionRef(responseData.data.txRef);
+                  //!------------- Open the FlutterWave modal for payment --------------//
+                  setOpenFlutterwaveModal(true);
+                  //!------------- Open the FlutterWave modal for payment End --------------//
+                } else {
+                  console.error("Response data does not contain a link");
+                  Swal.fire({
+                    title: "Error",
+                    text: "Response data does not contain a link",
+                    icon: "error",
+                    customClass: {
+                      confirmButton: "custom-swal-button",
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0DC939",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.reload();
+                    }
+                  });
+                  return;
+                }
               }
             } else {
-              // Handle errors here
-              console.error("Failed to post data:", response.statusText);
+              Swal.fire({
+                title: "Error",
+                text: "Failed to initialize payment",
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0DC939",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
+              return;
             }
           } catch (error) {
             // Handle any unexpected errors
             console.error("An error occurred:", error);
+            Swal.fire({
+              title: "Error",
+              text: "Failed to initialize payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
           }
           handleCancel();
         }
-        // Add your logic here for handling the selected payment method
+        //!!LIVE PAYMENT ENDS
       }
     });
   };
@@ -491,7 +602,8 @@ const BusinessName = () => {
   };
 
   const handleModalNewOk = async () => {
-    setLoading(true);
+    setOpenFlutterwaveModal(false);
+
     try {
       const response = await fetch(
         `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
@@ -504,91 +616,170 @@ const BusinessName = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      console.log(data);
-      setLoading(true);
-
-      if (loading) {
         Swal.fire({
-          title: "Please Wait",
-          text: "Verification in progress",
-          icon: "info",
-          didOpen: () => {
-            Swal.showLoading();
-          },
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
           },
           allowOutsideClick: false,
           allowEscapeKey: false,
-        });
-      }
-      setModal2Open(false);
-
-      if (data.status === "success") {
-        setLoading(true);
-        const requestBody = {
-          payment: {
-            currency: currencyCheck || "ngn",
-          },
-          business: {
-            requestId: parseInt(requestId),
-            cacId: parseInt(cacId),
-          },
-        };
-        const externalApiResponse = await axios.post(
-          "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
-          requestBody,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
           }
-        );
-        console.log("External API call response:", externalApiResponse.data);
-        if (
-          externalApiResponse.data.business &&
-          externalApiResponse.data.business.success == false
-        ) {
-          setLoading(false);
+        });
+        return;
+      }
+      if (response.ok) {
+        setLoading(true);
+        const responseData = await response.json();
+        if (responseData.status === "success") {
+          console.log("Checking payment status");
+          console.log(responseData.data);
+          if (
+            responseData.data &&
+            (responseData.data.status === "success" ||
+              responseData.data.status === "successful")
+          ) {
+            const requestBody = {
+              payment: {
+                currency: currencyCheck || "ngn",
+              },
+              business: {
+                requestId: parseInt(requestId),
+                cacId: parseInt(cacId),
+              },
+            };
+            const externalApiResponse = await axios.post(
+              "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+              requestBody,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${userToken}`,
+                },
+              }
+            );
+            if (
+              externalApiResponse.data.business &&
+              externalApiResponse.data.business.success == false
+            ) {
+              setLoading(false);
+              Swal.fire({
+                title: "Request Error",
+                text: externalApiResponse.data.business.message,
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0DC939",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
+              return;
+            }
+            if (
+              externalApiResponse.data.business &&
+              Array.isArray(externalApiResponse.data.business.data)
+            ) {
+              setLoading(false);
+              setBusinessData(externalApiResponse.data.business.data);
+            } else {
+              setLoading(false);
+              console.error("Invalid response structure:", response.data);
+              Swal.fire({
+                title: "Error",
+                text: "Error fetching Stake Holders",
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0DC939",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
+            }
+          } else {
+            setLoading(false);
+            Swal.fire({
+              title: "Failed Payment",
+              text: responseData.data.processor_response,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        } else {
+          setOpenFlutterwaveModal(false);
+          setLoading(true);
           Swal.fire({
-            title: "Verification Error",
-            text: externalApiResponse.data.business.message,
+            title: "Error",
+            text: "Error fetching Stake Holders",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
             },
             allowOutsideClick: false,
             allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
           });
         }
-        if (
-          externalApiResponse.data.business &&
-          Array.isArray(externalApiResponse.data.business.data)
-        ) {
-          setBusinessData(externalApiResponse.data.business.data);
-        } else {
-          console.error(
-            "Invalid response structure:",
-            externalApiResponse.data
-          );
-        }
-        setLoading(false);
-        setModal2Open(false);
-      } else {
-        setModal2Open(false);
       }
     } catch (error) {
       console.error("Error handling modal new OK:", error);
       // Handle errors here
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     }
-  };
-  const handleCancel2 = () => {
-    setLoading(false);
-    setModal2Open(false);
   };
 
   return (
@@ -1666,14 +1857,13 @@ const BusinessName = () => {
             </div>
           </div>
           <Modal
-            // title="Complete Wallet TopUp"
             style={{
               top: 20,
             }}
             width={1000}
-            open={modal2Open}
+            open={openFlutterwaveModal}
             onOk={handleModalNewOk}
-            onCancel={handleCancel2}
+            onCancel={handleModalNewOk}
             maskClosable={false}
             footer={[
               <Button danger type="dashed" onClick={handleModalNewOk}>

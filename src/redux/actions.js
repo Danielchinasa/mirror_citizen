@@ -53,6 +53,7 @@ export const signIn = (credentials) => async (dispatch) => {
     dispatch(fetchUserProfile(userData.jwtToken));
 
     // Return the user data upon successful login
+    console.log("userDataDDDDD", userData);
     return userData;
   } catch (error) {
     if (error.response) {

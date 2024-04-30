@@ -22,6 +22,7 @@ import { Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Space, Divider, Input } from "antd";
 import ReactGA from "react-ga4";
+import Swal from "sweetalert2";
 
 const { Title } = Typography;
 
@@ -33,9 +34,11 @@ function Navbar() {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = userDetails?.jwtToken || "";
+  // const tokenExpire = userDetails?.expirationDate || "";
   const userCurrency = userDetails?.currency || "";
   const user = useSelector((state) => state.user);
   const userToken2 = user?.jwtToken || "";
+  // const tokenExpire = "2024-04-30T09:04:44.000+00:00";
 
   const handleClick = () => setClick(!click);
 
@@ -219,17 +222,73 @@ function Navbar() {
         // Handle successful response here
 
         const responseData = await response.json();
-        console.log(responseData.data.link);
-        if (responseData.data && responseData.data.link) {
-          console.log("Embedding URL:", responseData.data.link);
-          setPaymentUrl(responseData.data.link);
-          setModal1Open(true);
+        if (responseData.status === "success") {
+          if (responseData.data && responseData.data.link) {
+            console.log("Embedding URL:", responseData.data.link);
+            setPaymentUrl(responseData.data.link);
+            setModal1Open(true);
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: "Response data does not contain a link",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
         } else {
-          console.error("Response data does not contain a link");
+          Swal.fire({
+            title: "Error",
+            text: "Failed to initialize payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
         }
       } else {
         // Handle errors here
         console.error("Failed to post data:", response.statusText);
+
+        Swal.fire({
+          title: "Error",
+          text: "Failed to initialize payment",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
       }
     } catch (error) {
       // Handle any unexpected errors
@@ -265,19 +324,34 @@ function Navbar() {
 
             <NavMenu onClick={handleClick} click={click}>
               {isAuthenticated && (
-                <NavItemBtn>
-                  <NavBtnLink to="/dashboard">
-                    <MainButton
-                      type="primary"
-                      style={{
-                        fontFamily: "Poppins",
-                        fontWeight: "700",
-                      }}
-                    >
-                      Identity Verification
-                    </MainButton>
-                  </NavBtnLink>
-                </NavItemBtn>
+                <>
+                  <NavItemBtn>
+                    <NavBtnLink to="/main-dashboard">
+                      <OutlineButton
+                        type="primary"
+                        style={{
+                          fontFamily: "Poppins",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Dashboard
+                      </OutlineButton>
+                    </NavBtnLink>
+                  </NavItemBtn>
+                  <NavItemBtn>
+                    <NavBtnLink to="/dashboard">
+                      <MainButton
+                        type="primary"
+                        style={{
+                          fontFamily: "Poppins",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Identity Verification
+                      </MainButton>
+                    </NavBtnLink>
+                  </NavItemBtn>
+                </>
               )}
               {!isAuthenticated && (
                 <>

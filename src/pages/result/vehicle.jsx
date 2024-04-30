@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchVerificationResult } from "../../redux/actions";
+import { fetchVerificationResult, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
 import { Typography, Image } from "antd";
 import Icon, {
@@ -68,6 +68,10 @@ const Vehicle = () => {
   //   (state) => state.verificationResult.data
   // );
   const requestId = localStorage.getItem("verificationRequestId");
+
+  useEffect(() => {
+    dispatch(fetchUserProfile(userToken));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
