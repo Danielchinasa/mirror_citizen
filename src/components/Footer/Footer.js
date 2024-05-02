@@ -111,7 +111,11 @@ function Footer() {
               </FooterLinkItems>
               <FooterLinkItems>
                 <FooterLink>
-                  <a href="#" target="none" style={{ cursor: "pointer" }}>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
+                    target="none"
+                    style={{ cursor: "pointer" }}
+                  >
                     <FooterLogoArea3
                       src={playStore}
                       style={{ width: 100, cursor: "pointer" }}
