@@ -231,7 +231,7 @@ const DashboardPage = () => {
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);
-
+        setLoadingPrice(false);
         setExchangeRate(response.data.rate);
         setNinFee(response.data.data[0].price);
         setNinServiceFee(response.data.data[0].serviceFee);
@@ -289,7 +289,27 @@ const DashboardPage = () => {
         setStolenCheckFee(response.data.data[7].price);
       } catch (error) {
         console.error("Error fetching IP address:", error);
-        setNinFee(null);
+
+        setLoadingPrice(false);
+        Swal.fire({
+          title: "Error",
+          text: "Unable to get Service Prices",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
+        });
       }
     };
 
@@ -537,7 +557,7 @@ const DashboardPage = () => {
     }
   };
 
-  //!---------- Performing the Verification --------- //
+  //!---------- Performing the Verification End --------- //
 
   const handleModalOk = () => {
     // Handle the modal OK button click
@@ -718,6 +738,7 @@ const DashboardPage = () => {
         {profile === "business_name" && `$ ${usdFee}`}
         {profile === "bvn" && `$ ${usdFee}`}
         {profile === "vin" && `$ ${usdFee}`}
+        {profile === "license_number" && `$ ${usdFee}`}
       </Radio>
     );
   }
@@ -785,6 +806,7 @@ const DashboardPage = () => {
 
     if (e.target.value == 2) {
       setFlutterWaveCurrency("USD");
+      // setCurrencyCheck("USD");
       setOutsideNgWithNiara(false);
     } else if (e.target.value == 1) {
       // setCurrencyCheck("NGN");
@@ -831,6 +853,7 @@ const DashboardPage = () => {
   const [modalVisibleFace, setModalVisibleFace] = useState(false);
   const [paymentMethod, setPaymentmethod] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingPrice, setLoadingPrice] = useState(true);
   const [totalveri, setTotalveri] = useState(0);
   const [totalveriNiara, setTotalveriNiara] = useState(0);
 
@@ -1054,7 +1077,7 @@ const DashboardPage = () => {
                 ? `${outsideNgWithNiaraPrice}`
                 : `${totalServiceCost}`
               : `${totalServiceCost}`,
-          currency: currencyCheck,
+          currency: flutterWaveCurrency,
           country: "NG",
           description: "Payment for verification",
           payment_method: "card,mobilemoney,ussd",
@@ -2363,9 +2386,15 @@ const DashboardPage = () => {
       console.log("Two or more checkboxes are checked.");
       if (prevNumberOfCheckedCheckboxes === 1) {
         // When moving from 1 to 2 or more, double the state values
-        setTotalVAT((prevTotalVAT) => prevTotalVAT + 113);
+        setTotalVAT(
+          currencyCheck === "USD"
+            ? (prevTotalVAT) => prevTotalVAT + 0.5
+            : (prevTotalVAT) => prevTotalVAT + 113
+        );
         setTotalServiceCost(
-          (prevTotalServiceCost) => prevTotalServiceCost + 1500
+          currencyCheck === "USD"
+            ? (prevTotalServiceCost) => prevTotalServiceCost + 2.34
+            : (prevTotalServiceCost) => prevTotalServiceCost + 1500
         );
       }
     } else if (
@@ -2373,9 +2402,15 @@ const DashboardPage = () => {
       numberOfCheckedCheckboxes < 2
     ) {
       // When moving from 2 or more to less than 2, divide by 2 to restore previous values
-      setTotalVAT((prevTotalVAT) => prevTotalVAT - 113);
+      setTotalVAT(
+        currencyCheck === "USD"
+          ? (prevTotalVAT) => prevTotalVAT - 0.5
+          : (prevTotalVAT) => prevTotalVAT - 113
+      );
       setTotalServiceCost(
-        (prevTotalServiceCost) => prevTotalServiceCost - 1500
+        currencyCheck === "USD"
+          ? (prevTotalServiceCost) => prevTotalServiceCost - 2.34
+          : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
     }
 
@@ -2385,18 +2420,30 @@ const DashboardPage = () => {
     ) {
       console.log("All three checkboxes are checked.");
       // Multiply the state values by 3
-      setTotalVAT((prevTotalVAT) => prevTotalVAT + 113);
+      setTotalVAT(
+        currencyCheck === "USD"
+          ? (prevTotalVAT) => prevTotalVAT + 0.5
+          : (prevTotalVAT) => prevTotalVAT + 113
+      );
       setTotalServiceCost(
-        (prevTotalServiceCost) => prevTotalServiceCost + 1500
+        currencyCheck === "USD"
+          ? (prevTotalServiceCost) => prevTotalServiceCost + 2.34
+          : (prevTotalServiceCost) => prevTotalServiceCost + 1500
       );
     } else if (
       prevNumberOfCheckedCheckboxes === 3 &&
       numberOfCheckedCheckboxes !== 3
     ) {
       // When moving from 3 to less than 3, divide by 3 to restore previous values
-      setTotalVAT((prevTotalVAT) => prevTotalVAT - 113);
+      setTotalVAT(
+        currencyCheck === "USD"
+          ? (prevTotalVAT) => prevTotalVAT - 0.5
+          : (prevTotalVAT) => prevTotalVAT - 113
+      );
       setTotalServiceCost(
-        (prevTotalServiceCost) => prevTotalServiceCost - 1500
+        currencyCheck === "USD"
+          ? (prevTotalServiceCost) => prevTotalServiceCost - 2.34
+          : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
     }
 
@@ -2561,7 +2608,16 @@ const DashboardPage = () => {
       </Col>
 
       <Container>
-        <Spin spinning={loading} tip="Verification in progress...">
+        <Spin
+          spinning={loadingPrice}
+          tip="Getting Service Prices ..."
+          colorBgMask="red"
+          style={{
+            fontSize: "85px",
+            fontWeight: "bold",
+            color: "black",
+          }}
+        >
           <StyledForm>
             <InfoSec>
               <Heading>Identity Verification Service</Heading>
@@ -3387,9 +3443,11 @@ const DashboardPage = () => {
                             {prevNumberOfCheckedCheckboxes == 2
                               ? currencyCheck === "USD"
                                 ? "$" +
-                                  (financialServiceFee +
-                                    financialProcessingFee) *
+                                  (
+                                    (financialServiceFee +
+                                      financialProcessingFee) *
                                     2
+                                  ).toFixed(2)
                                 : formatToNaira(
                                     (financialServiceFee +
                                       financialProcessingFee) *
@@ -3398,9 +3456,11 @@ const DashboardPage = () => {
                               : prevNumberOfCheckedCheckboxes == 3
                               ? currencyCheck === "USD"
                                 ? "$" +
-                                  (financialServiceFee +
-                                    financialProcessingFee) *
+                                  (
+                                    (financialServiceFee +
+                                      financialProcessingFee) *
                                     3
+                                  ).toFixed(2)
                                 : formatToNaira(
                                     (financialServiceFee +
                                       financialProcessingFee) *
@@ -3528,7 +3588,8 @@ const DashboardPage = () => {
                       )} */}
 
                         {currencyCheck === "USD" ? (
-                          <p>{`$${totalServiceCost}`}</p>
+                          // <p>{`$${totalServiceCost}`}</p>
+                          <p>{`$${totalServiceCost.toFixed(2)}`}</p>
                         ) : (
                           <p>{formatToNaira(totalServiceCost)}</p>
                         )}
@@ -3551,7 +3612,7 @@ const DashboardPage = () => {
                               </Radio>
                               <RadioComponent
                                 profile={profile}
-                                usdFee={totalServiceCost}
+                                usdFee={totalServiceCost.toFixed(2)}
                               />
                             </Radio.Group>
                           </>
@@ -3565,15 +3626,12 @@ const DashboardPage = () => {
                                 {" "}
                                 {formatToNaira(totalveriNiara)}
                               </Radio>
-                            ) : userCurrency === "usd" ? (
+                            ) : (
                               // <Radio value={2}>
                               <RadioComponent
                                 profile={profile}
                                 usdFee={totalServiceCost}
                               />
-                            ) : (
-                              // </Radio>
-                              ""
                             )}
                           </Radio.Group>
                         )}
