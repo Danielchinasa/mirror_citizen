@@ -229,7 +229,7 @@ const MainDashboard = () => {
       if (response.ok) {
         const data = await response.json();
         // Proceed with navigation only if there is no data in the response
-        if (!data) {
+        if (!data || data.data == null) {
           console.log("NO DATA");
           Swal.fire({
             title: "Oops!",
@@ -578,18 +578,27 @@ const MainDashboard = () => {
       title: "Transaction ID",
       dataIndex: "transactionID",
       key: "transactionID",
-      sorter: (a, b) => a.transactionID - b.transactionID,
     },
     {
       title: "Date and Time",
       dataIndex: "transactionDate",
       key: "transactionDate",
-      sorter: (a, b) => b.transactionDate - a.transactionDate,
+      sorter: (a, b) =>
+        new Date(a.transactionDate) - new Date(b.transactionDate),
       render: (transactionDate) => {
         const date = new Date(transactionDate);
-        const formattedDate = `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${date
+          .getDate()
+          .toString()
+          .padStart(2, "0")} ${date
+          .getHours()
+          .toString()
+          .padStart(2, "0")}:${date
+          .getMinutes()
+          .toString()
+          .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
         return <span>{formattedDate}</span>;
       },
     },
@@ -604,7 +613,21 @@ const MainDashboard = () => {
       title: "Transaction Type",
       dataIndex: "transactionType",
       key: "transactionType",
-      sorter: (a, b) => a.transactionType - b.transactionType,
+      filters: [
+        {
+          text: "VERIFICATION",
+          value: "VERIFICATION",
+        },
+        {
+          text: "REFUND",
+          value: "REFUND",
+        },
+        {
+          text: "TOPUP",
+          value: "TOPUP",
+        },
+      ],
+      onFilter: (value, record) => record.transactionType.indexOf(value) === 0,
     },
 
     {

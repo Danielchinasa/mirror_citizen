@@ -260,6 +260,8 @@ const BusinessName = () => {
           amount: stakeHolderFeeUsd,
         };
         if (result.value === "Payment from Wallet") {
+          localStorage.setItem("transactionID", randomTransactionId);
+          localStorage.setItem("paymentType", "WALLET");
           if (currencyCheck === "NGN" && userCurrency === "usd") {
             setLoading(false);
             Swal.fire({
@@ -338,12 +340,26 @@ const BusinessName = () => {
             const data = await response.text();
 
             if (response.ok && data === "payment successful") {
+              const transactionID = localStorage.getItem("transactionID");
+              const paymentType = localStorage.getItem("paymentType");
+              function generateTransactionId() {
+                const length = 16; // total length including "EA"
+                let transactionId = "EA";
+                for (let i = 0; i < length - 2; i++) {
+                  transactionId += Math.floor(Math.random() * 10); // Append random number between 0 and 9
+                }
+                return transactionId;
+              }
+
+              const randomTransactionId = generateTransactionId();
               try {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
                   payment: {
-                    currency: currencyCheck || "ngn",
+                    currency: currencyCheck || "NGN",
+                    transactionID: transactionID || randomTransactionId,
+                    paymentType: paymentType || "INSTANT",
                   },
                   business: {
                     requestId: parseInt(requestId),
@@ -520,6 +536,11 @@ const BusinessName = () => {
                   console.log("Embedding URL:", responseData.data.link);
                   setPaymentUrl(responseData.data.link);
                   setTransactionRef(responseData.data.txRef);
+                  localStorage.setItem(
+                    "transactionID",
+                    responseData.data.txRef
+                  );
+                  localStorage.setItem("paymentType", "INSTANT");
                   //!------------- Open the FlutterWave modal for payment --------------//
                   setOpenFlutterwaveModal(true);
                   //!------------- Open the FlutterWave modal for payment End --------------//
@@ -638,6 +659,8 @@ const BusinessName = () => {
       if (response.ok) {
         setLoading(true);
         const responseData = await response.json();
+        const transactionID = localStorage.getItem("transactionID");
+        const paymentType = localStorage.getItem("paymentType");
         if (responseData.status === "success") {
           console.log("Checking payment status");
           console.log(responseData.data);
@@ -648,7 +671,9 @@ const BusinessName = () => {
           ) {
             const requestBody = {
               payment: {
-                currency: currencyCheck || "ngn",
+                currency: currencyCheck || "NGN",
+                transactionID: transactionID || randomTransactionId,
+                paymentType: paymentType || "INSTANT",
               },
               business: {
                 requestId: parseInt(requestId),
@@ -1774,6 +1799,7 @@ const BusinessName = () => {
                   </div>
                 ) : (
                   <span style={{ color: "red" }}>
+                    <br />
                     We couldn't find any shareholders records based on the
                     information you provided.
                   </span>

@@ -317,7 +317,6 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    //!! HEREEEE
     // Store currencyCheck in localStorage
     localStorage.setItem("currencyCheck", currencyCheck);
   }, [currencyCheck]);
@@ -360,6 +359,7 @@ const DashboardPage = () => {
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
+    setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -858,8 +858,6 @@ const DashboardPage = () => {
   const [totalveriNiara, setTotalveriNiara] = useState(0);
 
   const showModal = () => {
-    console.log("currencyCheck");
-    console.log(currencyCheck);
     setModalVisible(true);
   };
   const showModalFace = () => {
@@ -912,9 +910,12 @@ const DashboardPage = () => {
       //!!WALLET PAYMENT START
 
       if (paymentMethod === 1) {
-        setLoading(true);
+        // setLoading(true);
+        localStorage.setItem("transactionID", randomTransactionId);
+        localStorage.setItem("paymentType", "WALLET");
         const apiUrl =
           "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
+
         const requestBody = {
           userNIN: userNin,
           transactionID: randomTransactionId,
@@ -1006,7 +1007,6 @@ const DashboardPage = () => {
         //!!-------------------- Check for Wallet balance End ------------------//
 
         try {
-          handleCancel();
           const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
@@ -1122,6 +1122,8 @@ const DashboardPage = () => {
                 console.log("Embedding URL:", responseData.data.link);
                 setPaymentUrl(responseData.data.link);
                 setTransactionRef(responseData.data.txRef);
+                localStorage.setItem("transactionID", responseData.data.txRef);
+                localStorage.setItem("paymentType", "INSTANT");
 
                 //!------------- Open the FlutterWave modal for payment --------------//
                 setOpenFlutterwaveModal(true);
@@ -1217,7 +1219,6 @@ const DashboardPage = () => {
   };
 
   const handleMakePayment = () => {
-    dispatch(fetchUserProfile(userToken));
     // Your existing logic for handling the payment
     // Calculate total veri based on form data
     const formDataFees = {
@@ -1376,7 +1377,15 @@ const DashboardPage = () => {
     const formattedTotalveri = currencyFormatter.format(totalveri);
 
     // Show the modal
-    showModal();
+    // showModal();
+    dispatch(fetchUserProfile(userToken))
+      .then(() => {
+        showModal();
+      })
+      .catch((error) => {
+        // Handle error if dispatch fails
+        console.error("Error fetching user profile:", error);
+      });
   };
   const handleMakePaymentForLiveFace = () => {
     const formDataFees = {
@@ -2260,7 +2269,7 @@ const DashboardPage = () => {
         return;
       }
       if (response.ok) {
-        setLoading(true);
+        // setLoading(true);
         const responseData = await response.json();
         if (responseData.status === "success") {
           console.log("Checking payment status");

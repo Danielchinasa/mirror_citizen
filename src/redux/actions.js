@@ -53,7 +53,6 @@ export const signIn = (credentials) => async (dispatch) => {
     dispatch(fetchUserProfile(userData.jwtToken));
 
     // Return the user data upon successful login
-    console.log("userDataDDDDD", userData);
     return userData;
   } catch (error) {
     if (error.response) {
@@ -279,10 +278,24 @@ export const sendVerificationRequest =
     try {
       const CLICK_ID = localStorage.getItem("CLICK_ID");
       const currencyCheck = localStorage.getItem("currencyCheck");
+      const transactionID = localStorage.getItem("transactionID");
+      const paymentType = localStorage.getItem("paymentType");
+      function generateTransactionId() {
+        const length = 16; // total length including "EA"
+        let transactionId = "EA";
+        for (let i = 0; i < length - 2; i++) {
+          transactionId += Math.floor(Math.random() * 10); // Append random number between 0 and 9
+        }
+        return transactionId;
+      }
+
+      const randomTransactionId = generateTransactionId();
 
       const restructuredData = {
         payment: {
-          currency: currencyCheck || "ngn",
+          currency: currencyCheck || "NGN",
+          transactionID: transactionID || randomTransactionId,
+          paymentType: paymentType || "INSTANT",
         },
         basic: {
           phoneNumber: formData.phone || "",
