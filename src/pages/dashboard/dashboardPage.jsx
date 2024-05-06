@@ -2389,12 +2389,12 @@ const DashboardPage = () => {
         // When moving from 1 to 2 or more, double the state values
         setTotalVAT(
           currencyCheck === "USD"
-            ? (prevTotalVAT) => prevTotalVAT + 0.5
+            ? (prevTotalVAT) => prevTotalVAT + 0.15
             : (prevTotalVAT) => prevTotalVAT + 113
         );
         setTotalServiceCost(
           currencyCheck === "USD"
-            ? (prevTotalServiceCost) => prevTotalServiceCost + 2.34
+            ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
             : (prevTotalServiceCost) => prevTotalServiceCost + 1500
         );
       }
@@ -2405,12 +2405,12 @@ const DashboardPage = () => {
       // When moving from 2 or more to less than 2, divide by 2 to restore previous values
       setTotalVAT(
         currencyCheck === "USD"
-          ? (prevTotalVAT) => prevTotalVAT - 0.5
+          ? (prevTotalVAT) => prevTotalVAT - 0.15
           : (prevTotalVAT) => prevTotalVAT - 113
       );
       setTotalServiceCost(
         currencyCheck === "USD"
-          ? (prevTotalServiceCost) => prevTotalServiceCost - 2.34
+          ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
     }
@@ -2423,12 +2423,12 @@ const DashboardPage = () => {
       // Multiply the state values by 3
       setTotalVAT(
         currencyCheck === "USD"
-          ? (prevTotalVAT) => prevTotalVAT + 0.5
+          ? (prevTotalVAT) => prevTotalVAT + 0.15
           : (prevTotalVAT) => prevTotalVAT + 113
       );
       setTotalServiceCost(
         currencyCheck === "USD"
-          ? (prevTotalServiceCost) => prevTotalServiceCost + 2.34
+          ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost + 1500
       );
     } else if (
@@ -2438,12 +2438,12 @@ const DashboardPage = () => {
       // When moving from 3 to less than 3, divide by 3 to restore previous values
       setTotalVAT(
         currencyCheck === "USD"
-          ? (prevTotalVAT) => prevTotalVAT - 0.5
+          ? (prevTotalVAT) => prevTotalVAT - 0.15
           : (prevTotalVAT) => prevTotalVAT - 113
       );
       setTotalServiceCost(
         currencyCheck === "USD"
-          ? (prevTotalServiceCost) => prevTotalServiceCost - 2.34
+          ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
     }
@@ -3564,7 +3564,7 @@ const DashboardPage = () => {
                       </Col>
                       <Col style={{ textAlign: "right" }}>
                         {currencyCheck === "USD" ? (
-                          <p>${totalVAT}</p>
+                          <p>${totalVAT.toFixed(2)}</p>
                         ) : (
                           <p>{formatToNaira(totalVAT)}</p>
                         )}
