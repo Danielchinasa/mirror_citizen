@@ -849,9 +849,7 @@ const BusinessName = () => {
                     {renderDetail(
                       <CheckCircleOutlined />,
                       "Status",
-                      business.data.status
-                        ? business.data.companyStatus
-                        : `No Data`
+                      business.data.status ? business.data.status : `No Data`
                     )}
                   </div>
                   <div class="col">
