@@ -111,22 +111,41 @@ function Footer() {
               </FooterLinkItems>
               <FooterLinkItems>
                 <FooterLink>
-                  <a
+                  <a href="https://play.google.com/store/apps/details?id=biosec.ecitizen">
+                    <img
+                      src={playStore}
+                      alt="Logo"
+                      style={{
+                        width: 100,
+                        cursor: "pointer",
+                        paddingRight: "5px",
+                      }}
+                    />
+                  </a>
+                  {/* <a
                     href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
                     target="none"
                     style={{ cursor: "pointer" }}
                   >
-                    <FooterLogoArea3
-                      src={playStore}
-                      style={{ width: 100, cursor: "pointer" }}
-                    ></FooterLogoArea3>
+                    <FooterLogoArea3 src={playStore}></FooterLogoArea3>
+                  </a> */}
+                  <a href="#" target="none">
+                    <img
+                      src={appStore}
+                      alt="Logo"
+                      style={{
+                        width: 100,
+                        cursor: "pointer",
+                        paddingRight: "5px",
+                      }}
+                    />
                   </a>
-                  <a href="#" target="none" style={{ cursor: "pointer" }}>
+                  {/* <a href="#" target="none" style={{ cursor: "pointer" }}>
                     <FooterLogoArea3
                       src={appStore}
                       style={{ width: 100, cursor: "pointer" }}
                     ></FooterLogoArea3>
-                  </a>
+                  </a> */}
                 </FooterLink>
               </FooterLinkItems>
             </div>
