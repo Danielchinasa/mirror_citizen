@@ -2184,6 +2184,7 @@ const DashboardPage = () => {
       title: "Please Wait",
       text: "Verification in progress",
       icon: "info",
+      showCloseButton: true,
       didOpen: () => {
         Swal.showLoading();
       },
