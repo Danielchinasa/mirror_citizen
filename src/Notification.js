@@ -40,7 +40,7 @@ const Notification = () => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
             // dispatch(fetchUserProfile(userToken));
-            window.location.reload();
+            // window.location.reload();
           }
         });
   };
