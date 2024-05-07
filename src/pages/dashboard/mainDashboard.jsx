@@ -229,7 +229,7 @@ const MainDashboard = () => {
       if (response.ok) {
         const data = await response.json();
         // Proceed with navigation only if there is no data in the response
-        if (!data || data.data == null) {
+        if (!data) {
           console.log("NO DATA");
           Swal.fire({
             title: "Oops!",
