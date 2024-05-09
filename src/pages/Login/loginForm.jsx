@@ -156,6 +156,7 @@ const LoginForm = () => {
       const formDataWithIpAndToken = {
         ...formData,
         ipAddress,
+
         deviceToken: localStorage.getItem("clientToken"),
       };
 

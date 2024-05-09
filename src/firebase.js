@@ -23,6 +23,10 @@ const app = initializeApp(firebaseConfig);
 const isiOS = () => {
   return /iPad|iPhone|iPod/.test(userAgent);
 };
+localStorage.setItem(
+  "clientToken",
+  "BM_Ct83FGrfjBlQMsG_Ekfe5kwl2bs-hzsRhvI28KQxOuVCIlwiLP2PanQWCh7AV9OKKsYgK5R1ACrF4PvCxyRE"
+);
 if (!isiOS()) {
   messaging = getMessaging(app);
 }
