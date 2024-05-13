@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {
+  getMessaging,
+  getToken,
+  onMessage,
+  isSupported,
+} from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBExfy-yXA7OxLaC7HrbzmTzw8gd1j1E-w",
@@ -10,10 +15,21 @@ const firebaseConfig = {
   appId: "1:504541434686:web:d094029ccfbf06f192926f",
   measurementId: "G-E4J0093Z41",
 };
+const userAgent = navigator.userAgent;
 
+// initializeApp(firebaseConfig);
+let messaging = null;
 const app = initializeApp(firebaseConfig);
-
-const messaging = getMessaging(app);
+const isiOS = () => {
+  return /iPad|iPhone|iPod/.test(userAgent);
+};
+localStorage.setItem(
+  "clientToken",
+  "BM_Ct83FGrfjBlQMsG_Ekfe5kwl2bs-hzsRhvI28KQxOuVCIlwiLP2PanQWCh7AV9OKKsYgK5R1ACrF4PvCxyRE"
+);
+if (!isiOS()) {
+  messaging = getMessaging(app);
+}
 
 export const Sendrequest = () => {
   console.log("Requesting User Permission......");

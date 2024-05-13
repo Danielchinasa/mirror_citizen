@@ -54,28 +54,28 @@ const Result = () => {
   const history = useHistory();
   const tokenExpire = user?.expirationDate || "";
   const [loading, setLoading] = useState(false);
-  const [firstName, setFirstName] = useState("No Data");
-  const [lastName, setLastName] = useState("No Data");
-  const [nin, setNin] = useState("No Data");
-  const [dob, setDob] = useState("No Data");
-  const [gender, setGender] = useState("No Data");
-  const [residenceAddress, setResidenceAddress] = useState("No Data");
-  const [phone, setPhone] = useState("No Data");
-  const [maritalStatus, setMaritalStatus] = useState("No Data");
-  const [religion, setReligion] = useState("No Data");
-  const [educationLevel, setEducationLevel] = useState("No Data");
-  const [profession, setProfession] = useState("No Data");
-  const [email, setEmail] = useState("No Data");
-  const [birthCountry, setBirthCountry] = useState("No Data");
-  const [birthState, setBirthState] = useState("No Data");
-  const [originState, setOriginState] = useState("No Data");
-  const [employmentStatus, setEmploymentStatus] = useState("No Data");
-  const [originLGA, setOriginLGA] = useState("No Data");
-  const [photo, setPhoto] = useState("No Data");
-  const [residenceLGA, setResidenceLGA] = useState("No Data");
-  const [residenceState, setResidenceState] = useState("No Data");
-  const [height, setHeight] = useState("No Data");
-  const [title, setTitle] = useState("No Data");
+  const [firstName, setFirstName] = useState("-");
+  const [lastName, setLastName] = useState("-");
+  const [nin, setNin] = useState("-");
+  const [dob, setDob] = useState("-");
+  const [gender, setGender] = useState("-");
+  const [residenceAddress, setResidenceAddress] = useState("-");
+  const [phone, setPhone] = useState("-");
+  const [maritalStatus, setMaritalStatus] = useState("-");
+  const [religion, setReligion] = useState("-");
+  const [educationLevel, setEducationLevel] = useState("-");
+  const [profession, setProfession] = useState("-");
+  const [email, setEmail] = useState("-");
+  const [birthCountry, setBirthCountry] = useState("-");
+  const [birthState, setBirthState] = useState("-");
+  const [originState, setOriginState] = useState("-");
+  const [employmentStatus, setEmploymentStatus] = useState("-");
+  const [originLGA, setOriginLGA] = useState("-");
+  const [photo, setPhoto] = useState("-");
+  const [residenceLGA, setResidenceLGA] = useState("-");
+  const [residenceState, setResidenceState] = useState("-");
+  const [height, setHeight] = useState("-");
+  const [title, setTitle] = useState("-");
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
   // );
@@ -129,37 +129,32 @@ const Result = () => {
         // console.log("hre");
         // console.log(response.data);
         const firstNameFromResponse = response.data.data.firstName || "";
-        const lastNameFromResponse = response.data.data.lastName || "No Data";
-        const ninFromResponse = response.data.data.nin || "No Data";
-        const dobFromResponse = response.data.data.dob || "No Data";
-        const genderFromResponse = response.data.data.gender || "No Data";
+        const lastNameFromResponse = response.data.data.lastName || "-";
+        const ninFromResponse = response.data.data.nin || "-";
+        const dobFromResponse = response.data.data.dob || "-";
+        const genderFromResponse = response.data.data.gender || "-";
         const residenceAddressFromResponse =
-          response.data.data.residenceAddress || "No Data";
-        const phoneFromResponse = response.data.data.phone || "No Data";
+          response.data.data.residenceAddress || "-";
+        const phoneFromResponse = response.data.data.phone || "-";
         const maritalStatusFromResponse =
-          response.data.data.maritalStatus || "No Data";
-        const religionFromResponse = response.data.data.religion || "No Data";
+          response.data.data.maritalStatus || "-";
+        const religionFromResponse = response.data.data.religion || "-";
         const educationLevelFromResponse =
-          response.data.data.educationLevel || "No Data";
-        const professionFromResponse =
-          response.data.data.profession || "No Data";
-        const emailFromResponse = response.data.data.email || "No Data";
-        const originLGAFromResponse = response.data.data.originLGA || "No Data";
-        const originStateFromResponse =
-          response.data.data.originState || "No Data";
-        const birthCountryFromResponse =
-          response.data.data.birthCountry || "No Data";
-        const birthStateFromResponse =
-          response.data.data.birthState || "No Data";
+          response.data.data.educationLevel || "-";
+        const professionFromResponse = response.data.data.profession || "-";
+        const emailFromResponse = response.data.data.email || "-";
+        const originLGAFromResponse = response.data.data.originLGA || "-";
+        const originStateFromResponse = response.data.data.originState || "-";
+        const birthCountryFromResponse = response.data.data.birthCountry || "-";
+        const birthStateFromResponse = response.data.data.birthState || "-";
         const employmentSatusFromResponse =
-          response.data.data.employmentSatus || "No Data";
-        const photoFromResponse = response.data.data.photo || "No Data";
-        const residenceLGAFromResponse =
-          response.data.data.residenceLGA || "No Data";
+          response.data.data.employmentSatus || "-";
+        const photoFromResponse = response.data.data.photo || "-";
+        const residenceLGAFromResponse = response.data.data.residenceLGA || "-";
         const residenceStateFromResponse =
-          response.data.data.residenceState || "No Data";
-        const heightFromResponse = response.data.data.height || "No Data";
-        const titleFromResponse = response.data.data.title || "No Data";
+          response.data.data.residenceState || "-";
+        const heightFromResponse = response.data.data.height || "-";
+        const titleFromResponse = response.data.data.title || "-";
         setFirstName(firstNameFromResponse);
         setLastName(lastNameFromResponse);
         setNin(ninFromResponse);
