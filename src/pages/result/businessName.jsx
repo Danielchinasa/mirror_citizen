@@ -43,6 +43,7 @@ import {
   logout,
 } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
+import Reach1 from "../../images/reach1.jpeg";
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -1816,21 +1817,22 @@ const BusinessName = () => {
       </Title>
       <div class="container">
         <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Car Finance</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#DDF9EA",
-                }}
-              >
-                <p class="card-text">Credit Cards handpicked for you</p>
-              </div>
-            </div>
-          </div>
+          <div
+            className="col-sm-12 col-md-6 col-lg-3 mb-3"
+            style={{
+              backgroundImage: `url(${Reach1})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "200px",
+              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+            }}
+            onClick={() => {
+              window.open(
+                "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
+                "_blank"
+              );
+            }}
+          ></div>
           <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">Car Insurance</div>

@@ -2977,6 +2977,9 @@ const DashboardPage = () => {
                         <div>
                           <StyledLabel>
                             National Identification Number*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined onClick={clearInputNin} />
+                            </span>
                           </StyledLabel>
                           <StyledInput
                             type="text"
@@ -3244,7 +3247,14 @@ const DashboardPage = () => {
                       {/* {selectedForm === "rc" && ( */}
                       {businessProfileArray.includes("rc") && (
                         <div>
-                          <StyledLabel>Registration Number (RC)*</StyledLabel>
+                          <StyledLabel>
+                            Registration Number (RC)*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputBusinessrc}
+                              />
+                            </span>
+                          </StyledLabel>
                           <StyledInput
                             type="text"
                             placeholder="Enter Registration Number"
@@ -3259,7 +3269,14 @@ const DashboardPage = () => {
                       {/* {selectedForm === "business_name" && ( */}
                       {businessProfileArray.includes("business_name") && (
                         <div>
-                          <StyledLabel>Business Name*</StyledLabel>
+                          <StyledLabel>
+                            Business Name*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputBusinessbusiness_name}
+                              />
+                            </span>
+                          </StyledLabel>
                           <StyledInput
                             type="text"
                             placeholder="Enter Business Name"
@@ -3276,6 +3293,11 @@ const DashboardPage = () => {
                         <div>
                           <StyledLabel>
                             Bank Verification Number (BVN)*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputFinancial}
+                              />
+                            </span>
                           </StyledLabel>
                           <StyledInput
                             type="text"
@@ -3318,7 +3340,14 @@ const DashboardPage = () => {
                       {/* {selectedForm === "vin" && ( */}
                       {vehicleProfileArray.includes("vin") && (
                         <div>
-                          <StyledLabel>Vehicle History (VIN)*</StyledLabel>
+                          <StyledLabel>
+                            Vehicle History (VIN)*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputVehiclevin}
+                              />
+                            </span>
+                          </StyledLabel>
                           <StyledInput
                             type="text"
                             placeholder="Enter Vehicle History (VIN)"
@@ -3342,6 +3371,11 @@ const DashboardPage = () => {
                         <div>
                           <StyledLabel>
                             Vehicle Registration Number*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputVehiclelicense_number}
+                              />
+                            </span>
                           </StyledLabel>
                           <span style={{ color: "grey" }}>
                             Input the vehicle registration number without any
