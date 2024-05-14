@@ -319,9 +319,6 @@ const MainDashboard = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const componentRef = useRef();
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
   const list = [
     { category: "credit", amount: 200 },
     { category: "debit", amount: 100 },
@@ -679,19 +676,12 @@ const MainDashboard = () => {
             onChange={handleSearch}
             style={{ marginBottom: 8, width: 200 }}
           />
-          <MainButton
-            onClick={handlePrint}
-            type="primary"
-            hidden
-            style={{ float: "right", width: 150, marginBottom: "20px" }}
-          >
-            {" "}
-            Export to PDF{" "}
-          </MainButton>
+
           <div ref={componentRef}>
             {list && (
               <Table
                 expandable
+                scroll={{ x: true }}
                 columns={columns}
                 dataSource={filteredData && filteredData}
                 onRow={(record, rowIndex) => {
@@ -724,6 +714,7 @@ const MainDashboard = () => {
           <Row>
             <Col span={24}>
               <Table
+                scroll={{ x: true }}
                 columns={columns2.reverse()} // Reverse the order of columns
                 dataSource={
                   filteredDataTransaction &&
@@ -806,90 +797,6 @@ const MainDashboard = () => {
     }
   };
 
-  // const handleOk = () => {
-  //   // Perform any validation on the amount if needed
-  //   // Save the amount to the config or use it as needed
-
-  //   config.amount = amount;
-
-  //   setIsModalVisible(false);
-  //   handleFlutterPayment({
-  //     callback: async (response) => {
-  //       console.log(response);
-  //       if (
-  //         response.status === "successful" ||
-  //         response.status === "success" ||
-  //         response.status === "completed"
-  //       ) {
-  //         try {
-  //           const apiUrl = "https://e-citizen.ng:8443/api/v2/transaction/topup";
-  //           const requestData = {
-  //             userNIN: userNin,
-  //             email: userEmail,
-  //             transactionID: response.transaction_id,
-  //             successful: true,
-  //             amount: response.amount,
-  //           };
-
-  //           const postResponse = await fetch(apiUrl, {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //               Authorization: `Bearer ${userToken}`,
-  //             },
-  //             body: JSON.stringify(requestData),
-  //           });
-
-  //           if (postResponse.ok) {
-  //             console.log("POST request successful");
-  //             ReactGA.event({
-  //               category: "User",
-  //               action: "Topped up wallet",
-  //             });
-  //             dispatch(fetchUserProfile(userToken));
-  //             // Fetch the updated wallet balance after the successful top-up
-  //             const apiUrlBalance =
-  //               "https://e-citizen.ng:8443/api/v2/user/wallet-balance";
-  //             const walletBalanceResponse = await fetch(apiUrlBalance, {
-  //               method: "GET",
-  //               headers: {
-  //                 Authorization: `Bearer ${userToken}`,
-  //               },
-  //             });
-
-  //             if (walletBalanceResponse.ok) {
-  //               const updatedWalletBalance = await walletBalanceResponse.json();
-  //               console.log("Updated Wallet Balance:", updatedWalletBalance);
-
-  //               // Update the user state with the new wallet balance
-  //               dispatch(updateUserWalletBalance(updatedWalletBalance));
-  //               Swal.fire({
-  //                 title: "Success",
-  //                 text: "Wallet topup was successful",
-  //                 icon: "success",
-  //                 customClass: {
-  //                   confirmButton: "custom-swal-button",
-  //                 },
-  //               });
-  //             }
-  //           } else {
-  //             console.error("POST request failed");
-  //             // Handle failure if needed
-  //           }
-  //         } catch (error) {
-  //           console.error("Error in POST request", error);
-  //           // Handle error if needed
-  //         }
-  //       }
-  //       closePaymentModal();
-  //       handleCancel();
-  //     },
-  //     onClose: () => {
-  //       handleCancel();
-  //     },
-  //   });
-  // };
-
   const [totalVerificationCount, setTotalVerificationCount] = useState(0);
   const [completedVerificationCount, setCompletedVerificationCount] =
     useState(0);
@@ -908,15 +815,6 @@ const MainDashboard = () => {
       );
       setFailedVerificationCount(failedVerifications.length);
     }
-    // if (transactionData) {
-    //   const failedVerifications = transactionData.filter(
-    //     (transaction) =>
-    //       transaction.successful == false &&
-    //       transaction.transactionType === "VERIFICATION"
-    //   );
-    //   console.log("failedVerifications:", failedVerifications);
-    //   setFailedVerificationCount(failedVerifications.length);
-    // }
   }, [verificationData, transactionData]);
   const CustomStatistic = ({ title, value, valueStyle }) => (
     <div className="custom-statistic">
@@ -950,31 +848,6 @@ const MainDashboard = () => {
       currency: "NGN",
     }).format(value);
   };
-
-  // const handleIframeLoad = () => {
-  //   // Access the content of the iframe
-  //   const iframe = document.getElementById("inlineFrameExample");
-  //   const iframeDocument =
-  //     iframe.contentDocument || iframe.contentWindow.document; // Handle cross-origin frame access
-  //   const jsonText = iframeDocument.body.textContent;
-  //   const jsonData = JSON.parse(jsonText);
-
-  //   // Send JSON data to parent window
-  //   window.parent.postMessage(jsonData, "*");
-  // };
-
-  // const iframeRef = useRef(null);
-  // const getContentFromIframe = () => {
-  //   // Check if the iframe ref is set
-  //   if (iframeRef.current) {
-  //     // Access the contentWindow property of the iframe to get its document
-  //     const iframeDocument = iframeRef.current.contentWindow.document;
-
-  //     // Now you can access the content inside the iframe
-  //     // For example, let's log the innerHTML of the body of the iframe
-  //     console.log(iframeDocument.body.innerHTML);
-  //   }
-  // };
 
   // Usage
   return (

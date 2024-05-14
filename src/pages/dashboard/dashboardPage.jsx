@@ -2196,12 +2196,21 @@ const DashboardPage = () => {
       text: "Verification in progress",
       icon: "info",
       showCloseButton: true,
+      allowOutsideClick: false, // Prevents closing by clicking outside
       didOpen: () => {
         Swal.showLoading();
       },
       customClass: {
         confirmButton: "custom-swal-button",
       },
+    }).then((result) => {
+      // Check if the modal is closed by clicking the close button
+      if (result.dismiss === Swal.DismissReason.close) {
+        // Close the modal
+        Swal.close();
+        // Refresh the page
+        window.location.reload();
+      }
     });
   }
 

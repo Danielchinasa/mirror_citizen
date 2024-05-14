@@ -65,14 +65,14 @@ function Navbar() {
   };
 
   const items = [
-    {
-      key: "1",
-      label: (
-        <a href="/main-dashboard" style={{ textDecoration: "none" }}>
-          Dashboard
-        </a>
-      ),
-    },
+    // {
+    //   key: "1",
+    //   label: (
+    //     <a href="/main-dashboard" style={{ textDecoration: "none" }}>
+    //       Dashboard
+    //     </a>
+    //   ),
+    // },
     {
       key: "2",
       label: (
@@ -418,11 +418,11 @@ function Navbar() {
               {window.innerWidth <= 960
                 ? isAuthenticated && (
                     <>
-                      <NavItemBtn>
+                      {/* <NavItemBtn>
                         <NavBtnLink to="/main-dashboard">
                           <MainButton type="primary">Dashboard</MainButton>
                         </NavBtnLink>
-                      </NavItemBtn>
+                      </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
                           <MainButton type="primary">Profile</MainButton>
