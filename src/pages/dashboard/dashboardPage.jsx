@@ -932,7 +932,7 @@ const DashboardPage = () => {
               : totalServiceCost,
         };
 
-        if (selectedProfile == "financial") {
+        if (bvnFilled) {
           if (areNoneChecked()) {
             setLoading(false);
             Swal.fire({
@@ -1085,7 +1085,7 @@ const DashboardPage = () => {
           type: "VERIFICATION",
         };
 
-        if (selectedProfile == "financial") {
+        if (bvnFilled) {
           if (areNoneChecked()) {
             setLoading(false);
             Swal.fire({
