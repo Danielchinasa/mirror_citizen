@@ -25,6 +25,7 @@ const SetNewPassword = () => {
   const [formData, setFormData] = useState({
     oldPassword: "",
     newPassword: "",
+    confirm_password: "",
   });
   const handleInputChange = (name, value) => {
     setFormData({
@@ -36,7 +37,19 @@ const SetNewPassword = () => {
     e.preventDefault();
     // Dispatch the sendVerificationRequest action with the form data
     setLoading(true);
+
     try {
+      // Check if old password is the same as the new password
+      if (formData.oldPassword === formData.newPassword) {
+        throw new Error("Old password and new password cannot be the same.");
+      }
+
+      // Check if new password and confirm password match
+      if (formData.newPassword !== formData.confirm_password) {
+        throw new Error("New password and confirm password do not match.");
+      }
+
+      // Dispatch the password update request only if all validations pass
       const response = await dispatch(setNewPassword(formData, userToken));
       setLoading(false);
 
@@ -60,15 +73,17 @@ const SetNewPassword = () => {
       }
     } catch (error) {
       // Handle errors if needed
-      message.error(error);
+      message.error(error.message);
       notification.error({
         message: "Error",
-        description: error,
+        description: error.message,
         duration: 10, // Duration in seconds
       });
       console.error("Error updating password", error);
+      setLoading(false); // Ensure loading state is set to false in case of error
     }
   };
+
   return (
     <div>
       <Row justify="center">
@@ -108,7 +123,7 @@ const SetNewPassword = () => {
               <Subtitle color="light">
                 Your new password must be different to previously used passwords
               </Subtitle>
-              <Spin spinning={loading} tip="Processing...">
+              <Spin spinning={loading} tip="Resetting Password...">
                 <StyledForm>
                   <StyledLabel>Old Password</StyledLabel>
                   <StyledInput
@@ -128,6 +143,16 @@ const SetNewPassword = () => {
                     value={formData.newPassword}
                     onChange={(e) =>
                       handleInputChange("newPassword", e.target.value)
+                    }
+                  />
+                  <StyledLabel>Confirm New password</StyledLabel>
+                  <StyledInput
+                    type="confirm_password"
+                    placeholder="Enter your new password"
+                    name="confirm_password"
+                    value={formData.confirm_password}
+                    onChange={(e) =>
+                      handleInputChange("confirm_password", e.target.value)
                     }
                   />
                   {/* <BtnLink to="/password-confirm"> */}

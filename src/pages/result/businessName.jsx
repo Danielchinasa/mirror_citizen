@@ -815,998 +815,1075 @@ const BusinessName = () => {
           <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
         </Link>
         <Card
-          style={{ width: "100%", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)" }}
+          style={{
+            width: "100%",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
+            marginBottom: "30px",
+          }}
         >
           <Heading4>Business Verification Result</Heading4>
         </Card>
 
         {businessData && businessData.length > 0 ? (
           businessData.map((business) => (
-            <Card
+            <Collapse
               style={{
                 width: "100%",
                 marginTop: "20px",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
               }}
-              key={business.data.id}
-            >
-              <div>
-                <Text>Business Profile</Text>
-                <RightOutlined />
-                <Text>Business Name</Text>
-                <RightOutlined />
-                <Text style={{ color: "#0DC939", fontWeight: "bold" }}>
-                  {business.data.approvedName}
-                </Text>
-              </div>
-              <Divider />
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    {renderDetail(
-                      <UserOutlined />,
-                      "Business Name",
-                      business.data.approvedName
-                        ? business.data.approvedName
-                        : `No Data`
-                    )}
-                  </div>
-                  <div class="col">
-                    {renderDetail(
-                      <BankOutlined />,
-                      "Registration Number",
-                      business.data.rcNumber
-                        ? business.data.rcNumber
-                        : `No Data`
-                    )}
-                  </div>
+              items={[
+                {
+                  key: business.data.id,
+                  label: (
+                    <div>
+                      <Text>Business Profile</Text>
+                      <RightOutlined />
+                      <Text>Business Name</Text>
+                      <RightOutlined />
+                      <Text style={{ color: "#0DC939", fontWeight: "bold" }}>
+                        {business.data.approvedName}
+                      </Text>
+                    </div>
+                  ),
+                  children: (
+                    <div class="container">
+                      <div class="row">
+                        <div class="col">
+                          {renderDetail(
+                            <UserOutlined />,
+                            "Business Name",
+                            business.data.approvedName
+                              ? business.data.approvedName
+                              : `No Data`
+                          )}
+                        </div>
+                        <div class="col">
+                          {renderDetail(
+                            <BankOutlined />,
+                            "Registration Number",
+                            business.data.rcNumber
+                              ? business.data.rcNumber
+                              : `No Data`
+                          )}
+                        </div>
 
-                  <div class="col">
-                    {renderDetail(
-                      <MailOutlined />,
-                      "Business Email",
-                      business.data.email ? business.data.email : `No Data`
-                    )}
-                  </div>
-                </div>
-                <Divider />
-                <div class="row">
-                  <div class="col">
-                    {renderDetail(
-                      <CheckCircleOutlined />,
-                      "Status",
-                      business.data.status ? business.data.status : `No Data`
-                    )}
-                  </div>
-                  <div class="col">
-                    {renderDetail(
-                      <CheckCircleOutlined />,
-                      "Company Status",
-                      business.data.companyStatus
-                        ? business.data.companyStatus
-                        : `No Data`
-                    )}
-                  </div>
+                        <div class="col">
+                          {renderDetail(
+                            <MailOutlined />,
+                            "Business Email",
+                            business.data.email
+                              ? business.data.email
+                              : `No Data`
+                          )}
+                        </div>
+                      </div>
+                      <Divider />
+                      <div class="row">
+                        <div class="col">
+                          {renderDetail(
+                            <CheckCircleOutlined />,
+                            "Status",
+                            business.data.status
+                              ? business.data.status
+                              : `No Data`
+                          )}
+                        </div>
+                        <div class="col">
+                          {renderDetail(
+                            <CheckCircleOutlined />,
+                            "Company Status",
+                            business.data.companyStatus
+                              ? business.data.companyStatus
+                              : `No Data`
+                          )}
+                        </div>
 
-                  <div class="col">
-                    {renderDetail(
-                      <HomeOutlined />,
-                      "Business Address",
-                      business.data.address ? business.data.address : "No Data"
-                    )}
-                  </div>
-                </div>
-                <Divider />
-                <div class="row">
-                  <div class="col">
-                    {renderDetail(
-                      <MdOutlinePinDrop />,
-                      "State",
-                      business.data.state
-                        ? business.data.state === "null"
-                          ? `No Data`
-                          : business.data.state
-                        : `No Data`
-                    )}
-                  </div>
+                        <div class="col">
+                          {renderDetail(
+                            <HomeOutlined />,
+                            "Business Address",
+                            business.data.address
+                              ? business.data.address
+                              : "No Data"
+                          )}
+                        </div>
+                      </div>
+                      <Divider />
+                      <div class="row">
+                        <div class="col">
+                          {renderDetail(
+                            <MdOutlinePinDrop />,
+                            "State",
+                            business.data.state
+                              ? business.data.state === "null"
+                                ? `No Data`
+                                : business.data.state
+                              : `No Data`
+                          )}
+                        </div>
 
-                  <div class="col">
-                    {renderDetail(
-                      <MdOutlinePinDrop />,
-                      "LGA",
-                      business.data.lga
-                        ? business.data.lga === "null"
-                          ? `No Data`
-                          : business.data.lga
-                        : `No Data`
-                    )}
-                  </div>
+                        <div class="col">
+                          {renderDetail(
+                            <MdOutlinePinDrop />,
+                            "LGA",
+                            business.data.lga
+                              ? business.data.lga === "null"
+                                ? `No Data`
+                                : business.data.lga
+                              : `No Data`
+                          )}
+                        </div>
 
-                  <div class="col">
-                    {renderDetail(
-                      <MdOutlinePinDrop />,
-                      "City",
-                      business.data.city ? business.data.city : `No Data`
-                    )}
-                  </div>
-                </div>
+                        <div class="col">
+                          {renderDetail(
+                            <MdOutlinePinDrop />,
+                            "City",
+                            business.data.city ? business.data.city : `No Data`
+                          )}
+                        </div>
+                      </div>
 
-                <Divider />
-                <div class="row">
-                  <div class="col">
-                    {renderDetail(
-                      <CheckCircleOutlined />,
-                      "CAC ID",
-                      business.data.cacid ? business.data.cacid : `No Data`
-                    )}
-                  </div>
-                  <div class="col">
-                    {renderDetail(
-                      <CheckCircleOutlined />,
-                      "Code",
-                      business.data.code ? business.data.code : `No Data`
-                    )}
-                  </div>
+                      <Divider />
+                      <div class="row">
+                        <div class="col">
+                          {renderDetail(
+                            <CheckCircleOutlined />,
+                            "CAC ID",
+                            business.data.cacid
+                              ? business.data.cacid
+                              : `No Data`
+                          )}
+                        </div>
+                        <div class="col">
+                          {renderDetail(
+                            <CheckCircleOutlined />,
+                            "Code",
+                            business.data.code ? business.data.code : `No Data`
+                          )}
+                        </div>
 
-                  <div class="col">
-                    {renderDetail(
-                      <MailOutlined />,
-                      "Classification ID",
-                      business.data.classificationId
-                        ? business.data.classificationId
-                        : `No Data`
-                    )}
-                  </div>
-                </div>
-                <Divider />
-                <div class="row">
-                  <div class="col">
-                    {renderDetail(
-                      <UserOutlined />,
-                      "Approved Name: ",
-                      business.data.approvedName
-                        ? business.data.approvedName
-                        : `No Data`
-                    )}
-                  </div>
-                  <div class="col">
-                    {renderDetail(
-                      <MailOutlined />,
-                      "Incorporated On",
-                      business.data.registrationDate
-                        ? new Date(
+                        <div class="col">
+                          {renderDetail(
+                            <MailOutlined />,
+                            "Classification ID",
+                            business.data.classificationId
+                              ? business.data.classificationId
+                              : `No Data`
+                          )}
+                        </div>
+                      </div>
+                      <Divider />
+                      <div class="row">
+                        <div class="col">
+                          {renderDetail(
+                            <UserOutlined />,
+                            "Approved Name: ",
+                            business.data.approvedName
+                              ? business.data.approvedName
+                              : `No Data`
+                          )}
+                        </div>
+                        <div class="col">
+                          {renderDetail(
+                            <MailOutlined />,
+                            "Incorporated On",
                             business.data.registrationDate
-                          ).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : "No Data"
-                    )}
-                  </div>
+                              ? new Date(
+                                  business.data.registrationDate
+                                ).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
+                              : "No Data"
+                          )}
+                        </div>
 
-                  <div class="col"></div>
-                </div>
-                <Divider />
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                  }}
-                >
-                  Stakeholder Details
-                </Text>
-                {business["shareholders-data"] == null ? (
-                  loading ? (
-                    <Spin size="large" tip="Loading" />
-                  ) : (
-                    <>
-                      <br></br>
-                      <MainButton
-                        type="primary"
-                        style={{ paddingRight: "50px", paddingLeft: "50px" }}
-                        onClick={() => handleButtonClick(business.data.cacid)}
+                        <div class="col"></div>
+                      </div>
+                      <Divider />
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "20px",
+                        }}
                       >
-                        <SearchOutlined /> Lookup Stakeholder for only{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {currencyCheck == "USD"
-                            ? "$" + stakeHolderFeeUsd
-                            : formatToNaira(stakeHolderFeeUsd)}
+                        Stakeholder Details
+                      </Text>
+                      {business["shareholders-data"] == null ? (
+                        loading ? (
+                          <Spin size="large" tip="Loading" />
+                        ) : (
+                          <>
+                            <br></br>
+                            <MainButton
+                              type="primary"
+                              style={{
+                                paddingRight: "50px",
+                                paddingLeft: "50px",
+                              }}
+                              onClick={() =>
+                                handleButtonClick(business.data.cacid)
+                              }
+                            >
+                              <SearchOutlined /> Lookup Stakeholder for only{" "}
+                              <span style={{ fontWeight: "bold" }}>
+                                {currencyCheck == "USD"
+                                  ? "$" + stakeHolderFeeUsd
+                                  : formatToNaira(stakeHolderFeeUsd)}
+                              </span>
+                            </MainButton>
+                          </>
+                        )
+                      ) : business["shareholders-data"].length > 0 ? (
+                        <div>
+                          <Collapse bordered={true} accordion>
+                            <Panel
+                              header={
+                                <div
+                                  style={{
+                                    color: "#0DC939",
+                                    fontSize: "16px",
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  Shareholders
+                                </div>
+                              }
+                              key="shareholderPanel"
+                            >
+                              {business["shareholders-data"].map(
+                                (shareholder, index) =>
+                                  shareholder.stake == "Shareholder" && (
+                                    <Collapse
+                                      bordered={false}
+                                      accordion
+                                      style={{ marginBottom: "10px" }}
+                                    >
+                                      <Panel
+                                        key={index}
+                                        header={
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                              alignItems: "center",
+                                            }}
+                                          >
+                                            <div style={{ fontWeight: "bold" }}>
+                                              {/* {`${shareholder.firstname || ""} ${
+                                            shareholder.surname || ""
+                                          }`} */}
+                                              {shareholder &&
+                                              shareholder.corporation_name ==
+                                                null
+                                                ? `${
+                                                    shareholder.firstname || ""
+                                                  } ${
+                                                    shareholder.surname || ""
+                                                  }`
+                                                : `${
+                                                    shareholder.corporation_name
+                                                  } ${
+                                                    shareholder.firstname || ""
+                                                  } ${
+                                                    shareholder.surname || ""
+                                                  }`}
+                                            </div>
+                                            <div
+                                              style={{
+                                                color: "#0DC939",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                padding: "2px",
+                                                border: "1px solid #0DC939",
+                                              }}
+                                            >
+                                              {shareholder.stake}
+                                            </div>
+                                          </div>
+                                        }
+                                      >
+                                        <div class="container">
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "First Name: ",
+                                                shareholder.firstname
+                                                  ? shareholder.firstname
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Last Name:",
+                                                shareholder.surname
+                                                  ? shareholder.surname
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Other Name: ",
+                                                shareholder.other_name
+                                                  ? shareholder.other_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Address: ",
+                                                shareholder.address
+                                                  ? shareholder.address ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.address
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Full Address: ",
+                                                shareholder.full_address2
+                                                  ? shareholder.full_address2 ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.full_address2
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Email: ",
+                                                shareholder.email
+                                                  ? shareholder.email == "null"
+                                                    ? `No Data`
+                                                    : shareholder.email
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Phone Number: ",
+                                                shareholder.phone_number
+                                                  ? shareholder.phone_number ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.phone_number
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Gender: ",
+                                                shareholder.gender
+                                                  ? shareholder.gender == "null"
+                                                    ? `No Data`
+                                                    : shareholder.gender
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "State: ",
+                                                shareholder.state
+                                                  ? shareholder.state == "null"
+                                                    ? `No Data`
+                                                    : shareholder.state
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "IsChairman: ",
+                                                shareholder.is_chairman
+                                                  ? shareholder.is_chairman ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.is_chairman
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Occupation: ",
+                                                shareholder.occupation
+                                                  ? shareholder.occupation ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.occupation
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Former Name: ",
+                                                shareholder.former_name
+                                                  ? shareholder.former_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.former_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Corporation Name: ",
+                                                shareholder.corporation_name
+                                                  ? shareholder.corporation_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.corporation_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Number of Shares: ",
+                                                shareholder.num_shares_alloted
+                                                  ? shareholder.num_shares_alloted ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.num_shares_alloted
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Status: ",
+                                                shareholder.status
+                                                  ? shareholder.status == "null"
+                                                    ? `No Data`
+                                                    : shareholder.status
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Identity Number: ",
+                                                shareholder.identity_number
+                                                  ? shareholder.identity_number ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.identity_number
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Age: ",
+                                                shareholder.age
+                                                  ? shareholder.age == "null"
+                                                    ? `No Data`
+                                                    : shareholder.age
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Type of Shares: ",
+                                                shareholder.type_of_shares
+                                                  ? shareholder.type_of_shares ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.type_of_shares
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "IsCorporate:",
+                                                shareholder.is_corporate
+                                                  ? shareholder.is_corporate ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.is_corporate
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Termination:",
+                                                shareholder.date_of_termination
+                                                  ? shareholder.date_of_termination ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_termination
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Appointment:",
+                                                shareholder.date_of_appointment
+                                                  ? shareholder.date_of_appointment ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_appointment
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Status Change:",
+                                                shareholder.date_of_status_change
+                                                  ? shareholder.date_of_status_change ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_status_change
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Birth:",
+                                                shareholder.date_of_birth
+                                                  ? shareholder.date_of_birth ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_birth
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Government Organisation Name:",
+                                                shareholder.government_organisation_name
+                                                  ? shareholder.government_organisation_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.government_organisation_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Foreign Organisation Name:",
+                                                shareholder.foreign_organisation_name
+                                                  ? shareholder.foreign_organisation_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.foreign_organisation_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Nationality:",
+                                                shareholder.nationality
+                                                  ? shareholder.nationality ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.nationality
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Appointed By:",
+                                                shareholder.appointed_by
+                                                  ? shareholder.appointed_by ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.appointed_by
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Panel>
+                                    </Collapse>
+                                  )
+                              )}
+                            </Panel>
+                            <Panel
+                              header={
+                                <div
+                                  style={{
+                                    color: "#0DC939",
+                                    fontSize: "16px",
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  Directors
+                                </div>
+                              }
+                              key="directorPanel"
+                            >
+                              {business["shareholders-data"].map(
+                                (shareholder, index) =>
+                                  shareholder.stake === "Director" && (
+                                    <Collapse
+                                      bordered={false}
+                                      accordion
+                                      style={{ marginBottom: "10px" }}
+                                    >
+                                      <Panel
+                                        key={index}
+                                        header={
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                              alignItems: "center",
+                                            }}
+                                          >
+                                            <div style={{ fontWeight: "bold" }}>
+                                              {shareholder &&
+                                              shareholder.corporation_name ==
+                                                null
+                                                ? `${
+                                                    shareholder.firstname || ""
+                                                  } ${
+                                                    shareholder.surname || ""
+                                                  }`
+                                                : `${
+                                                    shareholder.corporation_name
+                                                  } ${
+                                                    shareholder.firstname || ""
+                                                  } ${
+                                                    shareholder.surname || ""
+                                                  }`}
+                                            </div>
+                                            <div
+                                              style={{
+                                                color: "#0DC939",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {shareholder.stake}
+                                            </div>
+                                          </div>
+                                        }
+                                      >
+                                        <div class="container">
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "First Name: ",
+                                                shareholder.firstname
+                                                  ? shareholder.firstname
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Last Name:",
+                                                shareholder.surname
+                                                  ? shareholder.surname
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Other Name: ",
+                                                shareholder.other_name
+                                                  ? shareholder.other_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Address: ",
+                                                shareholder.address
+                                                  ? shareholder.address ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.address
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Full Address: ",
+                                                shareholder.full_address2
+                                                  ? shareholder.full_address2 ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.full_address2
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Email: ",
+                                                shareholder.email
+                                                  ? shareholder.email == "null"
+                                                    ? `No Data`
+                                                    : shareholder.email
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Phone Number: ",
+                                                shareholder.phone_number
+                                                  ? shareholder.phone_number ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.phone_number
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Gender: ",
+                                                shareholder.gender
+                                                  ? shareholder.gender == "null"
+                                                    ? `No Data`
+                                                    : shareholder.gender
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "State: ",
+                                                shareholder.state
+                                                  ? shareholder.state == "null"
+                                                    ? `No Data`
+                                                    : shareholder.state
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "IsChairman: ",
+                                                shareholder.is_chairman
+                                                  ? shareholder.is_chairman ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.is_chairman
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Occupation: ",
+                                                shareholder.occupation
+                                                  ? shareholder.occupation ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.occupation
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Former Name: ",
+                                                shareholder.former_name
+                                                  ? shareholder.former_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.former_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Corporation Name: ",
+                                                shareholder.corporation_name
+                                                  ? shareholder.corporation_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.corporation_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Number of Shares: ",
+                                                shareholder.num_shares_alloted
+                                                  ? shareholder.num_shares_alloted ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.num_shares_alloted
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Status: ",
+                                                shareholder.status
+                                                  ? shareholder.status == "null"
+                                                    ? `No Data`
+                                                    : shareholder.status
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Identity Number: ",
+                                                shareholder.identity_number
+                                                  ? shareholder.identity_number ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.identity_number
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Age: ",
+                                                shareholder.age
+                                                  ? shareholder.age == "null"
+                                                    ? `No Data`
+                                                    : shareholder.age
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Type of Shares: ",
+                                                shareholder.type_of_shares
+                                                  ? shareholder.type_of_shares ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.type_of_shares
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "IsCorporate:",
+                                                shareholder.is_corporate
+                                                  ? shareholder.is_corporate ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.is_corporate
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Termination:",
+                                                shareholder.date_of_termination
+                                                  ? shareholder.date_of_termination ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_termination
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Appointment:",
+                                                shareholder.date_of_appointment
+                                                  ? shareholder.date_of_appointment ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_appointment
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Status Change:",
+                                                shareholder.date_of_status_change
+                                                  ? shareholder.date_of_status_change ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_status_change
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Date of Birth:",
+                                                shareholder.date_of_birth
+                                                  ? shareholder.date_of_birth ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : new Date(
+                                                        shareholder.date_of_birth
+                                                      ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                          year: "numeric",
+                                                          month: "long",
+                                                          day: "numeric",
+                                                        }
+                                                      )
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Government Organisation Name:",
+                                                shareholder.government_organisation_name
+                                                  ? shareholder.government_organisation_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.government_organisation_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Divider />
+                                          <div class="row">
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Foreign Organisation Name:",
+                                                shareholder.foreign_organisation_name
+                                                  ? shareholder.foreign_organisation_name ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.foreign_organisation_name
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Nationality:",
+                                                shareholder.nationality
+                                                  ? shareholder.nationality ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.nationality
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                            <div class="col">
+                                              {renderDetail2(
+                                                "Appointed By:",
+                                                shareholder.appointed_by
+                                                  ? shareholder.appointed_by ==
+                                                    "null"
+                                                    ? `No Data`
+                                                    : shareholder.appointed_by
+                                                  : `No Data`
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Panel>
+                                    </Collapse>
+                                  )
+                              )}
+                            </Panel>
+                          </Collapse>
+                        </div>
+                      ) : (
+                        <span style={{ color: "red" }}>
+                          <br />
+                          We couldn't find any shareholders records based on the
+                          information you provided.
                         </span>
-                      </MainButton>
-                    </>
-                  )
-                ) : business["shareholders-data"].length > 0 ? (
-                  <div>
-                    <Collapse bordered={true} accordion>
-                      <Panel
-                        header={
-                          <div
-                            style={{
-                              color: "#0DC939",
-                              fontSize: "16px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Shareholders
-                          </div>
-                        }
-                        key="shareholderPanel"
-                      >
-                        {business["shareholders-data"].map(
-                          (shareholder, index) =>
-                            shareholder.stake == "Shareholder" && (
-                              <Collapse
-                                bordered={false}
-                                accordion
-                                style={{ marginBottom: "10px" }}
-                              >
-                                <Panel
-                                  key={index}
-                                  header={
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      <div style={{ fontWeight: "bold" }}>
-                                        {/* {`${shareholder.firstname || ""} ${
-                                          shareholder.surname || ""
-                                        }`} */}
-                                        {shareholder &&
-                                        shareholder.corporation_name == null
-                                          ? `${shareholder.firstname || ""} ${
-                                              shareholder.surname || ""
-                                            }`
-                                          : `${shareholder.corporation_name} ${
-                                              shareholder.firstname || ""
-                                            } ${shareholder.surname || ""}`}
-                                      </div>
-                                      <div
-                                        style={{
-                                          color: "#0DC939",
-                                          fontSize: "14px",
-                                          fontWeight: "bold",
-                                          padding: "2px",
-                                          border: "1px solid #0DC939",
-                                        }}
-                                      >
-                                        {shareholder.stake}
-                                      </div>
-                                    </div>
-                                  }
-                                >
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "First Name: ",
-                                          shareholder.firstname
-                                            ? shareholder.firstname
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Last Name:",
-                                          shareholder.surname
-                                            ? shareholder.surname
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Other Name: ",
-                                          shareholder.other_name
-                                            ? shareholder.other_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Address: ",
-                                          shareholder.address
-                                            ? shareholder.address == "null"
-                                              ? `No Data`
-                                              : shareholder.address
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Full Address: ",
-                                          shareholder.full_address2
-                                            ? shareholder.full_address2 ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.full_address2
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Email: ",
-                                          shareholder.email
-                                            ? shareholder.email == "null"
-                                              ? `No Data`
-                                              : shareholder.email
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Phone Number: ",
-                                          shareholder.phone_number
-                                            ? shareholder.phone_number == "null"
-                                              ? `No Data`
-                                              : shareholder.phone_number
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Gender: ",
-                                          shareholder.gender
-                                            ? shareholder.gender == "null"
-                                              ? `No Data`
-                                              : shareholder.gender
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "State: ",
-                                          shareholder.state
-                                            ? shareholder.state == "null"
-                                              ? `No Data`
-                                              : shareholder.state
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "IsChairman: ",
-                                          shareholder.is_chairman
-                                            ? shareholder.is_chairman == "null"
-                                              ? `No Data`
-                                              : shareholder.is_chairman
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Occupation: ",
-                                          shareholder.occupation
-                                            ? shareholder.occupation == "null"
-                                              ? `No Data`
-                                              : shareholder.occupation
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Former Name: ",
-                                          shareholder.former_name
-                                            ? shareholder.former_name == "null"
-                                              ? `No Data`
-                                              : shareholder.former_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Corporation Name: ",
-                                          shareholder.corporation_name
-                                            ? shareholder.corporation_name ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.corporation_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Number of Shares: ",
-                                          shareholder.num_shares_alloted
-                                            ? shareholder.num_shares_alloted ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.num_shares_alloted
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Status: ",
-                                          shareholder.status
-                                            ? shareholder.status == "null"
-                                              ? `No Data`
-                                              : shareholder.status
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Identity Number: ",
-                                          shareholder.identity_number
-                                            ? shareholder.identity_number ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.identity_number
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Age: ",
-                                          shareholder.age
-                                            ? shareholder.age == "null"
-                                              ? `No Data`
-                                              : shareholder.age
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Type of Shares: ",
-                                          shareholder.type_of_shares
-                                            ? shareholder.type_of_shares ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.type_of_shares
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "IsCorporate:",
-                                          shareholder.is_corporate
-                                            ? shareholder.is_corporate == "null"
-                                              ? `No Data`
-                                              : shareholder.is_corporate
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Termination:",
-                                          shareholder.date_of_termination
-                                            ? shareholder.date_of_termination ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_termination
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Appointment:",
-                                          shareholder.date_of_appointment
-                                            ? shareholder.date_of_appointment ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_appointment
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Status Change:",
-                                          shareholder.date_of_status_change
-                                            ? shareholder.date_of_status_change ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_status_change
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Birth:",
-                                          shareholder.date_of_birth
-                                            ? shareholder.date_of_birth ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_birth
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Government Organisation Name:",
-                                          shareholder.government_organisation_name
-                                            ? shareholder.government_organisation_name ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.government_organisation_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Foreign Organisation Name:",
-                                          shareholder.foreign_organisation_name
-                                            ? shareholder.foreign_organisation_name ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.foreign_organisation_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Nationality:",
-                                          shareholder.nationality
-                                            ? shareholder.nationality == "null"
-                                              ? `No Data`
-                                              : shareholder.nationality
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Appointed By:",
-                                          shareholder.appointed_by
-                                            ? shareholder.appointed_by == "null"
-                                              ? `No Data`
-                                              : shareholder.appointed_by
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Panel>
-                              </Collapse>
-                            )
-                        )}
-                      </Panel>
-                      <Panel
-                        header={
-                          <div
-                            style={{
-                              color: "#0DC939",
-                              fontSize: "16px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Directors
-                          </div>
-                        }
-                        key="directorPanel"
-                      >
-                        {business["shareholders-data"].map(
-                          (shareholder, index) =>
-                            shareholder.stake === "Director" && (
-                              <Collapse
-                                bordered={false}
-                                accordion
-                                style={{ marginBottom: "10px" }}
-                              >
-                                <Panel
-                                  key={index}
-                                  header={
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      <div style={{ fontWeight: "bold" }}>
-                                        {shareholder &&
-                                        shareholder.corporation_name == null
-                                          ? `${shareholder.firstname || ""} ${
-                                              shareholder.surname || ""
-                                            }`
-                                          : `${shareholder.corporation_name} ${
-                                              shareholder.firstname || ""
-                                            } ${shareholder.surname || ""}`}
-                                      </div>
-                                      <div
-                                        style={{
-                                          color: "#0DC939",
-                                          fontSize: "14px",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        {shareholder.stake}
-                                      </div>
-                                    </div>
-                                  }
-                                >
-                                  <div class="container">
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "First Name: ",
-                                          shareholder.firstname
-                                            ? shareholder.firstname
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Last Name:",
-                                          shareholder.surname
-                                            ? shareholder.surname
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Other Name: ",
-                                          shareholder.other_name
-                                            ? shareholder.other_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Address: ",
-                                          shareholder.address
-                                            ? shareholder.address == "null"
-                                              ? `No Data`
-                                              : shareholder.address
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Full Address: ",
-                                          shareholder.full_address2
-                                            ? shareholder.full_address2 ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.full_address2
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Email: ",
-                                          shareholder.email
-                                            ? shareholder.email == "null"
-                                              ? `No Data`
-                                              : shareholder.email
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Phone Number: ",
-                                          shareholder.phone_number
-                                            ? shareholder.phone_number == "null"
-                                              ? `No Data`
-                                              : shareholder.phone_number
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Gender: ",
-                                          shareholder.gender
-                                            ? shareholder.gender == "null"
-                                              ? `No Data`
-                                              : shareholder.gender
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "State: ",
-                                          shareholder.state
-                                            ? shareholder.state == "null"
-                                              ? `No Data`
-                                              : shareholder.state
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "IsChairman: ",
-                                          shareholder.is_chairman
-                                            ? shareholder.is_chairman == "null"
-                                              ? `No Data`
-                                              : shareholder.is_chairman
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Occupation: ",
-                                          shareholder.occupation
-                                            ? shareholder.occupation == "null"
-                                              ? `No Data`
-                                              : shareholder.occupation
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Former Name: ",
-                                          shareholder.former_name
-                                            ? shareholder.former_name == "null"
-                                              ? `No Data`
-                                              : shareholder.former_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Corporation Name: ",
-                                          shareholder.corporation_name
-                                            ? shareholder.corporation_name ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.corporation_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Number of Shares: ",
-                                          shareholder.num_shares_alloted
-                                            ? shareholder.num_shares_alloted ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.num_shares_alloted
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Status: ",
-                                          shareholder.status
-                                            ? shareholder.status == "null"
-                                              ? `No Data`
-                                              : shareholder.status
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Identity Number: ",
-                                          shareholder.identity_number
-                                            ? shareholder.identity_number ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.identity_number
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Age: ",
-                                          shareholder.age
-                                            ? shareholder.age == "null"
-                                              ? `No Data`
-                                              : shareholder.age
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Type of Shares: ",
-                                          shareholder.type_of_shares
-                                            ? shareholder.type_of_shares ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.type_of_shares
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "IsCorporate:",
-                                          shareholder.is_corporate
-                                            ? shareholder.is_corporate == "null"
-                                              ? `No Data`
-                                              : shareholder.is_corporate
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Termination:",
-                                          shareholder.date_of_termination
-                                            ? shareholder.date_of_termination ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_termination
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Appointment:",
-                                          shareholder.date_of_appointment
-                                            ? shareholder.date_of_appointment ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_appointment
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Status Change:",
-                                          shareholder.date_of_status_change
-                                            ? shareholder.date_of_status_change ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_status_change
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Date of Birth:",
-                                          shareholder.date_of_birth
-                                            ? shareholder.date_of_birth ==
-                                              "null"
-                                              ? `No Data`
-                                              : new Date(
-                                                  shareholder.date_of_birth
-                                                ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                                })
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Government Organisation Name:",
-                                          shareholder.government_organisation_name
-                                            ? shareholder.government_organisation_name ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.government_organisation_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                    <Divider />
-                                    <div class="row">
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Foreign Organisation Name:",
-                                          shareholder.foreign_organisation_name
-                                            ? shareholder.foreign_organisation_name ==
-                                              "null"
-                                              ? `No Data`
-                                              : shareholder.foreign_organisation_name
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Nationality:",
-                                          shareholder.nationality
-                                            ? shareholder.nationality == "null"
-                                              ? `No Data`
-                                              : shareholder.nationality
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                      <div class="col">
-                                        {renderDetail2(
-                                          "Appointed By:",
-                                          shareholder.appointed_by
-                                            ? shareholder.appointed_by == "null"
-                                              ? `No Data`
-                                              : shareholder.appointed_by
-                                            : `No Data`
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Panel>
-                              </Collapse>
-                            )
-                        )}
-                      </Panel>
-                    </Collapse>
-                  </div>
-                ) : (
-                  <span style={{ color: "red" }}>
-                    <br />
-                    We couldn't find any shareholders records based on the
-                    information you provided.
-                  </span>
-                )}
-              </div>
-            </Card>
+                      )}
+                    </div>
+                  ),
+                },
+              ]}
+            />
           ))
         ) : (
           <Spin size="large" />

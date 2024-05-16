@@ -93,6 +93,9 @@ const MainDashboard = () => {
   useEffect(() => {
     // Convert tokenExpire string to a Date object
     const expireDate = new Date(tokenExpire);
+    // const expireDate = new Date(
+    //   "Thu May 16 2024 10:31:20 GMT+0100 (West Africa Standard Time)"
+    // );
 
     // Get the current date/time
     const currentDate = new Date();
@@ -107,6 +110,8 @@ const MainDashboard = () => {
     } else {
       // Token is still valid
       // You may want to handle this case differently
+      console.log(expireDate);
+      console.log(currentDate);
     }
   }, []);
 

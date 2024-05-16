@@ -40,6 +40,8 @@ function Navbar() {
   const userToken2 = user?.jwtToken || "";
   // const tokenExpire = "2024-04-30T09:04:44.000+00:00";
 
+  const tokenExpire = user?.expirationDate || "";
+
   const handleClick = () => setClick(!click);
 
   const closeMobileMenu = () => setClick(false);
@@ -52,6 +54,21 @@ function Navbar() {
       setButton(true);
     }
   };
+
+  useEffect(() => {
+    // Convert tokenExpire string to a Date object
+    const expireDate = new Date(tokenExpire);
+
+    // Get the current date/time
+    const currentDate = new Date();
+
+    if (currentDate >= expireDate) {
+      dispatch(logout());
+      history.push("/");
+      // console.log("Time don pass well");
+    } else {
+    }
+  }, []);
 
   useEffect(() => {
     showButton();

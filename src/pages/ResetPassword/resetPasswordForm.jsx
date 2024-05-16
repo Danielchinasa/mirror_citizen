@@ -32,7 +32,6 @@ const ResetPasswordForm = ({ email, token }) => {
     // rememberMe: false,
   });
 
-
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -248,7 +247,7 @@ const ResetPasswordForm = ({ email, token }) => {
       {contextHolder}
       <div style={{ marginTop: "50px" }}>
         <Heading>Reset Password</Heading>
-        <Spin spinning={loading} tip="Logging in...">
+        <Spin spinning={loading} tip="Resetting Password...">
           <StyledForm onSubmit={handleSignIn}>
             {formErrors.general && (
               <Alert
@@ -278,7 +277,11 @@ const ResetPasswordForm = ({ email, token }) => {
               onChange={handleInputChange}
             />
             {formErrors.confirmpassword && (
-              <Alert message={formErrors.confirmpassword} type="error" showIcon />
+              <Alert
+                message={formErrors.confirmpassword}
+                type="error"
+                showIcon
+              />
             )}
             {/* <Checkbox
               onChange={handleRememberMeChange}
