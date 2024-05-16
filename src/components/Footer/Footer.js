@@ -20,6 +20,7 @@ import NewsletterSection from "../newsletter/newsLetterSection";
 import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
+import { Link } from "react-router-dom";
 
 function Footer() {
   const date = new Date();
@@ -110,18 +111,34 @@ function Footer() {
                 </Modal>
               </FooterLinkItems>
               <FooterLinkItems>
+                <a
+                  href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
+                  target="none"
+                  style={{ cursor: "pointer", marginBottom: "10px" }}
+                >
+                  <img
+                    src={playStore}
+                    alt="Logo"
+                    style={{
+                      width: 100,
+                      cursor: "pointer",
+                      paddingRight: "5px",
+                    }}
+                  />
+                </a>
+                <a href="#" target="none">
+                  <img
+                    src={appStore}
+                    alt="Logo"
+                    style={{
+                      width: 100,
+                      cursor: "pointer",
+                      paddingRight: "5px",
+                    }}
+                  />
+                </a>
+
                 <FooterLink>
-                  <a href="https://play.google.com/store/apps/details?id=biosec.ecitizen">
-                    <img
-                      src={playStore}
-                      alt="Logo"
-                      style={{
-                        width: 100,
-                        cursor: "pointer",
-                        paddingRight: "5px",
-                      }}
-                    />
-                  </a>
                   {/* <a
                     href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
                     target="none"
@@ -129,17 +146,7 @@ function Footer() {
                   >
                     <FooterLogoArea3 src={playStore}></FooterLogoArea3>
                   </a> */}
-                  <a href="#" target="none">
-                    <img
-                      src={appStore}
-                      alt="Logo"
-                      style={{
-                        width: 100,
-                        cursor: "pointer",
-                        paddingRight: "5px",
-                      }}
-                    />
-                  </a>
+
                   {/* <a href="#" target="none" style={{ cursor: "pointer" }}>
                     <FooterLogoArea3
                       src={appStore}

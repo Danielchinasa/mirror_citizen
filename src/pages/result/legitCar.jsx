@@ -135,24 +135,24 @@ const LegitCar = () => {
               );
             }}
           ></div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Car Insurance</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#ECF5F8",
-                }}
-              >
-                <p class="card-text">
-                  Borrow from 100,000 with monthly repayments of to 7 years.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+          <div
+            className="col-sm-12 col-md-6 col-lg-3 mb-3 mr-3"
+            style={{
+              backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "200px",
+              marginRight: "10px",
+              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+            }}
+            onClick={() => {
+              window.open(
+                "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
+                "_blank"
+              );
+            }}
+          ></div>
+          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">Finance your Next Car</div>
               <div
@@ -183,7 +183,7 @@ const LegitCar = () => {
                 <p class="card-text">Credit Cards handpicked for you</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </Container>
