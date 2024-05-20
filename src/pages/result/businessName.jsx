@@ -18,6 +18,7 @@ import {
   StyledLabel,
 } from "../../globalStyles";
 import { Link } from "react-router-dom";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -807,6 +808,14 @@ const BusinessName = () => {
       });
     }
   };
+  const [activeKey, setActiveKey] = React.useState(null);
+  React.useEffect(() => {
+    if (businessData.length === 1) {
+      setActiveKey(businessData[0].data.id);
+    } else {
+      setActiveKey(null);
+    }
+  }, [businessData]);
 
   return (
     <Container>
@@ -827,20 +836,25 @@ const BusinessName = () => {
         {businessData && businessData.length > 0 ? (
           businessData.map((business) => (
             <Collapse
+              expandIcon={({ isActive }) => (
+                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+              )}
               style={{
                 width: "100%",
                 marginTop: "20px",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
               }}
+              activeKey={activeKey}
+              onChange={(key) => setActiveKey(key)}
               items={[
                 {
                   key: business.data.id,
                   label: (
                     <div>
-                      <Text>Business Profile</Text>
+                      {/* <Text>Business Profile</Text>
                       <RightOutlined />
                       <Text>Business Name</Text>
-                      <RightOutlined />
+                      <RightOutlined /> */}
                       <Text style={{ color: "#0DC939", fontWeight: "bold" }}>
                         {business.data.approvedName}
                       </Text>
@@ -1895,7 +1909,7 @@ const BusinessName = () => {
       <div class="container">
         <div class="row">
           <div
-            className="col-sm-12 col-md-6 col-lg-3 mb-3 mr-3"
+            className="col-sm-4 col-md-3 col-lg-3 mb-3 mr-3"
             style={{
               backgroundImage: `url(${Reach1})`,
               backgroundSize: "cover",
@@ -1912,7 +1926,7 @@ const BusinessName = () => {
             }}
           ></div>
           <div
-            className="col-sm-12 col-md-6 col-lg-3 mb-3 mr-3"
+            className="col-sm-4 col-md-3 col-lg-3 mb-3 mr-3"
             style={{
               backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
               backgroundSize: "cover",

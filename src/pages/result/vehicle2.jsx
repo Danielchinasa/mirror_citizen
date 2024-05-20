@@ -343,7 +343,7 @@ const Vehicle2 = () => {
       <div class="container">
         <div class="row">
           <div
-            className="col-sm-12 col-md-6 col-lg-3 mb-3"
+            className="col-sm-4 col-md-6 col-lg-3 mb-3"
             style={{
               backgroundImage: `url(${Reach1})`,
               backgroundSize: "cover",
@@ -359,7 +359,7 @@ const Vehicle2 = () => {
             }}
           ></div>
           <div
-            className="col-sm-12 col-md-6 col-lg-3 mb-3 mr-3"
+            className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
             style={{
               backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
               backgroundSize: "cover",
