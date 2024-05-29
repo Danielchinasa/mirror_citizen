@@ -58,23 +58,23 @@ const Vehicle2 = () => {
   const tokenExpire = user?.expirationDate || "";
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [vin, setVin] = useState("No Data");
-  const [model, setModel] = useState("No Data");
-  const [make, setMake] = useState("No Data");
-  const [decision, setDecision] = useState("No Data");
-  const [reason, setReason] = useState("No Data");
-  const [chassisNumber, setChassisNumber] = useState("No Data");
-  const [stolen, setStolen] = useState("No Data");
-  const [stolenReports, setStolenReports] = useState("No Data");
-  const [licenseNumber, setLicenseNumber] = useState("No Data");
-  const [category, setCategory] = useState("No Data");
-  const [ownerFirstName, setOwnerFirstName] = useState("No Data");
-  const [ownerMiddleName, setOwnerMiddleName] = useState("No Data");
-  const [ownerLastName, setOwnerLastName] = useState("No Data");
-  const [ownerAddress, setOwnerAddress] = useState("No Data");
-  const [ownerLga, setOwnerLga] = useState("No Data");
-  const [ownerState, setOwnerState] = useState("No Data");
-  const [ownerPhone, setOwnerPhone] = useState("No Data");
+  const [vin, setVin] = useState("-");
+  const [model, setModel] = useState("-");
+  const [make, setMake] = useState("-");
+  const [decision, setDecision] = useState("-");
+  const [reason, setReason] = useState("-");
+  const [chassisNumber, setChassisNumber] = useState("-");
+  const [stolen, setStolen] = useState("-");
+  const [stolenReports, setStolenReports] = useState("-");
+  const [licenseNumber, setLicenseNumber] = useState("-");
+  const [category, setCategory] = useState("-");
+  const [ownerFirstName, setOwnerFirstName] = useState("-");
+  const [ownerMiddleName, setOwnerMiddleName] = useState("-");
+  const [ownerLastName, setOwnerLastName] = useState("-");
+  const [ownerAddress, setOwnerAddress] = useState("-");
+  const [ownerLga, setOwnerLga] = useState("-");
+  const [ownerState, setOwnerState] = useState("-");
+  const [ownerPhone, setOwnerPhone] = useState("-");
 
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
@@ -122,24 +122,24 @@ const Vehicle2 = () => {
         const vehicleData = postResponse.data.data;
         console.log("Post JSON:", vehicleData);
         setLoading(false);
-        const vinSpec = vehicleData.vin || "No Data";
-        const modelSpec = vehicleData.model || "No Data";
-        const makeSpec = vehicleData.make || "No Data";
-        const decisionSpec = vehicleData.decision || "No Data";
-        const reasonSpec = vehicleData.reason || "No Data";
-        const chassisNumberSpec = vehicleData.chassisNumber || "No Data";
-        const stolenSpec = vehicleData.stolen || "No Data";
-        const stolenReportsSpec = vehicleData.stolenReports || "No Data";
-        const licenseNumberSpec = vehicleData.license_number || "No Data";
-        const categorySpec = vehicleData.category || "No Data";
-        const ownerFirstNameSpec = vehicleData.owner_first_name || "No Data";
-        const ownerMiddleNameSpec = vehicleData.owner_middle_name || "No Data";
+        const vinSpec = vehicleData.vin || "-";
+        const modelSpec = vehicleData.model || "-";
+        const makeSpec = vehicleData.make || "-";
+        const decisionSpec = vehicleData.decision || "-";
+        const reasonSpec = vehicleData.reason || "-";
+        const chassisNumberSpec = vehicleData.chassisNumber || "-";
+        const stolenSpec = vehicleData.stolen || "-";
+        const stolenReportsSpec = vehicleData.stolenReports || "-";
+        const licenseNumberSpec = vehicleData.license_number || "-";
+        const categorySpec = vehicleData.category || "-";
+        const ownerFirstNameSpec = vehicleData.owner_first_name || "-";
+        const ownerMiddleNameSpec = vehicleData.owner_middle_name || "-";
 
-        const ownerLastNameSpec = vehicleData.owner_last_name || "No Data";
-        const ownerAddressSpec = vehicleData.owner_address || "No Data";
-        const ownerLgaSpec = vehicleData.owner_lga || "No Data";
-        const ownerStateSpec = vehicleData.owner_state || "No Data";
-        const ownerPhoneSpec = vehicleData.owner_phone || "No Data";
+        const ownerLastNameSpec = vehicleData.owner_last_name || "-";
+        const ownerAddressSpec = vehicleData.owner_address || "-";
+        const ownerLgaSpec = vehicleData.owner_lga || "-";
+        const ownerStateSpec = vehicleData.owner_state || "-";
+        const ownerPhoneSpec = vehicleData.owner_phone || "-";
         setVin(vinSpec);
         setModel(modelSpec);
         setMake(makeSpec);
@@ -169,6 +169,17 @@ const Vehicle2 = () => {
     fetchData();
   }, [dispatch, userToken]);
 
+  // const renderDetail = (icon, label, value) => (
+  //   <>
+  //     <StyledLabel>
+  //       {icon}
+  //       &nbsp; {label}
+  //     </StyledLabel>
+  //     <StyledLabel>
+  //       <strong>{value}</strong>
+  //     </StyledLabel>
+  //   </>
+  // );
   const renderDetail = (icon, label, value) => (
     <>
       <StyledLabel>
@@ -176,7 +187,7 @@ const Vehicle2 = () => {
         &nbsp; {label}
       </StyledLabel>
       <StyledLabel>
-        <strong>{value}</strong>
+        <strong>{value != null && value !== "null" ? value : "-"}</strong>
       </StyledLabel>
     </>
   );

@@ -195,10 +195,21 @@ const Result = () => {
         &nbsp; {label}
       </StyledLabel>
       <StyledLabel>
-        <strong>{value}</strong>
+        <strong>{value != null && value !== "null" ? value : "-"}</strong>
       </StyledLabel>
     </>
   );
+  // const renderDetail = (icon, label, value) => (
+  //   <>
+  //     <StyledLabel>
+  //       {icon}
+  //       &nbsp; {label}
+  //     </StyledLabel>
+  //     <StyledLabel>
+  //       <strong>{value}</strong>
+  //     </StyledLabel>
+  //   </>
+  // );
   const storedValue = localStorage.getItem("profile");
 
   if (loading) {

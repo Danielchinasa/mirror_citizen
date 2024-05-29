@@ -359,6 +359,7 @@ const DashboardPage = () => {
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
+    setLoadingSmall(false);
     setLoading(true);
     try {
       const response = await dispatch(
@@ -853,6 +854,7 @@ const DashboardPage = () => {
   const [modalVisibleFace, setModalVisibleFace] = useState(false);
   const [paymentMethod, setPaymentmethod] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingSmall, setLoadingSmall] = useState(false);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [loadingModal, setLoadingModal] = useState(false);
   const [totalveri, setTotalveri] = useState(0);
@@ -899,6 +901,7 @@ const DashboardPage = () => {
   const randomTransactionId = generateTransactionId();
 
   const handlePaymentMethod = async () => {
+    setLoadingSmall(true);
     if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
@@ -1605,22 +1608,24 @@ const DashboardPage = () => {
           marginTop: "20px",
         }}
       >
-        <Button
-          type="primary"
-          onClick={handlePaymentMethod}
-          disabled={!checkboxCheckedConfirm}
-          style={{
-            marginRight: 10,
-            backgroundColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
-            borderColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9",
-            cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
-          }}
-        >
-          Confirm
-        </Button>
-        <Button key="cancel" onClick={handleCancel}>
-          Cancel
-        </Button>
+        <Spin spinning={loadingSmall}>
+          <Button
+            type="primary"
+            onClick={handlePaymentMethod}
+            disabled={!checkboxCheckedConfirm}
+            style={{
+              marginRight: 10,
+              backgroundColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
+              borderColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9",
+              cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+            }}
+          >
+            Confirm
+          </Button>
+          <Button key="cancel" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </Spin>
       </div>
     </Modal>
   );

@@ -345,32 +345,23 @@ const Financial = () => {
                         <div class="col-12">
                           {renderDetail(
                             "Date of Birth",
-                            basicData[0].dateOfBirth || "No Data"
+                            basicData[0].dateOfBirth || "-"
                           )}
                         </div>
                         <div class="col-12">
                           {renderDetail("Gender", basicData[0].gender)}
                         </div>
                         <div class="col-12">
-                          {renderDetail(
-                            "Phone",
-                            basicData[0].phone || "No Data"
-                          )}
+                          {renderDetail("Phone", basicData[0].phone || "-")}
                         </div>
                         <div class="col-12">
                           {renderDetail("BVN", basicData[0].bvn)}
                         </div>
                         <div class="col-12">
-                          {renderDetail(
-                            "Address",
-                            basicData[0].address || "No Data"
-                          )}
+                          {renderDetail("Address", basicData[0].address || "-")}
                         </div>
                         <div class="col-12">
-                          {renderDetail(
-                            "Email",
-                            basicData[0].email || "No Data"
-                          )}
+                          {renderDetail("Email", basicData[0].email || "-")}
                         </div>
                       </div>
                     </div>
@@ -560,7 +551,7 @@ const Financial = () => {
                         {" "}
                         {summaryData && summaryData.highestLoanAmount !== null
                           ? formatAmountToNaira(summaryData.highestLoanAmount)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -584,7 +575,7 @@ const Financial = () => {
                         {summaryData &&
                         summaryData.totalNoOfInstitutions !== null
                           ? summaryData.totalNoOfInstitutions
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -605,7 +596,7 @@ const Financial = () => {
                         {" "}
                         {summaryData && summaryData.totalOverdue !== null
                           ? formatAmountToNaira(summaryData.totalOverdue)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -626,7 +617,7 @@ const Financial = () => {
                         {" "}
                         {summaryData && summaryData.totalBorrowed !== null
                           ? formatAmountToNaira(summaryData.totalBorrowed)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -649,7 +640,7 @@ const Financial = () => {
                         {" "}
                         {summaryData && summaryData.totalOutstanding !== null
                           ? formatAmountToNaira(summaryData.totalOutstanding)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -672,7 +663,7 @@ const Financial = () => {
                         {" "}
                         {summaryData && summaryData.totalNoOfLoans !== null
                           ? summaryData.totalNoOfLoans
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -696,7 +687,7 @@ const Financial = () => {
                         {summaryData &&
                         summaryData.totalNoOfActiveLoans !== null
                           ? summaryData.totalNoOfActiveLoans
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -720,7 +711,7 @@ const Financial = () => {
                         {summaryData &&
                         summaryData.totalNoOfDelinquentFacilities !== null
                           ? summaryData.totalNoOfDelinquentFacilities
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -841,7 +832,7 @@ const Financial = () => {
                           ? formatAmountToNaira(
                               crcsummaryData.highestLoanAmount
                             )
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -865,7 +856,7 @@ const Financial = () => {
                         {crcsummaryData &&
                         crcsummaryData.totalNoOfInstitutions !== null
                           ? crcsummaryData.totalNoOfInstitutions
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -886,7 +877,7 @@ const Financial = () => {
                         {" "}
                         {crcsummaryData && crcsummaryData.totalOverdue !== null
                           ? formatAmountToNaira(crcsummaryData.totalOverdue)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -907,7 +898,7 @@ const Financial = () => {
                         {" "}
                         {crcsummaryData && crcsummaryData.totalBorrowed !== null
                           ? formatAmountToNaira(crcsummaryData.totalBorrowed)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -931,7 +922,7 @@ const Financial = () => {
                         {crcsummaryData &&
                         crcsummaryData.totalOutstanding !== null
                           ? formatAmountToNaira(crcsummaryData.totalOutstanding)
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -955,7 +946,7 @@ const Financial = () => {
                         {crcsummaryData &&
                         crcsummaryData.totalNoOfLoans !== null
                           ? crcsummaryData.totalNoOfLoans
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -979,7 +970,7 @@ const Financial = () => {
                         {crcsummaryData &&
                         crcsummaryData.totalNoOfActiveLoans !== null
                           ? crcsummaryData.totalNoOfActiveLoans
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1003,7 +994,7 @@ const Financial = () => {
                         {crcsummaryData &&
                         crcsummaryData.totalNoOfDelinquentFacilities !== null
                           ? crcsummaryData.totalNoOfDelinquentFacilities
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1125,7 +1116,7 @@ const Financial = () => {
                           ? formatAmountToNaira(
                               creditRegistrySummaryData.highestLoanAmount
                             )
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1149,7 +1140,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.totalNoOfInstitutions !== null
                           ? creditRegistrySummaryData.totalNoOfInstitutions
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1173,7 +1164,7 @@ const Financial = () => {
                           ? formatAmountToNaira(
                               creditRegistrySummaryData.totalOverdue
                             )
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1197,7 +1188,7 @@ const Financial = () => {
                           ? formatAmountToNaira(
                               creditRegistrySummaryData.totalBorrowed
                             )
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1223,7 +1214,7 @@ const Financial = () => {
                           ? formatAmountToNaira(
                               creditRegistrySummaryData.totalOutstanding
                             )
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1247,7 +1238,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.totalNoOfLoans !== null
                           ? creditRegistrySummaryData.totalNoOfLoans
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1271,7 +1262,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.totalNoOfActiveLoans !== null
                           ? creditRegistrySummaryData.totalNoOfActiveLoans
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
@@ -1296,7 +1287,7 @@ const Financial = () => {
                         creditRegistrySummaryData.totalNoOfDelinquentFacilities !==
                           null
                           ? creditRegistrySummaryData.totalNoOfDelinquentFacilities
-                          : "No Data"}
+                          : "-"}
                       </h6>
                     </Card>
                     <Card
