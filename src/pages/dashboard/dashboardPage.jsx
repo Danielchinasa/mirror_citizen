@@ -152,6 +152,8 @@ const DashboardPage = () => {
   const [flutterWaveCurrency, setFlutterWaveCurrency] = useState("NGN");
   const [value, setValue] = useState();
   const [stolenCheckFee, setStolenCheckFee] = useState("");
+  const [stolenCheckServiceFee, setStolenCheckServiceFee] = useState("");
+  const [stolenCheckVatFee, setStolenCheckVatFee] = useState("");
   const [formData, setFormData] = useState({
     nin: "",
     phone: "",
@@ -287,6 +289,8 @@ const DashboardPage = () => {
         setCurrencyCheck(response.data.data[0].currency);
 
         setStolenCheckFee(response.data.data[7].price);
+        setStolenCheckVatFee(response.data.data[7].VAT);
+        setStolenCheckServiceFee(response.data.data[7].serviceFee);
       } catch (error) {
         console.error("Error fetching IP address:", error);
 
@@ -859,6 +863,7 @@ const DashboardPage = () => {
   const [loadingModal, setLoadingModal] = useState(false);
   const [totalveri, setTotalveri] = useState(0);
   const [totalveriNiara, setTotalveriNiara] = useState(0);
+  const [additionalPriceAdded, setAdditionalPriceAdded] = useState(false);
 
   const showModal = () => {
     setModalVisible(true);
@@ -879,16 +884,30 @@ const DashboardPage = () => {
   };
 
   useEffect(() => {
-    console.log("Total Veri Amount next:", totalveri);
-
-    // Check if checkStolen is true
-    if (checkStolen === true) {
-      // Add 4000 to totalServiceCost if checkStolen is true
+    if (checkStolen && !additionalPriceAdded) {
+      // Add the additional costs
       setTotalServiceCost(
-        (prevTotalServiceCost) => prevTotalServiceCost + 4000
+        (prevTotalServiceCost) => prevTotalServiceCost + stolenCheckFee
       );
+      setTotalVAT((prevTotalVAT) => prevTotalVAT + stolenCheckVatFee);
+      setvinVehicleServiceFee(
+        (previnVehicleServiceFee) =>
+          previnVehicleServiceFee + stolenCheckServiceFee
+      );
+      setAdditionalPriceAdded(true); // Set the flag to true to indicate that the additional price has been added
+    } else if (!checkStolen && additionalPriceAdded) {
+      // Remove the additional costs
+      setTotalServiceCost(
+        (prevTotalServiceCost) => prevTotalServiceCost - stolenCheckFee
+      );
+      setTotalVAT((prevTotalVAT) => prevTotalVAT - stolenCheckVatFee);
+      setvinVehicleServiceFee(
+        (previnVehicleServiceFee) =>
+          previnVehicleServiceFee - stolenCheckServiceFee
+      );
+      setAdditionalPriceAdded(false); // Set the flag to false to indicate that the additional price has been removed
     }
-  }, [checkStolen]);
+  }, [checkStolen, additionalPriceAdded]);
 
   function generateTransactionId() {
     const length = 16; // total length including "EA"
@@ -901,7 +920,7 @@ const DashboardPage = () => {
   const randomTransactionId = generateTransactionId();
 
   const handlePaymentMethod = async () => {
-    setLoadingSmall(true);
+    // setLoadingSmall(true);
     if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
@@ -1381,7 +1400,6 @@ const DashboardPage = () => {
     const formattedTotalveri = currencyFormatter.format(totalveri);
     setLoadingModal(true);
     // Show the modal
-    // showModal();
     dispatch(fetchUserProfile(userToken))
       .then(() => {
         setLoadingModal(false);
@@ -2156,24 +2174,59 @@ const DashboardPage = () => {
 
     // Check if currency is USD, then subtract fees accordingly
     if (currencyCheck === "USD") {
-      setTotalVAT((prevTotalVAT) => {
-        const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
-        return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
-      });
-      setTotalServiceCost((prevTotalFees) => {
-        const newTotalFees = prevTotalFees - vinVehicleFee;
-        return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
-      });
+      if (isChecked) {
+        setTotalVAT((prevTotalVAT) => {
+          const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+          return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+        });
+        setTotalServiceCost((prevTotalFees) => {
+          const newTotalFees = prevTotalFees - (vinVehicleFee + stolenCheckFee);
+          return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+        });
+      } else {
+        setTotalVAT((prevTotalVAT) => {
+          const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+          return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+        });
+        setTotalServiceCost((prevTotalFees) => {
+          const newTotalFees = prevTotalFees - vinVehicleFee;
+          return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+        });
+      }
+      setIsChecked(false);
     } else {
       // If currency is not USD, subtract fees similarly
-      setTotalVAT((prevTotalVAT) => {
-        const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
-        return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
-      });
-      setTotalServiceCost((prevTotalFees) => {
-        const newTotalFees = prevTotalFees - vinVehicleFee;
-        return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
-      });
+      if (isChecked) {
+        setTotalVAT((prevTotalVAT) => {
+          const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+
+          return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+        });
+        setTotalServiceCost((prevTotalFees) => {
+          const newTotalFees = prevTotalFees - vinVehicleFee;
+          return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+        });
+
+        // setvinVehicleServiceFee(
+        //   (previnVehicleServiceFee) =>
+        //     previnVehicleServiceFee - stolenCheckServiceFee
+        // );
+        setIsChecked(false);
+      } else {
+        setTotalVAT((prevTotalVAT) => {
+          const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
+          return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+        });
+        setTotalServiceCost((prevTotalFees) => {
+          const newTotalFees = prevTotalFees - vinVehicleFee;
+          return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+        });
+        // setvinVehicleServiceFee(
+        //   (previnVehicleServiceFee) =>
+        //     previnVehicleServiceFee - stolenCheckServiceFee
+        // );
+      }
+      setIsChecked(false);
     }
 
     // Subtract USD fees
@@ -2917,7 +2970,6 @@ const DashboardPage = () => {
                         >
                           <Space direction="vertical">
                             <Radio
-                              disabled
                               value="vin"
                               size="large"
                               onClick={() => setSelectedForm("vin")}

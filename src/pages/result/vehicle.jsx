@@ -40,6 +40,7 @@ import { AiOutlineColumnWidth } from "react-icons/ai";
 import { LuCar } from "react-icons/lu";
 import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+import Reach1 from "../../images/reach1.jpeg";
 
 const { Title, Text } = Typography;
 
@@ -48,21 +49,21 @@ const Vehicle = () => {
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
   const [loading, setLoading] = useState(true);
-  const [vin, setVin] = useState("No Data");
-  const [year, setYear] = useState("No Data");
-  const [madeIn, setMadeIn] = useState("No Data");
-  const [model, setModel] = useState("No Data");
-  const [trim, setTrim] = useState("No Data");
-  const [engine, setEngine] = useState("No Data");
-  const [make, setMake] = useState("No Data");
-  const [style, setStyle] = useState("No Data");
-  const [invoice, setInvoice] = useState("No Data");
-  const [msrp, setMsrp] = useState("No Data");
-  const [image, setImage] = useState("No Data");
-  const [pdfUri, setpdfUri] = useState("No Data");
-  const [chasisNumber, setChasisNumber] = useState("No Data");
-  const [stolen, setStolen] = useState("No Data");
-  const [report, setReport] = useState("No Data");
+  const [vin, setVin] = useState("-");
+  const [year, setYear] = useState("-");
+  const [madeIn, setMadeIn] = useState("-");
+  const [model, setModel] = useState("-");
+  const [trim, setTrim] = useState("-");
+  const [engine, setEngine] = useState("-");
+  const [make, setMake] = useState("-");
+  const [style, setStyle] = useState("-");
+  const [invoice, setInvoice] = useState("-");
+  const [msrp, setMsrp] = useState("-");
+  const [image, setImage] = useState("-");
+  const [pdfUri, setpdfUri] = useState("-");
+  const [chasisNumber, setChasisNumber] = useState("-");
+  const [stolen, setStolen] = useState("-");
+  const [report, setReport] = useState("-");
 
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
@@ -109,19 +110,19 @@ const Vehicle = () => {
         const vehicleData = postResponse.data.data;
         console.log("Post JSON:", vehicleData);
         setLoading(false);
-        const vinSpec = vehicleData.vin || "No Data";
-        const year = vehicleData.year || "No Data";
-        const madein = vehicleData.madeIn || "No Data";
-        const model = vehicleData.model || "No Data";
-        const trim = vehicleData.trim || "No Data";
-        const engine = vehicleData.engine || "No Data";
-        const make = vehicleData.make || "No Data";
-        const style = vehicleData.style || "No Data";
-        const invoice = vehicleData.invoice || "No Data";
-        const msrp = vehicleData.msrp || "No Data";
-        const image = vehicleData.previewImageURL || "No Data";
-        const pdfUri = vehicleData.pdfUri || "No Data";
-        const stolen = vehicleData.stolen || "No Data";
+        const vinSpec = vehicleData.vin || "-";
+        const year = vehicleData.year || "-";
+        const madein = vehicleData.madeIn || "-";
+        const model = vehicleData.model || "-";
+        const trim = vehicleData.trim || "-";
+        const engine = vehicleData.engine || "-";
+        const make = vehicleData.make || "-";
+        const style = vehicleData.style || "-";
+        const invoice = vehicleData.invoice || "-";
+        const msrp = vehicleData.msrp || "-";
+        const image = vehicleData.previewImageURL || "-";
+        const pdfUri = vehicleData.pdfUri || "-";
+        const stolen = vehicleData.stolen || "-";
         setVin(vinSpec);
         setYear(year);
         setMadeIn(madein);
@@ -271,27 +272,19 @@ const Vehicle = () => {
                 )}
               </Col>
               <Col span={6}>
-                {renderDetail(<TbSteeringWheel />, "Steering Type", `No Data`)}
+                {renderDetail(<TbSteeringWheel />, "Steering Type", `-`)}
                 <Divider />
-                {renderDetail(<GiCarWheel />, "Tires", `No Data`)}
+                {renderDetail(<GiCarWheel />, "Tires", `-`)}
               </Col>
               <Col span={6}>
-                {renderDetail(<GiChemicalTank />, "Tank Size", `No Data`)}
+                {renderDetail(<GiChemicalTank />, "Tank Size", `-`)}
                 <Divider />
-                {renderDetail(<LuCar />, "Wheel drive", `No Data`)}
+                {renderDetail(<LuCar />, "Wheel drive", `-`)}
               </Col>
               <Col span={6}>
-                {renderDetail(
-                  <AiOutlineColumnWidth />,
-                  "Overall Width",
-                  `No Data`
-                )}
+                {renderDetail(<AiOutlineColumnWidth />, "Overall Width", `-`)}
                 <Divider />
-                {renderDetail(
-                  <IoMdSpeedometer />,
-                  "Highway Mileage",
-                  `No Data`
-                )}
+                {renderDetail(<IoMdSpeedometer />, "Highway Mileage", `-`)}
               </Col>
             </Row>
             <Divider />
@@ -532,39 +525,41 @@ const Vehicle = () => {
       </Title>
       <div class="container">
         <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Car Finance</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#DDF9EA",
-                }}
-              >
-                <p class="card-text">Credit Cards handpicked for you</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Car Insurance</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#ECF5F8",
-                }}
-              >
-                <p class="card-text">
-                  Borrow from 100,000 with monthly repayments of to 7 years.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+          <div
+            className="col-sm-4 col-md-6 col-lg-3 mb-3"
+            style={{
+              backgroundImage: `url(${Reach1})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              marginRight: "10px",
+              height: "200px",
+              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+            }}
+            onClick={() => {
+              window.open(
+                "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
+                "_blank"
+              );
+            }}
+          ></div>
+          <div
+            className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
+            style={{
+              backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "200px",
+              marginRight: "10px",
+              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+            }}
+            onClick={() => {
+              window.open(
+                "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
+                "_blank"
+              );
+            }}
+          ></div>
+          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">Finance your Next Car</div>
               <div
@@ -595,7 +590,7 @@ const Vehicle = () => {
                 <p class="card-text">Credit Cards handpicked for you</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </Container>
