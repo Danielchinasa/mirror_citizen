@@ -56,6 +56,7 @@ import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
+import { UploadOutlined } from "@ant-design/icons";
 
 /* global Reach */
 
@@ -72,7 +73,10 @@ const props = {
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
+      console.error("Upload error:", info.file.error);
+      message.error(
+        `${info.file.name} file upload failed. ${info.file.error.message}`
+      );
     }
   },
   onDrop(e) {
@@ -83,6 +87,75 @@ const props = {
 const dateFormat = "DD/MM/YYYY";
 
 const DashboardPage = () => {
+  const [fileName, setFileName] = useState("");
+  const [fileUploadError, setFileUploadError] = useState("");
+  const [rowCount, setRowCount] = useState(null);
+  const [fileUploaded, setFileUploaded] = useState(false);
+
+  const [hasPreviousUpload, setHasPreviousUpload] = useState(false);
+
+  const countRows = (content) => {
+    const rows = content.split("\n").filter((row) => row.trim() !== "");
+    return rows.length;
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFileUploadError("");
+    setRowCount(null);
+
+    if (file) {
+      if (file.type === "text/csv" || file.name.endsWith(".csv")) {
+        setFileName(file.name);
+        setFileUploaded(true);
+        const reader = new FileReader();
+        const base64Reader = new FileReader();
+        base64Reader.onload = (e) => {
+          const base64String = e.target.result.split(",")[1]; // Remove data URL prefix
+          console.log("Base64 string:", base64String); // Or handle the base64 string as needed
+          handleInputChange("nin_csv", base64String);
+        };
+        reader.onload = (e) => {
+          const content = e.target.result;
+          const count = countRows(content);
+          setRowCount(count);
+          localStorage.setItem("numberOfRowsFromDoc", count);
+          setNumberOfRows(count); // Call with updated rowCount value
+          setNinFilled(true);
+          setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee * count);
+          setTotalServiceCost(
+            (prevTotalFees) => prevTotalFees + ninFee * count
+          );
+          setTotalveriNiara(
+            (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee * count
+          );
+        };
+        reader.onerror = () => {
+          setFileUploadError("Error reading the file.");
+        };
+        const handleError = () => {
+          setFileUploadError("Error reading the file.");
+        };
+        base64Reader.onerror = handleError;
+        base64Reader.readAsDataURL(file);
+        reader.readAsText(file);
+      } else {
+        setFileName("");
+        setFileUploadError("Please select a CSV file.");
+      }
+    }
+  };
+
+  const handleChange = (event) => {
+    handleFileChange(event);
+    // const file = event.target.files[0];
+
+    // if (file) {
+    //   handleInputChange("nin_csv", "ll");
+    // } else {
+    //   handleInputChange("nin_csv", "ll");
+    // }
+  };
   const history = useHistory();
 
   const dispatch = useDispatch();
@@ -155,6 +228,7 @@ const DashboardPage = () => {
   const [stolenCheckServiceFee, setStolenCheckServiceFee] = useState("");
   const [stolenCheckVatFee, setStolenCheckVatFee] = useState("");
   const [formData, setFormData] = useState({
+    nin_csv: "",
     nin: "",
     phone: "",
     firstname: "",
@@ -338,6 +412,7 @@ const DashboardPage = () => {
   const userPhone = user?.phone || "";
   const userNin = user?.nin || "";
   const userCurrency = userDetails?.currency || "";
+  const userType = userDetails?.userType || "";
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
@@ -512,6 +587,29 @@ const DashboardPage = () => {
           if (result.isConfirmed) {
             // dispatch(fetchUserProfile(userToken));
             window.location.reload();
+          }
+        });
+      } else if (
+        response.bulkNin &&
+        response.bulkNin.status === "Bulk verification completed"
+      ) {
+        Swal.fire({
+          title: "Success",
+          text: response.bulkNin.status,
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.isConfirmed) {
+            // dispatch(fetchUserProfile(userToken));
+            history.push("/main-dashboard");
           }
         });
       } else {
@@ -1298,6 +1396,16 @@ const DashboardPage = () => {
         setTotalveri(calculatedTotalveri);
       }
       if (
+        typeof formData.nin_csv === "string" &&
+        formData.nin_csv.trim() !== "" &&
+        formDataUsdFees.nin !== undefined
+      ) {
+        setIsBasicOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
         typeof formData.nin === "string" &&
         formData.nin.trim() !== "" &&
         formDataUsdFees.nin !== undefined
@@ -1359,6 +1467,16 @@ const DashboardPage = () => {
       if (
         typeof formData.nin === "string" &&
         formData.nin.trim() !== "" &&
+        formDataUsdFees.nin !== undefined
+      ) {
+        setIsBasicOn(true);
+        // Add the fee for 'vin' to the totalveri
+        calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.nin_csv === "string" &&
+        formData.nin_csv.trim() !== "" &&
         formDataUsdFees.nin !== undefined
       ) {
         setIsBasicOn(true);
@@ -1872,6 +1990,7 @@ const DashboardPage = () => {
         setFormData((prevFormData) => ({
           ...prevFormData,
           nin: "", // Assuming "rc" is the name of the field you want to set to empty string
+          nin_csv: "",
         }));
       }
     }
@@ -2055,6 +2174,35 @@ const DashboardPage = () => {
     });
     setTotalveriNiara((prevTotalFees) => {
       const newTotalFees = prevTotalFees - ninUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
+  };
+
+  const clearInputBulkNin = () => {
+    const numberCSV = localStorage.getItem("numberOfRowsFromDoc");
+    handleInputChange("nin_csv", "");
+    setFileUploaded(false);
+    setFileName("");
+    setRowCount(null);
+    setFileUploadError("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    setBasicProfileArray([]); // Clears basic profile array
+    setFormData({ ...formData, nin: "" }); // Clears the nin field in the form data
+    setPaymentmethod(null); // Clears selected value
+    setNinFilled(false); // Sets ninFilled state to false
+    setFaceFilled(false); // Sets faceFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - ninVatFee * numberCSV;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - ninFee * numberCSV;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - ninUsdFee * numberCSV;
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
     });
   };
@@ -2540,11 +2688,42 @@ const DashboardPage = () => {
     totalVAT,
     totalServiceCost,
   ]);
-
-  const handleInputChange = (name, value) => {
+  const [numberOfRows, setNumberOfRows] = useState(1);
+  const handleInputChange = async (name, value) => {
     // const hadPreviousValue = formData[name].trim() !== "";
+
+    const numberCSV = await localStorage.getItem("numberOfRowsFromDoc");
+
+    console.log(numberCSV);
+
     const hadPreviousValue =
       typeof formData[name] === "string" && formData[name].trim() !== "";
+
+    // if (name === "nin_csv") {
+    //   if (!hadPreviousValue && value.trim() !== "") {
+    //     setNinFilled(true);
+    //     setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
+    //     setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
+    //     setTotalveriNiara(
+    //       (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
+    //     );
+    //   }
+    //   if (hadPreviousValue && value.trim() !== "") {
+    //     setNinFilled(true);
+    //     setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
+    //     setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
+    //     setTotalveriNiara(
+    //       (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
+    //     );
+    //   } else if (hadPreviousValue && value.trim() === "") {
+    //     setNinFilled(false);
+    //     setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
+    //     setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
+    //     setTotalveriNiara(
+    //       (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee
+    //     );
+    //   }
+    // }
     if (name === "nin") {
       if (!hadPreviousValue && value.trim() !== "") {
         setNinFilled(true);
@@ -3030,25 +3209,98 @@ const DashboardPage = () => {
                     )}
                     <Form>
                       {/* {selectedForm === "nin" && ( */}
-                      {basicProfileArray.includes("nin") && (
-                        <div>
-                          <StyledLabel>
-                            National Identification Number*
-                            <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined onClick={clearInputNin} />
-                            </span>
-                          </StyledLabel>
-                          <StyledInput
-                            type="text"
-                            placeholder="Enter your NIN"
-                            name="nin"
-                            value={formData.nin}
-                            onChange={(e) =>
-                              handleInputChange("nin", e.target.value)
-                            }
-                          />
-                        </div>
-                      )}
+                      {basicProfileArray.includes("nin") &&
+                        (userType == "individual" ? (
+                          <div>
+                            <StyledLabel>
+                              National Identification Number*
+                              <span
+                                style={{ marginLeft: "20px", color: "red" }}
+                              >
+                                <CloseSquareOutlined onClick={clearInputNin} />
+                              </span>
+                            </StyledLabel>
+                            <StyledInput
+                              type="text"
+                              placeholder="Enter your NIN"
+                              name="nin"
+                              value={formData.nin}
+                              onChange={(e) =>
+                                handleInputChange("nin", e.target.value)
+                              }
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <StyledLabel>
+                              National Identification Number*
+                              <span
+                                style={{ marginLeft: "20px", color: "red" }}
+                              >
+                                <CloseSquareOutlined
+                                  onClick={clearInputBulkNin}
+                                />
+                              </span>
+                            </StyledLabel>
+
+                            {/* <Col
+                              span={8}
+                              xs={{ span: 24 }}
+                              sm={{ span: 24 }}
+                              md={{ span: 12 }}
+                              lg={{ span: 12 }}
+                            > */}
+
+                            <span>Bulk upload</span>
+                            {!fileUploaded && ( // Only show input if not uploaded
+                              <StyledInput
+                                type="file"
+                                className="hidden"
+                                accept=".csv"
+                                name="nin_csv"
+                                onChange={handleChange}
+                              />
+                            )}
+                            {/* <StyledInput
+                              type="file"
+                              className="hidden"
+                              accept=".csv"
+                              name="nin_csv"
+                              onChange={handleChange}
+                            /> */}
+
+                            {fileName && (
+                              <div className="mt-2 text-sm text-green-600">
+                                <p>Selected file: {fileName}</p>
+                                {rowCount !== null && (
+                                  <p className="font-semibold">
+                                    Number of records: {rowCount}
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                            {fileUploadError && (
+                              <div className="mt-2 text-sm text-red-600 flex items-center">
+                                {fileUploadError}
+                              </div>
+                            )}
+                            {/* <StyledInput
+                              type="text"
+                              placeholder="Enter your NIN"
+                              name="nin"
+                              value={formData.nin}
+                              onChange={(e) =>
+                                handleInputChange("nin", e.target.value)
+                              }
+                            /> */}
+                            <StyledInput
+                              type="hidden"
+                              name="nin_csv"
+                              value={formData.nin_csv}
+                            />
+                            {/* </Col> */}
+                          </div>
+                        ))}
                       {/* {selectedForm === "phone" && ( */}
                       <div hidden={selectedForm === "phone" ? false : true}>
                         <StyledLabel>Phone Number*</StyledLabel>
