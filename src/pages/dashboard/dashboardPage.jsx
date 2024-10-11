@@ -697,6 +697,7 @@ const DashboardPage = () => {
   const [isCheckedFirstCentral, setIsCheckedFirstCentral] = useState(false);
   const [isCheckedCreditRegistry, setIsCheckedCreditRegistry] = useState(false);
   const [checkStolen, setCheckStolen] = useState(false);
+  const [isConfirmedBtnClicked, setIsConfirmedBtnClicked] = useState(false);
 
   const [enableCrc, setEnableCrc] = useState(true);
 
@@ -1018,6 +1019,7 @@ const DashboardPage = () => {
   const randomTransactionId = generateTransactionId();
 
   const handlePaymentMethod = async () => {
+    setIsConfirmedBtnClicked(true);
     // setLoadingSmall(true);
     if (paymentMethod !== null) {
       // Log the selected payment method
@@ -1055,6 +1057,7 @@ const DashboardPage = () => {
         if (bvnFilled) {
           if (areNoneChecked()) {
             setLoading(false);
+            setIsConfirmedBtnClicked(false);
             Swal.fire({
               title: "Error",
               text: "At least one Credit Bereau must be selected",
@@ -1070,6 +1073,7 @@ const DashboardPage = () => {
         }
         if (currencyCheck === "NGN" && userCurrency === "usd") {
           setLoading(false);
+          setIsConfirmedBtnClicked(false);
           handleCancel();
           Swal.fire({
             title: "Error",
@@ -1105,6 +1109,7 @@ const DashboardPage = () => {
             : totalServiceCost)
         ) {
           setLoading(false);
+          setIsConfirmedBtnClicked(false);
           handleCancel();
           Swal.fire({
             title: "Wallet Balance Low",
@@ -1145,6 +1150,7 @@ const DashboardPage = () => {
             //!------------------- Do the Verification End ------------------------//
           } else {
             setLoading(false);
+            setIsConfirmedBtnClicked(false);
             Swal.fire({
               title: "Payment failed",
               text: data,
@@ -1166,6 +1172,7 @@ const DashboardPage = () => {
         } catch (error) {
           console.error("Error:", error);
           setLoading(false);
+          setIsConfirmedBtnClicked(false);
           Swal.fire({
             title: "Error",
             text: error,
@@ -1208,6 +1215,7 @@ const DashboardPage = () => {
         if (bvnFilled) {
           if (areNoneChecked()) {
             setLoading(false);
+            setIsConfirmedBtnClicked(false);
             Swal.fire({
               title: "Error",
               text: "At least one Credit Bereau must be selected",
@@ -1248,6 +1256,7 @@ const DashboardPage = () => {
 
                 //!------------- Open the FlutterWave modal for payment --------------//
                 setOpenFlutterwaveModal(true);
+
                 //!------------- Open the FlutterWave modal for payment End --------------//
               } else {
                 console.error("Response data does not contain a link");
@@ -1333,6 +1342,7 @@ const DashboardPage = () => {
           });
           return;
         }
+        setIsConfirmedBtnClicked(false);
         handleCancel();
       }
       //!!LIVE PAYMENT ENDS
@@ -1748,12 +1758,12 @@ const DashboardPage = () => {
           <Button
             type="primary"
             onClick={handlePaymentMethod}
-            disabled={!checkboxCheckedConfirm}
+            disabled={isConfirmedBtnClicked}
             style={{
               marginRight: 10,
-              backgroundColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
-              borderColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9",
-              cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+              backgroundColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939", // Set the colors based on checkbox state
+              borderColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939",
+              cursor: isConfirmedBtnClicked ? "not-allowed" : "pointer", // Change cursor based on checkbox state
             }}
           >
             Confirm
