@@ -3235,9 +3235,25 @@ const DashboardPage = () => {
                               placeholder="Enter your NIN"
                               name="nin"
                               value={formData.nin}
-                              onChange={(e) =>
-                                handleInputChange("nin", e.target.value)
-                              }
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d+$/.test(value) || value === "") {
+                                  if (value.length <= 11) {
+                                    handleInputChange("nin", value);
+                                  }
+                                }
+                              }}
+                              onBlur={() => {
+                                // Check if the NIN is exactly 11 digits on blur
+                                if (formData.nin.length !== 11) {
+                                  Swal.fire({
+                                    title: "Error",
+                                    text: "NIN must be exactly 11 digits.",
+                                    icon: "error",
+                                    confirmButtonColor: "#0DC939",
+                                  });
+                                }
+                              }}
                             />
                           </div>
                         ) : (
@@ -3514,9 +3530,24 @@ const DashboardPage = () => {
                             name="nin"
                             value={liveFaceNin}
                             onChange={handleLiveFaceNinChange}
-                            onChangeCapture={(e) =>
-                              handleInputChange("nin", e.target.value)
-                            }
+                            onChangeCapture={(e) => {
+                              const value = e.target.value;
+                              if (/^\d+$/.test(value) || value === "") {
+                                if (value.length <= 11) {
+                                  handleInputChange("nin", value);
+                                }
+                              }
+                            }}
+                            onBlur={() => {
+                              // Check if the NIN is exactly 11 digits on blur
+                              if (formData.nin.length !== 11) {
+                                Swal.fire({
+                                  title: "Error",
+                                  text: "NIN must be exactly 11 digits.",
+                                  icon: "error",
+                                });
+                              }
+                            }}
                             style={{
                               borderColor: isLiveFaceNinValid ? "" : "red",
                             }}
@@ -3625,9 +3656,26 @@ const DashboardPage = () => {
                             value={formData.bvn}
                             pattern="[0-9]*" // Allow only numbers
                             title="Please enter only numbers"
-                            onChange={(e) =>
-                              handleInputChange("bvn", e.target.value)
-                            }
+                            onChange={(e) => {
+                              // handleInputChange("bvn", e.target.value);
+                              const value = e.target.value;
+                              if (/^\d+$/.test(value) || value === "") {
+                                if (value.length <= 11) {
+                                  handleInputChange("bvn", value);
+                                }
+                              }
+                            }}
+                            onBlur={() => {
+                              // Check if the NIN is exactly 11 digits on blur
+                              if (formData.bvn.length !== 11) {
+                                Swal.fire({
+                                  title: "Error",
+                                  text: "BVN must be exactly 11 digits.",
+                                  icon: "error",
+                                  confirmButtonColor: "#0DC939",
+                                });
+                              }
+                            }}
                           />
                           <u>Select one or more Credit Bureaus</u>
                           <br></br>
@@ -3672,9 +3720,23 @@ const DashboardPage = () => {
                             placeholder="Enter Vehicle History (VIN)"
                             name="vin"
                             value={formData.vin}
-                            onChange={(e) =>
-                              handleInputChange("vin", e.target.value)
-                            }
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              // Allow only digits and check if length is within 11 characters
+                              if (value.length <= 17) {
+                                handleInputChange("vin", value);
+                              }
+                            }}
+                            onBlur={() => {
+                              if (formData.vin.length !== 17) {
+                                Swal.fire({
+                                  title: "Error",
+                                  text: "VIN must be exactly 17 characters.",
+                                  icon: "error",
+                                  confirmButtonColor: "#0DC939",
+                                });
+                              }
+                            }}
                           />
 
                           <Checkbox
@@ -3705,12 +3767,17 @@ const DashboardPage = () => {
                             placeholder="Vehicle Registration Number"
                             name="license_number"
                             value={formData.license_number}
-                            onChange={(e) =>
-                              handleInputChange(
-                                "license_number",
-                                e.target.value
-                              )
-                            }
+                            onChange={(e) => {
+                              // Use a regex to check for special characters or spaces
+                              const value = e.target.value;
+                              const regex = /^[a-zA-Z0-9]+$/; // Only allow alphanumeric characters
+
+                              // Update the state if the value is valid
+                              if (regex.test(value) || value === "") {
+                                // Allow empty input for deletion
+                                handleInputChange("license_number", value);
+                              }
+                            }}
                           />
                         </div>
                       )}
