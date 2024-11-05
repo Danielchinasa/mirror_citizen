@@ -1,26 +1,25 @@
 {
   "files": {
     "main.css": "/static/css/main.0fb76ced.chunk.css",
-    "main.js": "/static/js/main.e5e0655a.chunk.js",
-    "main.js.map": "/static/js/main.e5e0655a.chunk.js.map",
+    "main.js": "/static/js/main.90b3dbaf.chunk.js",
+    "main.js.map": "/static/js/main.90b3dbaf.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.134a2eb2.chunk.js": "/static/js/2.134a2eb2.chunk.js",
-    "static/js/2.134a2eb2.chunk.js.map": "/static/js/2.134a2eb2.chunk.js.map",
+    "static/js/2.576e15fc.chunk.js": "/static/js/2.576e15fc.chunk.js",
+    "static/js/2.576e15fc.chunk.js.map": "/static/js/2.576e15fc.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.e5a15c9a9fabf03e17f1a3ac34dcea22.js": "/precache-manifest.e5a15c9a9fabf03e17f1a3ac34dcea22.js",
+    "precache-manifest.2f7617a01c088661cf8e1f118b064fa3.js": "/precache-manifest.2f7617a01c088661cf8e1f118b064fa3.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.0fb76ced.chunk.css.map": "/static/css/main.0fb76ced.chunk.css.map",
-    "static/js/2.134a2eb2.chunk.js.LICENSE.txt": "/static/js/2.134a2eb2.chunk.js.LICENSE.txt",
+    "static/js/2.576e15fc.chunk.js.LICENSE.txt": "/static/js/2.576e15fc.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/banner.png": "/static/media/banner.dfc673b1.png",
     "static/media/car-insurance.svg": "/static/media/car-insurance.3132370c.svg",
     "static/media/clearvin.png": "/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/static/media/contact.2a1a7bdb.png",
     "static/media/credit-card.svg": "/static/media/credit-card.acbe8d8e.svg",
-    "static/media/defaultDp.png": "/static/media/defaultDp.1a817a95.png",
     "static/media/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf": "/static/media/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.ef04cacc.pdf",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/hero-2.png": "/static/media/hero-2.d757ba08.png",
@@ -42,8 +41,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.134a2eb2.chunk.js",
+    "static/js/2.576e15fc.chunk.js",
     "static/css/main.0fb76ced.chunk.css",
-    "static/js/main.e5e0655a.chunk.js"
+    "static/js/main.90b3dbaf.chunk.js"
   ]
 }
