@@ -13,6 +13,7 @@ import {
   message,
   Button,
   Divider,
+  Spin
 } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
@@ -85,6 +86,7 @@ const MainDashboard = () => {
   const [businessFee, setBusinessFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const [loadingSmall, setLoadingSmall] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUserProfile(userToken));
@@ -165,6 +167,7 @@ const MainDashboard = () => {
   console.log(currencyCheck);
 
   const handleViewResult = async (record) => {
+    setLoadingSmall(true);
     const { id, insertionDate, consent } = record;
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
@@ -188,6 +191,7 @@ const MainDashboard = () => {
         new Date(insertionDate) < sevenDaysAgo)
     ) {
       // message.error("Verification Result or Consent Expired");
+      
       Swal.fire({
         title: "Error",
         text: "Verification Result or Consent expired",
@@ -232,6 +236,7 @@ const MainDashboard = () => {
         }
       );
       if (response.ok) {
+        setLoadingSmall(false);
         const data = await response.json();
         // Proceed with navigation only if there is no data in the response
         if (!data) {
@@ -266,6 +271,7 @@ const MainDashboard = () => {
           console.log("Consent data found:", data);
         }
       } else {
+        setLoadingSmall(false);
         // Handle the case where the API call fails
         console.error("Failed to fetch consent data:", response.statusText);
       }
@@ -274,6 +280,7 @@ const MainDashboard = () => {
     }
     // }
   };
+  
   const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
     localStorage.setItem("verificationRequestId", record.id);
@@ -857,170 +864,190 @@ const MainDashboard = () => {
   // Usage
   return (
     <Container>
-      <InfoSec>
-        <Row gutter={20}>
-          <Col
-            span={6}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 8 }}
-            lg={{ span: 8 }}
-          >
-            <Card
-              style={{
-                marginTop: "10px",
-                border: "3px #0DC939 solid",
-                borderRadius: "12px",
-                background: "#EBFFF0",
-                boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-              }}
-            >
-              <CustomStatistic
-                title="Total verifications "
-                value={totalVerificationCount}
-                valueStyle={{
-                  color: "#3f8600",
-                  fontSize: "50px",
-                  fontWeight: "600",
-                  fontFamily: "Poppins, sans-serif",
-                  textAlign: "center",
-                }}
-              />
-            </Card>
-          </Col>
-          <Col
-            span={6}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 8 }}
-            lg={{ span: 8 }}
-          >
-            <Card
-              style={{
-                marginTop: "10px",
-                border: "3px #0DC939 solid",
-                borderRadius: "12px",
-                background: "#EBFFF0",
-                boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-              }}
-            >
-              <CustomStatistic
-                title="Successful verifications "
-                value={completedVerificationCount}
-                valueStyle={{
-                  color: "#3f8600",
-                  fontSize: "50px",
-                  fontWeight: "600",
-                  fontFamily: "Poppins, sans-serif",
-                  textAlign: "center",
-                }}
-              />
-            </Card>
-          </Col>
-          <Col
-            span={6}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 8 }}
-            lg={{ span: 8 }}
-          >
-            <Card
-              style={{
-                marginTop: "10px",
-                border: "3px #0DC939 solid",
-                borderRadius: "12px",
-                background: "#EBFFF0",
-                boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-              }}
-            >
-              <CustomStatistic
-                title="Unsuccessful verifications "
-                value={failedVerificationCount}
-                valueStyle={{
-                  color: "#3f8600",
-                  fontSize: "50px",
-                  fontWeight: "600",
-                  fontFamily: "Poppins, sans-serif",
-                  textAlign: "center",
-                }}
-              />
-            </Card>
-          </Col>
-        </Row>
-        <div style={{ marginTop: "30px" }}>
-          {/* <Heading4>Recent Activities</Heading4> */}
-          <MainButton
-            type="primary"
-            style={{ float: "right" }}
-            onClick={showModal}
-          >
-            View Wallet
-          </MainButton>
-          <Modal
-            title="User Wallet"
-            visible={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            width={300}
-          >
-            <Title level={5}> Wallet Balance:</Title>
-            <Title level={3} style={{ color: "#0DC939" }}>
-              {userCurrency === "ngn"
-                ? formatToNaira(userBalance)
-                : `$${userBalance}`}
-            </Title>
-
-            <Divider style={{ border: "1px solid #D9D9D9" }} />
-            <Title level={5}>Fund Wallet</Title>
-            <p>Enter Amount to Fund Wallet</p>
-            <Input
-              type="text"
-              placeholder="Enter amount"
-              value={amount}
-              onChange={handleChange}
-            />
-          </Modal>
-        </div>
-      </InfoSec>
-      <Tabs
-        defaultActiveKey="1"
-        items={items}
-        onChange={onChange}
+      
+     
+      <Spin
+        spinning={loadingSmall}
+        tip="Fetching result ..."
+        colorBgMask="red"
         style={{
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
-          padding: "20px",
-          marginTop: "40px",
-          marginBottom: "40px",
+          fontSize: "85px",
+          fontWeight: "bold",
+          color: "black",
         }}
-      />
-      <Notification />
-      <Modal
-        // title="Complete Wallet TopUp"
-        style={{
-          top: 20,
-        }}
-        width={1000}
-        open={modal1Open}
-        onOk={handleModalOk}
-        onCancel={handleModalOk}
-        maskClosable={false}
-        footer={[
-          <Button danger type="dashed" onClick={handleModalOk}>
-            Close
-          </Button>,
-        ]}
       >
-        <iframe
-          id="inlineFrameExample"
-          title="Inline Frame Example"
-          width="100%"
-          height="600"
-          src={paymentUrl}
-          // ref={iframeRef}
-          // onLoad={handleIframeLoad}
-        ></iframe>
-        {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
-      </Modal>
+        <InfoSec>
+          <Row gutter={20}>
+            <Col
+              span={6}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 8 }}
+              lg={{ span: 8 }}
+            >
+              <Card
+                style={{
+                  marginTop: "10px",
+                  border: "3px #0DC939 solid",
+                  borderRadius: "12px",
+                  background: "#EBFFF0",
+                  boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
+                }}
+              >
+                <CustomStatistic
+                  title="Total verifications "
+                  value={totalVerificationCount}
+                  valueStyle={{
+                    color: "#3f8600",
+                    fontSize: "50px",
+                    fontWeight: "600",
+                    fontFamily: "Poppins, sans-serif",
+                    textAlign: "center",
+                  }}
+                />
+              </Card>
+            </Col>
+            <Col
+              span={6}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 8 }}
+              lg={{ span: 8 }}
+            >
+              <Card
+                style={{
+                  marginTop: "10px",
+                  border: "3px #0DC939 solid",
+                  borderRadius: "12px",
+                  background: "#EBFFF0",
+                  boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
+                }}
+              >
+                <CustomStatistic
+                  title="Successful verifications "
+                  value={completedVerificationCount}
+                  valueStyle={{
+                    color: "#3f8600",
+                    fontSize: "50px",
+                    fontWeight: "600",
+                    fontFamily: "Poppins, sans-serif",
+                    textAlign: "center",
+                  }}
+                />
+              </Card>
+            </Col>
+            <Col
+              span={6}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 8 }}
+              lg={{ span: 8 }}
+            >
+              <Card
+                style={{
+                  marginTop: "10px",
+                  border: "3px #0DC939 solid",
+                  borderRadius: "12px",
+                  background: "#EBFFF0",
+                  boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
+                }}
+              >
+                <CustomStatistic
+                  title="Unsuccessful verifications "
+                  value={failedVerificationCount}
+                  valueStyle={{
+                    color: "#3f8600",
+                    fontSize: "50px",
+                    fontWeight: "600",
+                    fontFamily: "Poppins, sans-serif",
+                    textAlign: "center",
+                  }}
+                />
+              </Card>
+            </Col>
+          </Row>
+          <div style={{ marginTop: "30px" }}>
+            {/* <Heading4>Recent Activities</Heading4> */}
+            <MainButton
+              type="primary"
+              style={{ float: "right" }}
+              onClick={showModal}
+            >
+              View Wallet
+            </MainButton>
+            <Modal
+              title="User Wallet"
+              visible={isModalVisible}
+              onOk={handleOk}
+              onCancel={handleCancel}
+              width={300}
+            >
+              <Title level={5}> Wallet Balance:</Title>
+              <Title level={3} style={{ color: "#0DC939" }}>
+                {userCurrency === "ngn"
+                  ? formatToNaira(userBalance)
+                  : `$${userBalance}`}
+              </Title>
+
+              <Divider style={{ border: "1px solid #D9D9D9" }} />
+              <Title level={5}>Fund Wallet</Title>
+              <p>Enter Amount to Fund Wallet</p>
+              <Input
+                type="text"
+                placeholder="Enter amount"
+                value={amount}
+                onChange={handleChange}
+              />
+            </Modal>
+          </div>
+          {/* <div class="postman-run-button"
+            data-postman-action="collection/fork"
+            data-postman-visibility="public"
+            data-postman-var-1="40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96"
+            data-postman-collection-url="entityId=40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96&entityType=collection&workspaceId=7222a8fe-9b7b-4ba7-9aa1-46b4cd965d34">
+            </div> */}
+
+        </InfoSec>
+        <Tabs
+          defaultActiveKey="1"
+          items={items}
+          onChange={onChange}
+          style={{
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
+            padding: "20px",
+            marginTop: "40px",
+            marginBottom: "40px",
+          }}
+        />
+        <Notification />
+        <Modal
+          // title="Complete Wallet TopUp"
+          style={{
+            top: 20,
+          }}
+          width={1000}
+          open={modal1Open}
+          onOk={handleModalOk}
+          onCancel={handleModalOk}
+          maskClosable={false}
+          footer={[
+            <Button danger type="dashed" onClick={handleModalOk}>
+              Close
+            </Button>,
+          ]}
+        >
+          <iframe
+            id="inlineFrameExample"
+            title="Inline Frame Example"
+            width="100%"
+            height="600"
+            src={paymentUrl}
+            // ref={iframeRef}
+            // onLoad={handleIframeLoad}
+          ></iframe>
+          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+        </Modal>
+      </Spin>
     </Container>
   );
 };

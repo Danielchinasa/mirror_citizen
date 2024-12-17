@@ -359,8 +359,8 @@ const DashboardPage = () => {
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
-    setLoadingSmall(false);
-    setLoading(true);
+    setLoadingSmall(true);
+    // setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -606,6 +606,7 @@ const DashboardPage = () => {
 
     setIsChecked(e.target.checked);
   };
+
   useEffect(() => {
     if (isChecked) {
       console.log("isChecked");
@@ -902,6 +903,8 @@ const DashboardPage = () => {
 
   const handlePaymentMethod = async () => {
     setLoadingSmall(true);
+    handleCancel();
+    setLoading(true);
     if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
@@ -2060,6 +2063,7 @@ const DashboardPage = () => {
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
     });
   };
+
   const clearInputBusinessbusiness_name = () => {
     setBusinessProfileArray([]); // Clears business profile array
     setFormData({ ...formData, business_name: "" }); // Clears the business_name field in the form data
@@ -2917,7 +2921,7 @@ const DashboardPage = () => {
                         >
                           <Space direction="vertical">
                             <Radio
-                              disabled
+                              // disabled
                               value="vin"
                               size="large"
                               onClick={() => setSelectedForm("vin")}
