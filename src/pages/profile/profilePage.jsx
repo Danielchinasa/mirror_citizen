@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { UploadOutlined } from "@ant-design/icons";
+import defaultDp from "../../images/defaultDp.png";
 import { Button, Image } from "antd";
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -271,7 +272,7 @@ const ProfilePage = () => {
                 className="avatar-uploader"
                 style={{ marginBottom: "20px" }}
                 showUploadList={true}
-                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                action="https://jsonplaceholder.typicode.com/posts"
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >
@@ -297,7 +298,12 @@ const ProfilePage = () => {
             {" "}
             <Image
               width={200}
-              src={`https://e-citizen.ng:8443${userDetails.profileImageLocation}`}
+              // src={`https://e-citizen.ng:8443${userDetails.profileImageLocation}`}
+              src={
+                userDetails && userDetails?.profileImageLocation
+                  ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                  : defaultDp
+              }
             />
           </Col>
           <Col

@@ -360,6 +360,7 @@ const Vehicle2 = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "200px",
+              marginRight: "10px",
               cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
             }}
             onClick={() => {

@@ -2167,6 +2167,7 @@ const BusinessName = () => {
               backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
               backgroundSize: "cover",
               backgroundPosition: "center",
+              marginRight: "10px",
               height: "200px",
               marginRight: "10px",
               cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable

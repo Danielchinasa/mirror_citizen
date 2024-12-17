@@ -300,6 +300,7 @@ export const sendVerificationRequest =
         basic: {
           phoneNumber: formData.phone || "",
           nin: formData.nin || "",
+          nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",
           gender: formData.gender || "",
           firstname: formData.firstname || "",
