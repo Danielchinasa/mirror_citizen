@@ -55,6 +55,7 @@ const Result = () => {
   const tokenExpire = user?.expirationDate || "";
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("-");
+  const [middleName, setMiddleName] = useState("-");
   const [lastName, setLastName] = useState("-");
   const [nin, setNin] = useState("-");
   const [dob, setDob] = useState("-");
@@ -68,7 +69,9 @@ const Result = () => {
   const [email, setEmail] = useState("-");
   const [birthCountry, setBirthCountry] = useState("-");
   const [birthState, setBirthState] = useState("-");
+  const [birthLGA, setBirthLGA] = useState("-");
   const [originState, setOriginState] = useState("-");
+  const [originPlace, setOriginPlace] = useState("-");
   const [employmentStatus, setEmploymentStatus] = useState("-");
   const [originLGA, setOriginLGA] = useState("-");
   const [photo, setPhoto] = useState("-");
@@ -129,6 +132,7 @@ const Result = () => {
         // console.log("hre");
         // console.log(response.data);
         const firstNameFromResponse = response.data.data.firstName || "";
+        const middleNameFromResponse = response.data.data.middleName || "";
         const lastNameFromResponse = response.data.data.lastName || "-";
         const ninFromResponse = response.data.data.nin || "-";
         const dobFromResponse = response.data.data.dob || "-";
@@ -145,8 +149,10 @@ const Result = () => {
         const emailFromResponse = response.data.data.email || "-";
         const originLGAFromResponse = response.data.data.originLGA || "-";
         const originStateFromResponse = response.data.data.originState || "-";
+        const originPlaceFromResponse = response.data.data.originPlace || "-";
         const birthCountryFromResponse = response.data.data.birthCountry || "-";
         const birthStateFromResponse = response.data.data.birthState || "-";
+        const birthLGAFromResponse = response.data.data.birthLGA || "-";
         const employmentSatusFromResponse =
           response.data.data.employmentSatus || "-";
         const photoFromResponse = response.data.data.photo || "-";
@@ -156,6 +162,7 @@ const Result = () => {
         const heightFromResponse = response.data.data.height || "-";
         const titleFromResponse = response.data.data.title || "-";
         setFirstName(firstNameFromResponse);
+        setMiddleName(middleNameFromResponse);
         setLastName(lastNameFromResponse);
         setNin(ninFromResponse);
         setDob(dobFromResponse);
@@ -169,8 +176,10 @@ const Result = () => {
         setEmail(emailFromResponse);
         setBirthCountry(birthCountryFromResponse);
         setOriginState(originStateFromResponse);
+        setOriginPlace(originPlaceFromResponse);
         setOriginLGA(originLGAFromResponse);
         setBirthState(birthStateFromResponse);
+        setBirthLGA(birthLGAFromResponse);
         setEmploymentStatus(employmentSatusFromResponse);
         setPhoto(photoFromResponse);
         setResidenceLGA(residenceLGAFromResponse);
@@ -262,21 +271,21 @@ const Result = () => {
               <Col span={6}>
                 {renderDetail(
                   <FaRegUser />,
-                  "Name",
-                  `${firstName} ${lastName}`
+                  "First Name",
+                  `${firstName}`
                 )}
                 <Divider />
 
                 {renderDetail(<AiOutlineFieldNumber />, "NIN", `${nin}`)}
               </Col>
               <Col span={6}>
-                {renderDetail(<FaCalendarAlt />, "Date of Birth", `${dob}`)}
+                {renderDetail(<FaRegUser />, "Middle Name", `${middleName}`)}
                 <Divider />
 
-                {renderDetail(<FaPray />, "Religion", `${religion}`)}
+                {renderDetail(<FaCalendarAlt />, "Date of Birth", `${dob}`)}
               </Col>
               <Col span={6}>
-                {renderDetail(<FaHome />, "Address", `${residenceAddress}`)}
+                {renderDetail(<FaRegUser />, "Last Name", `${lastName}`)}
                 <Divider />
                 {renderDetail(<FaRestroom />, "Gender", `${gender}`)}
               </Col>
@@ -294,9 +303,7 @@ const Result = () => {
                 )}
                 <Divider />
                 {renderDetail(
-                  <MdOutlineWorkOutline />,
-                  "Employment Status",
-                  `${employmentStatus}`
+                  <FaHome />, "Residence Address", `${residenceAddress}`
                 )}
               </Col>
               <Col span={6}>
@@ -308,21 +315,21 @@ const Result = () => {
                 <Divider />
                 {renderDetail(
                   <MdOutlinePinDrop />,
-                  "LGA of Origin",
-                  `${originLGA}`
+                  "Residence State",
+                  `${residenceState}`
                 )}
               </Col>
               <Col span={6}>
                 {renderDetail(
                   <MdOutlinePinDrop />,
-                  "State of Origin",
+                  "LGA of Birth",
                   `${originState}`
                 )}
                 <Divider />
                 {renderDetail(
-                  <GiBigDiamondRing />,
-                  "Marrital Status",
-                  `${maritalStatus}`
+                  <MdOutlinePinDrop />,
+                  "Residence LGA",
+                  `${residenceLGA}`
                 )}
               </Col>
               <Col span={6}>
@@ -338,33 +345,36 @@ const Result = () => {
               <Col span={6}>
                 {renderDetail(
                   <MdOutlinePinDrop />,
-                  "Residence LGA",
-                  `${residenceLGA}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Residence State",
-                  `${residenceState}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <MdOutlinePinDrop />,
                   "Origin State",
                   `${originState}`
                 )}
                 <Divider />
                 {renderDetail(
+                  <GiBodyHeight />, "Height", `${height}`
+                )}
+              </Col>
+              <Col span={6}>
+                {renderDetail(
                   <MdOutlinePinDrop />,
                   "Origin LGA",
                   `${originLGA}`
                 )}
+                <Divider />
+                {renderDetail(
+                  <GiBigDiamondRing />,
+                  "Marital Status",
+                  `${maritalStatus}`
+                )}
               </Col>
               <Col span={6}>
-                {renderDetail(<GiBodyHeight />, "Height", `${height}`)}
-                <Divider />
+                {renderDetail(<MdOutlinePinDrop />,
+                  "Origin Place",
+                  `${originPlace}`)}
+                
+              </Col>
+              <Col span={6}>
                 {renderDetail(<MdTitle />, "Title", `${title}`)}
+                
               </Col>
             </Row>
           </Card>
