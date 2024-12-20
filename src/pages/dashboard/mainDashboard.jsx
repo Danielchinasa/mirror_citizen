@@ -191,7 +191,7 @@ const MainDashboard = () => {
         new Date(insertionDate) < sevenDaysAgo)
     ) {
       // message.error("Verification Result or Consent Expired");
-      
+      setLoadingSmall(false);
       Swal.fire({
         title: "Error",
         text: "Verification Result or Consent expired",
@@ -215,10 +215,24 @@ const MainDashboard = () => {
       return;
     }
     if (consent === "pending") {
+      setLoadingSmall(false);
       Swal.fire({
         title: "Info",
         text: "Awaiting Consent",
         icon: "info",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
+    }
+
+    if (consent === "No data found") {
+      setLoadingSmall(false);
+      Swal.fire({
+        title: "Oops!",
+        text: "Sorry, No record found",
+        icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
         },
@@ -243,7 +257,7 @@ const MainDashboard = () => {
           console.log("NO DATA");
           Swal.fire({
             title: "Oops!",
-            text: "Sorry, No record was returned",
+            text: "Sorry, No record found",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -257,7 +271,7 @@ const MainDashboard = () => {
         ) {
           Swal.fire({
             title: "Oops!",
-            text: "Sorry, No record was returned",
+            text: "Sorry, No record found",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
