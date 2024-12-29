@@ -438,8 +438,8 @@ const DashboardPage = () => {
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
-    setLoadingSmall(true);
-    // setLoading(true);
+    //setLoadingSmall(true);
+     setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -1021,8 +1021,8 @@ const DashboardPage = () => {
 
   const handlePaymentMethod = async () => {
     setLoadingSmall(true);
-    handleCancel();
-    setLoading(true);
+    // handleCancel();
+    // setLoading(true);
     if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
