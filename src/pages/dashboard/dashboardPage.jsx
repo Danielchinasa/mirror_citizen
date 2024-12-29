@@ -41,7 +41,7 @@ import {
   CameraOutlined,
   CloseSquareOutlined,
 } from "@ant-design/icons";
-import banner from "../../images/banner.png";
+import banner from "../../images/NIN verification on ecitizen.png";
 import tick from "../../images/tick.png";
 import clearvin from "../../images/clearvin.png";
 import { useDispatch, useSelector } from "react-redux";
