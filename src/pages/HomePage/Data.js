@@ -8,8 +8,8 @@ export const homeObjOne = {
   description: "How it works",
   buttonLabel: "Verify Identity",
   imgStart: "",
-  img: require("../../images/hero-2.png"),
-  alt: "Credit Card",
+  img: require("../../images/VIN_verification_platform_in_nigeria.png"),
+  alt: "VIN_verification_platform_in_nigeria",
   start: "",
 };
 

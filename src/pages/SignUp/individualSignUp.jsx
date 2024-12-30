@@ -16,7 +16,7 @@ import {
 } from "antd";
 import { useHistory } from "react-router-dom";
 
-import reg from "../../images/reg.jpg";
+import reg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import {
   BtnLink,
   StyledForm,

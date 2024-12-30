@@ -13,7 +13,7 @@ import {
   Spin,
   Checkbox,
 } from "antd";
-import reg from "../../images/reg.jpg";
+import reg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import slide2 from "../../images/slide2.svg";
 import {
   BtnLink,

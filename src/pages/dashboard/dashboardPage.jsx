@@ -41,7 +41,7 @@ import {
   CameraOutlined,
   CloseSquareOutlined,
 } from "@ant-design/icons";
-import banner from "../../images/banner.png";
+import banner from "../../images/NIN_verification_on_ecitizen.png";
 import tick from "../../images/tick.png";
 import clearvin from "../../images/clearvin.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -438,8 +438,8 @@ const DashboardPage = () => {
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
-    setLoadingSmall(true);
-    // setLoading(true);
+    //setLoadingSmall(true);
+     setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -1021,8 +1021,8 @@ const DashboardPage = () => {
 
   const handlePaymentMethod = async () => {
     setLoadingSmall(true);
-    handleCancel();
-    setLoading(true);
+    // handleCancel();
+    // setLoading(true);
     if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
