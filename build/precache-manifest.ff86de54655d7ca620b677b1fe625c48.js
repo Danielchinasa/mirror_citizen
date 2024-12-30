@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9fc3f8bd7a29e801105695e7a59b92a0",
+    "revision": "104757ef2898698644a6bdeae014fe26",
     "url": "/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/2.ec61a722.chunk.css"
   },
   {
-    "revision": "23a203e17d5193411136",
+    "revision": "40a8fb52df4c9f7a376e",
     "url": "/static/css/main.59cecac9.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/2.5e41a5ef.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "23a203e17d5193411136",
-    "url": "/static/js/main.bdf1801f.chunk.js"
+    "revision": "40a8fb52df4c9f7a376e",
+    "url": "/static/js/main.2e18a2dc.chunk.js"
   },
   {
     "revision": "dfe3d817a9ac0c05d2c9",
@@ -33,15 +33,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   },
   {
     "revision": "dfc673b153f3f4275652ce15bf398b5a",
-    "url": "/static/media/NIN verification on ecitizen.dfc673b1.png"
+    "url": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png"
   },
   {
     "revision": "d757ba0873c63f8bbfe22867f096327b",
-    "url": "/static/media/VIN verification platform in nigeria.d757ba08.png"
+    "url": "/static/media/VIN_verification_platform_in_nigeria.d757ba08.png"
   },
   {
     "revision": "0eb722607fdc7ae44fbb095a58cb7400",
-    "url": "/static/media/Verify NIN on ecitizen.0eb72260.jpg"
+    "url": "/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg"
   },
   {
     "revision": "4bbf54a2485fdacfd86d7a07a563db2f",
@@ -49,7 +49,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   },
   {
     "revision": "e1e01b752a6058eddeda02e266e19a82",
-    "url": "/static/media/check credit scores on ecitizen.e1e01b75.png"
+    "url": "/static/media/check_credit_scores_on_ecitizen.e1e01b75.png"
   },
   {
     "revision": "020b3b46079eb5abf52a8670b18854ce",

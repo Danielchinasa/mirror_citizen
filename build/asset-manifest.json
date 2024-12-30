@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/static/css/main.59cecac9.chunk.css",
-    "main.js": "/static/js/main.bdf1801f.chunk.js",
-    "main.js.map": "/static/js/main.bdf1801f.chunk.js.map",
+    "main.js": "/static/js/main.2e18a2dc.chunk.js",
+    "main.js.map": "/static/js/main.2e18a2dc.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
     "static/js/2.5e41a5ef.chunk.js": "/static/js/2.5e41a5ef.chunk.js",
     "static/js/2.5e41a5ef.chunk.js.map": "/static/js/2.5e41a5ef.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.885c5f1dc12d1b2f252b629390f3906d.js": "/precache-manifest.885c5f1dc12d1b2f252b629390f3906d.js",
+    "precache-manifest.ff86de54655d7ca620b677b1fe625c48.js": "/precache-manifest.ff86de54655d7ca620b677b1fe625c48.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.59cecac9.chunk.css.map": "/static/css/main.59cecac9.chunk.css.map",
     "static/js/2.5e41a5ef.chunk.js.LICENSE.txt": "/static/js/2.5e41a5ef.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.021f78a2.svg",
-    "static/media/NIN verification on ecitizen.png": "/static/media/NIN verification on ecitizen.dfc673b1.png",
-    "static/media/VIN verification platform in nigeria.png": "/static/media/VIN verification platform in nigeria.d757ba08.png",
-    "static/media/Verify NIN on ecitizen.jpg": "/static/media/Verify NIN on ecitizen.0eb72260.jpg",
+    "static/media/NIN_verification_on_ecitizen.png": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
+    "static/media/VIN_verification_platform_in_nigeria.png": "/static/media/VIN_verification_platform_in_nigeria.d757ba08.png",
+    "static/media/Verify_NIN_on_ecitizen.jpg": "/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg",
     "static/media/car-insurance.svg": "/static/media/car-insurance.4bbf54a2.svg",
-    "static/media/check credit scores on ecitizen.png": "/static/media/check credit scores on ecitizen.e1e01b75.png",
+    "static/media/check_credit_scores_on_ecitizen.png": "/static/media/check_credit_scores_on_ecitizen.e1e01b75.png",
     "static/media/clearvin.png": "/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/static/media/contact.2a1a7bdb.png",
     "static/media/credit-card.svg": "/static/media/credit-card.6cb759f3.svg",
@@ -43,6 +43,6 @@
     "static/css/2.ec61a722.chunk.css",
     "static/js/2.5e41a5ef.chunk.js",
     "static/css/main.59cecac9.chunk.css",
-    "static/js/main.bdf1801f.chunk.js"
+    "static/js/main.2e18a2dc.chunk.js"
   ]
 }

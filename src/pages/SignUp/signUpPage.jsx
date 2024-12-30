@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row, Image } from "antd";
-import reg from "../../images/Verify NIN on ecitizen.jpg";
+import reg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import SignUpMode from "./signUpMode";
 
 const SignUpPage = () => {
