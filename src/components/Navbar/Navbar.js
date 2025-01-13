@@ -11,7 +11,7 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
-import Logo from "../../images/logo.png";
+import Logo from "../../images/logo.svg";
 import Logo1 from "../../images/logo1.png";
 import defaultDp from "../../images/defaultDp.png";
 import { Link } from "react-router-dom";

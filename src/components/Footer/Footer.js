@@ -13,7 +13,7 @@ import {
 } from "./Footer.elements";
 
 // import logo from "../../images/logo.svg";
-import logo from "../../images/logo.png";
+// import logo from "../../images/logo.png";
 import logo1 from "../../images/logo1.png";
 import osia from "../../images/osia.png";
 import ndpr from "../../images/ndpr.png";
