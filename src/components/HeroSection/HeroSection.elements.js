@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const HeroSec = styled.div`
     color: #fff;
     padding: 10px 0px 0px 20px;
-    background: ${({lightBg}) => (lightBg ? "#fff" : "#FAFFFB")};
+    // background: ${({lightBg}) => (lightBg ? "#fff" : "#FAFFFB")};
+    background: ${({ theme }) => theme.background};
 `;
 
 export const HeroRow = styled.div`
@@ -81,7 +82,8 @@ export const Heading = styled.h1`
     font-size: 48px;
     line-height: 1.1;
     font-weight: 600;
-    color: ${({lightText}) => (lightText ? "#354138" : "#1c2237")};
+    // color: ${({lightText}) => (lightText ? "#354138" : "#1c2237")};
+    color: ${({theme}) => theme.text};
 `;
 
 export const Subtitle = styled.p`

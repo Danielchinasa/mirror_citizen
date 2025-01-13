@@ -49,6 +49,8 @@ import Reach1 from "../../images/reach1.jpeg";
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
+
+
 const BusinessName = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -1296,7 +1298,6 @@ const BusinessName = () => {
                                   header={
                                     <div
                                       style={{
-                                        color: "#0DC939",
                                         fontSize: "16px",
                                         fontWeight: "bold",
                                       }}
@@ -1312,7 +1313,7 @@ const BusinessName = () => {
                                         <Collapse
                                           bordered={false}
                                           accordion
-                                          style={{ marginBottom: "10px" }}
+                                          style={{ marginBottom: "10px", background: "red" }}
                                         >
                                           <Panel
                                             key={index}

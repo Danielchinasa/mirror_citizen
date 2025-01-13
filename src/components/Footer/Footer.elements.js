@@ -2,9 +2,22 @@ import styled from "styled-components";
 import { FaMagento } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+export const Footer1Container = styled.div`
+  background-color: ${({ theme }) => theme.footerBackground};
+  padding-left: 60px;
+  padding-right: 60px;
+  padding-top: 30px;
+
+  @media (max-width: 768px) {
+    padding-left: 0; // Remove padding on smaller screens
+    padding-right: 0;
+    padding-top: 0;  // Remove padding on smaller screens
+  }
+`;
+
 export const FooterContainer = styled.div`
-  background-color: #354138;
-  padding: 0 0 2rem 0;
+  background-color: ${({ theme }) => theme.footer2Background};
+  padding: 0 0 0 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -153,7 +166,7 @@ export const SocialMediaWrap = styled.div`
   align-items: center;
   width: 90%;
   max-width: 1000px;
-  margin: 40px auto 0 auto;
+  margin: 10px auto 0 auto;
 
   @media screen and (max-width: 820px) {
     flex-direction: column;

@@ -3,8 +3,10 @@ import { Container } from "../../globalStyles";
 import { FaMagento } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+
 export const Nav = styled.nav`
-  background: #ffffff;
+  // background: #ffffff;
+  background: ${({ theme }) => theme.background};
   height: 80px;
   display: flex;
   justify-content: center;

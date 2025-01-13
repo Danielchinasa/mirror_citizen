@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Image, Typography, Button, Avatar, List, Space } from "antd";
 import individual from "../../images/individual.svg";
 import Corporate from "../../images/Corporate.svg";
-import { BtnLink } from "../../globalStyles";
+import { BtnLink, StyledDiv, ThemedTitle } from "../../globalStyles";
+import styled from "styled-components";
 const { Title } = Typography;
+
 
 const SignUpMode = () => {
   const data = [
@@ -20,8 +22,8 @@ const SignUpMode = () => {
 
   return (
     <div className="p-5">
-      <Title>Create Account</Title>
-      <Title level={4}>How do you want to sign up?</Title>
+      <ThemedTitle >Create Account</ThemedTitle>
+      <ThemedTitle level={4}>How do you want to sign up?</ThemedTitle>
       <Space
         size="large"
         direction="vertical"
@@ -29,14 +31,7 @@ const SignUpMode = () => {
           display: "flex",
         }}
       >
-        <div
-          style={{
-            border: "2px #000 solid",
-            borderRadius: "10px",
-            padding: "20px",
-            background: selectedDiv === 1 ? "#EBFFF0" : "white",
-            cursor: "pointer",
-          }}
+        <StyledDiv
           onClick={() => handleDivClick(1)}
         >
           <List
@@ -53,17 +48,20 @@ const SignUpMode = () => {
                     />
                   }
                   title={
-                    <Title level={3} style={{ cursor: "pointer" }}>
+                    <ThemedTitle level={3} style={{ cursor: "pointer" }}>
                       Individual
-                    </Title>
+                    </ThemedTitle>
                   }
-                  description="Select this if you are not a registered business and wish to
-              perform verifications."
+              //     description="Select this if you are not a registered business and wish to
+              // perform verifications."
+                  description={<ThemedTitle level={5}>
+                  Select this if you are not a registered business and wish to perform verifications.
+                </ThemedTitle>}
                 />
               </List.Item>
             )}
           />
-        </div>
+        </StyledDiv>
         {/* <div
           style={{
             border: "2px #000 solid",

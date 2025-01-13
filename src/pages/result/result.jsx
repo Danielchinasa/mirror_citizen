@@ -8,6 +8,7 @@ import {
   StyledLabel,
   Heading6,
   CenterText,
+  ThemedText,
 } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
@@ -245,10 +246,10 @@ const Result = () => {
         <Spin spinning={loading} tip="Awaiting Consent...">
           <Card style={{ width: "100%", marginTop: "20px" }}>
             <div>
-              <Text>Basic Identity Profile </Text>
+              <ThemedText>Basic Identity Profile </ThemedText>
               <RightOutlined />
               {/* <Text>{storedValue}</Text> */}
-              <Text>National Identification Number (NIN)</Text>
+              <ThemedText>National Identification Number (NIN)</ThemedText>
             </div>
             <Divider />
 

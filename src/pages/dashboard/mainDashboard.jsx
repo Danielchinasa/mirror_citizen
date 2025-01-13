@@ -34,7 +34,32 @@ import { useReactToPrint } from "react-to-print";
 import Notification from "../../Notification";
 import { Typography } from "antd";
 import ReactGA from "react-ga4";
+import { Table as AntTable } from "antd";
+import styled, { css } from "styled-components";
+
 const { Title } = Typography;
+// Styled Table component with dynamic background color for table rows and header
+const ThemedTable = styled(AntTable)`
+  .ant-table {
+    background-color: ${({ theme }) => theme.tableBackgroundColor}; /* Apply to whole table */
+  }
+
+  .ant-table-thead > tr > th {
+    background-color: ${({ theme }) => theme.tableHeaderBackgroundColor}; /* Apply to table header */
+    color: ${({ theme }) => theme.tableHeaderTextColor}; /* Apply header text color */
+  }
+
+  .ant-table-tbody > tr > td {
+    background-color: ${({ theme }) => theme.tableRowBackgroundColor}; /* Apply to table rows */
+    color: ${({ theme }) => theme.tableHeaderTextColor}; /* Apply table rows text color */
+  }
+
+  ${({ theme }) => css`
+    .ant-table-tbody > tr:hover {
+      background-color: ${theme.tableRowHoverBackgroundColor} !important;
+    }
+  `}
+`;
 
 const data = [
   {
@@ -705,7 +730,7 @@ const MainDashboard = () => {
 
           <div ref={componentRef}>
             {list && (
-              <Table
+              <ThemedTable
                 expandable
                 scroll={{ x: true }}
                 columns={columns}
@@ -739,7 +764,7 @@ const MainDashboard = () => {
           />
           <Row>
             <Col span={24}>
-              <Table
+              <ThemedTable
                 scroll={{ x: true }}
                 columns={columns2.reverse()} // Reverse the order of columns
                 dataSource={
@@ -824,8 +849,7 @@ const MainDashboard = () => {
   };
 
   const [totalVerificationCount, setTotalVerificationCount] = useState(0);
-  const [completedVerificationCount, setCompletedVerificationCount] =
-    useState(0);
+  const [completedVerificationCount, setCompletedVerificationCount] = useState(0);
   const [failedVerificationCount, setFailedVerificationCount] = useState(0);
   useEffect(() => {
     console.log("transactionData:", transactionData);

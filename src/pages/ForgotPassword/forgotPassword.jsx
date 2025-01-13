@@ -81,7 +81,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div>
+    <div >
       <Row justify="center">
         <Col span={4}></Col>
         <Col span={8}>

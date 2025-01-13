@@ -33,6 +33,7 @@ import {
   StyledInput,
   StyledLabel,
   StyledForm,
+  ThemedText,
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 
@@ -1540,6 +1541,7 @@ const DashboardPage = () => {
         console.error("Error fetching user profile:", error);
       });
   };
+
   const handleMakePaymentForLiveFace = () => {
     const formDataFees = {
       nin: ninFee + 100,
@@ -2016,6 +2018,7 @@ const DashboardPage = () => {
       setBasicProfileArray([value]);
     }
   };
+
   const handleBusinessProfileRadioChange = (value) => {
     if (businessProfileArray.length > 0) {
       // Log the value being removed
@@ -2102,6 +2105,7 @@ const DashboardPage = () => {
       setFinancialProfileArray([value]);
     }
   };
+
   const handleVehicleProfileRadioChange = (value) => {
     if (vehicleProfileArray.length > 0) {
       // Log the value being removed
@@ -2448,9 +2452,6 @@ const DashboardPage = () => {
     });
   };
 
-  // const onChangeCheckBox = (checkedValues) => {
-  //   console.log("checked = ", checkedValues);
-  // };
   const onChangeCheckBox = (checkedValues) => {
     const updatedFormData = {
       ...formData,
@@ -2556,38 +2557,7 @@ const DashboardPage = () => {
       });
       return;
     }
-    // fetch(
-    //   `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${userToken}`,
-    //     },
-    //   }
-    // )
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       throw new Error("Network response was not ok");
-    //     }
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     // Handle the response data here
-    //     console.log(data); // For example, logging the response data
-    //     if (data.status == "success") {
-    //       handleSubmit();
-    //       setOpenFlutterwaveModal(false);
-    //     } else {
-    //       setOpenFlutterwaveModal(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("There was a problem with the fetch operation:", error);
-    //     // Handle errors here
-    //   });
-
-    // setOpenFlutterwaveModal(false);
+   
   };
 
   const [prevNumberOfCheckedCheckboxes, setPrevNumberOfCheckedCheckboxes] =
@@ -2712,31 +2682,6 @@ const DashboardPage = () => {
     const hadPreviousValue =
       typeof formData[name] === "string" && formData[name].trim() !== "";
 
-    // if (name === "nin_csv") {
-    //   if (!hadPreviousValue && value.trim() !== "") {
-    //     setNinFilled(true);
-    //     setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
-    //     setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
-    //     setTotalveriNiara(
-    //       (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
-    //     );
-    //   }
-    //   if (hadPreviousValue && value.trim() !== "") {
-    //     setNinFilled(true);
-    //     setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
-    //     setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
-    //     setTotalveriNiara(
-    //       (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
-    //     );
-    //   } else if (hadPreviousValue && value.trim() === "") {
-    //     setNinFilled(false);
-    //     setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
-    //     setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
-    //     setTotalveriNiara(
-    //       (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee
-    //     );
-    //   }
-    // }
     if (name === "nin") {
       if (!hadPreviousValue && value.trim() !== "") {
         setNinFilled(true);
@@ -2754,6 +2699,7 @@ const DashboardPage = () => {
         );
       }
     }
+
     if (name === "face") {
       if (!hadPreviousValue && value.trim() !== "") {
         setFaceFilled(true);
@@ -2774,6 +2720,7 @@ const DashboardPage = () => {
         );
       }
     }
+
     if (name === "rc") {
       if (!hadPreviousValue && value.trim() !== "") {
         setRcFilled(true);
@@ -2791,6 +2738,7 @@ const DashboardPage = () => {
         );
       }
     }
+
     if (name === "business_name") {
       if (!hadPreviousValue && value.trim() !== "") {
         setBusinessNameFilled(true);
@@ -2808,6 +2756,7 @@ const DashboardPage = () => {
         );
       }
     }
+
     if (name === "bvn") {
       // Update state based on 'hadPreviousValue' and 'value'
       if (!hadPreviousValue && value.trim() !== "") {
@@ -2849,6 +2798,7 @@ const DashboardPage = () => {
         );
       }
     }
+
     if (name === "license_number") {
       if (!hadPreviousValue && value.trim() !== "") {
         setLicenseNumberFilled(true);
@@ -2866,6 +2816,7 @@ const DashboardPage = () => {
         );
       }
     }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -2921,7 +2872,7 @@ const DashboardPage = () => {
                               <List.Item>
                                 <List.Item.Meta
                                   avatar={<Avatar src={tick} />}
-                                  title={item.title}
+                                  title={<ThemedText>{item.title}</ThemedText>}
                                 />
                               </List.Item>
                             )}
@@ -3797,7 +3748,7 @@ const DashboardPage = () => {
                     <Heading6>Payment Summary</Heading6>
                     <div
                       style={{
-                        backgroundColor: "#FAFBFC",
+                        backgroundColor: "transparent",
                         padding: "15px",
                         boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)",
                       }}

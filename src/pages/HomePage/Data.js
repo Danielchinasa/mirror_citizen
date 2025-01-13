@@ -8,7 +8,7 @@ export const homeObjOne = {
   description: "How it works",
   buttonLabel: "Verify Identity",
   imgStart: "",
-  img: require("../../images/hero-2.png"),
+  img: require("../../images/hero-1.png"),
   alt: "Credit Card",
   start: "",
 };

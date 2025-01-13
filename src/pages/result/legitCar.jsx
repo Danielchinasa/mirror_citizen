@@ -152,38 +152,7 @@ const LegitCar = () => {
               );
             }}
           ></div>
-          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Finance your Next Car</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#DDF9EA",
-                }}
-              >
-                <p class="card-text">
-                  Find financial offers that are tailored to your credit score.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Credit Cards</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#ECF5F8",
-                }}
-              >
-                <p class="card-text">Credit Cards handpicked for you</p>
-              </div>
-            </div>
-          </div> */}
+          
         </div>
       </div>
     </Container>

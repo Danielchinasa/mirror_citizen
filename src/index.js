@@ -7,12 +7,28 @@ import { store, persistor } from "./redux/store";
 import App from "./App";
 import InactivityDetector from "./InactivityDetector";
 
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import { ThemeProvider, useTheme } from "./ThemeContext";
+import { lightTheme, darkTheme } from "./theme";
+
+const ThemedApp = () => {
+  const { theme } = useTheme();
+  return (
+    <StyledThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <App />
+    </StyledThemeProvider>
+  );
+};
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router>
         {/* <InactivityDetector /> */}
-        <App />
+        {/* <App /> */}
+        <ThemeProvider>
+          <ThemedApp />
+        </ThemeProvider>,
       </Router>
     </PersistGate>
   </Provider>,

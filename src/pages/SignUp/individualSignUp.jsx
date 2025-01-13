@@ -24,6 +24,7 @@ import {
   StyledLabel,
   Subtitle,
   MainButtonFull,
+  ThemedTitle
 } from "../../globalStyles";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { signUp } from "../../redux/actions";
@@ -351,8 +352,8 @@ const IndividualSignUp = () => {
                 }}
               />
             </BtnLink>
-            <Title>Create Account</Title>
-            <Title level={4}>INDIVIDUAL ACCOUNT</Title>
+            <ThemedTitle>Create Account</ThemedTitle>
+            <ThemedTitle level={4}>INDIVIDUAL ACCOUNT</ThemedTitle>
             <Space
               size="large"
               direction="vertical"

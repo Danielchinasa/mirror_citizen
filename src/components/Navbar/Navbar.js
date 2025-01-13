@@ -12,6 +12,7 @@ import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
 import Logo from "../../images/logo.png";
+import Logo1 from "../../images/logo1.png";
 import defaultDp from "../../images/defaultDp.png";
 import { Link } from "react-router-dom";
 import { Button, Flex, Modal } from "antd";
@@ -23,6 +24,9 @@ import { DownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Space, Divider, Input } from "antd";
 import ReactGA from "react-ga4";
 import Swal from "sweetalert2";
+import ThemeToggleButton from "../ThemeToggleButton";
+import { useTheme } from "../../ThemeContext";
+
 
 const { Title } = Typography;
 
@@ -321,20 +325,24 @@ function Navbar() {
     }
   };
 
+  const { theme } = useTheme();
+
   return (
     <>
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav>
+          
           <NavbarContainer>
             <Link to={isAuthenticated ? "/dashboard" : "/"}>
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
-                src={Logo}
+                src={theme === "light" ? Logo : Logo1}
                 alt="Logo"
                 width={230}
                 style={{ marginTop: "10px", cursor: "pointer" }}
               />
             </Link>
+            <ThemeToggleButton />
             <HamburgerIcon onClick={handleClick}>
               {click ? <FaTimes /> : <FaBars />}
             </HamburgerIcon>

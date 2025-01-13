@@ -1,5 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { Link } from "react-router-dom";
+import { Typography } from "antd";
+import { Table as AntTable } from "antd";
+
 
 const GlobalStyles = createGlobalStyle`
 * {
@@ -30,6 +33,20 @@ const GlobalStyles = createGlobalStyle`
 a {
   cursor: pointer;
 }
+`;
+
+
+
+export const ThemedTitle = styled(Typography.Title)`
+  color: ${({ theme }) => theme.labelColor} !important;
+`;
+
+export const ThemedTable = styled(AntTable)`
+  background-color: ${({ theme }) => theme.background} !important;
+`;
+
+export const ThemedText = styled(Typography.Text)`
+  color: ${({ theme }) => theme.labelColor} !important;
 `;
 
 export const Container = styled.div`
@@ -134,7 +151,7 @@ export const DisabledButtonFull = styled.button`
 
 export const OutlineButton = styled.button`
   ${buttonBaseStyles};
-  background-color: #ffffff;
+  background-color: transparent;
   color: ${({ type }) => colors[type]};
   border: ${({ type }) => `1px solid ${colors[type]}`};
   border-radius: 4px;
@@ -174,28 +191,28 @@ export const OutlineButtonFull = styled.button`
 export const InfoSec = styled.div`
   padding-top: 80px;
   padding-bottom: 50px;
-  background: #fff;
+  background: ${({ theme }) => theme.background};
 `;
 
 export const Heading = styled.h1`
   font-size: 40px;
   font-weight: 600;
   font-family: Poppins;
-  color: ${({ lightText }) => (lightText ? "#f7f8fa" : "#1c2237")};
+  color: ${({theme}) => theme.labelColor};
 `;
 
 export const Heading6 = styled.h6`
   font-size: 20px;
   font-weight: 300;
   font-family: Poppins;
-  color: ${({ lightText }) => (lightText ? "#f7f8fa" : "#1c2237")};
+  color: ${({theme}) => theme.labelColor};
 `;
 
 export const Heading4 = styled.h4`
   font-size: 28px;
   font-weight: 300;
   font-family: Poppins;
-  color: ${({ lightText }) => (lightText ? "#f7f8fa" : "#1c2237")};
+  color: ${({ theme }) => theme.labelColor} !important;
 `;
 
 export const CenterText = styled.div`
@@ -207,12 +224,7 @@ export const Subtitle = styled.p`
   font-size: 18px;
   line-height: 24px;
   font-family: Nunito;
-  color: ${(props) =>
-    props.color === "primary"
-      ? "#09C93A"
-      : props.color === "light"
-      ? "#a9b3c1"
-      : "#1c2237"};
+  color: ${({ theme }) => theme.labelColor} !important;
 `;
 
 export const StyledForm = styled.form`
@@ -223,20 +235,20 @@ export const StyledLabel = styled.label`
   display: block;
   margin-bottom: 5px;
   text-align: left;
-  color: ${(props) => (props.invalid ? "red" : "black")};
+  color: ${({theme}) => theme.labelColor};
 `;
 
 export const StyledInput = styled.input`
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.inputBorderColor};
   border-radius: 5px;
   margin-bottom: 20px;
-  background: rgba(53, 65, 56, 0.1);
+  background: ${({ theme }) => theme.inputBackgroundColor};
   &:focus {
     outline: none;
     border-color: #09c93a !important;
-    background: #fff;
+    background: ${({ theme }) => theme.inputBorderColor};
   }
 `;
 
@@ -279,4 +291,18 @@ export const Img2 = styled.img`
   display: inline-block;
   max-height: 600px;
 `;
+
+export const StyledDiv = styled.div`
+  border: 2px solid ${({ theme }) => theme.labelColor};
+  border-radius: 10px;
+  padding: 20px;
+  background: ${({ theme, selected }) =>
+    selected ? "#EBFFF0" : theme.background};
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
 export default GlobalStyles;
