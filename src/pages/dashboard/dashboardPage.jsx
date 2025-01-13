@@ -439,7 +439,7 @@ const DashboardPage = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     //setLoadingSmall(true);
-     setLoading(true);
+    setLoading(true);
     try {
       const response = await dispatch(
         sendVerificationRequest(formData, userToken)
@@ -2983,6 +2983,18 @@ const DashboardPage = () => {
                             >
                               National Identification Number (NIN)
                             </Radio>
+                            {userType != "individual" ? (
+                              <Radio
+                                value="bulk_nin"
+                                size="large"
+                                onClick={() => setSelectedForm("bulk_nin")}
+                              >
+                                National Identification Number{" "}
+                                <strong>(Bulk NIN)</strong>
+                              </Radio>
+                            ) : (
+                              ""
+                            )}
 
                             <Radio
                               value="face"
@@ -3267,70 +3279,78 @@ const DashboardPage = () => {
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
-                                <CloseSquareOutlined
-                                  onClick={clearInputBulkNin}
-                                />
+                                <CloseSquareOutlined onClick={clearInputNin} />
                               </span>
                             </StyledLabel>
-
-                            {/* <Col
-                              span={8}
-                              xs={{ span: 24 }}
-                              sm={{ span: 24 }}
-                              md={{ span: 12 }}
-                              lg={{ span: 12 }}
-                            > */}
-
-                            <span>Bulk upload</span>
-                            {!fileUploaded && ( // Only show input if not uploaded
-                              <StyledInput
-                                type="file"
-                                className="hidden"
-                                accept=".csv"
-                                name="nin_csv"
-                                onChange={handleChange}
+                            <StyledInput
+                              type="text"
+                              placeholder="Enter your NIN"
+                              name="nin"
+                              value={formData.nin}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d+$/.test(value) || value === "") {
+                                  if (value.length <= 11) {
+                                    handleInputChange("nin", value);
+                                  }
+                                }
+                              }}
+                              onBlur={() => {
+                                // Check if the NIN is exactly 11 digits on blur
+                                if (formData.nin.length !== 11) {
+                                  Swal.fire({
+                                    title: "Error",
+                                    text: "NIN must be exactly 11 digits.",
+                                    icon: "error",
+                                    confirmButtonColor: "#0DC939",
+                                  });
+                                }
+                              }}
+                            />
+                          </div>
+                        ))}
+                      {/* <div hidden={selectedForm === "bulk_nin" ? false : true}>
+                        <div>
+                          <StyledLabel>
+                            National Identification Number*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputBulkNin}
                               />
-                            )}
-                            {/* <StyledInput
+                            </span>
+                          </StyledLabel>
+                          <span>Bulk upload</span>
+                          {!fileUploaded && ( // Only show input if not uploaded
+                            <StyledInput
                               type="file"
                               className="hidden"
                               accept=".csv"
                               name="nin_csv"
                               onChange={handleChange}
-                            /> */}
-
-                            {fileName && (
-                              <div className="mt-2 text-sm text-green-600">
-                                <p>Selected file: {fileName}</p>
-                                {rowCount !== null && (
-                                  <p className="font-semibold">
-                                    Number of records: {rowCount}
-                                  </p>
-                                )}
-                              </div>
-                            )}
-                            {fileUploadError && (
-                              <div className="mt-2 text-sm text-red-600 flex items-center">
-                                {fileUploadError}
-                              </div>
-                            )}
-                            {/* <StyledInput
-                              type="text"
-                              placeholder="Enter your NIN"
-                              name="nin"
-                              value={formData.nin}
-                              onChange={(e) =>
-                                handleInputChange("nin", e.target.value)
-                              }
-                            /> */}
-                            <StyledInput
-                              type="hidden"
-                              name="nin_csv"
-                              value={formData.nin_csv}
                             />
-                            {/* </Col> */}
-                          </div>
-                        ))}
+                          )}
+                          {fileName && (
+                            <div className="mt-2 text-sm text-green-600">
+                              <p>Selected file: {fileName}</p>
+                              {rowCount !== null && (
+                                <p className="font-semibold">
+                                  Number of records: {rowCount}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                          {fileUploadError && (
+                            <div className="mt-2 text-sm text-red-600 flex items-center">
+                              {fileUploadError}
+                            </div>
+                          )}
+                          <StyledInput
+                            type="hidden"
+                            name="nin_csv"
+                            value={formData.nin_csv}
+                          />
+                        </div>
+                      </div> */}
                       {/* {selectedForm === "phone" && ( */}
                       <div hidden={selectedForm === "phone" ? false : true}>
                         <StyledLabel>Phone Number*</StyledLabel>
@@ -3598,6 +3618,49 @@ const DashboardPage = () => {
                           </Row>
                         </>
                       )}
+                      {basicProfileArray.includes("bulk_nin") && (
+                        <div>
+                          <StyledLabel>
+                            National Identification Number*
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              <CloseSquareOutlined
+                                onClick={clearInputBulkNin}
+                              />
+                            </span>
+                          </StyledLabel>
+                          <span>Bulk upload</span>
+                          {!fileUploaded && ( // Only show input if not uploaded
+                            <StyledInput
+                              type="file"
+                              className="hidden"
+                              accept=".csv"
+                              name="nin_csv"
+                              onChange={handleChange}
+                            />
+                          )}
+                          {fileName && (
+                            <div className="mt-2 text-sm text-green-600">
+                              <p>Selected file: {fileName}</p>
+                              {rowCount !== null && (
+                                <p className="font-semibold">
+                                  Number of records: {rowCount}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                          {fileUploadError && (
+                            <div className="mt-2 text-sm text-red-600 flex items-center">
+                              {fileUploadError}
+                            </div>
+                          )}
+                          <StyledInput
+                            type="hidden"
+                            name="nin_csv"
+                            value={formData.nin_csv}
+                          />
+                        </div>
+                      )}
+
                       {/* {selectedForm === "rc" && ( */}
                       {businessProfileArray.includes("rc") && (
                         <div>
