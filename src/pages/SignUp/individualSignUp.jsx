@@ -34,6 +34,8 @@ import "../../index.css";
 import privacyPolicy from "../../privacyPolicy";
 import { Modal } from "antd";
 import Swal from "sweetalert2";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -334,8 +336,11 @@ const IndividualSignUp = () => {
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
 
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
+
   return (
-    <>
+    <div style={{ backgroundColor: bgContainer }}>
       <Row>
         <Col span={8} sm={0} xs={0} md={8} lg={8}>
           <Image src={reg} preview={false} />
@@ -346,7 +351,7 @@ const IndividualSignUp = () => {
               <ArrowLeftOutlined
                 style={{
                   fontSize: "25px",
-                  color: "#000",
+                  color: text,
                   cursor: "pointer",
                 }}
               />
@@ -370,8 +375,9 @@ const IndividualSignUp = () => {
                       style={{ marginBottom: "16px" }}
                     />
                   )}
-                  <StyledLabel>First name</StyledLabel>
+                  <StyledLabel $token={token}>First name</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="text"
                     placeholder="Enter your first name"
                     name="firstName"
@@ -387,8 +393,9 @@ const IndividualSignUp = () => {
                     />
                   )}
 
-                  <StyledLabel>Last name</StyledLabel>
+                  <StyledLabel $token={token}>Last name</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="text"
                     placeholder="Enter your last name"
                     name="lastName"
@@ -407,6 +414,7 @@ const IndividualSignUp = () => {
                     National Identification Number (NIN)
                   </StyledLabel> */}
                   <StyledInput
+                    $token={token}
                     hidden
                     type="text"
                     placeholder="Enter your NIN"
@@ -420,8 +428,9 @@ const IndividualSignUp = () => {
                   {/* {formErrors.nin && (
                     <Alert message={formErrors.nin} type="error" showIcon />
                   )} */}
-                  <StyledLabel>Email address</StyledLabel>
+                  <StyledLabel $token={token}>Email address</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="text"
                     placeholder="Enter your Email address"
                     name="email"
@@ -432,10 +441,11 @@ const IndividualSignUp = () => {
                   {formErrors.email && (
                     <Alert message={formErrors.email} type="error" showIcon />
                   )}
-                  <StyledLabel>
+                  <StyledLabel $token={token}>
                     Phone number (E.g: +234 81X XXX XXX X)
                   </StyledLabel>
                   <PhoneInput
+                    $token={token}
                     country={"ng"}
                     value={formData.phoneNumber}
                     onChange={handlePhoneChange}
@@ -473,8 +483,9 @@ const IndividualSignUp = () => {
                     letter, contain at least one number, contain at least one
                     special character.
                   </small>
-                  <StyledLabel>Password</StyledLabel>
+                  <StyledLabel $token={token}>Password</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="password"
                     placeholder="Create a password "
                     name="password"
@@ -491,8 +502,9 @@ const IndividualSignUp = () => {
                     />
                   )}
 
-                  <StyledLabel>Confirm Password</StyledLabel>
+                  <StyledLabel $token={token}>Confirm Password</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="password"
                     placeholder="Re-enter the password "
                     name="reenterPassword"
@@ -549,7 +561,7 @@ const IndividualSignUp = () => {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

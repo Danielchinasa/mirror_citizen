@@ -12,6 +12,7 @@ import {
   StyledInput,
   OutlineButton,
   BtnLink,
+  DynamicTextArea,
 } from "../../globalStyles";
 import { updateProfile, logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -24,6 +25,9 @@ import Swal from "sweetalert2";
 import { UploadOutlined } from "@ant-design/icons";
 import defaultDp from "../../images/defaultDp.png";
 import { Button, Image } from "antd";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
+
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -218,31 +222,37 @@ const ProfilePage = () => {
       }
     },
   };
-  return (
-    <Container>
-      <InfoSec>
-        <Card
-          style={{
-            width: "100%",
-            marginBottom: "30px",
-          }}
-        >
-          {userType == "individual" && (
-            <Title level={4}>Personal Information</Title>
-          )}
-          {userType == "business" && (
-            <Title level={4}>Business Information</Title>
-          )}
 
-          <Subtitle>Update your profile details here</Subtitle>
-        </Card>
-        <Row
-          justify="space-between"
-          style={{ marginTop: "30px", marginBottom: "20px" }}
-        >
-          <Col span={12}>
-            <div style={{ display: "inline-block", position: "relative" }}>
-              {/* <Upload
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
+  return (
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container $token={token}>
+        <InfoSec>
+          <Card
+            style={{
+              width: "100%",
+              marginBottom: "30px",
+              backgroundColor: bgContainer,
+              borderColor: text,
+            }}
+          >
+            {userType == "individual" && (
+              <Title level={4}>Personal Information</Title>
+            )}
+            {userType == "business" && (
+              <Title level={4}>Business Information</Title>
+            )}
+
+            <Subtitle $token={token}>Update your profile details here</Subtitle>
+          </Card>
+          <Row
+            justify="space-between"
+            style={{ marginTop: "30px", marginBottom: "20px" }}
+          >
+            <Col span={12}>
+              <div style={{ display: "inline-block", position: "relative" }}>
+                {/* <Upload
                 name="avatar"
                 listType="picture-circle"
                 className="avatar-uploader"
@@ -267,201 +277,217 @@ const ProfilePage = () => {
                   uploadButton
                 )}
               </Upload> */}
-              <Upload
-                name="avatar"
-                className="avatar-uploader"
-                style={{ marginBottom: "20px" }}
-                showUploadList={true}
-                action="https://jsonplaceholder.typicode.com/posts"
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </div>
-            <Subtitle style={{ marginTop: "20px" }}>
-              Update your profile image here (Max Size: 800kb)
-            </Subtitle>
-            <StyledInput
-              hidden={true}
-              value={formData.profileImage}
-              name="profileImage"
-              onChange={(e) =>
-                setFormData({ ...formData, profileImage: e.target.value })
-              }
-            />
-          </Col>
-        </Row>
+                <Upload
+                  name="avatar"
+                  className="avatar-uploader"
+                  style={{ marginBottom: "20px" }}
+                  showUploadList={true}
+                  action="https://jsonplaceholder.typicode.com/posts"
+                  beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
+              </div>
+              <Subtitle style={{ marginTop: "20px" }} $token={token}>
+                Update your profile image here (Max Size: 800kb)
+              </Subtitle>
+              <StyledInput
+                $token={token}
+                hidden={true}
+                value={formData.profileImage}
+                name="profileImage"
+                onChange={(e) =>
+                  setFormData({ ...formData, profileImage: e.target.value })
+                }
+              />
+            </Col>
+          </Row>
 
-        <Row gutter={40}>
-          <Col span={24}>
-            {" "}
-            <Image
-              width={200}
-              // src={`https://e-citizen.ng:8443${userDetails.profileImageLocation}`}
-              src={
-                userDetails && userDetails?.profileImageLocation
-                  ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
-                  : defaultDp
-              }
-            />
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
+          <Row gutter={40}>
+            <Col span={24}>
+              {" "}
+              <Image
+                width={200}
+                // src={`https://e-citizen.ng:8443${userDetails.profileImageLocation}`}
+                src={
+                  userDetails && userDetails?.profileImageLocation
+                    ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                    : defaultDp
+                }
+              />
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+            >
+              {userType == "individual" && (
+                <>
+                  <StyledLabel $token={token}>First Name</StyledLabel>
+                  <StyledInput
+                    $token={token}
+                    value={formData.firstName}
+                    name="firstName"
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                  ></StyledInput>
+                </>
+              )}
+              {userType == "business" && (
+                <>
+                  <StyledLabel $token={token}>Business Name</StyledLabel>
+                  <StyledInput
+                    $token={token}
+                    value={formData.businessName}
+                    name="businessName"
+                    onChange={(e) =>
+                      handleInputChange("businessName", e.target.value)
+                    }
+                  ></StyledInput>
+                </>
+              )}
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+            >
+              {userType == "individual" && (
+                <>
+                  <StyledLabel $token={token}>Last Name</StyledLabel>
+                  <StyledInput
+                    $token={token}
+                    value={formData.lastName}
+                    name="lastName"
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
+                  ></StyledInput>
+                </>
+              )}
+              {userType == "business" && (
+                <>
+                  <StyledLabel $token={token}>RC Number</StyledLabel>
+                  <StyledInput
+                    $token={token}
+                    value={formData.rcNumber}
+                    name="rcNumber"
+                    onChange={(e) =>
+                      handleInputChange("rcNumber", e.target.value)
+                    }
+                  ></StyledInput>
+                </>
+              )}
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+            >
+              <StyledLabel $token={token}>Email</StyledLabel>
+              <StyledInput
+                $token={token}
+                value={formData.email}
+                name="email"
+                onChange={(e) => handleInputChange("email", e.target.value)}
+              ></StyledInput>
+              <StyledInput
+                $token={token}
+                value={formData.walletBalance}
+                name="walletBalance"
+                hidden="true"
+                onChange={(e) =>
+                  handleInputChange("walletBalance", e.target.value)
+                }
+              ></StyledInput>
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+            >
+              <StyledLabel $token={token}>Phone number</StyledLabel>
+              <StyledInput
+                $token={token}
+                value={formData.phoneNumber}
+                name="phoneNumber"
+                onChange={(e) =>
+                  handleInputChange("phoneNumber", e.target.value)
+                }
+              ></StyledInput>
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+            >
+              <StyledLabel $token={token}>NIN</StyledLabel>
+              <StyledInput
+                $token={token}
+                value={formData.nin}
+                name="nin"
+                onChange={(e) => handleInputChange("nin", e.target.value)}
+              ></StyledInput>
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+            >
+              <StyledLabel $token={token}>Address</StyledLabel>
+              <DynamicTextArea
+                $token={token}
+                rows={4}
+                name="address"
+                value={formData.address}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+              />
+            </Col>
+            <Col>
+              {userType == "business" && (
+                <>
+                  <StyledLabel $token={token}>Designation</StyledLabel>
+                  <StyledInput
+                    $token={token}
+                    value={formData.designation}
+                    name="designation"
+                    onChange={(e) =>
+                      handleInputChange("designation", e.target.value)
+                    }
+                  ></StyledInput>
+                </>
+              )}
+            </Col>
+          </Row>
+          <MainButton
+            type="primary"
+            onClick={handleSubmit}
+            style={{ marginRight: "20px", marginTop: "20px" }}
           >
-            {userType == "individual" && (
-              <>
-                <StyledLabel>First Name</StyledLabel>
-                <StyledInput
-                  value={formData.firstName}
-                  name="firstName"
-                  onChange={(e) =>
-                    handleInputChange("firstName", e.target.value)
-                  }
-                ></StyledInput>
-              </>
-            )}
-            {userType == "business" && (
-              <>
-                <StyledLabel>Business Name</StyledLabel>
-                <StyledInput
-                  value={formData.businessName}
-                  name="businessName"
-                  onChange={(e) =>
-                    handleInputChange("businessName", e.target.value)
-                  }
-                ></StyledInput>
-              </>
-            )}
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-            {userType == "individual" && (
-              <>
-                <StyledLabel>Last Name</StyledLabel>
-                <StyledInput
-                  value={formData.lastName}
-                  name="lastName"
-                  onChange={(e) =>
-                    handleInputChange("lastName", e.target.value)
-                  }
-                ></StyledInput>
-              </>
-            )}
-            {userType == "business" && (
-              <>
-                <StyledLabel>RC Number</StyledLabel>
-                <StyledInput
-                  value={formData.rcNumber}
-                  name="rcNumber"
-                  onChange={(e) =>
-                    handleInputChange("rcNumber", e.target.value)
-                  }
-                ></StyledInput>
-              </>
-            )}
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-            <StyledLabel>Email</StyledLabel>
-            <StyledInput
-              value={formData.email}
-              name="email"
-              onChange={(e) => handleInputChange("email", e.target.value)}
-            ></StyledInput>
-            <StyledInput
-              value={formData.walletBalance}
-              name="walletBalance"
-              hidden="true"
-              onChange={(e) =>
-                handleInputChange("walletBalance", e.target.value)
-              }
-            ></StyledInput>
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-            <StyledLabel>Phone number</StyledLabel>
-            <StyledInput
-              value={formData.phoneNumber}
-              name="phoneNumber"
-              onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-            ></StyledInput>
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-            <StyledLabel>NIN</StyledLabel>
-            <StyledInput
-              value={formData.nin}
-              name="nin"
-              onChange={(e) => handleInputChange("nin", e.target.value)}
-            ></StyledInput>
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-            <StyledLabel>Address</StyledLabel>
-            <TextArea
-              rows={4}
-              name="address"
-              value={formData.address}
-              onChange={(e) => handleInputChange("address", e.target.value)}
-            />
-          </Col>
-          <Col>
-            {userType == "business" && (
-              <>
-                <StyledLabel>Designation</StyledLabel>
-                <StyledInput
-                  value={formData.designation}
-                  name="designation"
-                  onChange={(e) =>
-                    handleInputChange("designation", e.target.value)
-                  }
-                ></StyledInput>
-              </>
-            )}
-          </Col>
-        </Row>
-        <MainButton
-          type="primary"
-          onClick={handleSubmit}
-          style={{ marginRight: "20px", marginTop: "20px" }}
-        >
-          Update Profile
-        </MainButton>
-        <BtnLink to="/set-new-password" style={{ marginTop: "20px" }}>
-          <OutlineButton type="primary">Change Password</OutlineButton>
-        </BtnLink>
-      </InfoSec>
-    </Container>
+            Update Profile
+          </MainButton>
+          <BtnLink to="/set-new-password" style={{ marginTop: "20px" }}>
+            <OutlineButton $token={token} type="primary">
+              Change Password
+            </OutlineButton>
+          </BtnLink>
+        </InfoSec>
+      </Container>
+    </div>
   );
 };
 

@@ -14,6 +14,8 @@ import {
 import { setNewPassword } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const SetNewPassword = () => {
   const history = useHistory();
@@ -83,9 +85,11 @@ const SetNewPassword = () => {
       setLoading(false); // Ensure loading state is set to false in case of error
     }
   };
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
 
   return (
-    <div>
+    <div style={{ backgroundColor: bgContainer }}>
       <Row justify="center">
         <Col
           span={4}
@@ -119,14 +123,15 @@ const SetNewPassword = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading>Set new password</Heading>
-              <Subtitle color="light">
+              <Heading $token={token}>Set new password</Heading>
+              <Subtitle $token={token}>
                 Your new password must be different to previously used passwords
               </Subtitle>
               <Spin spinning={loading} tip="Resetting Password...">
                 <StyledForm>
-                  <StyledLabel>Old Password</StyledLabel>
+                  <StyledLabel $token={token}>Old Password</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="password"
                     placeholder="Enter your old password"
                     name="oldPassword"
@@ -135,8 +140,9 @@ const SetNewPassword = () => {
                       handleInputChange("oldPassword", e.target.value)
                     }
                   />
-                  <StyledLabel>New password</StyledLabel>
+                  <StyledLabel $token={token}>New password</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="password"
                     placeholder="Enter your new password"
                     name="newPassword"
@@ -145,8 +151,9 @@ const SetNewPassword = () => {
                       handleInputChange("newPassword", e.target.value)
                     }
                   />
-                  <StyledLabel>Confirm New password</StyledLabel>
+                  <StyledLabel $token={token}>Confirm New password</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="confirm_password"
                     placeholder="Enter your new password"
                     name="confirm_password"

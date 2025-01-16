@@ -4,10 +4,18 @@ import React from "react";
 import { Img } from "../../globalStyles";
 import lady from "../../images/check_credit_scores_on_ecitizen.png";
 import LoginForm from "./loginForm";
+import { useTheme } from "../../components/ThemeProvider";
+import { theme } from "antd";
 
 const LoginPage = () => {
+  const { isDark } = useTheme();
+
+  // Get the useToken hook from antd
+  const { token } = theme.useToken(); // Get token from useToken
+  const { bgContainer } = token;
+
   return (
-    <Row>
+    <Row style={{ backgroundColor: bgContainer }}>
       <Col
         span={8}
         xs={{ span: 0 }}

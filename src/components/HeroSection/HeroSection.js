@@ -12,6 +12,10 @@ import {
 import { Container, MainButton } from "../../globalStyles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "../../components/ThemeProvider";
+import { theme } from "antd";
+
+const { useToken } = theme;
 
 const HeroSection = ({
   lightBg,
@@ -25,15 +29,17 @@ const HeroSection = ({
   start,
 }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const { token } = useToken();
+  const { isDark } = useTheme();
   return (
     <>
-      <HeroSec lightBg={lightBg}>
+      <HeroSec $token={token}>
         <Container>
           <HeroRow imgStart={imgStart}>
             <HeroColumn>
               <TextWrapper>
                 <Heading
-                  lightText={lightText}
+                  $token={token}
                   style={{ fontFamily: "Poppins", fontWeight: "700" }}
                 >
                   {/* {headline} */}

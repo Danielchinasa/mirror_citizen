@@ -48,6 +48,8 @@ import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title, Text } = Typography;
 
@@ -192,9 +194,10 @@ const Vehicle2 = () => {
     </>
   );
   const storedValue = localStorage.getItem("profile");
+  const { token } = theme.useToken();
 
   return (
-    <Container>
+    <Container $token={token}>
       <InfoSec>
         <Link to="/main-dashboard">
           <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>

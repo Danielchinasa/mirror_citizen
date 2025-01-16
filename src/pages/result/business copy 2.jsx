@@ -20,6 +20,8 @@ import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
 
 import { MdOutlinePinDrop } from "react-icons/md";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title, Text } = Typography;
 
@@ -75,9 +77,10 @@ const Business = () => {
     </>
   );
   const storedValue = localStorage.getItem("profile");
+  const { token } = theme.useToken();
 
   return (
-    <Container>
+    <Container $token={token}>
       <InfoSec>
         <Link to="/main-dashboard">
           <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>

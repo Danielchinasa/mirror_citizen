@@ -57,6 +57,8 @@ import termsOfService from "../../termsOfService";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 /* global Reach */
 
@@ -2872,13 +2874,16 @@ const DashboardPage = () => {
     });
   };
 
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
+
   return (
-    <Row>
+    <Row style={{ backgroundColor: bgContainer }}>
       <Col>
         <Img src={banner} />
       </Col>
 
-      <Container>
+      <Container $token={token}>
         <Spin
           spinning={loadingPrice}
           tip="Getting Service Prices ..."
@@ -2900,7 +2905,7 @@ const DashboardPage = () => {
           >
             <StyledForm>
               <InfoSec>
-                <Heading>Identity Verification Service</Heading>
+                <Heading $token={token}>Identity Verification Service</Heading>
 
                 <Row gutter={[50, 50]}>
                   <Col
@@ -2912,7 +2917,7 @@ const DashboardPage = () => {
                   >
                     {window.innerWidth < 960 ? (
                       <>
-                        <Heading6>How to verify</Heading6>
+                        <Heading6 $token={token}>How to verify</Heading6>
                         <>
                           <List
                             itemLayout="horizontal"
@@ -2931,7 +2936,7 @@ const DashboardPage = () => {
                     ) : (
                       ""
                     )}
-                    <Heading6> Select Profile</Heading6>
+                    <Heading6 $token={token}> Select Profile</Heading6>
                     <Notification />
 
                     <Space
@@ -3216,7 +3221,7 @@ const DashboardPage = () => {
                     </Flex> */}
                         {selectedForm === "none" && (
                           <>
-                            <Heading6>How to verify</Heading6>
+                            <Heading6 $token={token}>How to verify</Heading6>
                             <List
                               itemLayout="horizontal"
                               dataSource={data}
@@ -3238,7 +3243,7 @@ const DashboardPage = () => {
                       {basicProfileArray.includes("nin") &&
                         (userType == "individual" ? (
                           <div>
-                            <StyledLabel>
+                            <StyledLabel $token={token}>
                               National Identification Number*
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
@@ -3247,6 +3252,7 @@ const DashboardPage = () => {
                               </span>
                             </StyledLabel>
                             <StyledInput
+                              $token={token}
                               type="text"
                               placeholder="Enter your NIN"
                               name="nin"
@@ -3274,7 +3280,7 @@ const DashboardPage = () => {
                           </div>
                         ) : (
                           <div>
-                            <StyledLabel>
+                            <StyledLabel $token={token}>
                               National Identification Number*
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
@@ -3283,6 +3289,7 @@ const DashboardPage = () => {
                               </span>
                             </StyledLabel>
                             <StyledInput
+                              $token={token}
                               type="text"
                               placeholder="Enter your NIN"
                               name="nin"
@@ -3353,8 +3360,9 @@ const DashboardPage = () => {
                       </div> */}
                       {/* {selectedForm === "phone" && ( */}
                       <div hidden={selectedForm === "phone" ? false : true}>
-                        <StyledLabel>Phone Number*</StyledLabel>
+                        <StyledLabel $token={token}>Phone Number*</StyledLabel>
                         <StyledInput
+                          $token={token}
                           type="number"
                           placeholder="Enter your Phone Number"
                           name="phone"
@@ -3367,8 +3375,9 @@ const DashboardPage = () => {
                       {/* )} */}
                       {selectedForm === "demographics" && (
                         <>
-                          <StyledLabel>First Name*</StyledLabel>
+                          <StyledLabel $token={token}>First Name*</StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter First Name"
                             name="firstname"
@@ -3377,8 +3386,9 @@ const DashboardPage = () => {
                               handleInputChange("firstname", e.target.value)
                             }
                           />
-                          <StyledLabel>Last Name*</StyledLabel>
+                          <StyledLabel $token={token}>Last Name*</StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter Last Name"
                             name="lastname"
@@ -3395,7 +3405,9 @@ const DashboardPage = () => {
                               md={{ span: 12 }}
                               lg={{ span: 12 }}
                             >
-                              <StyledLabel>Date of Birth*</StyledLabel>
+                              <StyledLabel $token={token}>
+                                Date of Birth*
+                              </StyledLabel>
                               <DatePicker
                                 format={dateFormat}
                                 size="large"
@@ -3410,7 +3422,7 @@ const DashboardPage = () => {
                               md={{ span: 12 }}
                               lg={{ span: 12 }}
                             >
-                              <StyledLabel>Gender*</StyledLabel>
+                              <StyledLabel $token={token}>Gender*</StyledLabel>
                               <Radio.Group
                                 onChange={(e) =>
                                   handleInputChange("gender", e.target.value)
@@ -3431,10 +3443,11 @@ const DashboardPage = () => {
                       {/* {selectedForm === "face" && ( */}
                       {basicProfileArray.includes("face") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             National Identification Number (NIN)*
                           </StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter your NIN"
                             name="nin"
@@ -3462,7 +3475,7 @@ const DashboardPage = () => {
                           {!isLiveFaceNinValid && (
                             <p style={{ color: "red" }}>NIN cannot be empty</p>
                           )}
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             Upload File or take a live face capture*
                           </StyledLabel>
 
@@ -3545,10 +3558,11 @@ const DashboardPage = () => {
                       {/* )} */}
                       {selectedForm === "fingerprint" && (
                         <>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             National Identification Number*
                           </StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter National Identification Number"
                             name="nin"
@@ -3591,7 +3605,9 @@ const DashboardPage = () => {
                           {!isLiveFaceNinValid && (
                             <p style={{ color: "red" }}>NIN cannot be empty</p>
                           )}
-                          <StyledLabel>Upload Finger Image</StyledLabel>
+                          <StyledLabel $token={token}>
+                            Upload Finger Image
+                          </StyledLabel>
 
                           <Row gutter={12}>
                             <Col
@@ -3620,7 +3636,7 @@ const DashboardPage = () => {
                       )}
                       {basicProfileArray.includes("bulk_nin") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             National Identification Number*
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               <CloseSquareOutlined
@@ -3631,6 +3647,7 @@ const DashboardPage = () => {
                           <span>Bulk upload</span>
                           {!fileUploaded && ( // Only show input if not uploaded
                             <StyledInput
+                              $token={token}
                               type="file"
                               className="hidden"
                               accept=".csv"
@@ -3654,6 +3671,7 @@ const DashboardPage = () => {
                             </div>
                           )}
                           <StyledInput
+                            $token={token}
                             type="hidden"
                             name="nin_csv"
                             value={formData.nin_csv}
@@ -3664,7 +3682,7 @@ const DashboardPage = () => {
                       {/* {selectedForm === "rc" && ( */}
                       {businessProfileArray.includes("rc") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             Registration Number (RC)*
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               <CloseSquareOutlined
@@ -3673,6 +3691,7 @@ const DashboardPage = () => {
                             </span>
                           </StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter Registration Number"
                             name="rc"
@@ -3686,7 +3705,7 @@ const DashboardPage = () => {
                       {/* {selectedForm === "business_name" && ( */}
                       {businessProfileArray.includes("business_name") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             Business Name*
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               <CloseSquareOutlined
@@ -3695,6 +3714,7 @@ const DashboardPage = () => {
                             </span>
                           </StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter Business Name"
                             name="business_name"
@@ -3708,7 +3728,7 @@ const DashboardPage = () => {
                       {/* {selectedForm === "bvn" && ( */}
                       {financialProfileArray.includes("bvn") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             Bank Verification Number (BVN)*
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               <CloseSquareOutlined
@@ -3717,6 +3737,7 @@ const DashboardPage = () => {
                             </span>
                           </StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter Bank Verification Number"
                             name="bvn"
@@ -3774,7 +3795,7 @@ const DashboardPage = () => {
                       {/* {selectedForm === "vin" && ( */}
                       {vehicleProfileArray.includes("vin") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             Vehicle History (VIN)*
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               <CloseSquareOutlined
@@ -3783,6 +3804,7 @@ const DashboardPage = () => {
                             </span>
                           </StyledLabel>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Enter Vehicle History (VIN)"
                             name="vin"
@@ -3817,7 +3839,7 @@ const DashboardPage = () => {
                       {/* {selectedForm === "license_number" && ( */}
                       {vehicleProfileArray.includes("license_number") && (
                         <div>
-                          <StyledLabel>
+                          <StyledLabel $token={token}>
                             Vehicle Registration Number*
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               <CloseSquareOutlined
@@ -3830,6 +3852,7 @@ const DashboardPage = () => {
                             space or hyphens e.g KUJ467SB
                           </span>
                           <StyledInput
+                            $token={token}
                             type="text"
                             placeholder="Vehicle Registration Number"
                             name="license_number"
@@ -3857,15 +3880,15 @@ const DashboardPage = () => {
                     md={{ span: 8 }}
                     lg={{ span: 8 }}
                   >
-                    <Heading6>Payment Summary</Heading6>
+                    <Heading6 $token={token}>Payment Summary</Heading6>
                     <div
                       style={{
-                        backgroundColor: "#FAFBFC",
+                        backgroundColor: bgContainer,
                         padding: "15px",
                         boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)",
                       }}
                     >
-                      <p>Processing fees:</p>
+                      <p style={{ color: text }}>Processing fees:</p>
 
                       {ninFilled ? (
                         <Row>
@@ -3877,10 +3900,10 @@ const DashboardPage = () => {
                             lg={{ span: 15 }}
                             style={{ textAlign: "left" }}
                           >
-                            <p> NIN: </p>
+                            <p style={{ color: text }}> NIN: </p>
                           </Col>
                           <Col>
-                            <p>
+                            <p style={{ color: text }}>
                               {" "}
                               {currencyCheck === "USD"
                                 ? "$" + (ninServiceFee + ninProcessingFee)
@@ -3907,10 +3930,10 @@ const DashboardPage = () => {
                             lg={{ span: 15 }}
                             style={{ textAlign: "left" }}
                           >
-                            <p>RC Number: </p>
+                            <p style={{ color: text }}>RC Number: </p>
                           </Col>
                           <Col>
-                            <p>
+                            <p style={{ color: text }}>
                               {" "}
                               {currencyCheck === "USD"
                                 ? "$" +
@@ -3940,10 +3963,10 @@ const DashboardPage = () => {
                             lg={{ span: 15 }}
                             style={{ textAlign: "left" }}
                           >
-                            <p> Business Name: </p>
+                            <p style={{ color: text }}> Business Name: </p>
                           </Col>
                           <Col>
-                            <p>
+                            <p style={{ color: text }}>
                               {" "}
                               {currencyCheck === "USD"
                                 ? "$" +
@@ -3974,10 +3997,10 @@ const DashboardPage = () => {
                             lg={{ span: 15 }}
                             style={{ textAlign: "left" }}
                           >
-                            <p> BVN: </p>
+                            <p style={{ color: text }}> BVN: </p>
                           </Col>
                           <Col>
-                            <p>
+                            <p style={{ color: text }}>
                               {prevNumberOfCheckedCheckboxes == 2
                                 ? currencyCheck === "USD"
                                   ? "$" +
@@ -4031,10 +4054,10 @@ const DashboardPage = () => {
                             lg={{ span: 15 }}
                             style={{ textAlign: "left" }}
                           >
-                            <p> VIN </p>
+                            <p style={{ color: text }}> VIN </p>
                           </Col>
                           <Col>
-                            <p>
+                            <p style={{ color: text }}>
                               {" "}
                               {currencyCheck === "USD"
                                 ? "$" +
@@ -4065,10 +4088,10 @@ const DashboardPage = () => {
                             lg={{ span: 15 }}
                             style={{ textAlign: "left" }}
                           >
-                            <p> Registration Number </p>
+                            <p style={{ color: text }}> Registration Number </p>
                           </Col>
                           <Col>
-                            <p>
+                            <p style={{ color: text }}>
                               {" "}
                               {currencyCheck === "USD"
                                 ? "$" +
@@ -4104,13 +4127,17 @@ const DashboardPage = () => {
                           lg={{ span: 15 }}
                           style={{ textAlign: "left" }}
                         >
-                          <p>Tax & charges: </p>
+                          <p style={{ color: text }}>Tax & charges: </p>
                         </Col>
                         <Col style={{ textAlign: "right" }}>
                           {currencyCheck === "USD" ? (
-                            <p>${totalVAT.toFixed(2)}</p>
+                            <p style={{ color: text }}>
+                              ${totalVAT.toFixed(2)}
+                            </p>
                           ) : (
-                            <p>{formatToNaira(totalVAT)}</p>
+                            <p style={{ color: text }}>
+                              {formatToNaira(totalVAT)}
+                            </p>
                           )}
                         </Col>
                       </Row>
@@ -4123,7 +4150,7 @@ const DashboardPage = () => {
                           lg={{ span: 15 }}
                           style={{ textAlign: "left" }}
                         >
-                          <p>Total Amount Due: </p>
+                          <p style={{ color: text }}>Total Amount Due: </p>
                         </Col>
                         <Col>
                           {/* {currencyCheck === "USD" ? (
@@ -4134,17 +4161,23 @@ const DashboardPage = () => {
 
                           {currencyCheck === "USD" ? (
                             // <p>{`$${totalServiceCost}`}</p>
-                            <p>{`$${totalServiceCost.toFixed(2)}`}</p>
+                            <p
+                              style={{ color: text }}
+                            >{`$${totalServiceCost.toFixed(2)}`}</p>
                           ) : (
-                            <p>{formatToNaira(totalServiceCost)}</p>
+                            <p style={{ color: text }}>
+                              {formatToNaira(totalServiceCost)}
+                            </p>
                           )}
                         </Col>
                       </Row>
                       <Divider />
                       {currencyCheck == "USD" ? (
                         <>
-                          <p>Select payment currency </p>
-                          <p>Currency Calculator</p>
+                          <p style={{ color: text }}>
+                            Select payment currency{" "}
+                          </p>
+                          <p style={{ color: text }}>Currency Calculator</p>
                           {paymentMethod != 1 ? (
                             <>
                               <Radio.Group
@@ -4188,8 +4221,8 @@ const DashboardPage = () => {
                       )}
                       {currencyCheck == "USD" ? (
                         <>
-                          <p>Exchange rate</p>
-                          <p>
+                          <p style={{ color: text }}>Exchange rate</p>
+                          <p style={{ color: text }}>
                             $1 USD =
                             {new Intl.NumberFormat("en-NG", {
                               style: "currency",
@@ -4225,7 +4258,9 @@ const DashboardPage = () => {
                     padding: "10px",
                   }}
                 >
-                  <strong>Select payment method:</strong>
+                  <strong style={{ color: text }}>
+                    Select payment method:
+                  </strong>
                   <div
                     style={{
                       borderRight: "1px solid #e8e8e8",
@@ -4375,7 +4410,11 @@ const DashboardPage = () => {
                   onCancel={handleModalNewOk}
                   maskClosable={false}
                   footer={[
-                    <Button danger type="dashed" onClick={handleModalNewOk}>
+                    <Button
+                      style={{ color: text }}
+                      type="dashed"
+                      onClick={handleModalNewOk}
+                    >
                       Close
                     </Button>,
                   ]}

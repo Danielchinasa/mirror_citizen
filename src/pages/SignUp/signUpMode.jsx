@@ -3,6 +3,8 @@ import { Image, Typography, Button, Avatar, List, Space } from "antd";
 import individual from "../../images/individual.svg";
 import Corporate from "../../images/Corporate.svg";
 import { BtnLink } from "../../globalStyles";
+import { useTheme } from "../../components/ThemeProvider";
+import { theme } from "antd";
 const { Title } = Typography;
 
 const SignUpMode = () => {
@@ -18,6 +20,9 @@ const SignUpMode = () => {
     console.log("Selected Div:", divIndex);
   };
 
+  const { token } = theme.useToken(); // Get token from useToken
+  const { text, bgContainer } = token;
+
   return (
     <div className="p-5">
       <Title>Create Account</Title>
@@ -31,10 +36,10 @@ const SignUpMode = () => {
       >
         <div
           style={{
-            border: "2px #000 solid",
+            border: `2px ${text} solid`,
             borderRadius: "10px",
             padding: "20px",
-            background: selectedDiv === 1 ? "#EBFFF0" : "white",
+            background: selectedDiv === 1 ? "#2FC818" : bgContainer,
             cursor: "pointer",
           }}
           onClick={() => handleDivClick(1)}
@@ -53,7 +58,13 @@ const SignUpMode = () => {
                     />
                   }
                   title={
-                    <Title level={3} style={{ cursor: "pointer" }}>
+                    <Title
+                      level={3}
+                      style={{
+                        cursor: "pointer",
+                        color: text,
+                      }}
+                    >
                       Individual
                     </Title>
                   }

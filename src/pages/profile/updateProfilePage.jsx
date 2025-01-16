@@ -20,6 +20,9 @@ import { LoadingOutlined, ManOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -112,8 +115,9 @@ const UpdateProfilePage = () => {
       console.error("Error sending verification", error);
     }
   };
+  const { token } = theme.useToken();
   return (
-    <Container>
+    <Container $token={token}>
       <InfoSec>
         <Card
           style={{

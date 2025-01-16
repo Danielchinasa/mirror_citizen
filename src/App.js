@@ -46,6 +46,9 @@ import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
 
+//theming
+import { ThemeProvider } from "./components/ThemeProvider";
+
 function App() {
   ReactGA.initialize("G-28ZN6L737E");
   useEffect(() => {
@@ -175,7 +178,7 @@ function App() {
 
   return (
     <Router>
-      <ConfigProvider
+      {/* <ConfigProvider
         theme={{
           token: {
             colorPrimary: "#09C93A",
@@ -186,7 +189,8 @@ function App() {
             },
           },
         }}
-      >
+      > */}
+      <ThemeProvider>
         <GlobalStyles />
         <ScrollToTop />
         <Navbar />
@@ -256,7 +260,9 @@ function App() {
           By clicking "Accept All Cookies" or continuing to use our website, you
           agree to our use of cookies and the terms of our Privacy Policy.
         </CookieConsent> */}
-      </ConfigProvider>
+
+        {/* </ConfigProvider> */}
+      </ThemeProvider>
     </Router>
   );
 }

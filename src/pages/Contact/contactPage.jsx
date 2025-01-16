@@ -14,12 +14,17 @@ import {
 } from "../../globalStyles";
 
 import contact from "../../images/contact.png";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const ContactPage = () => {
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
   return (
-    <Container>
-      <InfoSec>
-        {/* <Row>
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container>
+        <InfoSec>
+          {/* <Row>
           <Col
             span={12}
             xs={{ span: 24 }}
@@ -91,19 +96,26 @@ const ContactPage = () => {
             </StyledForm>
           </Col>
         </Row> */}
-        <div style={{ fontFamily: "Arial, sans-serif", textAlign: "center" }}>
-          <h1 style={{ color: "#09c93a" }}>Contact Us</h1>
-          <p>
-            Our Email Address:{" "}
-            <a href="mailto:info@e-citizen.ng">info@e-citizen.ng</a>
-          </p>
-          <p>
-            Feel free to reach out to us via email for any inquiries or
-            feedback.
-          </p>
-        </div>
-      </InfoSec>
-    </Container>
+          <div
+            style={{
+              fontFamily: "Arial, sans-serif",
+              textAlign: "center",
+              color: text,
+            }}
+          >
+            <h1 style={{ color: text }}>Contact Us</h1>
+            <p>
+              Our Email Address:{" "}
+              <a href="mailto:info@e-citizen.ng">info@e-citizen.ng</a>
+            </p>
+            <p>
+              Feel free to reach out to us via email for any inquiries or
+              feedback.
+            </p>
+          </div>
+        </InfoSec>
+      </Container>
+    </div>
   );
 };
 

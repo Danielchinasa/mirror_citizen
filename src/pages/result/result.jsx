@@ -8,6 +8,7 @@ import {
   StyledLabel,
   Heading6,
   CenterText,
+  DynamicCard,
 } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
@@ -44,6 +45,8 @@ import { GiBigDiamondRing, GiBodyHeight } from "react-icons/gi";
 import { IoSchoolSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title, Text } = Typography;
 
@@ -199,11 +202,11 @@ const Result = () => {
 
   const renderDetail = (icon, label, value) => (
     <>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         {icon}
         &nbsp; {label}
       </StyledLabel>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         <strong>{value != null && value !== "null" ? value : "-"}</strong>
       </StyledLabel>
     </>
@@ -233,154 +236,167 @@ const Result = () => {
       // allowEscapeKey: false,
     });
   }
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
   return (
-    <Container>
-      <InfoSec>
-        <Link to="/main-dashboard">
-          <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
-        </Link>
-        <Card style={{ width: "100%" }}>
-          <Heading4>Verification Result</Heading4>
-        </Card>
-        <Spin spinning={loading} tip="Awaiting Consent...">
-          <Card style={{ width: "100%", marginTop: "20px" }}>
-            <div>
-              <Text>Basic Identity Profile </Text>
-              <RightOutlined />
-              {/* <Text>{storedValue}</Text> */}
-              <Text>National Identification Number (NIN)</Text>
-            </div>
-            <Divider />
-
-            <Row gutter={16}>
-              <StyledLabel style={{ marginBottom: "10px" }}>
-                Personal Details
-              </StyledLabel>
-              <Col span={24}>
-                {photo ? (
-                  <Avatar
-                    size={124}
-                    src={`https://e-citizen.ng:8443${photo}`}
-                    alt="Avatar"
-                  />
-                ) : (
-                  <Avatar size={124} icon={<UserOutlined />} />
-                )}
-              </Col>
-              <Divider />
-              <Col span={6}>
-                {renderDetail(
-                  <FaRegUser />,
-                  "First Name",
-                  `${firstName}`
-                )}
-                <Divider />
-
-                {renderDetail(<AiOutlineFieldNumber />, "NIN", `${nin}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaRegUser />, "Middle Name", `${middleName}`)}
-                <Divider />
-
-                {renderDetail(<FaCalendarAlt />, "Date of Birth", `${dob}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaRegUser />, "Last Name", `${lastName}`)}
-                <Divider />
-                {renderDetail(<FaRestroom />, "Gender", `${gender}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaPhoneAlt />, "Phone Number", `${phone}`)}
-                <Divider />
-                {renderDetail(<MdOutlineMail />, "Email", `${email}`)}
-              </Col>
-              <Divider />
-              <Col span={6}>
-                {renderDetail(
-                  <FaGlobe />,
-                  "Country of Birth",
-                  `${birthCountry}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <FaHome />, "Residence Address", `${residenceAddress}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "State of Birth",
-                  `${birthState}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Residence State",
-                  `${residenceState}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "LGA of Birth",
-                  `${originState}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Residence LGA",
-                  `${residenceLGA}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<IoSchoolSharp />, "Profession", `${profession}`)}
-                <Divider />
-                {renderDetail(
-                  <IoSchoolSharp />,
-                  "Education Level",
-                  `${educationLevel}`
-                )}
-              </Col>
-              <Divider />
-              <Col span={6}>
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Origin State",
-                  `${originState}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <GiBodyHeight />, "Height", `${height}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <MdOutlinePinDrop />,
-                  "Origin LGA",
-                  `${originLGA}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <GiBigDiamondRing />,
-                  "Marital Status",
-                  `${maritalStatus}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<MdOutlinePinDrop />,
-                  "Origin Place",
-                  `${originPlace}`)}
-                
-              </Col>
-              <Col span={6}>
-                {renderDetail(<MdTitle />, "Title", `${title}`)}
-                
-              </Col>
-            </Row>
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container $token={token}>
+        <InfoSec>
+          <Link to="/main-dashboard" style={{ color: text }}>
+            <p style={{ color: text, cursor: "pointer" }}>Go back</p>
+          </Link>
+          <Card
+            style={{
+              width: "100%",
+              backgroundColor: bgContainer,
+              borderColor: text,
+            }}
+          >
+            <Heading4 $token={token}>Verification Result</Heading4>
           </Card>
-        </Spin>
-      </InfoSec>
-    </Container>
+          <Spin spinning={loading} tip="Awaiting Consent...">
+            <DynamicCard
+              style={{ width: "100%", marginTop: "20px" }}
+              $token={token}
+            >
+              <div>
+                <Text>Basic Identity Profile </Text>
+                <RightOutlined />
+                {/* <Text>{storedValue}</Text> */}
+                <Text>National Identification Number (NIN)</Text>
+              </div>
+              <Divider />
+
+              <Row gutter={16}>
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  Personal Details
+                </StyledLabel>
+                <Col span={24}>
+                  {photo ? (
+                    <Avatar
+                      size={124}
+                      src={`https://e-citizen.ng:8443${photo}`}
+                      alt="Avatar"
+                    />
+                  ) : (
+                    <Avatar size={124} icon={<UserOutlined />} />
+                  )}
+                </Col>
+                <Divider />
+                <Col span={6}>
+                  {renderDetail(<FaRegUser />, "First Name", `${firstName}`)}
+                  <Divider />
+
+                  {renderDetail(<AiOutlineFieldNumber />, "NIN", `${nin}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaRegUser />, "Middle Name", `${middleName}`)}
+                  <Divider />
+
+                  {renderDetail(<FaCalendarAlt />, "Date of Birth", `${dob}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaRegUser />, "Last Name", `${lastName}`)}
+                  <Divider />
+                  {renderDetail(<FaRestroom />, "Gender", `${gender}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaPhoneAlt />, "Phone Number", `${phone}`)}
+                  <Divider />
+                  {renderDetail(<MdOutlineMail />, "Email", `${email}`)}
+                </Col>
+                <Divider />
+                <Col span={6}>
+                  {renderDetail(
+                    <FaGlobe />,
+                    "Country of Birth",
+                    `${birthCountry}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <FaHome />,
+                    "Residence Address",
+                    `${residenceAddress}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "State of Birth",
+                    `${birthState}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "Residence State",
+                    `${residenceState}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "LGA of Birth",
+                    `${originState}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "Residence LGA",
+                    `${residenceLGA}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <IoSchoolSharp />,
+                    "Profession",
+                    `${profession}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <IoSchoolSharp />,
+                    "Education Level",
+                    `${educationLevel}`
+                  )}
+                </Col>
+                <Divider />
+                <Col span={6}>
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "Origin State",
+                    `${originState}`
+                  )}
+                  <Divider />
+                  {renderDetail(<GiBodyHeight />, "Height", `${height}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "Origin LGA",
+                    `${originLGA}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <GiBigDiamondRing />,
+                    "Marital Status",
+                    `${maritalStatus}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <MdOutlinePinDrop />,
+                    "Origin Place",
+                    `${originPlace}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<MdTitle />, "Title", `${title}`)}
+                </Col>
+              </Row>
+            </DynamicCard>
+          </Spin>
+        </InfoSec>
+      </Container>
+    </div>
   );
 };
 

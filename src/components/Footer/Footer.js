@@ -21,6 +21,7 @@ import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../components/ThemeProvider";
 
 function Footer() {
   const date = new Date();
@@ -43,9 +44,11 @@ function Footer() {
     setIsOpen(false);
   };
 
+  const { isDark } = useTheme();
+
   return (
     <>
-      <div style={{ backgroundColor: "#354138" }}>
+      <div style={{ backgroundColor: isDark ? "#212121" : "#354138" }}>
         <div class="container text-left">
           <div class="row" style={{ borderBottom: "1px solid #fff" }}>
             <div class="col-md-5 col-sm-12 col-xs-12">
@@ -178,7 +181,9 @@ function Footer() {
       <FooterContainer>
         <SocialMedia>
           <SocialMediaWrap>
-            <WebsiteRights>© e-citizen {date.getFullYear()}</WebsiteRights>
+            <WebsiteRights>
+              © e-citizen {date.getFullYear()}. All Rights Reserved
+            </WebsiteRights>
           </SocialMediaWrap>
         </SocialMedia>
       </FooterContainer>

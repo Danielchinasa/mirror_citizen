@@ -12,6 +12,7 @@ import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
 import Logo from "../../images/e-citizen_logo_ecitizen.png";
+import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
 import defaultDp from "../../images/defaultDp.png";
 import { Link } from "react-router-dom";
 import { Button, Flex, Modal } from "antd";
@@ -23,6 +24,11 @@ import { DownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Space, Divider, Input } from "antd";
 import ReactGA from "react-ga4";
 import Swal from "sweetalert2";
+import { ThemeToggle } from "../../components/ThemeToggle";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
+
+const { useToken } = theme;
 
 const { Title } = Typography;
 
@@ -321,22 +327,30 @@ function Navbar() {
     }
   };
 
+  const { isDark } = useTheme();
+  const { token } = theme.useToken(); // Get token from useToken
+  const { text } = token;
+
   return (
     <>
       <IconContext.Provider value={{ color: "#000" }}>
-        <Nav>
+        <Nav $token={token}>
           <NavbarContainer>
             <Link to={isAuthenticated ? "/dashboard" : "/"}>
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
-                src={Logo}
+                src={isDark ? LogoWhite : Logo}
                 alt="Logo"
                 width={230}
                 style={{ marginTop: "10px", cursor: "pointer" }}
               />
             </Link>
             <HamburgerIcon onClick={handleClick}>
-              {click ? <FaTimes /> : <FaBars />}
+              {click ? (
+                <FaTimes />
+              ) : (
+                <FaBars color={isDark ? "white" : "black"} />
+              )}
             </HamburgerIcon>
 
             <NavMenu onClick={handleClick} click={click}>
@@ -350,6 +364,7 @@ function Navbar() {
                           fontFamily: "Poppins",
                           fontWeight: "700",
                         }}
+                        $token={token}
                       >
                         Dashboard
                       </OutlineButton>
@@ -376,6 +391,7 @@ function Navbar() {
                     {button ? (
                       <NavBtnLink to="/login">
                         <OutlineButton
+                          $token={token}
                           type="primary"
                           style={{
                             fontFamily: "Poppins",
@@ -388,6 +404,7 @@ function Navbar() {
                     ) : (
                       <NavBtnLink to="/login">
                         <OutlineButton
+                          $token={token}
                           onClick={closeMobileMenu}
                           fontBig
                           primary
@@ -428,6 +445,7 @@ function Navbar() {
                       </NavBtnLink>
                     )}
                   </NavItemBtn>
+                  <ThemeToggle />
                 </>
               )}
 
@@ -467,7 +485,7 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal}>
+                        <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
@@ -513,7 +531,7 @@ function Navbar() {
                           maskClosable={false}
                           footer={[
                             <Button
-                              danger
+                              style={{ color: text }}
                               type="dashed"
                               onClick={handleModalOk}
                             >
@@ -536,11 +554,16 @@ function Navbar() {
 
                       <NavItemBtn>
                         <NavBtnLink>
-                          <OutlineButton type="primary" onClick={handleLogout}>
+                          <OutlineButton
+                            type="primary"
+                            onClick={handleLogout}
+                            $token={token}
+                          >
                             Logout
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
+                      <ThemeToggle style={{ paddingLeft: "49px" }} />
                     </>
                   )
                 : isAuthenticated && (
@@ -556,7 +579,7 @@ function Navbar() {
                         <Title level={4}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal}>
+                        <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
@@ -623,6 +646,9 @@ function Navbar() {
                         </Modal>
                       </div>
                       <UserDropdown />
+                      <div style={{ marginLeft: "20px" }}>
+                        <ThemeToggle />
+                      </div>
                     </>
                   )}
             </NavMenu>

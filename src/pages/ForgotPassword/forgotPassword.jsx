@@ -13,6 +13,8 @@ import {
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ResetPassword } from "../../redux/actions";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
@@ -79,23 +81,25 @@ const ForgotPassword = () => {
       message.error("Failed to reset password. Please try again.");
     }
   };
-
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
   return (
-    <div>
+    <div style={{ backgroundColor: bgContainer }}>
       <Row justify="center">
-        <Col span={4}></Col>
-        <Col span={8}>
+        <Col xs={24} sm={24} md={8} lg={4} xl={4}></Col>
+        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <CenterText>
             <InfoSec>
-              <Heading>Forgot password?</Heading>
-              <Subtitle color="light">
+              <Heading $token={token}>Forgot password?</Heading>
+              <Subtitle color="light" $token={token}>
                 Enter the email that is associated with your account, and we’ll
                 send you instructions on how to recover your account.
               </Subtitle>
               <Spin spinning={loading} tip="Processing...">
                 <StyledForm>
-                  <StyledLabel>Email</StyledLabel>
+                  <StyledLabel $token={token}>Email</StyledLabel>
                   <StyledInput
+                    $token={token}
                     type="text"
                     placeholder="Enter your email"
                     name="email"

@@ -1,5 +1,11 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { Link } from "react-router-dom";
+import { theme } from "antd";
+import { Card, Collapse, Input, Table } from "antd";
+
+const { TextArea } = Input;
+
+const { useToken } = theme;
 
 const GlobalStyles = createGlobalStyle`
 * {
@@ -30,6 +36,39 @@ const GlobalStyles = createGlobalStyle`
 a {
   cursor: pointer;
 }
+`;
+
+export const DynamicCollapse = styled(Collapse)`
+  .ant-collapse-content {
+    background-color: ${(props) => props.$token.bgContainer} !important;
+    color: ${(props) => props.$token.text} !important;
+  }
+`;
+
+export const DynamicTextArea = styled(TextArea)`
+  background-color: ${(props) => props.$token.bgContainer} !important;
+  border-color: ${(props) => props.$token.text2};
+`;
+export const DynamicTable = styled(Table)`
+  .ant-table-thead > tr > th {
+    background-color: ${(props) => props.$token.bgContainer};
+    color: ${(props) => props.$token.text};
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .ant-table-tbody > tr > td {
+    text-align: center;
+  }
+
+  .ant-table {
+    background-color: ${(props) => props.$token.bgContainer} !important;
+    color: ${(props) => props.$token.text} !important;
+  }
+`;
+
+export const DynamicCard = styled(Card)`
+  background-color: ${(props) => props.$token.bgContainer} !important;
 `;
 
 export const Container = styled.div`
@@ -134,7 +173,7 @@ export const DisabledButtonFull = styled.button`
 
 export const OutlineButton = styled.button`
   ${buttonBaseStyles};
-  background-color: #ffffff;
+  background-color: ${(props) => props.$token.btnBackground};
   color: ${({ type }) => colors[type]};
   border: ${({ type }) => `1px solid ${colors[type]}`};
   border-radius: 4px;
@@ -174,28 +213,28 @@ export const OutlineButtonFull = styled.button`
 export const InfoSec = styled.div`
   padding-top: 80px;
   padding-bottom: 50px;
-  background: #fff;
+  // background: #fff;
 `;
 
 export const Heading = styled.h1`
   font-size: 40px;
   font-weight: 600;
   font-family: Poppins;
-  color: ${({ lightText }) => (lightText ? "#f7f8fa" : "#1c2237")};
+  color: ${(props) => props.$token.headingTextColor};
 `;
 
 export const Heading6 = styled.h6`
   font-size: 20px;
   font-weight: 300;
   font-family: Poppins;
-  color: ${({ lightText }) => (lightText ? "#f7f8fa" : "#1c2237")};
+  color: ${(props) => props.$token.text};
 `;
 
 export const Heading4 = styled.h4`
   font-size: 28px;
   font-weight: 300;
   font-family: Poppins;
-  color: ${({ lightText }) => (lightText ? "#f7f8fa" : "#1c2237")};
+  color: ${(props) => props.$token.text};
 `;
 
 export const CenterText = styled.div`
@@ -208,11 +247,7 @@ export const Subtitle = styled.p`
   line-height: 24px;
   font-family: Nunito;
   color: ${(props) =>
-    props.color === "primary"
-      ? "#09C93A"
-      : props.color === "light"
-      ? "#a9b3c1"
-      : "#1c2237"};
+    props.color === "primary" ? "#09C93A" : props.$token.text};
 `;
 
 export const StyledForm = styled.form`
@@ -223,7 +258,7 @@ export const StyledLabel = styled.label`
   display: block;
   margin-bottom: 5px;
   text-align: left;
-  color: ${(props) => (props.invalid ? "red" : "black")};
+  color: ${(props) => props.$token.text};
 `;
 
 export const StyledInput = styled.input`
@@ -232,11 +267,12 @@ export const StyledInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 20px;
-  background: rgba(53, 65, 56, 0.1);
+  background: ${(props) => props.$token.bgContainer};
+  color: ${(props) => props.$token.text};
   &:focus {
     outline: none;
     border-color: #09c93a !important;
-    background: #fff;
+    background: ${(props) => props.$token.bgContainer};
   }
 `;
 

@@ -30,6 +30,8 @@ import { FaRegMoneyBillAlt, FaRegCalendarTimes } from "react-icons/fa";
 import { CiWallet } from "react-icons/ci";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { RiHomeOfficeLine } from "react-icons/ri";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -238,9 +240,10 @@ const Financial = () => {
     // Join the array back into a string
     return amountArr.join("");
   };
+  const { token } = theme.useToken();
 
   return (
-    <Container>
+    <Container $token={token}>
       <InfoSec>
         <Link to="/main-dashboard">
           <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>

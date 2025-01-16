@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { FaMagento } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+import { theme } from "antd";
+
+// Get the useToken hook from antd
+const { useToken } = theme;
+
 export const FooterContainer = styled.div`
   background-color: #354138;
   padding: 0 0 2rem 0;

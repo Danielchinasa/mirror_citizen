@@ -1,10 +1,14 @@
+import React from "react";
 import styled from "styled-components";
 import { Container } from "../../globalStyles";
 import { FaMagento } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { theme } from "antd";
+
+const { useToken } = theme;
 
 export const Nav = styled.nav`
-  background: #ffffff;
+  background: ${(props) => props.$token.bgContainer};
   height: 80px;
   display: flex;
   justify-content: center;

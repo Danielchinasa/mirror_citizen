@@ -17,6 +17,8 @@ import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
+import { theme } from "antd";
+const { useToken } = theme;
 
 const Context = React.createContext({
   name: "Default",
@@ -251,12 +253,13 @@ const LoginForm = () => {
   const handleCaptchaVerify = () => {
     setIsCaptchaVerified(true);
   };
+  const { token } = useToken();
 
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
       <div style={{ marginTop: "50px" }}>
-        <Heading>Login</Heading>
+        <Heading $token={token}>Login</Heading>
         <Spin spinning={loading} tip="Logging in...">
           <StyledForm onSubmit={handleSignIn}>
             {formErrors.general && (
@@ -267,8 +270,9 @@ const LoginForm = () => {
                 style={{ marginBottom: "16px" }}
               />
             )}
-            <StyledLabel>Email address</StyledLabel>
+            <StyledLabel $token={token}>Email address</StyledLabel>
             <StyledInput
+              $token={token}
               type="text"
               placeholder="Enter your email"
               name="email"
@@ -278,8 +282,9 @@ const LoginForm = () => {
             {formErrors.email && (
               <Alert message={formErrors.email} type="error" showIcon />
             )}
-            <StyledLabel>Password</StyledLabel>
+            <StyledLabel $token={token}>Password</StyledLabel>
             <StyledInput
+              $token={token}
               type="password"
               placeholder="Enter password"
               name="password"
@@ -316,7 +321,7 @@ const LoginForm = () => {
             >
               Login
             </MainButtonFull>
-            <Subtitle color="light">
+            <Subtitle color="light" $token={token}>
               Don’t have an account?{" "}
               <BtnLink to="/sign-up">
                 <span style={{ color: "#09C93A", cursor: "pointer" }}>
@@ -324,7 +329,7 @@ const LoginForm = () => {
                 </span>
               </BtnLink>
             </Subtitle>
-            <Subtitle color="light">
+            <Subtitle color="light" $token={token}>
               Forgot password?{" "}
               <span style={{ color: "#09C93A" }}>
                 <BtnLink to="/forgot-password">Click me!</BtnLink>

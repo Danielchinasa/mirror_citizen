@@ -1,18 +1,14 @@
 import React from "react";
-import { Container, InfoSec } from "../../globalStyles";
+import { Container, InfoSec, DynamicCollapse } from "../../globalStyles";
 import { Card, Collapse } from "antd";
 import { Typography } from "antd";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
 
 const FaqPage = () => {
-  const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-  `;
-
   const generalItems = [
     {
       key: "1",
@@ -492,34 +488,42 @@ const FaqPage = () => {
   const onChange = (key) => {
     console.log(key);
   };
-
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
   return (
-    <Container>
-      <InfoSec>
-        <Card
-          style={{
-            width: "100%",
-          }}
-        >
-          <Title level={4}>Frequently Asked Questions</Title>
-        </Card>
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container $token={token}>
+        <InfoSec>
+          <Card
+            style={{
+              width: "100%",
+              background: bgContainer,
+              borderColor: text,
+            }}
+          >
+            <Title level={4} style={{ color: text }}>
+              Frequently Asked Questions
+            </Title>
+          </Card>
 
-        {/* FAQ content goes here */}
-        <Collapse
-          size="large"
-          accordion
-          defaultActiveKey={["1"]}
-          onChange={onChange}
-          style={{ marginTop: "30px" }}
-        >
-          {items.map((item) => (
-            <Panel key={item.key} header={item.title}>
-              {item.content}
-            </Panel>
-          ))}
-        </Collapse>
-      </InfoSec>
-    </Container>
+          {/* FAQ content goes here */}
+          <DynamicCollapse
+            $token={token}
+            size="large"
+            accordion
+            defaultActiveKey={["1"]}
+            onChange={onChange}
+            style={{ marginTop: "30px" }}
+          >
+            {items.map((item) => (
+              <Panel key={item.key} header={item.title}>
+                {item.content}
+              </Panel>
+            ))}
+          </DynamicCollapse>
+        </InfoSec>
+      </Container>
+    </div>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   StyledLabel,
   Heading6,
   CenterText,
+  DynamicCard,
 } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
@@ -41,6 +42,8 @@ import { LuCar } from "react-icons/lu";
 import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import Reach1 from "../../images/reach1.jpeg";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title, Text } = Typography;
 
@@ -150,83 +153,94 @@ const Vehicle = () => {
 
   const renderDetail = (icon, label, value) => (
     <>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         {icon}
         &nbsp; {label}
       </StyledLabel>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         <strong>{value}</strong>
       </StyledLabel>
     </>
   );
   const storedValue = localStorage.getItem("profile");
-
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
   return (
-    <Container>
-      <InfoSec>
-        <Link to="/main-dashboard">
-          <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
-        </Link>
-        <Card style={{ width: "100%" }}>
-          <Heading4>Verification Result</Heading4>
-        </Card>
-        <Spin spinning={loading} tip="Loading Data...">
-          <Card style={{ width: "100%", marginTop: "20px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container $token={token}>
+        <InfoSec>
+          <Link to="/main-dashboard" style={{ color: text }}>
+            <p style={{ color: text, cursor: "pointer" }}>Go back</p>
+          </Link>
+          <Card
+            style={{
+              width: "100%",
+              backgroundColor: bgContainer,
+              borderColor: text,
+            }}
+          >
+            <Heading4 $token={token}>Verification Result</Heading4>
+          </Card>
+          <Spin spinning={loading} tip="Loading Data...">
+            <DynamicCard
+              style={{ width: "100%", marginTop: "20px" }}
+              $token={token}
             >
-              <div>
-                <Text>Vehicle History Profile </Text>
-                <RightOutlined />
-                <Text>Vehicle History (VIN)</Text>
-                {/* <RightOutlined />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <Text>Vehicle History Profile </Text>
+                  <RightOutlined />
+                  <Text>Vehicle History (VIN)</Text>
+                  {/* <RightOutlined />
                 <Text>Clear VIN</Text> */}
+                </div>
               </div>
-            </div>
-            <Divider />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-            >
-              <div>
-                <Text>CLEAR VIN PREVIEW REPORT</Text>
-                {/* <RightOutlined />
+              <Divider />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                <div>
+                  <Text>CLEAR VIN PREVIEW REPORT</Text>
+                  {/* <RightOutlined />
                 <Text>Clear VIN</Text> */}
+                </div>
+
+                <div>
+                  <a
+                    href={`https://e-citizen.ng:8443${pdfUri}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      textAlign: "right",
+                      fontSize: "15px",
+                      color: "#09C93A",
+                      textDecoration: "none",
+                      cursor: "pointer",
+                      padding: "6px",
+                      border: "2px solid #09C93A",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <DownloadOutlined /> Download PDF for Full Report
+                  </a>
+                </div>
               </div>
 
-              <div>
-                <a
-                  href={`https://e-citizen.ng:8443${pdfUri}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    textAlign: "right",
-                    fontSize: "15px",
-                    color: "#09C93A",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                    padding: "6px",
-                    border: "2px solid #09C93A",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <DownloadOutlined /> Download PDF for Full Report
-                </a>
-              </div>
-            </div>
-
-            <Divider />
-            <Row gutter={16}>
-              <Col span={24}>
-                {/* {image ? (
+              <Divider />
+              <Row gutter={16}>
+                <Col span={24}>
+                  {/* {image ? (
                 <Avatar
                   size={224}
                   src={`${image}`}
@@ -235,60 +249,64 @@ const Vehicle = () => {
                   square
                 />
               ) : ( */}
-                {/* <Avatar size={124} icon={<CarOutlined />} /> */}
-                Vehicle Specification
-                {/* )} */}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaTeethOpen />, "Vin", `${vin}`)}
-                <Divider />
+                  {/* <Avatar size={124} icon={<CarOutlined />} /> */}
+                  Vehicle Specification
+                  {/* )} */}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaTeethOpen />, "Vin", `${vin}`)}
+                  <Divider />
 
-                {renderDetail(<FaCalendarAlt />, "Year", `${year}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaGlobe />, "Made In", `${madeIn}`)}
-                <Divider />
+                  {renderDetail(<FaCalendarAlt />, "Year", `${year}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaGlobe />, "Made In", `${madeIn}`)}
+                  <Divider />
 
-                {renderDetail(<FaCarAlt />, "Model", `${model}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaCarSide />, "Trim", `${trim}`)}
+                  {renderDetail(<FaCarAlt />, "Model", `${model}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaCarSide />, "Trim", `${trim}`)}
+                  <Divider />
+                  {renderDetail(<PiEngineLight />, "Engine", `${engine}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaCarAlt />, "Make", `${make}`)}
+                  <Divider />
+                  {renderDetail(<FaCarAlt />, "Style", `${style}`)}
+                </Col>
                 <Divider />
-                {renderDetail(<PiEngineLight />, "Engine", `${engine}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaCarAlt />, "Make", `${make}`)}
-                <Divider />
-                {renderDetail(<FaCarAlt />, "Style", `${style}`)}
-              </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <LiaFileInvoiceDollarSolid />,
+                    "Msrp",
+                    `${msrp}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <LiaFileInvoiceDollarSolid />,
+                    "Invoice",
+                    `${invoice}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<TbSteeringWheel />, "Steering Type", `-`)}
+                  <Divider />
+                  {renderDetail(<GiCarWheel />, "Tires", `-`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<GiChemicalTank />, "Tank Size", `-`)}
+                  <Divider />
+                  {renderDetail(<LuCar />, "Wheel drive", `-`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<AiOutlineColumnWidth />, "Overall Width", `-`)}
+                  <Divider />
+                  {renderDetail(<IoMdSpeedometer />, "Highway Mileage", `-`)}
+                </Col>
+              </Row>
               <Divider />
-              <Col span={6}>
-                {renderDetail(<LiaFileInvoiceDollarSolid />, "Msrp", `${msrp}`)}
-                <Divider />
-                {renderDetail(
-                  <LiaFileInvoiceDollarSolid />,
-                  "Invoice",
-                  `${invoice}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<TbSteeringWheel />, "Steering Type", `-`)}
-                <Divider />
-                {renderDetail(<GiCarWheel />, "Tires", `-`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<GiChemicalTank />, "Tank Size", `-`)}
-                <Divider />
-                {renderDetail(<LuCar />, "Wheel drive", `-`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<AiOutlineColumnWidth />, "Overall Width", `-`)}
-                <Divider />
-                {renderDetail(<IoMdSpeedometer />, "Highway Mileage", `-`)}
-              </Col>
-            </Row>
-            <Divider />
-            {/* <div>
+              {/* <div>
               <a
                 href={`https://e-citizen.ng:8443${pdfUri}`}
                 target="_blank"
@@ -305,19 +323,19 @@ const Vehicle = () => {
               </a>
             </div> */}
 
-            <div>
-              <Text
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "bold",
-                }}
-              >
-                LOCALIZED DATA
-              </Text>
-            </div>
-            <Row gutter={16}>
-              <Col span={24}>
-                {/* {photo ? (
+              <div>
+                <Text
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  LOCALIZED DATA
+                </Text>
+              </div>
+              <Row gutter={16}>
+                <Col span={24}>
+                  {/* {photo ? (
                 <Avatar
                   size={124}
                   src={`https://e-citizen.ng:8443${photo}`}
@@ -326,9 +344,9 @@ const Vehicle = () => {
               ) : (
                 <Avatar size={124} icon={<UserOutlined />} />
               )} */}
-              </Col>
-              <Divider />
-              {/* <Col span={6}>
+                </Col>
+                <Divider />
+                {/* <Col span={6}>
                 {renderDetail(
                   <PiEngineLight />,
                   "Chassis Number",
@@ -341,78 +359,78 @@ const Vehicle = () => {
               <Col span={6}>
                 {renderDetail(<FaFileInvoice />, "Stolen Reports", `${report}`)}
               </Col> */}
-            </Row>
+              </Row>
 
-            {!stolen ? (
-              <Row justify="center">
-                <Col span={24}>
-                  <div style={{ textAlign: "center" }}>
-                    <IoIosInformationCircleOutline
-                      style={{
-                        fontSize: "40px",
-                        paddingBottom: "10px",
-                        color: "#E2574C",
-                      }}
-                    />
-                    {/* Adjust margin as needed */}
-                    <span
-                      style={{
-                        fontSize: "23px",
-                        color: "#E2574C",
-                        fontWeight: "bolder",
-                      }}
-                    >
-                      This vehicle is in our database of stolen vehicles
-                      <br />
+              {!stolen ? (
+                <Row justify="center">
+                  <Col span={24}>
+                    <div style={{ textAlign: "center" }}>
+                      <IoIosInformationCircleOutline
+                        style={{
+                          fontSize: "40px",
+                          paddingBottom: "10px",
+                          color: "#E2574C",
+                        }}
+                      />
+                      {/* Adjust margin as needed */}
                       <span
                         style={{
-                          fontSize: "14px",
-                          color: "#354138",
+                          fontSize: "23px",
+                          color: text,
+                          fontWeight: "bolder",
                         }}
                       >
-                        As of January 4, 2024, 12:45Am
+                        This vehicle is in our database of stolen vehicles
+                        <br />
+                        <span
+                          style={{
+                            fontSize: "14px",
+                            color: text,
+                          }}
+                        >
+                          As of January 4, 2024, 12:45Am
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                </Col>
-              </Row>
-            ) : (
-              <Row justify="center">
-                <Col span={24}>
-                  <div style={{ textAlign: "center" }}>
-                    <FaRegCheckCircle
-                      style={{
-                        fontSize: "40px",
-                        paddingBottom: "10px",
-                        color: "#11AF59",
-                      }}
-                    />
-                    {/* Adjust margin as needed */}
-                    <span
-                      style={{
-                        fontSize: "23px",
-                        color: "#000000",
-                        fontWeight: "bolder",
-                      }}
-                    >
-                      This vehicle is not found in our database of stolen
-                      vehicles
-                      <br />
+                    </div>
+                  </Col>
+                </Row>
+              ) : (
+                <Row justify="center">
+                  <Col span={24}>
+                    <div style={{ textAlign: "center" }}>
+                      <FaRegCheckCircle
+                        style={{
+                          fontSize: "40px",
+                          paddingBottom: "10px",
+                          color: "#11AF59",
+                        }}
+                      />
+                      {/* Adjust margin as needed */}
                       <span
                         style={{
-                          fontSize: "14px",
-                          color: "#354138",
+                          fontSize: "23px",
+                          color: text,
+                          fontWeight: "bolder",
                         }}
                       >
-                        As of January 4, 2024, 12:45Am
+                        This vehicle is not found in our database of stolen
+                        vehicles
+                        <br />
+                        <span
+                          style={{
+                            fontSize: "14px",
+                            color: text,
+                          }}
+                        >
+                          As of January 4, 2024, 12:45Am
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                </Col>
-              </Row>
-            )}
+                    </div>
+                  </Col>
+                </Row>
+              )}
 
-            {/* <Row gutter={16}>
+              {/* <Row gutter={16}>
             <Divider />
             <Col span={6}>
               {renderDetail("Rebuilt", `${vin}`)}
@@ -517,49 +535,49 @@ const Vehicle = () => {
             <Col span={6}>{renderDetail("State", `${madeIn}`)}</Col>
             <Col span={6}>{renderDetail("Mileage", `${trim}`)}</Col>
           </Row> */}
-          </Card>
-        </Spin>
-      </InfoSec>
-      <Title level={5} style={{ marginTop: "20px" }}>
-        Your Offers
-      </Title>
-      <div class="container">
-        <div class="row">
-          <div
-            className="col-sm-4 col-md-6 col-lg-3 mb-3"
-            style={{
-              backgroundImage: `url(${Reach1})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              marginRight: "10px",
-              height: "200px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
-            }}
-            onClick={() => {
-              window.open(
-                "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
-                "_blank"
-              );
-            }}
-          ></div>
-          <div
-            className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
-            style={{
-              backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "200px",
-              marginRight: "10px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
-            }}
-            onClick={() => {
-              window.open(
-                "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
-                "_blank"
-              );
-            }}
-          ></div>
-          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+            </DynamicCard>
+          </Spin>
+        </InfoSec>
+        <Title level={5} style={{ marginTop: "20px" }}>
+          Your Offers
+        </Title>
+        <div class="container">
+          <div class="row">
+            <div
+              className="col-sm-4 col-md-6 col-lg-3 mb-3"
+              style={{
+                backgroundImage: `url(${Reach1})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                marginRight: "10px",
+                height: "200px",
+                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              }}
+              onClick={() => {
+                window.open(
+                  "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
+                  "_blank"
+                );
+              }}
+            ></div>
+            <div
+              className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
+              style={{
+                backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "200px",
+                marginRight: "10px",
+                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              }}
+              onClick={() => {
+                window.open(
+                  "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
+                  "_blank"
+                );
+              }}
+            ></div>
+            {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">Finance your Next Car</div>
               <div
@@ -591,9 +609,10 @@ const Vehicle = () => {
               </div>
             </div>
           </div> */}
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

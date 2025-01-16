@@ -16,6 +16,8 @@ import {
   Heading4,
   InfoSec,
   StyledLabel,
+  DynamicCard,
+  DynamicTable,
 } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
@@ -37,11 +39,13 @@ import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { RiHomeOfficeLine } from "react-icons/ri";
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-const renderTable = (dataArray) => {
+const renderTable = (dataArray, token) => {
   // Function to convert camelCase key to separate words
   const getKeyText = (key) => {
     return key
@@ -67,7 +71,12 @@ const renderTable = (dataArray) => {
 
   return (
     <div style={{ overflowX: "auto", maxWidth: "100%" }}>
-      <Table dataSource={dataArray} columns={columns} scroll={{ x: true }} />
+      <DynamicTable
+        $token={token}
+        dataSource={dataArray}
+        columns={columns}
+        scroll={{ x: true }}
+      />
     </div>
   );
 };
@@ -191,7 +200,12 @@ const Financial = () => {
             response.data["creditRegistry-data"] !== null ||
             response.data["creditRegistry-data"].length !== 0
           ) {
-            setCheckCreditRegistryDataStats(true);
+            // setCheckCreditRegistryDataStats(true);
+            // console.log(
+            //   "setCheckCreditRegistryDataStats",
+            //   checkCreditRegistryDataStats
+            // );
+
             setCreditRegistryDataStats(
               response.data["creditRegistry-data"]["data"]
             );
@@ -202,7 +216,8 @@ const Financial = () => {
             response.data["firstCentral-data"] !== null ||
             response.data["firstCentral-data"].length !== 0
           ) {
-            setCheckFirstCentralDataStats(true);
+            // setCheckFirstCentralDataStats(true);
+
             setFirstCentralDataStats(
               response.data["firstCentral-data"]["data"]
             );
@@ -213,7 +228,8 @@ const Financial = () => {
             response.data["crc-data"] !== null ||
             response.data["crc-data"].length !== 0
           ) {
-            setCheckCrcDataStats(true);
+            // setCheckCrcDataStats(true);
+
             setCrcDataStats(response.data["crc-data"]["data"]);
           }
         }
@@ -232,7 +248,7 @@ const Financial = () => {
 
   const renderDetail = (label, value) => (
     <>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         {label}: <strong>{value}</strong>
       </StyledLabel>
     </>
@@ -305,1128 +321,1198 @@ const Financial = () => {
     // Join the array back into a string
     return amountArr.join("");
   };
-
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
   return (
-    <Container>
-      <InfoSec>
-        <Link to="/main-dashboard">
-          <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
-        </Link>
-        <Card
-          style={{ width: "100%", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }}
-        >
-          <Heading4>Verification Result</Heading4>
-        </Card>
-        <Spin spinning={loading} tip="loading...">
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container $token={token}>
+        <InfoSec>
+          <Link to="/main-dashboard" style={{ color: text }}>
+            <p style={{ color: text, cursor: "pointer" }}>Go back</p>
+          </Link>
           <Card
             style={{
               width: "100%",
-              marginTop: "20px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              backgroundColor: bgContainer,
+              borderColor: text,
             }}
           >
-            <div>
-              <Text style={{ fontSize: "18px" }}>Financial Credit Profile</Text>
-              <RightOutlined />
-              <Text style={{ fontSize: "18px" }}>
-                Bank Verification Number (BVN)
-              </Text>
-            </div>
-            <Divider />
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12 col-lg-6 col-sm-12">
-                  {basicData && (
-                    <div>
-                      <div class="row">
-                        <div class="col-12">
-                          {renderDetail("Name", basicData[0].name)}
-                        </div>
-                        <div class="col-12">
-                          {renderDetail(
-                            "Date of Birth",
-                            basicData[0].dateOfBirth || "-"
-                          )}
-                        </div>
-                        <div class="col-12">
-                          {renderDetail("Gender", basicData[0].gender)}
-                        </div>
-                        <div class="col-12">
-                          {renderDetail("Phone", basicData[0].phone || "-")}
-                        </div>
-                        <div class="col-12">
-                          {renderDetail("BVN", basicData[0].bvn)}
-                        </div>
-                        <div class="col-12">
-                          {renderDetail("Address", basicData[0].address || "-")}
-                        </div>
-                        <div class="col-12">
-                          {renderDetail("Email", basicData[0].email || "-")}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div class="col-md-12 col-lg-6 col-sm-12" style={{}}>
-                  {ficoData && (
-                    <>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: "20px",
-                        }}
-                      >
+            <Heading4 $token={token}>Verification Result</Heading4>
+          </Card>
+          <Spin spinning={loading} tip="loading...">
+            <DynamicCard
+              $token={token}
+              style={{
+                width: "100%",
+                marginTop: "20px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              <div>
+                <Text style={{ fontSize: "18px" }}>
+                  Financial Credit Profile
+                </Text>
+                <RightOutlined />
+                <Text style={{ fontSize: "18px" }}>
+                  Bank Verification Number (BVN)
+                </Text>
+              </div>
+              <Divider />
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12 col-lg-6 col-sm-12">
+                    {basicData && (
+                      <div>
                         <div class="row">
-                          <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div style={{ marginRight: "20px" }}>
-                              <span
-                                style={{
-                                  display: "inline-block",
-                                  width: "10px",
-                                  height: "10px",
-                                  backgroundColor: "#CC440B",
-                                  marginRight: "5px",
-                                }}
-                              ></span>
-                              <span>POOR (300 - 539)</span>
-                            </div>
+                          <div class="col-12">
+                            {renderDetail("Name", basicData[0].name)}
                           </div>
-                          <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div style={{ marginRight: "20px" }}>
-                              <span
-                                style={{
-                                  display: "inline-block",
-                                  width: "10px",
-                                  height: "10px",
-                                  backgroundColor: "#E57E0D",
-                                  marginRight: "5px",
-                                }}
-                              ></span>
-                              <span>AVERAGE (540 - 660)</span>
-                            </div>
+                          <div class="col-12">
+                            {renderDetail(
+                              "Date of Birth",
+                              basicData[0].dateOfBirth || "-"
+                            )}
                           </div>
-                          <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div style={{ marginRight: "20px" }}>
-                              <span
-                                style={{
-                                  display: "inline-block",
-                                  width: "10px",
-                                  height: "10px",
-                                  backgroundColor: "#FCCF38",
-                                  marginRight: "5px",
-                                }}
-                              ></span>
-                              <span>GOOD (661 - 700)</span>
-                            </div>
+                          <div class="col-12">
+                            {renderDetail("Gender", basicData[0].gender)}
                           </div>
-                          <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div style={{ marginRight: "20px" }}>
-                              <span
-                                style={{
-                                  display: "inline-block",
-                                  width: "10px",
-                                  height: "10px",
-                                  backgroundColor: "#67F351",
-                                  marginRight: "5px",
-                                }}
-                              ></span>
-                              <span>VERY GOOD (701 - 750)</span>
-                            </div>
+                          <div class="col-12">
+                            {renderDetail("Phone", basicData[0].phone || "-")}
                           </div>
-                          <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div>
-                              <span
-                                style={{
-                                  display: "inline-block",
-                                  width: "10px",
-                                  height: "10px",
-                                  backgroundColor: "#186609",
-                                  marginRight: "5px",
-                                }}
-                              ></span>
-                              <span>EXCELLENT (751 - 850)</span>
-                            </div>
+                          <div class="col-12">
+                            {renderDetail("BVN", basicData[0].bvn)}
+                          </div>
+                          <div class="col-12">
+                            {renderDetail(
+                              "Address",
+                              basicData[0].address || "-"
+                            )}
+                          </div>
+                          <div class="col-12">
+                            {renderDetail("Email", basicData[0].email || "-")}
                           </div>
                         </div>
                       </div>
-                      <GaugeChart
-                        id="gauge-chart2"
-                        nrOfLevels={1000}
-                        arcsLength={[0.9, 0.4, 0.1, 0.1, 0.2]}
-                        colors={[
-                          "#CC440B",
-                          "#E57E0D",
-                          "#FCCF38",
-                          "#67F351",
-                          "#186609",
-                        ]}
-                        percent={ficoData["ficoScore"] / 1000}
-                        arcPadding={0.006}
-                        hideText={true}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: "20px",
-                          fontSize: "25px",
-                        }}
-                      >
-                        <span style={{ color: "#126609" }}>Credit Score:</span>
-                        &nbsp;
-                        <span style={{ fontWeight: "bold" }}>
-                          {" "}
-                          {ficoData["ficoScore"]}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                  {!ficoData && (
-                    <>
-                      <GaugeChart
-                        id="gauge-chart2"
-                        nrOfLevels={1000}
-                        arcsLength={[0.9, 0.4, 0.1, 0.1, 0.2]}
-                        colors={[
-                          "#CC440B",
-                          "#E57E0D",
-                          "#FCCF38",
-                          "#67F351",
-                          "#186609",
-                        ]}
-                        percent={0.0}
-                        arcPadding={0.006}
-                        hideText={true}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: "20px",
-                          fontSize: "25px",
-                        }}
-                      >
-                        <span style={{ color: "#126609" }}>Credit Score:</span>
-                        &nbsp;
-                        <span style={{ fontWeight: "bold" }}> No Record</span>
-                      </div>
-                    </>
-                  )}
+                    )}
+                  </div>
+                  <div class="col-md-12 col-lg-6 col-sm-12" style={{}}>
+                    {ficoData && (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "20px",
+                          }}
+                        >
+                          <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                              <div style={{ marginRight: "20px" }}>
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "10px",
+                                    height: "10px",
+                                    backgroundColor: "#CC440B",
+                                    marginRight: "5px",
+                                  }}
+                                ></span>
+                                <span>POOR (300 - 539)</span>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                              <div style={{ marginRight: "20px" }}>
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "10px",
+                                    height: "10px",
+                                    backgroundColor: "#E57E0D",
+                                    marginRight: "5px",
+                                  }}
+                                ></span>
+                                <span>AVERAGE (540 - 660)</span>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                              <div style={{ marginRight: "20px" }}>
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "10px",
+                                    height: "10px",
+                                    backgroundColor: "#FCCF38",
+                                    marginRight: "5px",
+                                  }}
+                                ></span>
+                                <span>GOOD (661 - 700)</span>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                              <div style={{ marginRight: "20px" }}>
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "10px",
+                                    height: "10px",
+                                    backgroundColor: "#67F351",
+                                    marginRight: "5px",
+                                  }}
+                                ></span>
+                                <span>VERY GOOD (701 - 750)</span>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                              <div>
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "10px",
+                                    height: "10px",
+                                    backgroundColor: "#186609",
+                                    marginRight: "5px",
+                                  }}
+                                ></span>
+                                <span>EXCELLENT (751 - 850)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <GaugeChart
+                          id="gauge-chart2"
+                          nrOfLevels={1000}
+                          arcsLength={[0.9, 0.4, 0.1, 0.1, 0.2]}
+                          colors={[
+                            "#CC440B",
+                            "#E57E0D",
+                            "#FCCF38",
+                            "#67F351",
+                            "#186609",
+                          ]}
+                          percent={ficoData["ficoScore"] / 1000}
+                          arcPadding={0.006}
+                          hideText={true}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "20px",
+                            fontSize: "25px",
+                          }}
+                        >
+                          <span style={{ color: text, fontWeight: "bolder" }}>
+                            Credit Score:
+                          </span>
+                          &nbsp;
+                          <span style={{ fontWeight: "bold" }}>
+                            {" "}
+                            {ficoData["ficoScore"]}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                    {!ficoData && (
+                      <>
+                        <GaugeChart
+                          id="gauge-chart2"
+                          nrOfLevels={1000}
+                          arcsLength={[0.9, 0.4, 0.1, 0.1, 0.2]}
+                          colors={[
+                            "#CC440B",
+                            "#E57E0D",
+                            "#FCCF38",
+                            "#67F351",
+                            "#186609",
+                          ]}
+                          percent={0.0}
+                          arcPadding={0.006}
+                          hideText={true}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "20px",
+                            fontSize: "25px",
+                          }}
+                        >
+                          <span style={{ color: "#126609" }}>
+                            Credit Score:
+                          </span>
+                          &nbsp;
+                          <span style={{ fontWeight: "bold" }}> No Record</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Card>
+            </DynamicCard>
 
-          <Card
-            style={{
-              width: "100%",
-              marginBottom: "20px",
-              marginTop: "20px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <Tabs defaultActiveKey="1">
-              //!checkFirstCentralDataStats comes here
-              {checkFirstCentralDataStats == true ? (
-                <TabPane tab="First Central" key="1">
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-                  >
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
+            <DynamicCard
+              $token={token}
+              style={{
+                width: "100%",
+                marginBottom: "20px",
+                marginTop: "20px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <Tabs defaultActiveKey="1">
+                //!checkFirstCentralDataStats comes here
+                {/* {checkFirstCentralDataStats != true ? ( */}
+                {firstCentralData ? (
+                  <TabPane tab="First Central" key="1">
+                    <div
+                      style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
                     >
-                      <p>
-                        <span class="badge text-bg-primary">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Highest Loan Request</p>
-                      <h6>
-                        {" "}
-                        {summaryData && summaryData.highestLoanAmount !== null
-                          ? formatAmountToNaira(summaryData.highestLoanAmount)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <HiOutlineBuildingOffice2 size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData &&
-                        summaryData.totalNoOfInstitutions !== null
-                          ? summaryData.totalNoOfInstitutions
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-danger">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Total due (Overdue)</p>
-                      <h6>
-                        {" "}
-                        {summaryData && summaryData.totalOverdue !== null
-                          ? formatAmountToNaira(summaryData.totalOverdue)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Total loan value</p>
-                      <h6>
-                        {" "}
-                        {summaryData && summaryData.totalBorrowed !== null
-                          ? formatAmountToNaira(summaryData.totalBorrowed)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <CiWallet size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total outstanding value
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData && summaryData.totalOutstanding !== null
-                          ? formatAmountToNaira(summaryData.totalOutstanding)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-secondary">
-                          <CiWallet size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of credit loans
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData && summaryData.totalNoOfLoans !== null
-                          ? summaryData.totalNoOfLoans
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-warning">
-                          <HiOutlineBuildingOffice2 size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of open credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData &&
-                        summaryData.totalNoOfActiveLoans !== null
-                          ? summaryData.totalNoOfActiveLoans
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-primary">
-                          <RiHomeOfficeLine size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of delinquent facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData &&
-                        summaryData.totalNoOfDelinquentFacilities !== null
-                          ? summaryData.totalNoOfDelinquentFacilities
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-danger">
-                          <FaRegCalendarTimes size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Max no: of days due (overdue days)
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData && summaryData.maxNoOfDays !== null
-                          ? summaryData.maxNoOfDays
-                          : "no data"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-secondary">
-                          <FaRegCalendarTimes size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of closed credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {summaryData &&
-                        summaryData.totalNoOfClosedLoans !== null
-                          ? summaryData.totalNoOfClosedLoans
-                          : "no data"}
-                      </h6>
-                    </Card>
-                  </div>
-                  {firstCentralData &&
-                    Object.entries(firstCentralData).map(([key, value]) => {
-                      if (Array.isArray(value)) {
-                        // Function to convert camelCase key to separate words
-                        const getKeyText = (key) => {
-                          // Remove the "data" part and split camelCase into words
-                          return key
-                            .replace("data", "")
-                            .replace("-", "")
-                            .replace(/([a-z])([A-Z])/g, "$1 $2")
-                            .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
-                            .replace(/^./, function (str) {
-                              return str.toUpperCase();
-                            });
-                        };
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-primary">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Highest Loan Request
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData && summaryData.highestLoanAmount !== null
+                            ? formatAmountToNaira(summaryData.highestLoanAmount)
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <HiOutlineBuildingOffice2 size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData &&
+                          summaryData.totalNoOfInstitutions !== null
+                            ? summaryData.totalNoOfInstitutions
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-danger">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total due (Overdue)
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData && summaryData.totalOverdue !== null
+                            ? formatAmountToNaira(summaryData.totalOverdue)
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>Total loan value</p>
+                        <h6>
+                          {" "}
+                          {summaryData && summaryData.totalBorrowed !== null
+                            ? formatAmountToNaira(summaryData.totalBorrowed)
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <CiWallet size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total outstanding value
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData && summaryData.totalOutstanding !== null
+                            ? formatAmountToNaira(summaryData.totalOutstanding)
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-secondary">
+                            <CiWallet size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of credit loans
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData && summaryData.totalNoOfLoans !== null
+                            ? summaryData.totalNoOfLoans
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-warning">
+                            <HiOutlineBuildingOffice2 size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of open credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData &&
+                          summaryData.totalNoOfActiveLoans !== null
+                            ? summaryData.totalNoOfActiveLoans
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-primary">
+                            <RiHomeOfficeLine size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of delinquent facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData &&
+                          summaryData.totalNoOfDelinquentFacilities !== null
+                            ? summaryData.totalNoOfDelinquentFacilities
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-danger">
+                            <FaRegCalendarTimes size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Max no: of days due (overdue days)
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData && summaryData.maxNoOfDays !== null
+                            ? summaryData.maxNoOfDays
+                            : "no data"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-secondary">
+                            <FaRegCalendarTimes size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of closed credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {summaryData &&
+                          summaryData.totalNoOfClosedLoans !== null
+                            ? summaryData.totalNoOfClosedLoans
+                            : "no data"}
+                        </h6>
+                      </DynamicCard>
+                    </div>
+                    {firstCentralData &&
+                      Object.entries(firstCentralData).map(([key, value]) => {
+                        if (Array.isArray(value)) {
+                          // Function to convert camelCase key to separate words
+                          const getKeyText = (key) => {
+                            // Remove the "data" part and split camelCase into words
+                            return key
+                              .replace("data", "")
+                              .replace("-", "")
+                              .replace(/([a-z])([A-Z])/g, "$1 $2")
+                              .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
+                              .replace(/^./, function (str) {
+                                return str.toUpperCase();
+                              });
+                          };
 
-                        return (
-                          <div key={key}>
-                            <Text
-                              style={{ fontWeight: "bold", fontSize: "20px" }}
-                            >
-                              {getKeyText(key)}{" "}
-                              {/* Use the function to convert key to separate words */}
-                            </Text>
-                            <Card
-                              className="text-center"
-                              style={{
-                                width: "auto",
-                                marginBottom: "20px",
-                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                              }}
-                            >
-                              {renderTable(value)}
-                            </Card>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                </TabPane>
-              ) : (
-                ""
-              )}
-              //!checkFirstCentralDataStats ends here //!checkCrcDataStats comes
-              {checkCrcDataStats == true ? (
-                <TabPane tab="CRC" key="2">
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-                  >
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
+                          return (
+                            <div key={key}>
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: "20px" }}
+                              >
+                                {getKeyText(key)}{" "}
+                                {/* Use the function to convert key to separate words */}
+                              </Text>
+                              <DynamicCard
+                                $token={token}
+                                className="text-center"
+                                style={{
+                                  width: "auto",
+                                  marginBottom: "20px",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                                }}
+                              >
+                                {renderTable(value, token)}
+                              </DynamicCard>
+                            </div>
+                          );
+                        }
+                      })}
+                  </TabPane>
+                ) : (
+                  ""
+                )}
+                //!checkFirstCentralDataStats ends here //!checkCrcDataStats
+                {crcData ? (
+                  <TabPane tab="CRC" key="2">
+                    <div
+                      style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
                     >
-                      <p>
-                        <span class="badge text-bg-primary">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Highest Loan Request</p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.highestLoanAmount !== null
-                          ? formatAmountToNaira(
-                              crcsummaryData.highestLoanAmount
-                            )
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <HiOutlineBuildingOffice2 size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.totalNoOfInstitutions !== null
-                          ? crcsummaryData.totalNoOfInstitutions
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-danger">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Total due (Overdue)</p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData && crcsummaryData.totalOverdue !== null
-                          ? formatAmountToNaira(crcsummaryData.totalOverdue)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Total loan value</p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData && crcsummaryData.totalBorrowed !== null
-                          ? formatAmountToNaira(crcsummaryData.totalBorrowed)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <CiWallet size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total outstanding value
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.totalOutstanding !== null
-                          ? formatAmountToNaira(crcsummaryData.totalOutstanding)
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-secondary">
-                          <CiWallet size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of credit loans
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.totalNoOfLoans !== null
-                          ? crcsummaryData.totalNoOfLoans
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-warning">
-                          <HiOutlineBuildingOffice2 size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of open credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.totalNoOfActiveLoans !== null
-                          ? crcsummaryData.totalNoOfActiveLoans
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-primary">
-                          <RiHomeOfficeLine size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of delinquent facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.totalNoOfDelinquentFacilities !== null
-                          ? crcsummaryData.totalNoOfDelinquentFacilities
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-danger">
-                          <FaRegCalendarTimes size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Max no: of days due (overdue days)
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData && crcsummaryData.maxNoOfDays !== null
-                          ? crcsummaryData.maxNoOfDays
-                          : "no data"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-secondary">
-                          <FaRegCalendarTimes size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of closed credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {crcsummaryData &&
-                        crcsummaryData.totalNoOfClosedLoans !== null
-                          ? crcsummaryData.totalNoOfClosedLoans
-                          : "no data"}
-                      </h6>
-                    </Card>
-                  </div>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-primary">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Highest Loan Request
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.highestLoanAmount !== null
+                            ? formatAmountToNaira(
+                                crcsummaryData.highestLoanAmount
+                              )
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <HiOutlineBuildingOffice2 size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalNoOfInstitutions !== null
+                            ? crcsummaryData.totalNoOfInstitutions
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-danger">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total due (Overdue)
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalOverdue !== null
+                            ? formatAmountToNaira(crcsummaryData.totalOverdue)
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>Total loan value</p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalBorrowed !== null
+                            ? formatAmountToNaira(crcsummaryData.totalBorrowed)
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <CiWallet size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total outstanding value
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalOutstanding !== null
+                            ? formatAmountToNaira(
+                                crcsummaryData.totalOutstanding
+                              )
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-secondary">
+                            <CiWallet size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of credit loans
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalNoOfLoans !== null
+                            ? crcsummaryData.totalNoOfLoans
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-warning">
+                            <HiOutlineBuildingOffice2 size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of open credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalNoOfActiveLoans !== null
+                            ? crcsummaryData.totalNoOfActiveLoans
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-primary">
+                            <RiHomeOfficeLine size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of delinquent facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalNoOfDelinquentFacilities !== null
+                            ? crcsummaryData.totalNoOfDelinquentFacilities
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-danger">
+                            <FaRegCalendarTimes size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Max no: of days due (overdue days)
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData && crcsummaryData.maxNoOfDays !== null
+                            ? crcsummaryData.maxNoOfDays
+                            : "no data"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-secondary">
+                            <FaRegCalendarTimes size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of closed credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {crcsummaryData &&
+                          crcsummaryData.totalNoOfClosedLoans !== null
+                            ? crcsummaryData.totalNoOfClosedLoans
+                            : "no data"}
+                        </h6>
+                      </DynamicCard>
+                    </div>
 
-                  {crcData &&
-                    Object.entries(crcData).map(([key, value]) => {
-                      if (Array.isArray(value)) {
-                        // Function to convert camelCase key to separate words
-                        const getKeyText = (key) => {
-                          // Remove the "data" part and split camelCase into words
-                          return key
-                            .replace("data", "")
-                            .replace("-", "")
-                            .replace(/([a-z])([A-Z])/g, "$1 $2")
-                            .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
-                            .replace(/^./, function (str) {
-                              return str.toUpperCase();
-                            });
-                        };
+                    {crcData &&
+                      Object.entries(crcData).map(([key, value]) => {
+                        if (Array.isArray(value)) {
+                          // Function to convert camelCase key to separate words
+                          const getKeyText = (key) => {
+                            // Remove the "data" part and split camelCase into words
+                            return key
+                              .replace("data", "")
+                              .replace("-", "")
+                              .replace(/([a-z])([A-Z])/g, "$1 $2")
+                              .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
+                              .replace(/^./, function (str) {
+                                return str.toUpperCase();
+                              });
+                          };
 
-                        return (
-                          <div key={key}>
-                            <Text
-                              style={{ fontWeight: "bold", fontSize: "20px" }}
-                            >
-                              {getKeyText(key)}{" "}
-                              {/* Use the function to convert key to separate words */}
-                            </Text>
-                            <Card
-                              className="text-center"
-                              style={{
-                                width: "auto",
-                                marginBottom: "20px",
-                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                              }}
-                            >
-                              {renderTable(value)}
-                            </Card>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                </TabPane>
-              ) : (
-                ""
-              )}
-              //!checkCrcDataStats ends here //!checkCreditRegistryDataStats
-              {checkCreditRegistryDataStats == true ? (
-                <TabPane tab="Credit Registry" key="3">
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-                  >
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
+                          return (
+                            <div key={key}>
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: "20px" }}
+                              >
+                                {getKeyText(key)}{" "}
+                                {/* Use the function to convert key to separate words */}
+                              </Text>
+                              <DynamicCard
+                                $token={token}
+                                className="text-center"
+                                style={{
+                                  width: "auto",
+                                  marginBottom: "20px",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                                }}
+                              >
+                                {renderTable(value, token)}
+                              </DynamicCard>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                  </TabPane>
+                ) : (
+                  ""
+                )}
+                //!checkCrcDataStats ends here //!checkCreditRegistryDataStats
+                {creditRegistryData ? (
+                  <TabPane tab="Credit Registry" key="3">
+                    <div
+                      style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
                     >
-                      <p>
-                        <span class="badge text-bg-primary">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Highest Loan Request</p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.highestLoanAmount !== null
-                          ? formatAmountToNaira(
-                              creditRegistrySummaryData.highestLoanAmount
-                            )
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <HiOutlineBuildingOffice2 size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalNoOfInstitutions !== null
-                          ? creditRegistrySummaryData.totalNoOfInstitutions
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-danger">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Total due (Overdue)</p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalOverdue !== null
-                          ? formatAmountToNaira(
-                              creditRegistrySummaryData.totalOverdue
-                            )
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <FaRegMoneyBillAlt size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>Total loan value</p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalBorrowed !== null
-                          ? formatAmountToNaira(
-                              creditRegistrySummaryData.totalBorrowed
-                            )
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-info">
-                          <CiWallet size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total outstanding value
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalOutstanding !== null
-                          ? formatAmountToNaira(
-                              creditRegistrySummaryData.totalOutstanding
-                            )
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-secondary">
-                          <CiWallet size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of credit loans
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalNoOfLoans !== null
-                          ? creditRegistrySummaryData.totalNoOfLoans
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-warning">
-                          <HiOutlineBuildingOffice2 size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of open credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalNoOfActiveLoans !== null
-                          ? creditRegistrySummaryData.totalNoOfActiveLoans
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-primary">
-                          <RiHomeOfficeLine size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of delinquent facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalNoOfDelinquentFacilities !==
-                          null
-                          ? creditRegistrySummaryData.totalNoOfDelinquentFacilities
-                          : "-"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-danger">
-                          <FaRegCalendarTimes size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Max no: of days due (overdue days)
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.maxNoOfDays !== null
-                          ? creditRegistrySummaryData.maxNoOfDays
-                          : "no data"}
-                      </h6>
-                    </Card>
-                    <Card
-                      className="text-center"
-                      style={{
-                        width: "200px",
-                        marginBottom: "20px",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                      }}
-                    >
-                      <p>
-                        <span class="badge text-bg-secondary">
-                          <FaRegCalendarTimes size={30} />
-                        </span>
-                      </p>
-                      <p style={{ fontWeight: "bold" }}>
-                        Total no: of closed credit facilities
-                      </p>
-                      <h6>
-                        {" "}
-                        {creditRegistrySummaryData &&
-                        creditRegistrySummaryData.totalNoOfClosedLoans !== null
-                          ? creditRegistrySummaryData.totalNoOfClosedLoans
-                          : "no data"}
-                      </h6>
-                    </Card>
-                  </div>
-                  {creditRegistryData &&
-                    Object.entries(creditRegistryData).map(([key, value]) => {
-                      if (Array.isArray(value)) {
-                        // Function to convert camelCase key to separate words
-                        const getKeyText = (key) => {
-                          // Remove the "data" part and split camelCase into words
-                          return key
-                            .replace("data", "")
-                            .replace("-", "")
-                            .replace(/([a-z])([A-Z])/g, "$1 $2")
-                            .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
-                            .replace(/^./, function (str) {
-                              return str.toUpperCase();
-                            });
-                        };
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-primary">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Highest Loan Request
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.highestLoanAmount !== null
+                            ? formatAmountToNaira(
+                                creditRegistrySummaryData.highestLoanAmount
+                              )
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <HiOutlineBuildingOffice2 size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalNoOfInstitutions !==
+                            null
+                            ? creditRegistrySummaryData.totalNoOfInstitutions
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-danger">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total due (Overdue)
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalOverdue !== null
+                            ? formatAmountToNaira(
+                                creditRegistrySummaryData.totalOverdue
+                              )
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <FaRegMoneyBillAlt size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>Total loan value</p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalBorrowed !== null
+                            ? formatAmountToNaira(
+                                creditRegistrySummaryData.totalBorrowed
+                              )
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-info">
+                            <CiWallet size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total outstanding value
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalOutstanding !== null
+                            ? formatAmountToNaira(
+                                creditRegistrySummaryData.totalOutstanding
+                              )
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-secondary">
+                            <CiWallet size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of credit loans
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalNoOfLoans !== null
+                            ? creditRegistrySummaryData.totalNoOfLoans
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-warning">
+                            <HiOutlineBuildingOffice2 size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of open credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalNoOfActiveLoans !==
+                            null
+                            ? creditRegistrySummaryData.totalNoOfActiveLoans
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-primary">
+                            <RiHomeOfficeLine size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of delinquent facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalNoOfDelinquentFacilities !==
+                            null
+                            ? creditRegistrySummaryData.totalNoOfDelinquentFacilities
+                            : "-"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-danger">
+                            <FaRegCalendarTimes size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Max no: of days due (overdue days)
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.maxNoOfDays !== null
+                            ? creditRegistrySummaryData.maxNoOfDays
+                            : "no data"}
+                        </h6>
+                      </DynamicCard>
+                      <DynamicCard
+                        $token={token}
+                        className="text-center"
+                        style={{
+                          width: "200px",
+                          marginBottom: "20px",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                        }}
+                      >
+                        <p>
+                          <span class="badge text-bg-secondary">
+                            <FaRegCalendarTimes size={30} />
+                          </span>
+                        </p>
+                        <p style={{ fontWeight: "bold" }}>
+                          Total no: of closed credit facilities
+                        </p>
+                        <h6>
+                          {" "}
+                          {creditRegistrySummaryData &&
+                          creditRegistrySummaryData.totalNoOfClosedLoans !==
+                            null
+                            ? creditRegistrySummaryData.totalNoOfClosedLoans
+                            : "no data"}
+                        </h6>
+                      </DynamicCard>
+                    </div>
+                    {creditRegistryData &&
+                      Object.entries(creditRegistryData).map(([key, value]) => {
+                        if (Array.isArray(value)) {
+                          // Function to convert camelCase key to separate words
+                          const getKeyText = (key) => {
+                            // Remove the "data" part and split camelCase into words
+                            return key
+                              .replace("data", "")
+                              .replace("-", "")
+                              .replace(/([a-z])([A-Z])/g, "$1 $2")
+                              .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
+                              .replace(/^./, function (str) {
+                                return str.toUpperCase();
+                              });
+                          };
 
-                        return (
-                          <div key={key}>
-                            <Text
-                              style={{ fontWeight: "bold", fontSize: "20px" }}
-                            >
-                              {getKeyText(key)}{" "}
-                              {/* Use the function to convert key to separate words */}
-                            </Text>
-                            <Card
-                              className="text-center"
-                              style={{
-                                width: "auto",
-                                marginBottom: "20px",
-                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                              }}
-                            >
-                              {renderTable(value)}
-                            </Card>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                </TabPane>
-              ) : (
-                ""
-              )}
-              //!checkCreditRegistryDataStats ends here
-            </Tabs>
-          </Card>
-        </Spin>
-      </InfoSec>
-      <Title level={5} style={{ marginTop: "20px" }}>
-        Your Offers
-      </Title>
-      <div class="container">
-        <div class="row">
-          <div
-            className="col-sm-4 col-md-6 col-lg-3 mb-3"
-            style={{
-              backgroundImage: `url(${Reach1})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "200px",
-              marginRight: "10px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
-            }}
-            onClick={() => {
-              window.open(
-                "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
-                "_blank"
-              );
-            }}
-          ></div>
-          <div
-            className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
-            style={{
-              backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "200px",
-              marginRight: "10px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
-            }}
-            onClick={() => {
-              window.open(
-                "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
-                "_blank"
-              );
-            }}
-          ></div>
-          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                          return (
+                            <div key={key}>
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: "20px" }}
+                              >
+                                {getKeyText(key)}{" "}
+                                {/* Use the function to convert key to separate words */}
+                              </Text>
+                              <DynamicCard
+                                $token={token}
+                                className="text-center"
+                                style={{
+                                  width: "auto",
+                                  marginBottom: "20px",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+                                }}
+                              >
+                                {renderTable(value, token)}
+                              </DynamicCard>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                  </TabPane>
+                ) : (
+                  ""
+                )}
+                //!checkCreditRegistryDataStats ends here
+              </Tabs>
+            </DynamicCard>
+          </Spin>
+        </InfoSec>
+        <Title level={5} style={{ marginTop: "20px" }}>
+          Your Offers
+        </Title>
+        <div class="container">
+          <div class="row">
+            <div
+              className="col-sm-4 col-md-6 col-lg-3 mb-3"
+              style={{
+                backgroundImage: `url(${Reach1})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "200px",
+                marginRight: "10px",
+                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              }}
+              onClick={() => {
+                window.open(
+                  "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
+                  "_blank"
+                );
+              }}
+            ></div>
+            <div
+              className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
+              style={{
+                backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "200px",
+                marginRight: "10px",
+                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              }}
+              onClick={() => {
+                window.open(
+                  "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
+                  "_blank"
+                );
+              }}
+            ></div>
+            {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">Finance your Next Car</div>
               <div
@@ -1458,9 +1544,10 @@ const Financial = () => {
               </div>
             </div>
           </div> */}
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
