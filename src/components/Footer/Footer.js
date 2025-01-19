@@ -11,9 +11,9 @@ import {
   WebsiteRights,
 } from "./Footer.elements";
 
-import logo from "../../images/logo.svg";
+import logo from "../../images/e-citizen_logo_ecitizen_white.png";
 import osia from "../../images/osia.png";
-import ndpr from "../../images/ndpr.png";
+import ndpr from "../../images/ndpr1.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import NewsletterSection from "../newsletter/newsLetterSection";
@@ -51,36 +51,95 @@ function Footer() {
       <div style={{ backgroundColor: isDark ? "#212121" : "#354138" }}>
         <div class="container text-left">
           <div class="row" style={{ borderBottom: "1px solid #fff" }}>
-            <div class="col-md-5 col-sm-12 col-xs-12">
-              <a href="/" style={{ cursor: "pointer" }}>
-                <FooterLogoArea
-                  src={logo}
-                  style={{ width: 120, cursor: "pointer" }}
-                ></FooterLogoArea>
-              </a>
-              <a
-                href="https://secureidentityalliance.org/osia"
-                target="none"
-                style={{ cursor: "pointer" }}
-              >
-                <FooterLogoArea2
-                  src={osia}
-                  style={{ width: 100, cursor: "pointer" }}
-                ></FooterLogoArea2>
-              </a>
-
-              <a
-                href="https://www.ndpc.gov.ng/#"
-                target="none"
-                style={{ cursor: "pointer" }}
-              >
-                <FooterLogoArea2
-                  src={ndpr}
-                  style={{ width: 100, cursor: "pointer" }}
-                ></FooterLogoArea2>
-              </a>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <FooterLinkItems>
+                <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
+                  <FooterLogoArea
+                    src={logo}
+                    style={{ width: "205px" }}
+                  ></FooterLogoArea>
+                </FooterLink>
+              </FooterLinkItems>
+              <FooterLinkItems>
+                <FooterLink
+                  to="/https://www.ndpc.gov.ng/#"
+                  onClick={handleClickPrivacyPolicy}
+                >
+                  <FooterLogoArea
+                    src={ndpr}
+                    style={{ width: "205px" }}
+                  ></FooterLogoArea>
+                </FooterLink>
+              </FooterLinkItems>
+              <FooterLinkItems>
+                <FooterLink
+                  to="/https://secureidentityalliance.org/osia"
+                  onClick={handleClickPrivacyPolicy}
+                >
+                  <FooterLogoArea
+                    src={osia}
+                    style={{ width: "135px" }}
+                  ></FooterLogoArea>
+                </FooterLink>
+              </FooterLinkItems>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12">
+              <FooterLinkItems>
+                <a
+                  href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
+                  target="none"
+                  style={{ cursor: "pointer", marginBottom: "10px" }}
+                >
+                  <img
+                    src={playStore}
+                    alt="Logo"
+                    style={{
+                      width: 120,
+                      cursor: "pointer",
+                      paddingRight: "5px",
+                    }}
+                  />
+                </a>
+              </FooterLinkItems>
+              <FooterLinkItems>
+                <a href="#" target="none">
+                  <img
+                    src={appStore}
+                    alt="Logo"
+                    style={{
+                      width: 120,
+                      cursor: "pointer",
+                      paddingRight: "5px",
+                    }}
+                  />
+                </a>
+              </FooterLinkItems>
+              <FooterLinkItems></FooterLinkItems>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <FooterLinkItems>
+                <FooterLink to="#">
+                  <strong style={{ fontWeight: "bolder" }}>Company</strong>
+                </FooterLink>
+              </FooterLinkItems>
+              <FooterLinkItems>
+                <FooterLink to="/contact">Contact</FooterLink>
+              </FooterLinkItems>
+              <FooterLinkItems>
+                <FooterLink to="/faq">FAQ</FooterLink>
+              </FooterLinkItems>
+
+              {/* <FooterLinkItems>
+                <FooterLink to="/">info@e-citizen.ng</FooterLink>
+              </FooterLinkItems> */}
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <FooterLinkItems>
+                <FooterLink to="#">
+                  <strong style={{ fontWeight: "bolder" }}>Legal</strong>
+                </FooterLink>
+              </FooterLinkItems>
               <FooterLinkItems>
                 <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
                   Privacy policy
@@ -113,63 +172,6 @@ function Footer() {
                   <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
                 </Modal>
               </FooterLinkItems>
-              <FooterLinkItems>
-                <a
-                  href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
-                  target="none"
-                  style={{ cursor: "pointer", marginBottom: "10px" }}
-                >
-                  <img
-                    src={playStore}
-                    alt="Logo"
-                    style={{
-                      width: 100,
-                      cursor: "pointer",
-                      paddingRight: "5px",
-                    }}
-                  />
-                </a>
-                <a href="#" target="none">
-                  <img
-                    src={appStore}
-                    alt="Logo"
-                    style={{
-                      width: 100,
-                      cursor: "pointer",
-                      paddingRight: "5px",
-                    }}
-                  />
-                </a>
-
-                <FooterLink>
-                  {/* <a
-                    href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
-                    target="none"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <FooterLogoArea3 src={playStore}></FooterLogoArea3>
-                  </a> */}
-
-                  {/* <a href="#" target="none" style={{ cursor: "pointer" }}>
-                    <FooterLogoArea3
-                      src={appStore}
-                      style={{ width: 100, cursor: "pointer" }}
-                    ></FooterLogoArea3>
-                  </a> */}
-                </FooterLink>
-              </FooterLinkItems>
-            </div>
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems>
-                <FooterLink to="/contact">Contact</FooterLink>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink to="/faq">FAQ</FooterLink>
-              </FooterLinkItems>
-
-              {/* <FooterLinkItems>
-                <FooterLink to="/">info@e-citizen.ng</FooterLink>
-              </FooterLinkItems> */}
             </div>
             {/* <div class="col-md-3 col-sm-12 col-xs-12">
               <FooterLinkItems></FooterLinkItems>

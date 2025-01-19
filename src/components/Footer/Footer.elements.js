@@ -7,6 +7,19 @@ import { theme } from "antd";
 // Get the useToken hook from antd
 const { useToken } = theme;
 
+export const Footer1Container = styled.div`
+  background-color: ${({ theme }) => theme.footerBackground};
+  padding-left: 60px;
+  padding-right: 60px;
+  padding-top: 30px;
+
+  @media (max-width: 768px) {
+    padding-left: 0; // Remove padding on smaller screens
+    padding-right: 0;
+    padding-top: 0; // Remove padding on smaller screens
+  }
+`;
+
 export const FooterContainer = styled.div`
   background-color: #354138;
   padding: 0 0 2rem 0;
@@ -111,14 +124,8 @@ export const FooterLinkTitle = styled.h2`
 
 export const FooterLogoArea = styled.img`
   padding-left: 15px;
-  padding-bottom: 25px;
-  padding-right: 5px;
-  padding-top: 70px;
-  border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   max-width: 100%;
-  background-color: #ffffff;
-  margin-bottom: 10px;
 `;
 export const FooterLogoArea2 = styled.img`
   padding-bottom: 8px;
