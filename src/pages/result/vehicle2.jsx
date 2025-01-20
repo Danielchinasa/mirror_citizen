@@ -184,60 +184,68 @@ const Vehicle2 = () => {
   // );
   const renderDetail = (icon, label, value) => (
     <>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         {icon}
         &nbsp; {label}
       </StyledLabel>
-      <StyledLabel>
+      <StyledLabel $token={token}>
         <strong>{value != null && value !== "null" ? value : "-"}</strong>
       </StyledLabel>
     </>
   );
   const storedValue = localStorage.getItem("profile");
   const { token } = theme.useToken();
+  const { bgContainer, text } = token;
 
   return (
-    <Container $token={token}>
-      <InfoSec>
-        <Link to="/main-dashboard">
-          <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
-        </Link>
-        <Card style={{ width: "100%" }}>
-          <Heading4>Verification Result</Heading4>
-        </Card>
-        <Spin spinning={loading} tip="Loading Data...">
-          <Card style={{ width: "100%", marginTop: "20px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <Text>Vehicle History Profile </Text>
-                <RightOutlined />
-                <Text>Vehicle Registration Number</Text>
-                {/* <RightOutlined />
+    <div style={{ backgroundColor: bgContainer }}>
+      <Container $token={token}>
+        <InfoSec>
+          <Link to="/main-dashboard">
+            <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
+          </Link>
+          <Card
+            style={{
+              width: "100%",
+              backgroundColor: bgContainer,
+              borderColor: text,
+            }}
+          >
+            <Heading4 $token={token}>Verification Result</Heading4>
+          </Card>
+          <Spin spinning={loading} tip="Loading Data...">
+            <Card style={{ width: "100%", marginTop: "20px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <Text>Vehicle History Profile </Text>
+                  <RightOutlined />
+                  <Text>Vehicle Registration Number</Text>
+                  {/* <RightOutlined />
                 <Text>Clear VIN</Text> */}
+                </div>
               </div>
-            </div>
-            <Divider />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-            >
-              <div>
-                <Text>VEHICLE REPORT</Text>
-                {/* <RightOutlined />
+              <Divider />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                <div>
+                  <Text>VEHICLE REPORT</Text>
+                  {/* <RightOutlined />
                 <Text>Clear VIN</Text> */}
-              </div>
+                </div>
 
-              {/* <div>
+                {/* <div>
                 <a
                   href={`https://e-citizen.ng:8443${pdfUri}`}
                   target="_blank"
@@ -256,12 +264,12 @@ const Vehicle2 = () => {
                   <DownloadOutlined /> Download PDF for Full Report
                 </a>
               </div> */}
-            </div>
+              </div>
 
-            <Divider />
-            <Row gutter={16}>
-              <Col span={24}>
-                {/* {image ? (
+              <Divider />
+              <Row gutter={16}>
+                <Col span={24}>
+                  {/* {image ? (
                 <Avatar
                   size={224}
                   src={`${image}`}
@@ -270,127 +278,135 @@ const Vehicle2 = () => {
                   square
                 />
               ) : ( */}
-                {/* <Avatar size={124} icon={<CarOutlined />} /> */}
-                Vehicle Specification
-                {/* )} */}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <FaTeethOpen />,
-                  "Chassis Number",
-                  `${chassisNumber}`
-                )}
-                <Divider />
+                  {/* <Avatar size={124} icon={<CarOutlined />} /> */}
+                  Vehicle Specification
+                  {/* )} */}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <FaTeethOpen />,
+                    "Chassis Number",
+                    `${chassisNumber}`
+                  )}
+                  <Divider />
 
-                {renderDetail(<FaFileInvoice />, "Reason", `${reason}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <FaFileInvoice />,
-                  "Registration Number",
-                  `${licenseNumber}`
-                )}
-                <Divider />
+                  {renderDetail(<FaFileInvoice />, "Reason", `${reason}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <FaFileInvoice />,
+                    "Registration Number",
+                    `${licenseNumber}`
+                  )}
+                  <Divider />
 
-                {renderDetail(<FaCarAlt />, "Model", `${model}`)}
-              </Col>
+                  {renderDetail(<FaCarAlt />, "Model", `${model}`)}
+                </Col>
 
-              <Col span={6}>
-                {renderDetail(<FaCarAlt />, "VIN", `${vin}`)}
+                <Col span={6}>
+                  {renderDetail(<FaCarAlt />, "VIN", `${vin}`)}
+                  <Divider />
+                  {renderDetail(<FaFileInvoice />, "Decision", `${decision}`)}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(<FaCarAlt />, "Make", `${make}`)}
+                  <Divider />
+                  {renderDetail(<FaCarAlt />, "Stolen", `${stolen}`)}
+                </Col>
                 <Divider />
-                {renderDetail(<FaFileInvoice />, "Decision", `${decision}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaCarAlt />, "Make", `${make}`)}
-                <Divider />
-                {renderDetail(<FaCarAlt />, "Stolen", `${stolen}`)}
-              </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <FaRegUser />,
+                    "Owner First Name",
+                    `${ownerFirstName}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <FaRegUser />,
+                    "Owner Last Name",
+                    `${ownerLastName}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <FaRegUser />,
+                    "Owner Middlename",
+                    `${ownerMiddleName}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <FaCarAlt />,
+                    "Vehicle Category",
+                    `${category}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <FaPhone />,
+                    "Owner Phone Number",
+                    `${ownerPhone}`
+                  )}
+                  <Divider />
+                  {renderDetail(
+                    <FaFileInvoice />,
+                    "Stolen Reports",
+                    `${stolenReports}`
+                  )}
+                </Col>
+                <Col span={6}>
+                  {renderDetail(
+                    <FaGlobe />,
+                    "Owner Address",
+                    `${ownerAddress}`
+                  )}
+                  <Divider />
+                  {renderDetail(<FaGlobe />, "Owner LGA", `${ownerLga}`)}
+                </Col>
+              </Row>
               <Divider />
-              <Col span={6}>
-                {renderDetail(
-                  <FaRegUser />,
-                  "Owner First Name",
-                  `${ownerFirstName}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <FaRegUser />,
-                  "Owner Last Name",
-                  `${ownerLastName}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <FaRegUser />,
-                  "Owner Middlename",
-                  `${ownerMiddleName}`
-                )}
-                <Divider />
-                {renderDetail(<FaCarAlt />, "Vehicle Category", `${category}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(
-                  <FaPhone />,
-                  "Owner Phone Number",
-                  `${ownerPhone}`
-                )}
-                <Divider />
-                {renderDetail(
-                  <FaFileInvoice />,
-                  "Stolen Reports",
-                  `${stolenReports}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaGlobe />, "Owner Address", `${ownerAddress}`)}
-                <Divider />
-                {renderDetail(<FaGlobe />, "Owner LGA", `${ownerLga}`)}
-              </Col>
-            </Row>
-            <Divider />
-          </Card>
-        </Spin>
-      </InfoSec>
-      <Title level={5} style={{ marginTop: "20px" }}>
-        Your Offers
-      </Title>
-      <div class="container">
-        <div class="row">
-          <div
-            className="col-sm-4 col-md-6 col-lg-3 mb-3"
-            style={{
-              backgroundImage: `url(${Reach1})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "200px",
-              marginRight: "10px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
-            }}
-            onClick={() => {
-              window.open(
-                "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
-                "_blank"
-              );
-            }}
-          ></div>
-          <div
-            className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
-            style={{
-              backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "200px",
-              marginRight: "10px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
-            }}
-            onClick={() => {
-              window.open(
-                "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
-                "_blank"
-              );
-            }}
-          ></div>
-          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+            </Card>
+          </Spin>
+        </InfoSec>
+        <Title level={5} style={{ marginTop: "20px" }}>
+          Your Offers
+        </Title>
+        <div class="container">
+          <div class="row">
+            <div
+              className="col-sm-4 col-md-6 col-lg-3 mb-3"
+              style={{
+                backgroundImage: `url(${Reach1})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "200px",
+                marginRight: "10px",
+                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              }}
+              onClick={() => {
+                window.open(
+                  "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
+                  "_blank"
+                );
+              }}
+            ></div>
+            <div
+              className="col-sm-4 col-md-6 col-lg-3 mb-3 mr-3"
+              style={{
+                backgroundImage: `url(https://cdn.affisereach.com/public/creatives/soiipjRopdyV7BrVn0lhVUVfbLI1kUYsm13tSQ2Y.png)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "200px",
+                marginRight: "10px",
+                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              }}
+              onClick={() => {
+                window.open(
+                  "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
+                  "_blank"
+                );
+              }}
+            ></div>
+            {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">
               <div class="card-header">Finance your Next Car</div>
               <div
@@ -422,9 +438,10 @@ const Vehicle2 = () => {
               </div>
             </div>
           </div> */}
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
