@@ -288,6 +288,8 @@ const IndividualSignUp = () => {
         setFormErrors({ general: response.message }); // Set error message
         // openNotification2("topRight");
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: response,
           icon: "error",
@@ -301,6 +303,8 @@ const IndividualSignUp = () => {
     } catch (error) {
       console.error("SignUp failed:", error);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: response,
         icon: "error",
@@ -456,6 +460,7 @@ const IndividualSignUp = () => {
                       width: "100%",
                       borderColor: isFocused ? "#09c93a" : "",
                       borderRadius: "5px",
+                      color: text,
                       background: "rgba(53, 65, 56, 0.1)",
                     }}
                   />

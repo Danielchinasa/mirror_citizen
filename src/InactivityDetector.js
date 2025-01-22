@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/actions";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import { theme } from "antd";
+import { useTheme } from "./components/ThemeProvider";
+const { useToken } = theme;
 
 const InactivityDetector = () => {
   const dispatch = useDispatch();
@@ -10,6 +13,9 @@ const InactivityDetector = () => {
   const isLoggedIn = useSelector((state) => state.isAuthenticated);
 
   let inactivityTimer;
+  const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
 
   const handleUserActivity = () => {
     // Clear the existing timer
@@ -20,6 +26,8 @@ const InactivityDetector = () => {
       inactivityTimer = setTimeout(() => {
         // Show SweetAlert dialog before logout only if the user is still logged in
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "You have been inactive for 10 minutes",
           text: "We will log you out in 10 seconds if no response",
           icon: "warning",

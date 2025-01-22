@@ -252,6 +252,8 @@ function Navbar() {
             setModal1Open(true);
           } else {
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: "Response data does not contain a link",
               icon: "error",
@@ -272,6 +274,8 @@ function Navbar() {
           }
         } else {
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Error",
             text: "Failed to initialize payment",
             icon: "error",
@@ -295,6 +299,8 @@ function Navbar() {
         console.error("Failed to post data:", response.statusText);
 
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Failed to initialize payment",
           icon: "error",
@@ -329,7 +335,7 @@ function Navbar() {
 
   const { isDark } = useTheme();
   const { token } = theme.useToken(); // Get token from useToken
-  const { text } = token;
+  const { text, bgContainer } = token;
 
   return (
     <>
@@ -407,7 +413,7 @@ function Navbar() {
                           $token={token}
                           onClick={closeMobileMenu}
                           fontBig
-                          primary
+                          type="primary"
                           style={{
                             fontFamily: "Poppins",
                             fontWeight: "700",
@@ -434,7 +440,7 @@ function Navbar() {
                         <MainButton
                           onClick={closeMobileMenu}
                           fontBig
-                          primary
+                          type="primary"
                           style={{
                             fontFamily: "Poppins",
                             fontWeight: "700",

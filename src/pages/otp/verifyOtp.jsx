@@ -17,6 +17,10 @@ import { useHistory } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import Swal from "sweetalert2";
 
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
+const { useToken } = theme;
+
 const VerifyOtp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -57,6 +61,8 @@ const VerifyOtp = () => {
         // console.log(`Entered OTP: jjjj`);
         // message.success("OTP verification successful", 10);
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: "OTP verification successful. Proceed to Sign In",
           icon: "success",
@@ -73,6 +79,8 @@ const VerifyOtp = () => {
         setLoading(false);
         // Display error message
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: response.message || "OTP verification failed",
           icon: "error",
@@ -89,6 +97,8 @@ const VerifyOtp = () => {
       // Handle errors if needed
       setLoading(false);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "Error sending OTP",
         icon: "error",
@@ -114,6 +124,8 @@ const VerifyOtp = () => {
         // Display success message
         setLoading2(false);
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: "OTP Sent Successfully",
           icon: "success",
@@ -130,6 +142,8 @@ const VerifyOtp = () => {
         setLoading2(false);
         // Display error message
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: response.message || "OTP Resend failed",
           icon: "error",
@@ -146,6 +160,8 @@ const VerifyOtp = () => {
       // Handle errors if needed
       setLoading2(false);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "Error sending OTP",
         icon: "error",
@@ -159,8 +175,12 @@ const VerifyOtp = () => {
     }
   };
 
+  const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
+
   return (
-    <div>
+    <div style={{ backgroundColor: bgContainer }}>
       <Row justify="center">
         <Col
           span={4}
@@ -194,8 +214,8 @@ const VerifyOtp = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading>Enter OTP</Heading>
-              <Subtitle color="light">
+              <Heading $token={token}>Enter OTP</Heading>
+              <Subtitle color="light" $token={token}>
                 Enter the OTP sent to {encryptedPhoneNumber} and {email} for
                 continuation
               </Subtitle>
@@ -252,7 +272,7 @@ const VerifyOtp = () => {
                       Verify OTP
                     </MainButtonFull>
 
-                    <p>I didn’t receive the OTP</p>
+                    <p style={{ color: text }}>I didn’t receive the OTP</p>
                     <p>
                       <strong
                         style={{ color: "#09C93A", cursor: "pointer" }}

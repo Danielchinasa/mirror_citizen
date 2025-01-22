@@ -3,6 +3,9 @@ import Swal from "sweetalert2";
 import { Sendrequest, onMessageListener } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile } from "./redux/actions";
+import { theme } from "antd";
+import { useTheme } from "./components/ThemeProvider";
+const { useToken } = theme;
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -12,10 +15,16 @@ const Notification = () => {
   const userToken2 = userDetails?.jwtToken || "";
   const [notification, setNotification] = useState({ title: "", body: "" });
 
+  const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
+
   const notify = () => {
     new Audio("./notification/sound.mp3").play(); // Change "/path/to/sound.mp3" to the path of your sound file
     notification.title == "A refund has been initiated to your wallet"
       ? Swal.fire({
+          background: bgContainer,
+          color: text,
           title: notification.title,
           text: notification.body,
           icon: "info",
@@ -30,6 +39,8 @@ const Notification = () => {
           }
         })
       : Swal.fire({
+          background: bgContainer,
+          color: text,
           title: notification.title,
           text: notification.body,
           icon: "info",
@@ -48,6 +59,8 @@ const Notification = () => {
   // const notifyRefund = () => {
   //   new Audio("./notification/sound.mp3").play(); // Change "/path/to/sound.mp3" to the path of your sound file
   //   Swal.fire({
+  // background: bgContainer,
+  // color: text,
   //     title: notification.title,
   //     text: notification.body,
   //     icon: "info",

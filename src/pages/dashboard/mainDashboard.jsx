@@ -205,6 +205,8 @@ const MainDashboard = () => {
       // message.error("Verification Result or Consent Expired");
       setLoadingSmall(false);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "Verification Result or Consent expired",
         icon: "error",
@@ -217,6 +219,8 @@ const MainDashboard = () => {
 
     if (consent === "denied") {
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "Consent Denied",
         icon: "error",
@@ -229,6 +233,8 @@ const MainDashboard = () => {
     if (consent === "pending") {
       setLoadingSmall(false);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Info",
         text: "Awaiting Consent",
         icon: "info",
@@ -242,6 +248,8 @@ const MainDashboard = () => {
     if (consent === "No data found") {
       setLoadingSmall(false);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Oops!",
         text: "Sorry, No record found",
         icon: "error",
@@ -268,6 +276,8 @@ const MainDashboard = () => {
         if (!data) {
           console.log("NO DATA");
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Oops!",
             text: "Sorry, No record found",
             icon: "error",
@@ -282,6 +292,8 @@ const MainDashboard = () => {
           data.message === "No value present"
         ) {
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Oops!",
             text: "Sorry, No record found",
             icon: "error",

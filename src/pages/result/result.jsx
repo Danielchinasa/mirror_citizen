@@ -226,6 +226,8 @@ const Result = () => {
 
   if (loading) {
     Swal.fire({
+      background: bgContainer,
+      color: text,
       title: "Hmmm...",
       text: "Awaiting Consent",
       icon: "info",

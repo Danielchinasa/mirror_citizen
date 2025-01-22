@@ -30,6 +30,9 @@ import "../../index.css";
 import privacyPolicy from "../../privacyPolicy";
 import { Modal } from "antd";
 import Swal from "sweetalert2";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
+const { useToken } = theme;
 const { Title } = Typography;
 
 const BusinessSignUp2 = () => {
@@ -262,6 +265,8 @@ const BusinessSignUp2 = () => {
         // On successful login, navigate to the main dashboard
         // console.log("I reach here");
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: "Registration Successful",
           icon: "success",
@@ -279,6 +284,8 @@ const BusinessSignUp2 = () => {
         history.push("/verify-otp");
       } else {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "An error occurred while signing up. Try again later",
           icon: "error",
@@ -299,6 +306,8 @@ const BusinessSignUp2 = () => {
     } catch (error) {
       console.error("SignUp failed:", error);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: error.message || "An error occurred while signing up.",
         icon: "error",
@@ -332,6 +341,10 @@ const BusinessSignUp2 = () => {
     console.log(`onChangeIsAccepted = ${e.target.checked}`);
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
+
+  const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
 
   return (
     <>

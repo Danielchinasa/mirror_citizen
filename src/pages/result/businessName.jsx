@@ -250,13 +250,18 @@ const BusinessName = () => {
   const handleButtonClick = async (cacid) => {
     dispatch(fetchUserProfile(userToken));
     Swal.fire({
+      background: bgContainer,
+      color: text,
       title: "Select Payment Method",
       input: "radio",
       inputOptions: {
         "Payment from Wallet": "Payment from Wallet",
         "Instant Payment": "Instant Payment",
       },
-      customClass: "swal-wide",
+      customClass: {
+        input: token.bgContainer == "#354138" ? "dark-mode" : "custom-input",
+        popup: "swal-wide",
+      },
       showCancelButton: true,
       confirmButtonText: "Confirm",
       confirmButtonColor: "#0DC939",
@@ -288,6 +293,8 @@ const BusinessName = () => {
             setLoading(true);
             if (userBalance.toLocaleString() < stakeHolderFeeUsd) {
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Wallet Balance Low",
                 text: "Your wallet balance is low. Please recharge before making a payment.",
                 icon: "error",
@@ -308,6 +315,8 @@ const BusinessName = () => {
             }
             if (userBalance.toLocaleString() < stakeHolderFeeNgn) {
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Wallet Balance Low",
                 text: "Your wallet balance is low. Please recharge before making a payment.",
                 icon: "error",
@@ -396,6 +405,8 @@ const BusinessName = () => {
                   } else {
                     console.error("Invalid response structure:", response.data);
                     Swal.fire({
+                      background: bgContainer,
+                      color: text,
                       title: "Error",
                       text: "Error fetching Stake Holders",
                       icon: "error",
@@ -416,6 +427,8 @@ const BusinessName = () => {
                 } else {
                   setLoading(false);
                   Swal.fire({
+                    background: bgContainer,
+                    color: text,
                     title: "Error",
                     text: response.data.business.message,
                     icon: "error",
@@ -437,6 +450,8 @@ const BusinessName = () => {
                 setLoading(false);
                 console.error("Error calling external APIs:", error);
                 Swal.fire({
+                  background: bgContainer,
+                  color: text,
                   title: "Error",
                   text: error,
                   icon: "error",
@@ -458,6 +473,8 @@ const BusinessName = () => {
               setLoading(false);
               console.error("Payment failed. Response:", data);
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Error",
                 text: "Payment Failed",
                 icon: "error",
@@ -479,6 +496,8 @@ const BusinessName = () => {
             setLoading(false);
             console.error("Error:", error);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: error,
               icon: "error",
@@ -507,6 +526,8 @@ const BusinessName = () => {
             setLoading(false);
 
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Warning",
               icon: "warning",
               text: "Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?",
@@ -531,6 +552,8 @@ const BusinessName = () => {
             setLoading(false);
 
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Warning",
               icon: "warning",
               text: "Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?",
@@ -554,6 +577,8 @@ const BusinessName = () => {
 
           if (userBalance.toLocaleString() < stakeHolderFeeUsd) {
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Wallet Balance Low",
               text: "Your wallet balance is low. Please recharge before making a payment.",
               icon: "error",
@@ -640,6 +665,8 @@ const BusinessName = () => {
                   } else {
                     console.error("Invalid response structure:", response.data);
                     Swal.fire({
+                      background: bgContainer,
+                      color: text,
                       title: "Error",
                       text: "Error fetching Stake Holders",
                       icon: "error",
@@ -660,6 +687,8 @@ const BusinessName = () => {
                 } else {
                   setLoading(false);
                   Swal.fire({
+                    background: bgContainer,
+                    color: text,
                     title: "Error",
                     text: response.data.business.message,
                     icon: "error",
@@ -684,6 +713,8 @@ const BusinessName = () => {
                 // Handle errors if needed
                 console.error("Error calling external APIs:", error);
                 Swal.fire({
+                  background: bgContainer,
+                  color: text,
                   title: "Error",
                   text: error,
                   icon: "error",
@@ -705,6 +736,8 @@ const BusinessName = () => {
               setLoading(false);
               console.error("Payment failed. Response:", data);
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Error",
                 text: "Payment Failed",
                 icon: "error",
@@ -726,6 +759,8 @@ const BusinessName = () => {
             setLoading(false);
             console.error("Error:", error);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: error,
               icon: "error",
@@ -794,6 +829,8 @@ const BusinessName = () => {
                 } else {
                   console.error("Response data does not contain a link");
                   Swal.fire({
+                    background: bgContainer,
+                    color: text,
                     title: "Error",
                     text: "Response data does not contain a link",
                     icon: "error",
@@ -815,6 +852,8 @@ const BusinessName = () => {
               }
             } else {
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Error",
                 text: "Failed to initialize payment",
                 icon: "error",
@@ -837,6 +876,8 @@ const BusinessName = () => {
             // Handle any unexpected errors
             console.error("An error occurred:", error);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: "Failed to initialize payment",
               icon: "error",
@@ -885,6 +926,8 @@ const BusinessName = () => {
       );
       if (!response.ok) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Payment Cancelled or Declined",
           icon: "error",
@@ -943,6 +986,8 @@ const BusinessName = () => {
             ) {
               setLoading(false);
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Request Error",
                 text: externalApiResponse.data.business.message,
                 icon: "error",
@@ -971,6 +1016,8 @@ const BusinessName = () => {
               setLoading(false);
               console.error("Invalid response structure:", response.data);
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Error",
                 text: "Error fetching Stake Holders",
                 icon: "error",
@@ -991,6 +1038,8 @@ const BusinessName = () => {
           } else {
             setLoading(false);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Failed Payment",
               text: responseData.data.processor_response,
               icon: "error",
@@ -1013,6 +1062,8 @@ const BusinessName = () => {
           setOpenFlutterwaveModal(false);
           setLoading(true);
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Error",
             text: "Error fetching Stake Holders",
             icon: "error",
@@ -1035,6 +1086,8 @@ const BusinessName = () => {
       console.error("Error handling modal new OK:", error);
       // Handle errors here
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: error,
         icon: "error",

@@ -164,6 +164,8 @@ const ProfilePage = () => {
         // console.log(response);
 
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: "Successfully updated profile",
           icon: "success",

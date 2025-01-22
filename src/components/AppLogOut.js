@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/actions";
+import { theme } from "antd";
+import { useTheme } from "../components/ThemeProvider";
+const { useToken } = theme;
 
 const events = [
   "load",
@@ -17,12 +20,18 @@ const AppLogout = ({ children }) => {
   const dispatch = useDispatch();
   let timer;
 
+  const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
+
   useEffect(() => {
     // Function to show SweetAlert and logout
     const showLogoutAlert = () => {
       let timerInterval;
 
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "You have been inactive for 10 minutes",
         html: "The system will log you out in <b></b> seconds.",
         timer: 1 * 60 * 1000, // Set timer to 10 seconds

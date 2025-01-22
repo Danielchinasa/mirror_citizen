@@ -372,6 +372,8 @@ const DashboardPage = () => {
 
         setLoadingPrice(false);
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Unable to get Service Prices",
           icon: "error",
@@ -459,6 +461,8 @@ const DashboardPage = () => {
         );
 
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: response.basic.message,
           icon: "info",
@@ -477,6 +481,8 @@ const DashboardPage = () => {
         response.basic.success === false
       ) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: response.basic.message,
           icon: "error",
@@ -497,6 +503,8 @@ const DashboardPage = () => {
         });
       } else if (response.business && response.business.success === false) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: response.business.message,
           icon: "error",
@@ -517,6 +525,8 @@ const DashboardPage = () => {
         history.push("/dashboard");
       } else if (response.business && response.business.success === true) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: "Your business verification request was successful.",
           icon: "success",
@@ -530,6 +540,8 @@ const DashboardPage = () => {
         history.push("/main-dashboard");
       } else if (response.vehicle && response.vehicle.success === true) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: "Your vehicle verification request was successful.",
           icon: "success",
@@ -543,6 +555,8 @@ const DashboardPage = () => {
         history.push("/main-dashboard");
       } else if (response.vehicle && response.vehicle.success === false) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: response.vehicle.message,
           icon: "error",
@@ -560,6 +574,8 @@ const DashboardPage = () => {
         });
       } else if (response.financial && response.financial.success === true) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: response.financial.message,
           icon: "success",
@@ -573,6 +589,8 @@ const DashboardPage = () => {
         history.push("/main-dashboard");
       } else if (response.financial && response.financial.success === false) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Oops!",
           text: response.financial.message,
           icon: "error",
@@ -596,6 +614,8 @@ const DashboardPage = () => {
         response.bulkNin.status === "Bulk verification completed"
       ) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Success",
           text: response.bulkNin.status,
           icon: "success",
@@ -616,6 +636,8 @@ const DashboardPage = () => {
         });
       } else {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "An unexpected server error occurred. A refund has been initiated",
           icon: "error",
@@ -640,6 +662,8 @@ const DashboardPage = () => {
       setLoading(false);
       console.error("Error sending verification", error);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "An unexpected server error occurred. A refund has been initiated",
         icon: "error",
@@ -1022,6 +1046,10 @@ const DashboardPage = () => {
   const randomTransactionId = generateTransactionId();
 
   const handlePaymentMethod = async () => {
+    console.log("Confirm button clicked");
+    console.log("Modal Visible State Before:", modalVisible);
+    // Ensure no duplicate state updates
+    setModalVisible(false);
     setLoadingSmall(true);
     // handleCancel();
     // setLoading(true);
@@ -1063,6 +1091,8 @@ const DashboardPage = () => {
             setLoading(false);
             setIsConfirmedBtnClicked(false);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: "At least one Credit Bereau must be selected",
               icon: "error",
@@ -1080,6 +1110,8 @@ const DashboardPage = () => {
           setIsConfirmedBtnClicked(false);
           handleCancel();
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Error",
             text: "Wallet currency doesn't match purchase currency. Please use the right currency for this transaction.",
             icon: "error",
@@ -1116,6 +1148,8 @@ const DashboardPage = () => {
           setIsConfirmedBtnClicked(false);
           handleCancel();
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Wallet Balance Low",
             text: "Your wallet balance is low. Please recharge before making a payment.",
             icon: "error",
@@ -1156,6 +1190,8 @@ const DashboardPage = () => {
             setLoading(false);
             setIsConfirmedBtnClicked(false);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Payment failed",
               text: data,
               icon: "error",
@@ -1178,6 +1214,8 @@ const DashboardPage = () => {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Error",
             text: error,
             icon: "error",
@@ -1221,6 +1259,8 @@ const DashboardPage = () => {
             setLoading(false);
             setIsConfirmedBtnClicked(false);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: "At least one Credit Bereau must be selected",
               icon: "error",
@@ -1265,6 +1305,8 @@ const DashboardPage = () => {
               } else {
                 console.error("Response data does not contain a link");
                 Swal.fire({
+                  background: bgContainer,
+                  color: text,
                   title: "Error",
                   text: "Response data does not contain a link",
                   icon: "error",
@@ -1285,6 +1327,8 @@ const DashboardPage = () => {
               }
             } else {
               Swal.fire({
+                background: bgContainer,
+                color: text,
                 title: "Error",
                 text: "Failed to initialize payment",
                 icon: "error",
@@ -1307,6 +1351,8 @@ const DashboardPage = () => {
             // Handle errors here
             console.error("Failed to post data:", response.statusText);
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Error",
               text: "Failed to initialize payment",
               icon: "error",
@@ -1328,6 +1374,8 @@ const DashboardPage = () => {
         } catch (error) {
           console.error("An error occurred:", error);
           Swal.fire({
+            background: bgContainer,
+            color: text,
             title: "Error",
             text: "Failed to initialize payment",
             icon: "error",
@@ -2413,10 +2461,14 @@ const DashboardPage = () => {
 
   if (loading) {
     Swal.fire({
+      background: bgContainer,
+      color: text,
       title: "Please Wait",
       text: "Verification in progress",
       icon: "info",
       showCloseButton: true,
+      background: bgContainer,
+      color: text,
       allowOutsideClick: false, // Prevents closing by clicking outside
       didOpen: () => {
         Swal.showLoading();
@@ -2482,6 +2534,8 @@ const DashboardPage = () => {
       // Check if the request was successful (status code 200-299)
       if (!response.ok) {
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Payment Cancelled or Declined",
           icon: "error",
@@ -2517,6 +2571,8 @@ const DashboardPage = () => {
             //!--------- Performing the verification only when payment is successfull end -------//
           } else {
             Swal.fire({
+              background: bgContainer,
+              color: text,
               title: "Failed Payment",
               text: responseData.data.processor_response,
               icon: "error",
@@ -2540,6 +2596,8 @@ const DashboardPage = () => {
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "There was an issue making payment",
         icon: "error",
@@ -2891,7 +2949,7 @@ const DashboardPage = () => {
           style={{
             fontSize: "85px",
             fontWeight: "bold",
-            color: "black",
+            color: text,
           }}
         >
           <Spin
@@ -3269,6 +3327,8 @@ const DashboardPage = () => {
                                 // Check if the NIN is exactly 11 digits on blur
                                 if (formData.nin.length !== 11) {
                                   Swal.fire({
+                                    background: bgContainer,
+                                    color: text,
                                     title: "Error",
                                     text: "NIN must be exactly 11 digits.",
                                     icon: "error",
@@ -3306,6 +3366,8 @@ const DashboardPage = () => {
                                 // Check if the NIN is exactly 11 digits on blur
                                 if (formData.nin.length !== 11) {
                                   Swal.fire({
+                                    background: bgContainer,
+                                    color: text,
                                     title: "Error",
                                     text: "NIN must be exactly 11 digits.",
                                     icon: "error",
@@ -3580,6 +3642,8 @@ const DashboardPage = () => {
                               // Check if the NIN is exactly 11 digits on blur
                               if (formData.nin.length !== 11) {
                                 Swal.fire({
+                                  background: bgContainer,
+                                  color: text,
                                   title: "Error",
                                   text: "NIN must be exactly 11 digits.",
                                   icon: "error",
@@ -3757,6 +3821,8 @@ const DashboardPage = () => {
                               // Check if the NIN is exactly 11 digits on blur
                               if (formData.bvn.length !== 11) {
                                 Swal.fire({
+                                  background: bgContainer,
+                                  color: text,
                                   title: "Error",
                                   text: "BVN must be exactly 11 digits.",
                                   icon: "error",
@@ -3819,6 +3885,8 @@ const DashboardPage = () => {
                             onBlur={() => {
                               if (formData.vin.length !== 17) {
                                 Swal.fire({
+                                  background: bgContainer,
+                                  color: text,
                                   title: "Error",
                                   text: "VIN must be exactly 17 characters.",
                                   icon: "error",

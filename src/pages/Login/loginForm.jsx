@@ -18,6 +18,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 const { useToken } = theme;
 
 const Context = React.createContext({
@@ -190,6 +191,8 @@ const LoginForm = () => {
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: response }); // Set error message
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Incorrect email or password",
           icon: "error",
@@ -206,6 +209,8 @@ const LoginForm = () => {
             "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
         }); // Set error message
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
           icon: "error",
@@ -220,6 +225,8 @@ const LoginForm = () => {
         // On successful login, navigate to the main dashboard
         setFormErrors({ general: "Login Failed" }); // Set error message
         Swal.fire({
+          background: bgContainer,
+          color: text,
           title: "Error",
           text: "Login Failed",
           icon: "error",
@@ -233,6 +240,8 @@ const LoginForm = () => {
       }
     } catch (error) {
       Swal.fire({
+        background: bgContainer,
+        color: text,
         title: "Error",
         text: "Login Failed",
         icon: "error",
@@ -254,6 +263,8 @@ const LoginForm = () => {
     setIsCaptchaVerified(true);
   };
   const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
 
   return (
     <Context.Provider value={contextValue}>

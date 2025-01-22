@@ -256,6 +256,8 @@ const Financial = () => {
   const storedValue = localStorage.getItem("profile");
   // if (loading) {
   //   Swal.fire({
+  // background: bgContainer,
+  // color: text,
   //     title: "Hmmm...",
   //     text: "Awaiting Consent",
   //     icon: "info",

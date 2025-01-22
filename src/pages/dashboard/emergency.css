@@ -8,3 +8,13 @@
   .swal-wide{
     width:auto !important;
 }
+
+.dark-mode {
+  background-color: #354138 !important;
+  color: white !important;
+}
+
+/* Dark mode */
+.custom-input{
+  background-color: #fff !important; /* Dark gray */
+  color: #000 !important; /* White */}
