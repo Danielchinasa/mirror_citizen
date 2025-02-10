@@ -134,7 +134,7 @@ const MainDashboard = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8090/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -262,7 +262,7 @@ const MainDashboard = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8443/api/v2/verification/check-consent/${id}`,
+        `https://e-citizen.ng:8090/api/v2/verification/check-consent/${id}`,
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -825,7 +825,7 @@ const MainDashboard = () => {
       setAmount("");
 
       const response = await fetch(
-        "https://e-citizen.ng:8443/api/v2/payment/initiate",
+        "https://e-citizen.ng:8090/api/v2/payment/initiate",
         {
           method: "POST",
           headers: {

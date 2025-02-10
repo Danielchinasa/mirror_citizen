@@ -208,7 +208,7 @@ export const fetchTransactionData = (token) => {
 export const SendOtp = (otpString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://e-citizen.ng:8443/api/v2/auth/activation/${otpString}`
+      `https://e-citizen.ng:8090/api/v2/auth/activation/${otpString}`
     );
     const userData = response.data;
 
@@ -242,7 +242,7 @@ export const SendOtp = (otpString) => async (dispatch) => {
 export const ReSendOtp = (emailString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://e-citizen.ng:8443/api/v2/auth/resendtotp/${emailString}`
+      `https://e-citizen.ng:8090/api/v2/auth/resendtotp/${emailString}`
     );
     const userData = response.data;
 

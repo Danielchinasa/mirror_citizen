@@ -158,11 +158,11 @@ function Navbar() {
           <img
             src={
               userDetails && userDetails?.profileImageLocation
-                ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                ? `https://e-citizen.ng:8090${userDetails?.profileImageLocation}`
                 : defaultDp
             }
             // src={
-            //   "https://e-citizen.ng:8443" + userDetails?.profileImageLocation ||
+            //   "https://e-citizen.ng:8090" + userDetails?.profileImageLocation ||
             //   defaultDp
             // }
             alt="User Avatar"
@@ -229,7 +229,7 @@ function Navbar() {
       setAmount("");
 
       const response = await fetch(
-        "https://e-citizen.ng:8443/api/v2/payment/initiate",
+        "https://e-citizen.ng:8090/api/v2/payment/initiate",
         {
           method: "POST",
           headers: {

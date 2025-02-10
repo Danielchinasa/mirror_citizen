@@ -105,7 +105,7 @@ const BusinessName = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8090/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -130,7 +130,7 @@ const BusinessName = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8090/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -157,7 +157,7 @@ const BusinessName = () => {
         // Make an API request to check consent status
         setLoading(true);
         const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/verification/check-consent/${requestId}`,
+          `https://e-citizen.ng:8090/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -273,7 +273,7 @@ const BusinessName = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const apiUrl =
-          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
+          "https://e-citizen.ng:8090/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,
@@ -381,7 +381,7 @@ const BusinessName = () => {
                 };
 
                 const response = await axios.post(
-                  "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                  "https://e-citizen.ng:8090/api/v2/verification/call-external-apis",
                   requestBody,
                   {
                     headers: {
@@ -640,7 +640,7 @@ const BusinessName = () => {
                 };
                 // Make an API request to call external APIs
                 const response = await axios.post(
-                  "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                  "https://e-citizen.ng:8090/api/v2/verification/call-external-apis",
                   requestBody,
                   {
                     headers: {
@@ -798,7 +798,7 @@ const BusinessName = () => {
             };
 
             const response = await fetch(
-              "https://e-citizen.ng:8443/api/v2/payment/initiate",
+              "https://e-citizen.ng:8090/api/v2/payment/initiate",
               {
                 method: "POST",
                 headers: {
@@ -915,7 +915,7 @@ const BusinessName = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
+        `https://e-citizen.ng:8090/api/v2/payment/check?transactionRef=${transactionRef}`,
         {
           method: "GET",
           headers: {
@@ -971,7 +971,7 @@ const BusinessName = () => {
               },
             };
             const externalApiResponse = await axios.post(
-              "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+              "https://e-citizen.ng:8090/api/v2/verification/call-external-apis",
               requestBody,
               {
                 headers: {
