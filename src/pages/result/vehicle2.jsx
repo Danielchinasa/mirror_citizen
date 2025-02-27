@@ -110,7 +110,7 @@ const Vehicle2 = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const postResponse = await axios.get(
-          `https://e-citizen.ng:8090/api/v2/verification/check-consent/${requestId}`,
+          `https://e-citizen.ng:8443/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -247,7 +247,7 @@ const Vehicle2 = () => {
 
                 {/* <div>
                 <a
-                  href={`https://e-citizen.ng:8090${pdfUri}`}
+                  href={`https://e-citizen.ng:8443${pdfUri}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{

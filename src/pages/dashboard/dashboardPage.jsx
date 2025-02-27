@@ -299,7 +299,7 @@ const DashboardPage = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await axios.get(
-          `https://e-citizen.ng:8090/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -1069,7 +1069,7 @@ const DashboardPage = () => {
         localStorage.setItem("transactionID", randomTransactionId);
         localStorage.setItem("paymentType", "WALLET");
         const apiUrl =
-          "https://e-citizen.ng:8090/api/v2/transaction/wallet-payment";
+          "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment";
 
         const requestBody = {
           userNIN: userNin,
@@ -1276,7 +1276,7 @@ const DashboardPage = () => {
         handleCancel();
         try {
           const response = await fetch(
-            "https://e-citizen.ng:8090/api/v2/payment/initiate",
+            "https://e-citizen.ng:8443/api/v2/payment/initiate",
             {
               method: "POST",
               headers: {
@@ -2521,7 +2521,7 @@ const DashboardPage = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8090/api/v2/payment/check?transactionRef=${transactionRef}`,
+        `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
         {
           method: "GET",
           headers: {
@@ -2617,7 +2617,7 @@ const DashboardPage = () => {
       return;
     }
     // fetch(
-    //   `https://e-citizen.ng:8090/api/v2/payment/check?transactionRef=${transactionRef}`,
+    //   `https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=${transactionRef}`,
     //   {
     //     method: "GET",
     //     headers: {
