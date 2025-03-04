@@ -3,21 +3,15 @@ import {
   Card,
   Row,
   Col,
-  Statistic,
-  Space,
-  Table,
-  Tag,
   Tabs,
   Modal,
   Input,
-  message,
   Button,
   Divider,
   Spin,
 } from "antd";
 import {
   Container,
-  Heading4,
   InfoSec,
   MainButton,
   DynamicTable,
@@ -98,7 +92,7 @@ const MainDashboard = () => {
 
   const { token } = theme.useToken();
   const { isDark } = useTheme();
-  const { bgContainer, text } = token;
+  const { bgContainer, text, text3 } = token;
 
   useEffect(() => {
     dispatch(fetchUserProfile(userToken));

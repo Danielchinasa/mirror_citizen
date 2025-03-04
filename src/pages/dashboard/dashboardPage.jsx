@@ -35,6 +35,7 @@ import {
   StyledForm,
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
+import flutterwaveWhite from "../../images/flutterwave-logos-white.png";
 
 import {
   InfoCircleOutlined,
@@ -96,7 +97,8 @@ const DashboardPage = () => {
   const [fileUploaded, setFileUploaded] = useState(false);
 
   const { token } = theme.useToken();
-  const { bgContainer, text } = token;
+  const { isDark } = useTheme();
+  const { bgContainer, text, text3 } = token;
 
   const [hasPreviousUpload, setHasPreviousUpload] = useState(false);
 
@@ -4368,7 +4370,7 @@ const DashboardPage = () => {
                       >
                         Instant Payment
                         <Img
-                          src={flutterwave}
+                          src={isDark ? flutterwaveWhite : flutterwave}
                           alt={"flutter wave"}
                           width={100}
                           style={{ float: "right", paddingTop: "10px" }}
@@ -4448,7 +4450,8 @@ const DashboardPage = () => {
                           ? "#0DC939"
                           : "#d9d9d9", // Set the colors based on checkbox state
                         borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
-                        cursor: checkboxChecked ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+                        cursor: checkboxChecked ? "pointer" : "not-allowed",
+                        color: text3,
                       }}
                     >
                       Payment
