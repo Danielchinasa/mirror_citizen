@@ -218,6 +218,7 @@ const MainDashboard = () => {
     }
 
     if (consent === "denied") {
+      setLoadingSmall(false);
       Swal.fire({
         background: bgContainer,
         color: text,
@@ -922,7 +923,7 @@ const MainDashboard = () => {
           style={{
             fontSize: "85px",
             fontWeight: "bold",
-            color: "black",
+            color: text,
           }}
         >
           <InfoSec>
