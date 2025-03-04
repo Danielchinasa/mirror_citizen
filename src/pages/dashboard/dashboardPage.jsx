@@ -63,6 +63,7 @@ import { useTheme } from "../../components/ThemeProvider";
 /* global Reach */
 
 const { Dragger } = Upload;
+
 const props = {
   name: "file",
   multiple: true,
@@ -93,6 +94,9 @@ const DashboardPage = () => {
   const [fileUploadError, setFileUploadError] = useState("");
   const [rowCount, setRowCount] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
+
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
 
   const [hasPreviousUpload, setHasPreviousUpload] = useState(false);
 
@@ -2931,9 +2935,6 @@ const DashboardPage = () => {
       [name]: value,
     });
   };
-
-  const { token } = theme.useToken();
-  const { bgContainer, text } = token;
 
   return (
     <Row style={{ backgroundColor: bgContainer }}>
