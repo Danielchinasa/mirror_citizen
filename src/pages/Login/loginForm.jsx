@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Checkbox, Alert, Spin, notification, Button } from "antd";
+import { Checkbox, Alert, Spin, notification, Button, Divider } from "antd";
 import {
   BtnLink,
   Heading,
@@ -19,6 +19,9 @@ import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { useGoogleLogin } from "@react-oauth/google";
+import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
 const { useToken } = theme;
 
 const Context = React.createContext({
@@ -266,6 +269,78 @@ const LoginForm = () => {
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
 
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      console.log("Google SSO Response New:", response);
+      try {
+        const payload = {
+          accessToken: response.access_token,
+          deviceToken: localStorage.getItem("clientToken"),
+          ipAddress: ipAddress,
+          deviceName: "Web app",
+        };
+
+        const res = await axios.post(
+          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Response from server:", res);
+
+        console.log("Google login successful:", res.data);
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: "Google login successful!",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } catch (error) {
+        console.error("Google login failed:", error);
+
+        let errorMessage = "Google login failed. Please try again.";
+
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Server responded with status:", error.response.status);
+          if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from server:", error.request);
+          errorMessage = "Network error. Please check your connection.";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error setting up request:", error.message);
+        }
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      }
+    },
+  });
+
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
@@ -315,7 +390,6 @@ const LoginForm = () => {
               sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
               onChange={handleCaptchaVerify}
             />
-
             <MainButtonFull
               type="primary"
               htmlType="submit"
@@ -332,7 +406,16 @@ const LoginForm = () => {
             >
               Login
             </MainButtonFull>
-            <Subtitle color="light" $token={token}>
+            <Divider>Or</Divider>
+
+            {/* // Google SSO button */}
+            <GoogleSignInButton onClick={() => login()} />
+
+            <Subtitle
+              color="light"
+              $token={token}
+              style={{ marginTop: "15px" }}
+            >
               Don’t have an account?{" "}
               <BtnLink to="/sign-up">
                 <span style={{ color: "#09C93A", cursor: "pointer" }}>
