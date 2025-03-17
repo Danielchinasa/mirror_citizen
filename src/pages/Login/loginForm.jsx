@@ -10,7 +10,7 @@ import {
   Subtitle,
 } from "../../globalStyles";
 import { useDispatch } from "react-redux";
-import { signIn } from "../../redux/actions";
+import { signIn, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -144,7 +144,7 @@ const LoginForm = () => {
     });
     event.preventDefault();
     if (formData.rememberMe) {
-      Cookies.set("rememberedEmail", formData.email, { expires: 7 }); // Store email in cookie for 7 days
+      Cookies.set("rememberedEmail", formData.email, { expires: 7 });
     } else {
       Cookies.remove("rememberedEmail");
     }
@@ -290,9 +290,8 @@ const LoginForm = () => {
           }
         );
 
-        console.log("Response from server:", res);
-
         console.log("Google login successful:", res.data);
+        const userData = res.data;
         Swal.fire({
           background: bgContainer,
           color: text,
@@ -305,6 +304,30 @@ const LoginForm = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
+        dispatch({
+          type: "SIGN_IN",
+          payload: userData,
+        });
+        dispatch(fetchUserProfile(userData.jwtToken));
+
+        if (userData.jwtToken) {
+          localStorage.setItem("IpAddress", userData.ipAddress);
+          history.push("/main-dashboard");
+        } else {
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Login failed",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          // openNotification2("topRight");
+        }
       } catch (error) {
         console.error("Google login failed:", error);
 
