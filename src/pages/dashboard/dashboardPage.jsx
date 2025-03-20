@@ -314,7 +314,7 @@ const DashboardPage = () => {
         //   }
         // );
         const response = await axios.post(
-          "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
           { ipAddress },
           {
             headers: {
@@ -405,7 +405,7 @@ const DashboardPage = () => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
             // dispatch(fetchUserProfile(userToken));
-            window.location.reload();
+            history.push("/main-dashboard");
           }
         });
       }

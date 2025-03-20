@@ -10,7 +10,7 @@ import {
   Subtitle,
 } from "../../globalStyles";
 import { useDispatch } from "react-redux";
-import { signIn, fetchUserProfile } from "../../redux/actions";
+import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -271,7 +271,6 @@ const LoginForm = () => {
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
-      console.log("Google SSO Response New:", response);
       try {
         const payload = {
           accessToken: response.access_token,
@@ -289,8 +288,6 @@ const LoginForm = () => {
             },
           }
         );
-
-        console.log("Google login successful:", res.data);
         const userData = res.data;
         Swal.fire({
           background: bgContainer,
@@ -311,7 +308,7 @@ const LoginForm = () => {
         dispatch(fetchUserProfile(userData.jwtToken));
 
         if (userData.jwtToken) {
-          localStorage.setItem("IpAddress", userData.ipAddress);
+          localStorage.setItem("IpAddress", ipAddress);
           history.push("/main-dashboard");
         } else {
           Swal.fire({
@@ -432,7 +429,12 @@ const LoginForm = () => {
             <Divider>Or</Divider>
 
             {/* // Google SSO button */}
-            <GoogleSignInButton onClick={() => login()} />
+            <GoogleSignInButton
+              onClick={() => {
+                localStorage.removeItem("token");
+                login();
+              }}
+            />
 
             <Subtitle
               color="light"
