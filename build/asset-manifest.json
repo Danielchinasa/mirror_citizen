@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.0d781138.chunk.css",
-    "main.js": "/static/js/main.bf308cfd.chunk.js",
-    "main.js.map": "/static/js/main.bf308cfd.chunk.js.map",
+    "main.css": "/static/css/main.6f9be82c.chunk.css",
+    "main.js": "/static/js/main.186683b3.chunk.js",
+    "main.js.map": "/static/js/main.186683b3.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.45413aa3.chunk.js": "/static/js/2.45413aa3.chunk.js",
-    "static/js/2.45413aa3.chunk.js.map": "/static/js/2.45413aa3.chunk.js.map",
+    "static/js/2.f2eab8d6.chunk.js": "/static/js/2.f2eab8d6.chunk.js",
+    "static/js/2.f2eab8d6.chunk.js.map": "/static/js/2.f2eab8d6.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.f231a70d18043333b33dd651f8d21756.js": "/precache-manifest.f231a70d18043333b33dd651f8d21756.js",
+    "precache-manifest.8a667c7c0859285767857a8eb9402b6b.js": "/precache-manifest.8a667c7c0859285767857a8eb9402b6b.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
-    "static/css/main.0d781138.chunk.css.map": "/static/css/main.0d781138.chunk.css.map",
-    "static/js/2.45413aa3.chunk.js.LICENSE.txt": "/static/js/2.45413aa3.chunk.js.LICENSE.txt",
+    "static/css/main.6f9be82c.chunk.css.map": "/static/css/main.6f9be82c.chunk.css.map",
+    "static/js/2.f2eab8d6.chunk.js.LICENSE.txt": "/static/js/2.f2eab8d6.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/Hero_image_new.png": "/static/media/Hero_image_new.353f76f7.png",
     "static/media/NIN_verification_on_ecitizen.png": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -26,6 +26,8 @@
     "static/media/e-citizen_logo_ecitizen_white.png": "/static/media/e-citizen_logo_ecitizen_white.9be9f1c1.png",
     "static/media/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf": "/static/media/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.ef04cacc.pdf",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
+    "static/media/flutterwave-logos-white.png": "/static/media/flutterwave-logos-white.877be0eb.png",
+    "static/media/google-logo.svg": "/static/media/google-logo.45aebcf8.svg",
     "static/media/individual.svg": "/static/media/individual.6bec09d4.svg",
     "static/media/lady.svg": "/static/media/lady.82ff32ba.svg",
     "static/media/ndpr1.png": "/static/media/ndpr1.70048de0.png",
@@ -41,8 +43,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.45413aa3.chunk.js",
-    "static/css/main.0d781138.chunk.css",
-    "static/js/main.bf308cfd.chunk.js"
+    "static/js/2.f2eab8d6.chunk.js",
+    "static/css/main.6f9be82c.chunk.css",
+    "static/js/main.186683b3.chunk.js"
   ]
 }
