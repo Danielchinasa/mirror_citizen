@@ -14,6 +14,7 @@ import { MainButton, OutlineButton } from "../../globalStyles";
 import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
 import defaultDp from "../../images/defaultDp.png";
+import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
 import { Button, Flex, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -159,6 +160,8 @@ function Navbar() {
             src={
               userDetails && userDetails?.profileImageLocation
                 ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                : isDark
+                ? defaultDpDark
                 : defaultDp
             }
             // src={

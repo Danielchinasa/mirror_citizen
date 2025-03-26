@@ -5,7 +5,7 @@ import Corporate from "../../images/Corporate.svg";
 import { BtnLink } from "../../globalStyles";
 import { useTheme } from "../../components/ThemeProvider";
 import { theme } from "antd";
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const SignUpMode = () => {
   const data = [
@@ -68,8 +68,13 @@ const SignUpMode = () => {
                       Individual
                     </Title>
                   }
-                  description="Select this if you are not a registered business and wish to
-              perform verifications."
+                  description={
+                    <Text strong>
+                      {" "}
+                      Select this if you are not a registered business and wish
+                      to perform verifications.
+                    </Text>
+                  }
                 />
               </List.Item>
             )}
