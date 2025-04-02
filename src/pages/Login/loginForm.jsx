@@ -365,9 +365,9 @@ const LoginForm = () => {
     <Context.Provider value={contextValue}>
       {contextHolder}
       <div style={{ marginTop: "50px" }}>
-        <Heading $token={token}>Login</Heading>
         <Spin spinning={loading} tip="Logging in...">
           <StyledForm onSubmit={handleSignIn}>
+            <Heading $token={token}>Login</Heading>
             {formErrors.general && (
               <Alert
                 message={formErrors.general}
@@ -430,7 +430,8 @@ const LoginForm = () => {
 
             {/* // Google SSO button */}
             <GoogleSignInButton
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 localStorage.removeItem("token");
                 login();
               }}
