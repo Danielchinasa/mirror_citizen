@@ -17,7 +17,7 @@ import ndpr from "../../images/ndpr1.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import NewsletterSection from "../newsletter/newsLetterSection";
-import { Modal } from "antd";
+import { Modal, Col, Divider, Row } from "antd";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 import { Link } from "react-router-dom";
@@ -51,135 +51,168 @@ function Footer() {
       <div style={{ backgroundColor: isDark ? "#212121" : "#354138" }}>
         <div class="container text-left">
           <div class="row" style={{ borderBottom: "1px solid #fff" }}>
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems>
-                <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
-                  <FooterLogoArea
-                    src={logo}
-                    style={{ width: "205px" }}
-                  ></FooterLogoArea>
-                </FooterLink>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink
-                  to="/https://www.ndpc.gov.ng/#"
-                  onClick={handleClickPrivacyPolicy}
-                >
-                  <FooterLogoArea
-                    src={ndpr}
-                    style={{ width: "205px" }}
-                  ></FooterLogoArea>
-                </FooterLink>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink
-                  to="/https://secureidentityalliance.org/osia"
-                  onClick={handleClickPrivacyPolicy}
-                >
-                  <FooterLogoArea
-                    src={osia}
-                    style={{ width: "135px" }}
-                  ></FooterLogoArea>
-                </FooterLink>
-              </FooterLinkItems>
-            </div>
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems>
-                <a
-                  href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
-                  target="none"
-                  style={{ cursor: "pointer", marginBottom: "10px" }}
-                >
-                  <img
-                    src={playStore}
-                    alt="Logo"
-                    style={{
-                      width: 120,
-                      cursor: "pointer",
-                      paddingRight: "5px",
-                    }}
-                  />
-                </a>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <a href="#" target="none">
-                  <img
-                    src={appStore}
-                    alt="Logo"
-                    style={{
-                      width: 120,
-                      cursor: "pointer",
-                      paddingRight: "5px",
-                    }}
-                  />
-                </a>
-              </FooterLinkItems>
-              <FooterLinkItems></FooterLinkItems>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems>
-                <FooterLink to="#">
-                  <strong style={{ fontWeight: "bolder" }}>Company</strong>
-                </FooterLink>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink to="/contact">Contact</FooterLink>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink to="/faq">FAQ</FooterLink>
-              </FooterLinkItems>
-
-              {/* <FooterLinkItems>
-                <FooterLink to="/">info@e-citizen.ng</FooterLink>
-              </FooterLinkItems> */}
-            </div>
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems>
-                <FooterLink to="#">
-                  <strong style={{ fontWeight: "bolder" }}>Legal</strong>
-                </FooterLink>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
-                  Privacy policy
-                </FooterLink>
-                <Modal
-                  title="Privacy Policy"
-                  visible={isOpen}
-                  centered
-                  // open={open}
-                  onOk={() => setIsOpen(false)}
-                  onCancel={() => setIsOpen(false)}
-                  width={1000}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
-                </Modal>
-              </FooterLinkItems>
-              <FooterLinkItems>
-                <FooterLink to="/" onClick={handleClickTermsofService}>
-                  Terms of Service
-                </FooterLink>
-                <Modal
-                  title="Terms of Service"
-                  visible={isOpen2}
-                  centered
-                  // open={open}
-                  onOk={() => setIsOpen2(false)}
-                  onCancel={() => setIsOpen2(false)}
-                  width={1000}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
-                </Modal>
-              </FooterLinkItems>
-            </div>
-            {/* <div class="col-md-3 col-sm-12 col-xs-12">
-              <FooterLinkItems></FooterLinkItems>
-              
-            </div> */}
+            <Row>
+              <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
+                <div>
+                  <FooterLinkItems>
+                    <FooterLinkItems>
+                      <a
+                        href="#"
+                        style={{ cursor: "pointer", marginBottom: "10px" }}
+                      >
+                        <img
+                          src={logo}
+                          alt="Logo"
+                          style={{
+                            width: "115px",
+                            cursor: "pointer",
+                            paddingRight: "5px",
+                          }}
+                        />
+                      </a>
+                    </FooterLinkItems>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <a
+                      href="https://www.ndpc.gov.ng/#"
+                      target="none"
+                      style={{ cursor: "pointer", marginBottom: "10px" }}
+                    >
+                      <img
+                        src={ndpr}
+                        alt="Logo"
+                        style={{
+                          width: "115px",
+                          cursor: "pointer",
+                          paddingRight: "5px",
+                        }}
+                      />
+                    </a>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <a
+                      href="https://secureidentityalliance.org/osia"
+                      target="none"
+                      style={{ cursor: "pointer", marginBottom: "10px" }}
+                    >
+                      <img
+                        src={osia}
+                        alt="Logo"
+                        style={{
+                          width: "95px",
+                          height: "50px",
+                          cursor: "pointer",
+                          paddingRight: "5px",
+                        }}
+                      />
+                    </a>
+                  </FooterLinkItems>
+                </div>
+              </Col>
+              <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
+                <div>
+                  <FooterLinkItems>
+                    <a
+                      href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
+                      target="none"
+                      style={{ cursor: "pointer", marginBottom: "10px" }}
+                    >
+                      <img
+                        src={playStore}
+                        alt="Logo"
+                        style={{
+                          width: "115px",
+                          cursor: "pointer",
+                          paddingRight: "5px",
+                        }}
+                      />
+                    </a>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <a
+                      href="https://apps.apple.com/ng/app/e-citizen-ng/id6503291019"
+                      target="none"
+                      style={{ cursor: "pointer", marginBottom: "10px" }}
+                    >
+                      <img
+                        src={appStore}
+                        alt="Logo"
+                        style={{
+                          width: "115px",
+                          cursor: "pointer",
+                          paddingRight: "5px",
+                        }}
+                      />
+                    </a>
+                  </FooterLinkItems>
+                  <FooterLinkItems></FooterLinkItems>
+                </div>
+              </Col>
+              <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
+                <div>
+                  <FooterLinkItems>
+                    <FooterLink to="#">
+                      <strong style={{ fontWeight: "bolder" }}>Company</strong>
+                    </FooterLink>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <FooterLink to="/contact">Contact</FooterLink>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <FooterLink to="/faq">FAQ</FooterLink>
+                  </FooterLinkItems>
+                </div>
+              </Col>
+              <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
+                <div>
+                  <FooterLinkItems>
+                    <FooterLink to="#">
+                      <strong style={{ fontWeight: "bolder" }}>Legal</strong>
+                    </FooterLink>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
+                      Privacy policy
+                    </FooterLink>
+                    <Modal
+                      title="Privacy Policy"
+                      visible={isOpen}
+                      centered
+                      // open={open}
+                      onOk={() => setIsOpen(false)}
+                      onCancel={() => setIsOpen(false)}
+                      width={1000}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{ __html: privacyPolicy }}
+                      />
+                    </Modal>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <FooterLink to="/" onClick={handleClickTermsofService}>
+                      Terms of Service
+                    </FooterLink>
+                    <Modal
+                      title="Terms of Service"
+                      visible={isOpen2}
+                      centered
+                      // open={open}
+                      onOk={() => setIsOpen2(false)}
+                      onCancel={() => setIsOpen2(false)}
+                      width={1000}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{ __html: termsOfService }}
+                      />
+                    </Modal>
+                  </FooterLinkItems>
+                </div>
+              </Col>
+            </Row>
           </div>
         </div>
       </div>
+
       <FooterContainer>
         <SocialMedia>
           <SocialMediaWrap>

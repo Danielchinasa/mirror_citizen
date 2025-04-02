@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Checkbox, Alert, Spin, notification, Button } from "antd";
+import { Checkbox, Alert, Spin, notification, Button, Divider } from "antd";
 import {
   BtnLink,
   Heading,
@@ -10,7 +10,7 @@ import {
   Subtitle,
 } from "../../globalStyles";
 import { useDispatch } from "react-redux";
-import { signIn } from "../../redux/actions";
+import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -19,6 +19,9 @@ import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { useGoogleLogin } from "@react-oauth/google";
+import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
 const { useToken } = theme;
 
 const Context = React.createContext({
@@ -141,7 +144,7 @@ const LoginForm = () => {
     });
     event.preventDefault();
     if (formData.rememberMe) {
-      Cookies.set("rememberedEmail", formData.email, { expires: 7 }); // Store email in cookie for 7 days
+      Cookies.set("rememberedEmail", formData.email, { expires: 7 });
     } else {
       Cookies.remove("rememberedEmail");
     }
@@ -257,7 +260,7 @@ const LoginForm = () => {
     }
   };
 
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   const handleCaptchaVerify = () => {
     setIsCaptchaVerified(true);
@@ -266,13 +269,105 @@ const LoginForm = () => {
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
 
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const payload = {
+          accessToken: response.access_token,
+          deviceToken: localStorage.getItem("clientToken"),
+          ipAddress: ipAddress,
+          deviceName: "Web app",
+        };
+
+        const res = await axios.post(
+          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const userData = res.data;
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: "Google login successful!",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        dispatch({
+          type: "SIGN_IN",
+          payload: userData,
+        });
+        dispatch(fetchUserProfile(userData.jwtToken));
+
+        if (userData.jwtToken) {
+          localStorage.setItem("IpAddress", ipAddress);
+          history.push("/main-dashboard");
+        } else {
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Login failed",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          // openNotification2("topRight");
+        }
+      } catch (error) {
+        console.error("Google login failed:", error);
+
+        let errorMessage = "Google login failed. Please try again.";
+
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Server responded with status:", error.response.status);
+          if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from server:", error.request);
+          errorMessage = "Network error. Please check your connection.";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error setting up request:", error.message);
+        }
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      }
+    },
+  });
+
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
       <div style={{ marginTop: "50px" }}>
-        <Heading $token={token}>Login</Heading>
         <Spin spinning={loading} tip="Logging in...">
           <StyledForm onSubmit={handleSignIn}>
+            <Heading $token={token}>Login</Heading>
             {formErrors.general && (
               <Alert
                 message={formErrors.general}
@@ -315,7 +410,6 @@ const LoginForm = () => {
               sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
               onChange={handleCaptchaVerify}
             />
-
             <MainButtonFull
               type="primary"
               htmlType="submit"
@@ -332,7 +426,22 @@ const LoginForm = () => {
             >
               Login
             </MainButtonFull>
-            <Subtitle color="light" $token={token}>
+            <Divider>Or</Divider>
+
+            {/* // Google SSO button */}
+            <GoogleSignInButton
+              onClick={(e) => {
+                e.preventDefault();
+                localStorage.removeItem("token");
+                login();
+              }}
+            />
+
+            <Subtitle
+              color="light"
+              $token={token}
+              style={{ marginTop: "15px" }}
+            >
               Don’t have an account?{" "}
               <BtnLink to="/sign-up">
                 <span style={{ color: "#09C93A", cursor: "pointer" }}>

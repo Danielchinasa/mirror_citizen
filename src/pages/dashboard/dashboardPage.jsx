@@ -35,6 +35,7 @@ import {
   StyledForm,
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
+import flutterwaveWhite from "../../images/flutterwave-logos-white.png";
 
 import {
   InfoCircleOutlined,
@@ -63,6 +64,7 @@ import { useTheme } from "../../components/ThemeProvider";
 /* global Reach */
 
 const { Dragger } = Upload;
+
 const props = {
   name: "file",
   multiple: true,
@@ -93,6 +95,10 @@ const DashboardPage = () => {
   const [fileUploadError, setFileUploadError] = useState("");
   const [rowCount, setRowCount] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
+
+  const { token } = theme.useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text, text3 } = token;
 
   const [hasPreviousUpload, setHasPreviousUpload] = useState(false);
 
@@ -298,12 +304,22 @@ const DashboardPage = () => {
     const fetchServiceFee = async () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
-        const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        // const response = await axios.get(
+        //   `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       Authorization: `Bearer ${userToken}`, // Include the bearer token
+        //     },
+        //   }
+        // );
+        const response = await axios.post(
+          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+          { ipAddress },
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
+              Authorization: `Bearer ${userToken}`,
             },
           }
         );
@@ -389,7 +405,7 @@ const DashboardPage = () => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
             // dispatch(fetchUserProfile(userToken));
-            window.location.reload();
+            history.push("/main-dashboard");
           }
         });
       }
@@ -2932,9 +2948,6 @@ const DashboardPage = () => {
     });
   };
 
-  const { token } = theme.useToken();
-  const { bgContainer, text } = token;
-
   return (
     <Row style={{ backgroundColor: bgContainer }}>
       <Col>
@@ -4367,7 +4380,7 @@ const DashboardPage = () => {
                       >
                         Instant Payment
                         <Img
-                          src={flutterwave}
+                          src={isDark ? flutterwaveWhite : flutterwave}
                           alt={"flutter wave"}
                           width={100}
                           style={{ float: "right", paddingTop: "10px" }}
@@ -4447,7 +4460,8 @@ const DashboardPage = () => {
                           ? "#0DC939"
                           : "#d9d9d9", // Set the colors based on checkbox state
                         borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
-                        cursor: checkboxChecked ? "pointer" : "not-allowed", // Change cursor based on checkbox state
+                        cursor: checkboxChecked ? "pointer" : "not-allowed",
+                        color: text3,
                       }}
                     >
                       Payment

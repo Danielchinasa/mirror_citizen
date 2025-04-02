@@ -360,8 +360,7 @@ const IndividualSignUp = () => {
                 }}
               />
             </BtnLink>
-            <Title>Create Account</Title>
-            <Title level={4}>INDIVIDUAL ACCOUNT</Title>
+
             <Space
               size="large"
               direction="vertical"
@@ -371,6 +370,8 @@ const IndividualSignUp = () => {
             >
               <Spin spinning={loading} tip="Signing Up...">
                 <StyledForm onSubmit={handleSignUp}>
+                  <Title>Create Account</Title>
+                  <Title level={4}>INDIVIDUAL ACCOUNT</Title>
                   {formErrors.general && (
                     <Alert
                       message={formErrors.general}

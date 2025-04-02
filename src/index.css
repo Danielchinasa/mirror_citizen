@@ -60,3 +60,17 @@ a {
 /* .ant-collapse-item {
   border-color: red !important; 
 } */
+
+ /* For unchecked radio button */
+ .ant-radio .ant-radio-inner {
+  border-color: #787C99 !important; /* Unchecked border color */
+}
+
+.ant-radio .ant-radio-inner::after {
+  background-color: white !important; /* Unchecked inner circle */
+}
+
+/* For hover state */
+.ant-radio:hover .ant-radio-inner {
+  border-color: #0DC939 !important; /* Hover border color */
+}

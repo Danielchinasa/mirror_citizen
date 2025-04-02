@@ -3,21 +3,15 @@ import {
   Card,
   Row,
   Col,
-  Statistic,
-  Space,
-  Table,
-  Tag,
   Tabs,
   Modal,
   Input,
-  message,
   Button,
   Divider,
   Spin,
 } from "antd";
 import {
   Container,
-  Heading4,
   InfoSec,
   MainButton,
   DynamicTable,
@@ -98,7 +92,7 @@ const MainDashboard = () => {
 
   const { token } = theme.useToken();
   const { isDark } = useTheme();
-  const { bgContainer, text } = token;
+  const { bgContainer, text, text3 } = token;
 
   useEffect(() => {
     dispatch(fetchUserProfile(userToken));
@@ -133,12 +127,22 @@ const MainDashboard = () => {
     const fetchServiceFee = async () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
-        const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        // const response = await axios.get(
+        //   `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       Authorization: `Bearer ${userToken}`, // Include the bearer token
+        //     },
+        //   }
+        // );
+        const response = await axios.post(
+          "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+          { ipAddress },
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
+              Authorization: `Bearer ${userToken}`,
             },
           }
         );
@@ -218,6 +222,7 @@ const MainDashboard = () => {
     }
 
     if (consent === "denied") {
+      setLoadingSmall(false);
       Swal.fire({
         background: bgContainer,
         color: text,
@@ -922,7 +927,7 @@ const MainDashboard = () => {
           style={{
             fontSize: "85px",
             fontWeight: "bold",
-            color: "black",
+            color: text,
           }}
         >
           <InfoSec>
