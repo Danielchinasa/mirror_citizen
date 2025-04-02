@@ -24,9 +24,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { UploadOutlined } from "@ant-design/icons";
 import defaultDp from "../../images/defaultDp.png";
+import defaultDpDark from "../../images/defaultDpDark.png";
 import { Button, Image } from "antd";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useDropzone } from "react-dropzone";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -144,13 +146,9 @@ const ProfilePage = () => {
 
     // Compare the current date with the expiration date
     if (currentDate >= expireDate) {
-      // If the current date is greater than or equal to the expiration date,
-      // it means the token has expired
       dispatch(logout());
       history.push("/");
     } else {
-      // Token is still valid
-      // You may want to handle this case differently
     }
   }, []);
   const handleSubmit = async (e) => {
@@ -174,11 +172,6 @@ const ProfilePage = () => {
           },
         });
         window.location.reload();
-        // notification.success({
-        //   message: "Success",
-        //   description: "Successfully updated profile",
-        //   duration: 10, // Duration in seconds
-        // });
         dispatch({
           type: "UPDATE_USER_DETAILS",
           payload: {
@@ -197,9 +190,6 @@ const ProfilePage = () => {
           },
         });
       } else {
-        // Display error message
-        // message.error(response.message || "OTP verification failed");
-        // Handle further actions if needed
       }
     } catch (error) {
       // Handle errors if needed
@@ -227,6 +217,33 @@ const ProfilePage = () => {
 
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
+  const { isDark } = useTheme();
+
+  const [profileImageNew, setProfileImageNew] = useState("");
+
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfileImageNew(reader.result);
+        setFormData({
+          ...formData,
+          profileImage: reader.result.replace(
+            /^data:image\/[a-z]+;base64,/,
+            ""
+          ),
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "image/jpeg, image/png",
+    maxSize: 2 * 1024 * 1024, // 2MB
+    onDrop,
+  });
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Container $token={token}>
@@ -253,32 +270,31 @@ const ProfilePage = () => {
             style={{ marginTop: "30px", marginBottom: "20px" }}
           >
             <Col span={12}>
-              <div style={{ display: "inline-block", position: "relative" }}>
-                {/* <Upload
-                name="avatar"
-                listType="picture-circle"
-                className="avatar-uploader"
-                style={{ marginBottom: "20px" }}
-                showUploadList={false}
-                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {profileImage ? (
+              <div>
+                <div
+                  {...getRootProps()}
+                  style={{
+                    border: "2px dashed #ddd",
+                    padding: "20px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    width: "500px",
+                  }}
+                >
+                  <input {...getInputProps()} />
+                  <p style={{ color: text }}>
+                    Drag & drop an image here, or click to select one
+                  </p>
+                </div>
+                {profileImageNew && (
                   <img
-                    src={profileImage}
-                    alt="avatar"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                    }}
+                    src={profileImageNew}
+                    alt="Profile Preview"
+                    width={200}
                   />
-                ) : (
-                  uploadButton
                 )}
-              </Upload> */}
+              </div>
+              {/* <div style={{ display: "inline-block", position: "relative" }}>
                 <Upload
                   name="avatar"
                   className="avatar-uploader"
@@ -296,13 +312,13 @@ const ProfilePage = () => {
               </Subtitle>
               <StyledInput
                 $token={token}
-                hidden={true}
-                value={formData.profileImage}
+                hidden={false}
+                value={formData.profileImageNew}
                 name="profileImage"
                 onChange={(e) =>
                   setFormData({ ...formData, profileImage: e.target.value })
                 }
-              />
+              /> */}
             </Col>
           </Row>
 
@@ -315,6 +331,8 @@ const ProfilePage = () => {
                 src={
                   userDetails && userDetails?.profileImageLocation
                     ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                    : isDark
+                    ? defaultDpDark
                     : defaultDp
                 }
               />

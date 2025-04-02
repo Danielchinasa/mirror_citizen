@@ -304,12 +304,22 @@ const DashboardPage = () => {
     const fetchServiceFee = async () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
-        const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        // const response = await axios.get(
+        //   `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       Authorization: `Bearer ${userToken}`, // Include the bearer token
+        //     },
+        //   }
+        // );
+        const response = await axios.post(
+          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+          { ipAddress },
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
+              Authorization: `Bearer ${userToken}`,
             },
           }
         );
@@ -395,7 +405,7 @@ const DashboardPage = () => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
             // dispatch(fetchUserProfile(userToken));
-            window.location.reload();
+            history.push("/main-dashboard");
           }
         });
       }
