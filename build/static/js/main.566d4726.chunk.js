@@ -868,7 +868,7 @@
         at = a(471),
         nt = a(78),
         rt = a(467),
-        ot = "https://e-citizen.ng:8443/api/v2",
+        ot = "https://e-citizen.ng:8444/api/v2",
         ct = function (e) {
           return (function () {
             var t = Object(Ie.a)(
@@ -1201,7 +1201,7 @@
                             (t.prev = 0),
                             (t.next = 3),
                             rt.a.get(
-                              "https://e-citizen.ng:8443/api/v2/auth/activation/".concat(
+                              "https://e-citizen.ng:8444/api/v2/auth/activation/".concat(
                                 e
                               )
                             )
@@ -1277,7 +1277,7 @@
                             (t.prev = 0),
                             (t.next = 3),
                             rt.a.get(
-                              "https://e-citizen.ng:8443/api/v2/auth/resendtotp/".concat(
+                              "https://e-citizen.ng:8444/api/v2/auth/resendtotp/".concat(
                                 e
                               )
                             )
@@ -1997,7 +1997,7 @@
                 src:
                   b &&
                   (null === b || void 0 === b ? void 0 : b.profileImageLocation)
-                    ? "https://e-citizen.ng:8443".concat(
+                    ? "https://e-citizen.ng:8444".concat(
                         null === b || void 0 === b
                           ? void 0
                           : b.profileImageLocation
@@ -2084,7 +2084,7 @@
                             V(""),
                             (e.next = 7),
                             fetch(
-                              "https://e-citizen.ng:8443/api/v2/payment/initiate",
+                              "https://e-citizen.ng:8444/api/v2/payment/initiate",
                               {
                                 method: "POST",
                                 headers: {
@@ -4267,7 +4267,7 @@
                                 }),
                                 (a.next = 4),
                                 rt.a.post(
-                                  "https://e-citizen.ng:8443/api/v2/openauth/google-login",
+                                  "https://e-citizen.ng:8444/api/v2/openauth/google-login",
                                   r,
                                   {
                                     headers: {
@@ -6512,7 +6512,7 @@
                                 (t = localStorage.getItem("IpAddress")),
                                 (e.next = 4),
                                 rt.a.post(
-                                  "https://e-citizen.ng:8443/api/v2/transaction/service-prices",
+                                  "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
                                   { ipAddress: t },
                                   {
                                     headers: {
@@ -7247,7 +7247,7 @@
                                 (localStorage.setItem("transactionID", Al),
                                 localStorage.setItem("paymentType", "WALLET"),
                                 (n =
-                                  "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment"),
+                                  "https://e-citizen.ng:8444/api/v2/transaction/wallet-payment"),
                                 (r = {
                                   userNIN: Ro,
                                   transactionID: Al,
@@ -7482,7 +7482,7 @@
                                 (e.prev = 61),
                                 (e.next = 64),
                                 fetch(
-                                  "https://e-citizen.ng:8443/api/v2/payment/initiate",
+                                  "https://e-citizen.ng:8444/api/v2/payment/initiate",
                                   {
                                     method: "POST",
                                     headers: {
@@ -8242,7 +8242,7 @@
                                 (e.prev = 1),
                                 (e.next = 4),
                                 fetch(
-                                  "https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=".concat(
+                                  "https://e-citizen.ng:8444/api/v2/payment/check?transactionRef=".concat(
                                     Ns
                                   ),
                                   {
@@ -11122,7 +11122,7 @@
                                     )),
                                     (a.next = 4),
                                     rt.a.get(
-                                      "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                      "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                         n
                                       ),
                                       {
@@ -11379,7 +11379,7 @@
                                   )),
                                   (e.next = 4),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                    "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                       t
                                     ),
                                     {
@@ -11563,7 +11563,7 @@
                         Xe
                           ? r.a.createElement(pr.a, {
                               size: 124,
-                              src: "https://e-citizen.ng:8443".concat(Xe),
+                              src: "https://e-citizen.ng:8444".concat(Xe),
                               alt: "Avatar",
                             })
                           : r.a.createElement(pr.a, {
@@ -11997,7 +11997,7 @@
                         (null === F || void 0 === F
                           ? void 0
                           : F.profileImageLocation)
-                          ? "https://e-citizen.ng:8443".concat(
+                          ? "https://e-citizen.ng:8444".concat(
                               null === F || void 0 === F
                                 ? void 0
                                 : F.profileImageLocation
@@ -12286,7 +12286,7 @@
                                 (t = localStorage.getItem("IpAddress")),
                                 (e.next = 4),
                                 rt.a.post(
-                                  "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+                                  "https://e-citizen.ng:8444/api/v2/transaction/services-prices",
                                   { ipAddress: t },
                                   {
                                     headers: {
@@ -12575,7 +12575,7 @@
                               (e.prev = 22),
                               (e.next = 25),
                               fetch(
-                                "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                   a
                                 ),
                                 {
@@ -13103,7 +13103,7 @@
                               ge(""),
                               (e.next = 7),
                               fetch(
-                                "https://e-citizen.ng:8443/api/v2/payment/initiate",
+                                "https://e-citizen.ng:8444/api/v2/payment/initiate",
                                 {
                                   method: "POST",
                                   headers: {
@@ -15132,7 +15132,7 @@
                                   )),
                                   (e.next = 4),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                    "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                       t
                                     ),
                                     {
@@ -15291,7 +15291,7 @@
                         r.a.createElement(
                           "a",
                           {
-                            href: "https://e-citizen.ng:8443".concat(re),
+                            href: "https://e-citizen.ng:8444".concat(re),
                             target: "_blank",
                             rel: "noopener noreferrer",
                             style: {
@@ -15662,7 +15662,7 @@
                                   )),
                                   (e.next = 4),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                    "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                       t
                                     ),
                                     {
@@ -16059,7 +16059,7 @@
                               (t = localStorage.getItem("IpAddress")),
                               (e.next = 4),
                               rt.a.post(
-                                "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+                                "https://e-citizen.ng:8444/api/v2/transaction/services-prices",
                                 { ipAddress: t },
                                 {
                                   headers: {
@@ -16111,7 +16111,7 @@
                                 (t = localStorage.getItem("IpAddress")),
                                 (e.next = 4),
                                 rt.a.post(
-                                  "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+                                  "https://e-citizen.ng:8444/api/v2/transaction/services-prices",
                                   { ipAddress: t },
                                   {
                                     headers: {
@@ -16167,7 +16167,7 @@
                                   E(!0),
                                   (e.next = 4),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                    "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                       p
                                     ),
                                     {
@@ -16292,7 +16292,7 @@
                                                 }),
                                                 (e.next = 9),
                                                 rt.a.post(
-                                                  "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                                                  "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
                                                   r,
                                                   {
                                                     headers: {
@@ -16994,7 +16994,7 @@
                                 )),
                                 (e.next = 4),
                                 rt.a.get(
-                                  "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                  "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                     t
                                   ),
                                   {
@@ -17283,7 +17283,7 @@
                                   )),
                                   (e.next = 5),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                    "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                       t
                                     ),
                                     {
@@ -19102,7 +19102,7 @@
                                 (t = localStorage.getItem("IpAddress")),
                                 (e.next = 4),
                                 rt.a.post(
-                                  "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+                                  "https://e-citizen.ng:8444/api/v2/transaction/services-prices",
                                   { ipAddress: t },
                                   {
                                     headers: {
@@ -19157,7 +19157,7 @@
                                 (t = localStorage.getItem("IpAddress")),
                                 (e.next = 4),
                                 rt.a.post(
-                                  "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+                                  "https://e-citizen.ng:8444/api/v2/transaction/services-prices",
                                   { ipAddress: t },
                                   {
                                     headers: {
@@ -19214,7 +19214,7 @@
                                   v(!0),
                                   (e.next = 4),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/verification/check-consent/".concat(
+                                    "https://e-citizen.ng:8444/api/v2/verification/check-consent/".concat(
                                       g
                                     ),
                                     {
@@ -19377,7 +19377,7 @@
                                                 }
                                                 if (
                                                   ((r =
-                                                    "https://e-citizen.ng:8443/api/v2/transaction/wallet-payment"),
+                                                    "https://e-citizen.ng:8444/api/v2/transaction/wallet-payment"),
                                                   (c = {
                                                     userNIN: G,
                                                     transactionID: be,
@@ -19593,7 +19593,7 @@
                                                                     }),
                                                                     (e.next = 24),
                                                                     rt.a.post(
-                                                                      "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                                                                      "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
                                                                       m,
                                                                       {
                                                                         headers:
@@ -20059,7 +20059,7 @@
                                                   }),
                                                   (e.next = 37),
                                                   rt.a.post(
-                                                    "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                                                    "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
                                                     h,
                                                     {
                                                       headers: {
@@ -20259,7 +20259,7 @@
                                                   }),
                                                   (e.next = 70),
                                                   fetch(
-                                                    "https://e-citizen.ng:8443/api/v2/payment/initiate",
+                                                    "https://e-citizen.ng:8444/api/v2/payment/initiate",
                                                     {
                                                       method: "POST",
                                                       headers: {
@@ -20447,7 +20447,7 @@
                               (e.prev = 1),
                               (e.next = 4),
                               fetch(
-                                "https://e-citizen.ng:8443/api/v2/payment/check?transactionRef=".concat(
+                                "https://e-citizen.ng:8444/api/v2/payment/check?transactionRef=".concat(
                                   _
                                 ),
                                 {
@@ -20526,7 +20526,7 @@
                               }),
                               (e.next = 22),
                               rt.a.post(
-                                "https://e-citizen.ng:8443/api/v2/verification/call-external-apis",
+                                "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
                                 c,
                                 {
                                   headers: {
@@ -22263,7 +22263,7 @@
                                   (e.prev = 0),
                                   (e.next = 3),
                                   rt.a.get(
-                                    "https://e-citizen.ng:8443/api/v2/sms/receive?from="
+                                    "https://e-citizen.ng:8444/api/v2/sms/receive?from="
                                       .concat(
                                         encodeURIComponent(a),
                                         "&message="

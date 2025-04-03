@@ -327,7 +327,7 @@ const ProfilePage = () => {
               {" "}
               <Image
                 width={200}
-                // src={`https://e-citizen.ng:8443${userDetails.profileImageLocation}`}
+                // src={`https://e-citizen.ng:8444${userDetails.profileImageLocation}`}
                 src={
                   userDetails && userDetails?.profileImageLocation
                     ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
