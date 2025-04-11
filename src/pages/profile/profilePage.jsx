@@ -330,7 +330,7 @@ const ProfilePage = () => {
                 // src={`https://e-citizen.ng:8444${userDetails.profileImageLocation}`}
                 src={
                   userDetails && userDetails?.profileImageLocation
-                    ? `https://e-citizen.ng:8443${userDetails?.profileImageLocation}`
+                    ? `https://e-citizen.ng:8444${userDetails?.profileImageLocation}`
                     : isDark
                     ? defaultDpDark
                     : defaultDp
