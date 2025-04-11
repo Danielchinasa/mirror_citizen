@@ -30,14 +30,24 @@ export const Sendrequest = () => {
               console.log("Client Token: ", currentToken);
               localStorage.setItem("clientToken", currentToken);
             } else {
+              localStorage.setItem(
+                "clientToken",
+                "dIT0eKRN6mxrY-Ysv8U8pL:APA91bEdY4z_MmamDKN88p83qF5qhApIgpktVtVvBBwf7BFdY8sLJ52BZtfg2_w-Qlv_ZGcQY6QhC6PYLjP-HDTA9TuoHXLZIwT6x_zWOpvmWC1xnTNOC44"
+              );
               console.log("Failed to generate the registration token.");
             }
           })
           .catch((err) => {
+            localStorage.setItem(
+              "clientToken",
+              "dIT0eKRN6mxrY-Ysv8U8pL:APA91bEdY4z_MmamDKN88p83qF5qhApIgpktVtVvBBwf7BFdY8sLJ52BZtfg2_w-Qlv_ZGcQY6QhC6PYLjP-HDTA9TuoHXLZIwT6x_zWOpvmWC1xnTNOC44"
+            );
+
             console.log(
               "An error occurred when requesting to receive the token.",
               err
             );
+            console.log("Using the fallback token.", err);
           });
       } else {
         console.log("User Permission Denied.");
