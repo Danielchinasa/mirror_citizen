@@ -82,7 +82,7 @@ const Vehicle = () => {
       try {
         // Make a new API post request independently of the consent status
         // const postResponse = await axios.post(
-        //   "https://e-citizen.ng:8443/api/v2/call-external-apis",
+        //   "https://e-citizen.ng:8444/api/v2/call-external-apis",
         //   {
         //     vehicle: {
         //       vin: "5TDYK3DC8DS290235",
@@ -99,7 +99,7 @@ const Vehicle = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const postResponse = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/verification/check-consent/${requestId}`,
+          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -218,7 +218,7 @@ const Vehicle = () => {
 
                 <div>
                   <a
-                    href={`https://e-citizen.ng:8443${pdfUri}`}
+                    href={`https://e-citizen.ng:8444${pdfUri}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -308,7 +308,7 @@ const Vehicle = () => {
               <Divider />
               {/* <div>
               <a
-                href={`https://e-citizen.ng:8443${pdfUri}`}
+                href={`https://e-citizen.ng:8444${pdfUri}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -338,7 +338,7 @@ const Vehicle = () => {
                   {/* {photo ? (
                 <Avatar
                   size={124}
-                  src={`https://e-citizen.ng:8443${photo}`}
+                  src={`https://e-citizen.ng:8444${photo}`}
                   alt="Avatar"
                 />
               ) : (

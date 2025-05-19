@@ -26,7 +26,7 @@ import {
   MainButtonFull,
 } from "../../globalStyles";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { signUp } from "../../redux/actions";
+import { signUp, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -36,6 +36,8 @@ import { Modal } from "antd";
 import Swal from "sweetalert2";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useGoogleLogin } from "@react-oauth/google";
+import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -343,6 +345,98 @@ const IndividualSignUp = () => {
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
 
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const payload = {
+          accessToken: response.access_token,
+          deviceToken: localStorage.getItem("clientToken"),
+          ipAddress: ipAddress,
+          deviceName: "Web app",
+        };
+
+        const res = await axios.post(
+          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const userData = res.data;
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: "Google login successful!",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        dispatch({
+          type: "SIGN_IN",
+          payload: userData,
+        });
+        dispatch(fetchUserProfile(userData.jwtToken));
+
+        if (userData.jwtToken) {
+          localStorage.setItem("IpAddress", ipAddress);
+          history.push("/main-dashboard");
+        } else {
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Login failed",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          // openNotification2("topRight");
+        }
+      } catch (error) {
+        console.error("Google login failed:", error);
+
+        let errorMessage = "Google login failed. Please try again.";
+
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Server responded with status:", error.response.status);
+          if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from server:", error.request);
+          errorMessage = "Network error. Please check your connection.";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error setting up request:", error.message);
+        }
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      }
+    },
+  });
+
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Row>
@@ -562,6 +656,14 @@ const IndividualSignUp = () => {
                     Proceed
                   </MainButtonFull>
                 </StyledForm>
+                {/* // Google SSO button */}
+                <GoogleSignUpButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("token");
+                    login();
+                  }}
+                />
               </Spin>
             </Space>
           </div>

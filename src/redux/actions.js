@@ -154,26 +154,58 @@ export const logout = () => async (dispatch) => {
   });
 };
 
-export const fetchVerificationData = (token) => {
-  return async (dispatch) => {
-    try {
-      // Make an API call to fetch verification data
-      const response = await axios.get(`${baseUrl}/user/matching-requests`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the bearer token
-        },
-      });
-      console.log("Verification Data Response:", response);
+// export const fetchVerificationData = (token) => {
+//   return async (dispatch) => {
+//     try {
+//       // Make an API call to fetch verification data
+//       const response = await axios.get(`${baseUrl}/user/matching-requests`, {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`, // Include the bearer token
+//         },
+//       });
+//       console.log("Verification Data Response:", response);
 
-      // Dispatch the fetched data to the store
+//       // Dispatch the fetched data to the store
+//       dispatch({
+//         type: "FETCH_VERIFICATION_DATA_SUCCESS",
+//         payload: response.data,
+//       });
+//     } catch (error) {
+//       // Handle errors, dispatch an error action, or set an error state
+//       console.error("Error fetching verification data:", error);
+//     }
+//   };
+// };
+export const fetchVerificationData = (token, page = 0, size = 10) => {
+  return async (dispatch) => {
+    dispatch({ type: "FETCH_VERIFICATION_DATA_REQUEST" });
+
+    try {
+      const response = await axios.post(
+        `${baseUrl}/user/matching-requests`,
+        { page, size }, // Payload
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Verification Data Response:", response.data);
+
       dispatch({
         type: "FETCH_VERIFICATION_DATA_SUCCESS",
         payload: response.data,
       });
     } catch (error) {
-      // Handle errors, dispatch an error action, or set an error state
       console.error("Error fetching verification data:", error);
+
+      dispatch({
+        type: "FETCH_VERIFICATION_DATA_FAILURE",
+        payload: error.response?.data?.message || "Something went wrong!",
+      });
     }
   };
 };
@@ -208,7 +240,7 @@ export const fetchTransactionData = (token) => {
 export const SendOtp = (otpString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://e-citizen.ng:8443/api/v2/auth/activation/${otpString}`
+      `https://e-citizen.ng:8444/api/v2/auth/activation/${otpString}`
     );
     const userData = response.data;
 
@@ -242,7 +274,7 @@ export const SendOtp = (otpString) => async (dispatch) => {
 export const ReSendOtp = (emailString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://e-citizen.ng:8443/api/v2/auth/resendtotp/${emailString}`
+      `https://e-citizen.ng:8444/api/v2/auth/resendtotp/${emailString}`
     );
     const userData = response.data;
 

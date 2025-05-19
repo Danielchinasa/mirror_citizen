@@ -128,7 +128,7 @@ const MainDashboard = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
         // const response = await axios.get(
-        //   `https://e-citizen.ng:8443/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
+        //   `https://e-citizen.ng:8444/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
         //   {
         //     headers: {
         //       "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const MainDashboard = () => {
         //   }
         // );
         const response = await axios.post(
-          "https://e-citizen.ng:8443/api/v2/transaction/services-prices",
+          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
           { ipAddress },
           {
             headers: {
@@ -159,22 +159,21 @@ const MainDashboard = () => {
     fetchServiceFee();
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   useEffect(() => {
     // Dispatch the fetchVerificationData action with the bearer token when the component mounts
     if (userToken) {
-      dispatch(fetchVerificationData(userToken));
+      dispatch(fetchVerificationData(userToken, currentPage - 1, pageSize));
       dispatch(fetchTransactionData(userToken));
     }
-    //!! Verification refresh timer
-    // const interval = setInterval(() => {
-    //   if (userToken) {
-    //     dispatch(fetchVerificationData(userToken));
-    //   }
-    // }, 5000); // 3000 milliseconds = 3 seconds
+  }, [dispatch, userToken, currentPage, pageSize]);
 
-    // Clean up the interval to avoid memory leaks
-    // return () => clearInterval(interval);
-  }, [dispatch, userToken]);
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
 
   // Log the verificationData to the console
 
@@ -267,7 +266,7 @@ const MainDashboard = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8443/api/v2/verification/check-consent/${id}`,
+        `https://e-citizen.ng:8444/api/v2/verification/check-consent/${id}`,
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -390,18 +389,18 @@ const MainDashboard = () => {
   };
 
   const filteredData =
-    verificationData &&
-    verificationData.filter((record) => {
-      return Object.keys(record).some(
-        (key) =>
-          record[key] &&
-          record[key]
-            .toString()
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
-      );
-    });
-
+    verificationData && verificationData.requests
+      ? verificationData.requests.filter((record) => {
+          return Object.keys(record).some(
+            (key) =>
+              record[key] &&
+              record[key]
+                .toString()
+                .toLowerCase()
+                .includes(searchText.toLowerCase())
+          );
+        })
+      : [];
   const filteredDataTransaction =
     transactionData &&
     transactionData.filter((record) => {
@@ -559,23 +558,7 @@ const MainDashboard = () => {
       ],
       onFilter: (value, record) => record.type.indexOf(value) === 0,
     },
-    // {
-    //   title: "Action",
-    //   key: "status",
-    //   dataIndex: "status",
-    //   render: (_, record) => (
-    //     <a
-    //       // href="/result"
-    //       rel="noopener noreferrer"
-    //       onClick={() => handleViewResult(record)}
-    //       style={{ cursor: "pointer" }}
-    //     >
-    //       View Result
-    //     </a>
-    //   ),
-    //   // render: (status) => <a href="/">status</a>,
-    //   // render: (_, record) => <Space size="middle">{status}</Space>,
-    // },
+
     {
       title: "Action",
       key: "status",
@@ -752,8 +735,13 @@ const MainDashboard = () => {
                   };
                 }}
                 pagination={{
-                  position: ["bottomCenter"],
+                  current: currentPage,
+                  pageSize: pageSize,
                   className: "ant-pagination ant-pagination-item",
+                  total: verificationData && verificationData.totalCount,
+                  onChange: handlePageChange,
+                  showSizeChanger: true,
+                  position: ["bottomCenter"],
                 }}
               />
             )}
@@ -830,7 +818,7 @@ const MainDashboard = () => {
       setAmount("");
 
       const response = await fetch(
-        "https://e-citizen.ng:8443/api/v2/payment/initiate",
+        "https://e-citizen.ng:8444/api/v2/payment/initiate",
         {
           method: "POST",
           headers: {
@@ -869,18 +857,26 @@ const MainDashboard = () => {
     useState(0);
   const [failedVerificationCount, setFailedVerificationCount] = useState(0);
   useEffect(() => {
-    console.log("transactionData:", transactionData);
-    if (verificationData) {
-      setTotalVerificationCount(verificationData.length);
-      const completedVerifications = verificationData.filter(
-        (verification) => verification.consent !== "terminated"
-      );
-      setCompletedVerificationCount(completedVerifications.length);
+    if (verificationData && verificationData.requests) {
+      setTotalVerificationCount(verificationData.totalCount);
 
-      const failedVerifications = verificationData.filter(
-        (verification) => verification.successful == "terminated"
-      );
-      setFailedVerificationCount(failedVerifications.length);
+      const completedVerifications =
+        verificationData &&
+        verificationData.requests.filter(
+          (verification) => verification.consent !== "terminated"
+        );
+      setCompletedVerificationCount(verificationData.totalSuccessfulCount);
+
+      const failedVerifications =
+        verificationData &&
+        verificationData.requests.filter(
+          (verification) => verification.status === "terminated"
+        );
+      setFailedVerificationCount(verificationData.totalUnsuccessfulCount);
+    } else {
+      setTotalVerificationCount(0);
+      setCompletedVerificationCount(0);
+      setFailedVerificationCount(0);
     }
   }, [verificationData, transactionData]);
   const CustomStatistic = ({ title, value, valueStyle }) => (

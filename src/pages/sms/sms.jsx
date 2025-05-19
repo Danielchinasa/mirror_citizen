@@ -14,7 +14,7 @@ const Sms = () => {
     const postData = async () => {
       try {
         const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/sms/receive?from=${encodeURIComponent(
+          `https://e-citizen.ng:8444/api/v2/sms/receive?from=${encodeURIComponent(
             from
           )}&message=${encodeURIComponent(message)}`
         );

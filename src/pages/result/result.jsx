@@ -117,7 +117,7 @@ const Result = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `https://e-citizen.ng:8443/api/v2/verification/check-consent/${requestId}`,
+          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -277,7 +277,7 @@ const Result = () => {
                   {photo ? (
                     <Avatar
                       size={124}
-                      src={`https://e-citizen.ng:8443${photo}`}
+                      src={`https://e-citizen.ng:8444${photo}`}
                       alt="Avatar"
                     />
                   ) : (
