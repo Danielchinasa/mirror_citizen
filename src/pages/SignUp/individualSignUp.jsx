@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { trackEvent } from '../../hooks/analytics';
 
 import {
   Image,
@@ -246,6 +247,12 @@ const IndividualSignUp = () => {
   };
 
   const handleSignUp = async (event) => {
+    trackEvent({
+      action: "click_individual_signup_form_attempt",
+      category: "Account Creation Attempt",
+      label: "Individual Signup Form Attempt",
+      value: 1,
+    });
     event.preventDefault();
 
     try {
@@ -285,6 +292,12 @@ const IndividualSignUp = () => {
       if (response === "success") {
         // On successful login, navigate to the main dashboard
         // console.log("I reach here");
+        trackEvent({
+                  action: "click_individual_signup_form_success",
+                  category: "Account Creation Success",
+                  label: "Individual Signup Form Success",
+                  value: 1,
+                });
         history.push("/verify-otp");
       } else {
         setFormErrors({ general: response.message }); // Set error message

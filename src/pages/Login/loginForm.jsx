@@ -22,6 +22,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
+import { trackEvent } from '../../hooks/analytics';
 const { useToken } = theme;
 
 const Context = React.createContext({
@@ -138,9 +139,11 @@ const LoginForm = () => {
   };
 
   const handleSignIn = async (event) => {
-    ReactGA.event({
-      category: "User",
-      action: "Attempt Login",
+    trackEvent({
+      action: "click_normail_signin_attempt",
+      category: "Authentication Attempt",
+      label: "Normal Signin Attempt",
+      value: 1,
     });
     event.preventDefault();
     if (formData.rememberMe) {
@@ -190,6 +193,12 @@ const LoginForm = () => {
         // On successful login with jwtToken, navigate to the main dashboard
         localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
+        trackEvent({
+          action: "click_normail_signin_sucess",
+          category: "Authentication Success",
+          label: "Normal Signin Success",
+          value: 1,
+        });
         history.push("/main-dashboard");
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: response }); // Set error message
@@ -433,6 +442,13 @@ const LoginForm = () => {
               onClick={(e) => {
                 e.preventDefault();
                 localStorage.removeItem("token");
+                // 🔍 Track the click event
+                trackEvent({
+                  action: "click_google_signin",
+                  category: "Authentication",
+                  label: "Google Sign-In Button",
+                  value: 1,
+                });
                 login();
               }}
             />
