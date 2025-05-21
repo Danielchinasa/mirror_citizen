@@ -60,6 +60,7 @@ import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { trackEvent } from '../../hooks/analytics';
 
 /* global Reach */
 
@@ -3055,7 +3056,15 @@ const DashboardPage = () => {
                             <Radio
                               value="nin"
                               size="large"
-                              onClick={() => setSelectedForm("nin")}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click_nin_button",
+                                  category: "Basic Identity Profile",
+                                  label: "NIN Button",
+                                  value: 1,
+                                });
+                                setSelectedForm("nin");
+                              }}
                             >
                               National Identification Number (NIN)
                             </Radio>
@@ -3129,13 +3138,30 @@ const DashboardPage = () => {
                             <Radio
                               value="rc"
                               size="large"
-                              onClick={() => setSelectedForm("rc")}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click_registration_number_button",
+                                  category: "Business Profile",
+                                  label: "Registration Number Button",
+                                  value: 1,
+                                });
+                                setSelectedForm("rc");
+                              }}
+
                             >
                               Registration Number (RC)
                             </Radio>
                             <Radio
                               value="business_name"
-                              onClick={() => setSelectedForm("business_name")}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click_business_name_button",
+                                  category: "Business Profile",
+                                  label: "Business Name Button",
+                                  value: 1,
+                                });
+                                setSelectedForm("business_name");
+                              }}
                             >
                               {" "}
                               Business Name{" "}
@@ -3190,7 +3216,15 @@ const DashboardPage = () => {
                           <Radio
                             value="bvn"
                             size="large"
-                            onClick={() => setSelectedForm("bvn")}
+                            onClick={() => {
+                              trackEvent({
+                                action: "click_bvn_button",
+                                category: "Financial Credit Profile",
+                                label: "BVN Button",
+                                value: 1,
+                              });
+                              setSelectedForm("bvn");
+                            }}
                           >
                             Bank Verification Number (BVN)
                           </Radio>
@@ -3253,7 +3287,15 @@ const DashboardPage = () => {
                               // disabled
                               value="vin"
                               size="large"
-                              onClick={() => setSelectedForm("vin")}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click_vehicle_history_button",
+                                  category: "Vehicle Profile",
+                                  label: "VIN Button",
+                                  value: 1,
+                                });
+                                setSelectedForm("vin");
+                              }}
                             >
                               Vehicle History (VIN)
                               <img src={clearvin} alt="" width={150} />
@@ -3261,7 +3303,15 @@ const DashboardPage = () => {
                             <Radio
                               value="license_number"
                               size="large"
-                              onClick={() => setSelectedForm("license_number")}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click_vehicle_registration_button",
+                                  category: "Vehicle Profile",
+                                  label: "Reg Number Button",
+                                  value: 1,
+                                });
+                                setSelectedForm("license_number");
+                              }}
                             >
                               Vehicle Registration Number
                             </Radio>
