@@ -5,7 +5,10 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="ecitizen allows you to perform NIN verification for any Nigerian individual and verify Nigerian businesses seamlessly. You can also check credit scores, perform VIN verification for vehicle history, and verify car registration details." />
+    <meta
+      name="description"
+      content="ecitizen allows you to perform NIN verification for any Nigerian individual and verify Nigerian businesses seamlessly. You can also check credit scores, perform VIN verification for vehicle history, and verify car registration details."
+    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link
       href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
@@ -44,10 +47,10 @@
       rel="stylesheet"
     />
 
-    <link
+    <!-- <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent"
-    />
+    /> -->
     <title>e-citizen - your one-stop shop for Identity Verification</title>
   </head>
   <body>
@@ -118,26 +121,17 @@
       if (
         hasAnalyticsConsent(document.cookie.match(/(^| )cc_cookie=([^;]+)/))
       ) {
-        (<noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-M4ZVHSBZ"
-            height="0"
-            width="0"
-            style="display: none; visibility: hidden"
-          ></iframe>
-        </noscript>)(
-          // Google Analytics script here
-          function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-            var f = d.getElementsByTagName(s)[0],
-              j = d.createElement(s),
-              dl = l != "dataLayer" ? "&l=" + l : "";
-            j.async = true;
-            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-            f.parentNode.insertBefore(j, f);
-          }
-        )(window, document, "script", "dataLayer", "GTM-M4ZVHSBZ");
+        // Google Analytics script here
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", "GTM-M4ZVHSBZ");
       }
     </script>
 
@@ -166,21 +160,36 @@
       });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent"></script>
-    <script
+    <!-- <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent"></script> -->
+    <!-- <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
 
     <script type="text/javascript">
-      (function (p,o,s,t,m,a,n) {
-        !p[s] && (p[s] = function () { (p[t] || (p[t] = [])).push(arguments); });
-        !o.getElementById(s+t) && o.getElementsByTagName("head")[0].appendChild((
-          (n = o.createElement("script")),
-          (n.id = s+t), (n.async = 1), (n.src = m), n
-        ));
-      }(window, document, "_pm", "PostmanRunObject", "https://run.pstmn.io/button.js"));
+      (function (p, o, s, t, m, a, n) {
+        !p[s] &&
+          (p[s] = function () {
+            (p[t] || (p[t] = [])).push(arguments);
+          });
+        !o.getElementById(s + t) &&
+          o
+            .getElementsByTagName("head")[0]
+            .appendChild(
+              ((n = o.createElement("script")),
+              (n.id = s + t),
+              (n.async = 1),
+              (n.src = m),
+              n)
+            );
+      })(
+        window,
+        document,
+        "_pm",
+        "PostmanRunObject",
+        "https://run.pstmn.io/button.js"
+      );
     </script>
   </body>
 </html>
