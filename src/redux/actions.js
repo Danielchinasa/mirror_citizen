@@ -40,8 +40,27 @@ export const updatePassword = (credentials) => async (dispatch) => {
   }
 };
 
+export const googleSignIn = (userData) => (dispatch) => {
+  try {
+    dispatch({
+      type: "GOOGLE_SIGN_IN",
+      payload: userData,
+    });
+
+    return { status: "success", user: userData };
+  } catch (error) {
+    console.error("Google sign-in error:", error);
+    return { status: "failed", message: "Google sign-in failed" };
+  }
+};
+
 export const signIn = (credentials) => async (dispatch) => {
   try {
+    // If it's Google auth, handle differently
+    if (credentials.isGoogleAuth) {
+      return dispatch(googleSignIn(credentials));
+    }
+
     const response = await axios.post(`${baseUrl}/auth/login`, credentials);
     const userData = response.data;
     console.log("User Data:", userData);

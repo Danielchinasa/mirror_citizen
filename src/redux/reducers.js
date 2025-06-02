@@ -6,6 +6,10 @@ const initialState = {
     // Other user fields...
     firstName: "",
     lastName: "",
+    email: "",
+    profilePicture: "",
+    googleId: "",
+    isGoogleAuth: false,
     // ...
   },
   verificationData: [],
@@ -17,14 +21,36 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SIGN_IN":
       // Make API call for sign in, update state accordingly
-      return { isAuthenticated: true, user: action.payload };
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload,
+      };
+
+    case "GOOGLE_SIGN_IN":
+      // Handle Google sign in
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: {
+          ...state.user,
+          ...action.payload,
+          isGoogleAuth: true,
+        },
+      };
 
     case "SIGN_UP":
       // Make API call for sign up, update state accordingly
-      return { isAuthenticated: false, user: action.payload };
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: action.payload,
+      };
 
     case "LOGOUT":
-      // Make API call for logout, update state accordingly
+      // Clear localStorage on logout
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("userData");
       return initialState;
 
     case "FETCH_VERIFICATION_DATA_SUCCESS":

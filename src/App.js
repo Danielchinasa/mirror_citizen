@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import GlobalStyles from "./globalStyles";
 import { Navbar, Footer } from "./components";
+import AuthGuard from "./components/AuthGuard/AuthGuard";
 import Home from "./pages/HomePage/Home";
 import Products from "./pages/Products/Products";
 import ScrollToTop from "./components/ScrollToTop";
@@ -48,6 +50,11 @@ import TermsOfService from "./pages/privacyPolicy/termsOfService";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
+
+// Google OAuth Client ID - you'll need to get this from Google Cloud Console
+const GOOGLE_CLIENT_ID =
+  process.env.REACT_APP_GOOGLE_CLIENT_ID ||
+  "652852723588-1j7ps2j4n3ub2dt8a9pm6f1vhp6di4lr.apps.googleusercontent.com";
 
 function App() {
   ReactGA.initialize("G-28ZN6L737E");
@@ -177,73 +184,82 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      {/* <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#09C93A",
-          },
-          components: {
-            Input: {
-              colorPrimary: "#09C93A",
-            },
-          },
-        }}
-      > */}
-      <ThemeProvider>
-        <GlobalStyles />
-        <ScrollToTop />
-        <Navbar />
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <div className="App">
+        <Router>
+          <GlobalStyles />
+          <AuthGuard>
+            <ScrollToTop />
+            <Navbar />
 
-        <Switch>
-          <AppLogout>
-            <Route path="/" exact component={Home} />
-            <Route path="/sms" exact component={Sms} />
-            <Route path="/privacy_policy" exact component={PrivacyPolicy} />
-            <Route path="/terms_of_service" exact component={TermsOfService} />
-            <Route path="/reach/:CLICK_ID" exact component={Home} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/verify-otp" component={VerifyOtp} />
-            <Route path="/email-confirm" component={EmailVerifiedConfirm} />
-            <Route path="/check-email" component={CheckPasswordResetLink} />
-            <ProtectedRoute
-              path="/set-new-password"
-              component={SetNewPassword}
-            />
-            <Route path="/password-confirm" component={PasswordResetConfirm} />
-            <Route path="/contact" component={ContactPage} />
-            <ProtectedRoute path="/dashboard" component={DashboardPage} />
-            <Route path="/disclaimer" component={Disclaimer} />
-            <ProtectedRoute path="/consent" component={Consent} />
-            <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />
-            <ProtectedRoute path="/result" component={Result} />
-            <ProtectedRoute path="/vehicle" component={Vehicle} />
-            <ProtectedRoute path="/vehicle2" component={Vehicle2} />
-            <ProtectedRoute path="/legit-car" component={LegitCar} />
-            <ProtectedRoute path="/businessName" component={BusinessName} />
-            <ProtectedRoute path="/business" component={Business} />
-            <ProtectedRoute path="/financial" component={Financial} />
-            <Route path="/faq" component={FaqPage} />
-            <ProtectedRoute path="/profile" component={ProfilePage} />
-            {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
-            <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
-            <Route path="/products" component={Products} />
-            <Route path="/sign-up" component={SignUpPage} />
-            <Route path="/notFoundPage" component={NotFoundPage} />
-            <Route path="/individual/sign-up/1" component={IndividualSignUp} />
-            <Route path="/individual/sign-up/2" component={BusinessSignUp} />
-            <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
-            <Route
-              path="/reset-password/:email/:token"
-              exact
-              component={ResetPasswordPage}
-            />
-          </AppLogout>
-        </Switch>
+            <Switch>
+              <AppLogout>
+                <Route path="/" exact component={Home} />
+                <Route path="/sms" exact component={Sms} />
+                <Route path="/privacy_policy" exact component={PrivacyPolicy} />
+                <Route
+                  path="/terms_of_service"
+                  exact
+                  component={TermsOfService}
+                />
+                <Route path="/reach/:CLICK_ID" exact component={Home} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/forgot-password" component={ForgotPassword} />
+                <Route path="/verify-otp" component={VerifyOtp} />
+                <Route path="/email-confirm" component={EmailVerifiedConfirm} />
+                <Route path="/check-email" component={CheckPasswordResetLink} />
+                <ProtectedRoute
+                  path="/set-new-password"
+                  component={SetNewPassword}
+                />
+                <Route
+                  path="/password-confirm"
+                  component={PasswordResetConfirm}
+                />
+                <Route path="/contact" component={ContactPage} />
+                <ProtectedRoute path="/dashboard" component={DashboardPage} />
+                <Route path="/disclaimer" component={Disclaimer} />
+                <ProtectedRoute path="/consent" component={Consent} />
+                <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />
+                <ProtectedRoute path="/result" component={Result} />
+                <ProtectedRoute path="/vehicle" component={Vehicle} />
+                <ProtectedRoute path="/vehicle2" component={Vehicle2} />
+                <ProtectedRoute path="/legit-car" component={LegitCar} />
+                <ProtectedRoute path="/businessName" component={BusinessName} />
+                <ProtectedRoute path="/business" component={Business} />
+                <ProtectedRoute path="/financial" component={Financial} />
+                <Route path="/faq" component={FaqPage} />
+                <ProtectedRoute path="/profile" component={ProfilePage} />
+                {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
+                <ProtectedRoute
+                  path="/main-dashboard"
+                  component={MainDashboard}
+                />
+                <Route path="/products" component={Products} />
+                <Route path="/sign-up" component={SignUpPage} />
+                <Route path="/notFoundPage" component={NotFoundPage} />
+                <Route
+                  path="/individual/sign-up/1"
+                  component={IndividualSignUp}
+                />
+                <Route
+                  path="/individual/sign-up/2"
+                  component={BusinessSignUp}
+                />
+                <Route
+                  path="/individual/sign-up/3"
+                  component={BusinessSignUp2}
+                />
+                <Route
+                  path="/reset-password/:email/:token"
+                  exact
+                  component={ResetPasswordPage}
+                />
+              </AppLogout>
+            </Switch>
 
-        <Footer />
-        {/* <CookieConsent
+            <Footer />
+            {/* <CookieConsent
           location="bottom"
           buttonText="Accept All Cookies"
           cookieName="myAwesomeCookieName2"
@@ -261,9 +277,11 @@ function App() {
           agree to our use of cookies and the terms of our Privacy Policy.
         </CookieConsent> */}
 
-        {/* </ConfigProvider> */}
-      </ThemeProvider>
-    </Router>
+            {/* </ConfigProvider> */}
+          </AuthGuard>
+        </Router>
+      </div>
+    </GoogleOAuthProvider>
   );
 }
 
