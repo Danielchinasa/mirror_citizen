@@ -2,30 +2,165 @@ import React, { useEffect, useState } from "react";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { homeObjOne } from "./Data";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { signIn, fetchUserProfile, logout } from "../../redux/actions";
+import { useHistory } from "react-router-dom";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
+const { useToken } = theme;
 
 const Home = () => {
-  const [showNewsletterModal, setShowNewsletterModal] = useState(false);
+  const [ipAddress, setIpAddress] = useState(null);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
+  const { token } = useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text } = token;
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const payload = {
+          accessToken: response.access_token,
+          deviceToken: localStorage.getItem("clientToken"),
+          ipAddress: ipAddress,
+          deviceName: "Web app",
+        };
+
+        const res = await axios.post(
+          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const userData = res.data;
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: "Google login successful!",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        dispatch({
+          type: "SIGN_IN",
+          payload: userData,
+        });
+        dispatch(fetchUserProfile(userData.jwtToken));
+
+        if (userData.jwtToken) {
+          localStorage.setItem("IpAddress", ipAddress);
+          history.push("/main-dashboard");
+        } else {
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Login failed",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+          // openNotification2("topRight");
+        }
+      } catch (error) {
+        console.error("Google login failed:", error);
+
+        let errorMessage = "Google login failed. Please try again.";
+
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Server responded with status:", error.response.status);
+          if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from server:", error.request);
+          errorMessage = "Network error. Please check your connection.";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error setting up request:", error.message);
+        }
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      }
+    },
+  });
   useEffect(() => {
-    const hasVisitedBefore = localStorage.getItem("hasVisited");
+    const loadGoogleOneTap = () => {
+      if (window.google && window.google.accounts?.id) {
+        window.google.accounts.id.disableAutoSelect(); // ⛔ reset for dev
 
-    if (!hasVisitedBefore || hasVisitedBefore !== "true") {
-      setShowNewsletterModal(true);
-      localStorage.setItem("hasVisited", "true");
-    }
+        window.google.accounts.id.initialize({
+          client_id:
+            "642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com",
+          callback: (credentialResponse) => {
+            console.log("✅ One Tap Login Success:", credentialResponse);
+            login();
+          },
+          auto_select: true,
+          cancel_on_tap_outside: false,
+        });
+
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed()) {
+            console.warn(
+              "⚠️ One Tap not displayed:",
+              notification.getNotDisplayedReason()
+            );
+          }
+          if (notification.isSkippedMoment()) {
+            console.warn(
+              "⚠️ One Tap skipped:",
+              notification.getSkippedReason()
+            );
+          }
+          if (notification.isDismissedMoment()) {
+            console.warn(
+              "⚠️ One Tap dismissed:",
+              notification.getDismissedReason()
+            );
+          }
+        });
+      }
+    };
+
+    const interval = setInterval(() => {
+      if (window.google && window.google.accounts?.id) {
+        loadGoogleOneTap();
+        clearInterval(interval);
+      }
+    }, 100);
   }, []);
-
-  const closeNewsletterModal = () => {
-    setShowNewsletterModal(false);
-  };
-
   return (
     <>
       <HeroSection {...homeObjOne} />
-      <NewsletterSection
-        visible={showNewsletterModal}
-        onClose={closeNewsletterModal}
-      />
+      <NewsletterSection visible={false} onClose={() => {}} />
     </>
   );
 };
