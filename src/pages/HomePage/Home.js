@@ -20,6 +20,30 @@ const Home = () => {
   const { token } = useToken();
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
+  useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        // Attempt to fetch IP address from the first URL
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        setIpAddress(response.data.ip);
+      } catch (error1) {
+        console.error("Error fetching IP address from primary URL:", error1);
+        try {
+          // Attempt to fetch IP address from the second URL if the first one fails
+          const response = await axios.get("https://ipapi.co/json/");
+          setIpAddress(response.data.ip);
+        } catch (error2) {
+          console.error(
+            "Error fetching IP address from secondary URL:",
+            error2
+          );
+          setIpAddress(null); // Set IP address to null if both URLs fail
+        }
+      }
+    };
+
+    fetchIpAddress();
+  }, []);
   const login = useGoogleLogin({
     onSuccess: async (response) => {
       try {
