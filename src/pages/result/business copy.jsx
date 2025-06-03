@@ -37,6 +37,7 @@ import {
 } from "react-icons/md";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -75,14 +76,9 @@ const Business = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `${baseUrl}/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         console.log("hre");
         console.log(response);

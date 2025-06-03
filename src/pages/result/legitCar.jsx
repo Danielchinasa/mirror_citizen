@@ -19,6 +19,7 @@ import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -36,14 +37,9 @@ const LegitCar = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `${baseUrl}/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         // console.log("hre");
         // console.log(response.data.data.firstName);

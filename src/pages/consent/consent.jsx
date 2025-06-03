@@ -5,6 +5,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../../apiConfig";
+import { apiGet } from "../../apiUtils";
 
 const antIcon = (
   <LoadingOutlined
@@ -24,16 +25,11 @@ const Consent = ({ history }) => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `${baseUrl}/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGet(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
-        const consentStatus = response.data.consent; // Adjust this based on your API response structure
+        const consentStatus = response.consent; // Adjust this based on your API response structure
 
         if (consentStatus === "granted") {
           // Consent granted, redirect to result page

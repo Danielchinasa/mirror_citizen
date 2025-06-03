@@ -62,6 +62,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
+import { apiPostInternalCall } from "../../apiUtils";
 
 /* global Reach */
 
@@ -307,15 +308,11 @@ const DashboardPage = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
 
-        const response = await axios.post(
-          `${baseUrl}/transaction/service-prices`,
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
           { ipAddress },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+
+          userToken
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);

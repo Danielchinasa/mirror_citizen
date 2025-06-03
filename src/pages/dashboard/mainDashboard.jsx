@@ -37,6 +37,7 @@ import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
+import { apiPost, apiPostInternalCall } from "../../apiUtils";
 const { Title } = Typography;
 
 const data = [
@@ -128,15 +129,10 @@ const MainDashboard = () => {
     const fetchServiceFee = async () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
-        const response = await axios.post(
-          `${baseUrl}/transaction/service-prices`,
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
           { ipAddress },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+          userToken
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);

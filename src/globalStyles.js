@@ -276,6 +276,19 @@ export const StyledInput = styled.input`
   }
 `;
 
+export const StyledInputNoDarkMode = styled.input`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  color: "#000000";
+  &:focus {
+    outline: none;
+    border-color: #09c93a !important;
+  }
+`;
+
 export const StyledTextArea = styled.textarea`
   width: 100%;
   padding: 10px;

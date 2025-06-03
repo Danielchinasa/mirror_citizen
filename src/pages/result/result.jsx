@@ -44,6 +44,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -113,14 +114,9 @@ const Result = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `${baseUrl}/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         // console.log("Consent Check");
         // console.log(response.data.consent);

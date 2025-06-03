@@ -41,6 +41,7 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -79,14 +80,9 @@ const Vehicle = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const postResponse = await axios.get(
-          `${baseUrl}/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+        const postResponse = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
 
         // Handle the response from the post request as needed

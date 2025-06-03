@@ -23,6 +23,7 @@ import baseUrl from "../../apiConfig";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
 import { trackEvent } from "../../hooks/analytics";
+import { apiPost, apiPostInternalCall } from "../../apiUtils";
 const { useToken } = theme;
 
 const Context = React.createContext({
@@ -187,7 +188,7 @@ const LoginForm = () => {
         });
       };
 
-      console.log("Response from signIn:", response.status);
+      console.log("Response from signIn:", response);
 
       if (response.jwtToken) {
         // On successful login with jwtToken, navigate to the main dashboard
@@ -288,16 +289,8 @@ const LoginForm = () => {
           deviceName: "Web app",
         };
 
-        const res = await axios.post(
-          `${baseUrl}/openauth/google-login`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const userData = res.data;
+        const res = await apiPost(`/openauth/google-login`, payload);
+        const userData = res;
         Swal.fire({
           background: bgContainer,
           color: text,

@@ -37,16 +37,11 @@ const Business = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `${baseUrl}/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGet(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
-        setBusinessData(response.data.data);
+        setBusinessData(response.data);
       } catch (error) {
         // Handle errors if needed
         console.error("Error checking consent:", error);

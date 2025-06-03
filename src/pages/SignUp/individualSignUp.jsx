@@ -40,6 +40,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
 import baseUrl from "../../apiConfig";
+import { apiPostInternalCall } from "../../apiUtils";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -347,14 +348,9 @@ const IndividualSignUp = () => {
           deviceName: "Web app",
         };
 
-        const res = await axios.post(
-          `${baseUrl}/openauth/google-login`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+        const res = await apiPostInternalCall(
+          `/openauth/google-login`,
+          payload
         );
         const userData = res.data;
         Swal.fire({

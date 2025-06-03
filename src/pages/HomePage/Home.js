@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
+import { apiPost, apiPostInternalCall } from "../../apiUtils";
 const { useToken } = theme;
 
 const Home = () => {
@@ -55,16 +56,8 @@ const Home = () => {
           deviceName: "Web app",
         };
 
-        const res = await axios.post(
-          `${baseUrl}/openauth/google-login`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const userData = res.data;
+        const res = await apiPost(`/openauth/google-login`, payload);
+        const userData = res;
         Swal.fire({
           background: bgContainer,
           color: text,
