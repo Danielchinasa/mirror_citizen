@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { trackEvent } from '../../hooks/analytics';
+import { trackEvent } from "../../hooks/analytics";
 
 import {
   Image,
@@ -39,6 +39,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
+import baseUrl from "../../apiConfig";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -211,12 +212,6 @@ const IndividualSignUp = () => {
       errors.lastName = "Please enter your last name";
     }
 
-    // NIN
-    // if (!formData.nin) {
-    //   errors.nin = "Please enter your National Identification Number (NIN)";
-    // } else if (formData.nin.length != 11) {
-    //   errors.nin = "NIN must be 11 characters";
-    // }
     if (!formData.email) {
       errors.email = "Please enter your email";
     } else if (
@@ -224,10 +219,6 @@ const IndividualSignUp = () => {
     ) {
       errors.email = "Invalid email format";
     }
-    // Phone Number
-    // if (!formData.phoneNumber) {
-    //   errors.phoneNumber = "Please enter your phone number";
-    // }
 
     if (!formData.password) {
       errors.password = "Please enter your password";
@@ -293,11 +284,11 @@ const IndividualSignUp = () => {
         // On successful login, navigate to the main dashboard
         // console.log("I reach here");
         trackEvent({
-                  action: "click_individual_signup_form_success",
-                  category: "Account Creation Success",
-                  label: "Individual Signup Form Success",
-                  value: 1,
-                });
+          action: "click_individual_signup_form_success",
+          category: "Account Creation Success",
+          label: "Individual Signup Form Success",
+          value: 1,
+        });
         history.push("/verify-otp");
       } else {
         setFormErrors({ general: response.message }); // Set error message
@@ -329,29 +320,17 @@ const IndividualSignUp = () => {
         allowOutsideClick: false,
         allowEscapeKey: false,
       });
-      // notification.error({
-      //   message: "Server Error",
-      //   description: error.message || "An error occurred while signing up.",
-      // });
     } finally {
       setLoading(false);
     }
   };
   const [isOpen, setIsOpen] = useState(false);
   const handleClickPrivacyPolicy = () => {
-    // Import the PDF file using require
-    // const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
-
-    // // Open the PDF in a new tab
-    // window.open(pdf, "_blank");
     setIsOpen(true);
   };
   const [isAccepted, setIsAccepted] = useState(false);
-  const onChange = (e) => {
-    // console.log(`checked = ${e.target.checked}`);
-  };
+
   const onChangeIsAccepted = (e) => {
-    // console.log(`onChangeIsAccepted = ${e.target.checked}`);
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
 
@@ -369,7 +348,7 @@ const IndividualSignUp = () => {
         };
 
         const res = await axios.post(
-          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          `${baseUrl}/openauth/google-login`,
           payload,
           {
             headers: {
@@ -522,9 +501,7 @@ const IndividualSignUp = () => {
                       showIcon
                     />
                   )}
-                  {/* <StyledLabel>
-                    National Identification Number (NIN)
-                  </StyledLabel> */}
+
                   <StyledInput
                     $token={token}
                     hidden
@@ -572,16 +549,7 @@ const IndividualSignUp = () => {
                       background: "rgba(53, 65, 56, 0.1)",
                     }}
                   />
-                  {/* <StyledInput
-                    type="text"
-                    placeholder="Enter your phone number"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    pattern="[0-9]*" // Allow only numbers
-                    title="Please enter only numbers"
-                    ref={phoneNumberRef}
-                  /> */}
+
                   {formErrors.phoneNumber && (
                     <Alert
                       message={formErrors.phoneNumber}

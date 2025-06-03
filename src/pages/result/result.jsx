@@ -21,9 +21,6 @@ import {
 import axios from "axios";
 import { Typography } from "antd";
 import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
-import carInsurance from "../../images/car-insurance.svg";
-import creditCard from "../../images/credit-card.svg";
-import AdsCard from "../../components/ads/adsCard";
 import "../dashboard/emergency.css";
 import {
   FaRegUser,
@@ -46,7 +43,7 @@ import { IoSchoolSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 
@@ -117,7 +114,7 @@ const Result = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
+          `${baseUrl}/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",

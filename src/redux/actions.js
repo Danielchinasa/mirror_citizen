@@ -154,29 +154,6 @@ export const logout = () => async (dispatch) => {
   });
 };
 
-// export const fetchVerificationData = (token) => {
-//   return async (dispatch) => {
-//     try {
-//       // Make an API call to fetch verification data
-//       const response = await axios.get(`${baseUrl}/user/matching-requests`, {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`, // Include the bearer token
-//         },
-//       });
-//       console.log("Verification Data Response:", response);
-
-//       // Dispatch the fetched data to the store
-//       dispatch({
-//         type: "FETCH_VERIFICATION_DATA_SUCCESS",
-//         payload: response.data,
-//       });
-//     } catch (error) {
-//       // Handle errors, dispatch an error action, or set an error state
-//       console.error("Error fetching verification data:", error);
-//     }
-//   };
-// };
 export const fetchVerificationData = (token, page = 0, size = 10) => {
   return async (dispatch) => {
     dispatch({ type: "FETCH_VERIFICATION_DATA_REQUEST" });
@@ -239,9 +216,7 @@ export const fetchTransactionData = (token) => {
 
 export const SendOtp = (otpString) => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `https://e-citizen.ng:8444/api/v2/auth/activation/${otpString}`
-    );
+    const response = await axios.get(`${baseUrl}/auth/activation/${otpString}`);
     const userData = response.data;
 
     dispatch({
@@ -274,7 +249,7 @@ export const SendOtp = (otpString) => async (dispatch) => {
 export const ReSendOtp = (emailString) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://e-citizen.ng:8444/api/v2/auth/resendtotp/${emailString}`
+      `${baseUrl}/auth/resendtotp/${emailString}`
     );
     const userData = response.data;
 

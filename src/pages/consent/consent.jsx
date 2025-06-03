@@ -4,6 +4,7 @@ import { Subtitle, Heading, InfoSec, BtnLink } from "../../globalStyles";
 import { LoadingOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import baseUrl from "../../apiConfig";
 
 const antIcon = (
   <LoadingOutlined
@@ -24,7 +25,7 @@ const Consent = ({ history }) => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
+          `${baseUrl}/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",

@@ -36,6 +36,7 @@ import { Typography } from "antd";
 import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 const { Title } = Typography;
 
 const data = [
@@ -127,17 +128,8 @@ const MainDashboard = () => {
     const fetchServiceFee = async () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
-        // const response = await axios.get(
-        //   `https://e-citizen.ng:8444/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       Authorization: `Bearer ${userToken}`, // Include the bearer token
-        //     },
-        //   }
-        // );
         const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+          `${baseUrl}/transaction/service-prices`,
           { ipAddress },
           {
             headers: {
@@ -266,7 +258,7 @@ const MainDashboard = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8444/api/v2/verification/check-consent/${id}`,
+        `${baseUrl}/verification/check-consent/${id}`,
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -817,17 +809,14 @@ const MainDashboard = () => {
       };
       setAmount("");
 
-      const response = await fetch(
-        "https://e-citizen.ng:8444/api/v2/payment/initiate",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
-          },
-          body: JSON.stringify(postData),
-        }
-      );
+      const response = await fetch(`${baseUrl}/payment/initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(postData),
+      });
 
       // Check if the request was successful (status code 200-299)
       if (response.ok) {

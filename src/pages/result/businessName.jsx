@@ -47,7 +47,7 @@ import {
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -106,7 +106,7 @@ const BusinessName = () => {
         const ipAddress = localStorage.getItem("IpAddress");
 
         const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+          `${baseUrl}/transaction/service-prices`,
           { ipAddress },
           {
             headers: {
@@ -133,7 +133,7 @@ const BusinessName = () => {
         const ipAddress = localStorage.getItem("IpAddress");
 
         const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+          `${baseUrl}/transaction/service-prices`,
           { ipAddress },
           {
             headers: {
@@ -161,7 +161,7 @@ const BusinessName = () => {
         // Make an API request to check consent status
         setLoading(true);
         const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
+          `${baseUrl}/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -276,8 +276,7 @@ const BusinessName = () => {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const apiUrl =
-          "https://e-citizen.ng:8444/api/v2/transaction/wallet-payment";
+        const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
           userNIN: userNin,
@@ -385,7 +384,7 @@ const BusinessName = () => {
                 };
 
                 const response = await axios.post(
-                  "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+                  `${baseUrl}/verification/call-external-apis`,
                   requestBody,
                   {
                     headers: {
@@ -644,7 +643,7 @@ const BusinessName = () => {
                 };
                 // Make an API request to call external APIs
                 const response = await axios.post(
-                  "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+                  `${baseUrl}/verification/call-external-apis`,
                   requestBody,
                   {
                     headers: {
@@ -801,17 +800,14 @@ const BusinessName = () => {
               type: "VERIFICATION",
             };
 
-            const response = await fetch(
-              "https://e-citizen.ng:8444/api/v2/payment/initiate",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${userToken}`,
-                },
-                body: JSON.stringify(postData),
-              }
-            );
+            const response = await fetch(`${baseUrl}/payment/initiate`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(postData),
+            });
 
             if (response.ok) {
               // Handle successful response here
@@ -919,7 +915,7 @@ const BusinessName = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8444/api/v2/payment/check?transactionRef=${transactionRef}`,
+        `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
         {
           method: "GET",
           headers: {
@@ -975,7 +971,7 @@ const BusinessName = () => {
               },
             };
             const externalApiResponse = await axios.post(
-              "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+              `${baseUrl}/verification/call-external-apis`,
               requestBody,
               {
                 headers: {

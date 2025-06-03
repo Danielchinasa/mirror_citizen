@@ -40,7 +40,7 @@ import { RiHomeOfficeLine } from "react-icons/ri";
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -155,7 +155,7 @@ const Financial = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
+          `${baseUrl}/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",

@@ -22,7 +22,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
-import { trackEvent } from '../../hooks/analytics';
+import { trackEvent } from "../../hooks/analytics";
 const { useToken } = theme;
 
 const Context = React.createContext({
@@ -289,7 +289,7 @@ const LoginForm = () => {
         };
 
         const res = await axios.post(
-          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          `${baseUrl}/openauth/google-login`,
           payload,
           {
             headers: {

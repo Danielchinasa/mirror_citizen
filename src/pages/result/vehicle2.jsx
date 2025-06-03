@@ -24,9 +24,6 @@ import Icon, {
   CarOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
-import carInsurance from "../../images/car-insurance.svg";
-import creditCard from "../../images/credit-card.svg";
-import AdsCard from "../../components/ads/adsCard";
 import {
   FaTeethOpen,
   FaCalendarAlt,
@@ -38,18 +35,11 @@ import {
   FaRegUser,
   FaPhone,
 } from "react-icons/fa";
-import { PiEngineLight } from "react-icons/pi";
-import { IoIosInformationCircleOutline } from "react-icons/io";
-import { TbSteeringWheel } from "react-icons/tb";
-import { GiCarWheel, GiChemicalTank } from "react-icons/gi";
-import { AiOutlineColumnWidth } from "react-icons/ai";
-import { LuCar } from "react-icons/lu";
-import { IoMdSpeedometer } from "react-icons/io";
-import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 
@@ -78,13 +68,9 @@ const Vehicle2 = () => {
   const [ownerState, setOwnerState] = useState("-");
   const [ownerPhone, setOwnerPhone] = useState("-");
 
-  // const verificationResult = useSelector(
-  //   (state) => state.verificationResult.data
-  // );
   const requestId = localStorage.getItem("verificationRequestId");
 
   useEffect(() => {
-    // Convert tokenExpire string to a Date object
     const expireDate = new Date(tokenExpire);
 
     // Get the current date/time
@@ -92,8 +78,6 @@ const Vehicle2 = () => {
 
     // Compare the current date with the expiration date
     if (currentDate >= expireDate) {
-      // If the current date is greater than or equal to the expiration date,
-      // it means the token has expired
       dispatch(logout());
       history.push("/");
     } else {
@@ -110,7 +94,7 @@ const Vehicle2 = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
         const postResponse = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
+          `${baseUrl}/verification/check-consent/${requestId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -171,17 +155,6 @@ const Vehicle2 = () => {
     fetchData();
   }, [dispatch, userToken]);
 
-  // const renderDetail = (icon, label, value) => (
-  //   <>
-  //     <StyledLabel>
-  //       {icon}
-  //       &nbsp; {label}
-  //     </StyledLabel>
-  //     <StyledLabel>
-  //       <strong>{value}</strong>
-  //     </StyledLabel>
-  //   </>
-  // );
   const renderDetail = (icon, label, value) => (
     <>
       <StyledLabel $token={token}>
@@ -241,47 +214,12 @@ const Vehicle2 = () => {
               >
                 <div>
                   <Text>VEHICLE REPORT</Text>
-                  {/* <RightOutlined />
-                <Text>Clear VIN</Text> */}
                 </div>
-
-                {/* <div>
-                <a
-                  href={`https://e-citizen.ng:8444${pdfUri}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    textAlign: "right",
-                    fontSize: "15px",
-                    color: "#09C93A",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                    padding: "6px",
-                    border: "2px solid #09C93A",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <DownloadOutlined /> Download PDF for Full Report
-                </a>
-              </div> */}
               </div>
 
               <Divider />
               <Row gutter={16}>
-                <Col span={24}>
-                  {/* {image ? (
-                <Avatar
-                  size={224}
-                  src={`${image}`}
-                  alt="Avatar"
-                  style={{ borderRadius: "4px" }} // Optional: Add a border-radius for a slightly rounded appearance
-                  square
-                />
-              ) : ( */}
-                  {/* <Avatar size={124} icon={<CarOutlined />} /> */}
-                  Vehicle Specification
-                  {/* )} */}
-                </Col>
+                <Col span={24}></Col>
                 <Col span={6}>
                   {renderDetail(
                     <FaTeethOpen />,
@@ -406,38 +344,6 @@ const Vehicle2 = () => {
                 );
               }}
             ></div>
-            {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Finance your Next Car</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#DDF9EA",
-                }}
-              >
-                <p class="card-text">
-                  Find financial offers that are tailored to your credit score.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Credit Cards</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#ECF5F8",
-                }}
-              >
-                <p class="card-text">Credit Cards handpicked for you</p>
-              </div>
-            </div>
-          </div> */}
           </div>
         </div>
       </Container>

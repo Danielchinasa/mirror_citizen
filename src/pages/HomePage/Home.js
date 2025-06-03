@@ -10,6 +10,7 @@ import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 const { useToken } = theme;
 
 const Home = () => {
@@ -55,7 +56,7 @@ const Home = () => {
         };
 
         const res = await axios.post(
-          `https://e-citizen.ng:8444/api/v2/openauth/google-login`,
+          `${baseUrl}/openauth/google-login`,
           payload,
           {
             headers: {

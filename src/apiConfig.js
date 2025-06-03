@@ -1,10 +1,7 @@
-// src/apiConfig.js
-//old API
+//Staging API
 // const baseUrl = "https://e-citizen.ng:8444/api/v2";
 
-//New API
-// const baseUrl = "https://e-citizen.ng:8444/api/v2";
-
+//Prod API
 const baseUrl = "https://e-citizen.ng:8444/api/v2";
 
 export default baseUrl;
