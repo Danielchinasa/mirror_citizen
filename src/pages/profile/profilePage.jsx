@@ -90,7 +90,7 @@ const ProfilePage = () => {
     </div>
   );
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.userDetails);
   const userFirstName = user?.firstName || "";
   const userLastName = user?.lastName || "";
   const userBal = user?.walletBalance;

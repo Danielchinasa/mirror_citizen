@@ -21,9 +21,6 @@ import Icon, {
   CarOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
-import carInsurance from "../../images/car-insurance.svg";
-import creditCard from "../../images/credit-card.svg";
-import AdsCard from "../../components/ads/adsCard";
 import {
   FaTeethOpen,
   FaCalendarAlt,
@@ -43,7 +40,8 @@ import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -80,32 +78,11 @@ const Vehicle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Make a new API post request independently of the consent status
-        // const postResponse = await axios.post(
-        //   "https://e-citizen.ng:8444/api/v2/call-external-apis",
-        //   {
-        //     vehicle: {
-        //       vin: "5TDYK3DC8DS290235",
-        //     },
-        //   },
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       Authorization: `Bearer ${userToken}`,
-        //     },
-        //   }
-        // );
-
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const postResponse = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const postResponse = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
 
         // Handle the response from the post request as needed

@@ -28,15 +28,7 @@ import Icon, {
 import carInsurance from "../../images/car-insurance.svg";
 import creditCard from "../../images/credit-card.svg";
 import AdsCard from "../../components/ads/adsCard";
-import {
-  FaRegUser,
-  FaCalendarAlt,
-  FaPray,
-  FaHome,
-  FaRestroom,
-  FaPhoneAlt,
-  FaGlobe,
-} from "react-icons/fa";
+
 import {
   MdOutlineMail,
   MdOutlineWorkOutline,
@@ -44,7 +36,8 @@ import {
   MdTitle,
 } from "react-icons/md";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -83,14 +76,9 @@ const Business = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         console.log("hre");
         console.log(response);

@@ -28,6 +28,7 @@ import Swal from "sweetalert2";
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 
 const { useToken } = theme;
 
@@ -154,10 +155,6 @@ function Navbar() {
                 ? defaultDpDark
                 : defaultDp
             }
-            // src={
-            //   "https://e-citizen.ng:8444" + userDetails?.profileImageLocation ||
-            //   defaultDp
-            // }
             alt="User Avatar"
             style={{
               width: "40px",
@@ -221,17 +218,14 @@ function Navbar() {
       };
       setAmount("");
 
-      const response = await fetch(
-        "https://e-citizen.ng:8444/api/v2/payment/initiate",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken2}`,
-          },
-          body: JSON.stringify(postData),
-        }
-      );
+      const response = await fetch(`${baseUrl}/payment/initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken2}`,
+        },
+        body: JSON.stringify(postData),
+      });
       console.log("Nav wallet resposne", response);
       // Check if the request was successful (status code 200-299)
       if (response.ok) {

@@ -22,14 +22,17 @@ import Icon, {
   MinusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import carInsurance from "../../images/car-insurance.svg";
-import creditCard from "../../images/credit-card.svg";
-import AdsCard from "../../components/ads/adsCard";
 
 import { MdOutlinePinDrop } from "react-icons/md";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import {
+  apiPost,
+  apiPostInternalCall,
+  apiGetInternalCall,
+} from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -53,24 +56,11 @@ const Business = () => {
     const fetchServiceFee = async () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
-        // const response = await axios.get(
-        //   `https://e-citizen.ng:8444/api/v2/transaction/services-prices?ipAddress=${ipAddress}`,
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       Authorization: `Bearer ${userToken}`, // Include the bearer token
-        //     },
-        //   }
-        // );
-        const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
           { ipAddress },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+          userToken
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);
@@ -89,15 +79,10 @@ const Business = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
 
-        const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
           { ipAddress },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+          userToken
         );
         console.log("Stake Fees");
         console.log(response.data.data[8].price);
@@ -117,14 +102,9 @@ const Business = () => {
       try {
         // Make an API request to check consent status
         setLoading(true);
-        const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         setBusinessData(response.data.data);
         setLoading(false);
@@ -207,15 +187,10 @@ const Business = () => {
               },
             };
             // Make an API request to call external APIs
-            const response = await axios.post(
-              "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+            const response = await apiPostInternalCall(
+              `/verification/call-external-apis`,
               requestBody,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${userToken}`, // Include the bearer token
-                },
-              }
+              userToken
             );
             // Handle response if needed
             console.log("External API call response:", response.data);

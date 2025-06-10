@@ -32,6 +32,8 @@ import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { RiHomeOfficeLine } from "react-icons/ri";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -88,9 +90,6 @@ const Financial = () => {
   const [checkFicoDataStats, setCheckFicoDataStats] = useState(false);
   const [highestloanRequest, setHighestloanRequest] = useState(null);
 
-  // const verificationResult = useSelector(
-  //   (state) => state.verificationResult.data
-  // );
   const requestId = localStorage.getItem("verificationRequestId");
 
   useEffect(() => {
@@ -99,14 +98,9 @@ const Financial = () => {
         setLoading(true);
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         console.log("hre");
         console.log(response);
@@ -173,20 +167,7 @@ const Financial = () => {
     </>
   );
   const storedValue = localStorage.getItem("profile");
-  // if (loading) {
-  //   Swal.fire({
-        background: bgContainer,
-        color: text,
-  //     title: "Hmmm...",
-  //     text: "Awaiting Consent",
-  //     icon: "info",
-  //     didOpen: () => {
-  //       Swal.showLoading();
-  //     },
-  //     // allowOutsideClick: false,
-  //     // allowEscapeKey: false,
-  //   });
-  // }
+
   const [activeTab, setActiveTab] = useState("1");
 
   const handleTabChange = (key) => {

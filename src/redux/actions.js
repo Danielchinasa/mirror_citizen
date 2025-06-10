@@ -2,29 +2,22 @@
 import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
+import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
 
 export const updatePassword = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}/form/reset-password/${credentials.email}/password`,
+    const response = await apiPost(
+      `/form/reset-password/${credentials.email}/password`,
       { newPassword: credentials.newpassword, token: credentials.token }
     );
-    const userData = response.data;
-    console.log("Reset password response:", userData);
-
-    // dispatch({
-    //   type: "SIGN_IN",
-    //   payload: userData,
-    // });
-    // dispatch(fetchUserProfile(userData.jwtToken));
 
     // Return the user data upon successful login
-    return userData;
+    return response;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -42,8 +35,10 @@ export const updatePassword = (credentials) => async (dispatch) => {
 
 export const signIn = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/auth/login`, credentials);
-    const userData = response.data;
+    const response = await apiPost("/auth/login", credentials);
+    // Check if the response is an error object
+    console.log("Sign In Response:", response);
+    const userData = response;
     console.log("User Data:", userData);
 
     dispatch({
@@ -58,7 +53,7 @@ export const signIn = (credentials) => async (dispatch) => {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -76,11 +71,8 @@ export const signIn = (credentials) => async (dispatch) => {
 
 export const signUp = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}/auth/registration`,
-      credentials
-    );
-    const userData = response.data;
+    const response = await apiPost("/auth/registration", credentials);
+    const userData = response;
 
     dispatch({
       type: "SIGN_UP",
@@ -93,7 +85,7 @@ export const signUp = (credentials) => async (dispatch) => {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -111,11 +103,8 @@ export const signUp = (credentials) => async (dispatch) => {
 
 export const BusinessSignUp = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}/auth/registration`,
-      credentials
-    );
-    const userData = response.data;
+    const response = await apiPost(`/auth/registration`, credentials);
+    const userData = response;
 
     dispatch({
       type: "SIGN_UP",
@@ -128,7 +117,7 @@ export const BusinessSignUp = (credentials) => async (dispatch) => {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -154,57 +143,27 @@ export const logout = () => async (dispatch) => {
   });
 };
 
-// export const fetchVerificationData = (token) => {
-//   return async (dispatch) => {
-//     try {
-//       // Make an API call to fetch verification data
-//       const response = await axios.get(`${baseUrl}/user/matching-requests`, {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`, // Include the bearer token
-//         },
-//       });
-//       console.log("Verification Data Response:", response);
-
-//       // Dispatch the fetched data to the store
-//       dispatch({
-//         type: "FETCH_VERIFICATION_DATA_SUCCESS",
-//         payload: response.data,
-//       });
-//     } catch (error) {
-//       // Handle errors, dispatch an error action, or set an error state
-//       console.error("Error fetching verification data:", error);
-//     }
-//   };
-// };
 export const fetchVerificationData = (token, page = 0, size = 10) => {
   return async (dispatch) => {
     dispatch({ type: "FETCH_VERIFICATION_DATA_REQUEST" });
 
     try {
-      const response = await axios.post(
-        `${baseUrl}/user/matching-requests`,
+      const response = await apiPost(
+        `/user/matching-requests`,
         { page, size }, // Payload
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        token
       );
-
-      console.log("Verification Data Response:", response.data);
 
       dispatch({
         type: "FETCH_VERIFICATION_DATA_SUCCESS",
-        payload: response.data,
+        payload: response,
       });
     } catch (error) {
       console.error("Error fetching verification data:", error);
 
       dispatch({
         type: "FETCH_VERIFICATION_DATA_FAILURE",
-        payload: error.response?.data?.message || "Something went wrong!",
+        payload: error.response?.message || "Something went wrong!",
       });
     }
   };
@@ -214,21 +173,13 @@ export const fetchTransactionData = (token) => {
   return async (dispatch) => {
     try {
       // Make an API call to fetch verification data
-      const response = await axios.get(
-        `${baseUrl}/transaction/payment-history`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the bearer token
-          },
-        }
-      );
+      const response = await apiGet(`/transaction/payment-history`, token);
       console.log("Transaction Data Response:", response);
 
       // Dispatch the fetched data to the store
       dispatch({
         type: "FETCH_TRANSACTION_DATA_SUCCESS",
-        payload: response.data,
+        payload: response,
       });
     } catch (error) {
       // Handle errors, dispatch an error action, or set an error state
@@ -239,23 +190,21 @@ export const fetchTransactionData = (token) => {
 
 export const SendOtp = (otpString) => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `https://e-citizen.ng:8444/api/v2/auth/activation/${otpString}`
-    );
+    const response = await apiGet(`/auth/activation/${otpString}`);
     const userData = response.data;
 
     dispatch({
       type: "SEND_OTP_SUCCESS",
-      payload: response.data,
+      payload: response,
     });
 
     // Return the user data upon successful login
-    return response.data;
+    return response;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -273,23 +222,21 @@ export const SendOtp = (otpString) => async (dispatch) => {
 
 export const ReSendOtp = (emailString) => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `https://e-citizen.ng:8444/api/v2/auth/resendtotp/${emailString}`
-    );
+    const response = await apiGet(`/auth/resendtotp/${emailString}`);
     const userData = response.data;
 
     dispatch({
       type: "RESEND_OTP_SUCCESS",
-      payload: response.data,
+      payload: response,
     });
 
     // Return the user data upon successful login
-    return response.data;
+    return response;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -376,31 +323,26 @@ export const sendVerificationRequest =
           delete restructuredData[section];
         }
       });
-      const response = await axios.post(
-        `${baseUrl}/verification/call-external-apis`,
+      const response = await apiPost(
+        `/verification/call-external-apis`,
         restructuredData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the bearer token
-          },
-        }
+        token
       );
 
-      const userData = response.data;
+      const userData = response;
 
       dispatch({
         type: "SEND_VERIFICATION_REQUEST_SUCCESS",
-        payload: response.data,
+        payload: response,
       });
 
       // Return the user data upon successful verification
-      return response.data;
+      return response;
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // other than 2xx. Access response data in error.response.data
-        return error.response.data;
+        return error.response;
       } else if (error.request) {
         // The request was made but no response was received
         console.error("No response received:", error.request);
@@ -418,23 +360,21 @@ export const sendVerificationRequest =
 
 export const ResetPassword = (emailAddress) => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `${baseUrl}/auth/fpassword/${emailAddress}`
-    );
+    const response = await apiGet(`/auth/fpassword/${emailAddress}`);
     const userData = response.data;
 
     dispatch({
       type: "RESET_PASSWORD",
-      payload: response.data,
+      payload: response,
     });
 
     // Return the user data upon successful login
-    return response.data;
+    return response;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -455,21 +395,15 @@ export const fetchVerificationResult = (requestId, token) => {
   return async (dispatch) => {
     try {
       // Make an API call to fetch verification data
-      const response = await axios.get(
-        `${baseUrl}/verification/check-consent/${requestId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the bearer token
-          },
-        }
+      const response = await apiGet(
+        `/verification/check-consent/${requestId}`,
+        token
       );
-      console.log("Verification Result Response:", response);
 
       // Dispatch the fetched data to the store
       dispatch({
         type: "FETCH_VERIFICATION_RESULT",
-        payload: response.data,
+        payload: response,
       });
     } catch (error) {
       // Handle errors, dispatch an error action, or set an error state
@@ -480,31 +414,22 @@ export const fetchVerificationResult = (requestId, token) => {
 
 export const setNewPassword = (formData, token) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}/user/change/password`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the bearer token
-        },
-      }
-    );
+    const response = await apiPost(`/user/change/password`, formData, token);
 
     const userData = response.data;
 
     dispatch({
       type: "SET_NEW_PASSWORD_SUCCESS",
-      payload: response.data,
+      payload: response,
     });
 
     // Return the user data upon successful verification
-    return response.data;
+    return response;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -521,27 +446,20 @@ export const setNewPassword = (formData, token) => async (dispatch) => {
 };
 export const updateProfile = (formData, token) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/user/update`, formData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Include the bearer token
-      },
-    });
-
-    const userData = response.data;
+    const response = await apiPost(`/user/update`, formData, token);
 
     dispatch({
       type: "UPDATE_PROFILE_SUCCESS",
-      payload: response.data,
+      payload: response,
     });
 
     // Return the user data upon successful verification
-    return response.data;
+    return response;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // other than 2xx. Access response data in error.response.data
-      return error.response.data;
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       console.error("No response received:", error.request);
@@ -566,29 +484,24 @@ export const fetchUserProfile = (token) => {
   return async (dispatch) => {
     try {
       // Make an API call to fetch user profile data
-      const response = await axios.get(`${baseUrl}/user/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the bearer token
-        },
-      });
+      const response = await apiGet(`/user/profile`, token);
 
       console.log("User Profile Data Response:", response);
 
       // Dispatch the fetched data to the store
       dispatch({
         type: "FETCH_USER_PROFILE_SUCCESS",
-        payload: response.data,
+        payload: response,
       });
 
       // Dispatch an action to update user details separately
       dispatch({
         type: "UPDATE_USER_DETAILS",
-        payload: response.data,
+        payload: response,
       });
 
       // Return the user profile data upon successful fetch
-      return response.data;
+      return response;
     } catch (error) {
       // Handle errors, dispatch an error action, or set an error state
       console.error("Error fetching user profile data:", error);

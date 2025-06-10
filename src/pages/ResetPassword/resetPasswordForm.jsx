@@ -5,7 +5,7 @@ import {
   Heading,
   MainButtonFull,
   StyledForm,
-  StyledInput,
+  StyledInputNoDarkMode,
   StyledLabel,
   // Subtitle,
 } from "../../globalStyles";
@@ -180,8 +180,8 @@ const ResetPasswordForm = ({ email, token }) => {
         // localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
         Swal.fire({
-          background: bgContainer,
-          color: text,
+          background: "#ffffff",
+          color: "#000000",
           title: "Success",
           text: "Reset password Successful",
           icon: "success",
@@ -198,8 +198,8 @@ const ResetPasswordForm = ({ email, token }) => {
             "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
         }); // Set error message
         Swal.fire({
-          background: bgContainer,
-          color: text,
+          background: "#ffffff",
+          color: "#000000",
           title: "Error",
           text: "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
           icon: "error",
@@ -214,8 +214,8 @@ const ResetPasswordForm = ({ email, token }) => {
         // On successful Reset password, navigate to the main dashboard
         setFormErrors({ general: "Reset password Failed" }); // Set error message
         Swal.fire({
-          background: bgContainer,
-          color: text,
+          background: "#ffffff",
+          color: "#000000",
           title: "Error",
           text: "Invalid Reset Password Link",
           icon: "error",
@@ -229,8 +229,8 @@ const ResetPasswordForm = ({ email, token }) => {
       }
     } catch (error) {
       Swal.fire({
-        background: bgContainer,
-        color: text,
+        background: "#ffffff",
+        color: "#000000",
         title: "Error",
         text: "Reset password Failed",
         icon: "error",
@@ -252,15 +252,15 @@ const ResetPasswordForm = ({ email, token }) => {
   //   setIsCaptchaVerified(true);
   // };
 
-  const { myToken } = theme.useToken();
-  const { isDark } = useTheme();
-  const { bgContainer, text } = myToken;
+  // const { myToken } = theme.useToken();
+  // const { isDark } = useTheme();
+  // const { bgContainer, text } = myToken;
 
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
       <div style={{ marginTop: "50px" }}>
-        <Heading>Reset Password</Heading>
+        <h4>Reset Password</h4>
         <Spin spinning={loading} tip="Resetting Password...">
           <StyledForm onSubmit={handleSignIn}>
             {formErrors.general && (
@@ -271,8 +271,8 @@ const ResetPasswordForm = ({ email, token }) => {
                 style={{ marginBottom: "16px" }}
               />
             )}
-            <StyledLabel>New Password</StyledLabel>
-            <StyledInput
+            <label>New Password</label>
+            <StyledInputNoDarkMode
               type="password"
               placeholder="Enter your new password"
               name="newpassword"
@@ -282,8 +282,8 @@ const ResetPasswordForm = ({ email, token }) => {
             {formErrors.email && (
               <Alert message={formErrors.newpassword} type="error" showIcon />
             )}
-            <StyledLabel>Confirm Password</StyledLabel>
-            <StyledInput
+            <label>Confirm Password</label>
+            <StyledInputNoDarkMode
               type="password"
               placeholder="Confirm your new password"
               name="confirmpassword"

@@ -16,12 +16,10 @@ import { fetchVerificationResult } from "../../redux/actions";
 import axios from "axios";
 import { Typography } from "antd";
 import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
-import AdsCard from "../../components/ads/adsCard";
-import carInsurance from "../../images/car-insurance.svg";
-import creditCard from "../../images/credit-card.svg";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 
@@ -39,14 +37,9 @@ const LegitCar = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         // console.log("hre");
         // console.log(response.data.data.firstName);

@@ -47,7 +47,8 @@ import {
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
-import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
+import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -105,15 +106,10 @@ const BusinessName = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
 
-        const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
           { ipAddress },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+          userToken
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);
@@ -132,15 +128,10 @@ const BusinessName = () => {
       try {
         const ipAddress = localStorage.getItem("IpAddress");
 
-        const response = await axios.post(
-          "https://e-citizen.ng:8444/api/v2/transaction/service-prices",
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
           { ipAddress },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
+          userToken
         );
         console.log("Stake Fees");
         console.log(response.data.data[8].price);
@@ -160,14 +151,9 @@ const BusinessName = () => {
       try {
         // Make an API request to check consent status
         setLoading(true);
-        const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
         setBusinessData(response.data.data);
         setLoading(false);
@@ -276,8 +262,7 @@ const BusinessName = () => {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const apiUrl =
-          "https://e-citizen.ng:8444/api/v2/transaction/wallet-payment";
+        const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
           userNIN: userNin,
@@ -384,15 +369,10 @@ const BusinessName = () => {
                   },
                 };
 
-                const response = await axios.post(
-                  "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+                const response = await apiPostInternalCall(
+                  `/verification/call-external-apis`,
                   requestBody,
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${userToken}`,
-                    },
-                  }
+                  userToken
                 );
 
                 if (
@@ -643,15 +623,10 @@ const BusinessName = () => {
                   },
                 };
                 // Make an API request to call external APIs
-                const response = await axios.post(
-                  "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+                const response = await apiPostInternalCall(
+                  `/verification/call-external-apis`,
                   requestBody,
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${userToken}`, // Include the bearer token
-                    },
-                  }
+                  userToken
                 );
 
                 if (
@@ -801,17 +776,14 @@ const BusinessName = () => {
               type: "VERIFICATION",
             };
 
-            const response = await fetch(
-              "https://e-citizen.ng:8444/api/v2/payment/initiate",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${userToken}`,
-                },
-                body: JSON.stringify(postData),
-              }
-            );
+            const response = await fetch(`${baseUrl}/payment/initiate`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(postData),
+            });
 
             if (response.ok) {
               // Handle successful response here
@@ -919,7 +891,7 @@ const BusinessName = () => {
 
     try {
       const response = await fetch(
-        `https://e-citizen.ng:8444/api/v2/payment/check?transactionRef=${transactionRef}`,
+        `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
         {
           method: "GET",
           headers: {
@@ -974,15 +946,10 @@ const BusinessName = () => {
                 cacId: parseInt(cacId),
               },
             };
-            const externalApiResponse = await axios.post(
-              "https://e-citizen.ng:8444/api/v2/verification/call-external-apis",
+            const externalApiResponse = await apiPostInternalCall(
+              `/verification/call-external-apis`,
               requestBody,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${userToken}`,
-                },
-              }
+              userToken
             );
             if (
               externalApiResponse.data.business &&

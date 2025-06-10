@@ -22,6 +22,7 @@ import AdsCard from "../../components/ads/adsCard";
 import { MdOutlinePinDrop } from "react-icons/md";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 
@@ -36,16 +37,11 @@ const Business = () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
         // Make an API request to check consent status
-        const response = await axios.get(
-          `https://e-citizen.ng:8444/api/v2/verification/check-consent/${requestId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`, // Include the bearer token
-            },
-          }
+        const response = await apiGet(
+          `/verification/check-consent/${requestId}`,
+          userToken
         );
-        setBusinessData(response.data.data);
+        setBusinessData(response.data);
       } catch (error) {
         // Handle errors if needed
         console.error("Error checking consent:", error);
