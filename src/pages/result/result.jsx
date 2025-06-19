@@ -84,7 +84,6 @@ const Result = () => {
   //   (state) => state.verificationResult.data
   // );
   const requestId = localStorage.getItem("verificationRequestId");
-  console.log("photo", photo);
 
   useEffect(() => {
     // Convert tokenExpire string to a Date object
@@ -118,15 +117,13 @@ const Result = () => {
           `/verification/check-consent/${requestId}`,
           userToken
         );
-        // console.log("Consent Check");
-        // console.log(response.data.consent);
+
         if (response.data.consent === "pending") {
           setLoading(true);
         } else {
           setLoading(false);
         }
-        // console.log("hre");
-        // console.log(response.data);
+
         const firstNameFromResponse = response.data.data.firstName || "";
         const middleNameFromResponse = response.data.data.middleName || "";
         const lastNameFromResponse = response.data.data.lastName || "-";

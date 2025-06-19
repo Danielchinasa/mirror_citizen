@@ -44,19 +44,17 @@ const InactivityDetector = () => {
           onClose: () => {
             // Trigger logout action when the dialog is closed without interaction
             dispatch(logout());
-            console.log("Logging out...");
+
             // Redirect to login page
             // history.push("/login");
-            console.log("Redirecting to login...");
           },
         }).then((result) => {
           if (result.dismiss === Swal.DismissReason.timer) {
             // If the timer is the reason for closing the dialog, logout the user
             dispatch(logout());
-            console.log("Logging out...");
+
             // Redirect to login page
             // history.push("/login");
-            console.log("Redirecting to login...");
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             // If the user clicks "Stay logged in", reset the timer
             handleUserActivity();

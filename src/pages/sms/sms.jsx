@@ -18,7 +18,6 @@ const Sms = () => {
             from
           )}&message=${encodeURIComponent(message)}`
         );
-        console.log(response); // Log the response data
       } catch (error) {
         console.error("Error sending data:", error);
       }

@@ -59,7 +59,6 @@ const AppLogout = ({ children }) => {
           resetTimer();
         }
         if (result.dismiss === Swal.DismissReason.timer) {
-          console.log("I was closed by the timer");
           logoutAction();
         }
       });

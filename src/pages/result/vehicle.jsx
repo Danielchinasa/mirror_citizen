@@ -86,9 +86,9 @@ const Vehicle = () => {
         );
 
         // Handle the response from the post request as needed
-        console.log("Post Response:", postResponse.data);
+
         const vehicleData = postResponse.data.data;
-        console.log("Post JSON:", vehicleData);
+
         setLoading(false);
         const vinSpec = vehicleData.vin || "-";
         const year = vehicleData.year || "-";

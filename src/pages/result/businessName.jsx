@@ -97,7 +97,6 @@ const BusinessName = () => {
     if (currentDate >= expireDate) {
       dispatch(logout());
       history.push("/");
-      // console.log("Time don pass well");
     } else {
     }
   }, []);
@@ -112,13 +111,9 @@ const BusinessName = () => {
           { ipAddress },
           userToken
         );
-        console.log("Service Fees");
-        console.log(response.data.data[0].price);
 
         setCurrencyCheck(response.data.data[8].currency);
-      } catch (error) {
-        console.error("Error fetching IP address:", error);
-      }
+      } catch (error) {}
     };
 
     fetchServiceFee();
@@ -134,8 +129,6 @@ const BusinessName = () => {
           { ipAddress },
           userToken
         );
-        console.log("Stake Fees");
-        console.log(response.data.data[8].price);
 
         setStakeHolderFeeUsd(response.data.data[8].price);
         setStakeHolderFeeNgn(response.data.data[8].price2);
@@ -270,7 +263,6 @@ const BusinessName = () => {
               cacId: parseInt(cacid),
             },
           };
-          console.log("Request Body for Verification:Daniel", requestBody);
 
           const response = await dispatch(
             initiateStakeHoldersRequest(requestBody, userToken)
@@ -352,7 +344,7 @@ const BusinessName = () => {
                 Authorization: `Bearer ${userToken}`,
               },
               body: JSON.stringify(
-                userCurrency === "usd"
+                userCurrency === "USD"
                   ? requestBody
                   : requestBodyWithAmountEquivalent
               ),
@@ -530,7 +522,7 @@ const BusinessName = () => {
         if (result.value === "Payment from Wallet") {
           localStorage.setItem("transactionID", randomTransactionId);
           localStorage.setItem("paymentType", "WALLET");
-          if (currencyCheck === "NGN" && userCurrency === "usd") {
+          if (currencyCheck === "NGN" && userCurrency === "USD") {
             setLoading(false);
 
             Swal.fire({
@@ -556,7 +548,7 @@ const BusinessName = () => {
             });
             return;
           }
-          if (currencyCheck === "USD" && userCurrency === "ngn") {
+          if (currencyCheck === "USD" && userCurrency === "NGN") {
             setLoading(false);
 
             Swal.fire({
@@ -819,7 +811,6 @@ const BusinessName = () => {
               const responseData = await response.json();
               if (responseData.status === "success") {
                 if (responseData.data && responseData.data.link) {
-                  console.log("Embedding URL:", responseData.data.link);
                   setPaymentUrl(responseData.data.link);
                   setTransactionRef(responseData.data.txRef);
                   localStorage.setItem(
@@ -956,8 +947,6 @@ const BusinessName = () => {
         const transactionID = localStorage.getItem("transactionID");
         const paymentType = localStorage.getItem("paymentType");
         if (responseData.status === "success") {
-          console.log("Checking payment status");
-          console.log(responseData.data);
           if (
             responseData.data &&
             (responseData.data.status === "success" ||

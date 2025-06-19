@@ -77,7 +77,6 @@ const props = {
   onChange(info) {
     const { status } = info.file;
     if (status !== "uploading") {
-      console.log(info.file, info.fileList);
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -88,9 +87,7 @@ const props = {
       );
     }
   },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
+  onDrop(e) {},
 };
 
 const dateFormat = "DD/MM/YYYY";
@@ -125,7 +122,6 @@ const DashboardPage = () => {
         const base64Reader = new FileReader();
         base64Reader.onload = (e) => {
           const base64String = e.target.result.split(",")[1]; // Remove data URL prefix
-          console.log("Base64 string:", base64String); // Or handle the base64 string as needed
           handleInputChange("nin_csv", base64String);
         };
         reader.onload = (e) => {
@@ -316,8 +312,6 @@ const DashboardPage = () => {
 
           userToken
         );
-        console.log("Service Fees");
-        console.log(response.data.data[0].price);
         setLoadingPrice(false);
         setExchangeRate(response.data.rate);
         setNinFee(response.data.data[0].price);
@@ -750,13 +744,8 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (isChecked) {
-      console.log("isChecked");
-
       setCheckStolen(true);
-      console.log(checkStolen);
     } else {
-      console.log("isCheckedNOT");
-      console.log(checkStolen);
       setCheckStolen(false);
     }
   }, [isChecked]);
@@ -929,7 +918,6 @@ const DashboardPage = () => {
     },
     onChange(info) {
       if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
       }
       if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
@@ -944,7 +932,6 @@ const DashboardPage = () => {
   const [outsideNgWithNiara, setOutsideNgWithNiara] = useState(false);
   const [outsideNgWithNiaraPrice, setOutsideNgWithNiaraPrice] = useState(0);
   const currencyOnChange = (e) => {
-    console.log("radio checked", e.target.value);
     setValue(e.target.value);
 
     if (e.target.value == 2) {
@@ -955,10 +942,9 @@ const DashboardPage = () => {
       // setCurrencyCheck("NGN");
       setFlutterWaveCurrency("NGN");
       setOutsideNgWithNiara(true);
-      // console.log("totalveriNiara:", totalveriNiara);
+
       setOutsideNgWithNiaraPrice(totalveriNiara);
       // setTotalServiceCost(totalveriNiara);
-      // console.log("totalServiceCost after update:", totalServiceCost);
     }
   };
 
@@ -1058,8 +1044,6 @@ const DashboardPage = () => {
   const randomTransactionId = generateTransactionId();
 
   const handlePaymentMethod = async () => {
-    console.log("Confirm button clicked");
-    console.log("Modal Visible State Before:", modalVisible);
     // Ensure no duplicate state updates
     setModalVisible(false);
     setLoadingSmall(true);
@@ -1089,9 +1073,9 @@ const DashboardPage = () => {
           amount:
             userCurrency == "NGN" && currencyCheck === "NGN"
               ? totalServiceCost
-              : currencyCheck === "USD" && userCurrency === "ngn"
+              : currencyCheck === "USD" && userCurrency === "NGN"
               ? totalveriNiara
-              : currencyCheck === "USD" && userCurrency === "usd"
+              : currencyCheck === "USD" && userCurrency === "USD"
               ? totalServiceCost
               : userCurrency == "NGN" && currencyCheck != "NGN"
               ? outsideNgWithNiaraPrice
@@ -1117,7 +1101,7 @@ const DashboardPage = () => {
             return;
           }
         }
-        if (currencyCheck === "NGN" && userCurrency === "usd") {
+        if (currencyCheck === "NGN" && userCurrency === "USD") {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
           handleCancel();
@@ -1148,9 +1132,9 @@ const DashboardPage = () => {
           userBalance.toLocaleString() <
           (userCurrency == "NGN" && currencyCheck === "NGN"
             ? totalServiceCost
-            : currencyCheck === "USD" && userCurrency === "ngn"
+            : currencyCheck === "USD" && userCurrency === "NGN"
             ? totalveriNiara
-            : currencyCheck === "USD" && userCurrency === "usd"
+            : currencyCheck === "USD" && userCurrency === "USD"
             ? totalServiceCost
             : userCurrency == "NGN" && currencyCheck != "NGN"
             ? outsideNgWithNiaraPrice
@@ -1302,7 +1286,6 @@ const DashboardPage = () => {
             const responseData = await response.json();
             if (responseData.status === "success") {
               if (responseData.data && responseData.data.link) {
-                console.log("Embedding URL:", responseData.data.link);
                 setPaymentUrl(responseData.data.link);
                 setTransactionRef(responseData.data.txRef);
                 localStorage.setItem("transactionID", responseData.data.txRef);
@@ -1635,14 +1618,6 @@ const DashboardPage = () => {
   };
 
   const handleRadioChange = (e) => {
-    // console.log("Payment from Wallet");
-    // console.log(currencyCheck);
-    // console.log("UserCurrency");
-    // console.log(userCurrency);
-    // console.log("Payment");
-    // console.log(totalServiceCost);
-    // console.log(totalveriNiara);
-
     setPaymentmethod(e.target.value);
     setCheckboxCheckedConfirm(true);
   };
@@ -2025,10 +2000,7 @@ const DashboardPage = () => {
   const handleBasicProfileRadioChange = (value) => {
     if (basicProfileArray.length > 0) {
       // Log the value being removed
-      console.log(
-        "Removing value:",
-        basicProfileArray[basicProfileArray.length - 1]
-      );
+
       if (basicProfileArray[basicProfileArray.length - 1] === "nin") {
         setNinFilled(false);
         if (formData.nin !== "") {
@@ -2090,10 +2062,6 @@ const DashboardPage = () => {
   const handleBusinessProfileRadioChange = (value) => {
     if (businessProfileArray.length > 0) {
       // Log the value being removed
-      console.log(
-        "Removing value:",
-        businessProfileArray[businessProfileArray.length - 1]
-      );
 
       // Check if the value being removed is "rc"
       if (businessProfileArray[businessProfileArray.length - 1] === "rc") {
@@ -2176,10 +2144,6 @@ const DashboardPage = () => {
   const handleVehicleProfileRadioChange = (value) => {
     if (vehicleProfileArray.length > 0) {
       // Log the value being removed
-      console.log(
-        "Removing value:",
-        vehicleProfileArray[vehicleProfileArray.length - 1]
-      );
 
       // Check if the value being removed is "rc"
       if (vehicleProfileArray[vehicleProfileArray.length - 1] === "vin") {
@@ -2523,9 +2487,6 @@ const DashboardPage = () => {
     });
   };
 
-  // const onChangeCheckBox = (checkedValues) => {
-  //   console.log("checked = ", checkedValues);
-  // };
   const onChangeCheckBox = (checkedValues) => {
     const updatedFormData = {
       ...formData,
@@ -2533,8 +2494,6 @@ const DashboardPage = () => {
       creditRegistry: checkedValues.includes("creditRegistry"),
       firstCentral: checkedValues.includes("firstCentral"),
     };
-    console.log("checked = ", checkedValues);
-    console.log("formData = ", updatedFormData);
   };
 
   const handleModalNewOk = async () => {
@@ -2579,8 +2538,6 @@ const DashboardPage = () => {
         // setLoading(true);
         const responseData = await response.json();
         if (responseData.status === "success") {
-          console.log("Checking payment status");
-          console.log(responseData.data);
           if (
             responseData.data &&
             (responseData.data.status === "success" ||
@@ -2672,7 +2629,6 @@ const DashboardPage = () => {
 
     // Update state based on checkbox status
     if (numberOfCheckedCheckboxes >= 2 && !allThreeChecked) {
-      console.log("Two or more checkboxes are checked.");
       if (prevNumberOfCheckedCheckboxes === 1) {
         // When moving from 1 to 2 or more, double the state values
         setTotalVAT(
@@ -2707,7 +2663,6 @@ const DashboardPage = () => {
       numberOfCheckedCheckboxes === 3 &&
       prevNumberOfCheckedCheckboxes !== 3
     ) {
-      console.log("All three checkboxes are checked.");
       // Multiply the state values by 3
       setTotalVAT(
         currencyCheck === "USD"
@@ -2740,8 +2695,6 @@ const DashboardPage = () => {
     setPrevNumberOfCheckedCheckboxes(numberOfCheckedCheckboxes);
 
     // Log the state changes for debugging
-    console.log("Total VAT:", totalVAT);
-    console.log("Total service cost:", totalServiceCost);
   }, [
     isCheckedCrc,
     isCheckedFirstCentral,
@@ -2755,8 +2708,6 @@ const DashboardPage = () => {
     // const hadPreviousValue = formData[name].trim() !== "";
 
     const numberCSV = await localStorage.getItem("numberOfRowsFromDoc");
-
-    console.log(numberCSV);
 
     const hadPreviousValue =
       typeof formData[name] === "string" && formData[name].trim() !== "";
@@ -4299,9 +4250,9 @@ const DashboardPage = () => {
                           ) : (
                             <Radio.Group
                               onChange={currencyOnChange}
-                              value={userCurrency === "ngn" ? 1 : 2}
+                              value={userCurrency === "NGN" ? 1 : 2}
                             >
-                              {userCurrency === "ngn" ? (
+                              {userCurrency === "NGN" ? (
                                 <Radio value={1}>
                                   {" "}
                                   {formatToNaira(totalveriNiara)}

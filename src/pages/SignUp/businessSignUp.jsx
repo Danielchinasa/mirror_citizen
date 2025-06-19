@@ -60,7 +60,6 @@ const BusinessSignUp = () => {
     // If validation passes, proceed with the next step or API call
     // For now, let's store the form data in localStorage and log it
     localStorage.setItem("businessFormData", JSON.stringify(formData));
-    console.log(JSON.stringify(formData));
 
     // Navigate to the next page
     history.push("/individual/sign-up/3");

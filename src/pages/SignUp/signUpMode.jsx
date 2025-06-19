@@ -17,7 +17,6 @@ const SignUpMode = () => {
 
   const handleDivClick = (divIndex) => {
     setSelectedDiv(divIndex);
-    console.log("Selected Div:", divIndex);
   };
 
   const { token } = theme.useToken(); // Get token from useToken

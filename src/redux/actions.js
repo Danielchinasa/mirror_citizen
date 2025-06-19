@@ -37,9 +37,8 @@ export const signIn = (credentials) => async (dispatch) => {
   try {
     const response = await apiPost("/auth/login", credentials);
     // Check if the response is an error object
-    console.log("Sign In Response:", response);
+
     const userData = response;
-    console.log("User Data:", userData);
 
     dispatch({
       type: "SIGN_IN",
@@ -174,7 +173,6 @@ export const fetchTransactionData = (token) => {
     try {
       // Make an API call to fetch verification data
       const response = await apiGet(`/transaction/payment-history`, token);
-      console.log("Transaction Data Response:", response);
 
       // Dispatch the fetched data to the store
       dispatch({
@@ -485,8 +483,6 @@ export const fetchUserProfile = (token) => {
     try {
       // Make an API call to fetch user profile data
       const response = await apiGet(`/user/profile`, token);
-
-      console.log("User Profile Data Response:", response);
 
       // Dispatch the fetched data to the store
       dispatch({

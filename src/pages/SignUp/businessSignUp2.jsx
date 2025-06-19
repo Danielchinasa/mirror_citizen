@@ -42,9 +42,7 @@ const BusinessSignUp2 = () => {
     },
   ];
 
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
+  const onChange = (e) => {};
   const dispatch = useDispatch();
   const history = useHistory();
   const [ipAddress, setIpAddress] = useState("");
@@ -73,7 +71,6 @@ const BusinessSignUp2 = () => {
 
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  console.log("IPADDRESS", "response");
 
   const [api, contextHolder] = notification.useNotification();
   const handlePhoneChange = (phone) => {
@@ -256,14 +253,14 @@ const BusinessSignUp2 = () => {
 
       setLoading(true);
       localStorage.setItem("formData", JSON.stringify(formData));
-      console.log("Response from signUp:", response);
+
       // if (response.status !== 200) {
       //   throw new Error(response); // Throw an error with the response status text
       // }
 
       if (response === "success") {
         // On successful login, navigate to the main dashboard
-        // console.log("I reach here");
+
         Swal.fire({
           background: bgContainer,
           color: text,
@@ -338,7 +335,6 @@ const BusinessSignUp2 = () => {
   const [isAccepted, setIsAccepted] = useState(false);
 
   const onChangeIsAccepted = (e) => {
-    console.log(`onChangeIsAccepted = ${e.target.checked}`);
     e.target.checked ? setIsAccepted(true) : setIsAccepted(false);
   };
 

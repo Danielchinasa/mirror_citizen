@@ -335,7 +335,7 @@ const MainDashboard = () => {
     public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}TP",
     amount: "1000",
-    currency: userCurrency == "usd" ? "USD" : "NGN",
+    currency: userCurrency == "USD" ? "USD" : "NGN",
     payment_options: "card,ussd, account, banktransfer, barter, nqr",
     customer: {
       email: userEmail,
@@ -919,6 +919,12 @@ const MainDashboard = () => {
       currency: "NGN",
     }).format(value);
   };
+  const formatToDollar = (value) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value);
+  };
 
   // Usage
   return (
@@ -1037,14 +1043,15 @@ const MainDashboard = () => {
                 title="User Wallet"
                 visible={isModalVisible}
                 onOk={handleOk}
+                okText="Proceed to Payment"
                 onCancel={handleCancel}
                 width={300}
               >
                 <Title level={5}> Wallet Balance:</Title>
                 <Title level={3} style={{ color: "#0DC939" }}>
-                  {userCurrency === "ngn"
+                  {userCurrency === "NGN"
                     ? formatToNaira(userBalance)
-                    : `$${userBalance}`}
+                    : `${formatToDollar(userBalance)}`}
                 </Title>
 
                 <Divider style={{ border: "1px solid #D9D9D9" }} />

@@ -62,8 +62,6 @@ const Business = () => {
           { ipAddress },
           userToken
         );
-        console.log("Service Fees");
-        console.log(response.data.data[0].price);
 
         setCurrencyCheck(response.data.data[8].currency);
       } catch (error) {
@@ -84,8 +82,6 @@ const Business = () => {
           { ipAddress },
           userToken
         );
-        console.log("Stake Fees");
-        console.log(response.data.data[8].price);
 
         setStakeHolderFeeUsd(response.data.data[8].price);
         // setStakeHolderFeeNgn(response.data.data[8].price);
@@ -168,14 +164,11 @@ const Business = () => {
   const handleButtonClick = async (cacid) => {
     handleFlutterPayment({
       callback: async (response) => {
-        console.log(response);
         if (
           response.status === "successful" ||
           response.status === "success" ||
           response.status === "completed"
         ) {
-          console.log("flutterWave success");
-
           setLoading(true);
           try {
             setLoading(true);
@@ -193,7 +186,7 @@ const Business = () => {
               userToken
             );
             // Handle response if needed
-            console.log("External API call response:", response.data);
+
             // setBusinessData((prevBusinessData) => [
             //   ...prevBusinessData,
             //   response.data.data,

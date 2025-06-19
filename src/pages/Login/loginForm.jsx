@@ -188,8 +188,6 @@ const LoginForm = () => {
         });
       };
 
-      console.log("Response from signIn:", response);
-
       if (response.jwtToken) {
         // On successful login with jwtToken, navigate to the main dashboard
         localStorage.setItem("IpAddress", ipAddress);

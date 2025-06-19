@@ -102,8 +102,7 @@ const Financial = () => {
           `/verification/check-consent/${requestId}`,
           userToken
         );
-        console.log("hre");
-        console.log(response);
+
         if (response.data.consent === "pending") {
           setLoading(true);
         } else {
