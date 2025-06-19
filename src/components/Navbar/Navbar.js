@@ -29,6 +29,7 @@ import { ThemeToggle } from "../../components/ThemeToggle";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
+import axios from "axios"; // Import axios
 
 const { useToken } = theme;
 
@@ -207,31 +208,53 @@ function Navbar() {
 
     setIsModalVisible(false);
     try {
-      // Assuming postData is the data you want to send to the endpoint
-      const postData = {
-        amount: amount,
-        currency: userCurrency,
-        country: "NG",
-        description: "Wallet top up",
-        payment_method: "card,mobilemoney,ussd",
-        type: "TOPUP",
-      };
-      setAmount("");
-
-      const response = await fetch(`${baseUrl}/payment/initiate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken2}`,
+      // Changed from fetch to axios
+      const initResponse = await axios.post(
+        `${baseUrl}/verification/initiate`,
+        {
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
         },
-        body: JSON.stringify(postData),
-      });
-      console.log("Nav wallet resposne", response);
-      // Check if the request was successful (status code 200-299)
-      if (response.ok) {
-        // Handle successful response here
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
 
-        const responseData = await response.json();
+      const initData = initResponse.data; // Axios puts the response data in the 'data' property
+
+      if (initData.sessionStatus === "INITIATED") {
+        localStorage.setItem("sessionCode", initData?.sessionCode);
+        const postData = {
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        };
+        setAmount("");
+
+        // Changed from fetch to axios
+        const response = await axios.post(
+          `${baseUrl}/payment/initiate`,
+          postData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken2}`,
+            },
+          }
+        );
+        console.log("Nav wallet resposne", response);
+
+        const responseData = response.data; // Axios puts the response data in the 'data' property
+
         if (responseData.status === "success") {
           if (responseData.data && responseData.data.link) {
             console.log("Embedding URL:", responseData.data.link);
@@ -281,34 +304,30 @@ function Navbar() {
           });
           return;
         }
-      } else {
-        // Handle errors here
-        console.error("Failed to post data:", response.statusText);
-
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text: "Failed to initialize payment",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-        return;
       }
     } catch (error) {
-      // Handle any unexpected errors
+      // Axios errors are typically in error.response or error.message
       console.error("An error occurred:", error);
+
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Failed to initialize payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     }
   };
   const handleChange = (e) => {
@@ -490,7 +509,7 @@ function Navbar() {
                         </p>
                         <Modal
                           title="User Wallet"
-                          visible={isModalVisible}
+                          open={isModalVisible} // Use 'open' instead of 'visible' for Ant Design v5+ Modal
                           onOk={handleOk}
                           onCancel={handleCancel}
                           width={300}
@@ -584,7 +603,7 @@ function Navbar() {
                         </p>
                         <Modal
                           title="User Wallet"
-                          visible={isModalVisible}
+                          open={isModalVisible} // Use 'open' instead of 'visible' for Ant Design v5+ Modal
                           onOk={handleOk}
                           onCancel={handleCancel}
                           width={300}
