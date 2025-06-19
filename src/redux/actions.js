@@ -508,3 +508,317 @@ export const fetchUserProfile = (token) => {
     }
   };
 };
+
+export const initiateVerificationRequest =
+  (formData, token) => async (dispatch) => {
+    try {
+      const CLICK_ID = localStorage.getItem("CLICK_ID");
+      const currencyCheck = localStorage.getItem("currencyCheck");
+      const transactionID = localStorage.getItem("transactionID");
+      const paymentType = localStorage.getItem("paymentType");
+      function generateTransactionId() {
+        const length = 16; // total length including "EA"
+        let transactionId = "EA";
+        for (let i = 0; i < length - 2; i++) {
+          transactionId += Math.floor(Math.random() * 10); // Append random number between 0 and 9
+        }
+        return transactionId;
+      }
+
+      const randomTransactionId = generateTransactionId();
+
+      const restructuredData = {
+        // payment: {
+        //   currency: currencyCheck || "NGN",
+        //   transactionID: transactionID || randomTransactionId,
+        //   paymentType: paymentType || "INSTANT",
+        // },
+        basic: {
+          phoneNumber: formData.phone || "",
+          nin: formData.nin || "",
+          nin_csv: formData.nin_csv || "",
+          dateOfBirth: formData.dateOfBirth || "",
+          gender: formData.gender || "",
+          firstname: formData.firstname || "",
+          lastname: formData.lastname || "",
+          liveFaceNin: formData.liveFaceNin || "",
+          face: formData.face || "",
+          finger: formData.finger || "",
+        },
+        business: {
+          company_name: formData.business_name || "",
+          rc_number: parseInt(formData.rc) || "",
+        },
+        financial: {
+          bvn: parseInt(formData.bvn) || "",
+          ...(formData.bvn && {
+            crc: formData.crc || false,
+            firstCentral: formData.firstCentral || false,
+            creditRegistry: formData.creditRegistry || false,
+          }),
+        },
+        reach: {
+          CLICK_ID: CLICK_ID || "",
+        },
+        vehicle: {
+          vin: formData.vin || "",
+          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+          license_number: formData.license_number || "",
+        },
+      };
+
+      // Remove fields with empty strings from the payload
+      Object.keys(restructuredData).forEach((section) => {
+        Object.keys(restructuredData[section]).forEach((field) => {
+          if (restructuredData[section][field] === "") {
+            delete restructuredData[section][field];
+          }
+        });
+
+        // Remove the section if it has no fields
+        if (Object.keys(restructuredData[section]).length === 0) {
+          delete restructuredData[section];
+        }
+      });
+      const response = await apiPost(
+        `/verification/initiate`,
+        restructuredData,
+        token
+      );
+
+      // dispatch({
+      //   type: "SEND_VERIFICATION_REQUEST_SUCCESS",
+      //   payload: response,
+      // });
+
+      // Return the user data upon successful verification
+      return response;
+    } catch (error) {
+      if (error.response) {
+        return error.response;
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        return {
+          status: "failed",
+          message: "No response received from the server",
+        };
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        return { status: "failed", message: "Error setting up the request" };
+      }
+    }
+  };
+
+export const initiateStakeHoldersRequest =
+  (formData, token) => async (dispatch) => {
+    try {
+      const CLICK_ID = localStorage.getItem("CLICK_ID");
+
+      const restructuredData = {
+        business: {
+          //!! We have to add the requestId and cacId to the business object
+          //!! This is because the backend expects these fields to be present
+          requestId: formData?.business?.requestId || "",
+          cacId: formData?.business?.cacId || "",
+        },
+
+        reach: {
+          CLICK_ID: CLICK_ID || "",
+        },
+      };
+
+      // Remove fields with empty strings from the payload
+      Object.keys(restructuredData).forEach((section) => {
+        Object.keys(restructuredData[section]).forEach((field) => {
+          if (restructuredData[section][field] === "") {
+            delete restructuredData[section][field];
+          }
+        });
+
+        // Remove the section if it has no fields
+        if (Object.keys(restructuredData[section]).length === 0) {
+          delete restructuredData[section];
+        }
+      });
+      const response = await apiPost(
+        `/verification/initiate`,
+        restructuredData,
+        token
+      );
+
+      // Return the user data upon successful verification
+      return response;
+    } catch (error) {
+      if (error.response) {
+        return error.response;
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        return {
+          status: "failed",
+          message: "No response received from the server",
+        };
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        return { status: "failed", message: "Error setting up the request" };
+      }
+    }
+  };
+
+export const completeVerificationRequest =
+  (formData, token) => async (dispatch) => {
+    try {
+      const CLICK_ID = localStorage.getItem("CLICK_ID");
+      const currencyCheck = localStorage.getItem("currencyCheck");
+      const transactionID = localStorage.getItem("transactionID");
+      const paymentType = localStorage.getItem("paymentType");
+      function generateTransactionId() {
+        const length = 16; // total length including "EA"
+        let transactionId = "EA";
+        for (let i = 0; i < length - 2; i++) {
+          transactionId += Math.floor(Math.random() * 10); // Append random number between 0 and 9
+        }
+        return transactionId;
+      }
+
+      const randomTransactionId = generateTransactionId();
+
+      const restructuredData = {
+        payment: {
+          currency: currencyCheck || "NGN",
+          transactionID: transactionID || randomTransactionId,
+          paymentType: paymentType || "INSTANT",
+        },
+        sessionCode: localStorage.getItem("sessionCode") || "",
+        sessionStatus: "COMPLETED",
+        paymentType: paymentType || "INSTANT",
+        basic: {
+          phoneNumber: formData.phone || "",
+          nin: formData.nin || "",
+          nin_csv: formData.nin_csv || "",
+          dateOfBirth: formData.dateOfBirth || "",
+          gender: formData.gender || "",
+          firstname: formData.firstname || "",
+          lastname: formData.lastname || "",
+          liveFaceNin: formData.liveFaceNin || "",
+          face: formData.face || "",
+          finger: formData.finger || "",
+        },
+        business: {
+          company_name: formData.business_name || "",
+          rc_number: parseInt(formData.rc) || "",
+        },
+        financial: {
+          bvn: parseInt(formData.bvn) || "",
+          ...(formData.bvn && {
+            crc: formData.crc || false,
+            firstCentral: formData.firstCentral || false,
+            creditRegistry: formData.creditRegistry || false,
+          }),
+        },
+        reach: {
+          CLICK_ID: CLICK_ID || "",
+        },
+        vehicle: {
+          vin: formData.vin || "",
+          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+          license_number: formData.license_number || "",
+        },
+      };
+
+      // Remove fields with empty strings from the payload
+      Object.keys(restructuredData).forEach((section) => {
+        Object.keys(restructuredData[section]).forEach((field) => {
+          if (restructuredData[section][field] === "") {
+            delete restructuredData[section][field];
+          }
+        });
+
+        // Remove the section if it has no fields
+        if (Object.keys(restructuredData[section]).length === 0) {
+          delete restructuredData[section];
+        }
+      });
+      const response = await apiPost(
+        `/verification/complete `,
+        restructuredData,
+        token
+      );
+
+      dispatch({
+        type: "SEND_VERIFICATION_REQUEST_SUCCESS",
+        payload: response,
+      });
+
+      // Return the user data upon successful verification
+      return response;
+    } catch (error) {
+      if (error.response) {
+        return error.response;
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        return {
+          status: "failed",
+          message: "No response received from the server",
+        };
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        return { status: "failed", message: "Error setting up the request" };
+      }
+    }
+  };
+
+export const paymentInitializationRequest =
+  (formData, token) => async (dispatch) => {
+    try {
+      const currencyCheck = localStorage.getItem("currencyCheck");
+      const paymentType = localStorage.getItem("paymentType");
+      const restructuredData = {
+        currency: currencyCheck || "NGN",
+        sessionCode: localStorage.getItem("sessionCode") || "",
+        type: paymentType || "INSTANT",
+      };
+
+      // Remove fields with empty strings from the payload
+      Object.keys(restructuredData).forEach((section) => {
+        Object.keys(restructuredData[section]).forEach((field) => {
+          if (restructuredData[section][field] === "") {
+            delete restructuredData[section][field];
+          }
+        });
+
+        // Remove the section if it has no fields
+        if (Object.keys(restructuredData[section]).length === 0) {
+          delete restructuredData[section];
+        }
+      });
+      const response = await apiPost(
+        `/payment/initiate`,
+        restructuredData,
+        token
+      );
+
+      // Return the user data upon successful verification
+      return response;
+    } catch (error) {
+      if (error.response) {
+        return error.response;
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        return {
+          status: "failed",
+          message: "No response received from the server",
+        };
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        return { status: "failed", message: "Error setting up the request" };
+      }
+    }
+  };

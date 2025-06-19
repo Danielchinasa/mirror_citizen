@@ -41,6 +41,7 @@ import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import Swal from "sweetalert2";
 import {
   sendVerificationRequest,
+  initiateStakeHoldersRequest,
   fetchUserProfile,
   logout,
 } from "../../redux/actions";
@@ -262,9 +263,28 @@ const BusinessName = () => {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
+        try {
+          const requestBody = {
+            business: {
+              requestId: parseInt(requestId),
+              cacId: parseInt(cacid),
+            },
+          };
+          console.log("Request Body for Verification:Daniel", requestBody);
+
+          const response = await dispatch(
+            initiateStakeHoldersRequest(requestBody, userToken)
+          );
+          if (response?.sessionStatus == "INITIATED") {
+            localStorage.setItem("sessionCode", response?.sessionCode);
+            handlePayment();
+          }
+        } catch (error) {}
+
         const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
+          sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
 
@@ -272,6 +292,7 @@ const BusinessName = () => {
         };
 
         const requestBodyWithAmountEquivalent = {
+          sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
 
@@ -337,9 +358,9 @@ const BusinessName = () => {
               ),
             });
 
-            const data = await response.text();
+            const data = await response.json();
 
-            if (response.ok && data === "payment successful") {
+            if (data.status === "success") {
               const transactionID = localStorage.getItem("transactionID");
               const paymentType = localStorage.getItem("paymentType");
 
@@ -358,6 +379,9 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
+                  sessionCode: localStorage.getItem("sessionCode"),
+                  sessionStatus: "COMPLETED",
+                  paymentType: paymentType || "INSTANT",
                   payment: {
                     currency: currencyCheck || "NGN",
                     transactionID: transactionID || randomTransactionId,
@@ -593,9 +617,9 @@ const BusinessName = () => {
               body: JSON.stringify(requestBody),
             });
 
-            const data = await response.text();
+            const data = await response.json();
 
-            if (response.ok && data === "payment successful") {
+            if (response.ok && data.status === "success") {
               const transactionID = localStorage.getItem("transactionID");
               const paymentType = localStorage.getItem("paymentType");
               function generateTransactionId() {
@@ -612,6 +636,9 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
+                  sessionCode: localStorage.getItem("sessionCode"),
+                  sessionStatus: "COMPLETED",
+                  paymentType: paymentType || "INSTANT",
                   payment: {
                     currency: currencyCheck || "NGN",
                     transactionID: transactionID || randomTransactionId,
@@ -624,7 +651,7 @@ const BusinessName = () => {
                 };
                 // Make an API request to call external APIs
                 const response = await apiPostInternalCall(
-                  `/verification/call-external-apis`,
+                  `/verification/complete`,
                   requestBody,
                   userToken
                 );
@@ -774,6 +801,7 @@ const BusinessName = () => {
               description: "Payment for StakeHolder verification",
               payment_method: "card,mobilemoney,ussd",
               type: "VERIFICATION",
+              sessionCode: localStorage.getItem("sessionCode"),
             };
 
             const response = await fetch(`${baseUrl}/payment/initiate`, {
@@ -936,6 +964,9 @@ const BusinessName = () => {
               responseData.data.status === "successful")
           ) {
             const requestBody = {
+              sessionCode: localStorage.getItem("sessionCode"),
+              sessionStatus: "COMPLETED",
+              paymentType: paymentType || "INSTANT",
               payment: {
                 currency: currencyCheck || "NGN",
                 transactionID: transactionID || randomTransactionId,
@@ -947,7 +978,7 @@ const BusinessName = () => {
               },
             };
             const externalApiResponse = await apiPostInternalCall(
-              `/verification/call-external-apis`,
+              `/verification/complete`,
               requestBody,
               userToken
             );

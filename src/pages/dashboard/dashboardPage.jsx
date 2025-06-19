@@ -48,6 +48,8 @@ import clearvin from "../../images/clearvin.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sendVerificationRequest,
+  initiateVerificationRequest,
+  completeVerificationRequest,
   fetchUserProfile,
   logout,
 } from "../../redux/actions";
@@ -453,7 +455,10 @@ const DashboardPage = () => {
     setLoading(true);
     try {
       const response = await dispatch(
-        sendVerificationRequest(formData, userToken)
+        //* I just changed the function to use the new one from Patrick
+        //! This is the new function that sends the verification request
+        // sendVerificationRequest(formData, userToken)
+        completeVerificationRequest(formData, userToken)
       );
       setLoading(false);
       dispatch(fetchUserProfile(userToken));
@@ -1078,6 +1083,7 @@ const DashboardPage = () => {
         const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
+          sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
           amount:
@@ -1186,9 +1192,9 @@ const DashboardPage = () => {
             body: JSON.stringify(requestBody),
           });
 
-          const data = await response.text();
+          const data = await response.json();
 
-          if (response.ok && data === "payment successful") {
+          if (response.ok && data.status === "success") {
             //!------------------- Do the Verification ------------------------//
             handleSubmit();
             //!------------------- Do the Verification End ------------------------//
@@ -1258,6 +1264,7 @@ const DashboardPage = () => {
           description: "Payment for verification",
           payment_method: "card,mobilemoney,ussd",
           type: "VERIFICATION",
+          sessionCode: localStorage.getItem("sessionCode"),
         };
 
         if (bvnFilled) {
@@ -1812,13 +1819,24 @@ const DashboardPage = () => {
         <Spin spinning={loadingSmall}>
           <Button
             type="primary"
-            onClick={handlePaymentMethod}
+            // onClick={handlePaymentMethod}
+            onClick={async () => {
+              try {
+                const response = await dispatch(
+                  initiateVerificationRequest(formData, userToken)
+                );
+                if (response?.sessionStatus == "INITIATED") {
+                  localStorage.setItem("sessionCode", response?.sessionCode);
+                  handlePaymentMethod();
+                }
+              } catch (error) {}
+            }}
             disabled={isConfirmedBtnClicked}
             style={{
               marginRight: 10,
-              backgroundColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939", // Set the colors based on checkbox state
+              backgroundColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939",
               borderColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939",
-              cursor: isConfirmedBtnClicked ? "not-allowed" : "pointer", // Change cursor based on checkbox state
+              cursor: isConfirmedBtnClicked ? "not-allowed" : "pointer",
             }}
           >
             Confirm

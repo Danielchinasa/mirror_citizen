@@ -21,6 +21,7 @@ import {
   fetchVerificationData,
   fetchTransactionData,
   updateUserWalletBalance,
+  initiateVerificationRequest,
   fetchUserProfile,
   logout,
 } from "../../redux/actions";
@@ -794,42 +795,64 @@ const MainDashboard = () => {
 
     setIsModalVisible(false);
     try {
-      // Assuming postData is the data you want to send to the endpoint
-      const postData = {
-        amount: amount,
-        currency: userCurrency,
-        country: "NG",
-        description: "Wallet top up",
-        payment_method: "card,mobilemoney,ussd",
-        type: "TOPUP",
-      };
-      setAmount("");
-
-      const response = await fetch(`${baseUrl}/payment/initiate`, {
+      const initResponse = await fetch(`${baseUrl}/verification/initiate`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify({
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        }),
       });
+      if (!initResponse.ok) {
+        throw new Error("Failed to initialize payment");
+      }
+      const initData = await initResponse.json();
+      if (initData.sessionStatus == "INITIATED") {
+        localStorage.setItem("sessionCode", initData?.sessionCode);
 
-      // Check if the request was successful (status code 200-299)
-      if (response.ok) {
-        // Handle successful response here
+        // Assuming postData is the data you want to send to the endpoint
+        const postData = {
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        };
+        setAmount("");
 
-        const responseData = await response.json();
-        console.log(responseData.data.link);
-        if (responseData.data && responseData.data.link) {
-          console.log("Embedding URL:", responseData.data.link);
-          setPaymentUrl(responseData.data.link);
-          setModal1Open(true);
+        const response = await fetch(`${baseUrl}/payment/initiate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify(postData),
+        });
+
+        // Check if the request was successful (status code 200-299)
+        if (response.ok) {
+          // Handle successful response here
+
+          const responseData = await response.json();
+          console.log(responseData.data.link);
+          if (responseData.data && responseData.data.link) {
+            console.log("Embedding URL:", responseData.data.link);
+            setPaymentUrl(responseData.data.link);
+            setModal1Open(true);
+          } else {
+            console.error("Response data does not contain a link");
+          }
         } else {
-          console.error("Response data does not contain a link");
+          // Handle errors here
+          console.error("Failed to post data:", response.statusText);
         }
-      } else {
-        // Handle errors here
-        console.error("Failed to post data:", response.statusText);
       }
     } catch (error) {
       // Handle any unexpected errors
