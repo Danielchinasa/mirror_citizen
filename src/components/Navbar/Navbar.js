@@ -43,6 +43,7 @@ function Navbar() {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = userDetails?.jwtToken || "";
+
   // const tokenExpire = userDetails?.expirationDate || "";
   const userCurrency = userDetails?.currency || "";
   const user = useSelector((state) => state.user);
@@ -74,7 +75,6 @@ function Navbar() {
     if (currentDate >= expireDate) {
       dispatch(logout());
       history.push("/");
-      // console.log("Time don pass well");
     } else {
     }
   }, []);
@@ -175,13 +175,17 @@ function Navbar() {
     dispatch(fetchUserProfile(userToken));
   }, [dispatch]);
 
-  console.log("UserDetails 2");
-  console.log(userDetails);
   const userBalance = userDetails?.walletBalance || 0;
   const formatToNaira = (value) => {
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
+    }).format(value);
+  };
+  const formatToDollar = (value) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(value);
   };
   const [amount, setAmount] = useState("");
@@ -221,7 +225,7 @@ function Navbar() {
         },
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken2}`,
           },
         }
       );
@@ -251,13 +255,11 @@ function Navbar() {
             },
           }
         );
-        console.log("Nav wallet resposne", response);
 
         const responseData = response.data; // Axios puts the response data in the 'data' property
 
         if (responseData.status === "success") {
           if (responseData.data && responseData.data.link) {
-            console.log("Embedding URL:", responseData.data.link);
             setPaymentUrl(responseData.data.link);
             setModal1Open(true);
           } else {
@@ -502,8 +504,8 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "usd"
-                              ? `$${userBalance}`
+                            {userCurrency === "USD"
+                              ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
                           </span>
                         </p>
@@ -511,14 +513,15 @@ function Navbar() {
                           title="User Wallet"
                           open={isModalVisible} // Use 'open' instead of 'visible' for Ant Design v5+ Modal
                           onOk={handleOk}
+                          okText="Proceed to Payment"
                           onCancel={handleCancel}
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "ngn"
+                            {userCurrency === "NGN"
                               ? formatToNaira(userBalance)
-                              : `$${userBalance}`}
+                              : `${formatToDollar(userBalance)}`}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
@@ -596,8 +599,8 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "usd"
-                              ? `$${userBalance}`
+                            {userCurrency === "USD"
+                              ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
                           </span>
                         </p>
@@ -605,14 +608,15 @@ function Navbar() {
                           title="User Wallet"
                           open={isModalVisible} // Use 'open' instead of 'visible' for Ant Design v5+ Modal
                           onOk={handleOk}
+                          okText="Proceed to Payment"
                           onCancel={handleCancel}
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "ngn"
+                            {userCurrency === "NGN"
                               ? formatToNaira(userBalance)
-                              : `$${userBalance}`}
+                              : `${formatToDollar(userBalance)}`}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />

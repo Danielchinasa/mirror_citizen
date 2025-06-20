@@ -145,23 +145,7 @@ const Home = () => {
           client_id:
             "642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com",
           callback: (credentialResponse) => {
-            console.log("✅ One Tap Login Success:", credentialResponse);
-            // If One Tap succeeds, we can proceed with the normal login flow.
-            // However, credentialResponse for One Tap typically contains an ID token,
-            // not an access token. You might need to adjust your backend's
-            // `/openauth/google-login` endpoint to accept an ID token instead of an access token
-            // if you want to use the One Tap credential directly.
-            // For now, calling `login()` will trigger the popup flow, which is what we want to avoid if it's blocked.
-            // Instead, we should use the credentialResponse directly or redirect.
-
-            // OPTION 1: Use the ID token from One Tap directly if your backend supports it
-            // This is generally preferred for One Tap.
-            // handleOneTapCredential(credentialResponse.credential);
-
-            // OPTION 2: If backend ONLY accepts access token from useGoogleLogin, and you want to use the popup after One Tap.
-            // If the popup is blocked, this `login()` call would also likely be blocked.
-            // So, for handling "popup blocked", we'll focus on the prompt's `isNotDisplayed` check.
-            login(); // This will trigger the popup flow (which we want to avoid if blocked)
+            login();
           },
           auto_select: true,
           cancel_on_tap_outside: false,

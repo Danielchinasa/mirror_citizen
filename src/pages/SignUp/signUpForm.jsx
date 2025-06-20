@@ -12,9 +12,7 @@ import {
 } from "../../globalStyles";
 
 const SignUpForm = () => {
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
+  const onChange = (e) => {};
   return <></>;
 };
 

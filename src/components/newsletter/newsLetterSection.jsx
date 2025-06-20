@@ -7,7 +7,6 @@ const { Title } = Typography;
 const NewsletterSection = ({ visible, onClose }) => {
   const onFinish = (values) => {
     // Handle form submission logic here
-    console.log("Submitted values:", values);
     // You can add additional logic here, such as sending the form data to a server
     // and then close the modal using onClose()
     onClose();

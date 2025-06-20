@@ -41,8 +41,7 @@ const LegitCar = () => {
           `/verification/check-consent/${requestId}`,
           userToken
         );
-        // console.log("hre");
-        // console.log(response.data.data.firstName);
+
         const chasisNumberFromResponse = response.data.data.chasisNumber || "";
         const stolenFromResponse = response.data.data.stolen || "No Data";
         const reportFromResponse = response.data.data.report || "No Data";

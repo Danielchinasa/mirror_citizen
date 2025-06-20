@@ -159,8 +159,7 @@ const Financial = () => {
           `/verification/check-consent/${requestId}`,
           userToken
         );
-        console.log("hre");
-        console.log(response);
+
         if (response.data.consent === "pending") {
           setLoading(true);
         } else {
@@ -197,10 +196,6 @@ const Financial = () => {
             response.data["creditRegistry-data"].length !== 0
           ) {
             // setCheckCreditRegistryDataStats(true);
-            // console.log(
-            //   "setCheckCreditRegistryDataStats",
-            //   checkCreditRegistryDataStats
-            // );
 
             setCreditRegistryDataStats(
               response.data["creditRegistry-data"]["data"]
