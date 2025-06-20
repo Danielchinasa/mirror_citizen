@@ -1071,11 +1071,11 @@ const DashboardPage = () => {
           userNIN: userNin,
           transactionID: randomTransactionId,
           amount:
-            userCurrency == "NGN" && currencyCheck === "NGN"
+            userCurrency == "NGN" && currencyCheck == "NGN"
               ? totalServiceCost
-              : currencyCheck === "USD" && userCurrency === "NGN"
+              : currencyCheck == "USD" && userCurrency == "NGN"
               ? totalveriNiara
-              : currencyCheck === "USD" && userCurrency === "USD"
+              : currencyCheck == "USD" && userCurrency == "USD"
               ? totalServiceCost
               : userCurrency == "NGN" && currencyCheck != "NGN"
               ? outsideNgWithNiaraPrice
@@ -1101,7 +1101,7 @@ const DashboardPage = () => {
             return;
           }
         }
-        if (currencyCheck === "NGN" && userCurrency === "USD") {
+        if (currencyCheck == "NGN" && userCurrency == "USD") {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
           handleCancel();
@@ -1130,11 +1130,11 @@ const DashboardPage = () => {
         //!!-------------------- Check for Wallet balance ------------------//
         if (
           userBalance.toLocaleString() <
-          (userCurrency == "NGN" && currencyCheck === "NGN"
+          (userCurrency == "NGN" && currencyCheck == "NGN"
             ? totalServiceCost
-            : currencyCheck === "USD" && userCurrency === "NGN"
+            : currencyCheck == "USD" && userCurrency == "NGN"
             ? totalveriNiara
-            : currencyCheck === "USD" && userCurrency === "USD"
+            : currencyCheck == "USD" && userCurrency == "USD"
             ? totalServiceCost
             : userCurrency == "NGN" && currencyCheck != "NGN"
             ? outsideNgWithNiaraPrice
@@ -1421,7 +1421,7 @@ const DashboardPage = () => {
     let calculatedTotalveri = 0;
     let calculatedTotalnaira = 0;
 
-    if (currencyCheck === "USD") {
+    if (currencyCheck == "USD") {
       Object.keys(formData).forEach((field) => {
         // Check if the field has data and if there's a corresponding fee
         if (
@@ -2369,7 +2369,7 @@ const DashboardPage = () => {
     setLicenseNumberFilled(false); // Sets licenseNumberFilled state to false
 
     // Check if currency is USD, then subtract fees accordingly
-    if (currencyCheck === "USD") {
+    if (currencyCheck == "USD") {
       if (isChecked) {
         setTotalVAT((prevTotalVAT) => {
           const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
@@ -2632,12 +2632,12 @@ const DashboardPage = () => {
       if (prevNumberOfCheckedCheckboxes === 1) {
         // When moving from 1 to 2 or more, double the state values
         setTotalVAT(
-          currencyCheck === "USD"
+          currencyCheck == "USD"
             ? (prevTotalVAT) => prevTotalVAT + 0.15
             : (prevTotalVAT) => prevTotalVAT + 113
         );
         setTotalServiceCost(
-          currencyCheck === "USD"
+          currencyCheck == "USD"
             ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
             : (prevTotalServiceCost) => prevTotalServiceCost + 1500
         );
@@ -2648,12 +2648,12 @@ const DashboardPage = () => {
     ) {
       // When moving from 2 or more to less than 2, divide by 2 to restore previous values
       setTotalVAT(
-        currencyCheck === "USD"
+        currencyCheck == "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
           : (prevTotalVAT) => prevTotalVAT - 113
       );
       setTotalServiceCost(
-        currencyCheck === "USD"
+        currencyCheck == "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
@@ -2665,12 +2665,12 @@ const DashboardPage = () => {
     ) {
       // Multiply the state values by 3
       setTotalVAT(
-        currencyCheck === "USD"
+        currencyCheck == "USD"
           ? (prevTotalVAT) => prevTotalVAT + 0.15
           : (prevTotalVAT) => prevTotalVAT + 113
       );
       setTotalServiceCost(
-        currencyCheck === "USD"
+        currencyCheck == "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost + 1500
       );
@@ -2680,12 +2680,12 @@ const DashboardPage = () => {
     ) {
       // When moving from 3 to less than 3, divide by 3 to restore previous values
       setTotalVAT(
-        currencyCheck === "USD"
+        currencyCheck == "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
           : (prevTotalVAT) => prevTotalVAT - 113
       );
       setTotalServiceCost(
-        currencyCheck === "USD"
+        currencyCheck == "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
@@ -3958,7 +3958,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck == "USD"
                                 ? "$" + (ninServiceFee + ninProcessingFee)
                                 : formatToNaira(
                                     ninServiceFee + ninProcessingFee
@@ -3988,7 +3988,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck == "USD"
                                 ? "$" +
                                   (businessServiceFee + businessProcessingFee)
                                 : formatToNaira(
@@ -4021,7 +4021,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck == "USD"
                                 ? "$" +
                                   (businessNameServiceFee +
                                     businessNameProcessingFee)
@@ -4055,7 +4055,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {prevNumberOfCheckedCheckboxes == 2
-                                ? currencyCheck === "USD"
+                                ? currencyCheck == "USD"
                                   ? "$" +
                                     (
                                       (financialServiceFee +
@@ -4068,7 +4068,7 @@ const DashboardPage = () => {
                                         2
                                     )
                                 : prevNumberOfCheckedCheckboxes == 3
-                                ? currencyCheck === "USD"
+                                ? currencyCheck == "USD"
                                   ? "$" +
                                     (
                                       (financialServiceFee +
@@ -4080,7 +4080,7 @@ const DashboardPage = () => {
                                         financialProcessingFee) *
                                         3
                                     )
-                                : currencyCheck === "USD"
+                                : currencyCheck == "USD"
                                 ? "$" +
                                   (financialServiceFee + financialProcessingFee)
                                 : formatToNaira(
@@ -4112,7 +4112,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck == "USD"
                                 ? "$" +
                                   (vinVehicleServiceFee +
                                     vinVehicleProcessingFee)
@@ -4146,7 +4146,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck == "USD"
                                 ? "$" +
                                   (vehicleServiceFee + vehicleProcessingFee)
                                 : formatToNaira(
@@ -4183,7 +4183,7 @@ const DashboardPage = () => {
                           <p style={{ color: text }}>Tax & charges: </p>
                         </Col>
                         <Col style={{ textAlign: "right" }}>
-                          {currencyCheck === "USD" ? (
+                          {currencyCheck == "USD" ? (
                             <p style={{ color: text }}>
                               ${totalVAT.toFixed(2)}
                             </p>
@@ -4206,13 +4206,13 @@ const DashboardPage = () => {
                           <p style={{ color: text }}>Total Amount Due: </p>
                         </Col>
                         <Col>
-                          {/* {currencyCheck === "USD" ? (
+                          {/* {currencyCheck == "USD" ? (
                         <p>{`$${rawServiceFee.toFixed(2)}`}</p>
                       ) : (
                         <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
                       )} */}
 
-                          {currencyCheck === "USD" ? (
+                          {currencyCheck == "USD" ? (
                             // <p>{`$${totalServiceCost}`}</p>
                             <p
                               style={{ color: text }}
@@ -4250,9 +4250,9 @@ const DashboardPage = () => {
                           ) : (
                             <Radio.Group
                               onChange={currencyOnChange}
-                              value={userCurrency === "NGN" ? 1 : 2}
+                              value={userCurrency == "NGN" ? 1 : 2}
                             >
-                              {userCurrency === "NGN" ? (
+                              {userCurrency == "NGN" ? (
                                 <Radio value={1}>
                                   {" "}
                                   {formatToNaira(totalveriNiara)}

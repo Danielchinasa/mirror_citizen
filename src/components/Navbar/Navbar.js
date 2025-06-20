@@ -504,7 +504,7 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "USD"
+                            {userCurrency == "USD"
                               ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
                           </span>
@@ -519,7 +519,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "NGN"
+                            {userCurrency == "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
@@ -599,7 +599,7 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "USD"
+                            {userCurrency == "USD"
                               ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
                           </span>
@@ -614,7 +614,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "NGN"
+                            {userCurrency == "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>

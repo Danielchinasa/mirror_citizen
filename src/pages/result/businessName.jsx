@@ -168,8 +168,8 @@ const BusinessName = () => {
     //test key
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
-    currency: currencyCheck === "USD" ? "USD" : "NGN",
+    amount: currencyCheck == "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+    currency: currencyCheck == "USD" ? "USD" : "NGN",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
@@ -344,7 +344,7 @@ const BusinessName = () => {
                 Authorization: `Bearer ${userToken}`,
               },
               body: JSON.stringify(
-                userCurrency === "USD"
+                userCurrency == "USD"
                   ? requestBody
                   : requestBodyWithAmountEquivalent
               ),
@@ -522,7 +522,7 @@ const BusinessName = () => {
         if (result.value === "Payment from Wallet") {
           localStorage.setItem("transactionID", randomTransactionId);
           localStorage.setItem("paymentType", "WALLET");
-          if (currencyCheck === "NGN" && userCurrency === "USD") {
+          if (currencyCheck == "NGN" && userCurrency == "USD") {
             setLoading(false);
 
             Swal.fire({
@@ -548,7 +548,7 @@ const BusinessName = () => {
             });
             return;
           }
-          if (currencyCheck === "USD" && userCurrency === "NGN") {
+          if (currencyCheck == "USD" && userCurrency == "NGN") {
             setLoading(false);
 
             Swal.fire({
@@ -787,7 +787,7 @@ const BusinessName = () => {
             // Assuming postData is the data you want to send to the endpoint
             const postData = {
               amount:
-                currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+                currencyCheck == "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
               currency: currencyCheck,
               country: "NG",
               description: "Payment for StakeHolder verification",

@@ -1049,7 +1049,7 @@ const MainDashboard = () => {
               >
                 <Title level={5}> Wallet Balance:</Title>
                 <Title level={3} style={{ color: "#0DC939" }}>
-                  {userCurrency === "NGN"
+                  {userCurrency == "NGN"
                     ? formatToNaira(userBalance)
                     : `${formatToDollar(userBalance)}`}
                 </Title>

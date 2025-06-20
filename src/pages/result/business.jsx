@@ -121,8 +121,8 @@ const Business = () => {
     //test key
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
-    amount: currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
-    currency: currencyCheck === "USD" ? "USD" : "NGN",
+    amount: currencyCheck == "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+    currency: currencyCheck == "USD" ? "USD" : "NGN",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
