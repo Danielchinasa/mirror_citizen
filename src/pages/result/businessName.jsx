@@ -169,7 +169,7 @@ const BusinessName = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount: currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
-    currency: currencyCheck === "USD" ? "USD" : "NGN",
+    currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "NGN",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
@@ -256,27 +256,27 @@ const BusinessName = () => {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          const requestBody = {
-            business: {
-              requestId: parseInt(requestId),
-              cacId: parseInt(cacid),
-            },
-          };
+        // try {
+        //   const requestBody = {
+        //     business: {
+        //       requestId: parseInt(requestId),
+        //       cacId: parseInt(cacid),
+        //     },
+        //   };
 
-          const response = await dispatch(
-            initiateStakeHoldersRequest(requestBody, userToken)
-          );
-          if (response?.sessionStatus == "INITIATED") {
-            localStorage.setItem("sessionCode", response?.sessionCode);
-            handlePayment();
-          }
-        } catch (error) {}
+        //   const response = await dispatch(
+        //     initiateStakeHoldersRequest(requestBody, userToken)
+        //   );
+        //   if (response?.sessionStatus == "INITIATED") {
+        //     localStorage.setItem("sessionCode", response?.sessionCode);
+        //     handlePayment();
+        //   }
+        // } catch (error) {}
 
         const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
-          sessionCode: localStorage.getItem("sessionCode"),
+          // sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
 
@@ -284,7 +284,7 @@ const BusinessName = () => {
         };
 
         const requestBodyWithAmountEquivalent = {
-          sessionCode: localStorage.getItem("sessionCode"),
+          // sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
 
@@ -344,7 +344,7 @@ const BusinessName = () => {
                 Authorization: `Bearer ${userToken}`,
               },
               body: JSON.stringify(
-                userCurrency === "USD"
+                userCurrency.toUpperCase() === "USD"
                   ? requestBody
                   : requestBodyWithAmountEquivalent
               ),
@@ -371,7 +371,7 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
-                  sessionCode: localStorage.getItem("sessionCode"),
+                  // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
                   payment: {
@@ -522,7 +522,10 @@ const BusinessName = () => {
         if (result.value === "Payment from Wallet") {
           localStorage.setItem("transactionID", randomTransactionId);
           localStorage.setItem("paymentType", "WALLET");
-          if (currencyCheck === "NGN" && userCurrency === "USD") {
+          if (
+            currencyCheck.toUpperCase() === "NGN" &&
+            userCurrency.toUpperCase() === "USD"
+          ) {
             setLoading(false);
 
             Swal.fire({
@@ -548,7 +551,10 @@ const BusinessName = () => {
             });
             return;
           }
-          if (currencyCheck === "USD" && userCurrency === "NGN") {
+          if (
+            currencyCheck.toUpperCase() === "USD" &&
+            userCurrency.toUpperCase() === "NGN"
+          ) {
             setLoading(false);
 
             Swal.fire({
@@ -628,7 +634,7 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
-                  sessionCode: localStorage.getItem("sessionCode"),
+                  // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
                   payment: {
@@ -787,13 +793,17 @@ const BusinessName = () => {
             // Assuming postData is the data you want to send to the endpoint
             const postData = {
               amount:
-                currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
+                currencyCheck.toUpperCase() === "USD"
+                  ? stakeHolderFeeUsd
+                  : stakeHolderFeeUsd,
               currency: currencyCheck,
               country: "NG",
               description: "Payment for StakeHolder verification",
               payment_method: "card,mobilemoney,ussd",
-              type: "VERIFICATION",
-              sessionCode: localStorage.getItem("sessionCode"),
+              type: "STAKEHOLDERS",
+              userEmail: userEmail,
+
+              // sessionCode: localStorage.getItem("sessionCode"),
             };
 
             const response = await fetch(`${baseUrl}/payment/initiate`, {

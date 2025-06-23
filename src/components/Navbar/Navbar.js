@@ -213,83 +213,59 @@ function Navbar() {
     setIsModalVisible(false);
     try {
       // Changed from fetch to axios
-      const initResponse = await axios.post(
-        `${baseUrl}/verification/initiate`,
-        {
-          amount: amount,
-          currency: userCurrency,
-          country: "NG",
-          description: "Wallet top up",
-          payment_method: "card,mobilemoney,ussd",
-          type: "TOPUP",
-        },
+      // const initResponse = await axios.post(
+      //   `${baseUrl}/verification/initiate`,
+      //   {
+      //     amount: amount,
+      //     currency: userCurrency,
+      //     country: "NG",
+      //     description: "Wallet top up",
+      //     payment_method: "card,mobilemoney,ussd",
+      //     type: "TOPUP",
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${userToken2}`,
+      //     },
+      //   }
+      // );
+
+      // const initData = initResponse.data;
+
+      const postData = {
+        amount: amount,
+        currency: userCurrency,
+        country: "NG",
+        description: "Wallet top up",
+        payment_method: "card,mobilemoney,ussd",
+        type: "TOPUP",
+      };
+      setAmount("");
+
+      // Changed from fetch to axios
+      const response = await axios.post(
+        `${baseUrl}/payment/initiate`,
+        postData,
         {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${userToken2}`,
           },
         }
       );
 
-      const initData = initResponse.data; // Axios puts the response data in the 'data' property
+      const responseData = response.data; // Axios puts the response data in the 'data' property
 
-      if (initData.sessionStatus === "INITIATED") {
-        localStorage.setItem("sessionCode", initData?.sessionCode);
-        const postData = {
-          amount: amount,
-          currency: userCurrency,
-          country: "NG",
-          description: "Wallet top up",
-          payment_method: "card,mobilemoney,ussd",
-          type: "TOPUP",
-        };
-        setAmount("");
-
-        // Changed from fetch to axios
-        const response = await axios.post(
-          `${baseUrl}/payment/initiate`,
-          postData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken2}`,
-            },
-          }
-        );
-
-        const responseData = response.data; // Axios puts the response data in the 'data' property
-
-        if (responseData.status === "success") {
-          if (responseData.data && responseData.data.link) {
-            setPaymentUrl(responseData.data.link);
-            setModal1Open(true);
-          } else {
-            Swal.fire({
-              background: bgContainer,
-              color: text,
-              title: "Error",
-              text: "Response data does not contain a link",
-              icon: "error",
-              customClass: {
-                confirmButton: "custom-swal-button",
-              },
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              showConfirmButton: true,
-              confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-            return;
-          }
+      if (responseData.status === "success") {
+        if (responseData.data && responseData.data.link) {
+          setPaymentUrl(responseData.data.link);
+          setModal1Open(true);
         } else {
           Swal.fire({
             background: bgContainer,
             color: text,
             title: "Error",
-            text: "Failed to initialize payment",
+            text: "Response data does not contain a link",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -306,6 +282,27 @@ function Navbar() {
           });
           return;
         }
+      } else {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: "Failed to initialize payment",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
       }
     } catch (error) {
       // Axios errors are typically in error.response or error.message
@@ -503,15 +500,14 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
-                            {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "USD"
+                            {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
                           </span>
                         </p>
                         <Modal
                           title="User Wallet"
-                          open={isModalVisible} // Use 'open' instead of 'visible' for Ant Design v5+ Modal
+                          open={isModalVisible}
                           onOk={handleOk}
                           okText="Proceed to Payment"
                           onCancel={handleCancel}
@@ -519,7 +515,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "NGN"
+                            {userCurrency.toUpperCase() === "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
@@ -599,7 +595,7 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "USD"
+                            {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
                           </span>
@@ -614,7 +610,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "NGN"
+                            {userCurrency.toUpperCase() === "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
