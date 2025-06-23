@@ -955,7 +955,7 @@ const DashboardPage = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount:
-      currencyCheck == "USD"
+      currencyCheck.toUpperCase() == "USD"
         ? outsideNgWithNiara == true
           ? `${outsideNgWithNiaraPrice}`
           : `${totalServiceCost}`
@@ -1071,13 +1071,17 @@ const DashboardPage = () => {
           userNIN: userNin,
           transactionID: randomTransactionId,
           amount:
-            userCurrency == "NGN" && currencyCheck === "NGN"
+            userCurrency.toUpperCase() === "NGN" &&
+            currencyCheck.toUpperCase() === "NGN"
               ? totalServiceCost
-              : currencyCheck === "USD" && userCurrency === "NGN"
+              : currencyCheck.toUpperCase() === "USD" &&
+                userCurrency.toUpperCase() === "NGN"
               ? totalveriNiara
-              : currencyCheck === "USD" && userCurrency === "USD"
+              : currencyCheck.toUpperCase() === "USD" &&
+                userCurrency.toUpperCase() === "USD"
               ? totalServiceCost
-              : userCurrency == "NGN" && currencyCheck != "NGN"
+              : userCurrency.toUpperCase() === "NGN" &&
+                currencyCheck.toUpperCase() !== "NGN"
               ? outsideNgWithNiaraPrice
               : totalServiceCost,
         };
@@ -1101,7 +1105,10 @@ const DashboardPage = () => {
             return;
           }
         }
-        if (currencyCheck === "NGN" && userCurrency === "USD") {
+        if (
+          currencyCheck.toUpperCase() === "NGN" &&
+          userCurrency.toUpperCase() === "USD"
+        ) {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
           handleCancel();
@@ -1130,13 +1137,17 @@ const DashboardPage = () => {
         //!!-------------------- Check for Wallet balance ------------------//
         if (
           userBalance.toLocaleString() <
-          (userCurrency == "NGN" && currencyCheck === "NGN"
+          (userCurrency.toUpperCase() === "NGN" &&
+          currencyCheck.toUpperCase() === "NGN"
             ? totalServiceCost
-            : currencyCheck === "USD" && userCurrency === "NGN"
+            : currencyCheck.toUpperCase() === "USD" &&
+              userCurrency.toUpperCase() === "NGN"
             ? totalveriNiara
-            : currencyCheck === "USD" && userCurrency === "USD"
+            : currencyCheck.toUpperCase() === "USD" &&
+              userCurrency.toUpperCase() === "USD"
             ? totalServiceCost
-            : userCurrency == "NGN" && currencyCheck != "NGN"
+            : userCurrency.toUpperCase() === "NGN" &&
+              currencyCheck.toUpperCase() !== "NGN"
             ? outsideNgWithNiaraPrice
             : totalServiceCost)
         ) {
@@ -1238,8 +1249,8 @@ const DashboardPage = () => {
         //!!LIVE PAYMENT START
         const postData = {
           amount:
-            currencyCheck == "USD"
-              ? outsideNgWithNiara == true
+            currencyCheck.toUpperCase() === "USD"
+              ? outsideNgWithNiara === true
                 ? `${outsideNgWithNiaraPrice}`
                 : `${totalServiceCost}`
               : `${totalServiceCost}`,
@@ -1421,7 +1432,7 @@ const DashboardPage = () => {
     let calculatedTotalveri = 0;
     let calculatedTotalnaira = 0;
 
-    if (currencyCheck === "USD") {
+    if (currencyCheck.toUpperCase() === "USD") {
       Object.keys(formData).forEach((field) => {
         // Check if the field has data and if there's a corresponding fee
         if (
@@ -2369,7 +2380,7 @@ const DashboardPage = () => {
     setLicenseNumberFilled(false); // Sets licenseNumberFilled state to false
 
     // Check if currency is USD, then subtract fees accordingly
-    if (currencyCheck === "USD") {
+    if (currencyCheck.toUpperCase() === "USD") {
       if (isChecked) {
         setTotalVAT((prevTotalVAT) => {
           const newTotalVAT = prevTotalVAT - vinVehicleVatFee;
@@ -2632,12 +2643,12 @@ const DashboardPage = () => {
       if (prevNumberOfCheckedCheckboxes === 1) {
         // When moving from 1 to 2 or more, double the state values
         setTotalVAT(
-          currencyCheck === "USD"
+          currencyCheck.toUpperCase() === "USD"
             ? (prevTotalVAT) => prevTotalVAT + 0.15
             : (prevTotalVAT) => prevTotalVAT + 113
         );
         setTotalServiceCost(
-          currencyCheck === "USD"
+          currencyCheck.toUpperCase() === "USD"
             ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
             : (prevTotalServiceCost) => prevTotalServiceCost + 1500
         );
@@ -2648,12 +2659,12 @@ const DashboardPage = () => {
     ) {
       // When moving from 2 or more to less than 2, divide by 2 to restore previous values
       setTotalVAT(
-        currencyCheck === "USD"
+        currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
           : (prevTotalVAT) => prevTotalVAT - 113
       );
       setTotalServiceCost(
-        currencyCheck === "USD"
+        currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
@@ -2665,12 +2676,12 @@ const DashboardPage = () => {
     ) {
       // Multiply the state values by 3
       setTotalVAT(
-        currencyCheck === "USD"
+        currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT + 0.15
           : (prevTotalVAT) => prevTotalVAT + 113
       );
       setTotalServiceCost(
-        currencyCheck === "USD"
+        currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost + 1500
       );
@@ -2680,12 +2691,12 @@ const DashboardPage = () => {
     ) {
       // When moving from 3 to less than 3, divide by 3 to restore previous values
       setTotalVAT(
-        currencyCheck === "USD"
+        currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
           : (prevTotalVAT) => prevTotalVAT - 113
       );
       setTotalServiceCost(
-        currencyCheck === "USD"
+        currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - 1500
       );
@@ -3291,7 +3302,11 @@ const DashboardPage = () => {
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
-                                <CloseSquareOutlined onClick={clearInputNin} />
+                                {ninFilled ? (
+                                  <CloseSquareOutlined
+                                    onClick={clearInputNin}
+                                  />
+                                ) : null}
                               </span>
                             </StyledLabel>
                             <StyledInput
@@ -3330,7 +3345,11 @@ const DashboardPage = () => {
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
-                                <CloseSquareOutlined onClick={clearInputNin} />
+                                {ninFilled ? (
+                                  <CloseSquareOutlined
+                                    onClick={clearInputNin}
+                                  />
+                                ) : null}
                               </span>
                             </StyledLabel>
                             <StyledInput
@@ -3688,9 +3707,9 @@ const DashboardPage = () => {
                           <StyledLabel $token={token}>
                             National Identification Number*
                             <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined
-                                onClick={clearInputBulkNin}
-                              />
+                              {ninFilled ? (
+                                <CloseSquareOutlined onClick={clearInputNin} />
+                              ) : null}
                             </span>
                           </StyledLabel>
                           <span>Bulk upload</span>
@@ -3734,9 +3753,11 @@ const DashboardPage = () => {
                           <StyledLabel $token={token}>
                             Registration Number (RC)*
                             <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined
-                                onClick={clearInputBusinessrc}
-                              />
+                              {rcFilled ? (
+                                <CloseSquareOutlined
+                                  onClick={clearInputBusinessrc}
+                                />
+                              ) : null}
                             </span>
                           </StyledLabel>
                           <StyledInput
@@ -3757,9 +3778,11 @@ const DashboardPage = () => {
                           <StyledLabel $token={token}>
                             Business Name*
                             <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined
-                                onClick={clearInputBusinessbusiness_name}
-                              />
+                              {businessNameFilled ? (
+                                <CloseSquareOutlined
+                                  onClick={clearInputBusinessbusiness_name}
+                                />
+                              ) : null}
                             </span>
                           </StyledLabel>
                           <StyledInput
@@ -3780,9 +3803,11 @@ const DashboardPage = () => {
                           <StyledLabel $token={token}>
                             Bank Verification Number (BVN)*
                             <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined
-                                onClick={clearInputFinancial}
-                              />
+                              {bvnFilled ? (
+                                <CloseSquareOutlined
+                                  onClick={clearInputFinancial}
+                                />
+                              ) : null}
                             </span>
                           </StyledLabel>
                           <StyledInput
@@ -3849,9 +3874,11 @@ const DashboardPage = () => {
                           <StyledLabel $token={token}>
                             Vehicle History (VIN)*
                             <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined
-                                onClick={clearInputVehiclevin}
-                              />
+                              {vinFilled ? (
+                                <CloseSquareOutlined
+                                  onClick={clearInputVehiclevin}
+                                />
+                              ) : null}
                             </span>
                           </StyledLabel>
                           <StyledInput
@@ -3895,9 +3922,11 @@ const DashboardPage = () => {
                           <StyledLabel $token={token}>
                             Vehicle Registration Number*
                             <span style={{ marginLeft: "20px", color: "red" }}>
-                              <CloseSquareOutlined
-                                onClick={clearInputVehiclelicense_number}
-                              />
+                              {licenseNumberFilled ? (
+                                <CloseSquareOutlined
+                                  onClick={clearInputVehiclelicense_number}
+                                />
+                              ) : null}
                             </span>
                           </StyledLabel>
                           <span style={{ color: "grey" }}>
@@ -3958,7 +3987,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck.toUpperCase() === "USD"
                                 ? "$" + (ninServiceFee + ninProcessingFee)
                                 : formatToNaira(
                                     ninServiceFee + ninProcessingFee
@@ -3988,7 +4017,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck.toUpperCase() === "USD"
                                 ? "$" +
                                   (businessServiceFee + businessProcessingFee)
                                 : formatToNaira(
@@ -4021,7 +4050,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck.toUpperCase() === "USD"
                                 ? "$" +
                                   (businessNameServiceFee +
                                     businessNameProcessingFee)
@@ -4055,7 +4084,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {prevNumberOfCheckedCheckboxes == 2
-                                ? currencyCheck === "USD"
+                                ? currencyCheck.toUpperCase() === "USD"
                                   ? "$" +
                                     (
                                       (financialServiceFee +
@@ -4068,7 +4097,7 @@ const DashboardPage = () => {
                                         2
                                     )
                                 : prevNumberOfCheckedCheckboxes == 3
-                                ? currencyCheck === "USD"
+                                ? currencyCheck.toUpperCase() === "USD"
                                   ? "$" +
                                     (
                                       (financialServiceFee +
@@ -4080,7 +4109,7 @@ const DashboardPage = () => {
                                         financialProcessingFee) *
                                         3
                                     )
-                                : currencyCheck === "USD"
+                                : currencyCheck.toUpperCase() === "USD"
                                 ? "$" +
                                   (financialServiceFee + financialProcessingFee)
                                 : formatToNaira(
@@ -4112,7 +4141,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck.toUpperCase() === "USD"
                                 ? "$" +
                                   (vinVehicleServiceFee +
                                     vinVehicleProcessingFee)
@@ -4146,7 +4175,7 @@ const DashboardPage = () => {
                           <Col>
                             <p style={{ color: text }}>
                               {" "}
-                              {currencyCheck === "USD"
+                              {currencyCheck.toUpperCase() === "USD"
                                 ? "$" +
                                   (vehicleServiceFee + vehicleProcessingFee)
                                 : formatToNaira(
@@ -4183,7 +4212,7 @@ const DashboardPage = () => {
                           <p style={{ color: text }}>Tax & charges: </p>
                         </Col>
                         <Col style={{ textAlign: "right" }}>
-                          {currencyCheck === "USD" ? (
+                          {currencyCheck.toUpperCase() === "USD" ? (
                             <p style={{ color: text }}>
                               ${totalVAT.toFixed(2)}
                             </p>
@@ -4206,13 +4235,13 @@ const DashboardPage = () => {
                           <p style={{ color: text }}>Total Amount Due: </p>
                         </Col>
                         <Col>
-                          {/* {currencyCheck === "USD" ? (
+                          {/* {currencyCheck.toUpperCase() === "USD" ? (
                         <p>{`$${rawServiceFee.toFixed(2)}`}</p>
                       ) : (
                         <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
                       )} */}
 
-                          {currencyCheck === "USD" ? (
+                          {currencyCheck.toUpperCase() === "USD" ? (
                             // <p>{`$${totalServiceCost}`}</p>
                             <p
                               style={{ color: text }}
@@ -4225,7 +4254,7 @@ const DashboardPage = () => {
                         </Col>
                       </Row>
                       <Divider />
-                      {currencyCheck == "USD" ? (
+                      {currencyCheck.toUpperCase() === "USD" ? (
                         <>
                           <p style={{ color: text }}>
                             Select payment currency{" "}
@@ -4250,9 +4279,11 @@ const DashboardPage = () => {
                           ) : (
                             <Radio.Group
                               onChange={currencyOnChange}
-                              value={userCurrency === "NGN" ? 1 : 2}
+                              value={
+                                userCurrency?.toUpperCase() === "NGN" ? 1 : 2
+                              }
                             >
-                              {userCurrency === "NGN" ? (
+                              {userCurrency?.toUpperCase() === "NGN" ? (
                                 <Radio value={1}>
                                   {" "}
                                   {formatToNaira(totalveriNiara)}
@@ -4272,7 +4303,7 @@ const DashboardPage = () => {
                       ) : (
                         ""
                       )}
-                      {currencyCheck == "USD" ? (
+                      {currencyCheck.toUpperCase() === "USD" ? (
                         <>
                           <p style={{ color: text }}>Exchange rate</p>
                           <p style={{ color: text }}>
