@@ -631,7 +631,12 @@ const MainDashboard = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      sorter: (a, b) => a.amount - b.amount,
+      sorter: (a, b) => Number(a.amount) - Number(b.amount),
+      render: (amount) =>
+        Number(amount).toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }),
     },
     {
       title: "Transaction Type",
