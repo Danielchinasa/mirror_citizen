@@ -3881,6 +3881,11 @@ const DashboardPage = () => {
                               ) : null}
                             </span>
                           </StyledLabel>
+                          <span style={{ color: "grey" }}>
+                            Input the vehicle VIN without any space or hyphens
+                            e.g 2B3HD46TXSH573598
+                          </span>
+
                           <StyledInput
                             $token={token}
                             type="text"

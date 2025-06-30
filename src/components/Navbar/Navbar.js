@@ -409,7 +409,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          LOGIN
+                          GET STARTED
                         </OutlineButton>
                       </NavBtnLink>
                     ) : (
@@ -424,12 +424,12 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          LOGIN
+                          GET STARTED
                         </OutlineButton>
                       </NavBtnLink>
                     )}
                   </NavItemBtn>
-                  <NavItemBtn>
+                  {/* <NavItemBtn>
                     {button ? (
                       <NavBtnLink
                         to="/sign-up"
@@ -455,7 +455,7 @@ function Navbar() {
                         </MainButton>
                       </NavBtnLink>
                     )}
-                  </NavItemBtn>
+                  </NavItemBtn> */}
                   <ThemeToggle />
                 </>
               )}
