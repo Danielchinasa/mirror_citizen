@@ -279,7 +279,7 @@ const BusinessName = () => {
           // sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
-
+          type: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
         };
 
@@ -287,7 +287,7 @@ const BusinessName = () => {
           // sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
-
+          type: "STAKEHOLDERS",
           amount: stakeHolderFeeNgn,
         };
         const handlePayment = async () => {
