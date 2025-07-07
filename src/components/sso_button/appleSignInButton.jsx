@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import googleLogo from "../../images/google-logo.svg";
+import appleImage from "../../images/Apple.png";
 
-const GoogleButton = styled.button`
+const AppleButton = styled.button`
   display: flex;
   align-items: center;
   width: 100%;
@@ -11,7 +11,7 @@ const GoogleButton = styled.button`
   border: 1px solid #dadce0;
   border-radius: 4px;
   background-color: white;
-  color: #3c4043;
+  color: #000000;
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
@@ -27,16 +27,16 @@ const GoogleButton = styled.button`
   }
 `;
 
-function GoogleSignInButton({ onClick }) {
+function AppleSignInButton({ onClick }) {
   return (
-    <GoogleButton
+    <AppleButton
       onClick={onClick}
       style={{ borderColor: "#000000", borderRadius: "8px" }}
     >
-      <img src={googleLogo} alt="Google logo" />
-      Log in with Google
-    </GoogleButton>
+      <img src={appleImage} alt="Apple logo" />
+      Log in with Apple
+    </AppleButton>
   );
 }
 
-export default GoogleSignInButton;
+export default AppleSignInButton;

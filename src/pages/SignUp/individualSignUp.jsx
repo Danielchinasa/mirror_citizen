@@ -14,6 +14,7 @@ import {
   Checkbox,
   Spin,
   message,
+  Divider,
 } from "antd";
 import { useHistory } from "react-router-dom";
 
@@ -41,6 +42,11 @@ import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
+import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
+import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
+import AppleSignInButton from "../../components/sso_button/appleSignInButton";
+import FacebookLogin from "react-facebook-login";
+import AppleLogin from "react-apple-login";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -453,7 +459,70 @@ const IndividualSignUp = () => {
               <Spin spinning={loading} tip="Signing Up...">
                 <StyledForm onSubmit={handleSignUp}>
                   <Title>Create Account</Title>
-                  <Title level={4}>INDIVIDUAL ACCOUNT</Title>
+
+                  <style>
+                    {`
+          .facebook-btn {
+           display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+            padding: 10px 20px;
+            border: 1px solid #000;
+            border-radius: 4px;
+            background-color: white;
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            border-radius: 8px;
+          }
+
+          .facebook-btn:hover {
+           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+          }
+        `}
+                  </style>
+                  <Space direction="vertical" style={{ width: "100%" }}>
+                    <GoogleSignInButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        localStorage.removeItem("token");
+                        // 🔍 Track the click event
+                        trackEvent({
+                          action: "click_google_signin",
+                          category: "Authentication",
+                          label: "Google Sign-In Button",
+                          value: 1,
+                        });
+                        login();
+                      }}
+                    />
+                    <FacebookLogin
+                      appId="1088597931155576"
+                      fields="name,email,picture"
+                      // callback={responseFacebook}
+                      cssClass="facebook-btn"
+                      textButton="Log in with Facebook"
+                      icon={<FacebookSignInButton />}
+                    />
+                    <AppleLogin
+                      clientId="com.react.apple.login"
+                      redirectURI="https://redirectUrl.com"
+                      responseType="code"
+                      responseMode="query"
+                      usePopup={true}
+                      callback={(response) => {
+                        console.log("Apple login response:", response);
+                        // handle login here
+                      }}
+                      render={({ onClick }) => (
+                        <AppleSignInButton onClick={onClick} />
+                      )}
+                    />
+                  </Space>
+                  <Divider>OR</Divider>
                   {formErrors.general && (
                     <Alert
                       message={formErrors.general}
@@ -634,13 +703,6 @@ const IndividualSignUp = () => {
                   </MainButtonFull>
                 </StyledForm>
                 {/* // Google SSO button */}
-                <GoogleSignUpButton
-                  onClick={(e) => {
-                    e.preventDefault();
-                    localStorage.removeItem("token");
-                    login();
-                  }}
-                />
               </Spin>
             </Space>
           </div>
