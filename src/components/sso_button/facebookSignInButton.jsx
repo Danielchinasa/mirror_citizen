@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import googleLogo from "../../images/google-logo.svg";
+import facebookImage from "../../images/Facebook.png";
 
-const GoogleButton = styled.button`
+const FacebookButton = styled.button`
   display: flex;
   align-items: center;
   width: 100%;
@@ -27,16 +27,14 @@ const GoogleButton = styled.button`
   }
 `;
 
-function GoogleSignInButton({ onClick }) {
+function FacebookSignInButton({ onClick }) {
   return (
-    <GoogleButton
-      onClick={onClick}
-      style={{ borderColor: "#000000", borderRadius: "8px" }}
-    >
-      <img src={googleLogo} alt="Google logo" />
-      Log in with Google
-    </GoogleButton>
+    <img
+      src={facebookImage}
+      alt="Facebook logo"
+      style={{ paddingRight: "10px" }}
+    />
   );
 }
 
-export default GoogleSignInButton;
+export default FacebookSignInButton;
