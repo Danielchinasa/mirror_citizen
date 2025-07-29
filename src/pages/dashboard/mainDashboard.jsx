@@ -13,7 +13,7 @@ import {
   message,
   Button,
   Divider,
-  Spin
+  Spin,
 } from "antd";
 import { Container, Heading4, InfoSec, MainButton } from "../../globalStyles";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
@@ -168,7 +168,7 @@ const MainDashboard = () => {
 
   const handleViewResult = async (record) => {
     setLoadingSmall(true);
-    const { id, insertionDate, consent } = record;
+    const { id, insertionDate, consent, status } = record;
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
       currentDate.getTime() - 48 * 60 * 60 * 1000
@@ -294,7 +294,7 @@ const MainDashboard = () => {
     }
     // }
   };
-  
+
   const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
     localStorage.setItem("verificationRequestId", record.id);
@@ -552,7 +552,7 @@ const MainDashboard = () => {
       key: "status",
       dataIndex: "status",
       render: (text, record) => {
-        const { insertionDate, type, consent } = record;
+        const { insertionDate, type, consent, status } = record;
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
           currentDate.getTime() - 24 * 60 * 60 * 1000
@@ -564,7 +564,17 @@ const MainDashboard = () => {
           currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
         );
 
-        if (
+        if (status.toLowerCase() === "expired") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+          );
+        } else if (status.toLowerCase() === "no data found") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              No Data Found
+            </span>
+          );
+        } else if (
           ((type === "Basic Profile" || type === "Financial Profile") &&
             new Date(insertionDate) < fortyEightHoursAgo) ||
           (consent === "pending" &&
@@ -878,8 +888,6 @@ const MainDashboard = () => {
   // Usage
   return (
     <Container>
-      
-     
       <Spin
         spinning={loadingSmall}
         tip="Fetching result ..."
@@ -1020,7 +1028,6 @@ const MainDashboard = () => {
             data-postman-var-1="40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96"
             data-postman-collection-url="entityId=40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96&entityType=collection&workspaceId=7222a8fe-9b7b-4ba7-9aa1-46b4cd965d34">
             </div> */}
-
         </InfoSec>
         <Tabs
           defaultActiveKey="1"
