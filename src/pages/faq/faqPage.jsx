@@ -337,11 +337,10 @@ const FaqPage = () => {
       title: "What is a Vehicle History Report ",
       content: (
         <p>
-          This service is most suitable for buyers of foreign-used vehicles that
-          have not been used locally. A vehicle history report chronicles the
-          life of a vehicle abroad, and contains information such as Accident
-          History, Actual Mileage, Maintenance History, Date of Shipping to
-          Nigeria or another destination, type, number of owners, etc.
+          A vehicle history report chronicles the life of a vehicle abroad, and
+          contains information such as Accident History, Actual Mileage,
+          Maintenance History, Date of Shipping to Nigeria or another
+          destination, type, number of owners, etc.
         </p>
       ),
     },
