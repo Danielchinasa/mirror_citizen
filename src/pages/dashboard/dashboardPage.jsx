@@ -179,11 +179,18 @@ const DashboardPage = () => {
   const [exchangeRate, setExchangeRate] = useState("");
   const [ninFee, setNinFee] = useState("");
   const [ninServiceFee, setNinServiceFee] = useState("");
+  const [phoneFee, setPhoneFee] = useState("");
+  const [phoneServiceFee, setPhoneServiceFee] = useState("");
   const [ninUsdServiceFee, setUsdNinServiceFee] = useState("");
   const [ninVatFee, setNinVatFee] = useState("");
+  const [phoneVatFee, setPhoneVatFee] = useState("");
   const [ninUsdFee, setNinUsdFee] = useState("");
+  const [phoneUsdFee, setPhoneUsdFee] = useState("");
   const [ninUsdVatFee, setNinUsdVatFee] = useState("");
   const [ninProcessingFee, setNinProcessingFee] = useState("");
+  const [phoneProcessingFee, setPhoneProcessingFee] = useState("");
+  const [phoneUsdServiceFee, setPhoneUsdServiceFee] = useState("");
+  const [phoneUsdVatFee, setPhoneUsdVatFee] = useState("");
   const [faceFee, setFaceFee] = useState("");
   const [faceServiceFee, setfaceServiceFee] = useState("");
   const [faceUsdServiceFee, setfaceUsdServiceFee] = useState("");
@@ -258,6 +265,7 @@ const DashboardPage = () => {
   });
 
   const [ninFilled, setNinFilled] = useState(false);
+  const [phoneFilled, setPhoneFilled] = useState(false);
   const [faceFilled, setFaceFilled] = useState(false);
   const [rcFilled, setRcFilled] = useState(false);
   const [businessNameFilled, setBusinessNameFilled] = useState(false);
@@ -370,6 +378,13 @@ const DashboardPage = () => {
         setStolenCheckFee(response.data.data[7].price);
         setStolenCheckVatFee(response.data.data[7].VAT);
         setStolenCheckServiceFee(response.data.data[7].serviceFee);
+
+        setPhoneFee(response.data.data[9].price);
+        setPhoneServiceFee(response.data.data[9].serviceFee);
+        setPhoneVatFee(response.data.data[9].VAT);
+        setPhoneUsdFee(response.data.data[9].price2);
+        setPhoneUsdServiceFee(response.data.data[9].serviceFee2);
+        setPhoneUsdVatFee(response.data.data[9].VAT2);
       } catch (error) {
         console.error("Error fetching IP address:", error);
 
@@ -504,6 +519,96 @@ const DashboardPage = () => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
             // dispatch(fetchUserProfile(userToken));
+            window.location.reload();
+          }
+        });
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].phoneVerification &&
+        response["search-extension"].phoneVerification.status === true
+      ) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: response["search-extension"].phoneVerification.detail,
+          icon: "info",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
+        history.push("/main-dashboard");
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].phoneVerification &&
+        response["search-extension"].phoneVerification.status === false
+      ) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text:
+            response["search-extension"].phoneVerification.detail ||
+            "Verification failed",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].bvnVerification &&
+        response["search-extension"].bvnVerification.status === true
+      ) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: response["search-extension"].bvnVerification.detail,
+          icon: "info",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
+        history.push("/main-dashboard");
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].bvnVerification &&
+        response["search-extension"].bvnVerification.status === false
+      ) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text:
+            response["search-extension"].bvnVerification.detail ||
+            "Verification failed",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
             window.location.reload();
           }
         });
@@ -781,6 +886,7 @@ const DashboardPage = () => {
     // Set the service fee based on the selected profile
     const formDataFees = {
       nin: ninFee,
+      phone: phoneFee,
       vin: vinVehicleFee,
       license_number: vehicleFee,
       rc: businessFee,
@@ -802,6 +908,14 @@ const DashboardPage = () => {
       setUsdFee(ninUsdFee);
       setVat(ninVatFee);
       setRawServiceFee(ninFee);
+    } else if (profile === "phone") {
+      localStorage.setItem("profile", profile);
+      setServiceFee(phoneServiceFee); // Set the service fee for Phone
+      setProcessingFee(phoneProcessingFee);
+      setProfile("phone");
+      setUsdFee(phoneUsdFee);
+      setVat(phoneVatFee);
+      setRawServiceFee(phoneFee);
     } else if (profile === "face") {
       localStorage.setItem("profile", profile);
       setServiceFee(faceServiceFee);
@@ -865,6 +979,7 @@ const DashboardPage = () => {
     return (
       <Radio value={2}>
         {profile === "nin" && `$ ${usdFee}`}
+        {profile === "phone" && `$ ${usdFee}`}
         {profile === "face" && `$ ${usdFee}`}
         {profile === "rc" && `$ ${usdFee}`}
         {profile === "business_name" && `$ ${usdFee}`}
@@ -1410,6 +1525,7 @@ const DashboardPage = () => {
     // Calculate total veri based on form data
     const formDataFees = {
       nin: ninFee,
+      phone: phoneFee,
       vin: vinVehicleFee,
       license_number: vehicleFee,
       rc: businessFee,
@@ -1420,6 +1536,7 @@ const DashboardPage = () => {
 
     const formDataUsdFees = {
       nin: ninUsdFee,
+      phone: phoneUsdFee,
       vin: vinVehicleUsdFee,
       license_number: vehicleUsdFee,
       rc: businessUsdFee,
@@ -1482,6 +1599,16 @@ const DashboardPage = () => {
         setTotalveri(calculatedTotalveri);
       }
       if (
+        typeof formData.phone === "string" &&
+        formData.phone.trim() !== "" &&
+        formDataUsdFees.phone !== undefined
+      ) {
+        setIsBasicOn(true);
+        // Add the fee for 'phone' to the totalveri
+        calculatedTotalveri += formDataUsdFees.phone;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
         typeof formData.bvn === "string" &&
         formData.bvn.trim() !== "" &&
         formDataUsdFees.bvn !== undefined
@@ -1538,6 +1665,16 @@ const DashboardPage = () => {
         setIsBasicOn(true);
         // Add the fee for 'vin' to the totalveri
         calculatedTotalveri += formDataUsdFees.vin;
+        setTotalveri(calculatedTotalveri);
+      }
+      if (
+        typeof formData.phone === "string" &&
+        formData.phone.trim() !== "" &&
+        formDataUsdFees.phone !== undefined
+      ) {
+        setIsBasicOn(true);
+        // Add the fee for 'phone' to the totalveri
+        calculatedTotalveri += formDataUsdFees.phone;
         setTotalveri(calculatedTotalveri);
       }
       if (
@@ -2055,8 +2192,32 @@ const DashboardPage = () => {
 
         setFormData((prevFormData) => ({
           ...prevFormData,
-          nin: "", // Assuming "rc" is the name of the field you want to set to empty string
+          nin: "",
           nin_csv: "",
+        }));
+      }
+      if (basicProfileArray[basicProfileArray.length - 1] === "phone") {
+        setFaceFilled(false);
+        if (formData.phone !== "") {
+          // Update total VAT
+          setTotalVAT((prevTotalVAT) => {
+            const newTotalVAT = prevTotalVAT - phoneVatFee;
+            return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+          });
+          setTotalServiceCost((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - phoneFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+          });
+          setTotalveriNiara((prevTotalFees) => {
+            const newTotalFees = prevTotalFees - phoneUsdFee;
+            return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+          });
+        }
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          phone: "",
+          phone_csv: "",
         }));
       }
     }
@@ -2232,6 +2393,26 @@ const DashboardPage = () => {
     });
     setTotalveriNiara((prevTotalFees) => {
       const newTotalFees = prevTotalFees - ninUsdFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
+    });
+  };
+
+  const clearInputPhone = () => {
+    setBasicProfileArray([]); // Clears basic profile array
+    setFormData({ ...formData, phone: "" }); // Clears the phone field in the form data
+    setPaymentmethod(null); // Clears selected value
+    setPhoneFilled(false); // Sets phoneFilled state to false
+    setFaceFilled(false); // Sets faceFilled state to false
+    setTotalVAT((prevTotalVAT) => {
+      const newTotalVAT = prevTotalVAT - phoneVatFee;
+      return newTotalVAT < 0 ? 0 : newTotalVAT; // Ensure total VAT doesn't go below 0
+    });
+    setTotalServiceCost((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - phoneFee;
+      return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
+    });
+    setTotalveriNiara((prevTotalFees) => {
+      const newTotalFees = prevTotalFees - phoneUsdFee;
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
     });
   };
@@ -2765,6 +2946,24 @@ const DashboardPage = () => {
         );
       }
     }
+    if (name === "phone") {
+      if (!hadPreviousValue && value.trim() !== "") {
+        setPhoneFilled(true);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT + phoneVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees + phoneFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira + phoneUsdFee
+        );
+      } else if (hadPreviousValue && value.trim() === "") {
+        setPhoneFilled(false);
+        setTotalVAT((prevTotalVAT) => prevTotalVAT - phoneVatFee);
+        setTotalServiceCost((prevTotalFees) => prevTotalFees - phoneFee);
+        setTotalveriNiara(
+          (prevTotalFeesNaira) => prevTotalFeesNaira - phoneUsdFee
+        );
+      }
+    }
+
     if (name === "face") {
       if (!hadPreviousValue && value.trim() !== "") {
         setFaceFilled(true);
@@ -3002,6 +3201,22 @@ const DashboardPage = () => {
                             >
                               National Identification Number (NIN)
                             </Radio>
+                            <Radio
+                              value="phone"
+                              size="large"
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click_phone_number_button",
+                                  category: "Basic Identity Profile",
+                                  label: "Phone Number Button",
+                                  value: 1,
+                                });
+                                setSelectedForm("phone");
+                              }}
+                            >
+                              Phone Number
+                            </Radio>
+
                             {userType != "individual" ? (
                               <Radio
                                 value="bulk_nin"
@@ -3025,6 +3240,7 @@ const DashboardPage = () => {
                           </Space>
                         </Radio.Group>
                       </Form>
+
                       <Row
                         onClick={() => setSelectedProfile("business")}
                         style={{
@@ -4001,6 +4217,36 @@ const DashboardPage = () => {
                           </Col>
                           <Col style={{ marginLeft: "20px", color: "red" }}>
                             <CloseSquareOutlined onClick={clearInputNin} />
+                          </Col>
+                        </Row>
+                      ) : (
+                        ""
+                      )}
+
+                      {phoneFilled ? (
+                        <Row>
+                          <Col
+                            span={8}
+                            xs={{ span: 12 }}
+                            sm={{ span: 12 }}
+                            md={{ span: 15 }}
+                            lg={{ span: 15 }}
+                            style={{ textAlign: "left" }}
+                          >
+                            <p style={{ color: text }}> Phone: </p>
+                          </Col>
+                          <Col>
+                            <p style={{ color: text }}>
+                              {" "}
+                              {currencyCheck.toUpperCase() === "USD"
+                                ? "$" + (phoneServiceFee + phoneProcessingFee)
+                                : formatToNaira(
+                                    phoneServiceFee + phoneProcessingFee
+                                  )}
+                            </p>
+                          </Col>
+                          <Col style={{ marginLeft: "20px", color: "red" }}>
+                            <CloseSquareOutlined onClick={clearInputPhone} />
                           </Col>
                         </Row>
                       ) : (
