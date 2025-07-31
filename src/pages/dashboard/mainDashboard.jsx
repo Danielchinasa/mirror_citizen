@@ -564,7 +564,7 @@ const MainDashboard = () => {
       key: "status",
       dataIndex: "status",
       render: (text, record) => {
-        const { insertionDate, type, consent } = record;
+        const { insertionDate, type, consent, status } = record;
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
           currentDate.getTime() - 24 * 60 * 60 * 1000
@@ -576,7 +576,17 @@ const MainDashboard = () => {
           currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
         );
 
-        if (
+        if (status.toLowerCase() === "expired") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+          );
+        } else if (status.toLowerCase() === "no data found") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              No Data Found
+            </span>
+          );
+        } else if (
           ((type === "Basic Profile" || type === "Financial Profile") &&
             new Date(insertionDate) < fortyEightHoursAgo) ||
           (consent === "pending" &&
