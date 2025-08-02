@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Divider, Avatar, Spin, Tabs } from "antd";
+import { Card, Row, Col, Divider, Avatar, Spin, Tabs, Collapse } from "antd";
 import {
   Container,
   Heading,
@@ -41,9 +41,11 @@ import { IoSchoolSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
+import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
+const { Panel } = Collapse;
 
 const SearchExtensionResult = () => {
   const dispatch = useDispatch();
@@ -52,7 +54,111 @@ const SearchExtensionResult = () => {
   const history = useHistory();
   const tokenExpire = user?.expirationDate || "";
   const [loading, setLoading] = useState(false);
-  const [searchExtensionData, setSearchExtensionData] = useState(null);
+  const [searchExtensionData, setSearchExtensionData] = useState({
+    premblyBvnVerification: [
+      {
+        id: 9,
+        bvn: "22337942293",
+        dateOfBirth: "03-Feb-1990",
+        enrollmentBank: "",
+        enrollmentBranch: "",
+        firstName: "FRANCIS",
+        lastName: "ELROI",
+        middleName: "JUNIOR",
+        gender: "Male",
+        levelOfAccount: "",
+        lgaOfOrigin: "Nsit-Ibom",
+        lgaOfResidence: "",
+        maritalStatus: "Single",
+        nameOnCard: "",
+        nationality: "",
+        number: "22337942293",
+        phoneNumber: "08143830936",
+        phoneNumber1: "",
+        phoneNumber2: "",
+        photo: "",
+        registrationDate: "2015-09-17",
+        residentialAddress: "",
+        stateOfOrigin: "Akwa Ibom State",
+        stateOfResidence: "",
+        title: "",
+        watchListed: "False",
+        verificationStatus: "VERIFIED",
+        verificationReference: "fe7bbed6-30a3-4a2c-a900-e62d551acccd",
+        responseCode: "00",
+        type: "BVN",
+        detail: "Verification successful",
+        matchingRequestId: 12053,
+        matchingSessionId: 106,
+        userId: 562,
+        rawData:
+          '{"status":true,"detail":"Verification successful","data":{"bvn":"22337942293","enrollmentBank":"","enrollmentBranch":"","firstName":"FRANCIS","gender":"Male","lastName":"ELROI","levelOfAccount":"","lgaOfOrigin":"Nsit-Ibom","lgaOfResidence":"","maritalStatus":"Single","middleName":"JUNIOR","nameOnCard":"","nationality":"","number":"22337942293","phoneNumber":"08143830936","phoneNumber1":"","phoneNumber2":"","photo":"","residentialAddress":"","stateOfOrigin":"Akwa Ibom State","stateOfResidence":"","title":"","watchListed":"False","dateOfBirth":"03-Feb-1990","registrationDate":"2015-09-17"},"verification":{"status":"VERIFIED","reference":"fe7bbed6-30a3-4a2c-a900-e62d551acccd"},"response_code":"00","endpoint_name":"BVN With Phone Verification"}',
+        createdAt: "2025-07-31T14:58:41.107773",
+      },
+    ],
+    success: true,
+    parameter: "08143830936",
+    consent: "granted",
+    premblyPhoneVerification: [
+      {
+        id: 8,
+        birthCountry: "NGA",
+        birthDate: "1990-02-03",
+        firstname: "FRANCIS",
+        gender: "M",
+        middlename: "JUNIOR",
+        nin: "53234919649",
+        surname: "ELROI",
+        residenceAddress: "",
+        residenceTown: "",
+        residenceState: "",
+        birthlga: "",
+        birthstate: "",
+        educationallevel: "",
+        email: "",
+        employmentstatus: "",
+        maritalstatus: "",
+        signature: "",
+        nokMiddlename: "",
+        nokAddress1: "",
+        title: "",
+        nokTown: "",
+        nokState: "",
+        nokAddress2: "",
+        residenceLga: "",
+        selfOriginLga: "",
+        nokSurname: "",
+        ospokenlang: "",
+        nokPostalcode: "",
+        selfOriginState: "",
+        vnin: "",
+        trackingId: "",
+        heigth: "",
+        selfOriginPlace: "",
+        psurname: "",
+        telephoneno: "08143830936",
+        premblyUserid: "",
+        nokLga: "",
+        residencestatus: "",
+        profession: "",
+        centralID: "",
+        spokenLanguage: "",
+        pmiddlename: "",
+        pfirstname: "",
+        religion: "",
+        nokFirstname: "",
+        verificationStatus: "VERIFIED",
+        verificationReference: "77fdfdfa-d653-44ac-a9a3-c0839add7182",
+        createdAt: "2025-07-31T14:58:08.917749",
+        photo: "",
+        type: "PHONE-NUMBER",
+        matchingRequestId: 12053,
+        matchingSessionId: 106,
+        userId: 562,
+        detail: "Verification Successful",
+      },
+    ],
+  });
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
 
@@ -74,8 +180,12 @@ const SearchExtensionResult = () => {
     const fetchData = async () => {
       try {
         const requestId = localStorage.getItem("verificationRequestId");
-        const response = await fetchVerificationResult(requestId, userToken);
-        setSearchExtensionData(response.data["search-extension"]);
+        const response = await apiGetInternalCall(
+          `/verification/check-consent/${requestId}`,
+          userToken
+        );
+        console.log("Response " + response.data);
+        // setSearchExtensionData(response.data["search-extension"]);
       } catch (error) {
         console.error("Error fetching verification result:", error);
       }
@@ -97,232 +207,294 @@ const SearchExtensionResult = () => {
   );
 
   const renderPhoneVerificationSection = () => {
-    if (!searchExtensionData?.phoneVerification) return null;
+    if (!searchExtensionData?.premblyPhoneVerification?.[0]) return null;
 
-    const { data } = searchExtensionData.phoneVerification;
+    const phoneData = searchExtensionData.premblyPhoneVerification[0];
 
     return (
-      <Row gutter={16}>
-        <Col span={24}>
-          <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
-            Personal Details
-          </StyledLabel>
-        </Col>
+      <div style={{ marginBottom: "24px" }}>
+        <Collapse defaultActiveKey={["1"]} ghost>
+          <Panel
+            header={
+              <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                Phone Verification Details
+              </span>
+            }
+            key="1"
+          >
+            <Row gutter={16}>
+              <Col span={24}>
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  Personal Details
+                </StyledLabel>
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaRegUser />, "First Name", data.firstname)}
-          <Divider />
-          {renderDetail(<AiOutlineFieldNumber />, "NIN", data.nin)}
-          <Divider />
-          {renderDetail(<FaPhoneAlt />, "Phone Number", data.telephoneno)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(<FaRegUser />, "First Name", phoneData.firstname)}
+                <Divider />
+                {renderDetail(<AiOutlineFieldNumber />, "NIN", phoneData.nin)}
+                <Divider />
+                {renderDetail(
+                  <FaPhoneAlt />,
+                  "Phone Number",
+                  phoneData.telephoneno
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaRegUser />, "Middle Name", data.middlename)}
-          <Divider />
-          {renderDetail(<FaCalendarAlt />, "Date of Birth", data.birthdate)}
-          <Divider />
-          {renderDetail(<FaRestroom />, "Gender", data.gender)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <FaRegUser />,
+                  "Middle Name",
+                  phoneData.middlename
+                )}
+                <Divider />
+                {renderDetail(
+                  <FaCalendarAlt />,
+                  "Date of Birth",
+                  phoneData.birthDate
+                )}
+                <Divider />
+                {renderDetail(<FaRestroom />, "Gender", phoneData.gender)}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaRegUser />, "Surname", data.surname)}
-          <Divider />
-          {renderDetail(<FaGlobe />, "Country of Birth", data.birthcountry)}
-          <Divider />
-          {renderDetail(<MdOutlineMail />, "Email", data.email)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(<FaRegUser />, "Surname", phoneData.surname)}
+                <Divider />
+                {renderDetail(
+                  <FaGlobe />,
+                  "Country of Birth",
+                  phoneData.birthCountry
+                )}
+                <Divider />
+                {renderDetail(<MdOutlineMail />, "Email", phoneData.email)}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "State of Birth",
-            data.birthstate
-          )}
-          <Divider />
-          {renderDetail(<MdOutlinePinDrop />, "LGA of Birth", data.birthlga)}
-          <Divider />
-          {renderDetail(<IoSchoolSharp />, "Profession", data.profession)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "State of Birth",
+                  phoneData.birthstate
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "LGA of Birth",
+                  phoneData.birthlga
+                )}
+                <Divider />
+                {renderDetail(
+                  <IoSchoolSharp />,
+                  "Profession",
+                  phoneData.profession
+                )}
+              </Col>
 
-        <Col span={24}>
-          <Divider />
-          <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
-            Additional Information
-          </StyledLabel>
-        </Col>
+              <Col span={24}>
+                <Divider />
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  Additional Information
+                </StyledLabel>
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <FaHome />,
-            "Residence Address",
-            data.residence_address
-          )}
-          <Divider />
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "Residence State",
-            data.residence_state
-          )}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <FaHome />,
+                  "Residence Address",
+                  phoneData.residenceAddress
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Residence State",
+                  phoneData.residenceState
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "Residence LGA",
-            data.residence_lga
-          )}
-          <Divider />
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "Residence Town",
-            data.residence_town
-          )}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Residence LGA",
+                  phoneData.residenceLga
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "Residence Town",
+                  phoneData.residenceTown
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <IoSchoolSharp />,
-            "Education Level",
-            data.educationallevel
-          )}
-          <Divider />
-          {renderDetail(
-            <GiBigDiamondRing />,
-            "Marital Status",
-            data.maritalstatus
-          )}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <IoSchoolSharp />,
+                  "Education Level",
+                  phoneData.educationallevel
+                )}
+                <Divider />
+                {renderDetail(
+                  <GiBigDiamondRing />,
+                  "Marital Status",
+                  phoneData.maritalstatus
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaPray />, "Religion", data.religion)}
-          <Divider />
-          {renderDetail(
-            <MdOutlineWorkOutline />,
-            "Employment Status",
-            data.employmentstatus
-          )}
-        </Col>
-      </Row>
+              <Col span={6}>
+                {renderDetail(<FaPray />, "Religion", phoneData.religion)}
+                <Divider />
+                {renderDetail(
+                  <MdOutlineWorkOutline />,
+                  "Employment Status",
+                  phoneData.employmentstatus
+                )}
+              </Col>
+            </Row>
+          </Panel>
+        </Collapse>
+      </div>
     );
   };
 
   const renderBvnVerificationSection = () => {
-    if (!searchExtensionData?.bvnVerification) return null;
+    if (!searchExtensionData?.premblyBvnVerification?.[0]) return null;
 
-    const { data } = searchExtensionData.bvnVerification;
+    const bvnData = searchExtensionData.premblyBvnVerification[0];
 
     return (
-      <Row gutter={16}>
-        <Col span={24}>
-          <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
-            BVN Details
-          </StyledLabel>
-        </Col>
+      <div style={{ marginBottom: "24px" }}>
+        <Collapse defaultActiveKey={["1"]} ghost>
+          <Panel
+            header={
+              <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                BVN Verification Details
+              </span>
+            }
+            key="1"
+          >
+            <Row gutter={16}>
+              <Col span={24}>
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  BVN Details
+                </StyledLabel>
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaRegUser />, "First Name", data.firstName)}
-          <Divider />
-          {renderDetail(<AiOutlineFieldNumber />, "BVN", data.bvn)}
-          <Divider />
-          {renderDetail(<FaPhoneAlt />, "Phone Number", data.phoneNumber)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(<FaRegUser />, "First Name", bvnData.firstName)}
+                <Divider />
+                {renderDetail(<AiOutlineFieldNumber />, "BVN", bvnData.bvn)}
+                <Divider />
+                {renderDetail(
+                  <FaPhoneAlt />,
+                  "Phone Number",
+                  bvnData.phoneNumber
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaRegUser />, "Middle Name", data.middleName)}
-          <Divider />
-          {renderDetail(<FaCalendarAlt />, "Date of Birth", data.dateOfBirth)}
-          <Divider />
-          {renderDetail(<FaRestroom />, "Gender", data.gender)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(<FaRegUser />, "Middle Name", bvnData.middleName)}
+                <Divider />
+                {renderDetail(
+                  <FaCalendarAlt />,
+                  "Date of Birth",
+                  bvnData.dateOfBirth
+                )}
+                <Divider />
+                {renderDetail(<FaRestroom />, "Gender", bvnData.gender)}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaRegUser />, "Last Name", data.lastName)}
-          <Divider />
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "State of Origin",
-            data.stateOfOrigin
-          )}
-          <Divider />
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "LGA of Origin",
-            data.lgaOfOrigin
-          )}
-        </Col>
+              <Col span={6}>
+                {renderDetail(<FaRegUser />, "Last Name", bvnData.lastName)}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "State of Origin",
+                  bvnData.stateOfOrigin
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "LGA of Origin",
+                  bvnData.lgaOfOrigin
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <GiBigDiamondRing />,
-            "Marital Status",
-            data.maritalStatus
-          )}
-          <Divider />
-          {renderDetail(
-            <MdOutlineWorkOutline />,
-            "Level of Account",
-            data.levelOfAccount
-          )}
-          <Divider />
-          {renderDetail(<MdTitle />, "Title", data.title)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <GiBigDiamondRing />,
+                  "Marital Status",
+                  bvnData.maritalStatus
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlineWorkOutline />,
+                  "Level of Account",
+                  bvnData.levelOfAccount
+                )}
+                <Divider />
+                {renderDetail(<MdTitle />, "Title", bvnData.title)}
+              </Col>
 
-        <Col span={24}>
-          <Divider />
-          <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
-            Additional Information
-          </StyledLabel>
-        </Col>
+              <Col span={24}>
+                <Divider />
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  Additional Information
+                </StyledLabel>
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <FaHome />,
-            "Residential Address",
-            data.residentialAddress
-          )}
-          <Divider />
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "State of Residence",
-            data.stateOfResidence
-          )}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <FaHome />,
+                  "Residential Address",
+                  bvnData.residentialAddress
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "State of Residence",
+                  bvnData.stateOfResidence
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <MdOutlinePinDrop />,
-            "LGA of Residence",
-            data.lgaOfResidence
-          )}
-          <Divider />
-          {renderDetail(<MdOutlineMail />, "Name on Card", data.nameOnCard)}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "LGA of Residence",
+                  bvnData.lgaOfResidence
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlineMail />,
+                  "Name on Card",
+                  bvnData.nameOnCard
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(
-            <FaPhoneAlt />,
-            "Additional Phone 1",
-            data.phoneNumber1
-          )}
-          <Divider />
-          {renderDetail(
-            <FaPhoneAlt />,
-            "Additional Phone 2",
-            data.phoneNumber2
-          )}
-        </Col>
+              <Col span={6}>
+                {renderDetail(
+                  <FaPhoneAlt />,
+                  "Additional Phone 1",
+                  bvnData.phoneNumber1
+                )}
+                <Divider />
+                {renderDetail(
+                  <FaPhoneAlt />,
+                  "Additional Phone 2",
+                  bvnData.phoneNumber2
+                )}
+              </Col>
 
-        <Col span={6}>
-          {renderDetail(<FaGlobe />, "Nationality", data.nationality)}
-          <Divider />
-          {renderDetail(
-            <FaCalendarAlt />,
-            "Registration Date",
-            data.registrationDate
-          )}
-        </Col>
-      </Row>
+              <Col span={6}>
+                {renderDetail(<FaGlobe />, "Nationality", bvnData.nationality)}
+                <Divider />
+                {renderDetail(
+                  <FaCalendarAlt />,
+                  "Registration Date",
+                  bvnData.registrationDate
+                )}
+              </Col>
+            </Row>
+          </Panel>
+        </Collapse>
+      </div>
     );
   };
 
@@ -364,19 +536,8 @@ const SearchExtensionResult = () => {
               style={{ width: "100%", marginTop: "20px" }}
               $token={token}
             >
-              <Tabs defaultActiveKey="1">
-                {searchExtensionData?.phoneVerification && (
-                  <TabPane tab="Phone Verification" key="1">
-                    {renderPhoneVerificationSection()}
-                  </TabPane>
-                )}
-
-                {searchExtensionData?.bvnVerification && (
-                  <TabPane tab="BVN Verification" key="2">
-                    {renderBvnVerificationSection()}
-                  </TabPane>
-                )}
-              </Tabs>
+              {renderPhoneVerificationSection()}
+              {renderBvnVerificationSection()}
 
               <Divider />
 
@@ -384,18 +545,18 @@ const SearchExtensionResult = () => {
                 <Col span={24}>
                   <StyledLabel $token={token}>
                     <strong>Verification Status:</strong>{" "}
-                    {searchExtensionData?.phoneVerification?.verification
-                      ?.status ||
-                      searchExtensionData?.bvnVerification?.verification
-                        ?.status}
+                    {searchExtensionData?.premblyPhoneVerification?.[0]
+                      ?.verificationStatus ||
+                      searchExtensionData?.premblyBvnVerification?.[0]
+                        ?.verificationStatus}
                   </StyledLabel>
                   <Divider />
                   <StyledLabel $token={token}>
                     <strong>Reference:</strong>{" "}
-                    {searchExtensionData?.phoneVerification?.verification
-                      ?.reference ||
-                      searchExtensionData?.bvnVerification?.verification
-                        ?.reference}
+                    {searchExtensionData?.premblyPhoneVerification?.[0]
+                      ?.verificationReference ||
+                      searchExtensionData?.premblyBvnVerification?.[0]
+                        ?.verificationReference}
                   </StyledLabel>
                 </Col>
               </Row>
