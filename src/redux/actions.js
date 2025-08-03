@@ -529,8 +529,11 @@ export const initiateVerificationRequest =
         //   transactionID: transactionID || randomTransactionId,
         //   paymentType: paymentType || "INSTANT",
         // },
+        "search-extension": {
+          "phone-number": formData.phone || "",
+        },
         basic: {
-          phoneNumber: formData.phone || "",
+          // phoneNumber: formData.phone || "",
           nin: formData.nin || "",
           nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",
@@ -691,8 +694,11 @@ export const completeVerificationRequest =
         sessionCode: localStorage.getItem("sessionCode") || "",
         sessionStatus: "COMPLETED",
         paymentType: paymentType || "INSTANT",
+        "search-extension": {
+          "phone-number": formData.phone || "",
+        },
         basic: {
-          phoneNumber: formData.phone || "",
+          // phoneNumber: formData.phone || "",
           nin: formData.nin || "",
           nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",

@@ -20,7 +20,6 @@ import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import {
   fetchVerificationData,
   fetchTransactionData,
-  updateUserWalletBalance,
   initiateVerificationRequest,
   fetchUserProfile,
   logout,
@@ -187,7 +186,8 @@ const MainDashboard = () => {
     // Your existing logic for handling different scenarios
     if (
       ((record.type === "Basic Profile" ||
-        record.type === "Financial Profile") &&
+        record.type === "Financial Profile" ||
+        record.type === "Search-Extension") &&
         new Date(insertionDate) < fortyEightHoursAgo) ||
       (record.consent === "pending" &&
         new Date(insertionDate) < twentyFourHoursAgo) ||
@@ -323,6 +323,8 @@ const MainDashboard = () => {
       history.push("/businessName"); // Assuming it's "/businessName" for both cases
     } else if (record.type === "Financial Profile") {
       history.push("/financial");
+    } else if (record.type === "Search-Extension") {
+      history.push("/search-extension");
     } else {
       history.push("/result");
     }
@@ -466,11 +468,13 @@ const MainDashboard = () => {
         if (
           formattedValue &&
           (((record.type === "Basic Profile" ||
-            record.type === "Financial Profile") &&
+            record.type === "Financial Profile" ||
+            record.type === "Search-Extension") &&
             new Date(record.insertionDate) < fortyEightHoursAgo) ||
             (record.consent === "pending" &&
               (record.type === "Basic Profile" ||
-                record.type === "Financial Profile") &&
+                record.type === "Financial Profile" ||
+                record.type === "Search-Extension") &&
               new Date(record.insertionDate) < twentyFourHoursAgo) ||
             (record.type === "Vehicle Profile" &&
               new Date(record.insertionDate) < sevenDaysAgo))
@@ -502,7 +506,6 @@ const MainDashboard = () => {
       title: "Status",
       dataIndex: "consent",
       key: "consent",
-      // sorter: (a, b) => a.consent.localeCompare(b.consent),
       filters: [
         {
           text: "granted",
@@ -515,11 +518,12 @@ const MainDashboard = () => {
       ],
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
       render: (text, record) => {
-        let color = ""; // Default color
+        let color = "";
         if (record.consent === "denied") {
-          color = "red"; // Change color to red if consent is denied
+          color = "red";
         }
-        return <span style={{ color }}>{text}</span>;
+        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1);
+        return <span style={{ color }}>{capitalizedText}</span>;
       },
     },
     {
@@ -535,6 +539,10 @@ const MainDashboard = () => {
         {
           text: "Business Profile",
           value: "Business Profile",
+        },
+        {
+          text: "Search-Extension",
+          value: "Search-Extension",
         },
         {
           text: "Financial Profile",
@@ -553,7 +561,7 @@ const MainDashboard = () => {
       key: "status",
       dataIndex: "status",
       render: (text, record) => {
-        const { insertionDate, type, consent } = record;
+        const { insertionDate, type, consent, status } = record;
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
           currentDate.getTime() - 24 * 60 * 60 * 1000
@@ -565,8 +573,20 @@ const MainDashboard = () => {
           currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
         );
 
-        if (
-          ((type === "Basic Profile" || type === "Financial Profile") &&
+        if (status.toLowerCase() === "expired") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+          );
+        } else if (status.toLowerCase() === "no data found") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              No Data Found
+            </span>
+          );
+        } else if (
+          ((type === "Basic Profile" ||
+            type === "Financial Profile" ||
+            type === "Search-Extension") &&
             new Date(insertionDate) < fortyEightHoursAgo) ||
           (consent === "pending" &&
             new Date(insertionDate) < twentyFourHoursAgo) ||
