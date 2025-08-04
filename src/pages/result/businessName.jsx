@@ -375,7 +375,7 @@ const BusinessName = () => {
                 const requestBody = {
                   // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
-                  stakeHolders: "STAKEHOLDERS",
+                  stakeholders: "STAKEHOLDERS",
                   paymentType: paymentType || "INSTANT",
                   payment: {
                     currency: currencyCheck || "NGN",
@@ -640,7 +640,11 @@ const BusinessName = () => {
                   // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
-                  stakeHolders: "STAKEHOLDERS",
+                  stakeholders: "STAKEHOLDERS",
+                  currency: currencyCheck || "NGN",
+                  userEmail: userEmail,
+                  requestId: parseInt(requestId),
+                  cacId: parseInt(cacid),
                   payment: {
                     currency: currencyCheck || "NGN",
                     transactionID: transactionID || randomTransactionId,
@@ -970,8 +974,12 @@ const BusinessName = () => {
             const requestBody = {
               sessionCode: localStorage.getItem("sessionCode"),
               sessionStatus: "COMPLETED",
-
+              stakeholders: "STAKEHOLDERS",
+              currency: currencyCheck || "NGN",
+              userEmail: userEmail,
               paymentType: paymentType || "INSTANT",
+              cacId: parseInt(cacId),
+              requestId: parseInt(requestId),
               payment: {
                 currency: currencyCheck || "NGN",
                 transactionID: transactionID || randomTransactionId,
