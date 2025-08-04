@@ -280,6 +280,7 @@ const BusinessName = () => {
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
+          stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
         };
 
@@ -288,6 +289,7 @@ const BusinessName = () => {
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
+          stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeNgn,
         };
         const handlePayment = async () => {
@@ -373,6 +375,7 @@ const BusinessName = () => {
                 const requestBody = {
                   // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
+                  stakeHolders: "STAKEHOLDERS",
                   paymentType: paymentType || "INSTANT",
                   payment: {
                     currency: currencyCheck || "NGN",
@@ -637,6 +640,7 @@ const BusinessName = () => {
                   // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
+                  stakeHolders: "STAKEHOLDERS",
                   payment: {
                     currency: currencyCheck || "NGN",
                     transactionID: transactionID || randomTransactionId,
@@ -802,6 +806,7 @@ const BusinessName = () => {
               payment_method: "card,mobilemoney,ussd",
               type: "STAKEHOLDERS",
               userEmail: userEmail,
+              stakeHolders: "STAKEHOLDERS",
 
               // sessionCode: localStorage.getItem("sessionCode"),
             };
@@ -965,6 +970,7 @@ const BusinessName = () => {
             const requestBody = {
               sessionCode: localStorage.getItem("sessionCode"),
               sessionStatus: "COMPLETED",
+
               paymentType: paymentType || "INSTANT",
               payment: {
                 currency: currencyCheck || "NGN",
