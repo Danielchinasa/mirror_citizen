@@ -1342,6 +1342,7 @@ const BusinessName = () => {
                                 style={{
                                   paddingRight: "50px",
                                   paddingLeft: "50px",
+                                  borderRadius: "15px",
                                 }}
                                 onClick={() =>
                                   handleButtonClick(business.data.cacid)
@@ -1354,7 +1355,9 @@ const BusinessName = () => {
                                     : formatToNaira(stakeHolderFeeUsd)}
                                 </span>{" "}
                                 <br />
-                                (Check who the directors and shareholders are)
+                                <i style={{ fontSize: "14px" }}>
+                                  (Check who the directors and shareholders are)
+                                </i>
                               </MainButton>
                             </>
                           )
