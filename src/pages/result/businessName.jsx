@@ -1352,7 +1352,9 @@ const BusinessName = () => {
                                   {currencyCheck == "USD"
                                     ? "$" + stakeHolderFeeUsd
                                     : formatToNaira(stakeHolderFeeUsd)}
-                                </span>
+                                </span>{" "}
+                                <br />
+                                (Check who the directors and shareholders are)
                               </MainButton>
                             </>
                           )
