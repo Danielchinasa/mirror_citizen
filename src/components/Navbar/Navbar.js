@@ -481,7 +481,7 @@ function Navbar() {
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/faq">
-                          <MainButton type="primary">FAQ</MainButton>
+                          <MainButton type="primary">FAQs</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <div
