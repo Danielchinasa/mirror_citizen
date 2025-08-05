@@ -13,6 +13,7 @@ import {
 
 import logo from "../../images/e-citizen_logo_ecitizen_white.png";
 import osia from "../../images/osia.png";
+import nimc from "../../images/nidologo.png";
 import ndpr from "../../images/ndpr1.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
@@ -22,6 +23,7 @@ import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../components/ThemeProvider";
+import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 function Footer() {
   const date = new Date();
@@ -89,19 +91,45 @@ function Footer() {
                       />
                     </a>
                   </FooterLinkItems>
-                  <FooterLinkItems>
+                  <FooterLinkItems
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
                     <a
                       href="https://secureidentityalliance.org/osia"
-                      target="none"
-                      style={{ cursor: "pointer", marginBottom: "10px" }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ cursor: "pointer" }}
                     >
                       <img
                         src={osia}
-                        alt="Logo"
+                        alt="OSIA Logo"
                         style={{
                           width: "95px",
                           height: "50px",
                           cursor: "pointer",
+                          paddingRight: "5px",
+                        }}
+                      />
+                    </a>
+
+                    <a
+                      href="https://idcard.ng/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <img
+                        src={nimc}
+                        alt="NIMC Logo"
+                        style={{
+                          width: "50px",
+                          cursor: "pointer",
+                          height: "50px",
                           paddingRight: "5px",
                         }}
                       />
@@ -145,30 +173,72 @@ function Footer() {
                       />
                     </a>
                   </FooterLinkItems>
-                  <FooterLinkItems></FooterLinkItems>
+                  <FooterLinkItems
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "20px",
+                    }}
+                  >
+                    <a
+                      href="https://www.facebook.com/share/16sSsUGzvP"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "inherit", cursor: "pointer" }}
+                    >
+                      <FaFacebookF size={20} />
+                    </a>
+                    <a
+                      href="https://www.instagram.com/biosecofficial?igsh=MW1wZjRycmMwa3oweQ=="
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "inherit", cursor: "pointer" }}
+                    >
+                      <FaInstagram size={20} />
+                    </a>
+                    <a
+                      href="https://x.com/biosecofficial?t=57VWdpANfzQZjePaZ71Rxg&s=09"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "inherit", cursor: "pointer" }}
+                    >
+                      <FaXTwitter size={20} />
+                    </a>
+                  </FooterLinkItems>
                 </div>
               </Col>
+
               <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
                 <div>
                   <FooterLinkItems>
-                    <FooterLink to="#">
-                      <strong style={{ fontWeight: "bolder" }}>Company</strong>
-                    </FooterLink>
+                    <h5 style={{ fontWeight: "bolder" }}>Company</h5>
                   </FooterLinkItems>
                   <FooterLinkItems>
                     <FooterLink to="/contact">Contact</FooterLink>
                   </FooterLinkItems>
                   <FooterLinkItems>
-                    <FooterLink to="/faq">FAQ</FooterLink>
+                    <FooterLink to="/faq">FAQs</FooterLink>
+                  </FooterLinkItems>
+                  <FooterLinkItems>
+                    <a
+                      href="https://blog.e-citizen.ng/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Blog
+                    </a>
                   </FooterLinkItems>
                 </div>
               </Col>
               <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
                 <div>
                   <FooterLinkItems>
-                    <FooterLink to="#">
-                      <strong style={{ fontWeight: "bolder" }}>Legal</strong>
-                    </FooterLink>
+                    <h5 style={{ fontWeight: "bolder" }}>Legal</h5>
                   </FooterLinkItems>
                   <FooterLinkItems>
                     <FooterLink to="/" onClick={handleClickPrivacyPolicy}>
