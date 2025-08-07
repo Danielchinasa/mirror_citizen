@@ -12,7 +12,7 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router>
-        <GoogleOAuthProvider clientId="642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="652852723588-1j7ps2j4n3ub2dt8a9pm6f1vhp6di4lr.apps.googleusercontent.com">
           {/* <InactivityDetector /> */}
           <App />
         </GoogleOAuthProvider>
