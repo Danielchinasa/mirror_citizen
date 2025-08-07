@@ -418,7 +418,7 @@ const LoginForm = (props) => {
                   login();
                 }}
               />
-              <FacebookLogin
+              {/* <FacebookLogin
                 appId="1088597931155576"
                 fields="name,email,picture"
                 // callback={responseFacebook}
@@ -439,7 +439,7 @@ const LoginForm = (props) => {
                 render={({ onClick }) => (
                   <AppleSignInButton onClick={onClick} />
                 )}
-              />
+              /> */}
             </Space>
 
             <Divider>OR</Divider>

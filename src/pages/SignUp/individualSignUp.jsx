@@ -499,7 +499,7 @@ const IndividualSignUp = () => {
                         login();
                       }}
                     />
-                    <FacebookLogin
+                    {/* <FacebookLogin
                       appId="1088597931155576"
                       fields="name,email,picture"
                       // callback={responseFacebook}
@@ -520,7 +520,7 @@ const IndividualSignUp = () => {
                       render={({ onClick }) => (
                         <AppleSignInButton onClick={onClick} />
                       )}
-                    />
+                    /> */}
                   </Space>
                   <Divider>OR</Divider>
                   {formErrors.general && (
