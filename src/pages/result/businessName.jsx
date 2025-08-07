@@ -280,6 +280,7 @@ const BusinessName = () => {
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
+          stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
         };
 
@@ -288,6 +289,7 @@ const BusinessName = () => {
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
+          stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeNgn,
         };
         const handlePayment = async () => {
@@ -373,6 +375,7 @@ const BusinessName = () => {
                 const requestBody = {
                   // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
+                  stakeholders: "STAKEHOLDERS",
                   paymentType: paymentType || "INSTANT",
                   payment: {
                     currency: currencyCheck || "NGN",
@@ -637,6 +640,11 @@ const BusinessName = () => {
                   // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
+                  stakeholders: "STAKEHOLDERS",
+                  currency: currencyCheck || "NGN",
+                  userEmail: userEmail,
+                  requestId: parseInt(requestId),
+                  cacId: parseInt(cacid),
                   payment: {
                     currency: currencyCheck || "NGN",
                     transactionID: transactionID || randomTransactionId,
@@ -802,6 +810,7 @@ const BusinessName = () => {
               payment_method: "card,mobilemoney,ussd",
               type: "STAKEHOLDERS",
               userEmail: userEmail,
+              stakeHolders: "STAKEHOLDERS",
 
               // sessionCode: localStorage.getItem("sessionCode"),
             };
@@ -965,7 +974,12 @@ const BusinessName = () => {
             const requestBody = {
               sessionCode: localStorage.getItem("sessionCode"),
               sessionStatus: "COMPLETED",
+              stakeholders: "STAKEHOLDERS",
+              currency: currencyCheck || "NGN",
+              userEmail: userEmail,
               paymentType: paymentType || "INSTANT",
+              cacId: parseInt(cacId),
+              requestId: parseInt(requestId),
               payment: {
                 currency: currencyCheck || "NGN",
                 transactionID: transactionID || randomTransactionId,
