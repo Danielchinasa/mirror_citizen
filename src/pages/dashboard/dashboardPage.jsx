@@ -3531,7 +3531,7 @@ const DashboardPage = () => {
                         (userType.toLowerCase() == "individual" ? (
                           <div>
                             <StyledLabel $token={token}>
-                              National Identification Number*
+                              National Identification Number
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
@@ -3574,7 +3574,7 @@ const DashboardPage = () => {
                         ) : (
                           <div>
                             <StyledLabel $token={token}>
-                              National Identification Number*
+                              National Identification Number
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
@@ -3659,7 +3659,7 @@ const DashboardPage = () => {
                       </div> */}
                       {/* {selectedForm === "phone" && ( */}
                       <div hidden={selectedForm === "phone" ? false : true}>
-                        <StyledLabel $token={token}>Phone Number*</StyledLabel>
+                        <StyledLabel $token={token}>Phone Number</StyledLabel>
                         <StyledInput
                           $token={token}
                           type="number"
@@ -3858,7 +3858,7 @@ const DashboardPage = () => {
                       {selectedForm === "fingerprint" && (
                         <>
                           <StyledLabel $token={token}>
-                            National Identification Number*
+                            National Identification Number
                           </StyledLabel>
                           <StyledInput
                             $token={token}
@@ -3938,7 +3938,7 @@ const DashboardPage = () => {
                       {basicProfileArray.includes("bulk_nin") && (
                         <div>
                           <StyledLabel $token={token}>
-                            National Identification Number*
+                            National Identification Number
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {ninFilled ? (
                                 <CloseSquareOutlined onClick={clearInputNin} />
@@ -3984,7 +3984,7 @@ const DashboardPage = () => {
                       {businessProfileArray.includes("rc") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Registration Number (RC)*
+                            Registration Number (RC)
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {rcFilled ? (
                                 <CloseSquareOutlined
@@ -4009,7 +4009,7 @@ const DashboardPage = () => {
                       {businessProfileArray.includes("business_name") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Business Name*
+                            Business Name
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {businessNameFilled ? (
                                 <CloseSquareOutlined
@@ -4034,7 +4034,7 @@ const DashboardPage = () => {
                       {financialProfileArray.includes("bvn") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Bank Verification Number (BVN)*
+                            Bank Verification Number (BVN)
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {bvnFilled ? (
                                 <CloseSquareOutlined
@@ -4105,7 +4105,7 @@ const DashboardPage = () => {
                       {vehicleProfileArray.includes("vin") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Vehicle History (VIN)*
+                            Vehicle History (VIN)
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {vinFilled ? (
                                 <CloseSquareOutlined
@@ -4158,7 +4158,7 @@ const DashboardPage = () => {
                       {vehicleProfileArray.includes("license_number") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Vehicle Registration Number*
+                            Vehicle Registration Number
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {licenseNumberFilled ? (
                                 <CloseSquareOutlined
