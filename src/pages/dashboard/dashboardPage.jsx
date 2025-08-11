@@ -1117,6 +1117,8 @@ const DashboardPage = () => {
 
   const handleCancel = () => {
     setModalVisible(false);
+    setMakingPayment(false);
+    setIsConfirmedBtnClicked(false);
   };
   const handleCancelFace = () => {
     setModalVisibleFace(false);
@@ -1521,6 +1523,14 @@ const DashboardPage = () => {
   };
 
   const handleMakePayment = () => {
+    if (!checkboxCheckedConfirm) {
+      return (
+        <Alert message="Kindly select a payment method" type="info" showIcon />
+      );
+    }
+
+    setMakingPayment(true);
+
     // Your existing logic for handling the payment
     // Calculate total veri based on form data
     const formDataFees = {
@@ -1782,6 +1792,7 @@ const DashboardPage = () => {
       footer={null} // Remove the default footer
       width={isClearVinOn ? 1000 : 700}
       bodyStyle={{ overflowX: "scroll" }}
+      maskClosable={false}
       style={{
         top: 20,
       }}
@@ -1944,12 +1955,16 @@ const DashboardPage = () => {
             type="primary"
             // onClick={handlePaymentMethod}
             onClick={async () => {
+              setIsConfirmedBtnClicked(true);
+              setModalVisible(false);
               try {
                 const response = await dispatch(
                   initiateVerificationRequest(formData, userToken)
                 );
+                setIsConfirmedBtnClicked(false);
                 if (response?.sessionStatus == "INITIATED") {
                   localStorage.setItem("sessionCode", response?.sessionCode);
+                  setIsConfirmedBtnClicked(false);
                   handlePaymentMethod();
                 }
               } catch (error) {}
@@ -3081,6 +3096,8 @@ const DashboardPage = () => {
       [name]: value,
     });
   };
+
+  const [makingPayment, setMakingPayment] = useState(false);
 
   return (
     <Row style={{ backgroundColor: bgContainer }}>
@@ -4708,18 +4725,37 @@ const DashboardPage = () => {
                       // htmlType="submit"
                       // onClick={handleSubmit}
                       onClick={handleMakePayment}
-                      disabled={!checkboxChecked}
+                      disabled={!checkboxChecked || makingPayment}
                       style={{
-                        backgroundColor: checkboxChecked
-                          ? "#0DC939"
-                          : "#d9d9d9", // Set the colors based on checkbox state
-                        borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
-                        cursor: checkboxChecked ? "pointer" : "not-allowed",
+                        backgroundColor:
+                          checkboxChecked && !makingPayment
+                            ? "#0DC939"
+                            : "#d9d9d9", // Set the colors based on checkbox state
+                        borderColor:
+                          checkboxChecked && !makingPayment
+                            ? "#0DC939"
+                            : "#d9d9d9",
+                        cursor:
+                          checkboxChecked && !makingPayment
+                            ? "pointer"
+                            : "not-allowed",
                         color: text3,
                       }}
                     >
                       Payment
                     </MainButtonFull>
+                  )}
+                  {!checkboxCheckedConfirm && (
+                    <Alert
+                      message="Kindly select a payment method"
+                      type="error"
+                      style={{
+                        textAlign: "center",
+                        backgroundColor: "#ffe5e5",
+                        borderColor: "#ff4d4f",
+                        color: "#a8071a",
+                      }}
+                    />
                   )}
                   <Modal
                     title="Wallet Balance Warning"
