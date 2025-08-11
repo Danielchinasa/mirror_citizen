@@ -3217,7 +3217,7 @@ const DashboardPage = () => {
                               Phone Number
                             </Radio>
 
-                            {userType != "individual" ? (
+                            {userType.toLowerCase() != "individual" ? (
                               <Radio
                                 value="bulk_nin"
                                 size="large"
@@ -3511,7 +3511,7 @@ const DashboardPage = () => {
                     <Form>
                       {/* {selectedForm === "nin" && ( */}
                       {basicProfileArray.includes("nin") &&
-                        (userType == "individual" ? (
+                        (userType.toLowerCase() == "individual" ? (
                           <div>
                             <StyledLabel $token={token}>
                               National Identification Number*

@@ -124,10 +124,10 @@ const UpdateProfilePage = () => {
             width: "100%",
           }}
         >
-          {userType == "individual" && (
+          {userType.toLowerCase() == "individual" && (
             <Title level={4}>Personal Information</Title>
           )}
-          {userType == "business" && (
+          {userType.toLowerCase() == "business" && (
             <Title level={4}>Business Information</Title>
           )}
 
