@@ -29,6 +29,7 @@ import { Button, Image } from "antd";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useDropzone } from "react-dropzone";
+import { imageBaseUrl } from "../../apiConfig";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -330,7 +331,7 @@ const ProfilePage = () => {
                 // src={`https://e-citizen.ng:8444${userDetails.profileImageLocation}`}
                 src={
                   userDetails && userDetails?.profileImageLocation
-                    ? `https://e-citizen.ng:8444${userDetails?.profileImageLocation}`
+                    ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
                     : isDark
                     ? defaultDpDark
                     : defaultDp

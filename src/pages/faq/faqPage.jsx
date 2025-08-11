@@ -50,7 +50,7 @@ const FaqPage = () => {
             third party. Your privacy is important to us!
           </p>
           <p>
-            Basic Identity profile: The consent request is sent to the
+            Person Identity Profile: The consent request is sent to the
             registered SMS and email (where available) attached to the data
             subject’s NIN in the national identity system. Financial Credit
             profile: The consent request is sent to the registered SMS and email

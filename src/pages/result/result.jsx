@@ -43,7 +43,7 @@ import { IoSchoolSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
-import baseUrl from "../../apiConfig";
+import { imageBaseUrl } from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
@@ -252,7 +252,7 @@ const Result = () => {
               $token={token}
             >
               <div>
-                <Text>Human Identity Profile </Text>
+                <Text>Person Identity Profile </Text>
                 <RightOutlined />
                 {/* <Text>{storedValue}</Text> */}
                 <Text>National Identification Number (NIN)</Text>
@@ -267,7 +267,7 @@ const Result = () => {
                   {photo ? (
                     <Avatar
                       size={124}
-                      src={`https://e-citizen.ng:8444${photo}`}
+                      src={`${imageBaseUrl}${photo}`}
                       alt="Avatar"
                     />
                   ) : (
