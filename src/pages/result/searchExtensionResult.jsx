@@ -54,111 +54,7 @@ const SearchExtensionResult = () => {
   const history = useHistory();
   const tokenExpire = user?.expirationDate || "";
   const [loading, setLoading] = useState(false);
-  const [searchExtensionData, setSearchExtensionData] = useState({
-    premblyBvnVerification: [
-      {
-        id: 9,
-        bvn: "22337942293",
-        dateOfBirth: "03-Feb-1990",
-        enrollmentBank: "",
-        enrollmentBranch: "",
-        firstName: "FRANCIS",
-        lastName: "ELROI",
-        middleName: "JUNIOR",
-        gender: "Male",
-        levelOfAccount: "",
-        lgaOfOrigin: "Nsit-Ibom",
-        lgaOfResidence: "",
-        maritalStatus: "Single",
-        nameOnCard: "",
-        nationality: "",
-        number: "22337942293",
-        phoneNumber: "08143830936",
-        phoneNumber1: "",
-        phoneNumber2: "",
-        photo: "",
-        registrationDate: "2015-09-17",
-        residentialAddress: "",
-        stateOfOrigin: "Akwa Ibom State",
-        stateOfResidence: "",
-        title: "",
-        watchListed: "False",
-        verificationStatus: "VERIFIED",
-        verificationReference: "fe7bbed6-30a3-4a2c-a900-e62d551acccd",
-        responseCode: "00",
-        type: "BVN",
-        detail: "Verification successful",
-        matchingRequestId: 12053,
-        matchingSessionId: 106,
-        userId: 562,
-        rawData:
-          '{"status":true,"detail":"Verification successful","data":{"bvn":"22337942293","enrollmentBank":"","enrollmentBranch":"","firstName":"FRANCIS","gender":"Male","lastName":"ELROI","levelOfAccount":"","lgaOfOrigin":"Nsit-Ibom","lgaOfResidence":"","maritalStatus":"Single","middleName":"JUNIOR","nameOnCard":"","nationality":"","number":"22337942293","phoneNumber":"08143830936","phoneNumber1":"","phoneNumber2":"","photo":"","residentialAddress":"","stateOfOrigin":"Akwa Ibom State","stateOfResidence":"","title":"","watchListed":"False","dateOfBirth":"03-Feb-1990","registrationDate":"2015-09-17"},"verification":{"status":"VERIFIED","reference":"fe7bbed6-30a3-4a2c-a900-e62d551acccd"},"response_code":"00","endpoint_name":"BVN With Phone Verification"}',
-        createdAt: "2025-07-31T14:58:41.107773",
-      },
-    ],
-    success: true,
-    parameter: "08143830936",
-    consent: "granted",
-    premblyPhoneVerification: [
-      {
-        id: 8,
-        birthCountry: "NGA",
-        birthDate: "1990-02-03",
-        firstname: "FRANCIS",
-        gender: "M",
-        middlename: "JUNIOR",
-        nin: "53234919649",
-        surname: "ELROI",
-        residenceAddress: "",
-        residenceTown: "",
-        residenceState: "",
-        birthlga: "",
-        birthstate: "",
-        educationallevel: "",
-        email: "",
-        employmentstatus: "",
-        maritalstatus: "",
-        signature: "",
-        nokMiddlename: "",
-        nokAddress1: "",
-        title: "",
-        nokTown: "",
-        nokState: "",
-        nokAddress2: "",
-        residenceLga: "",
-        selfOriginLga: "",
-        nokSurname: "",
-        ospokenlang: "",
-        nokPostalcode: "",
-        selfOriginState: "",
-        vnin: "",
-        trackingId: "",
-        heigth: "",
-        selfOriginPlace: "",
-        psurname: "",
-        telephoneno: "08143830936",
-        premblyUserid: "",
-        nokLga: "",
-        residencestatus: "",
-        profession: "",
-        centralID: "",
-        spokenLanguage: "",
-        pmiddlename: "",
-        pfirstname: "",
-        religion: "",
-        nokFirstname: "",
-        verificationStatus: "VERIFIED",
-        verificationReference: "77fdfdfa-d653-44ac-a9a3-c0839add7182",
-        createdAt: "2025-07-31T14:58:08.917749",
-        photo: "",
-        type: "PHONE-NUMBER",
-        matchingRequestId: 12053,
-        matchingSessionId: 106,
-        userId: 562,
-        detail: "Verification Successful",
-      },
-    ],
-  });
+  const [searchExtensionData, setSearchExtensionData] = useState({});
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
 
@@ -184,8 +80,8 @@ const SearchExtensionResult = () => {
           `/verification/check-consent/${requestId}`,
           userToken
         );
-        console.log("Response " + response.data);
-        // setSearchExtensionData(response.data["search-extension"]);
+        // console.log("Response " + response.data);
+        setSearchExtensionData(response.data);
       } catch (error) {
         console.error("Error fetching verification result:", error);
       }
