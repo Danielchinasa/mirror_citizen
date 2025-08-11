@@ -867,7 +867,7 @@ const DashboardPage = () => {
     "Registration: Choose this option to search for a vehicle's registration information in Nigeria using the vehicle registration number (license plate)",
   ];
   const tooltipContentBasic =
-    "A Basic Identity Profile gives the distinct characteristics, attributes and information that uniquely identifies an individual. Searchable parameters are NIN, demographics, face, fingerprint, and phone number.";
+    "A Person Identity Profile gives the distinct characteristics, attributes and information that uniquely identifies an individual. Searchable parameters are NIN, demographics, face, fingerprint, and phone number.";
   const tooltipContentBusiness =
     "A business profile is a set of information and data that are used to confirm and validate the identity of a business or organization. Searchable parameters are registration number(RC), and business name.";
   const tooltipContentFinancial =
@@ -3166,7 +3166,7 @@ const DashboardPage = () => {
                           boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Adding the boxShadow property for the shadow effect
                         }}
                       >
-                        <Col span={21}>Basic Identity Profile</Col>
+                        <Col span={21}>Person Identity Profile</Col>
                         <Col span={3}>
                           <Tooltip title={tooltipContentBasic} color="#F4B40F">
                             <InfoCircleOutlined
@@ -3192,7 +3192,7 @@ const DashboardPage = () => {
                               onClick={() => {
                                 trackEvent({
                                   action: "click_nin_button",
-                                  category: "Basic Identity Profile",
+                                  category: "Person Identity Profile",
                                   label: "NIN Button",
                                   value: 1,
                                 });
@@ -3207,7 +3207,7 @@ const DashboardPage = () => {
                               onClick={() => {
                                 trackEvent({
                                   action: "click_phone_number_button",
-                                  category: "Basic Identity Profile",
+                                  category: "Person Identity Profile",
                                   label: "Phone Number Button",
                                   value: 1,
                                 });
@@ -3217,7 +3217,7 @@ const DashboardPage = () => {
                               Phone Number
                             </Radio>
 
-                            {userType != "individual" ? (
+                            {userType.toLowerCase() != "individual" ? (
                               <Radio
                                 value="bulk_nin"
                                 size="large"
@@ -3511,7 +3511,7 @@ const DashboardPage = () => {
                     <Form>
                       {/* {selectedForm === "nin" && ( */}
                       {basicProfileArray.includes("nin") &&
-                        (userType == "individual" ? (
+                        (userType.toLowerCase() == "individual" ? (
                           <div>
                             <StyledLabel $token={token}>
                               National Identification Number*

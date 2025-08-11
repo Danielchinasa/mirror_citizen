@@ -41,6 +41,7 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
+import { imageBaseUrl } from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
 
 const { Title, Text } = Typography;
@@ -195,7 +196,7 @@ const Vehicle = () => {
 
                 <div>
                   <a
-                    href={`https://e-citizen.ng:8444${pdfUri}`}
+                    href={`${imageBaseUrl}${pdfUri}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{

@@ -29,6 +29,7 @@ import { ThemeToggle } from "../../components/ThemeToggle";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
+import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 
 const { useToken } = theme;
@@ -151,7 +152,7 @@ function Navbar() {
           <img
             src={
               userDetails && userDetails?.profileImageLocation
-                ? `https://e-citizen.ng:8444${userDetails?.profileImageLocation}`
+                ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
                 : isDark
                 ? defaultDpDark
                 : defaultDp

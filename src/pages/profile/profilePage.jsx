@@ -29,6 +29,7 @@ import { Button, Image } from "antd";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useDropzone } from "react-dropzone";
+import { imageBaseUrl } from "../../apiConfig";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -256,10 +257,10 @@ const ProfilePage = () => {
               borderColor: text,
             }}
           >
-            {userType == "individual" && (
+            {userType.toLowerCase() == "individual" && (
               <Title level={4}>Personal Information</Title>
             )}
-            {userType == "business" && (
+            {userType.toLowerCase() == "business" && (
               <Title level={4}>Business Information</Title>
             )}
 
@@ -330,7 +331,7 @@ const ProfilePage = () => {
                 // src={`https://e-citizen.ng:8444${userDetails.profileImageLocation}`}
                 src={
                   userDetails && userDetails?.profileImageLocation
-                    ? `https://e-citizen.ng:8444${userDetails?.profileImageLocation}`
+                    ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
                     : isDark
                     ? defaultDpDark
                     : defaultDp
@@ -344,7 +345,7 @@ const ProfilePage = () => {
               md={{ span: 12 }}
               lg={{ span: 12 }}
             >
-              {userType == "individual" && (
+              {userType.toLowerCase() == "individual" && (
                 <>
                   <StyledLabel $token={token}>First Name</StyledLabel>
                   <StyledInput
@@ -357,7 +358,7 @@ const ProfilePage = () => {
                   ></StyledInput>
                 </>
               )}
-              {userType == "business" && (
+              {userType.toLowerCase() == "business" && (
                 <>
                   <StyledLabel $token={token}>Business Name</StyledLabel>
                   <StyledInput
@@ -378,7 +379,7 @@ const ProfilePage = () => {
               md={{ span: 12 }}
               lg={{ span: 12 }}
             >
-              {userType == "individual" && (
+              {userType.toLowerCase() == "individual" && (
                 <>
                   <StyledLabel $token={token}>Last Name</StyledLabel>
                   <StyledInput
@@ -391,7 +392,7 @@ const ProfilePage = () => {
                   ></StyledInput>
                 </>
               )}
-              {userType == "business" && (
+              {userType.toLowerCase() == "business" && (
                 <>
                   <StyledLabel $token={token}>RC Number</StyledLabel>
                   <StyledInput
