@@ -3662,13 +3662,18 @@ const DashboardPage = () => {
                         <StyledLabel $token={token}>Phone Number</StyledLabel>
                         <StyledInput
                           $token={token}
-                          type="number"
+                          type="text"
                           placeholder="Enter your Phone Number"
                           name="phone"
                           value={formData.phone}
-                          onChange={(e) =>
-                            handleInputChange("phone", e.target.value)
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d+$/.test(value) || value === "") {
+                              if (value.length <= 11) {
+                                handleInputChange("phone", value);
+                              }
+                            }
+                          }}
                         />
                       </div>
                       {/* )} */}
