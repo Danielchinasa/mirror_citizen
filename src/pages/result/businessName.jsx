@@ -9,6 +9,7 @@ import {
   Modal,
   Button,
   Collapse,
+  Tooltip,
 } from "antd";
 import {
   Container,
@@ -50,6 +51,10 @@ import Reach1 from "../../images/reach1.jpeg";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
+import { InfoCircleOutlined } from "@ant-design/icons";
+
+const tooltipContentStakeholders =
+  "Check who the directors and shareholders are";
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -1368,10 +1373,18 @@ const BusinessName = () => {
                                     ? "$" + stakeHolderFeeUsd
                                     : formatToNaira(stakeHolderFeeUsd)}
                                 </span>{" "}
-                                <br />
-                                <i style={{ fontSize: "14px" }}>
-                                  (Check who the directors and shareholders are)
-                                </i>
+                                <Tooltip
+                                  title={tooltipContentStakeholders}
+                                  color="#F4B40F"
+                                >
+                                  <InfoCircleOutlined
+                                    style={{
+                                      fontSize: "20px",
+                                      paddingLeft: "20px",
+                                      fontSize: "16px",
+                                    }}
+                                  />
+                                </Tooltip>
                               </MainButton>
                             </>
                           )

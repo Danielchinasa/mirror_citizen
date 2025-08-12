@@ -1117,6 +1117,8 @@ const DashboardPage = () => {
 
   const handleCancel = () => {
     setModalVisible(false);
+    setMakingPayment(false);
+    setIsConfirmedBtnClicked(false);
   };
   const handleCancelFace = () => {
     setModalVisibleFace(false);
@@ -1521,6 +1523,14 @@ const DashboardPage = () => {
   };
 
   const handleMakePayment = () => {
+    if (!checkboxCheckedConfirm) {
+      return (
+        <Alert message="Kindly select a payment method" type="info" showIcon />
+      );
+    }
+
+    setMakingPayment(true);
+
     // Your existing logic for handling the payment
     // Calculate total veri based on form data
     const formDataFees = {
@@ -1782,6 +1792,7 @@ const DashboardPage = () => {
       footer={null} // Remove the default footer
       width={isClearVinOn ? 1000 : 700}
       bodyStyle={{ overflowX: "scroll" }}
+      maskClosable={false}
       style={{
         top: 20,
       }}
@@ -1944,12 +1955,16 @@ const DashboardPage = () => {
             type="primary"
             // onClick={handlePaymentMethod}
             onClick={async () => {
+              setIsConfirmedBtnClicked(true);
+              setModalVisible(false);
               try {
                 const response = await dispatch(
                   initiateVerificationRequest(formData, userToken)
                 );
+                setIsConfirmedBtnClicked(false);
                 if (response?.sessionStatus == "INITIATED") {
                   localStorage.setItem("sessionCode", response?.sessionCode);
+                  setIsConfirmedBtnClicked(false);
                   handlePaymentMethod();
                 }
               } catch (error) {}
@@ -3082,6 +3097,8 @@ const DashboardPage = () => {
     });
   };
 
+  const [makingPayment, setMakingPayment] = useState(false);
+
   return (
     <Row style={{ backgroundColor: bgContainer }}>
       <Col>
@@ -3514,7 +3531,7 @@ const DashboardPage = () => {
                         (userType.toLowerCase() == "individual" ? (
                           <div>
                             <StyledLabel $token={token}>
-                              National Identification Number*
+                              National Identification Number
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
@@ -3557,7 +3574,7 @@ const DashboardPage = () => {
                         ) : (
                           <div>
                             <StyledLabel $token={token}>
-                              National Identification Number*
+                              National Identification Number
                               <span
                                 style={{ marginLeft: "20px", color: "red" }}
                               >
@@ -3642,16 +3659,21 @@ const DashboardPage = () => {
                       </div> */}
                       {/* {selectedForm === "phone" && ( */}
                       <div hidden={selectedForm === "phone" ? false : true}>
-                        <StyledLabel $token={token}>Phone Number*</StyledLabel>
+                        <StyledLabel $token={token}>Phone Number</StyledLabel>
                         <StyledInput
                           $token={token}
-                          type="number"
+                          type="text"
                           placeholder="Enter your Phone Number"
                           name="phone"
                           value={formData.phone}
-                          onChange={(e) =>
-                            handleInputChange("phone", e.target.value)
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d+$/.test(value) || value === "") {
+                              if (value.length <= 11) {
+                                handleInputChange("phone", value);
+                              }
+                            }
+                          }}
                         />
                       </div>
                       {/* )} */}
@@ -3841,7 +3863,7 @@ const DashboardPage = () => {
                       {selectedForm === "fingerprint" && (
                         <>
                           <StyledLabel $token={token}>
-                            National Identification Number*
+                            National Identification Number
                           </StyledLabel>
                           <StyledInput
                             $token={token}
@@ -3921,7 +3943,7 @@ const DashboardPage = () => {
                       {basicProfileArray.includes("bulk_nin") && (
                         <div>
                           <StyledLabel $token={token}>
-                            National Identification Number*
+                            National Identification Number
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {ninFilled ? (
                                 <CloseSquareOutlined onClick={clearInputNin} />
@@ -3967,7 +3989,7 @@ const DashboardPage = () => {
                       {businessProfileArray.includes("rc") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Registration Number (RC)*
+                            Registration Number (RC)
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {rcFilled ? (
                                 <CloseSquareOutlined
@@ -3992,7 +4014,7 @@ const DashboardPage = () => {
                       {businessProfileArray.includes("business_name") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Business Name*
+                            Business Name
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {businessNameFilled ? (
                                 <CloseSquareOutlined
@@ -4017,7 +4039,7 @@ const DashboardPage = () => {
                       {financialProfileArray.includes("bvn") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Bank Verification Number (BVN)*
+                            Bank Verification Number (BVN)
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {bvnFilled ? (
                                 <CloseSquareOutlined
@@ -4088,7 +4110,7 @@ const DashboardPage = () => {
                       {vehicleProfileArray.includes("vin") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Vehicle History (VIN)*
+                            Vehicle History (VIN)
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {vinFilled ? (
                                 <CloseSquareOutlined
@@ -4141,7 +4163,7 @@ const DashboardPage = () => {
                       {vehicleProfileArray.includes("license_number") && (
                         <div>
                           <StyledLabel $token={token}>
-                            Vehicle Registration Number*
+                            Vehicle Registration Number
                             <span style={{ marginLeft: "20px", color: "red" }}>
                               {licenseNumberFilled ? (
                                 <CloseSquareOutlined
@@ -4708,18 +4730,37 @@ const DashboardPage = () => {
                       // htmlType="submit"
                       // onClick={handleSubmit}
                       onClick={handleMakePayment}
-                      disabled={!checkboxChecked}
+                      disabled={!checkboxChecked || makingPayment}
                       style={{
-                        backgroundColor: checkboxChecked
-                          ? "#0DC939"
-                          : "#d9d9d9", // Set the colors based on checkbox state
-                        borderColor: checkboxChecked ? "#0DC939" : "#d9d9d9",
-                        cursor: checkboxChecked ? "pointer" : "not-allowed",
+                        backgroundColor:
+                          checkboxChecked && !makingPayment
+                            ? "#0DC939"
+                            : "#d9d9d9", // Set the colors based on checkbox state
+                        borderColor:
+                          checkboxChecked && !makingPayment
+                            ? "#0DC939"
+                            : "#d9d9d9",
+                        cursor:
+                          checkboxChecked && !makingPayment
+                            ? "pointer"
+                            : "not-allowed",
                         color: text3,
                       }}
                     >
                       Payment
                     </MainButtonFull>
+                  )}
+                  {!checkboxCheckedConfirm && (
+                    <Alert
+                      message="Kindly select a payment method"
+                      type="error"
+                      style={{
+                        textAlign: "center",
+                        backgroundColor: "#ffe5e5",
+                        borderColor: "#ff4d4f",
+                        color: "#a8071a",
+                      }}
+                    />
                   )}
                   <Modal
                     title="Wallet Balance Warning"
