@@ -300,46 +300,25 @@ const Vehicle = () => {
                 Download PDF for Full Report
               </a>
             </div> */}
-
-              <div>
-                <Text
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  LOCALIZED DATA
-                </Text>
-              </div>
-              <Row gutter={16}>
-                <Col span={24}>
-                  {/* {photo ? (
-                <Avatar
-                  size={124}
-                  src={`https://e-citizen.ng:8444${photo}`}
-                  alt="Avatar"
-                />
+              {stolen === null ? (
+                ""
               ) : (
-                <Avatar size={124} icon={<UserOutlined />} />
-              )} */}
-                </Col>
-                <Divider />
-                {/* <Col span={6}>
-                {renderDetail(
-                  <PiEngineLight />,
-                  "Chassis Number",
-                  `${chasisNumber}`
-                )}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaFileInvoice />, "Stolen", `${stolen}`)}
-              </Col>
-              <Col span={6}>
-                {renderDetail(<FaFileInvoice />, "Stolen Reports", `${report}`)}
-              </Col> */}
-              </Row>
+                <div>
+                  <Text
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    LOCALIZED DATA
+                  </Text>
+                  <Divider />
+                </div>
+              )}
 
-              {!stolen ? (
+              {stolen === null ? (
+                ""
+              ) : stolen === true ? (
                 <Row justify="center">
                   <Col span={24}>
                     <div style={{ textAlign: "center" }}>
@@ -350,7 +329,6 @@ const Vehicle = () => {
                           color: "#E2574C",
                         }}
                       />
-                      {/* Adjust margin as needed */}
                       <span
                         style={{
                           fontSize: "23px",
@@ -383,7 +361,6 @@ const Vehicle = () => {
                           color: "#11AF59",
                         }}
                       />
-                      {/* Adjust margin as needed */}
                       <span
                         style={{
                           fontSize: "23px",
@@ -407,112 +384,6 @@ const Vehicle = () => {
                   </Col>
                 </Row>
               )}
-
-              {/* <Row gutter={16}>
-            <Divider />
-            <Col span={6}>
-              {renderDetail("Rebuilt", `${vin}`)}
-              <Divider />
-
-              {renderDetail("Salvage", `${year}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Not Actual", `${madeIn}`)}
-              <Divider />
-
-              {renderDetail("Clear", `${model}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Flood damage", `${trim}`)}
-              <Divider />
-              {renderDetail("Fire damage", `${engine}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Hail damage", `${make}`)}
-              <Divider />
-              {renderDetail("Salt water damage", `${style}`)}
-            </Col>
-            <Divider />
-            <Col span={6}>
-              {renderDetail("Vandalism", `${msrp}`)}
-              <Divider />
-              {renderDetail("Kit", `${invoice}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Dismantled", `No Data`)}
-              <Divider />
-              {renderDetail("Junk", `No Data`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Reconstructed", `No Data`)}
-              <Divider />
-              {renderDetail("Test Vehicle", `No Data`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Refurbished", `No Data`)}
-              <Divider />
-              {renderDetail("Collision", `No Data`)}
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Divider />
-            <Col span={6}>
-              {renderDetail("Reserved", `${vin}`)}
-              <Divider />
-
-              {renderDetail("Salvage Retention", `${year}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Totaledl", `${madeIn}`)}
-              <Divider />
-
-              {renderDetail("Remanufactured", `${model}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Gray Market", `${trim}`)}
-              <Divider />
-              {renderDetail("Warranty Return", `${engine}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Antique", `${make}`)}
-              <Divider />
-              {renderDetail("Street Rod", `${style}`)}
-            </Col>
-            <Divider />
-            <Col span={6}>
-              {renderDetail("Call Title Division", `${msrp}`)}
-              <Divider />
-              {renderDetail("Pending Junk", `${invoice}`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Junk Automobile", `No Data`)}
-              <Divider />
-              {renderDetail("Odometer may be Altered", `No Data`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Odometer Replaced", `No Data`)}
-              <Divider />
-              {renderDetail("Crushed", `No Data`)}
-            </Col>
-            <Col span={6}>
-              {renderDetail("Export only vehicle", `No Data`)}
-              <Divider />
-              {renderDetail("Salvage--Stolen", `No Data`)}
-            </Col>
-          </Row>
-          <Divider />
-          <div>
-            <Text>Title History Information</Text>
-          </div>
-          <Row gutter={16}>
-            <Divider />
-            <Col span={24}>
-              <Text>Title History Information</Text>
-            </Col>
-            <Col span={6}>{renderDetail("Title Issue date", `${vin}`)}</Col>
-            <Col span={6}>{renderDetail("State", `${madeIn}`)}</Col>
-            <Col span={6}>{renderDetail("Mileage", `${trim}`)}</Col>
-          </Row> */}
             </DynamicCard>
           </Spin>
         </InfoSec>
@@ -555,38 +426,6 @@ const Vehicle = () => {
                 );
               }}
             ></div>
-            {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Finance your Next Car</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#DDF9EA",
-                }}
-              >
-                <p class="card-text">
-                  Find financial offers that are tailored to your credit score.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Credit Cards</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#ECF5F8",
-                }}
-              >
-                <p class="card-text">Credit Cards handpicked for you</p>
-              </div>
-            </div>
-          </div> */}
           </div>
         </div>
       </Container>

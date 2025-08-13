@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Card, Row, Col, notification } from "antd";
-import { Typography, Input } from "antd";
+import { Typography, Input, Avatar } from "antd";
 
 import {
   Container,
@@ -30,6 +30,8 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useDropzone } from "react-dropzone";
 import { imageBaseUrl } from "../../apiConfig";
+
+const { Title, Text } = Typography;
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -270,65 +272,52 @@ const ProfilePage = () => {
             justify="space-between"
             style={{ marginTop: "30px", marginBottom: "20px" }}
           >
-            <Col span={12}>
-              <div>
-                <div
-                  {...getRootProps()}
-                  style={{
-                    border: "2px dashed #ddd",
-                    padding: "20px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    width: "500px",
-                  }}
-                >
-                  <input {...getInputProps()} />
-                  <p style={{ color: text }}>
-                    Drag & drop an image here, or click to select one
-                  </p>
-                </div>
-                {profileImageNew && (
-                  <img
-                    src={profileImageNew}
-                    alt="Profile Preview"
-                    width={200}
-                  />
-                )}
-              </div>
-              {/* <div style={{ display: "inline-block", position: "relative" }}>
-                <Upload
-                  name="avatar"
-                  className="avatar-uploader"
-                  style={{ marginBottom: "20px" }}
-                  showUploadList={true}
-                  action="https://jsonplaceholder.typicode.com/posts"
-                  beforeUpload={beforeUpload}
-                  onChange={handleChange}
-                >
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>
-              </div>
-              <Subtitle style={{ marginTop: "20px" }} $token={token}>
-                Update your profile image here (Max Size: 800kb)
-              </Subtitle>
-              <StyledInput
-                $token={token}
-                hidden={false}
-                value={formData.profileImageNew}
-                name="profileImage"
-                onChange={(e) =>
-                  setFormData({ ...formData, profileImage: e.target.value })
-                }
-              /> */}
+            <Col span={24} style={{ marginBottom: "30px" }}>
+              <Title level={4} style={{ color: text }}>
+                Upload Profile Picture
+              </Title>
+              <Row gutter={24} align="middle">
+                <Col xs={24} sm={12}>
+                  <div
+                    {...getRootProps()}
+                    style={{
+                      border: "2px dashed #aaa",
+                      padding: "30px",
+                      textAlign: "center",
+                      borderRadius: "8px",
+                      backgroundColor: isDark ? "#1f1f1f" : "#fafafa",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <input {...getInputProps()} />
+                    <p style={{ marginBottom: 0, color: text }}>
+                      📁 Drag & drop an image here, or click to select one
+                    </p>
+                    <Text type="secondary" style={{ fontSize: "12px" }}>
+                      (JPG/PNG, max 2MB)
+                    </Text>
+                  </div>
+                </Col>
+
+                <Col xs={24} sm={12} style={{ textAlign: "center" }}>
+                  {profileImageNew ? (
+                    <Avatar
+                      size={154}
+                      src={profileImageNew}
+                      style={{ border: "2px solid #ddd" }}
+                    />
+                  ) : (
+                    <Text type="secondary">No image selected</Text>
+                  )}
+                </Col>
+              </Row>
             </Col>
           </Row>
 
           <Row gutter={40}>
-            <Col span={24}>
-              {" "}
-              <Image
-                width={200}
-                // src={`https://e-citizen.ng:8444${userDetails.profileImageLocation}`}
+            {/* <Col span={24} style={{ textAlign: "center" }}>
+              <Avatar
+                size={154}
                 src={
                   userDetails && userDetails?.profileImageLocation
                     ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
@@ -337,7 +326,7 @@ const ProfilePage = () => {
                     : defaultDp
                 }
               />
-            </Col>
+            </Col> */}
             <Col
               span={12}
               xs={{ span: 24 }}
@@ -447,7 +436,7 @@ const ProfilePage = () => {
                 }
               ></StyledInput>
             </Col>
-            <Col
+            {/* <Col
               span={12}
               xs={{ span: 24 }}
               sm={{ span: 24 }}
@@ -462,6 +451,7 @@ const ProfilePage = () => {
                 onChange={(e) => handleInputChange("nin", e.target.value)}
               ></StyledInput>
             </Col>
+
             <Col
               span={12}
               xs={{ span: 24 }}
@@ -477,7 +467,7 @@ const ProfilePage = () => {
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
               />
-            </Col>
+            </Col> */}
             <Col>
               {userType == "business" && (
                 <>
