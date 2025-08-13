@@ -64,7 +64,7 @@ const Vehicle = () => {
   const [image, setImage] = useState("-");
   const [pdfUri, setpdfUri] = useState("-");
   const [chasisNumber, setChasisNumber] = useState("-");
-  const [stolen, setStolen] = useState("-");
+  const [stolen, setStolen] = useState(false);
   const [report, setReport] = useState("-");
 
   // const verificationResult = useSelector(
@@ -103,7 +103,7 @@ const Vehicle = () => {
         const msrp = vehicleData.msrp || "-";
         const image = vehicleData.previewImageURL || "-";
         const pdfUri = vehicleData.pdfUri || "-";
-        const stolen = vehicleData.stolen || "-";
+        const stolen = vehicleData.stolen;
         setVin(vinSpec);
         setYear(year);
         setMadeIn(madein);
