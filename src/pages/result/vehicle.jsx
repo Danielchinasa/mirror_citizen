@@ -65,7 +65,7 @@ const Vehicle = () => {
   const [image, setImage] = useState("-");
   const [pdfUri, setpdfUri] = useState("-");
   const [chasisNumber, setChasisNumber] = useState("-");
-  const [stolen, setStolen] = useState("-");
+  const [stolen, setStolen] = useState(false);
   const [report, setReport] = useState("-");
 
   // const verificationResult = useSelector(
@@ -125,7 +125,7 @@ const Vehicle = () => {
         const msrp = vehicleData.msrp || "-";
         const image = vehicleData.previewImageURL || "-";
         const pdfUri = vehicleData.pdfUri || "-";
-        const stolen = vehicleData.stolen || "-";
+        const stolen = vehicleData.stolen;
         setVin(vinSpec);
         setYear(year);
         setMadeIn(madein);
@@ -322,30 +322,23 @@ const Vehicle = () => {
                 Download PDF for Full Report
               </a>
             </div> */}
-
-              <div>
-                <Text
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  LOCALIZED DATA
-                </Text>
-              </div>
-              <Row gutter={16}>
-                <Col span={24}>
-                  {/* {photo ? (
-                <Avatar
-                  size={124}
-                  src={`https://e-citizen.ng:8444${photo}`}
-                  alt="Avatar"
-                />
+              {stolen === null ? (
+                ""
               ) : (
-                <Avatar size={124} icon={<UserOutlined />} />
-              )} */}
-                </Col>
-                <Divider />
+                <div>
+                  <Text
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    LOCALIZED DATA
+                  </Text>
+                  <Divider />
+                </div>
+              )}
+
+              <Row gutter={16}>
                 {/* <Col span={6}>
                 {renderDetail(
                   <PiEngineLight />,
@@ -362,7 +355,7 @@ const Vehicle = () => {
               </Row>
 
               {stolen === null ? (
-                ""
+                " "
               ) : stolen === true ? (
                 <Row justify="center">
                   <Col span={24}>
@@ -389,7 +382,7 @@ const Vehicle = () => {
                             color: text,
                           }}
                         >
-                          As of January 4, 2024, 12:45Am
+                          As of January 4, 2024, 12:45AM
                         </span>
                       </span>
                     </div>
@@ -422,7 +415,7 @@ const Vehicle = () => {
                             color: text,
                           }}
                         >
-                          As of January 4, 2024, 12:45Am
+                          As of January 4, 2024, 12:45AM {stolen}
                         </span>
                       </span>
                     </div>
