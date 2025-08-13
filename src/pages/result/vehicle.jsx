@@ -361,7 +361,9 @@ const Vehicle = () => {
               </Col> */}
               </Row>
 
-              {!stolen ? (
+              {stolen === null ? (
+                ""
+              ) : stolen === true ? (
                 <Row justify="center">
                   <Col span={24}>
                     <div style={{ textAlign: "center" }}>
@@ -372,7 +374,6 @@ const Vehicle = () => {
                           color: "#E2574C",
                         }}
                       />
-                      {/* Adjust margin as needed */}
                       <span
                         style={{
                           fontSize: "23px",
@@ -405,7 +406,6 @@ const Vehicle = () => {
                           color: "#11AF59",
                         }}
                       />
-                      {/* Adjust margin as needed */}
                       <span
                         style={{
                           fontSize: "23px",
