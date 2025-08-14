@@ -451,9 +451,8 @@ const IndividualSignUp = () => {
     try {
       setLoading(true);
 
-      // Build payload similar to Google
       const payload = {
-        accessToken: fbRes.accessToken, // <-- use this on your backend
+        accessToken: fbRes.accessToken,
         // userId: fbRes.userID,
         deviceToken: localStorage.getItem("clientToken"),
         ipAddress: ipAddress,
