@@ -180,16 +180,16 @@ function Footer() {
                       gap: "20px",
                     }}
                   >
-                    <a
+                    {/* <a
                       href="https://www.facebook.com/share/16sSsUGzvP"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: "inherit", cursor: "pointer" }}
                     >
                       <FaFacebookF size={20} />
-                    </a>
+                    </a> */}
                     <a
-                      href="https://www.instagram.com/biosecofficial?igsh=MW1wZjRycmMwa3oweQ=="
+                      href="https://www.instagram.com/ecitizenng/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: "inherit", cursor: "pointer" }}
@@ -197,7 +197,7 @@ function Footer() {
                       <FaInstagram size={20} />
                     </a>
                     <a
-                      href="https://x.com/biosecofficial?t=57VWdpANfzQZjePaZ71Rxg&s=09"
+                      href="https://x.com/ecitizenng"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: "inherit", cursor: "pointer" }}
