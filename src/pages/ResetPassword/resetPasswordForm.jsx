@@ -180,8 +180,8 @@ const ResetPasswordForm = ({ email, token }) => {
         // localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
         Swal.fire({
-          background: bgContainer,
-          color: text,
+          background: "FFF",
+          color: "#000",
           title: "Success",
           text: "Reset password Successful",
           icon: "success",
@@ -198,8 +198,8 @@ const ResetPasswordForm = ({ email, token }) => {
             "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
         }); // Set error message
         Swal.fire({
-          background: bgContainer,
-          color: text,
+          background: "#FFF",
+          color: "#000",
           title: "Error",
           text: "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time. Try again later",
           icon: "error",
@@ -214,8 +214,8 @@ const ResetPasswordForm = ({ email, token }) => {
         // On successful Reset password, navigate to the main dashboard
         setFormErrors({ general: "Reset password Failed" }); // Set error message
         Swal.fire({
-          background: bgContainer,
-          color: text,
+          background: "#FFF",
+          color: "#000",
           title: "Error",
           text: "Invalid Reset Password Link",
           icon: "error",
@@ -229,8 +229,8 @@ const ResetPasswordForm = ({ email, token }) => {
       }
     } catch (error) {
       Swal.fire({
-        background: bgContainer,
-        color: text,
+        background: "#FFF",
+        color: "#000",
         title: "Error",
         text: "Reset password Failed",
         icon: "error",
@@ -254,7 +254,7 @@ const ResetPasswordForm = ({ email, token }) => {
 
   const { myToken } = theme.useToken();
   const { isDark } = useTheme();
-  const { bgContainer, text } = myToken;
+  // const { bgContainer, text } = myToken;
 
   return (
     <Context.Provider value={contextValue}>
