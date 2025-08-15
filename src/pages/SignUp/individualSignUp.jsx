@@ -47,6 +47,7 @@ import FacebookSignInButton from "../../components/sso_button/facebookSignInButt
 import AppleSignInButton from "../../components/sso_button/appleSignInButton";
 import FacebookLogin from "react-facebook-login";
 import AppleLogin from "react-apple-login";
+import { apiPost } from "../../apiUtils";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -431,6 +432,74 @@ const IndividualSignUp = () => {
     },
   });
 
+  const handleFacebook = async (fbRes) => {
+    // User cancelled or popup blocked
+    if (!fbRes || !fbRes.accessToken) {
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Facebook Login",
+        text: "Facebook login was cancelled or failed.",
+        icon: "error",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        accessToken: fbRes.accessToken,
+        // userId: fbRes.userID,
+        deviceToken: localStorage.getItem("clientToken"),
+        ipAddress: ipAddress,
+        deviceName: "Web app",
+      };
+
+      const resfb = await apiPost(`/openauth/facebook`, payload);
+      const userDataFb = resfb;
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Success",
+        text: "Facebook login successful!",
+        icon: "success",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+
+      dispatch({ type: "SIGN_IN", payload: userDataFb });
+      dispatch(fetchUserProfile(userDataFb.jwtToken));
+
+      if (userDataFb.jwtToken) {
+        localStorage.setItem("IpAddress", ipAddress);
+        history.push("/main-dashboard");
+      } else {
+        throw new Error("Login failed");
+      }
+    } catch (err) {
+      console.error("Facebook login failed:", err);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text:
+          err?.response?.data?.message ||
+          "Facebook login failed. Please try again.",
+        icon: "error",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Row>
@@ -499,12 +568,14 @@ const IndividualSignUp = () => {
                         login();
                       }}
                     />
-                    {/* <FacebookLogin
-                      appId="1088597931155576"
-                      fields="name,email,picture"
-                      // callback={responseFacebook}
+                    <FacebookLogin
+                      appId="1951516332293043"
+                      autoLoad={false}
+                      fields="name,picture"
+                      scope="public_profile"
+                      callback={handleFacebook}
                       cssClass="facebook-btn"
-                      textButton="Log in with Facebook"
+                      textButton="Continue with Facebook"
                       icon={<FacebookSignInButton />}
                     />
                     <AppleLogin
@@ -520,7 +591,7 @@ const IndividualSignUp = () => {
                       render={({ onClick }) => (
                         <AppleSignInButton onClick={onClick} />
                       )}
-                    /> */}
+                    />
                   </Space>
                   <Divider>OR</Divider>
                   {formErrors.general && (
