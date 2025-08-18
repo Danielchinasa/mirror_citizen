@@ -58,16 +58,62 @@
     <noscript>Verify your Nigerian identity easily.</noscript>
     <div id="root"></div>
 
+    <p id="profile"></p>
+
+    <script>
+      <!-- Add the Facebook SDK for Javascript -->
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "1951516332293043",
+          xfbml: true,
+          version: "v12.0",
+        });
+
+        FB.login(function (response) {
+          if (response.authResponse) {
+            console.log("Welcome!  Fetching your information.... ");
+            FB.api("/me", { fields: "name, email" }, function (response) {
+              document.getElementById("profile").innerHTML =
+                "Good to see you, " +
+                response.name +
+                ". i see your email address is " +
+                response.email;
+            });
+          } else {
+            console.log("User cancelled login or did not fully authorize.");
+          }
+        });
+      };
+    </script>
+
     <!-- Google Tag Manager (noscript) -->
 
     <!-- End Google Tag Manager (noscript) -->
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSHE0JCXW1"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XSHE0JCXW1"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-XSHE0JCXW1');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-XSHE0JCXW1");
     </script>
 
     <!-- Meta Pixel Code -->
