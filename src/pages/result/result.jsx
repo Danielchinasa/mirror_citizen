@@ -262,7 +262,7 @@ const Result = () => {
               $token={token}
             >
               <div>
-                <Text>Basic Identity Profile </Text>
+                <Text>Person Identity Profile </Text>
                 <RightOutlined />
                 {/* <Text>{storedValue}</Text> */}
                 <Text>National Identification Number (NIN)</Text>
