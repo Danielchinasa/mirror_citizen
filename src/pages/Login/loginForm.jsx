@@ -443,7 +443,7 @@ const LoginForm = () => {
               style={{ marginTop: "15px" }}
             >
               Don’t have an account?{" "}
-              <BtnLink to="/sign-up">
+              <BtnLink to="/individual/sign-up/1">
                 <span style={{ color: "#09C93A", cursor: "pointer" }}>
                   Register here
                 </span>

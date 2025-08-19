@@ -397,7 +397,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          LOGIN
+                          GET STARTED
                         </OutlineButton>
                       </NavBtnLink>
                     ) : (
@@ -412,12 +412,12 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          LOGIN
+                          GET STARTED
                         </OutlineButton>
                       </NavBtnLink>
                     )}
                   </NavItemBtn>
-                  <NavItemBtn>
+                  {/* <NavItemBtn>
                     {button ? (
                       <NavBtnLink
                         to="/sign-up"
@@ -443,7 +443,7 @@ function Navbar() {
                         </MainButton>
                       </NavBtnLink>
                     )}
-                  </NavItemBtn>
+                  </NavItemBtn> */}
                   <ThemeToggle />
                 </>
               )}
@@ -489,7 +489,7 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "usd"
+                            {userCurrency.toLowerCase() === "usd"
                               ? `$${userBalance}`
                               : formatToNaira(userBalance)}
                           </span>
@@ -503,7 +503,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "ngn"
+                            {userCurrency.toLowerCase() === "ngn"
                               ? formatToNaira(userBalance)
                               : `$${userBalance}`}
                           </Title>
@@ -583,7 +583,7 @@ function Navbar() {
                           <span style={{ color: "#0DC939" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "usd"
+                            {userCurrency.toLowerCase() === "usd"
                               ? `$${userBalance}`
                               : formatToNaira(userBalance)}
                           </span>
@@ -597,7 +597,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#0DC939" }}>
-                            {userCurrency === "ngn"
+                            {userCurrency.toLowerCase() === "ngn"
                               ? formatToNaira(userBalance)
                               : `$${userBalance}`}
                           </Title>
