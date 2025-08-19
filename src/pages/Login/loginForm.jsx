@@ -368,6 +368,18 @@ const LoginForm = () => {
         <Spin spinning={loading} tip="Logging in...">
           <StyledForm onSubmit={handleSignIn}>
             <Heading $token={token}>Login</Heading>
+            
+            {/* // Google SSO button */}
+            <GoogleSignInButton
+              onClick={(e) => {
+                e.preventDefault();
+                localStorage.removeItem("token");
+                login();
+              }}
+            />
+
+            <Divider>Or</Divider>
+
             {formErrors.general && (
               <Alert
                 message={formErrors.general}
@@ -426,17 +438,7 @@ const LoginForm = () => {
             >
               Login
             </MainButtonFull>
-            <Divider>Or</Divider>
-
-            {/* // Google SSO button */}
-            <GoogleSignInButton
-              onClick={(e) => {
-                e.preventDefault();
-                localStorage.removeItem("token");
-                login();
-              }}
-            />
-
+            
             <Subtitle
               color="light"
               $token={token}
