@@ -214,28 +214,7 @@ function Navbar() {
           },
         }
       );
-      if (!response.ok) {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-        return;
-      }
+
       if (response.ok) {
         const responseData = await response.json();
         if (responseData.status === "success") {
@@ -244,25 +223,6 @@ function Navbar() {
         }
       }
     } catch (error) {
-      Swal.fire({
-        background: bgContainer,
-        color: text,
-        title: "Error",
-        text: "Service Temporarily Unavailable",
-        icon: "error",
-        customClass: {
-          confirmButton: "custom-swal-button",
-        },
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: true,
-        confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload();
-        }
-      });
       dispatch(fetchUserProfile(userToken2));
       setModal1Open(false);
     }
