@@ -210,7 +210,7 @@ function Navbar() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken2}`,
           },
         }
       );
