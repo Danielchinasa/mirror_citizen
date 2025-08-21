@@ -827,6 +827,9 @@ const MainDashboard = () => {
         if (responseData.status === "success") {
           dispatch(fetchUserProfile(userToken));
           setModal1Open(false);
+        } else {
+          dispatch(fetchUserProfile(userToken));
+          setModal1Open(false);
         }
       }
     } catch (error) {

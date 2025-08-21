@@ -220,6 +220,9 @@ function Navbar() {
         if (responseData.status === "success") {
           dispatch(fetchUserProfile(userToken2));
           setModal1Open(false);
+        } else {
+          dispatch(fetchUserProfile(userToken2));
+          setModal1Open(false);
         }
       }
     } catch (error) {
