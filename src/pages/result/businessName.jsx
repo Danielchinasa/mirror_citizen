@@ -820,7 +820,7 @@ const BusinessName = () => {
               // sessionCode: localStorage.getItem("sessionCode"),
             };
 
-            const response = await fetch(`${baseUrl}/payment/initiate`, {
+            const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

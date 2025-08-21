@@ -2082,7 +2082,7 @@
                             V(""),
                             (e.next = 7),
                             fetch(
-                              "https://e-citizen.ng:8444/api/v2/payment/initiate",
+                              "https://e-citizen.ng:8444/api/v2/payment/flexi-initiate",
                               {
                                 method: "POST",
                                 headers: {
@@ -7848,7 +7848,7 @@
                                 (e.prev = 61),
                                 (e.next = 64),
                                 fetch(
-                                  "https://e-citizen.ng:8444/api/v2/payment/initiate",
+                                  "https://e-citizen.ng:8444/api/v2/payment/flexi-initiate",
                                   {
                                     method: "POST",
                                     headers: {
@@ -13502,7 +13502,7 @@
                               Oe(""),
                               (e.next = 7),
                               fetch(
-                                "https://e-citizen.ng:8444/api/v2/payment/initiate",
+                                "https://e-citizen.ng:8444/api/v2/payment/flexi-initiate",
                                 {
                                   method: "POST",
                                   headers: {
@@ -20660,7 +20660,7 @@
                                                   }),
                                                   (e.next = 70),
                                                   fetch(
-                                                    "https://e-citizen.ng:8444/api/v2/payment/initiate",
+                                                    "https://e-citizen.ng:8444/api/v2/payment/flexi-initiate",
                                                     {
                                                       method: "POST",
                                                       headers: {
