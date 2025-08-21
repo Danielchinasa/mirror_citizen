@@ -94,6 +94,7 @@ const ProfilePage = () => {
   );
 
   const user = useSelector((state) => state.userDetails);
+  const accessToken = useSelector((state) => state.user);
   const userFirstName = user?.firstName || "";
   const userLastName = user?.lastName || "";
   const userBal = user?.walletBalance;
@@ -133,8 +134,10 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.userDetails);
-  const userToken = user?.jwtToken || "";
+  const userToken = accessToken?.jwtToken || "";
   const tokenExpire = user?.expirationDate || "";
+
+  console.log("userTokendddd", userToken);
 
   useEffect(() => {
     dispatch(fetchUserProfile(userToken));
