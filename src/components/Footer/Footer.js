@@ -211,7 +211,7 @@ function Footer() {
               <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
                 <div>
                   <FooterLinkItems>
-                    <h5 style={{ fontWeight: "bolder" }}>Company</h5>
+                    <h5 style={{ fontWeight: "bolder" }}>Service</h5>
                   </FooterLinkItems>
                   <FooterLinkItems>
                     <FooterLink to="/contact">Contact</FooterLink>
