@@ -801,6 +801,7 @@ const MainDashboard = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const [modal1Open, setModal1Open] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
+  const [transactionRef, setTransactionRef] = useState("");
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -808,9 +809,72 @@ const MainDashboard = () => {
     setAmount("");
     setIsModalVisible(false);
   };
-  const handleModalOk = () => {
-    dispatch(fetchUserProfile(userToken));
-    setModal1Open(false);
+  const handleModalOk = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+        if (responseData.status === "success") {
+          dispatch(fetchUserProfile(userToken));
+          setModal1Open(false);
+        }
+      }
+    } catch (error) {
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Service Temporarily Unavailable",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+      dispatch(fetchUserProfile(userToken));
+      setModal1Open(false);
+    }
+    // dispatch(fetchUserProfile(userToken));
+    // setModal1Open(false);
   };
   const handleOk = async () => {
     ReactGA.event({
@@ -831,7 +895,7 @@ const MainDashboard = () => {
       };
       setAmount("");
 
-      const response = await fetch(`${baseUrl}/payment/initiate`, {
+      const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -849,6 +913,7 @@ const MainDashboard = () => {
         if (responseData.data && responseData.data.link) {
           console.log("Embedding URL:", responseData.data.link);
           setPaymentUrl(responseData.data.link);
+          setTransactionRef(responseData.data.txRef);
           setModal1Open(true);
         } else {
           console.error("Response data does not contain a link");

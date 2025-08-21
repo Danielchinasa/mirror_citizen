@@ -800,7 +800,7 @@ export const paymentInitializationRequest =
         }
       });
       const response = await apiPost(
-        `/payment/initiate`,
+        `/payment/flexi-initiate`,
         restructuredData,
         token
       );
