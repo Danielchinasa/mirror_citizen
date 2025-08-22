@@ -106,9 +106,9 @@ const ProfilePage = () => {
   const rcNumber = user?.rcNumber;
   const designation = user?.designation;
   const walletBalance = user?.walletBalance;
-  const userType = user?.userType;
+  const userType = accessToken?.userType;
   const userImage = user?.profileImageLocation;
-  console.log(userType);
+  console.log("userType", accessToken);
   const { Title } = Typography;
   const [formData, setFormData] = useState({
     firstName: userFirstName,
