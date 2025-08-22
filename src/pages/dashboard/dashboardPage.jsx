@@ -1182,27 +1182,6 @@ const DashboardPage = () => {
 
         localStorage.setItem("transactionID", randomTransactionId);
         localStorage.setItem("paymentType", "WALLET");
-        const apiUrl = `${baseUrl}/transaction/wallet-payment`;
-
-        const requestBody = {
-          sessionCode: localStorage.getItem("sessionCode"),
-          userNIN: userNin,
-          transactionID: randomTransactionId,
-          amount:
-            userCurrency.toUpperCase() === "NGN" &&
-            currencyCheck.toUpperCase() === "NGN"
-              ? totalServiceCost
-              : currencyCheck.toUpperCase() === "USD" &&
-                userCurrency.toUpperCase() === "NGN"
-              ? totalveriNiara
-              : currencyCheck.toUpperCase() === "USD" &&
-                userCurrency.toUpperCase() === "USD"
-              ? totalServiceCost
-              : userCurrency.toUpperCase() === "NGN" &&
-                currencyCheck.toUpperCase() !== "NGN"
-              ? outsideNgWithNiaraPrice
-              : totalServiceCost,
-        };
 
         if (bvnFilled) {
           if (areNoneChecked()) {
@@ -1311,6 +1290,26 @@ const DashboardPage = () => {
           setLoadingSmall(false);
         }
         try {
+          const apiUrl = `${baseUrl}/transaction/wallet-payment`;
+          const requestBody = {
+            sessionCode: localStorage.getItem("sessionCode"),
+            userNIN: userNin,
+            transactionID: randomTransactionId,
+            amount:
+              userCurrency.toUpperCase() === "NGN" &&
+              currencyCheck.toUpperCase() === "NGN"
+                ? totalServiceCost
+                : currencyCheck.toUpperCase() === "USD" &&
+                  userCurrency.toUpperCase() === "NGN"
+                ? totalveriNiara
+                : currencyCheck.toUpperCase() === "USD" &&
+                  userCurrency.toUpperCase() === "USD"
+                ? totalServiceCost
+                : userCurrency.toUpperCase() === "NGN" &&
+                  currencyCheck.toUpperCase() !== "NGN"
+                ? outsideNgWithNiaraPrice
+                : totalServiceCost,
+          };
           const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
@@ -1382,20 +1381,6 @@ const DashboardPage = () => {
       } //!!WALLET PAYMENT ENDS
       else if (paymentMethod === 2) {
         //!!LIVE PAYMENT START
-        const postData = {
-          amount:
-            currencyCheck.toUpperCase() === "USD"
-              ? outsideNgWithNiara === true
-                ? `${outsideNgWithNiaraPrice}`
-                : `${totalServiceCost}`
-              : `${totalServiceCost}`,
-          currency: flutterWaveCurrency,
-          country: "NG",
-          description: "Payment for verification",
-          payment_method: "card,mobilemoney,ussd",
-          type: "VERIFICATION",
-          sessionCode: localStorage.getItem("sessionCode"),
-        };
 
         if (bvnFilled) {
           if (areNoneChecked()) {
@@ -1431,6 +1416,20 @@ const DashboardPage = () => {
           setLoadingSmall(false);
         }
         try {
+          const postData = {
+            amount:
+              currencyCheck.toUpperCase() === "USD"
+                ? outsideNgWithNiara === true
+                  ? `${outsideNgWithNiaraPrice}`
+                  : `${totalServiceCost}`
+                : `${totalServiceCost}`,
+            currency: flutterWaveCurrency,
+            country: "NG",
+            description: "Payment for verification",
+            payment_method: "card,mobilemoney,ussd",
+            type: "VERIFICATION",
+            sessionCode: localStorage.getItem("sessionCode"),
+          };
           const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
             method: "POST",
             headers: {
@@ -1501,7 +1500,6 @@ const DashboardPage = () => {
             }
           } else {
             // Handle errors here
-            console.error("Failed to post data:", response.statusText);
             Swal.fire({
               background: bgContainer,
               color: text,
