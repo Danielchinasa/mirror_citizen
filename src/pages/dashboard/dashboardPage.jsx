@@ -1179,6 +1179,7 @@ const DashboardPage = () => {
 
       if (paymentMethod === 1) {
         // setLoading(true);
+
         localStorage.setItem("transactionID", randomTransactionId);
         localStorage.setItem("paymentType", "WALLET");
         const apiUrl = `${baseUrl}/transaction/wallet-payment`;
@@ -1207,6 +1208,9 @@ const DashboardPage = () => {
           if (areNoneChecked()) {
             setLoading(false);
             setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
+            setMakingPayment(false);
+
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -1228,6 +1232,7 @@ const DashboardPage = () => {
         ) {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
           handleCancel();
           Swal.fire({
             background: bgContainer,
@@ -1270,6 +1275,7 @@ const DashboardPage = () => {
         ) {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
           handleCancel();
           Swal.fire({
             background: bgContainer,
@@ -1293,7 +1299,17 @@ const DashboardPage = () => {
           return;
         }
         //!!-------------------- Check for Wallet balance End ------------------//
-
+        //!! Do verification initiate here
+        const initiateResponse = await dispatch(
+          initiateVerificationRequest(formData, userToken)
+        );
+        setIsConfirmedBtnClicked(false);
+        setLoadingSmall(false);
+        if (initiateResponse?.sessionStatus == "INITIATED") {
+          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
+        }
         try {
           const response = await fetch(apiUrl, {
             method: "POST",
@@ -1313,6 +1329,7 @@ const DashboardPage = () => {
           } else {
             setLoading(false);
             setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -1337,6 +1354,7 @@ const DashboardPage = () => {
           console.error("Error:", error);
           setLoading(false);
           setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
           Swal.fire({
             background: bgContainer,
             color: text,
@@ -1383,6 +1401,8 @@ const DashboardPage = () => {
           if (areNoneChecked()) {
             setLoading(false);
             setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
+            setMakingPayment(false);
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -1399,6 +1419,17 @@ const DashboardPage = () => {
           }
         }
         handleCancel();
+        //!! Do verification initiate here
+        const initiateResponse = await dispatch(
+          initiateVerificationRequest(formData, userToken)
+        );
+        setIsConfirmedBtnClicked(false);
+        setLoadingSmall(false);
+        if (initiateResponse?.sessionStatus == "INITIATED") {
+          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
+        }
         try {
           const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
             method: "POST",
@@ -1528,7 +1559,7 @@ const DashboardPage = () => {
         <Alert message="Kindly select a payment method" type="info" showIcon />
       );
     }
-
+    setIsConfirmedBtnClicked(false);
     setMakingPayment(true);
 
     // Your existing logic for handling the payment
@@ -1957,17 +1988,17 @@ const DashboardPage = () => {
             onClick={async () => {
               setIsConfirmedBtnClicked(true);
               setModalVisible(false);
-              try {
-                const response = await dispatch(
-                  initiateVerificationRequest(formData, userToken)
-                );
-                setIsConfirmedBtnClicked(false);
-                if (response?.sessionStatus == "INITIATED") {
-                  localStorage.setItem("sessionCode", response?.sessionCode);
-                  setIsConfirmedBtnClicked(false);
-                  handlePaymentMethod();
-                }
-              } catch (error) {}
+              // try {
+              //   const response = await dispatch(
+              //     initiateVerificationRequest(formData, userToken)
+              //   );
+              //   setIsConfirmedBtnClicked(false);
+              //   if (response?.sessionStatus == "INITIATED") {
+              //     localStorage.setItem("sessionCode", response?.sessionCode);
+              //     setIsConfirmedBtnClicked(false);
+              //   }
+              // } catch (error) {}
+              handlePaymentMethod();
             }}
             disabled={isConfirmedBtnClicked}
             style={{
@@ -2212,7 +2243,7 @@ const DashboardPage = () => {
         }));
       }
       if (basicProfileArray[basicProfileArray.length - 1] === "phone") {
-        setFaceFilled(false);
+        setPhoneFilled(false);
         if (formData.phone !== "") {
           // Update total VAT
           setTotalVAT((prevTotalVAT) => {
@@ -3737,28 +3768,37 @@ const DashboardPage = () => {
                             name="nin_csv"
                             value={formData.nin_csv}
                           />
-                        </div>
+                        </div>  
                       </div> */}
-                      {/* {selectedForm === "phone" && ( */}
-                      <div hidden={selectedForm === "phone" ? false : true}>
-                        <StyledLabel $token={token}>Phone Number</StyledLabel>
-                        <StyledInput
-                          $token={token}
-                          type="text"
-                          placeholder="Enter your Phone Number"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (/^\d+$/.test(value) || value === "") {
-                              if (value.length <= 11) {
-                                handleInputChange("phone", value);
+                      {basicProfileArray.includes("phone") && (
+                        <div>
+                          <StyledLabel $token={token}>
+                            Phone Number{" "}
+                            <span style={{ marginLeft: "20px", color: "red" }}>
+                              {phoneFilled ? (
+                                <CloseSquareOutlined
+                                  onClick={clearInputPhone}
+                                />
+                              ) : null}
+                            </span>
+                          </StyledLabel>
+                          <StyledInput
+                            $token={token}
+                            type="text"
+                            placeholder="Enter your Phone Number"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              if (/^\d+$/.test(value) || value === "") {
+                                if (value.length <= 11) {
+                                  handleInputChange("phone", value);
+                                }
                               }
-                            }
-                          }}
-                        />
-                      </div>
-                      {/* )} */}
+                            }}
+                          />
+                        </div>
+                      )}
                       {selectedForm === "demographics" && (
                         <>
                           <StyledLabel $token={token}>First Name*</StyledLabel>

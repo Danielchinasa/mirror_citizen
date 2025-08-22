@@ -568,7 +568,7 @@ const IndividualSignUp = () => {
                         login();
                       }}
                     />
-                    <FacebookLogin
+                    {/* <FacebookLogin
                       appId="1951516332293043"
                       autoLoad={false}
                       fields="name,picture"
@@ -591,7 +591,7 @@ const IndividualSignUp = () => {
                       render={({ onClick }) => (
                         <AppleSignInButton onClick={onClick} />
                       )}
-                    />
+                    /> */}
                   </Space>
                   <Divider>OR</Divider>
                   {formErrors.general && (
