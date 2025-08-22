@@ -125,6 +125,21 @@ const SearchExtensionResult = () => {
                 </StyledLabel>
               </Col>
 
+              <Col
+                span={24}
+                style={{ textAlign: "center", marginBottom: "20px" }}
+              >
+                <Avatar
+                  size={120}
+                  src={
+                    phoneData.photo
+                      ? `data:image/jpeg;base64,${phoneData.photo}`
+                      : "https://via.placeholder.com/120"
+                  }
+                  icon={<UserOutlined />}
+                />
+              </Col>
+
               <Col span={6}>
                 {renderDetail(<FaRegUser />, "First Name", phoneData.firstname)}
                 <Divider />
@@ -243,6 +258,85 @@ const SearchExtensionResult = () => {
                   phoneData.employmentstatus
                 )}
               </Col>
+              <Col span={24}>
+                <Divider />
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  Next of Kin Information
+                </StyledLabel>
+              </Col>
+
+              <Col span={6}>
+                {renderDetail(
+                  <FaRegUser />,
+                  "NOK First Name",
+                  phoneData.nokFirstname
+                )}
+                <Divider />
+                {renderDetail(
+                  <FaRegUser />,
+                  "NOK Middle Name",
+                  phoneData.nokMiddlename
+                )}
+              </Col>
+
+              <Col span={6}>
+                {renderDetail(
+                  <FaRegUser />,
+                  "NOK Surname",
+                  phoneData.nokSurname
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "NOK Address",
+                  phoneData.nokAddress1
+                )}
+              </Col>
+
+              <Col span={6}>
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "NOK Town",
+                  phoneData.nokTown
+                )}
+                <Divider />
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "NOK LGA",
+                  phoneData.nokLga
+                )}
+              </Col>
+
+              <Col span={6}>
+                {renderDetail(
+                  <MdOutlinePinDrop />,
+                  "NOK State",
+                  phoneData.nokState
+                )}
+              </Col>
+
+              <Col span={24}>
+                <Divider />
+                <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+                  Parent Information
+                </StyledLabel>
+              </Col>
+
+              <Col span={6}>
+                {renderDetail(
+                  <FaRegUser />,
+                  "Parent First Name",
+                  phoneData.pfirstname
+                )}
+              </Col>
+
+              <Col span={6}>
+                {renderDetail(
+                  <FaRegUser />,
+                  "Parent Surname",
+                  phoneData.psurname
+                )}
+              </Col>
             </Row>
           </Panel>
         </Collapse>
@@ -271,6 +365,20 @@ const SearchExtensionResult = () => {
                 <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
                   BVN Details
                 </StyledLabel>
+              </Col>
+              <Col
+                span={24}
+                style={{ textAlign: "center", marginBottom: "20px" }}
+              >
+                <Avatar
+                  size={120}
+                  src={
+                    bvnData.photo
+                      ? `data:image/jpeg;base64,${bvnData.photo}`
+                      : "https://via.placeholder.com/120"
+                  }
+                  icon={<UserOutlined />}
+                />
               </Col>
 
               <Col span={6}>
