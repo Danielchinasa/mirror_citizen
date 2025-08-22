@@ -487,7 +487,7 @@ const LoginForm = (props) => {
                 }}
               />
 
-              <FacebookLogin
+              {/* <FacebookLogin
                 appId="1951516332293043"
                 autoLoad={false}
                 fields="name,picture"
@@ -510,7 +510,7 @@ const LoginForm = (props) => {
                 render={({ onClick }) => (
                   <AppleSignInButton onClick={onClick} />
                 )}
-              />
+              /> */}
             </Space>
 
             <Divider>OR</Divider>
