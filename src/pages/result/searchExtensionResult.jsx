@@ -103,9 +103,9 @@ const SearchExtensionResult = () => {
   );
 
   const renderPhoneVerificationSection = () => {
-    if (!searchExtensionData?.premblyPhoneVerification?.[0]) return null;
+    if (!searchExtensionData.premblyPhoneVerification) return null;
 
-    const phoneData = searchExtensionData.premblyPhoneVerification[0];
+    const phoneData = searchExtensionData.premblyPhoneVerification;
 
     return (
       <div style={{ marginBottom: "24px" }}>

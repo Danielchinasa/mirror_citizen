@@ -473,19 +473,19 @@ const DashboardPage = () => {
       dispatch(fetchUserProfile(userToken));
       if (
         response.basic &&
-        response.basic.success &&
-        response.basic.success === true
+        response.basic.status &&
+        response.basic.status === true
       ) {
-        localStorage.setItem(
-          "verificationRequestId",
-          response.basic.data.requestId
-        );
+        // localStorage.setItem(
+        //   "verificationRequestId",
+        //   response.basic.data.requestId
+        // );
 
         Swal.fire({
           background: bgContainer,
           color: text,
           title: "Success",
-          text: response.basic.message,
+          text: response.basic.detail,
           icon: "info",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -498,14 +498,14 @@ const DashboardPage = () => {
       } else if (
         response &&
         response.basic &&
-        typeof response.basic.success === "boolean" &&
-        response.basic.success === false
+        typeof response.basic.status === "boolean" &&
+        response.basic.status === false
       ) {
         Swal.fire({
           background: bgContainer,
           color: text,
           title: "Error",
-          text: response.basic.message,
+          text: response.basic.detail,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -522,26 +522,79 @@ const DashboardPage = () => {
             window.location.reload();
           }
         });
-      } else if (
-        response["search-extension"] &&
-        response["search-extension"].phoneVerification &&
-        response["search-extension"].phoneVerification.status === true
-      ) {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Success",
-          text: response["search-extension"].phoneVerification.detail,
-          icon: "info",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        });
+      }
+      // if (
+      //   response.basic &&
+      //   response.basic.success &&
+      //   response.basic.success === true
+      // ) {
+      //   localStorage.setItem(
+      //     "verificationRequestId",
+      //     response.basic.data.requestId
+      //   );
 
-        history.push("/main-dashboard");
-      } else if (
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Success",
+      //     text: response.basic.message,
+      //     icon: "info",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //   });
+
+      //   history.push("/main-dashboard");
+      // } else if (
+      //   response &&
+      //   response.basic &&
+      //   typeof response.basic.success === "boolean" &&
+      //   response.basic.success === false
+      // ) {
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Error",
+      //     text: response.basic.message,
+      //     icon: "error",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //     showConfirmButton: true,
+      //     confirmButtonText: "OK",
+      //     confirmButtonColor: "#0DC939",
+      //   }).then((result) => {
+      //     /* Read more about handling dismissals below */
+      //     if (result.isConfirmed) {
+      //       // dispatch(fetchUserProfile(userToken));
+      //       window.location.reload();
+      //     }
+      //   });
+      // } else if (
+      //   response["search-extension"] &&
+      //   response["search-extension"].phoneVerification &&
+      //   response["search-extension"].phoneVerification.status === true
+      // ) {
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Success",
+      //     text: response["search-extension"].phoneVerification.detail,
+      //     icon: "info",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //   });
+
+      //   history.push("/main-dashboard");
+      // }
+      else if (
         response["search-extension"] &&
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === false
@@ -750,7 +803,7 @@ const DashboardPage = () => {
           background: bgContainer,
           color: text,
           title: "Error",
-          text: "An unexpected server error occurred. A refund has been initiated",
+          text: "An unexpected server error occurred.",
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -2773,7 +2826,10 @@ const DashboardPage = () => {
       if (response.ok) {
         // setLoading(true);
         const responseData = await response.json();
-        if (responseData.status === "success") {
+        if (
+          responseData.data.status === "successful" ||
+          responseData.status === "success"
+        ) {
           if (
             responseData.data &&
             (responseData.data.status === "success" ||

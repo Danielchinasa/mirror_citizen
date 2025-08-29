@@ -19,6 +19,7 @@ import DashboardPage from "./pages/dashboard/dashboardPage";
 import Disclaimer from "./pages/disclaimer/disclaimer";
 import Consent from "./pages/consent/consent";
 import Result from "./pages/result/result";
+import PremblyNinResult from "./pages/result/premblyNinResult";
 import SearchExtensionResult from "./pages/result/searchExtensionResult";
 import ProfilePage from "./pages/profile/profilePage";
 import MainDashboard from "./pages/dashboard/mainDashboard";
@@ -218,6 +219,10 @@ function App() {
             <ProtectedRoute path="/consent" component={Consent} />
             <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />
             <ProtectedRoute path="/result" component={Result} />
+            <ProtectedRoute
+              path="/premblyNinResult"
+              component={PremblyNinResult}
+            />
             <ProtectedRoute
               path="/search-extension"
               component={SearchExtensionResult}

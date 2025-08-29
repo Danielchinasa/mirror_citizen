@@ -116,12 +116,9 @@ const MainDashboard = () => {
       // it means the token has expired
       dispatch(logout());
       history.push("/");
-      // console.log("Time don pass well");
     } else {
       // Token is still valid
       // You may want to handle this case differently
-      console.log(expireDate);
-      console.log(currentDate);
     }
   }, []);
 
@@ -164,6 +161,8 @@ const MainDashboard = () => {
   };
 
   // Log the verificationData to the console
+  console.log("verificationData");
+  console.log(verificationData);
 
   const [openedVerifications, setOpenedVerifications] = useState([]);
   console.log("currencyCheck");
@@ -172,6 +171,8 @@ const MainDashboard = () => {
   const handleViewResult = async (record) => {
     setLoadingSmall(true);
     const { id, insertionDate, consent } = record;
+    console.log("consent");
+    console.log(consent);
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
       currentDate.getTime() - 48 * 60 * 60 * 1000
@@ -267,12 +268,11 @@ const MainDashboard = () => {
         const data = await response.json();
         // Proceed with navigation only if there is no data in the response
         if (!data) {
-          console.log("NO DATA");
           Swal.fire({
             background: bgContainer,
             color: text,
             title: "Oops!",
-            text: "Sorry, No record found",
+            text: data.message,
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -288,7 +288,7 @@ const MainDashboard = () => {
             background: bgContainer,
             color: text,
             title: "Oops!",
-            text: "Sorry, No record found",
+            text: data.message,
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -326,8 +326,11 @@ const MainDashboard = () => {
     } else if (record.type === "Search-Extension") {
       history.push("/search-extension");
     } else {
-      history.push("/result");
+      history.push("/premblyNinResult");
     }
+    // else {
+    //   history.push("/result");
+    // }
   };
 
   const config = {
