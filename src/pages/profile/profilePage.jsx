@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Col, notification } from "antd";
 import { Typography, Input, Avatar } from "antd";
-
 import {
   Container,
   Heading,
@@ -16,16 +15,12 @@ import {
 } from "../../globalStyles";
 import { updateProfile, logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-
-import { LoadingOutlined, ManOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
-import { useState } from "react";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { UploadOutlined } from "@ant-design/icons";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
-import { Button, Image } from "antd";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useDropzone } from "react-dropzone";
@@ -33,140 +28,100 @@ import { imageBaseUrl } from "../../apiConfig";
 
 const { Title, Text } = Typography;
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-
-  return isJpgOrPng && isLt2M;
-};
-
 const ProfilePage = () => {
   const [loading, setLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState("");
-  const [uploadedImage, setUploadedImage] = useState();
-  const handleChange = (info) => {
-    if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setProfileImage(url);
-        setFormData({
-          ...formData,
-          profileImage: url.replace(/^data:image\/[a-z]+;base64,/, ""),
-        });
-      });
-    }
-  };
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
-
   const user = useSelector((state) => state.userDetails);
   const accessToken = useSelector((state) => state.user);
-  const userFirstName = user?.firstName || "";
-  const userLastName = user?.lastName || "";
-  const userBal = user?.walletBalance;
-  const email = user?.email;
-  const phoneNumber = user?.phoneNumber;
-  const address = user?.address;
-  const nin = user?.nin;
-  const businessName = user?.businessName;
-  const rcNumber = user?.rcNumber;
-  const designation = user?.designation;
-  const walletBalance = user?.walletBalance;
   const userType = accessToken?.userType;
-  const userImage = user?.profileImageLocation;
-  console.log("userType", accessToken);
-  const { Title } = Typography;
+
   const [formData, setFormData] = useState({
-    firstName: userFirstName,
-    phoneNumber: phoneNumber,
-    lastName: userLastName,
-    email: email,
-    address: address,
-    nin: nin,
-    businessName: businessName,
-    profileImage: profileImage,
-    rcNumber: rcNumber,
-    designation: designation,
-    walletBalance: walletBalance,
+    firstName: user?.firstName || "",
+    phoneNumber: user?.phoneNumber || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    address: user?.address || "",
+    nin: user?.nin || "",
+    businessName: user?.businessName || "",
+    rcNumber: user?.rcNumber || "",
+    designation: user?.designation || "",
   });
+
   const handleInputChange = (name, value) => {
     setFormData({
       ...formData,
       [name]: value,
     });
   };
+
   const history = useHistory();
-
   const dispatch = useDispatch();
-
   const userDetails = useSelector((state) => state.userDetails);
   const userToken = accessToken?.jwtToken || "";
   const tokenExpire = user?.expirationDate || "";
+  const { token } = theme.useToken();
+  const { bgContainer, text } = token;
+  const { isDark } = useTheme();
 
-  console.log("userTokendddd", userToken);
+  const [profileImageNew, setProfileImageNew] = useState(null);
+
+  useEffect(() => {
+    if (userDetails) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        firstName: userDetails.firstName || "",
+        phoneNumber: userDetails.phoneNumber || "",
+        lastName: userDetails.lastName || "",
+        email: userDetails.email || "",
+        address: userDetails.address || "",
+        nin: userDetails.nin || "",
+        businessName: userDetails.businessName || "",
+        rcNumber: userDetails.rcNumber || "",
+        designation: userDetails.designation || "",
+      }));
+    }
+  }, [userDetails]);
 
   useEffect(() => {
     dispatch(fetchUserProfile(userToken));
-  }, []);
+  }, [dispatch, userToken]);
 
   useEffect(() => {
-    // Convert tokenExpire string to a Date object
     const expireDate = new Date(tokenExpire);
-
-    // Get the current date/time
     const currentDate = new Date();
-
-    // Compare the current date with the expiration date
     if (currentDate >= expireDate) {
       dispatch(logout());
       history.push("/");
-    } else {
     }
-  }, []);
+  }, [dispatch, history, tokenExpire]);
+
+  // Utility function to remove empty fields
+  const cleanPayload = (data) => {
+    const cleaned = {};
+    for (const key in data) {
+      if (data[key] !== null && data[key] !== undefined && data[key] !== "") {
+        cleaned[key] = data[key];
+      }
+    }
+    return cleaned;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Dispatch the sendVerificationRequest action with the form data
+
+    // Create a new payload that only includes fields with data
+    const payload = cleanPayload(formData);
+
+    // Only add the profileImage field if a new one was uploaded
+    if (profileImageNew) {
+      payload.profileImage = profileImageNew.replace(
+        /^data:image\/[a-z]+;base64,/,
+        ""
+      );
+    }
+
     try {
-      const response = await dispatch(updateProfile(formData, userToken));
-
-      console.log(response);
+      const response = await dispatch(updateProfile(payload, userToken));
       if (response === "success") {
-        // console.log(response);
-
         Swal.fire({
           background: bgContainer,
           color: text,
@@ -177,55 +132,12 @@ const ProfilePage = () => {
             confirmButton: "custom-swal-button",
           },
         });
-        window.location.reload();
-        dispatch({
-          type: "UPDATE_USER_DETAILS",
-          payload: {
-            user: {
-              firstName: formData.firstName,
-              lastName: formData.lastName,
-              email: formData.email,
-              phoneNumber: formData.phoneNumber,
-              address: formData.address,
-              // Add other fields as needed
-            },
-            walletBalance: formData.walletBalance,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            jwtToken: userToken,
-          },
-        });
-      } else {
+        dispatch(fetchUserProfile(userToken));
       }
     } catch (error) {
-      // Handle errors if needed
-      console.error("Error sending verification", error);
+      console.error("Error updating profile", error);
     }
   };
-  const { TextArea } = Input;
-  const props = {
-    name: "file",
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
-  const { token } = theme.useToken();
-  const { bgContainer, text } = token;
-  const { isDark } = useTheme();
-
-  const [profileImageNew, setProfileImageNew] = useState("");
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -233,13 +145,13 @@ const ProfilePage = () => {
       const reader = new FileReader();
       reader.onload = () => {
         setProfileImageNew(reader.result);
-        setFormData({
-          ...formData,
+        setFormData((prevFormData) => ({
+          ...prevFormData,
           profileImage: reader.result.replace(
             /^data:image\/[a-z]+;base64,/,
             ""
           ),
-        });
+        }));
       };
       reader.readAsDataURL(file);
     }
@@ -250,6 +162,7 @@ const ProfilePage = () => {
     maxSize: 2 * 1024 * 1024, // 2MB
     onDrop,
   });
+
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Container $token={token}>
@@ -262,13 +175,11 @@ const ProfilePage = () => {
               borderColor: text,
             }}
           >
-            {userType.toLowerCase() == "individual" && (
+            {userType?.toLowerCase() === "individual" ? (
               <Title level={4}>Personal Information</Title>
-            )}
-            {userType.toLowerCase() == "business" && (
+            ) : (
               <Title level={4}>Business Information</Title>
             )}
-
             <Subtitle $token={token}>Update your profile details here</Subtitle>
           </Card>
           <Row
@@ -301,7 +212,6 @@ const ProfilePage = () => {
                     </Text>
                   </div>
                 </Col>
-
                 <Col xs={24} sm={12} style={{ textAlign: "center" }}>
                   {profileImageNew ? (
                     <Avatar
@@ -309,27 +219,24 @@ const ProfilePage = () => {
                       src={profileImageNew}
                       style={{ border: "2px solid #ddd" }}
                     />
+                  ) : userDetails?.profileImageLocation ? (
+                    <Avatar
+                      size={154}
+                      src={`${imageBaseUrl}${userDetails.profileImageLocation}`}
+                      style={{ border: "2px solid #ddd" }}
+                    />
                   ) : (
-                    <Text type="secondary">No image selected</Text>
+                    <Avatar
+                      size={154}
+                      src={isDark ? defaultDpDark : defaultDp}
+                      style={{ border: "2px solid #ddd" }}
+                    />
                   )}
                 </Col>
               </Row>
             </Col>
           </Row>
-
           <Row gutter={40}>
-            {/* <Col span={24} style={{ textAlign: "center" }}>
-              <Avatar
-                size={154}
-                src={
-                  userDetails && userDetails?.profileImageLocation
-                    ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
-                    : isDark
-                    ? defaultDpDark
-                    : defaultDp
-                }
-              />
-            </Col> */}
             <Col
               span={12}
               xs={{ span: 24 }}
@@ -337,7 +244,7 @@ const ProfilePage = () => {
               md={{ span: 12 }}
               lg={{ span: 12 }}
             >
-              {userType.toLowerCase() == "individual" && (
+              {userType?.toLowerCase() === "individual" ? (
                 <>
                   <StyledLabel $token={token}>First Name</StyledLabel>
                   <StyledInput
@@ -349,8 +256,7 @@ const ProfilePage = () => {
                     }
                   ></StyledInput>
                 </>
-              )}
-              {userType.toLowerCase() == "business" && (
+              ) : (
                 <>
                   <StyledLabel $token={token}>Business Name</StyledLabel>
                   <StyledInput
@@ -371,7 +277,7 @@ const ProfilePage = () => {
               md={{ span: 12 }}
               lg={{ span: 12 }}
             >
-              {userType.toLowerCase() == "individual" && (
+              {userType?.toLowerCase() === "individual" ? (
                 <>
                   <StyledLabel $token={token}>Last Name</StyledLabel>
                   <StyledInput
@@ -383,8 +289,7 @@ const ProfilePage = () => {
                     }
                   ></StyledInput>
                 </>
-              )}
-              {userType.toLowerCase() == "business" && (
+              ) : (
                 <>
                   <StyledLabel $token={token}>RC Number</StyledLabel>
                   <StyledInput
@@ -408,18 +313,11 @@ const ProfilePage = () => {
               <StyledLabel $token={token}>Email</StyledLabel>
               <StyledInput
                 $token={token}
+                disabled={true}
                 value={formData.email}
                 name="email"
+                style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-              ></StyledInput>
-              <StyledInput
-                $token={token}
-                value={formData.walletBalance}
-                name="walletBalance"
-                hidden="true"
-                onChange={(e) =>
-                  handleInputChange("walletBalance", e.target.value)
-                }
               ></StyledInput>
             </Col>
             <Col
@@ -431,6 +329,8 @@ const ProfilePage = () => {
             >
               <StyledLabel $token={token}>Phone number</StyledLabel>
               <StyledInput
+                disabled={true}
+                style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
                 $token={token}
                 value={formData.phoneNumber}
                 name="phoneNumber"
@@ -439,28 +339,13 @@ const ProfilePage = () => {
                 }
               ></StyledInput>
             </Col>
-            {/* <Col
-              span={12}
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 12 }}
-              lg={{ span: 12 }}
-            >
-              <StyledLabel $token={token}>NIN</StyledLabel>
-              <StyledInput
-                $token={token}
-                value={formData.nin}
-                name="nin"
-                onChange={(e) => handleInputChange("nin", e.target.value)}
-              ></StyledInput>
-            </Col>
-
             <Col
               span={12}
               xs={{ span: 24 }}
               sm={{ span: 24 }}
               md={{ span: 12 }}
               lg={{ span: 12 }}
+              hidden={true}
             >
               <StyledLabel $token={token}>Address</StyledLabel>
               <DynamicTextArea
@@ -470,9 +355,25 @@ const ProfilePage = () => {
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
               />
-            </Col> */}
-            <Col>
-              {userType == "business" && (
+            </Col>
+            <Col
+              span={12}
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 12 }}
+              hidden={true}
+            >
+              <StyledLabel $token={token}>NIN</StyledLabel>
+              <StyledInput
+                $token={token}
+                value={formData.nin}
+                name="nin"
+                onChange={(e) => handleInputChange("nin", e.target.value)}
+              ></StyledInput>
+            </Col>
+            <Col hidden={true}>
+              {userType?.toLowerCase() === "business" && (
                 <>
                   <StyledLabel $token={token}>Designation</StyledLabel>
                   <StyledInput
