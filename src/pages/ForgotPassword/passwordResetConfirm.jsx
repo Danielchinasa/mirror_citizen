@@ -13,6 +13,8 @@ import {
   StyledForm,
   Subtitle,
 } from "../../globalStyles";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const PasswordResetConfirm = () => {
   const history = useHistory();
@@ -22,6 +24,10 @@ const PasswordResetConfirm = () => {
     dispatch(logout());
     history.push("/");
   };
+
+  const { token } = theme.useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text, text3 } = token;
   return (
     <div>
       <Row justify="center">
@@ -60,8 +66,8 @@ const PasswordResetConfirm = () => {
               <CheckCircleOutlined
                 style={{ fontSize: "92px", color: "#09C93A" }}
               />
-              <Heading>Password reset</Heading>
-              <Subtitle color="light">
+              <Heading $token={token}>Password reset</Heading>
+              <Subtitle color="light" $token={token}>
                 Your password has been successfully reset, Click below to log in
               </Subtitle>
               <StyledForm>

@@ -9,8 +9,13 @@ import {
   InfoSec,
   BtnLink,
 } from "../../globalStyles";
+import { theme } from "antd";
+import { useTheme } from "../../components/ThemeProvider";
 
 const CheckPasswordResetLink = () => {
+  const { token } = theme.useToken();
+  const { isDark } = useTheme();
+  const { bgContainer, text, text3 } = token;
   return (
     <div>
       <Row justify="center">
@@ -46,16 +51,16 @@ const CheckPasswordResetLink = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading>Check your email</Heading>
-              <Subtitle color="light">
-                We sent a password reset link to samuel.igboji@biosec.com.ng
+              <Heading $token={token}>Check your email</Heading>
+              <Subtitle color="light" $token={token}>
+                We sent a password reset link to your email
               </Subtitle>
               <StyledForm>
                 <BtnLink to="/set-new-password">
                   <MainButtonFull type="primary">Check Email</MainButtonFull>
                 </BtnLink>
               </StyledForm>
-              <Subtitle color="light">
+              <Subtitle color="light" $token={token}>
                 Didn’t receive an email?{" "}
                 <strong style={{ color: "#09C93A" }}>Click to resend</strong>
               </Subtitle>
