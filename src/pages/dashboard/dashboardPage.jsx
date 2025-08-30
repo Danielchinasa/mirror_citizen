@@ -1502,6 +1502,9 @@ const DashboardPage = () => {
                 localStorage.setItem("transactionID", responseData.data.txRef);
                 localStorage.setItem("paymentType", "INSTANT");
 
+                // //!Call the PaymentChecker function??//
+                // startPaymentChecker(responseData.data.txRef);
+
                 //!------------- Open the FlutterWave modal for payment --------------//
                 setOpenFlutterwaveModal(true);
 
@@ -3183,6 +3186,87 @@ const DashboardPage = () => {
   };
 
   const [makingPayment, setMakingPayment] = useState(false);
+
+  // const startPaymentChecker = (txRef) => {
+  //   const intervalId = setInterval(async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${baseUrl}/payment/check?transactionRef=${txRef}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${userToken}`,
+  //           },
+  //         }
+  //       );
+
+  //       // ✅ Only treat 200 or 204 as success
+  //       if (response.status === 200 || response.status === 204) {
+  //         const responseData = await response.json();
+
+  //         if (
+  //           responseData.data?.status === "successful" ||
+  //           responseData.status === "success"
+  //         ) {
+  //           clearInterval(intervalId); // stop polling
+  //           setOpenFlutterwaveModal(false);
+
+  //           //!--------- Perform verification only when payment is successful -------//
+  //           // dispatch(fetchUserProfile(userToken));
+  //           handleSubmit();
+  //           //!--------- End verification -------//
+  //         } else if (responseData.data?.status === "failed") {
+  //           clearInterval(intervalId); // stop polling
+  //           setOpenFlutterwaveModal(false);
+
+  //           Swal.fire({
+  //             background: bgContainer,
+  //             color: text,
+  //             title: "Failed Payment",
+  //             text: responseData.data.message,
+  //             icon: "error",
+  //             customClass: {
+  //               confirmButton: "custom-swal-button",
+  //             },
+  //             allowOutsideClick: false,
+  //             allowEscapeKey: false,
+  //             showConfirmButton: true,
+  //             confirmButtonText: "OK",
+  //             confirmButtonColor: "#0DC939",
+  //           }).then((result) => {
+  //             if (result.isConfirmed) {
+  //               window.location.reload();
+  //             }
+  //           });
+  //         }
+  //       } else {
+  //         clearInterval(intervalId); // stop polling
+  //         Swal.fire({
+  //           background: bgContainer,
+  //           color: text,
+  //           title: "Error",
+  //           text: "Payment Cancelled or Declined",
+  //           icon: "error",
+  //           customClass: {
+  //             confirmButton: "custom-swal-button",
+  //           },
+  //           allowOutsideClick: false,
+  //           allowEscapeKey: false,
+  //           showConfirmButton: true,
+  //           confirmButtonText: "OK",
+  //           confirmButtonColor: "#0DC939",
+  //         }).then((result) => {
+  //           if (result.isConfirmed) {
+  //             window.location.reload();
+  //           }
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking payment:", error);
+  //     }
+  //   }, 5000);
+  // };
 
   return (
     <Row style={{ backgroundColor: bgContainer }}>
