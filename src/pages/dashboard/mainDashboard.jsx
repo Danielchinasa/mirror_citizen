@@ -382,19 +382,38 @@ const MainDashboard = () => {
     setSearchTextTransaction(value);
   };
 
+  //!! Return all the date from Verification History
+  // const filteredData =
+  //   verificationData && verificationData.requests
+  //     ? verificationData.requests.filter((record) => {
+  //         return Object.keys(record).some(
+  //           (key) =>
+  //             record[key] &&
+  //             record[key]
+  //               .toString()
+  //               .toLowerCase()
+  //               .includes(searchText.toLowerCase())
+  //         );
+  //       })
+  //     : [];
+
+  //!! Return only completed verification history failed or completed
   const filteredData =
     verificationData && verificationData.requests
-      ? verificationData.requests.filter((record) => {
-          return Object.keys(record).some(
-            (key) =>
-              record[key] &&
-              record[key]
-                .toString()
-                .toLowerCase()
-                .includes(searchText.toLowerCase())
-          );
-        })
+      ? verificationData.requests
+          .filter((record) => record.status?.toLowerCase() !== "initiate")
+          .filter((record) => {
+            return Object.keys(record).some(
+              (key) =>
+                record[key] &&
+                record[key]
+                  .toString()
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
+            );
+          })
       : [];
+
   const filteredDataTransaction =
     transactionData &&
     transactionData.filter((record) => {
@@ -518,6 +537,14 @@ const MainDashboard = () => {
           text: "pending",
           value: "pending",
         },
+        {
+          text: "denied",
+          value: "denied",
+        },
+        {
+          text: "initiate",
+          value: "initiate",
+        },
       ],
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
       render: (text, record) => {
@@ -586,6 +613,8 @@ const MainDashboard = () => {
               No Data Found
             </span>
           );
+        } else if (status.toLowerCase() === "initiate") {
+          return <span style={{ color: "red", fontWeight: "bold" }}></span>;
         } else if (
           ((type === "Basic Profile" ||
             type === "Financial Profile" ||

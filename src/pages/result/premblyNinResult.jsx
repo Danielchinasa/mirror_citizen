@@ -242,7 +242,7 @@ const PremblyNinResult = () => {
                     </div>
                   </Col>
 
-                  <Col span={12}>
+                  {/* <Col span={12}>
                     {signature && signature !== "-" ? (
                       <Avatar
                         size={124}
@@ -255,7 +255,7 @@ const PremblyNinResult = () => {
                     <div style={{ marginTop: "8px" }}>
                       <Text strong>Signature</Text>
                     </div>
-                  </Col>
+                  </Col> */}
                 </Row>
                 <Divider />
 
