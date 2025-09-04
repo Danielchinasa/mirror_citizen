@@ -329,16 +329,21 @@ const ProfilePage = () => {
             >
               <StyledLabel $token={token}>Phone number</StyledLabel>
               <StyledInput
-                disabled={true}
-                style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
+                // disabled={!!user?.phoneNumber}
+                style={
+                  user?.phoneNumber
+                    ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" }
+                    : {}
+                }
                 $token={token}
                 value={formData.phoneNumber}
                 name="phoneNumber"
                 onChange={(e) =>
                   handleInputChange("phoneNumber", e.target.value)
                 }
-              ></StyledInput>
+              />
             </Col>
+
             <Col
               span={12}
               xs={{ span: 24 }}

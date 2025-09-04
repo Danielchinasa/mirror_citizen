@@ -574,27 +574,27 @@ const DashboardPage = () => {
       //       window.location.reload();
       //     }
       //   });
-      // } else if (
-      //   response["search-extension"] &&
-      //   response["search-extension"].phoneVerification &&
-      //   response["search-extension"].phoneVerification.status === true
-      // ) {
-      //   Swal.fire({
-      //     background: bgContainer,
-      //     color: text,
-      //     title: "Success",
-      //     text: response["search-extension"].phoneVerification.detail,
-      //     icon: "info",
-      //     customClass: {
-      //       confirmButton: "custom-swal-button",
-      //     },
-      //     allowOutsideClick: false,
-      //     allowEscapeKey: false,
-      //   });
-
-      //   history.push("/main-dashboard");
       // }
       else if (
+        response["search-extension"] &&
+        response["search-extension"].phoneVerification &&
+        response["search-extension"].phoneVerification.status === true
+      ) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Success",
+          text: response["search-extension"].phoneVerification.detail,
+          icon: "info",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
+        history.push("/main-dashboard");
+      } else if (
         response["search-extension"] &&
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === false
@@ -639,33 +639,35 @@ const DashboardPage = () => {
         });
 
         history.push("/main-dashboard");
-      } else if (
-        response["search-extension"] &&
-        response["search-extension"].bvnVerification &&
-        response["search-extension"].bvnVerification.status === false
-      ) {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text:
-            response["search-extension"].bvnVerification.detail ||
-            "Verification failed",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-      } else if (response.business && response.business.success === false) {
+      }
+      // else if (
+      //   response["search-extension"] &&
+      //   response["search-extension"].bvnVerification &&
+      //   response["search-extension"].bvnVerification.status === false
+      // ) {
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Error",
+      //     text:
+      //       response["search-extension"].bvnVerification.detail ||
+      //       "Verification failed",
+      //     icon: "error",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //     showConfirmButton: true,
+      //     confirmButtonText: "OK",
+      //     confirmButtonColor: "#0DC939",
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       window.location.reload();
+      //     }
+      //   });
+      // }
+      else if (response.business && response.business.success === false) {
         Swal.fire({
           background: bgContainer,
           color: text,

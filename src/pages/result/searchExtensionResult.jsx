@@ -345,9 +345,9 @@ const SearchExtensionResult = () => {
   };
 
   const renderBvnVerificationSection = () => {
-    if (!searchExtensionData?.premblyBvnVerification?.[0]) return null;
+    if (!searchExtensionData?.premblyBvnVerification) return null;
 
-    const bvnData = searchExtensionData.premblyBvnVerification[0];
+    const bvnData = searchExtensionData.premblyBvnVerification;
 
     return (
       <div style={{ marginBottom: "24px" }}>
