@@ -116,12 +116,9 @@ const MainDashboard = () => {
       // it means the token has expired
       dispatch(logout());
       history.push("/");
-      // console.log("Time don pass well");
     } else {
       // Token is still valid
       // You may want to handle this case differently
-      console.log(expireDate);
-      console.log(currentDate);
     }
   }, []);
 
@@ -164,6 +161,8 @@ const MainDashboard = () => {
   };
 
   // Log the verificationData to the console
+  console.log("verificationData");
+  console.log(verificationData);
 
   const [openedVerifications, setOpenedVerifications] = useState([]);
   console.log("currencyCheck");
@@ -172,6 +171,8 @@ const MainDashboard = () => {
   const handleViewResult = async (record) => {
     setLoadingSmall(true);
     const { id, insertionDate, consent } = record;
+    console.log("consent");
+    console.log(consent);
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
       currentDate.getTime() - 48 * 60 * 60 * 1000
@@ -267,12 +268,11 @@ const MainDashboard = () => {
         const data = await response.json();
         // Proceed with navigation only if there is no data in the response
         if (!data) {
-          console.log("NO DATA");
           Swal.fire({
             background: bgContainer,
             color: text,
             title: "Oops!",
-            text: "Sorry, No record found",
+            text: data.message,
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -288,7 +288,7 @@ const MainDashboard = () => {
             background: bgContainer,
             color: text,
             title: "Oops!",
-            text: "Sorry, No record found",
+            text: data.message,
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -326,8 +326,11 @@ const MainDashboard = () => {
     } else if (record.type === "Search-Extension") {
       history.push("/search-extension");
     } else {
-      history.push("/result");
+      history.push("/premblyNinResult");
     }
+    // else {
+    //   history.push("/result");
+    // }
   };
 
   const config = {
@@ -379,19 +382,38 @@ const MainDashboard = () => {
     setSearchTextTransaction(value);
   };
 
+  //!! Return all the date from Verification History
+  // const filteredData =
+  //   verificationData && verificationData.requests
+  //     ? verificationData.requests.filter((record) => {
+  //         return Object.keys(record).some(
+  //           (key) =>
+  //             record[key] &&
+  //             record[key]
+  //               .toString()
+  //               .toLowerCase()
+  //               .includes(searchText.toLowerCase())
+  //         );
+  //       })
+  //     : [];
+
+  //!! Return only completed verification history failed or completed
   const filteredData =
     verificationData && verificationData.requests
-      ? verificationData.requests.filter((record) => {
-          return Object.keys(record).some(
-            (key) =>
-              record[key] &&
-              record[key]
-                .toString()
-                .toLowerCase()
-                .includes(searchText.toLowerCase())
-          );
-        })
+      ? verificationData.requests
+          .filter((record) => record.status?.toLowerCase() !== "initiate")
+          .filter((record) => {
+            return Object.keys(record).some(
+              (key) =>
+                record[key] &&
+                record[key]
+                  .toString()
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
+            );
+          })
       : [];
+
   const filteredDataTransaction =
     transactionData &&
     transactionData.filter((record) => {
@@ -515,6 +537,14 @@ const MainDashboard = () => {
           text: "pending",
           value: "pending",
         },
+        {
+          text: "denied",
+          value: "denied",
+        },
+        {
+          text: "initiate",
+          value: "initiate",
+        },
       ],
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
       render: (text, record) => {
@@ -583,6 +613,8 @@ const MainDashboard = () => {
               No Data Found
             </span>
           );
+        } else if (status.toLowerCase() === "initiate") {
+          return <span style={{ color: "red", fontWeight: "bold" }}></span>;
         } else if (
           ((type === "Basic Profile" ||
             type === "Financial Profile" ||

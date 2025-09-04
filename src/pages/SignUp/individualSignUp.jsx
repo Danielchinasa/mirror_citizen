@@ -568,8 +568,8 @@ const IndividualSignUp = () => {
                         login();
                       }}
                     />
-                    {/* <FacebookLogin
-                      appId="1951516332293043"
+                    <FacebookLogin
+                      appId="541710452150170"
                       autoLoad={false}
                       fields="name,picture"
                       scope="public_profile"
@@ -578,7 +578,7 @@ const IndividualSignUp = () => {
                       textButton="Continue with Facebook"
                       icon={<FacebookSignInButton />}
                     />
-                    <AppleLogin
+                    {/*  <AppleLogin
                       clientId="com.react.apple.login"
                       redirectURI="https://redirectUrl.com"
                       responseType="code"

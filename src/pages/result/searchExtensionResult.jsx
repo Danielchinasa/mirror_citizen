@@ -103,9 +103,9 @@ const SearchExtensionResult = () => {
   );
 
   const renderPhoneVerificationSection = () => {
-    if (!searchExtensionData?.premblyPhoneVerification?.[0]) return null;
+    if (!searchExtensionData.premblyPhoneVerification) return null;
 
-    const phoneData = searchExtensionData.premblyPhoneVerification[0];
+    const phoneData = searchExtensionData.premblyPhoneVerification;
 
     return (
       <div style={{ marginBottom: "24px" }}>
@@ -345,9 +345,9 @@ const SearchExtensionResult = () => {
   };
 
   const renderBvnVerificationSection = () => {
-    if (!searchExtensionData?.premblyBvnVerification?.[0]) return null;
+    if (!searchExtensionData?.premblyBvnVerification) return null;
 
-    const bvnData = searchExtensionData.premblyBvnVerification[0];
+    const bvnData = searchExtensionData.premblyBvnVerification;
 
     return (
       <div style={{ marginBottom: "24px" }}>

@@ -27,12 +27,12 @@ export const Sendrequest = () => {
         })
           .then((currentToken) => {
             if (currentToken) {
-              console.log("Client Token: ", currentToken);
+              console.log("Client Token1: ", currentToken);
               localStorage.setItem("clientToken", currentToken);
             } else {
               localStorage.setItem(
                 "clientToken",
-                "dIT0eKRN6mxrY-Ysv8U8pL:APA91bEdY4z_MmamDKN88p83qF5qhApIgpktVtVvBBwf7BFdY8sLJ52BZtfg2_w-Qlv_ZGcQY6QhC6PYLjP-HDTA9TuoHXLZIwT6x_zWOpvmWC1xnTNOC44"
+                " cYKXlJoUlvrhue8s682Ksy:APA91bE3_41ZG6tYmfkCtB3rxkM44ft6FmVMpKtPve-EVBTxLoXCnAox276hTt-jmtGRijI7nki5prAJRlpvzA5wke7D9xjMi_GV0ywWjjIXzL0tCpATLs8"
               );
               console.log("Failed to generate the registration token.");
             }
@@ -40,7 +40,7 @@ export const Sendrequest = () => {
           .catch((err) => {
             localStorage.setItem(
               "clientToken",
-              "dIT0eKRN6mxrY-Ysv8U8pL:APA91bEdY4z_MmamDKN88p83qF5qhApIgpktVtVvBBwf7BFdY8sLJ52BZtfg2_w-Qlv_ZGcQY6QhC6PYLjP-HDTA9TuoHXLZIwT6x_zWOpvmWC1xnTNOC44"
+              " cYKXlJoUlvrhue8s682Ksy:APA91bE3_41ZG6tYmfkCtB3rxkM44ft6FmVMpKtPve-EVBTxLoXCnAox276hTt-jmtGRijI7nki5prAJRlpvzA5wke7D9xjMi_GV0ywWjjIXzL0tCpATLs8"
             );
 
             console.log(

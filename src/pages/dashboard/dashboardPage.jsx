@@ -473,19 +473,19 @@ const DashboardPage = () => {
       dispatch(fetchUserProfile(userToken));
       if (
         response.basic &&
-        response.basic.success &&
-        response.basic.success === true
+        response.basic.status &&
+        response.basic.status === true
       ) {
-        localStorage.setItem(
-          "verificationRequestId",
-          response.basic.data.requestId
-        );
+        // localStorage.setItem(
+        //   "verificationRequestId",
+        //   response.basic.data.requestId
+        // );
 
         Swal.fire({
           background: bgContainer,
           color: text,
           title: "Success",
-          text: response.basic.message,
+          text: response.basic.detail,
           icon: "info",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -498,14 +498,14 @@ const DashboardPage = () => {
       } else if (
         response &&
         response.basic &&
-        typeof response.basic.success === "boolean" &&
-        response.basic.success === false
+        typeof response.basic.status === "boolean" &&
+        response.basic.status === false
       ) {
         Swal.fire({
           background: bgContainer,
           color: text,
           title: "Error",
-          text: response.basic.message,
+          text: response.basic.detail,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -522,7 +522,60 @@ const DashboardPage = () => {
             window.location.reload();
           }
         });
-      } else if (
+      }
+      // if (
+      //   response.basic &&
+      //   response.basic.success &&
+      //   response.basic.success === true
+      // ) {
+      //   localStorage.setItem(
+      //     "verificationRequestId",
+      //     response.basic.data.requestId
+      //   );
+
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Success",
+      //     text: response.basic.message,
+      //     icon: "info",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //   });
+
+      //   history.push("/main-dashboard");
+      // } else if (
+      //   response &&
+      //   response.basic &&
+      //   typeof response.basic.success === "boolean" &&
+      //   response.basic.success === false
+      // ) {
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Error",
+      //     text: response.basic.message,
+      //     icon: "error",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //     showConfirmButton: true,
+      //     confirmButtonText: "OK",
+      //     confirmButtonColor: "#0DC939",
+      //   }).then((result) => {
+      //     /* Read more about handling dismissals below */
+      //     if (result.isConfirmed) {
+      //       // dispatch(fetchUserProfile(userToken));
+      //       window.location.reload();
+      //     }
+      //   });
+      // }
+      else if (
         response["search-extension"] &&
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === true
@@ -586,33 +639,35 @@ const DashboardPage = () => {
         });
 
         history.push("/main-dashboard");
-      } else if (
-        response["search-extension"] &&
-        response["search-extension"].bvnVerification &&
-        response["search-extension"].bvnVerification.status === false
-      ) {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text:
-            response["search-extension"].bvnVerification.detail ||
-            "Verification failed",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-      } else if (response.business && response.business.success === false) {
+      }
+      // else if (
+      //   response["search-extension"] &&
+      //   response["search-extension"].bvnVerification &&
+      //   response["search-extension"].bvnVerification.status === false
+      // ) {
+      //   Swal.fire({
+      //     background: bgContainer,
+      //     color: text,
+      //     title: "Error",
+      //     text:
+      //       response["search-extension"].bvnVerification.detail ||
+      //       "Verification failed",
+      //     icon: "error",
+      //     customClass: {
+      //       confirmButton: "custom-swal-button",
+      //     },
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //     showConfirmButton: true,
+      //     confirmButtonText: "OK",
+      //     confirmButtonColor: "#0DC939",
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       window.location.reload();
+      //     }
+      //   });
+      // }
+      else if (response.business && response.business.success === false) {
         Swal.fire({
           background: bgContainer,
           color: text,
@@ -750,7 +805,7 @@ const DashboardPage = () => {
           background: bgContainer,
           color: text,
           title: "Error",
-          text: "An unexpected server error occurred. A refund has been initiated",
+          text: "An unexpected server error occurred.",
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -1448,6 +1503,9 @@ const DashboardPage = () => {
                 setTransactionRef(responseData.data.txRef);
                 localStorage.setItem("transactionID", responseData.data.txRef);
                 localStorage.setItem("paymentType", "INSTANT");
+
+                // //!Call the PaymentChecker function??//
+                // startPaymentChecker(responseData.data.txRef);
 
                 //!------------- Open the FlutterWave modal for payment --------------//
                 setOpenFlutterwaveModal(true);
@@ -2773,7 +2831,10 @@ const DashboardPage = () => {
       if (response.ok) {
         // setLoading(true);
         const responseData = await response.json();
-        if (responseData.status === "success") {
+        if (
+          responseData.data.status === "successful" ||
+          responseData.status === "success"
+        ) {
           if (
             responseData.data &&
             (responseData.data.status === "success" ||
@@ -3127,6 +3188,87 @@ const DashboardPage = () => {
   };
 
   const [makingPayment, setMakingPayment] = useState(false);
+
+  // const startPaymentChecker = (txRef) => {
+  //   const intervalId = setInterval(async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${baseUrl}/payment/check?transactionRef=${txRef}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${userToken}`,
+  //           },
+  //         }
+  //       );
+
+  //       // ✅ Only treat 200 or 204 as success
+  //       if (response.status === 200 || response.status === 204) {
+  //         const responseData = await response.json();
+
+  //         if (
+  //           responseData.data?.status === "successful" ||
+  //           responseData.status === "success"
+  //         ) {
+  //           clearInterval(intervalId); // stop polling
+  //           setOpenFlutterwaveModal(false);
+
+  //           //!--------- Perform verification only when payment is successful -------//
+  //           // dispatch(fetchUserProfile(userToken));
+  //           handleSubmit();
+  //           //!--------- End verification -------//
+  //         } else if (responseData.data?.status === "failed") {
+  //           clearInterval(intervalId); // stop polling
+  //           setOpenFlutterwaveModal(false);
+
+  //           Swal.fire({
+  //             background: bgContainer,
+  //             color: text,
+  //             title: "Failed Payment",
+  //             text: responseData.data.message,
+  //             icon: "error",
+  //             customClass: {
+  //               confirmButton: "custom-swal-button",
+  //             },
+  //             allowOutsideClick: false,
+  //             allowEscapeKey: false,
+  //             showConfirmButton: true,
+  //             confirmButtonText: "OK",
+  //             confirmButtonColor: "#0DC939",
+  //           }).then((result) => {
+  //             if (result.isConfirmed) {
+  //               window.location.reload();
+  //             }
+  //           });
+  //         }
+  //       } else {
+  //         clearInterval(intervalId); // stop polling
+  //         Swal.fire({
+  //           background: bgContainer,
+  //           color: text,
+  //           title: "Error",
+  //           text: "Payment Cancelled or Declined",
+  //           icon: "error",
+  //           customClass: {
+  //             confirmButton: "custom-swal-button",
+  //           },
+  //           allowOutsideClick: false,
+  //           allowEscapeKey: false,
+  //           showConfirmButton: true,
+  //           confirmButtonText: "OK",
+  //           confirmButtonColor: "#0DC939",
+  //         }).then((result) => {
+  //           if (result.isConfirmed) {
+  //             window.location.reload();
+  //           }
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking payment:", error);
+  //     }
+  //   }, 5000);
+  // };
 
   return (
     <Row style={{ backgroundColor: bgContainer }}>
