@@ -118,7 +118,7 @@ function Footer() {
                     </a>
 
                     <a
-                      href="https://idcard.ng/"
+                      href="https://nimc.gov.ng/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ cursor: "pointer" }}
