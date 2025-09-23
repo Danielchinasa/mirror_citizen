@@ -100,8 +100,8 @@ const FaqPage = () => {
       title: "Why do I need to register before verifying a NIN?",
       content: (
         <p>
-          Users are required to register to enjoy the verification experience
-          e-Citizen™.ng provides.
+          Registration ensures you can enjoy the full verification experience
+          and track your history on e-Citizen™.
         </p>
       ),
     },
