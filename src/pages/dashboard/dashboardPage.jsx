@@ -66,6 +66,11 @@ import { trackEvent } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 
+/* Stripe Payment Methods */
+import { Elements } from "@stripe/react-stripe-js";
+import stripePromise from "../../stripeConfig";
+import StripePaymentForm from "../../stripe/StripePaymentForm";
+
 /* global Reach */
 
 const { Dragger } = Upload;
@@ -1215,6 +1220,130 @@ const DashboardPage = () => {
   }
   const randomTransactionId = generateTransactionId();
 
+  const [stripeModalVisible, setStripeModalVisible] = useState(false);
+  const [selectedStripePayment, setSelectedStripePayment] = useState(null);
+
+  const handleStripePayment = async () => {
+    setLoadingSmall(true);
+
+    try {
+      //!! Do verification initiate here
+      const initiateResponse = await dispatch(
+        initiateVerificationRequest(formData, userToken)
+      );
+
+      if (initiateResponse?.sessionStatus == "INITIATED") {
+        localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+      }
+
+      // Create payment intent on your backend
+      const response = await fetch(`${baseUrl}/payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify({
+          amount: Math.round(
+            currencyCheck.toUpperCase() === "USD"
+              ? outsideNgWithNiara === true
+                ? outsideNgWithNiaraPrice * 100 // Convert to cents
+                : totalServiceCost * 100
+              : totalServiceCost * 100 // Convert kobo for NGN
+          ),
+          currency: "usd",
+          description: "Payment for verification service",
+          sessionCode: localStorage.getItem("sessionCode"),
+          type: "VERIFICATION",
+        }),
+      });
+
+      const { clientSecret, paymentIntentId } = await response.json();
+
+      if (!clientSecret) {
+        throw new Error("Failed to create payment intent");
+      }
+
+      localStorage.setItem("transactionID", paymentIntentId);
+      localStorage.setItem("paymentType", "STRIPE");
+
+      // Set up Stripe payment
+      setSelectedStripePayment({
+        clientSecret,
+        amount: totalServiceCost,
+        currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "NGN",
+      });
+
+      setStripeModalVisible(true);
+    } catch (error) {
+      console.error("Stripe payment error:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Failed to initialize Stripe payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+    } finally {
+      setLoadingSmall(false);
+    }
+  };
+
+  const StripePaymentModal = () => (
+    <Modal
+      title="Pay with Card"
+      visible={stripeModalVisible}
+      onCancel={() => setStripeModalVisible(false)}
+      footer={null}
+      width={500}
+      maskClosable={false}
+    >
+      <Elements
+        stripe={stripePromise}
+        options={{
+          clientSecret: selectedStripePayment?.clientSecret,
+          appearance: {
+            theme: isDark ? "night" : "stripe",
+            variables: {
+              colorPrimary: "#0DC939",
+            },
+          },
+        }}
+      >
+        <StripePaymentForm
+          onSuccess={() => {
+            setStripeModalVisible(false);
+            handleSubmit(); // Perform verification after successful payment
+          }}
+          onError={(error) => {
+            console.error("Stripe payment error:", error);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Failed",
+              text: "Stripe payment failed. Please try again.",
+              icon: "error",
+            });
+            setStripeModalVisible(false);
+          }}
+          onCancel={() => {
+            setStripeModalVisible(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Cancelled",
+              text: "Stripe payment was cancelled.",
+              icon: "info",
+            });
+          }}
+        />
+      </Elements>
+    </Modal>
+  );
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1606,6 +1735,12 @@ const DashboardPage = () => {
         handleCancel();
       }
       //!!LIVE PAYMENT ENDS
+
+      //!!Stripe Payment START
+      else if (paymentMethod === 3) {
+        console.log("Stripe Payment Selected");
+        await handleStripePayment();
+      }
     }
   };
 
@@ -3275,6 +3410,7 @@ const DashboardPage = () => {
       <Col>
         <Img src={banner} />
       </Col>
+      <StripePaymentModal />
 
       <Container $token={token}>
         <Spin
@@ -4923,6 +5059,18 @@ const DashboardPage = () => {
                           width={100}
                           style={{ float: "right", paddingTop: "10px" }}
                         />
+                      </Radio>
+                      <Radio
+                        style={{
+                          display: "block",
+                          border: "1px solid #e8e8e8",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          fontWeight: "bold", // Make the text bold
+                        }}
+                        value={3}
+                      >
+                        Credit/Debit Card (Stripe)
                       </Radio>
                     </Radio.Group>
                   </div>
