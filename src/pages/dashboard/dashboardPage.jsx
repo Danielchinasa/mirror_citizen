@@ -1237,7 +1237,7 @@ const DashboardPage = () => {
       }
 
       // Create payment intent on your backend
-      const response = await fetch(`${baseUrl}/payment`, {
+      const response = await fetch(`${baseUrl}/payment/create-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
