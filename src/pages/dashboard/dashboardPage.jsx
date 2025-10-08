@@ -36,6 +36,7 @@ import {
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import flutterwaveWhite from "../../images/flutterwave-logos-white.png";
+import stripeImage from "../../images/stripe.png";
 
 import {
   InfoCircleOutlined,
@@ -1224,7 +1225,7 @@ const DashboardPage = () => {
   const [selectedStripePayment, setSelectedStripePayment] = useState(null);
 
   const handleStripePayment = async () => {
-    setLoadingSmall(true);
+    setLoadingModal(true);
 
     try {
       //!! Do verification initiate here
@@ -1258,9 +1259,9 @@ const DashboardPage = () => {
         }),
       });
 
-      const { clientSecret, paymentIntentId } = await response.json();
+      const { client_secret, paymentIntentId } = await response.json();
 
-      if (!clientSecret) {
+      if (!client_secret) {
         throw new Error("Failed to create payment intent");
       }
 
@@ -1269,13 +1270,16 @@ const DashboardPage = () => {
 
       // Set up Stripe payment
       setSelectedStripePayment({
-        clientSecret,
+        client_secret,
         amount: totalServiceCost,
         currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "NGN",
       });
 
       setStripeModalVisible(true);
+      setLoadingModal(false);
     } catch (error) {
+      setIsConfirmedBtnClicked(false);
+      setMakingPayment(false);
       console.error("Stripe payment error:", error);
       Swal.fire({
         background: bgContainer,
@@ -1289,6 +1293,7 @@ const DashboardPage = () => {
       });
     } finally {
       setLoadingSmall(false);
+      setLoadingModal(false);
     }
   };
 
@@ -1301,10 +1306,18 @@ const DashboardPage = () => {
       width={500}
       maskClosable={false}
     >
+      <div
+        style={{ marginBottom: "15px", fontWeight: "bold", fontSize: "16px" }}
+      >
+        Amount to Pay: {selectedStripePayment?.currency}{" "}
+        {(selectedStripePayment?.amount ?? 0).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+        })}
+      </div>
       <Elements
         stripe={stripePromise}
         options={{
-          clientSecret: selectedStripePayment?.clientSecret,
+          clientSecret: selectedStripePayment?.client_secret,
           appearance: {
             theme: isDark ? "night" : "stripe",
             variables: {
@@ -1314,12 +1327,29 @@ const DashboardPage = () => {
         }}
       >
         <StripePaymentForm
-          onSuccess={() => {
+          onSuccess={(paymentIntent) => {
+            console.log(
+              "Stripe Payment Success. PaymentIntent:",
+              paymentIntent
+            );
             setStripeModalVisible(false);
-            handleSubmit(); // Perform verification after successful payment
+            // handleSubmit();
+            if (paymentIntent && paymentIntent.status === "succeeded") {
+              handleSubmit();
+            } else {
+              Swal.fire({
+                background: bgContainer,
+                color: text,
+                title: "Payment Failed",
+                text: "Stripe payment failed. Please try again.",
+                icon: "error",
+              });
+            }
           }}
           onError={(error) => {
             console.error("Stripe payment error:", error);
+            setIsConfirmedBtnClicked(false);
+            setMakingPayment(false);
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -1330,6 +1360,8 @@ const DashboardPage = () => {
             setStripeModalVisible(false);
           }}
           onCancel={() => {
+            setIsConfirmedBtnClicked(false);
+            setMakingPayment(false);
             setStripeModalVisible(false);
             Swal.fire({
               background: bgContainer,
@@ -1466,8 +1498,10 @@ const DashboardPage = () => {
         const initiateResponse = await dispatch(
           initiateVerificationRequest(formData, userToken)
         );
+        setLoadingModal(false);
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
+
         if (initiateResponse?.sessionStatus == "INITIATED") {
           localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
           setIsConfirmedBtnClicked(false);
@@ -1592,6 +1626,7 @@ const DashboardPage = () => {
         const initiateResponse = await dispatch(
           initiateVerificationRequest(formData, userToken)
         );
+        setLoadingModal(false);
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
         if (initiateResponse?.sessionStatus == "INITIATED") {
@@ -2179,6 +2214,7 @@ const DashboardPage = () => {
             onClick={async () => {
               setIsConfirmedBtnClicked(true);
               setModalVisible(false);
+              setLoadingModal(true);
               // try {
               //   const response = await dispatch(
               //     initiateVerificationRequest(formData, userToken)
@@ -5052,7 +5088,7 @@ const DashboardPage = () => {
                         }}
                         value={2}
                       >
-                        Instant Payment
+                        Pay with Flutterwave
                         <Img
                           src={isDark ? flutterwaveWhite : flutterwave}
                           alt={"flutter wave"}
@@ -5060,18 +5096,27 @@ const DashboardPage = () => {
                           style={{ float: "right", paddingTop: "10px" }}
                         />
                       </Radio>
-                      <Radio
-                        style={{
-                          display: "block",
-                          border: "1px solid #e8e8e8",
-                          borderRadius: "5px",
-                          padding: "10px",
-                          fontWeight: "bold", // Make the text bold
-                        }}
-                        value={3}
-                      >
-                        Credit/Debit Card (Stripe)
-                      </Radio>
+                      {currencyCheck.toUpperCase() === "USD" ? (
+                        <Radio
+                          style={{
+                            display: "block",
+                            border: "1px solid #e8e8e8",
+                            borderRadius: "5px",
+                            padding: "10px",
+                            marginTop: "10px",
+                            fontWeight: "bold",
+                          }}
+                          value={3}
+                        >
+                          Pay with Stripe
+                          <Img
+                            src={isDark ? stripeImage : stripeImage}
+                            alt={"stripe"}
+                            width={80}
+                            style={{ float: "right" }}
+                          />
+                        </Radio>
+                      ) : null}
                     </Radio.Group>
                   </div>
                 </Col>

@@ -52,6 +52,9 @@ import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { Elements } from "@stripe/react-stripe-js";
+import stripePromise from "../../stripeConfig";
+import StripePaymentForm from "../../stripe/StripePaymentForm";
 
 const tooltipContentStakeholders =
   "Check who the directors and shareholders are";
@@ -245,7 +248,8 @@ const BusinessName = () => {
       input: "radio",
       inputOptions: {
         "Payment from Wallet": "Payment from Wallet",
-        "Instant Payment": "Instant Payment",
+        "Instant Payment": "Pay with Flutterwave",
+        "Pay with Stripe": "Pay with Stripe",
       },
       customClass: {
         input: token.bgContainer == "#354138" ? "dark-mode" : "custom-input",
@@ -916,10 +920,239 @@ const BusinessName = () => {
             return;
           }
           handleCancel();
+          //!!LIVE PAYMENT ENDS
+        } else if (result.value === "Pay with Stripe") {
+          handleCancel();
+          // Stripe payment logic here
+          handleStripePayment();
         }
-        //!!LIVE PAYMENT ENDS
       }
     });
+  };
+  const [stripeModalVisible, setStripeModalVisible] = useState(false);
+  const [selectedStripePayment, setSelectedStripePayment] = useState(null);
+  const StripePaymentModal = () => (
+    <Modal
+      title="Pay with Card"
+      visible={stripeModalVisible}
+      onCancel={() => setStripeModalVisible(false)}
+      footer={null}
+      width={500}
+      maskClosable={false}
+    >
+      <div
+        style={{ marginBottom: "15px", fontWeight: "bold", fontSize: "16px" }}
+      >
+        Amount to Pay: {selectedStripePayment?.currency}{" "}
+        {(selectedStripePayment?.amount ?? 0).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+        })}
+      </div>
+      <Elements
+        stripe={stripePromise}
+        options={{
+          clientSecret: selectedStripePayment?.client_secret,
+          appearance: {
+            theme: "stripe",
+            variables: {
+              colorPrimary: "#0DC939",
+            },
+          },
+        }}
+      >
+        <StripePaymentForm
+          onSuccess={async (paymentIntent) => {
+            console.log(
+              "Stripe Payment Success. PaymentIntent:",
+              paymentIntent
+            );
+            setStripeModalVisible(false);
+            if (paymentIntent && paymentIntent.status === "succeeded") {
+              const response = await fetch(
+                `${baseUrl}/payment/confirm-intent`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userToken}`,
+                  },
+                  body: JSON.stringify({
+                    paymentIntentId: localStorage.getItem("paymentIntentId"),
+                    paymentMethod: "pm_card_mastercard",
+                  }),
+                }
+              );
+              const responseData = await response.json();
+              if (responseData.status === "succeeded") {
+                const requestBody = {
+                  sessionCode: localStorage.getItem("sessionCode"),
+                  sessionStatus: "COMPLETED",
+                  stakeholders: "STAKEHOLDERS",
+                  currency: currencyCheck || "NGN",
+                  userEmail: userEmail,
+                  paymentType: "INSTANT",
+                  cacId: parseInt(cacId),
+                  requestId: parseInt(requestId),
+                  payment: {
+                    currency: currencyCheck || "NGN",
+                    transactionID: randomTransactionId,
+                    paymentType: "INSTANT",
+                  },
+                  business: {
+                    requestId: parseInt(requestId),
+                    cacId: parseInt(cacId),
+                  },
+                };
+                const externalApiResponse = await apiPostInternalCall(
+                  `/verification/complete`,
+                  requestBody,
+                  userToken
+                );
+                if (
+                  externalApiResponse.data.business &&
+                  externalApiResponse.data.business.success == false
+                ) {
+                  setLoading(false);
+                  Swal.fire({
+                    background: bgContainer,
+                    color: text,
+                    title: "Request Error",
+                    text: externalApiResponse.data.business.message,
+                    icon: "error",
+                    customClass: {
+                      confirmButton: "custom-swal-button",
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0DC939",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.reload();
+                    }
+                  });
+                  return;
+                }
+                if (
+                  externalApiResponse.data.business &&
+                  Array.isArray(externalApiResponse.data.business.data)
+                ) {
+                  setLoading(false);
+                  setBusinessData(externalApiResponse.data.business.data);
+                } else {
+                  setLoading(false);
+                  console.error("Invalid response structure:", response.data);
+                  Swal.fire({
+                    background: bgContainer,
+                    color: text,
+                    title: "Error",
+                    text: "Error fetching Stake Holders",
+                    icon: "error",
+                    customClass: {
+                      confirmButton: "custom-swal-button",
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0DC939",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.reload();
+                    }
+                  });
+                }
+              }
+            } else {
+              Swal.fire({
+                background: bgContainer,
+                color: text,
+                title: "Payment Failed",
+                text: "Stripe payment failed. Please try again.",
+                icon: "error",
+              });
+            }
+          }}
+          onError={(error) => {
+            console.error("Stripe payment error:", error);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Failed",
+              text: "Stripe payment failed. Please try again.",
+              icon: "error",
+            });
+            setStripeModalVisible(false);
+          }}
+          onCancel={() => {
+            setStripeModalVisible(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Cancelled",
+              text: "Stripe payment was cancelled.",
+              icon: "info",
+            });
+          }}
+        />
+      </Elements>
+    </Modal>
+  );
+  const handleStripePayment = async () => {
+    try {
+      // Create payment intent on your backend
+      const response = await fetch(`${baseUrl}/payment/create-intent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify({
+          amount: Math.round(
+            userCurrency.toUpperCase() === "USD"
+              ? stakeHolderFeeUsd * 100 // Convert to cents
+              : stakeHolderFeeNgn * 100
+          ),
+          currency: "usd",
+          description: "Payment for verification service",
+          sessionCode: localStorage.getItem("sessionCode"),
+          type: "VERIFICATION",
+        }),
+      });
+
+      const { client_secret, paymentIntentId } = await response.json();
+
+      if (!client_secret) {
+        throw new Error("Failed to create payment intent");
+      }
+
+      localStorage.setItem("paymentIntentId", paymentIntentId);
+      localStorage.setItem("paymentType", "STRIPE");
+
+      // Set up Stripe payment
+      setSelectedStripePayment({
+        client_secret,
+        amount:
+          userCurrency.toUpperCase() === "USD"
+            ? stakeHolderFeeUsd * 100 // Convert to cents
+            : stakeHolderFeeNgn * 100,
+        currency: userCurrency.toUpperCase() === "USD" ? "USD" : "NGN",
+      });
+    } catch (error) {
+      console.error("Stripe payment error:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Failed to initialize Stripe payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+    } finally {
+    }
   };
 
   const formatToNaira = (value) => {
@@ -1142,6 +1375,7 @@ const BusinessName = () => {
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Container $token={token}>
+        <StripePaymentModal />
         <InfoSec>
           <Link to="/main-dashboard" style={{ color: text }}>
             <p style={{ color: text, cursor: "pointer" }}>Go back</p>

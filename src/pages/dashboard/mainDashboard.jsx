@@ -38,6 +38,10 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+
+import { Elements } from "@stripe/react-stripe-js";
+import stripePromise from "../../stripeConfig";
+import StripePaymentForm from "../../stripe/StripePaymentForm";
 const { Title } = Typography;
 
 const data = [
@@ -91,6 +95,7 @@ const MainDashboard = () => {
   const [financialFee, setFinancialFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const [loadingSmall, setLoadingSmall] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const { token } = theme.useToken();
   const { isDark } = useTheme();
@@ -871,10 +876,199 @@ const MainDashboard = () => {
     // dispatch(fetchUserProfile(userToken));
     // setModal1Open(false);
   };
-  const handleOk = async () => {
+  const handleOk = () => {
+    if (!amount) {
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Payment Failed",
+        text: "Please enter an amount",
+        icon: "error",
+      });
+      return;
+    }
+
+    if (!selectedPaymentMethod) {
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Payment Failed",
+        text: "Please select a payment method",
+        icon: "error",
+      });
+      return;
+    }
+
+    // Handle payment based on selected method
+    if (selectedPaymentMethod === "flutterwave") {
+      handleFlutterwavePayment();
+    } else if (selectedPaymentMethod === "stripe") {
+      handleStripePayment();
+    }
+  };
+
+  const [stripeModalVisible, setStripeModalVisible] = useState(false);
+  const [selectedStripePayment, setSelectedStripePayment] = useState(null);
+
+  const handleStripePayment = async () => {
     ReactGA.event({
       category: "User",
-      action: "Topped up wallet",
+      action: "Topped up wallet via Stripe",
+    });
+
+    setIsModalVisible(false);
+    try {
+      //!! Do verification initiate here
+      // const initiateResponse = await dispatch(
+      //   initiateVerificationRequest(formData, userToken)
+      // );
+
+      // if (initiateResponse?.sessionStatus == "INITIATED") {
+      //   localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+      // }
+
+      // Create payment intent on your backend
+      const response = await fetch(`${baseUrl}/payment/create-intent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify({
+          amount: Math.round(amount * 100),
+          currency: "usd",
+          // sessionCode: localStorage.getItem("sessionCode"),
+          description: "Wallet funding",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        }),
+      });
+
+      const { client_secret, paymentIntentId } = await response.json();
+
+      if (!client_secret) {
+        throw new Error("Failed to create payment intent");
+      }
+
+      localStorage.setItem("transactionID", paymentIntentId);
+      localStorage.setItem("paymentType", "STRIPE");
+      setSelectedStripePayment({
+        client_secret,
+        amount: amount,
+        currency: "USD",
+      });
+      setStripeModalVisible(true);
+    } catch (error) {
+      console.error("Stripe payment error:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Failed to initialize Stripe payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+    } finally {
+    }
+  };
+
+  const StripePaymentModal = () => (
+    <Modal
+      title="Pay with Card"
+      visible={stripeModalVisible}
+      onCancel={() => setStripeModalVisible(false)}
+      footer={null}
+      width={500}
+      maskClosable={false}
+    >
+      <div
+        style={{ marginBottom: "15px", fontWeight: "bold", fontSize: "16px" }}
+      >
+        Amount to Pay: {selectedStripePayment?.currency}{" "}
+        {(selectedStripePayment?.amount ?? 0).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+        })}
+      </div>
+      <Elements
+        stripe={stripePromise}
+        options={{
+          clientSecret: selectedStripePayment?.client_secret,
+          appearance: {
+            theme: isDark ? "night" : "stripe",
+            variables: {
+              colorPrimary: "#0DC939",
+            },
+          },
+        }}
+      >
+        <StripePaymentForm
+          onSuccess={async (paymentIntent) => {
+            console.log(
+              "Stripe Payment Success. PaymentIntent:",
+              paymentIntent
+            );
+            setStripeModalVisible(false);
+            // handleSubmit();
+            if (paymentIntent && paymentIntent.status === "succeeded") {
+              const response = await fetch(
+                `${baseUrl}/payment/confirm-intent`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userToken}`,
+                  },
+                  body: JSON.stringify({
+                    paymentIntentId: localStorage.getItem("transactionID"),
+                    paymentMethod: "pm_card_mastercard",
+                  }),
+                }
+              );
+              const responseData = await response.json();
+              if (responseData.status === "succeeded") {
+                dispatch(fetchUserProfile(userToken));
+              }
+            } else {
+              Swal.fire({
+                background: bgContainer,
+                color: text,
+                title: "Payment Failed",
+                text: "Stripe payment failed. Please try again.",
+                icon: "error",
+              });
+            }
+          }}
+          onError={(error) => {
+            console.error("Stripe payment error:", error);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Failed",
+              text: "Stripe payment failed. Please try again.",
+              icon: "error",
+            });
+            setStripeModalVisible(false);
+          }}
+          onCancel={() => {
+            setStripeModalVisible(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Cancelled",
+              text: "Stripe payment was cancelled.",
+              icon: "info",
+            });
+          }}
+        />
+      </Elements>
+    </Modal>
+  );
+  const handleFlutterwavePayment = async () => {
+    ReactGA.event({
+      category: "User",
+      action: "Topped up wallet via Flutterwave",
     });
 
     setIsModalVisible(false);
@@ -992,6 +1186,7 @@ const MainDashboard = () => {
   // Usage
   return (
     <div style={{ backgroundColor: bgContainer }}>
+      <StripePaymentModal />
       <Container>
         <Spin
           spinning={loadingSmall}
@@ -1103,37 +1298,132 @@ const MainDashboard = () => {
                 View Wallet
               </MainButton>
               <Modal
-                title="User Wallet"
+                title="Fund Your Wallet"
                 visible={isModalVisible}
                 onOk={handleOk}
                 okText="Proceed to Payment"
                 onCancel={handleCancel}
-                width={300}
+                width={400}
               >
-                <Title level={5}> Wallet Balance:</Title>
-                <Title level={3} style={{ color: "#0DC939" }}>
-                  {userCurrency.toUpperCase() === "NGN"
-                    ? formatToNaira(userBalance)
-                    : `${formatToDollar(userBalance)}`}
-                </Title>
+                {/* Current Balance Section */}
+                <div style={{ marginBottom: 20 }}>
+                  <Title level={5}>Wallet Balance:</Title>
+                  <Title level={3} style={{ color: "#0DC939" }}>
+                    {userCurrency.toUpperCase() === "NGN"
+                      ? formatToNaira(userBalance)
+                      : `${formatToDollar(userBalance)}`}
+                  </Title>
+                </div>
 
                 <Divider style={{ border: "1px solid #D9D9D9" }} />
-                <Title level={5}>Fund Wallet</Title>
-                <p>Enter Amount to Fund Wallet</p>
-                <Input
-                  type="text"
-                  placeholder="Enter amount"
-                  value={amount}
-                  onChange={handleChange}
-                />
+
+                {/* Amount Input Section */}
+                <div style={{ marginBottom: 20 }}>
+                  <Title level={5}>Enter Amount</Title>
+                  <Input
+                    type="text"
+                    placeholder="Enter amount"
+                    value={amount}
+                    onChange={handleChange}
+                    style={{ marginTop: 8 }}
+                  />
+                </div>
+
+                {/* Payment Method Selection */}
+                <div style={{ marginBottom: 20 }}>
+                  <Title level={5}>Select Payment Method</Title>
+
+                  <div style={{ display: "flex", gap: "12px", marginTop: 12 }}>
+                    {/* Flutterwave Option */}
+                    <div
+                      style={{
+                        flex: 1,
+                        border: `2px solid ${
+                          selectedPaymentMethod === "flutterwave"
+                            ? "#1890ff"
+                            : "#f0f0f0"
+                        }`,
+                        borderRadius: "8px",
+                        padding: "12px",
+                        cursor: "pointer",
+                        backgroundColor:
+                          selectedPaymentMethod === "flutterwave"
+                            ? "#f6ffed"
+                            : "white",
+                        textAlign: "center",
+                      }}
+                      onClick={() => setSelectedPaymentMethod("flutterwave")}
+                    >
+                      <div style={{ fontSize: "24px", marginBottom: "8px" }}>
+                        🇳🇬
+                      </div>
+                      <div style={{ fontWeight: "bold" }}>Flutterwave</div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: "#666",
+                          marginTop: "4px",
+                        }}
+                      >
+                        Best for NGN payments
+                      </div>
+                    </div>
+
+                    {/* Stripe Option */}
+                    <div
+                      style={{
+                        flex: 1,
+                        border: `2px solid ${
+                          selectedPaymentMethod === "stripe"
+                            ? "#1890ff"
+                            : "#f0f0f0"
+                        }`,
+                        borderRadius: "8px",
+                        padding: "12px",
+                        cursor: "pointer",
+                        backgroundColor:
+                          selectedPaymentMethod === "stripe"
+                            ? "#f6ffed"
+                            : "white",
+                        textAlign: "center",
+                      }}
+                      onClick={() => setSelectedPaymentMethod("stripe")}
+                    >
+                      <div style={{ fontSize: "24px", marginBottom: "8px" }}>
+                        💳
+                      </div>
+                      <div style={{ fontWeight: "bold" }}>Stripe</div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: "#666",
+                          marginTop: "4px",
+                        }}
+                      >
+                        Cards & International
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment Method Details */}
+                {selectedPaymentMethod && (
+                  <div
+                    style={{
+                      padding: "12px",
+                      backgroundColor: "#f9f9f9",
+                      borderRadius: "6px",
+                      fontSize: "12px",
+                      color: "#666",
+                    }}
+                  >
+                    {selectedPaymentMethod === "flutterwave"
+                      ? "You will be redirected to Flutterwave to complete your payment"
+                      : "You will be redirected to Stripe to complete your payment"}
+                  </div>
+                )}
               </Modal>
             </div>
-            {/* <div class="postman-run-button"
-            data-postman-action="collection/fork"
-            data-postman-visibility="public"
-            data-postman-var-1="40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96"
-            data-postman-collection-url="entityId=40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96&entityType=collection&workspaceId=7222a8fe-9b7b-4ba7-9aa1-46b4cd965d34">
-            </div> */}
           </InfoSec>
           <Tabs
             defaultActiveKey="1"
