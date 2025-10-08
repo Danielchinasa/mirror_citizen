@@ -872,6 +872,26 @@ const MainDashboard = () => {
     // setModal1Open(false);
   };
   const handleOk = async () => {
+    const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
+
+    // Validate minimum amount
+    if (!amount || parseFloat(amount) < minAmount) {
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: `Minimum top-up amount is ${
+          userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"
+        }`,
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+
+      return;
+    }
+
     ReactGA.event({
       category: "User",
       action: "Topped up wallet",
@@ -902,7 +922,6 @@ const MainDashboard = () => {
       // Check if the request was successful (status code 200-299)
       if (response.ok) {
         // Handle successful response here
-
         const responseData = await response.json();
         console.log(responseData.data.link);
         if (responseData.data && responseData.data.link) {
@@ -1119,13 +1138,33 @@ const MainDashboard = () => {
 
                 <Divider style={{ border: "1px solid #D9D9D9" }} />
                 <Title level={5}>Fund Wallet</Title>
-                <p>Enter Amount to Fund Wallet</p>
+                <p>
+                  Enter Amount to Fund Wallet (Minimum:{" "}
+                  {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
+                </p>
                 <Input
-                  type="text"
-                  placeholder="Enter amount"
+                  type="number"
+                  placeholder={`Enter amount (min: ${
+                    userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
+                  })`}
                   value={amount}
                   onChange={handleChange}
+                  min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
                 />
+                {amount &&
+                  parseFloat(amount) <
+                    (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "12px",
+                        marginTop: "5px",
+                      }}
+                    >
+                      Minimum top-up amount is{" "}
+                      {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"}
+                    </p>
+                  )}
               </Modal>
             </div>
             {/* <div class="postman-run-button"
