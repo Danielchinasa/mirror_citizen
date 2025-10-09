@@ -12,6 +12,18 @@ const FaqPage = () => {
   const generalItems = [
     {
       key: "1",
+      title: "Does e-Citizen comply with privacy standards?",
+      content: (
+        <p>
+          Yes, the platform is consent‑driven and adheres to Nigeria’s Nigeria
+          Data Protection Act (NDPA), General Data Protection Regulation (GDPR),
+          and specific agency regulations. Identity verification requests
+          require user consent.
+        </p>
+      ),
+    },
+    {
+      key: "2",
       title: "What data requires consent?",
       content: (
         <p>
@@ -26,7 +38,7 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "2",
+      key: "3",
       title: "What data is accessible without consent?",
       content: (
         <p>
@@ -40,7 +52,7 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "3",
+      key: "4",
       title: "How does consent work? ",
       content: (
         <>
@@ -61,7 +73,7 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "4",
+      key: "5",
       title: "What is a NIN?",
       content: (
         <p>
@@ -73,7 +85,7 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "5",
+      key: "6",
       title: "Why do I need to pay before verifying a NIN?",
       content: (
         <p>
@@ -84,17 +96,17 @@ const FaqPage = () => {
       ),
     },
     {
-      key: "6",
+      key: "7",
       title: "Why do I need to register before verifying a NIN?",
       content: (
         <p>
-          Users are required to register to enjoy the verification experience
-          e-Citizen™.ng provides.
+          Registration ensures you can enjoy the full verification experience
+          and track your history on e-Citizen™.
         </p>
       ),
     },
     {
-      key: "7",
+      key: "8",
       title: "Is my verification result saved on e-Citizen™.ng website?",
       content: (
         <>
@@ -106,18 +118,55 @@ const FaqPage = () => {
           </p>
           <p>
             If your question is not answered above, please feel free to write us
-            from our contact page or send an email to info@e-citizen.ng{" "}
+            from our contact page or send an email to info@e‑citizen.ng
           </p>
         </>
       ),
     },
     {
-      key: "8",
+      key: "9",
       title: "What do I do if my information is not correct?",
       content: (
         <p>
-          Please visit the NIMC website for steps on how to modify your
-          information.
+          e‑citizen is an aggregator of data and only displays results from
+          databases it connects to. If your information is incorrect, please
+          visit the custodian agency.
+        </p>
+      ),
+    },
+    {
+      key: "10",
+      title: "I didn't receive a verification email; what should I do?",
+      content: (
+        <p>
+          Please check your spam/junk folder. If still not received, email
+          info@e-citizen.ng or WhatsApp +234 (0) 704 008 2933.
+          <p>
+            Note: Verification emails are only sent to users who provided an
+            email address during registration. If you did not input an email,
+            you will only receive verification via WhatsApp and SMS.
+          </p>
+        </p>
+      ),
+    },
+    {
+      key: "11",
+      title: "Is my personal information secure?",
+      content: (
+        <p>
+          Yes. Your data is protected by the NDPA and GDPR and accessed only
+          with your consent. You can review our full privacy policy on our
+          website.
+        </p>
+      ),
+    },
+    {
+      key: "12",
+      title: "I paid but got nothing",
+      content: (
+        <p>
+          Send an email to info@e‑citizen.ng with the payment reference, amount,
+          and the service paid for.
         </p>
       ),
     },
@@ -265,7 +314,35 @@ const FaqPage = () => {
     {
       key: "11",
       title: "Is consent required to view my credit profile? ",
-      content: <p>Yes</p>,
+      content: (
+        <p>
+          Yes. Your consent is always required before your credit profile can be
+          accessed.
+        </p>
+      ),
+    },
+    {
+      key: "12",
+      title: "You said I don’t have a credit record, why?",
+      content: (
+        <p>
+          Credit profiles are from licensed bureaus. If you’ve never taken a
+          loan or banks haven’t reported your data, it may be blank. Using
+          credit updates it over time.
+        </p>
+      ),
+    },
+    {
+      key: "13",
+      title: "I have loans, why is my result blank?",
+      content: (
+        <p>
+          Not all lenders update the credit bureaus right away. If your bank or
+          lender hasn’t shared your loan details with First Central, CRC, or
+          Credit Registry yet, your record may appear blank. Please check with
+          your lender to be sure they’ve reported your information.
+        </p>
+      ),
     },
   ];
 
@@ -275,11 +352,9 @@ const FaqPage = () => {
       title: "What is a Business Profile?",
       content: (
         <p>
-          A business profile is a set of data points and information that can be
-          used to confirm and validate the identity of a business or
-          organization. This enables users to confirm the authenticity of
-          information supplied by businesses they are considering for
-          engagement.
+          A Business Profile is data that validates a company’s identity,
+          helping confirm the authenticity of businesses you want to engage
+          with.
         </p>
       ),
     },
@@ -395,6 +470,16 @@ const FaqPage = () => {
       ),
     },
     {
+      key: "6",
+      title: "How long does it take to get a vehicle history report?",
+      content: (
+        <p>
+          Our vehicle history reports are instant. This implies that you get
+          your report as soon as you make payment.
+        </p>
+      ),
+    },
+    {
       key: "7",
       title: "How often should I check a VIN?",
       content: (
@@ -403,17 +488,6 @@ const FaqPage = () => {
           or every time you are considering buying a used vehicle. This helps to
           ensure that you have the most up-to-date information about the
           vehicle's history.
-        </p>
-      ),
-    },
-
-    {
-      key: "6",
-      title: "How long does it take to get a vehicle history report? ",
-      content: (
-        <p>
-          Our vehicle history reports are instant. This implies that you get
-          your report as soon as you make payment.
         </p>
       ),
     },
