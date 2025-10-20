@@ -233,6 +233,30 @@ function Navbar() {
     // setModal1Open(false);
   };
   const handleOk = async () => {
+    const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
+
+    // Validate minimum amount
+    if (!amount || parseFloat(amount) < minAmount) {
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: `Minimum top-up amount is ${
+          userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"
+        }`,
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      });
+      return;
+    }
+
     ReactGA.event({
       category: "User",
       action: "Topped up wallet",
@@ -240,26 +264,6 @@ function Navbar() {
 
     setIsModalVisible(false);
     try {
-      // Changed from fetch to axios
-      // const initResponse = await axios.post(
-      //   `${baseUrl}/verification/initiate`,
-      //   {
-      //     amount: amount,
-      //     currency: userCurrency,
-      //     country: "NG",
-      //     description: "Wallet top up",
-      //     payment_method: "card,mobilemoney,ussd",
-      //     type: "TOPUP",
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${userToken2}`,
-      //     },
-      //   }
-      // );
-
-      // const initData = initResponse.data;
-
       const postData = {
         amount: amount,
         currency: userCurrency,
@@ -551,13 +555,44 @@ function Navbar() {
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
                           <Title level={5}>Fund Wallet</Title>
-                          <p>Enter Amount to Fund Wallet</p>
+                          <p>
+                            Enter Amount to Fund Wallet (Minimum:{" "}
+                            {userCurrency.toUpperCase() === "NGN"
+                              ? "₦1,000"
+                              : "$10"}
+                            )
+                          </p>
                           <Input
-                            type="text"
-                            placeholder="Enter amount"
+                            type="number"
+                            placeholder={`Enter amount (min: ${
+                              userCurrency.toUpperCase() === "NGN"
+                                ? "1000"
+                                : "10"
+                            })`}
                             value={amount}
                             onChange={handleChange}
+                            min={
+                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
+                            }
                           />
+                          {amount &&
+                            parseFloat(amount) <
+                              (userCurrency.toUpperCase() === "NGN"
+                                ? 1000
+                                : 10) && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  fontSize: "12px",
+                                  marginTop: "5px",
+                                }}
+                              >
+                                Minimum top-up amount is{" "}
+                                {userCurrency.toUpperCase() === "NGN"
+                                  ? "₦1,000"
+                                  : "$10"}
+                              </p>
+                            )}
                         </Modal>
                         <Modal
                           // title="Complete Wallet TopUp"
@@ -631,7 +666,7 @@ function Navbar() {
                         </p>
                         <Modal
                           title="User Wallet"
-                          open={isModalVisible} // Use 'open' instead of 'visible' for Ant Design v5+ Modal
+                          open={isModalVisible}
                           onOk={handleOk}
                           okText="Proceed to Payment"
                           onCancel={handleCancel}
@@ -646,13 +681,44 @@ function Navbar() {
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
                           <Title level={5}>Fund Wallet</Title>
-                          <p>Enter Amount to Fund Wallet</p>
+                          <p>
+                            Enter Amount to Fund Wallet (Minimum:{" "}
+                            {userCurrency.toUpperCase() === "NGN"
+                              ? "₦1,000"
+                              : "$10"}
+                            )
+                          </p>
                           <Input
-                            type="text"
-                            placeholder="Enter amount"
+                            type="number"
+                            placeholder={`Enter amount (min: ${
+                              userCurrency.toUpperCase() === "NGN"
+                                ? "1000"
+                                : "10"
+                            })`}
                             value={amount}
                             onChange={handleChange}
+                            min={
+                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
+                            }
                           />
+                          {amount &&
+                            parseFloat(amount) <
+                              (userCurrency.toUpperCase() === "NGN"
+                                ? 1000
+                                : 10) && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  fontSize: "12px",
+                                  marginTop: "5px",
+                                }}
+                              >
+                                Minimum top-up amount is{" "}
+                                {userCurrency.toUpperCase() === "NGN"
+                                  ? "₦1,000"
+                                  : "$10"}
+                              </p>
+                            )}
                         </Modal>
                         <Modal
                           // title="Complete Wallet TopUp"
