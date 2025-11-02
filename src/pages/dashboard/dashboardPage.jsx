@@ -2927,32 +2927,32 @@ const DashboardPage = () => {
     // Update state based on checkbox status
     if (numberOfCheckedCheckboxes >= 2 && !allThreeChecked) {
       if (prevNumberOfCheckedCheckboxes === 1) {
-        // When moving from 1 to 2 or more, double the state values
+        // When moving from 1 to 2 bureaus, add one more bureau cost
         setTotalVAT(
           currencyCheck.toUpperCase() === "USD"
             ? (prevTotalVAT) => prevTotalVAT + 0.15
-            : (prevTotalVAT) => prevTotalVAT + 113
+            : (prevTotalVAT) => prevTotalVAT + financialVatFee // Use same VAT as base financial fee
         );
         setTotalServiceCost(
           currencyCheck.toUpperCase() === "USD"
             ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
-            : (prevTotalServiceCost) => prevTotalServiceCost + 1500
+            : (prevTotalServiceCost) => prevTotalServiceCost + financialFee // Use same service fee as base financial fee
         );
       }
     } else if (
       prevNumberOfCheckedCheckboxes >= 2 &&
       numberOfCheckedCheckboxes < 2
     ) {
-      // When moving from 2 or more to less than 2, divide by 2 to restore previous values
+      // When moving from 2 or more to less than 2, remove one bureau cost
       setTotalVAT(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
-          : (prevTotalVAT) => prevTotalVAT - 113
+          : (prevTotalVAT) => prevTotalVAT - financialVatFee // Remove same VAT as base financial fee
       );
       setTotalServiceCost(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
-          : (prevTotalServiceCost) => prevTotalServiceCost - 1500
+          : (prevTotalServiceCost) => prevTotalServiceCost - financialFee // Remove same service fee as base financial fee
       );
     }
 
@@ -2960,31 +2960,31 @@ const DashboardPage = () => {
       numberOfCheckedCheckboxes === 3 &&
       prevNumberOfCheckedCheckboxes !== 3
     ) {
-      // Multiply the state values by 3
+      // When moving to 3 bureaus, add third bureau cost then apply discount
       setTotalVAT(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT + 0.15
-          : (prevTotalVAT) => prevTotalVAT + 113
+          : (prevTotalVAT) => prevTotalVAT + financialVatFee // Add same VAT as base financial fee
       );
       setTotalServiceCost(
         currencyCheck.toUpperCase() === "USD"
-          ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
-          : (prevTotalServiceCost) => prevTotalServiceCost + 1500
+          ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99 - 0.97 // Add third bureau then apply discount
+          : (prevTotalServiceCost) => prevTotalServiceCost + financialFee - 800 // Add third bureau then apply discount
       );
     } else if (
       prevNumberOfCheckedCheckboxes === 3 &&
       numberOfCheckedCheckboxes !== 3
     ) {
-      // When moving from 3 to less than 3, divide by 3 to restore previous values
+      // When moving from 3 to less than 3, remove third bureau cost and discount
       setTotalVAT(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
-          : (prevTotalVAT) => prevTotalVAT - 113
+          : (prevTotalVAT) => prevTotalVAT - financialVatFee // Remove same VAT as base financial fee
       );
       setTotalServiceCost(
         currencyCheck.toUpperCase() === "USD"
-          ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
-          : (prevTotalServiceCost) => prevTotalServiceCost - 1500
+          ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99 + 0.97 // Remove third bureau and remove discount
+          : (prevTotalServiceCost) => prevTotalServiceCost - financialFee + 800 // Remove third bureau and remove discount
       );
     }
 
@@ -4759,6 +4759,34 @@ const DashboardPage = () => {
                         </Col>
                       </Row>
                       <Divider />
+                      {/* Display discount when all three bureaus are selected */}
+                      {isCheckedCrc &&
+                        isCheckedFirstCentral &&
+                        isCheckedCreditRegistry && (
+                          <>
+                            <Row>
+                              <Col
+                                xs={{ span: 12 }}
+                                sm={{ span: 12 }}
+                                md={{ span: 15 }}
+                                lg={{ span: 15 }}
+                                style={{ textAlign: "left" }}
+                              >
+                                <p style={{ color: "green" }}>
+                                  🎉 All 3 Bureaus Discount Applied:
+                                </p>
+                              </Col>
+                              <Col>
+                                {currencyCheck.toUpperCase() === "USD" ? (
+                                  <p style={{ color: "green" }}>-$0.97</p>
+                                ) : (
+                                  <p style={{ color: "green" }}>-₦800.00</p>
+                                )}
+                              </Col>
+                            </Row>
+                            <Divider />
+                          </>
+                        )}
                       <Row>
                         <Col
                           xs={{ span: 12 }}
