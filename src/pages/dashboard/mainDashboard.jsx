@@ -184,6 +184,21 @@ const MainDashboard = () => {
       currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
     );
 
+    if (consent === "initiate") {
+      setLoadingSmall(false);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Failed to load result.",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
+    }
+
     // Your existing logic for handling different scenarios
     if (
       ((record.type === "Basic Profile" ||
@@ -416,7 +431,7 @@ const MainDashboard = () => {
   const filteredData =
     verificationData && verificationData.requests
       ? verificationData.requests
-          .filter((record) => record.status?.toLowerCase() !== "initiate")
+          // .filter((record) => record.status?.toLowerCase() !== "initiate")
           .filter((record) => {
             return Object.keys(record).some(
               (key) =>
