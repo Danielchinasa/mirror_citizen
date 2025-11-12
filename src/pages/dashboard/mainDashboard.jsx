@@ -269,6 +269,21 @@ const MainDashboard = () => {
       return;
     }
 
+    if (consent === "failed") {
+      setLoadingSmall(false);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Oops!",
+        text: "Sorry, verification failed",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
+    }
+
     try {
       const response = await fetch(
         `${baseUrl}/verification/check-consent/${id}`,
@@ -626,6 +641,12 @@ const MainDashboard = () => {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
               No Data Found
+            </span>
+          );
+        } else if (status.toLowerCase() === "failed") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              Failed verification
             </span>
           );
         } else if (status.toLowerCase() === "initiate") {
