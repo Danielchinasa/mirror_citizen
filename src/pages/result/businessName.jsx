@@ -287,6 +287,8 @@ const BusinessName = () => {
           type: "STAKEHOLDERS",
           stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
+          currency: localStorage.getItem("currency") || "NGN",
+          paymentType: localStorage.getItem("paymentType") || "WALLET",
         };
 
         const requestBodyWithAmountEquivalent = {

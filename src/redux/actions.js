@@ -527,13 +527,10 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
 
       const restructuredData = {
-        currency: currencyCheck || "NGN",
-        paymentType: paymentType || "INSTANT",
-        // payment: {
-        //   currency: currencyCheck || "NGN",
-        //   transactionID: transactionID || randomTransactionId,
-        //   paymentType: paymentType || "INSTANT",
-        // },
+        payment: {
+          currency: currencyCheck || "NGN",
+          paymentType: paymentType || "INSTANT",
+        },
         "search-extension": {
           "phone-number": formData.phone || "",
         },
