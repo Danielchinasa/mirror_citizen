@@ -527,6 +527,8 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
 
       const restructuredData = {
+        currency: currencyCheck || "NGN",
+        paymentType: paymentType || "INSTANT",
         // payment: {
         //   currency: currencyCheck || "NGN",
         //   transactionID: transactionID || randomTransactionId,

@@ -262,6 +262,8 @@ const DashboardPage = () => {
     crc: "",
     firstCentral: "",
     creditRegistry: "",
+    paymentType: "",
+    currency: "",
   });
 
   const [ninFilled, setNinFilled] = useState(false);
@@ -1436,6 +1438,7 @@ const DashboardPage = () => {
       } //!!WALLET PAYMENT ENDS
       else if (paymentMethod === 2) {
         //!!LIVE PAYMENT START
+        localStorage.setItem("paymentType", "INSTANT");
 
         if (bvnFilled) {
           if (areNoneChecked()) {

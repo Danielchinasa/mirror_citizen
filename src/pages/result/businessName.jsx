@@ -799,6 +799,8 @@ const BusinessName = () => {
           }
         } else if (result.value === "Instant Payment") {
           //!!LIVE PAYMENT START
+          localStorage.setItem("paymentType", "INSTANT");
+          localStorage.setItem("currency", currencyCheck);
 
           handleCancel();
           try {
