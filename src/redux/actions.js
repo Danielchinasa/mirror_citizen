@@ -529,7 +529,6 @@ export const initiateVerificationRequest =
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
-          // transactionID: transactionID || randomTransactionId,
           paymentType: paymentType || "INSTANT",
         },
         "search-extension": {

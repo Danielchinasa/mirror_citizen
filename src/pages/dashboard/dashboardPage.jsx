@@ -262,6 +262,8 @@ const DashboardPage = () => {
     crc: "",
     firstCentral: "",
     creditRegistry: "",
+    paymentType: "",
+    currency: "",
   });
 
   const [ninFilled, setNinFilled] = useState(false);
@@ -1350,6 +1352,8 @@ const DashboardPage = () => {
             sessionCode: localStorage.getItem("sessionCode"),
             userNIN: userNin,
             transactionID: randomTransactionId,
+            currency: localStorage.getItem("currency") || "NGN",
+            paymentType: localStorage.getItem("paymentType") || "WALLET",
             amount:
               userCurrency.toUpperCase() === "NGN" &&
               currencyCheck.toUpperCase() === "NGN"
@@ -1436,6 +1440,7 @@ const DashboardPage = () => {
       } //!!WALLET PAYMENT ENDS
       else if (paymentMethod === 2) {
         //!!LIVE PAYMENT START
+        localStorage.setItem("paymentType", "INSTANT");
 
         if (bvnFilled) {
           if (areNoneChecked()) {

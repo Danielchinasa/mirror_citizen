@@ -287,6 +287,8 @@ const BusinessName = () => {
           type: "STAKEHOLDERS",
           stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
+          currency: localStorage.getItem("currency") || "NGN",
+          paymentType: localStorage.getItem("paymentType") || "WALLET",
         };
 
         const requestBodyWithAmountEquivalent = {
@@ -799,6 +801,8 @@ const BusinessName = () => {
           }
         } else if (result.value === "Instant Payment") {
           //!!LIVE PAYMENT START
+          localStorage.setItem("paymentType", "INSTANT");
+          localStorage.setItem("currency", currencyCheck);
 
           handleCancel();
           try {
