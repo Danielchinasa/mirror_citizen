@@ -807,7 +807,7 @@ const DashboardPage = () => {
           background: bgContainer,
           color: text,
           title: "Error",
-          text: "An unexpected server error occurred.",
+          text: "Service unavailable at the moment. Please try again later.",
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -833,7 +833,7 @@ const DashboardPage = () => {
         background: bgContainer,
         color: text,
         title: "Error",
-        text: "An unexpected server error occurred. A refund has been initiated",
+        text: "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
