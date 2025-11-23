@@ -687,9 +687,9 @@ const MainDashboard = () => {
   ];
   const columns2 = [
     {
-      title: "Transaction ID",
-      dataIndex: "transactionID",
-      key: "transactionID",
+      title: "Transaction Ref",
+      dataIndex: "transactionRef",
+      key: "transactionRef",
     },
     {
       title: "Date and Time",
