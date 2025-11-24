@@ -9,7 +9,9 @@ import {
   Button,
   Divider,
   Spin,
+  Radio,
 } from "antd";
+import paypal from "../../images/paypal.png";
 import {
   Container,
   InfoSec,
@@ -870,6 +872,7 @@ const MainDashboard = () => {
   const [modal1Open, setModal1Open] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
+  const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -935,42 +938,102 @@ const MainDashboard = () => {
 
     setIsModalVisible(false);
     try {
-      // Assuming postData is the data you want to send to the endpoint
-      const postData = {
-        amount: amount,
-        currency: userCurrency,
-        country: "NG",
-        description: "Wallet top up",
-        payment_method: "card,mobilemoney,ussd",
-        type: "TOPUP",
-      };
-      setAmount("");
+      if (walletPaymentMethod === 1) {
+        // FlutterWave payment
+        const postData = {
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        };
+        setAmount("");
 
-      const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-        body: JSON.stringify(postData),
-      });
+        const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify(postData),
+        });
 
-      // Check if the request was successful (status code 200-299)
-      if (response.ok) {
-        // Handle successful response here
-        const responseData = await response.json();
-        console.log(responseData.data.link);
-        if (responseData.data && responseData.data.link) {
-          console.log("Embedding URL:", responseData.data.link);
-          setPaymentUrl(responseData.data.link);
-          setTransactionRef(responseData.data.txRef);
-          setModal1Open(true);
+        // Check if the request was successful (status code 200-299)
+        if (response.ok) {
+          // Handle successful response here
+          const responseData = await response.json();
+          console.log(responseData.data.link);
+          if (responseData.data && responseData.data.link) {
+            console.log("Embedding URL:", responseData.data.link);
+            setPaymentUrl(responseData.data.link);
+            setTransactionRef(responseData.data.txRef);
+            setModal1Open(true);
+          } else {
+            console.error("Response data does not contain a link");
+          }
         } else {
-          console.error("Response data does not contain a link");
+          // Handle errors here
+          console.error("Failed to post data:", response.statusText);
         }
-      } else {
-        // Handle errors here
-        console.error("Failed to post data:", response.statusText);
+      } else if (walletPaymentMethod === 2) {
+        // PayPal payment
+        const postData = {
+          tx_ref: `WALLET_${Date.now()}`,
+          amount: amount,
+          currency: "USD",
+          email: userEmail,
+          type: "TOPUP",
+          stakeHolders: "NON-STAKEHOLDER",
+          return_url: window.location.origin + "/main-dashboard",
+          cancel_url: window.location.origin + "/main-dashboard",
+        };
+        setAmount("");
+
+        const response = await fetch(`${baseUrl}/payment/paypal/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify(postData),
+        });
+
+        // Check if the request was successful (status code 200-299)
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log("PayPal Response Data:", responseData);
+
+          if (responseData.status === "success" && responseData.approval_url) {
+            // Redirect to PayPal approval URL
+            window.location.href = responseData.approval_url;
+          } else {
+            console.error("PayPal response does not contain approval URL");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize PayPal payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+            });
+          }
+        } else {
+          // Handle errors here
+          console.error("Failed to post data:", response.statusText);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Failed to initialize PayPal payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+          });
+        }
       }
     } catch (error) {
       // Handle any unexpected errors
@@ -1174,6 +1237,44 @@ const MainDashboard = () => {
 
                 <Divider style={{ border: "1px solid #D9D9D9" }} />
                 <Title level={5}>Fund Wallet</Title>
+                <Title level={5}>Select Payment Method</Title>
+                <Radio.Group
+                  value={walletPaymentMethod}
+                  onChange={(e) => setWalletPaymentMethod(e.target.value)}
+                  style={{ width: "100%", marginBottom: "15px" }}
+                >
+                  <Radio
+                    value={1}
+                    style={{
+                      display: "block",
+                      border: "1px solid #e8e8e8",
+                      borderRadius: "5px",
+                      padding: "10px",
+                      marginBottom: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    FlutterWave
+                  </Radio>
+                  <Radio
+                    value={2}
+                    style={{
+                      display: "block",
+                      border: "1px solid #e8e8e8",
+                      borderRadius: "5px",
+                      padding: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    PayPal
+                    <img
+                      src={paypal}
+                      alt="paypal"
+                      width={60}
+                      style={{ float: "right", marginTop: "5px" }}
+                    />
+                  </Radio>
+                </Radio.Group>
                 <p>
                   Enter Amount to Fund Wallet (Minimum:{" "}
                   {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
