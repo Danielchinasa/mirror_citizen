@@ -1417,7 +1417,7 @@ const DashboardPage = () => {
             background: bgContainer,
             color: text,
             title: "Error",
-            text: error,
+            text: "We encountered an issue while trying to process your payment. Please try again shortly.",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",

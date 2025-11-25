@@ -541,7 +541,8 @@ const SearchExtensionResult = () => {
               $token={token}
             >
               {renderPhoneVerificationSection()}
-              {renderBvnVerificationSection()}
+              {/* Commented out BVN section temporarily */}
+              {/* {renderBvnVerificationSection()} */}
 
               <Divider />
 
