@@ -1663,8 +1663,8 @@ const DashboardPage = () => {
             type: "VERIFICATION",
             stakeHolders: "NON-STAKEHOLDER",
             sessionCode: localStorage.getItem("sessionCode"),
-            return_url: window.location.origin + "/main-dashboard",
-            cancel_url: window.location.origin + "/main-dashboard",
+            return_url: window.location.origin + "/payment/success",
+            cancel_url: window.location.origin + "/payment/failure",
           };
           const response = await fetch(`${baseUrl}/payment/paypal/create`, {
             method: "POST",
@@ -2297,24 +2297,26 @@ const DashboardPage = () => {
           >
             Instant Payment
           </Radio>
-          <Radio
-            style={{
-              display: "block",
-              border: "1px solid #e8e8e8",
-              borderRadius: "5px",
-              padding: "10px",
-              fontWeight: "bold",
-            }}
-            value={3}
-          >
-            Pay with PayPal
-            <Img
-              src={paypal}
-              alt={"paypal"}
-              width={100}
-              style={{ float: "right" }}
-            />
-          </Radio>
+          {currencyCheck.toUpperCase() !== "NGN" && (
+            <Radio
+              style={{
+                display: "block",
+                border: "1px solid #e8e8e8",
+                borderRadius: "5px",
+                padding: "10px",
+                fontWeight: "bold",
+              }}
+              value={3}
+            >
+              Pay with PayPal
+              <Img
+                src={paypal}
+                alt={"paypal"}
+                width={100}
+                style={{ float: "right" }}
+              />
+            </Radio>
+          )}
         </Radio.Group>
       </div>
 
@@ -5137,6 +5139,7 @@ const DashboardPage = () => {
                           border: "1px solid #e8e8e8",
                           borderRadius: "5px",
                           padding: "10px",
+                          marginBottom: "10px",
                           fontWeight: "bold", // Make the text bold
                         }}
                         value={2}
@@ -5149,24 +5152,26 @@ const DashboardPage = () => {
                           style={{ float: "right", paddingTop: "10px" }}
                         />
                       </Radio>
-                      <Radio
-                        style={{
-                          display: "block",
-                          border: "1px solid #e8e8e8",
-                          borderRadius: "5px",
-                          padding: "10px",
-                          fontWeight: "bold",
-                        }}
-                        value={3}
-                      >
-                        Pay with PayPal
-                        <Img
-                          src={paypal}
-                          alt={"paypal"}
-                          width={100}
-                          style={{ float: "right" }}
-                        />
-                      </Radio>
+                      {currencyCheck.toUpperCase() !== "NGN" && (
+                        <Radio
+                          style={{
+                            display: "block",
+                            border: "1px solid #e8e8e8",
+                            borderRadius: "5px",
+                            padding: "10px",
+                            fontWeight: "bold",
+                          }}
+                          value={3}
+                        >
+                          Pay with PayPal
+                          <Img
+                            src={paypal}
+                            alt={"paypal"}
+                            width={100}
+                            style={{ float: "right" }}
+                          />
+                        </Radio>
+                      )}
                     </Radio.Group>
                   </div>
                 </Col>

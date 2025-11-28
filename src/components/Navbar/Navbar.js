@@ -350,8 +350,8 @@ function Navbar() {
           email: userDetails?.email || "",
           type: "TOPUP",
           stakeHolders: "NON-STAKEHOLDER",
-          return_url: window.location.origin + "/main-dashboard",
-          cancel_url: window.location.origin + "/main-dashboard",
+          return_url: window.location.origin + "/payment/success",
+          cancel_url: window.location.origin + "/payment/failure",
         };
         setAmount("");
 
@@ -630,24 +630,26 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            <Radio
-                              value={2}
-                              style={{
-                                display: "block",
-                                border: "1px solid #e8e8e8",
-                                borderRadius: "5px",
-                                padding: "10px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              PayPal
-                              <img
-                                src={paypal}
-                                alt="paypal"
-                                width={60}
-                                style={{ float: "right", marginTop: "5px" }}
-                              />
-                            </Radio>
+                            {userCurrency.toUpperCase() !== "NGN" && (
+                              <Radio
+                                value={2}
+                                style={{
+                                  display: "block",
+                                  border: "1px solid #e8e8e8",
+                                  borderRadius: "5px",
+                                  padding: "10px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                PayPal
+                                <img
+                                  src={paypal}
+                                  alt="paypal"
+                                  width={60}
+                                  style={{ float: "right", marginTop: "5px" }}
+                                />
+                              </Radio>
+                            )}
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
@@ -796,24 +798,26 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            <Radio
-                              value={2}
-                              style={{
-                                display: "block",
-                                border: "1px solid #e8e8e8",
-                                borderRadius: "5px",
-                                padding: "10px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              PayPal
-                              <img
-                                src={paypal}
-                                alt="paypal"
-                                width={60}
-                                style={{ float: "right", marginTop: "5px" }}
-                              />
-                            </Radio>
+                            {userCurrency.toUpperCase() !== "NGN" && (
+                              <Radio
+                                value={2}
+                                style={{
+                                  display: "block",
+                                  border: "1px solid #e8e8e8",
+                                  borderRadius: "5px",
+                                  padding: "10px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                PayPal
+                                <img
+                                  src={paypal}
+                                  alt="paypal"
+                                  width={60}
+                                  style={{ float: "right", marginTop: "5px" }}
+                                />
+                              </Radio>
+                            )}
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
