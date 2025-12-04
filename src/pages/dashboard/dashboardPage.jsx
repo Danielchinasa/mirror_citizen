@@ -5144,11 +5144,11 @@ const DashboardPage = () => {
                         }}
                         value={2}
                       >
-                        Instant Payment
+                        Instant Payment (NAIRA)
                         <Img
                           src={isDark ? flutterwaveWhite : flutterwave}
                           alt={"flutter wave"}
-                          width={100}
+                          width={80}
                           style={{ float: "right", paddingTop: "10px" }}
                         />
                       </Radio>
@@ -5163,11 +5163,11 @@ const DashboardPage = () => {
                           }}
                           value={3}
                         >
-                          Pay with PayPal
+                          Pay with PayPal (USD)
                           <Img
                             src={paypal}
                             alt={"paypal"}
-                            width={100}
+                            width={80}
                             style={{ float: "right" }}
                           />
                         </Radio>
