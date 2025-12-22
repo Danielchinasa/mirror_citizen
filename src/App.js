@@ -51,6 +51,7 @@ import usePageTracking from "./hooks/usePageTracking";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
+import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -208,6 +209,11 @@ function App() {
             <Route path="/payment/success" exact component={PaymentSuccess} />
             <Route path="/payment/failure" exact component={PaymentFailure} />
             <Route path="/payment/cancel" exact component={PaymentCancel} />
+            <Route
+              path="/payment/paystack-redirect"
+              exact
+              component={PaystackRedirect}
+            />
             <Route path="/reach/:CLICK_ID" exact component={Home} />
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPassword} />

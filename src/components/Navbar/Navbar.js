@@ -32,6 +32,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
+import { initiatePaystackPayment } from "../../services/paystackService";
 
 const { useToken } = theme;
 
@@ -390,6 +391,62 @@ function Navbar() {
             confirmButtonColor: "#0DC939",
           });
         }
+      } else if (walletPaymentMethod === 3) {
+        // Paystack payment
+        const postData = {
+          amount: amount,
+          currency: "NGN",
+          type: "TOPUP",
+          sessionCode: null,
+          stakeHolders: null,
+        };
+        setAmount("");
+
+        try {
+          const responseData = await initiatePaystackPayment(
+            postData,
+            userToken2
+          );
+
+          if (responseData.status === "success" && responseData.data) {
+            // Redirect to Paystack payment page
+            window.location.href = responseData.data.authorization_url;
+          } else {
+            console.error("Paystack response invalid");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize Paystack payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            });
+          }
+        } catch (error) {
+          console.error("Paystack error:", error);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: error.message || "Failed to initialize Paystack payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          });
+        }
       }
     } catch (error) {
       // Axios errors are typically in error.response or error.message
@@ -638,6 +695,7 @@ function Navbar() {
                                   border: "1px solid #e8e8e8",
                                   borderRadius: "5px",
                                   padding: "10px",
+                                  marginBottom: "10px",
                                   fontWeight: "bold",
                                 }}
                               >
@@ -648,6 +706,20 @@ function Navbar() {
                                   width={60}
                                   style={{ float: "right", marginTop: "5px" }}
                                 />
+                              </Radio>
+                            )}
+                            {userCurrency.toUpperCase() === "NGN" && (
+                              <Radio
+                                value={3}
+                                style={{
+                                  display: "block",
+                                  border: "1px solid #e8e8e8",
+                                  borderRadius: "5px",
+                                  padding: "10px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Paystack
                               </Radio>
                             )}
                           </Radio.Group>
@@ -806,6 +878,7 @@ function Navbar() {
                                   border: "1px solid #e8e8e8",
                                   borderRadius: "5px",
                                   padding: "10px",
+                                  marginBottom: "10px",
                                   fontWeight: "bold",
                                 }}
                               >
@@ -816,6 +889,20 @@ function Navbar() {
                                   width={60}
                                   style={{ float: "right", marginTop: "5px" }}
                                 />
+                              </Radio>
+                            )}
+                            {userCurrency.toUpperCase() === "NGN" && (
+                              <Radio
+                                value={3}
+                                style={{
+                                  display: "block",
+                                  border: "1px solid #e8e8e8",
+                                  borderRadius: "5px",
+                                  padding: "10px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Paystack
                               </Radio>
                             )}
                           </Radio.Group>
