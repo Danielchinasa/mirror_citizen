@@ -40,6 +40,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import { initiatePaystackPayment } from "../../services/paystackService";
 const { Title } = Typography;
 
 const data = [
@@ -1034,6 +1035,52 @@ const MainDashboard = () => {
             },
           });
         }
+      } else if (walletPaymentMethod === 3) {
+        // Paystack payment
+        const postData = {
+          amount: amount,
+          currency: "NGN",
+          type: "TOPUP",
+          sessionCode: null,
+          stakeHolders: null,
+        };
+        setAmount("");
+
+        try {
+          const responseData = await initiatePaystackPayment(
+            postData,
+            userToken
+          );
+
+          if (responseData.status === "success" && responseData.data) {
+            // Redirect to Paystack payment page
+            window.location.href = responseData.data.authorization_url;
+          } else {
+            console.error("Paystack response invalid");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize Paystack payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Paystack error:", error);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: error.message || "Failed to initialize Paystack payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+          });
+        }
       }
     } catch (error) {
       // Handle any unexpected errors
@@ -1264,6 +1311,7 @@ const MainDashboard = () => {
                         border: "1px solid #e8e8e8",
                         borderRadius: "5px",
                         padding: "10px",
+                        marginBottom: "10px",
                         fontWeight: "bold",
                       }}
                     >
@@ -1274,6 +1322,20 @@ const MainDashboard = () => {
                         width={60}
                         style={{ float: "right", marginTop: "5px" }}
                       />
+                    </Radio>
+                  )}
+                  {userCurrency.toUpperCase() === "NGN" && (
+                    <Radio
+                      value={3}
+                      style={{
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Paystack
                     </Radio>
                   )}
                 </Radio.Group>

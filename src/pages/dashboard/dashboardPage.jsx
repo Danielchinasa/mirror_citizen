@@ -66,6 +66,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
+import { initiatePaystackPayment } from "../../services/paystackService";
 
 /* global Reach */
 
@@ -1785,6 +1786,121 @@ const DashboardPage = () => {
         handleCancel();
       }
       //!!PAYPAL PAYMENT ENDS
+      else if (paymentMethod === 4) {
+        //!!PAYSTACK PAYMENT START
+        localStorage.setItem("paymentType", "CARD");
+
+        if (bvnFilled) {
+          if (areNoneChecked()) {
+            setLoading(false);
+            setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
+            setMakingPayment(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "At least one Credit Bereau must be selected",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
+        }
+        handleCancel();
+        //!! Do verification initiate here
+        const initiateResponse = await dispatch(
+          initiateVerificationRequest(formData, userToken)
+        );
+        setIsConfirmedBtnClicked(false);
+        setLoadingSmall(false);
+        if (initiateResponse?.sessionStatus == "INITIATED") {
+          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
+        }
+        try {
+          const postData = {
+            amount:
+              currencyCheck.toUpperCase() === "USD"
+                ? outsideNgWithNiara === true
+                  ? `${outsideNgWithNiaraPrice}`
+                  : `${totalServiceCost}`
+                : `${totalServiceCost}`,
+            currency: "NGN",
+            type: "VERIFICATION",
+            sessionCode: localStorage.getItem("sessionCode"),
+            stakeHolders: null,
+          };
+
+          const responseData = await initiatePaystackPayment(
+            postData,
+            userToken
+          );
+
+          if (responseData.status === "success" && responseData.data) {
+            // Store transaction details before redirecting
+            localStorage.setItem("transactionID", responseData.data.reference);
+            localStorage.setItem("paymentType", "CARD");
+
+            //!------------- Redirect to Paystack payment page --------------//
+            window.location.href = responseData.data.authorization_url;
+
+            //!------------- Redirect to Paystack payment page End --------------//
+          } else {
+            console.error("Paystack response invalid");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize Paystack payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        } catch (error) {
+          console.error("Paystack error:", error);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: error.message || "Failed to initialize Paystack payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
+        }
+        setIsConfirmedBtnClicked(false);
+        handleCancel();
+      }
+      //!!PAYSTACK PAYMENT ENDS
     }
   };
 
@@ -2295,7 +2411,7 @@ const DashboardPage = () => {
             }}
             value={2}
           >
-            Instant Payment
+            Instant Payment (NAIRA)
           </Radio>
           {currencyCheck.toUpperCase() !== "NGN" && (
             <Radio
@@ -2308,7 +2424,7 @@ const DashboardPage = () => {
               }}
               value={3}
             >
-              Pay with PayPal
+              Pay with PayPal (USD)
               <Img
                 src={paypal}
                 alt={"paypal"}
@@ -5172,6 +5288,21 @@ const DashboardPage = () => {
                           />
                         </Radio>
                       )}
+                      {/* {currencyCheck.toUpperCase() === "NGN" && ( */}
+                      <Radio
+                        style={{
+                          display: "block",
+                          border: "1px solid #e8e8e8",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          marginBottom: "10px",
+                          fontWeight: "bold",
+                        }}
+                        value={4}
+                      >
+                        Pay with Paystack (NAIRA or USD)
+                      </Radio>
+                      {/* )} */}
                     </Radio.Group>
                   </div>
                 </Col>
