@@ -20,13 +20,37 @@ export const HeroColumn = styled.div`
   margin-bottom: 15px;
   padding-right: 15px;
   flex: 1;
-  max-width: 50%;
-  flex-basis: 50%;
+  max-width: 40%;
+  flex-basis: 40%;
 
   @media (min-width: 480px) and (max-width: 1200px) {
     max-width: 100%;
     flex-basis: 100%;
     display: flex;
+    justify-content: left;
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    max-width: 100%;
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+  }
+`;
+
+export const HeroColumnSmall = styled.div`
+  margin-bottom: 15px;
+  padding-right: 15px;
+  flex: 1;
+  max-width: 20%;
+  flex-basis: 20%;
+
+  @media (min-width: 480px) and (max-width: 1200px) {
+    max-width: 100%;
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: left;
   }
 
