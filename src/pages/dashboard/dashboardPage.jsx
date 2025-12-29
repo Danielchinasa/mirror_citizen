@@ -5288,8 +5288,9 @@ const DashboardPage = () => {
                           />
                         </Radio>
                       )}
+                      {/* Temporarily hidden - Paystack Payment */}
                       {/* {currencyCheck.toUpperCase() === "NGN" && ( */}
-                      <Radio
+                      {/* <Radio
                         style={{
                           display: "block",
                           border: "1px solid #e8e8e8",
@@ -5301,7 +5302,7 @@ const DashboardPage = () => {
                         value={4}
                       >
                         Pay with Paystack (NAIRA or USD)
-                      </Radio>
+                      </Radio> */}
                       {/* )} */}
                     </Radio.Group>
                   </div>

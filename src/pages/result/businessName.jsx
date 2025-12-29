@@ -246,10 +246,11 @@ const BusinessName = () => {
       "Instant Payment": "Instant Payment (FlutterWave)",
     };
 
+    // Temporarily hidden - Paystack Payment
     // Add Paystack option only for NGN currency
-    if (currencyCheck.toUpperCase() === "NGN") {
-      paymentOptions["Paystack Payment"] = "Paystack Payment";
-    }
+    // if (currencyCheck.toUpperCase() === "NGN") {
+    //   paymentOptions["Paystack Payment"] = "Paystack Payment";
+    // }
 
     Swal.fire({
       background: bgContainer,

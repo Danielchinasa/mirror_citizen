@@ -1324,7 +1324,8 @@ const MainDashboard = () => {
                       />
                     </Radio>
                   )}
-                  {userCurrency.toUpperCase() === "NGN" && (
+                  {/* Temporarily hidden - Paystack Payment */}
+                  {/* {userCurrency.toUpperCase() === "NGN" && (
                     <Radio
                       value={3}
                       style={{
@@ -1337,7 +1338,7 @@ const MainDashboard = () => {
                     >
                       Paystack
                     </Radio>
-                  )}
+                  )} */}
                 </Radio.Group>
                 <p>
                   Enter Amount to Fund Wallet (Minimum:{" "}

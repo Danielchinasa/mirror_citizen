@@ -708,7 +708,8 @@ function Navbar() {
                                 />
                               </Radio>
                             )}
-                            {userCurrency.toUpperCase() === "NGN" && (
+                            {/* Temporarily hidden - Paystack Payment */}
+                            {/* {userCurrency.toUpperCase() === "NGN" && (
                               <Radio
                                 value={3}
                                 style={{
@@ -721,7 +722,7 @@ function Navbar() {
                               >
                                 Paystack
                               </Radio>
-                            )}
+                            )} */}
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
@@ -891,7 +892,8 @@ function Navbar() {
                                 />
                               </Radio>
                             )}
-                            {userCurrency.toUpperCase() === "NGN" && (
+                            {/* Temporarily hidden - Paystack Payment */}
+                            {/* {userCurrency.toUpperCase() === "NGN" && (
                               <Radio
                                 value={3}
                                 style={{
@@ -904,7 +906,7 @@ function Navbar() {
                               >
                                 Paystack
                               </Radio>
-                            )}
+                            )} */}
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
