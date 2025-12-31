@@ -36,6 +36,7 @@ import {
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import flutterwaveWhite from "../../images/flutterwave-logos-white.png";
+import paypal from "../../images/paypal.png";
 
 import {
   InfoCircleOutlined,
@@ -65,6 +66,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
+import { initiatePaystackPayment } from "../../services/paystackService";
 
 /* global Reach */
 
@@ -262,6 +264,8 @@ const DashboardPage = () => {
     crc: "",
     firstCentral: "",
     creditRegistry: "",
+    paymentType: "",
+    currency: "",
   });
 
   const [ninFilled, setNinFilled] = useState(false);
@@ -805,7 +809,7 @@ const DashboardPage = () => {
           background: bgContainer,
           color: text,
           title: "Error",
-          text: "An unexpected server error occurred.",
+          text: "Service unavailable at the moment. Please try again later.",
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -831,7 +835,7 @@ const DashboardPage = () => {
         background: bgContainer,
         color: text,
         title: "Error",
-        text: "An unexpected server error occurred. A refund has been initiated",
+        text: "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1350,6 +1354,8 @@ const DashboardPage = () => {
             sessionCode: localStorage.getItem("sessionCode"),
             userNIN: userNin,
             transactionID: randomTransactionId,
+            currency: localStorage.getItem("currency") || "NGN",
+            paymentType: localStorage.getItem("paymentType") || "WALLET",
             amount:
               userCurrency.toUpperCase() === "NGN" &&
               currencyCheck.toUpperCase() === "NGN"
@@ -1413,7 +1419,7 @@ const DashboardPage = () => {
             background: bgContainer,
             color: text,
             title: "Error",
-            text: error,
+            text: "We encountered an issue while trying to process your payment. Please try again shortly.",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1436,6 +1442,7 @@ const DashboardPage = () => {
       } //!!WALLET PAYMENT ENDS
       else if (paymentMethod === 2) {
         //!!LIVE PAYMENT START
+        localStorage.setItem("paymentType", "INSTANT");
 
         if (bvnFilled) {
           if (areNoneChecked()) {
@@ -1606,6 +1613,294 @@ const DashboardPage = () => {
         handleCancel();
       }
       //!!LIVE PAYMENT ENDS
+      else if (paymentMethod === 3) {
+        //!!PAYPAL PAYMENT START
+        localStorage.setItem("paymentType", "CARD");
+
+        if (bvnFilled) {
+          if (areNoneChecked()) {
+            setLoading(false);
+            setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
+            setMakingPayment(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "At least one Credit Bereau must be selected",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
+        }
+        handleCancel();
+        //!! Do verification initiate here
+        const initiateResponse = await dispatch(
+          initiateVerificationRequest(formData, userToken)
+        );
+        setIsConfirmedBtnClicked(false);
+        setLoadingSmall(false);
+        if (initiateResponse?.sessionStatus == "INITIATED") {
+          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
+        }
+        try {
+          const postData = {
+            tx_ref: randomTransactionId,
+            amount:
+              currencyCheck.toUpperCase() === "USD"
+                ? outsideNgWithNiara === true
+                  ? `${outsideNgWithNiaraPrice}`
+                  : `${totalServiceCost}`
+                : `${totalServiceCost}`,
+            currency: "USD",
+            email: userEmail,
+            type: "VERIFICATION",
+            stakeHolders: "NON-STAKEHOLDER",
+            sessionCode: localStorage.getItem("sessionCode"),
+            return_url: window.location.origin + "/payment/success",
+            cancel_url: window.location.origin + "/payment/failure",
+          };
+          const response = await fetch(`${baseUrl}/payment/paypal/create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+            body: JSON.stringify(postData),
+          });
+
+          // Check if the request was successful (status code 200-299)
+          if (response.ok) {
+            const responseData = await response.json();
+            console.log("Response Data:", responseData);
+
+            if (responseData.status === "success") {
+              if (responseData.approval_url) {
+                // Store transaction details before redirecting
+                localStorage.setItem("transactionID", responseData.tx_ref);
+                localStorage.setItem("paymentType", "CARD");
+
+                //!------------- Redirect to PayPal approval URL --------------//
+                window.location.href = responseData.approval_url;
+
+                //!------------- Redirect to PayPal approval URL End --------------//
+              } else {
+                console.error("Response data does not contain a link");
+                Swal.fire({
+                  background: bgContainer,
+                  color: text,
+                  title: "Error",
+                  text: "Response data does not contain a link",
+                  icon: "error",
+                  customClass: {
+                    confirmButton: "custom-swal-button",
+                  },
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                  showConfirmButton: true,
+                  confirmButtonText: "OK",
+                  confirmButtonColor: "#0DC939",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+                return;
+              }
+            } else {
+              Swal.fire({
+                background: bgContainer,
+                color: text,
+                title: "Error",
+                text: "Failed to initialize PayPal payment",
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0DC939",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
+              return;
+            }
+          } else {
+            // Handle errors here
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize PayPal payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Failed to initialize PayPal payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
+        }
+        setIsConfirmedBtnClicked(false);
+        handleCancel();
+      }
+      //!!PAYPAL PAYMENT ENDS
+      else if (paymentMethod === 4) {
+        //!!PAYSTACK PAYMENT START
+        localStorage.setItem("paymentType", "CARD");
+
+        if (bvnFilled) {
+          if (areNoneChecked()) {
+            setLoading(false);
+            setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
+            setMakingPayment(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "At least one Credit Bereau must be selected",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+            return;
+          }
+        }
+        handleCancel();
+        //!! Do verification initiate here
+        const initiateResponse = await dispatch(
+          initiateVerificationRequest(formData, userToken)
+        );
+        setIsConfirmedBtnClicked(false);
+        setLoadingSmall(false);
+        if (initiateResponse?.sessionStatus == "INITIATED") {
+          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          setIsConfirmedBtnClicked(false);
+          setLoadingSmall(false);
+        }
+        try {
+          const postData = {
+            amount:
+              currencyCheck.toUpperCase() === "USD"
+                ? outsideNgWithNiara === true
+                  ? `${outsideNgWithNiaraPrice}`
+                  : `${totalServiceCost}`
+                : `${totalServiceCost}`,
+            currency: "NGN",
+            type: "VERIFICATION",
+            sessionCode: localStorage.getItem("sessionCode"),
+            stakeHolders: null,
+          };
+
+          const responseData = await initiatePaystackPayment(
+            postData,
+            userToken
+          );
+
+          if (responseData.status === "success" && responseData.data) {
+            // Store transaction details before redirecting
+            localStorage.setItem("transactionID", responseData.data.reference);
+            localStorage.setItem("paymentType", "CARD");
+
+            //!------------- Redirect to Paystack payment page --------------//
+            window.location.href = responseData.data.authorization_url;
+
+            //!------------- Redirect to Paystack payment page End --------------//
+          } else {
+            console.error("Paystack response invalid");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize Paystack payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        } catch (error) {
+          console.error("Paystack error:", error);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: error.message || "Failed to initialize Paystack payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
+        }
+        setIsConfirmedBtnClicked(false);
+        handleCancel();
+      }
+      //!!PAYSTACK PAYMENT ENDS
     }
   };
 
@@ -2116,8 +2411,28 @@ const DashboardPage = () => {
             }}
             value={2}
           >
-            Instant Payment
+            Instant Payment (NAIRA)
           </Radio>
+          {currencyCheck.toUpperCase() !== "NGN" && (
+            <Radio
+              style={{
+                display: "block",
+                border: "1px solid #e8e8e8",
+                borderRadius: "5px",
+                padding: "10px",
+                fontWeight: "bold",
+              }}
+              value={3}
+            >
+              Pay with PayPal (USD)
+              <Img
+                src={paypal}
+                alt={"paypal"}
+                width={100}
+                style={{ float: "right" }}
+              />
+            </Radio>
+          )}
         </Radio.Group>
       </div>
 
@@ -4940,18 +5255,55 @@ const DashboardPage = () => {
                           border: "1px solid #e8e8e8",
                           borderRadius: "5px",
                           padding: "10px",
+                          marginBottom: "10px",
                           fontWeight: "bold", // Make the text bold
                         }}
                         value={2}
                       >
-                        Instant Payment
+                        Instant Payment (NAIRA)
                         <Img
                           src={isDark ? flutterwaveWhite : flutterwave}
                           alt={"flutter wave"}
-                          width={100}
+                          width={80}
                           style={{ float: "right", paddingTop: "10px" }}
                         />
                       </Radio>
+                      {currencyCheck.toUpperCase() !== "NGN" && (
+                        <Radio
+                          style={{
+                            display: "block",
+                            border: "1px solid #e8e8e8",
+                            borderRadius: "5px",
+                            padding: "10px",
+                            fontWeight: "bold",
+                          }}
+                          value={3}
+                        >
+                          Pay with PayPal (USD)
+                          <Img
+                            src={paypal}
+                            alt={"paypal"}
+                            width={80}
+                            style={{ float: "right" }}
+                          />
+                        </Radio>
+                      )}
+                      {/* Temporarily hidden - Paystack Payment */}
+                      {/* {currencyCheck.toUpperCase() === "NGN" && ( */}
+                      {/* <Radio
+                        style={{
+                          display: "block",
+                          border: "1px solid #e8e8e8",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          marginBottom: "10px",
+                          fontWeight: "bold",
+                        }}
+                        value={4}
+                      >
+                        Pay with Paystack (NAIRA or USD)
+                      </Radio> */}
+                      {/* )} */}
                     </Radio.Group>
                   </div>
                 </Col>
