@@ -52,7 +52,6 @@ import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { initiatePaystackPayment } from "../../services/paystackService";
 
 const tooltipContentStakeholders =
   "Check who the directors and shareholders are";
@@ -239,25 +238,15 @@ const BusinessName = () => {
 
   const handleButtonClick = async (cacid) => {
     dispatch(fetchUserProfile(userToken));
-
-    // Build payment options based on currency
-    const paymentOptions = {
-      "Payment from Wallet": "Payment from Wallet",
-      "Instant Payment": "Instant Payment (FlutterWave)",
-    };
-
-    // Temporarily hidden - Paystack Payment
-    // Add Paystack option only for NGN currency
-    // if (currencyCheck.toUpperCase() === "NGN") {
-    //   paymentOptions["Paystack Payment"] = "Paystack Payment";
-    // }
-
     Swal.fire({
       background: bgContainer,
       color: text,
       title: "Select Payment Method",
       input: "radio",
-      inputOptions: paymentOptions,
+      inputOptions: {
+        "Payment from Wallet": "Payment from Wallet",
+        "Instant Payment": "Instant Payment",
+      },
       customClass: {
         input: token.bgContainer == "#354138" ? "dark-mode" : "custom-input",
         popup: "swal-wide",
@@ -292,20 +281,18 @@ const BusinessName = () => {
         const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
-          sessionCode: localStorage.getItem("stakeHolderSessionCode"),
-          paymentType: "WALLET",
+          // sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
           stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
-          currency: localStorage.getItem("currency") || "NGN",
-          paymentType: localStorage.getItem("paymentType") || "WALLET",
+          currency: currencyCheck || "NGN",
+          userEmail: userEmail,
         };
 
         const requestBodyWithAmountEquivalent = {
-          sessionCode: localStorage.getItem("stakeHolderSessionCode"),
-          paymentType: "WALLET",
+          // sessionCode: localStorage.getItem("sessionCode"),
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
@@ -393,7 +380,7 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
-                  sessionCode: localStorage.getItem("stakeHolderSessionCode"),
+                  // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   stakeholders: "STAKEHOLDERS",
                   paymentType: paymentType || "INSTANT",
@@ -657,7 +644,7 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
-                  sessionCode: localStorage.getItem("stakeHolderSessionCode"),
+                  // sessionCode: localStorage.getItem("sessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
                   stakeholders: "STAKEHOLDERS",
@@ -670,6 +657,7 @@ const BusinessName = () => {
                     transactionID: transactionID || randomTransactionId,
                     paymentType: paymentType || "INSTANT",
                   },
+                  transactionRef: transactionID || randomTransactionId,
                   business: {
                     requestId: parseInt(requestId),
                     cacId: parseInt(cacid),
@@ -814,8 +802,6 @@ const BusinessName = () => {
           }
         } else if (result.value === "Instant Payment") {
           //!!LIVE PAYMENT START
-          localStorage.setItem("paymentType", "INSTANT");
-          localStorage.setItem("currency", currencyCheck);
 
           handleCancel();
           try {
@@ -933,89 +919,7 @@ const BusinessName = () => {
             return;
           }
           handleCancel();
-        } else if (result.value === "Paystack Payment") {
-          //!!PAYSTACK PAYMENT START
-          localStorage.setItem("paymentType", "INSTANT");
-          localStorage.setItem("currency", currencyCheck);
-
-          handleCancel();
-          try {
-            setCacId(cacid);
-
-            const postData = {
-              amount: stakeHolderFeeNgn,
-              currency: "NGN",
-              type: "STAKEHOLDERS",
-              sessionCode: null,
-              stakeHolders: "STAKEHOLDERS",
-            };
-
-            const responseData = await initiatePaystackPayment(
-              postData,
-              userToken
-            );
-
-            if (responseData.status === "success" && responseData.data) {
-              // Store transaction details before redirecting
-              localStorage.setItem(
-                "transactionID",
-                responseData.data.reference
-              );
-              localStorage.setItem("paymentType", "INSTANT");
-
-              //!------------- Redirect to Paystack payment page --------------//
-              window.location.href = responseData.data.authorization_url;
-
-              //!------------- Redirect to Paystack payment page End --------------//
-            } else {
-              console.error("Paystack response invalid");
-              Swal.fire({
-                background: bgContainer,
-                color: text,
-                title: "Error",
-                text: "Failed to initialize Paystack payment",
-                icon: "error",
-                customClass: {
-                  confirmButton: "custom-swal-button",
-                },
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: true,
-                confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              });
-              return;
-            }
-          } catch (error) {
-            console.error("Paystack error:", error);
-            Swal.fire({
-              background: bgContainer,
-              color: text,
-              title: "Error",
-              text: error.message || "Failed to initialize Paystack payment",
-              icon: "error",
-              customClass: {
-                confirmButton: "custom-swal-button",
-              },
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              showConfirmButton: true,
-              confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-            return;
-          }
-          handleCancel();
         }
-        //!!PAYSTACK PAYMENT ENDS
         //!!LIVE PAYMENT ENDS
       }
     });
@@ -1079,7 +983,7 @@ const BusinessName = () => {
               responseData.data.status === "successful")
           ) {
             const requestBody = {
-              sessionCode: localStorage.getItem("stakeHolderSessionCode"),
+              sessionCode: localStorage.getItem("sessionCode"),
               sessionStatus: "COMPLETED",
               stakeholders: "STAKEHOLDERS",
               currency: currencyCheck || "NGN",
@@ -1092,6 +996,7 @@ const BusinessName = () => {
                 transactionID: transactionID || randomTransactionId,
                 paymentType: paymentType || "INSTANT",
               },
+              transactionRef: transactionID || randomTransactionId,
               business: {
                 requestId: parseInt(requestId),
                 cacId: parseInt(cacId),
