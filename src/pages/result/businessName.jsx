@@ -292,7 +292,8 @@ const BusinessName = () => {
         const apiUrl = `${baseUrl}/transaction/wallet-payment`;
 
         const requestBody = {
-          // sessionCode: localStorage.getItem("sessionCode"),
+          sessionCode: localStorage.getItem("stakeHolderSessionCode"),
+          paymentType: "WALLET",
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
@@ -303,7 +304,8 @@ const BusinessName = () => {
         };
 
         const requestBodyWithAmountEquivalent = {
-          // sessionCode: localStorage.getItem("sessionCode"),
+          sessionCode: localStorage.getItem("stakeHolderSessionCode"),
+          paymentType: "WALLET",
           userNIN: userNin,
           transactionID: randomTransactionId,
           type: "STAKEHOLDERS",
@@ -391,7 +393,7 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
-                  // sessionCode: localStorage.getItem("sessionCode"),
+                  sessionCode: localStorage.getItem("stakeHolderSessionCode"),
                   sessionStatus: "COMPLETED",
                   stakeholders: "STAKEHOLDERS",
                   paymentType: paymentType || "INSTANT",
@@ -655,7 +657,7 @@ const BusinessName = () => {
                 dispatch(fetchUserProfile(userToken));
 
                 const requestBody = {
-                  // sessionCode: localStorage.getItem("sessionCode"),
+                  sessionCode: localStorage.getItem("stakeHolderSessionCode"),
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
                   stakeholders: "STAKEHOLDERS",
@@ -1067,14 +1069,17 @@ const BusinessName = () => {
         const responseData = await response.json();
         const transactionID = localStorage.getItem("transactionID");
         const paymentType = localStorage.getItem("paymentType");
-        if (responseData.status === "success") {
+        if (
+          responseData.status === "success" ||
+          responseData.status === "successful"
+        ) {
           if (
             responseData.data &&
             (responseData.data.status === "success" ||
               responseData.data.status === "successful")
           ) {
             const requestBody = {
-              sessionCode: localStorage.getItem("sessionCode"),
+              sessionCode: localStorage.getItem("stakeHolderSessionCode"),
               sessionStatus: "COMPLETED",
               stakeholders: "STAKEHOLDERS",
               currency: currencyCheck || "NGN",
