@@ -328,8 +328,6 @@ const MainDashboard = () => {
             },
           });
           return;
-
-          return;
         } else {
           navigateToResultPage(record);
           console.log("Consent data found:", data);
@@ -353,6 +351,10 @@ const MainDashboard = () => {
     } else if (record.type === "Vehicle Profile") {
       history.push("/vehicle");
     } else if (record.type === "Business Profile") {
+      localStorage.setItem(
+        "stakeHolderSessionCode",
+        record.matchingSession.sessionCode
+      );
       history.push("/businessName"); // Assuming it's "/businessName" for both cases
     } else if (record.type === "Financial Profile") {
       history.push("/financial");
