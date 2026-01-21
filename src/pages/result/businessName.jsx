@@ -114,7 +114,7 @@ const BusinessName = () => {
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
-          userToken
+          userToken,
         );
 
         setCurrencyCheck(response.data.data[8].currency);
@@ -132,7 +132,7 @@ const BusinessName = () => {
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
-          userToken
+          userToken,
         );
 
         setStakeHolderFeeUsd(response.data.data[8].price);
@@ -152,7 +152,7 @@ const BusinessName = () => {
         setLoading(true);
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
         setBusinessData(response.data.data);
         setLoading(false);
@@ -357,7 +357,7 @@ const BusinessName = () => {
               body: JSON.stringify(
                 userCurrency.toUpperCase() === "USD"
                   ? requestBody
-                  : requestBodyWithAmountEquivalent
+                  : requestBodyWithAmountEquivalent,
               ),
             });
 
@@ -400,7 +400,7 @@ const BusinessName = () => {
                 const response = await apiPostInternalCall(
                   `/verification/call-external-apis`,
                   requestBody,
-                  userToken
+                  userToken,
                 );
 
                 if (
@@ -420,7 +420,7 @@ const BusinessName = () => {
                       background: bgContainer,
                       color: text,
                       title: "Error",
-                      text: "Error fetching Stake Holders",
+                      text: "Error fetching Stake Holders 1",
                       icon: "error",
                       customClass: {
                         confirmButton: "custom-swal-button",
@@ -669,7 +669,7 @@ const BusinessName = () => {
                 const response = await apiPostInternalCall(
                   `/verification/complete`,
                   requestBody,
-                  userToken
+                  userToken,
                 );
 
                 if (
@@ -690,7 +690,7 @@ const BusinessName = () => {
                       background: bgContainer,
                       color: text,
                       title: "Error",
-                      text: "Error fetching Stake Holders",
+                      text: "Error fetching Stake Holders 2",
                       icon: "error",
                       customClass: {
                         confirmButton: "custom-swal-button",
@@ -844,7 +844,7 @@ const BusinessName = () => {
                   setTransactionRef(responseData.data.txRef);
                   localStorage.setItem(
                     "transactionID",
-                    responseData.data.txRef
+                    responseData.data.txRef,
                   );
                   localStorage.setItem("paymentType", "INSTANT");
                   //!------------- Open the FlutterWave modal for payment --------------//
@@ -946,7 +946,7 @@ const BusinessName = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
       if (!response.ok) {
         Swal.fire({
@@ -1007,7 +1007,7 @@ const BusinessName = () => {
             const externalApiResponse = await apiPostInternalCall(
               `/verification/complete`,
               requestBody,
-              userToken
+              userToken,
             );
             if (
               externalApiResponse.data.business &&
@@ -1048,7 +1048,7 @@ const BusinessName = () => {
                 background: bgContainer,
                 color: text,
                 title: "Error",
-                text: "Error fetching Stake Holders",
+                text: "Error fetching Stake Holders 3",
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -1094,7 +1094,7 @@ const BusinessName = () => {
             background: bgContainer,
             color: text,
             title: "Error",
-            text: "Error fetching Stake Holders",
+            text: "Error fetching Stake Holders 4",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1209,7 +1209,7 @@ const BusinessName = () => {
                               "Business Name",
                               business.data.approvedName
                                 ? business.data.approvedName
-                                : `-`
+                                : `-`,
                             )}
                           </div>
                           <div class="col">
@@ -1218,7 +1218,7 @@ const BusinessName = () => {
                               "Registration Number",
                               business.data.rcNumber
                                 ? business.data.rcNumber
-                                : `-`
+                                : `-`,
                             )}
                           </div>
 
@@ -1226,7 +1226,7 @@ const BusinessName = () => {
                             {renderDetail(
                               <MailOutlined />,
                               "Business Email",
-                              business.data.email ? business.data.email : `-`
+                              business.data.email ? business.data.email : `-`,
                             )}
                           </div>
                         </div>
@@ -1236,7 +1236,7 @@ const BusinessName = () => {
                             {renderDetail(
                               <CheckCircleOutlined />,
                               "Status",
-                              business.data.status ? business.data.status : `-`
+                              business.data.status ? business.data.status : `-`,
                             )}
                           </div>
                           <div class="col">
@@ -1245,7 +1245,7 @@ const BusinessName = () => {
                               "Company Status",
                               business.data.companyStatus
                                 ? business.data.companyStatus
-                                : `-`
+                                : `-`,
                             )}
                           </div>
 
@@ -1255,7 +1255,7 @@ const BusinessName = () => {
                               "Business Address",
                               business.data.address
                                 ? business.data.address
-                                : "-"
+                                : "-",
                             )}
                           </div>
                         </div>
@@ -1269,7 +1269,7 @@ const BusinessName = () => {
                                 ? business.data.state === "null"
                                   ? `-`
                                   : business.data.state
-                                : `-`
+                                : `-`,
                             )}
                           </div>
 
@@ -1281,7 +1281,7 @@ const BusinessName = () => {
                                 ? business.data.lga === "null"
                                   ? `-`
                                   : business.data.lga
-                                : `-`
+                                : `-`,
                             )}
                           </div>
 
@@ -1289,7 +1289,7 @@ const BusinessName = () => {
                             {renderDetail(
                               <MdOutlinePinDrop />,
                               "City",
-                              business.data.city ? business.data.city : `-`
+                              business.data.city ? business.data.city : `-`,
                             )}
                           </div>
                         </div>
@@ -1300,14 +1300,14 @@ const BusinessName = () => {
                             {renderDetail(
                               <CheckCircleOutlined />,
                               "CAC ID",
-                              business.data.cacid ? business.data.cacid : `-`
+                              business.data.cacid ? business.data.cacid : `-`,
                             )}
                           </div>
                           <div class="col">
                             {renderDetail(
                               <CheckCircleOutlined />,
                               "Code",
-                              business.data.code ? business.data.code : `-`
+                              business.data.code ? business.data.code : `-`,
                             )}
                           </div>
 
@@ -1317,7 +1317,7 @@ const BusinessName = () => {
                               "Classification ID",
                               business.data.classificationId
                                 ? business.data.classificationId
-                                : `-`
+                                : `-`,
                             )}
                           </div>
                         </div>
@@ -1329,7 +1329,7 @@ const BusinessName = () => {
                               "Approved Name: ",
                               business.data.approvedName
                                 ? business.data.approvedName
-                                : `-`
+                                : `-`,
                             )}
                           </div>
                           <div class="col">
@@ -1338,13 +1338,13 @@ const BusinessName = () => {
                               "Incorporated On",
                               business.data.registrationDate
                                 ? new Date(
-                                    business.data.registrationDate
+                                    business.data.registrationDate,
                                   ).toLocaleDateString("en-US", {
                                     year: "numeric",
                                     month: "long",
                                     day: "numeric",
                                   })
-                                : "-"
+                                : "-",
                             )}
                           </div>
 
@@ -1480,7 +1480,7 @@ const BusinessName = () => {
                                                   "First Name: ",
                                                   shareholder.firstname
                                                     ? shareholder.firstname
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1488,7 +1488,7 @@ const BusinessName = () => {
                                                   "Last Name:",
                                                   shareholder.surname
                                                     ? shareholder.surname
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1496,7 +1496,7 @@ const BusinessName = () => {
                                                   "Other Name: ",
                                                   shareholder.other_name
                                                     ? shareholder.other_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1510,7 +1510,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.address
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1521,7 +1521,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.full_address2
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1532,7 +1532,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.email
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1546,7 +1546,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.phone_number
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1557,7 +1557,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.gender
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1568,7 +1568,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.state
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1582,7 +1582,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.is_chairman
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1593,7 +1593,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.occupation
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1604,7 +1604,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.former_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1618,7 +1618,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.corporation_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1629,7 +1629,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.num_shares_alloted
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1640,7 +1640,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.status
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1654,7 +1654,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.identity_number
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1664,7 +1664,7 @@ const BusinessName = () => {
                                                     ? shareholder.age == "null"
                                                       ? `-`
                                                       : shareholder.age
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1675,7 +1675,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.type_of_shares
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1689,7 +1689,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.is_corporate
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1700,16 +1700,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_termination
+                                                          shareholder.date_of_termination,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1720,16 +1720,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_appointment
+                                                          shareholder.date_of_appointment,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1743,16 +1743,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_status_change
+                                                          shareholder.date_of_status_change,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1763,16 +1763,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_birth
+                                                          shareholder.date_of_birth,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1783,7 +1783,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.government_organisation_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1797,7 +1797,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.foreign_organisation_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1808,7 +1808,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.nationality
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1819,14 +1819,14 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.appointed_by
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
                                           </div>
                                         </Panel>
                                       </Collapse>
-                                    )
+                                    ),
                                 )}
                               </Panel>
                               <Panel
@@ -1904,7 +1904,7 @@ const BusinessName = () => {
                                                   "First Name: ",
                                                   shareholder.firstname
                                                     ? shareholder.firstname
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1912,7 +1912,7 @@ const BusinessName = () => {
                                                   "Last Name:",
                                                   shareholder.surname
                                                     ? shareholder.surname
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1920,7 +1920,7 @@ const BusinessName = () => {
                                                   "Other Name: ",
                                                   shareholder.other_name
                                                     ? shareholder.other_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1934,7 +1934,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.address
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1945,7 +1945,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.full_address2
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1956,7 +1956,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.email
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -1970,7 +1970,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.phone_number
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1981,7 +1981,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.gender
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -1992,7 +1992,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.state
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -2006,7 +2006,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.is_chairman
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2017,7 +2017,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.occupation
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2028,7 +2028,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.former_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -2042,7 +2042,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.corporation_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2053,7 +2053,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.num_shares_alloted
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2064,7 +2064,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.status
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -2078,7 +2078,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.identity_number
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2088,7 +2088,7 @@ const BusinessName = () => {
                                                     ? shareholder.age == "null"
                                                       ? `-`
                                                       : shareholder.age
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2099,7 +2099,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.type_of_shares
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -2113,7 +2113,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.is_corporate
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2124,16 +2124,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_termination
+                                                          shareholder.date_of_termination,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2144,16 +2144,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_appointment
+                                                          shareholder.date_of_appointment,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -2167,16 +2167,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_status_change
+                                                          shareholder.date_of_status_change,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2187,16 +2187,16 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : new Date(
-                                                          shareholder.date_of_birth
+                                                          shareholder.date_of_birth,
                                                         ).toLocaleDateString(
                                                           "en-US",
                                                           {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                          }
+                                                          },
                                                         )
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2207,7 +2207,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.government_organisation_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
@@ -2221,7 +2221,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.foreign_organisation_name
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2232,7 +2232,7 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.nationality
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                               <div class="col">
@@ -2243,14 +2243,14 @@ const BusinessName = () => {
                                                       "null"
                                                       ? `-`
                                                       : shareholder.appointed_by
-                                                    : `-`
+                                                    : `-`,
                                                 )}
                                               </div>
                                             </div>
                                           </div>
                                         </Panel>
                                       </Collapse>
-                                    )
+                                    ),
                                 )}
                               </Panel>
                             </Collapse>
@@ -2290,7 +2290,7 @@ const BusinessName = () => {
               onClick={() => {
                 window.open(
                   "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
-                  "_blank"
+                  "_blank",
                 );
               }}
             ></div>
@@ -2308,7 +2308,7 @@ const BusinessName = () => {
               onClick={() => {
                 window.open(
                   "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
-                  "_blank"
+                  "_blank",
                 );
               }}
             ></div>
