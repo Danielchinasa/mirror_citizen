@@ -298,6 +298,8 @@ const BusinessName = () => {
           type: "STAKEHOLDERS",
           stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeNgn,
+          currency: currencyCheck || "NGN",
+          userEmail: userEmail,
         };
         const handlePayment = async () => {
           try {
