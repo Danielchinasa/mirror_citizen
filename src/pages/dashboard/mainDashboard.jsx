@@ -132,7 +132,7 @@ const MainDashboard = () => {
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
-          userToken
+          userToken,
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);
@@ -178,13 +178,13 @@ const MainDashboard = () => {
     console.log(consent);
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
-      currentDate.getTime() - 48 * 60 * 60 * 1000
+      currentDate.getTime() - 48 * 60 * 60 * 1000,
     );
     const twentyFourHoursAgo = new Date(
-      currentDate.getTime() - 24 * 60 * 60 * 1000
+      currentDate.getTime() - 24 * 60 * 60 * 1000,
     );
     const sevenDaysAgo = new Date(
-      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
     );
 
     if (consent === "initiate") {
@@ -294,7 +294,7 @@ const MainDashboard = () => {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
       if (response.ok) {
         setLoadingSmall(false);
@@ -353,7 +353,7 @@ const MainDashboard = () => {
     } else if (record.type === "Business Profile") {
       localStorage.setItem(
         "stakeHolderSessionCode",
-        record.matchingSession.sessionCode
+        record.matchingSession.sessionCode,
       );
       history.push("/businessName"); // Assuming it's "/businessName" for both cases
     } else if (record.type === "Financial Profile") {
@@ -444,7 +444,7 @@ const MainDashboard = () => {
                 record[key]
                   .toString()
                   .toLowerCase()
-                  .includes(searchText.toLowerCase())
+                  .includes(searchText.toLowerCase()),
             );
           })
       : [];
@@ -458,7 +458,7 @@ const MainDashboard = () => {
           record[key]
             .toString()
             .toLowerCase()
-            .includes(searchTextTransaction.toLowerCase())
+            .includes(searchTextTransaction.toLowerCase()),
       );
     });
 
@@ -511,13 +511,13 @@ const MainDashboard = () => {
       render: (text, record) => {
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
-          currentDate.getTime() - 24 * 60 * 60 * 1000
+          currentDate.getTime() - 24 * 60 * 60 * 1000,
         ); // 24 hours in milliseconds
         const fortyEightHoursAgo = new Date(
-          currentDate.getTime() - 48 * 60 * 60 * 1000
+          currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
         const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
         );
 
         let formattedValue = record.searchValue;
@@ -629,13 +629,13 @@ const MainDashboard = () => {
         const { insertionDate, type, consent, status } = record;
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
-          currentDate.getTime() - 24 * 60 * 60 * 1000
+          currentDate.getTime() - 24 * 60 * 60 * 1000,
         ); // 24 hours in milliseconds
         const fortyEightHoursAgo = new Date(
-          currentDate.getTime() - 48 * 60 * 60 * 1000
+          currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
         const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
         );
 
         if (status.toLowerCase() === "expired") {
@@ -893,7 +893,7 @@ const MainDashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
 
       if (response.ok) {
@@ -1051,7 +1051,7 @@ const MainDashboard = () => {
         try {
           const responseData = await initiatePaystackPayment(
             postData,
-            userToken
+            userToken,
           );
 
           if (responseData.status === "success" && responseData.data) {
@@ -1101,14 +1101,14 @@ const MainDashboard = () => {
       const completedVerifications =
         verificationData &&
         verificationData.requests.filter(
-          (verification) => verification.consent !== "terminated"
+          (verification) => verification.consent !== "terminated",
         );
       setCompletedVerificationCount(verificationData.totalSuccessfulCount);
 
       const failedVerifications =
         verificationData &&
         verificationData.requests.filter(
-          (verification) => verification.status === "terminated"
+          (verification) => verification.status === "terminated",
         );
       setFailedVerificationCount(verificationData.totalUnsuccessfulCount);
     } else {
@@ -1305,7 +1305,7 @@ const MainDashboard = () => {
                   >
                     FlutterWave
                   </Radio>
-                  {userCurrency.toUpperCase() !== "NGN" && (
+                  {/* {userCurrency.toUpperCase() !== "NGN" && (
                     <Radio
                       value={2}
                       style={{
@@ -1325,7 +1325,7 @@ const MainDashboard = () => {
                         style={{ float: "right", marginTop: "5px" }}
                       />
                     </Radio>
-                  )}
+                  )} */}
                   {/* Temporarily hidden - Paystack Payment */}
                   {/* {userCurrency.toUpperCase() === "NGN" && (
                     <Radio

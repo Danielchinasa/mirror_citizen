@@ -156,8 +156,8 @@ function Navbar() {
               userDetails && userDetails?.profileImageLocation
                 ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
                 : isDark
-                ? defaultDpDark
-                : defaultDp
+                  ? defaultDpDark
+                  : defaultDp
             }
             alt="User Avatar"
             style={{
@@ -215,7 +215,7 @@ function Navbar() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken2}`,
           },
-        }
+        },
       );
 
       if (response.ok) {
@@ -288,7 +288,7 @@ function Navbar() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken2}`,
             },
-          }
+          },
         );
 
         const responseData = response.data; // Axios puts the response data in the 'data' property
@@ -364,7 +364,7 @@ function Navbar() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken2}`,
             },
-          }
+          },
         );
 
         const responseData = response.data;
@@ -405,7 +405,7 @@ function Navbar() {
         try {
           const responseData = await initiatePaystackPayment(
             postData,
-            userToken2
+            userToken2,
           );
 
           if (responseData.status === "success" && responseData.data) {
@@ -687,7 +687,7 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {userCurrency.toUpperCase() !== "NGN" && (
+                            {/* {userCurrency.toUpperCase() !== "NGN" && (
                               <Radio
                                 value={2}
                                 style={{
@@ -707,7 +707,7 @@ function Navbar() {
                                   style={{ float: "right", marginTop: "5px" }}
                                 />
                               </Radio>
-                            )}
+                            )} */}
                             {/* Temporarily hidden - Paystack Payment */}
                             {/* {userCurrency.toUpperCase() === "NGN" && (
                               <Radio
@@ -871,7 +871,7 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {userCurrency.toUpperCase() !== "NGN" && (
+                            {/* {userCurrency.toUpperCase() !== "NGN" && (
                               <Radio
                                 value={2}
                                 style={{
@@ -891,7 +891,7 @@ function Navbar() {
                                   style={{ float: "right", marginTop: "5px" }}
                                 />
                               </Radio>
-                            )}
+                            )} */}
                             {/* Temporarily hidden - Paystack Payment */}
                             {/* {userCurrency.toUpperCase() === "NGN" && (
                               <Radio

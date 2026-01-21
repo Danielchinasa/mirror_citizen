@@ -85,7 +85,7 @@ const props = {
     } else if (status === "error") {
       console.error("Upload error:", info.file.error);
       message.error(
-        `${info.file.name} file upload failed. ${info.file.error.message}`
+        `${info.file.name} file upload failed. ${info.file.error.message}`,
       );
     }
   },
@@ -135,10 +135,10 @@ const DashboardPage = () => {
           setNinFilled(true);
           setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee * count);
           setTotalServiceCost(
-            (prevTotalFees) => prevTotalFees + ninFee * count
+            (prevTotalFees) => prevTotalFees + ninFee * count,
           );
           setTotalveriNiara(
-            (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee * count
+            (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee * count,
           );
         };
         reader.onerror = () => {
@@ -322,7 +322,7 @@ const DashboardPage = () => {
           `/transaction/service-prices`,
           { ipAddress },
 
-          userToken
+          userToken,
         );
         setLoadingPrice(false);
         setExchangeRate(response.data.rate);
@@ -471,7 +471,7 @@ const DashboardPage = () => {
         //* I just changed the function to use the new one from Patrick
         //! This is the new function that sends the verification request
         // sendVerificationRequest(formData, userToken)
-        completeVerificationRequest(formData, userToken)
+        completeVerificationRequest(formData, userToken),
       );
       setLoading(false);
       dispatch(fetchUserProfile(userToken));
@@ -1187,23 +1187,23 @@ const DashboardPage = () => {
     if (checkStolen && !additionalPriceAdded) {
       // Add the additional costs
       setTotalServiceCost(
-        (prevTotalServiceCost) => prevTotalServiceCost + stolenCheckFee
+        (prevTotalServiceCost) => prevTotalServiceCost + stolenCheckFee,
       );
       setTotalVAT((prevTotalVAT) => prevTotalVAT + stolenCheckVatFee);
       setvinVehicleServiceFee(
         (previnVehicleServiceFee) =>
-          previnVehicleServiceFee + stolenCheckServiceFee
+          previnVehicleServiceFee + stolenCheckServiceFee,
       );
       setAdditionalPriceAdded(true); // Set the flag to true to indicate that the additional price has been added
     } else if (!checkStolen && additionalPriceAdded) {
       // Remove the additional costs
       setTotalServiceCost(
-        (prevTotalServiceCost) => prevTotalServiceCost - stolenCheckFee
+        (prevTotalServiceCost) => prevTotalServiceCost - stolenCheckFee,
       );
       setTotalVAT((prevTotalVAT) => prevTotalVAT - stolenCheckVatFee);
       setvinVehicleServiceFee(
         (previnVehicleServiceFee) =>
-          previnVehicleServiceFee - stolenCheckServiceFee
+          previnVehicleServiceFee - stolenCheckServiceFee,
       );
       setAdditionalPriceAdded(false); // Set the flag to false to indicate that the additional price has been removed
     }
@@ -1301,15 +1301,15 @@ const DashboardPage = () => {
           currencyCheck.toUpperCase() === "NGN"
             ? totalServiceCost
             : currencyCheck.toUpperCase() === "USD" &&
-              userCurrency.toUpperCase() === "NGN"
-            ? totalveriNiara
-            : currencyCheck.toUpperCase() === "USD" &&
-              userCurrency.toUpperCase() === "USD"
-            ? totalServiceCost
-            : userCurrency.toUpperCase() === "NGN" &&
-              currencyCheck.toUpperCase() !== "NGN"
-            ? outsideNgWithNiaraPrice
-            : totalServiceCost)
+                userCurrency.toUpperCase() === "NGN"
+              ? totalveriNiara
+              : currencyCheck.toUpperCase() === "USD" &&
+                  userCurrency.toUpperCase() === "USD"
+                ? totalServiceCost
+                : userCurrency.toUpperCase() === "NGN" &&
+                    currencyCheck.toUpperCase() !== "NGN"
+                  ? outsideNgWithNiaraPrice
+                  : totalServiceCost)
         ) {
           setLoading(false);
           setIsConfirmedBtnClicked(false);
@@ -1339,7 +1339,7 @@ const DashboardPage = () => {
         //!!-------------------- Check for Wallet balance End ------------------//
         //!! Do verification initiate here
         const initiateResponse = await dispatch(
-          initiateVerificationRequest(formData, userToken)
+          initiateVerificationRequest(formData, userToken),
         );
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
@@ -1361,15 +1361,15 @@ const DashboardPage = () => {
               currencyCheck.toUpperCase() === "NGN"
                 ? totalServiceCost
                 : currencyCheck.toUpperCase() === "USD" &&
-                  userCurrency.toUpperCase() === "NGN"
-                ? totalveriNiara
-                : currencyCheck.toUpperCase() === "USD" &&
-                  userCurrency.toUpperCase() === "USD"
-                ? totalServiceCost
-                : userCurrency.toUpperCase() === "NGN" &&
-                  currencyCheck.toUpperCase() !== "NGN"
-                ? outsideNgWithNiaraPrice
-                : totalServiceCost,
+                    userCurrency.toUpperCase() === "NGN"
+                  ? totalveriNiara
+                  : currencyCheck.toUpperCase() === "USD" &&
+                      userCurrency.toUpperCase() === "USD"
+                    ? totalServiceCost
+                    : userCurrency.toUpperCase() === "NGN" &&
+                        currencyCheck.toUpperCase() !== "NGN"
+                      ? outsideNgWithNiaraPrice
+                      : totalServiceCost,
           };
           const response = await fetch(apiUrl, {
             method: "POST",
@@ -1468,7 +1468,7 @@ const DashboardPage = () => {
         handleCancel();
         //!! Do verification initiate here
         const initiateResponse = await dispatch(
-          initiateVerificationRequest(formData, userToken)
+          initiateVerificationRequest(formData, userToken),
         );
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
@@ -1641,7 +1641,7 @@ const DashboardPage = () => {
         handleCancel();
         //!! Do verification initiate here
         const initiateResponse = await dispatch(
-          initiateVerificationRequest(formData, userToken)
+          initiateVerificationRequest(formData, userToken),
         );
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
@@ -1814,7 +1814,7 @@ const DashboardPage = () => {
         handleCancel();
         //!! Do verification initiate here
         const initiateResponse = await dispatch(
-          initiateVerificationRequest(formData, userToken)
+          initiateVerificationRequest(formData, userToken),
         );
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
@@ -1839,7 +1839,7 @@ const DashboardPage = () => {
 
           const responseData = await initiatePaystackPayment(
             postData,
-            userToken
+            userToken,
           );
 
           if (responseData.status === "success" && responseData.data) {
@@ -2413,7 +2413,7 @@ const DashboardPage = () => {
           >
             Instant Payment (NAIRA)
           </Radio>
-          {currencyCheck.toUpperCase() !== "NGN" && (
+          {/* {currencyCheck.toUpperCase() !== "NGN" && (
             <Radio
               style={{
                 display: "block",
@@ -2432,7 +2432,7 @@ const DashboardPage = () => {
                 style={{ float: "right" }}
               />
             </Radio>
-          )}
+          )} */}
         </Radio.Group>
       </div>
 
@@ -2922,8 +2922,8 @@ const DashboardPage = () => {
         prevNumberOfCheckedCheckboxes === 2
           ? prevTotalVAT - 226
           : prevNumberOfCheckedCheckboxes === 3
-          ? prevTotalVAT - 339
-          : prevTotalVAT - financialVatFee;
+            ? prevTotalVAT - 339
+            : prevTotalVAT - financialVatFee;
 
       const totalVAT = newTotalVAT < 0 ? 0 : newTotalVAT;
       return totalVAT;
@@ -2937,8 +2937,8 @@ const DashboardPage = () => {
         prevNumberOfCheckedCheckboxes === 2
           ? prevTotalFees - 3000
           : prevNumberOfCheckedCheckboxes === 3
-          ? prevTotalFees - 4500
-          : prevTotalFees - financialFee; // Subtract financialVatFee otherwise
+            ? prevTotalFees - 4500
+            : prevTotalFees - financialFee; // Subtract financialVatFee otherwise
 
       const totalVAT = newTotalFees < 0 ? 0 : newTotalFees;
       return totalVAT;
@@ -3117,7 +3117,7 @@ const DashboardPage = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
 
       // Check if the request was successful (status code 200-299)
@@ -3246,12 +3246,12 @@ const DashboardPage = () => {
         setTotalVAT(
           currencyCheck.toUpperCase() === "USD"
             ? (prevTotalVAT) => prevTotalVAT + 0.15
-            : (prevTotalVAT) => prevTotalVAT + financialVatFee // Use same VAT as base financial fee
+            : (prevTotalVAT) => prevTotalVAT + financialVatFee, // Use same VAT as base financial fee
         );
         setTotalServiceCost(
           currencyCheck.toUpperCase() === "USD"
             ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
-            : (prevTotalServiceCost) => prevTotalServiceCost + financialFee // Use same service fee as base financial fee
+            : (prevTotalServiceCost) => prevTotalServiceCost + financialFee, // Use same service fee as base financial fee
         );
       }
     } else if (
@@ -3262,12 +3262,12 @@ const DashboardPage = () => {
       setTotalVAT(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
-          : (prevTotalVAT) => prevTotalVAT - financialVatFee // Remove same VAT as base financial fee
+          : (prevTotalVAT) => prevTotalVAT - financialVatFee, // Remove same VAT as base financial fee
       );
       setTotalServiceCost(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
-          : (prevTotalServiceCost) => prevTotalServiceCost - financialFee // Remove same service fee as base financial fee
+          : (prevTotalServiceCost) => prevTotalServiceCost - financialFee, // Remove same service fee as base financial fee
       );
     }
 
@@ -3279,12 +3279,12 @@ const DashboardPage = () => {
       setTotalVAT(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT + 0.15
-          : (prevTotalVAT) => prevTotalVAT + financialVatFee // Add same VAT as base financial fee
+          : (prevTotalVAT) => prevTotalVAT + financialVatFee, // Add same VAT as base financial fee
       );
       setTotalServiceCost(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99 - 0.97 // Add third bureau then apply discount
-          : (prevTotalServiceCost) => prevTotalServiceCost + financialFee - 800 // Add third bureau then apply discount
+          : (prevTotalServiceCost) => prevTotalServiceCost + financialFee - 800, // Add third bureau then apply discount
       );
     } else if (
       prevNumberOfCheckedCheckboxes === 3 &&
@@ -3294,12 +3294,12 @@ const DashboardPage = () => {
       setTotalVAT(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalVAT) => prevTotalVAT - 0.15
-          : (prevTotalVAT) => prevTotalVAT - financialVatFee // Remove same VAT as base financial fee
+          : (prevTotalVAT) => prevTotalVAT - financialVatFee, // Remove same VAT as base financial fee
       );
       setTotalServiceCost(
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99 + 0.97 // Remove third bureau and remove discount
-          : (prevTotalServiceCost) => prevTotalServiceCost - financialFee + 800 // Remove third bureau and remove discount
+          : (prevTotalServiceCost) => prevTotalServiceCost - financialFee + 800, // Remove third bureau and remove discount
       );
     }
 
@@ -3355,14 +3355,14 @@ const DashboardPage = () => {
         setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + ninUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setNinFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - ninUsdFee,
         );
       }
     }
@@ -3372,14 +3372,14 @@ const DashboardPage = () => {
         setTotalVAT((prevTotalVAT) => prevTotalVAT + phoneVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + phoneFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + phoneUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + phoneUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setPhoneFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - phoneVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - phoneFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - phoneUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - phoneUsdFee,
         );
       }
     }
@@ -3393,14 +3393,14 @@ const DashboardPage = () => {
         setFaceFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - faceFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + faceUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + faceUsdFee,
         );
         setTotalServiceCost(
           (prevTotalFees) =>
-            prevTotalFees - (faceServiceFee + faceProcessingFee)
+            prevTotalFees - (faceServiceFee + faceProcessingFee),
         );
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - faceUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - faceUsdFee,
         );
       }
     }
@@ -3410,14 +3410,14 @@ const DashboardPage = () => {
         setTotalVAT((prevTotalVAT) => prevTotalVAT + businessVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + businessFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + businessUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + businessUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setRcFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - businessVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - businessFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - businessUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - businessUsdFee,
         );
       }
     }
@@ -3427,14 +3427,14 @@ const DashboardPage = () => {
         setTotalVAT((prevTotalVAT) => prevTotalVAT + businessNameVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + businessNameFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + businessNameUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + businessNameUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setBusinessNameFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - businessNameVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - businessNameFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - businessNameUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - businessNameUsdFee,
         );
       }
     }
@@ -3445,19 +3445,19 @@ const DashboardPage = () => {
         setBvnFilled(true);
         setTotalVAT((prevTotalVAT) => prevTotalVAT + financialVatFee);
         setTotalServiceCost(
-          (prevTotalServiceCost) => prevTotalServiceCost + financialFee
+          (prevTotalServiceCost) => prevTotalServiceCost + financialFee,
         );
         setTotalveriNiara(
-          (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee
+          (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setBvnFilled(false);
         setTotalServiceCost(
-          (prevTotalServiceCost) => prevTotalServiceCost - financialFee
+          (prevTotalServiceCost) => prevTotalServiceCost - financialFee,
         );
         setTotalVAT((prevTotalVAT) => prevTotalVAT - financialVatFee);
         setTotalveriNiara(
-          (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee
+          (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee,
         );
       }
     }
@@ -3468,14 +3468,14 @@ const DashboardPage = () => {
         setTotalVAT((prevTotalVAT) => prevTotalVAT + vinVehicleVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + vinVehicleFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + vinVehicleUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + vinVehicleUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setVinFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - vinVehicleVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - vinVehicleFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - vinVehicleUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - vinVehicleUsdFee,
         );
       }
     }
@@ -3485,14 +3485,14 @@ const DashboardPage = () => {
         setTotalVAT((prevTotalVAT) => prevTotalVAT + vehicleVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + vehicleFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira + vehicleUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira + vehicleUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setLicenseNumberFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - vehicleVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - vehicleFee);
         setTotalveriNiara(
-          (prevTotalFeesNaira) => prevTotalFeesNaira - vehicleUsdFee
+          (prevTotalFeesNaira) => prevTotalFeesNaira - vehicleUsdFee,
         );
       }
     }
@@ -4810,7 +4810,7 @@ const DashboardPage = () => {
                               {currencyCheck.toUpperCase() === "USD"
                                 ? "$" + (ninServiceFee + ninProcessingFee)
                                 : formatToNaira(
-                                    ninServiceFee + ninProcessingFee
+                                    ninServiceFee + ninProcessingFee,
                                   )}
                             </p>
                           </Col>
@@ -4840,7 +4840,7 @@ const DashboardPage = () => {
                               {currencyCheck.toUpperCase() === "USD"
                                 ? "$" + (phoneServiceFee + phoneProcessingFee)
                                 : formatToNaira(
-                                    phoneServiceFee + phoneProcessingFee
+                                    phoneServiceFee + phoneProcessingFee,
                                   )}
                             </p>
                           </Col>
@@ -4871,7 +4871,7 @@ const DashboardPage = () => {
                                 ? "$" +
                                   (businessServiceFee + businessProcessingFee)
                                 : formatToNaira(
-                                    businessServiceFee + businessProcessingFee
+                                    businessServiceFee + businessProcessingFee,
                                   )}
                             </p>
                           </Col>
@@ -4906,7 +4906,7 @@ const DashboardPage = () => {
                                     businessNameProcessingFee)
                                 : formatToNaira(
                                     businessNameServiceFee +
-                                      businessNameProcessingFee
+                                      businessNameProcessingFee,
                                   )}
                             </p>
                           </Col>
@@ -4944,27 +4944,29 @@ const DashboardPage = () => {
                                   : formatToNaira(
                                       (financialServiceFee +
                                         financialProcessingFee) *
-                                        2
+                                        2,
                                     )
                                 : prevNumberOfCheckedCheckboxes == 3
-                                ? currencyCheck.toUpperCase() === "USD"
-                                  ? "$" +
-                                    (
-                                      (financialServiceFee +
-                                        financialProcessingFee) *
-                                      3
-                                    ).toFixed(2)
-                                  : formatToNaira(
-                                      (financialServiceFee +
-                                        financialProcessingFee) *
+                                  ? currencyCheck.toUpperCase() === "USD"
+                                    ? "$" +
+                                      (
+                                        (financialServiceFee +
+                                          financialProcessingFee) *
                                         3
-                                    )
-                                : currencyCheck.toUpperCase() === "USD"
-                                ? "$" +
-                                  (financialServiceFee + financialProcessingFee)
-                                : formatToNaira(
-                                    financialServiceFee + financialProcessingFee
-                                  )}{" "}
+                                      ).toFixed(2)
+                                    : formatToNaira(
+                                        (financialServiceFee +
+                                          financialProcessingFee) *
+                                          3,
+                                      )
+                                  : currencyCheck.toUpperCase() === "USD"
+                                    ? "$" +
+                                      (financialServiceFee +
+                                        financialProcessingFee)
+                                    : formatToNaira(
+                                        financialServiceFee +
+                                          financialProcessingFee,
+                                      )}{" "}
                             </p>
                           </Col>
                           <Col style={{ marginLeft: "20px", color: "red" }}>
@@ -4997,7 +4999,7 @@ const DashboardPage = () => {
                                     vinVehicleProcessingFee)
                                 : formatToNaira(
                                     vinVehicleServiceFee +
-                                      vinVehicleProcessingFee
+                                      vinVehicleProcessingFee,
                                   )}
                             </p>
                           </Col>
@@ -5029,7 +5031,7 @@ const DashboardPage = () => {
                                 ? "$" +
                                   (vehicleServiceFee + vehicleProcessingFee)
                                 : formatToNaira(
-                                    vehicleServiceFee + vehicleProcessingFee
+                                    vehicleServiceFee + vehicleProcessingFee,
                                   )}
                             </p>
                           </Col>
@@ -5268,7 +5270,7 @@ const DashboardPage = () => {
                           style={{ float: "right", paddingTop: "10px" }}
                         />
                       </Radio>
-                      {currencyCheck.toUpperCase() !== "NGN" && (
+                      {/* {currencyCheck.toUpperCase() !== "NGN" && (
                         <Radio
                           style={{
                             display: "block",
@@ -5287,7 +5289,7 @@ const DashboardPage = () => {
                             style={{ float: "right" }}
                           />
                         </Radio>
-                      )}
+                      )} */}
                       {/* Temporarily hidden - Paystack Payment */}
                       {/* {currencyCheck.toUpperCase() === "NGN" && ( */}
                       {/* <Radio
