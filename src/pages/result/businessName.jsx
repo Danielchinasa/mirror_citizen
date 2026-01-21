@@ -420,7 +420,7 @@ const BusinessName = () => {
                       background: bgContainer,
                       color: text,
                       title: "Error",
-                      text: "Error fetching Stake Holders 1",
+                      text: "Error fetching Stake Holders",
                       icon: "error",
                       customClass: {
                         confirmButton: "custom-swal-button",
@@ -690,7 +690,7 @@ const BusinessName = () => {
                       background: bgContainer,
                       color: text,
                       title: "Error",
-                      text: "Error fetching Stake Holders 2",
+                      text: "Error fetching Stake Holders",
                       icon: "error",
                       customClass: {
                         confirmButton: "custom-swal-button",
@@ -1048,7 +1048,7 @@ const BusinessName = () => {
                 background: bgContainer,
                 color: text,
                 title: "Error",
-                text: "Error fetching Stake Holders 3",
+                text: "Error fetching Stake Holders",
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -1094,7 +1094,7 @@ const BusinessName = () => {
             background: bgContainer,
             color: text,
             title: "Error",
-            text: "Error fetching Stake Holders 4",
+            text: "Error fetching Stake Holders",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
