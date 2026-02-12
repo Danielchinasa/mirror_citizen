@@ -33,6 +33,7 @@ import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { trackPurchaseConversion } from "../../hooks/analytics";
 
 const { useToken } = theme;
 
@@ -200,6 +201,7 @@ function Navbar() {
   const [paystackReference, setPaystackReference] = useState("");
   const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
   const [paystackLoading, setPaystackLoading] = useState(false);
+  const [transactionAmount, setTransactionAmount] = useState(0);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -224,6 +226,12 @@ function Navbar() {
       if (response.ok) {
         const responseData = await response.json();
         if (responseData.status === "success") {
+          // Track conversion
+          trackPurchaseConversion({
+            value: parseFloat(transactionAmount) || 1.0,
+            currency: userCurrency || "NGN",
+            transactionId: transactionRef,
+          });
           dispatch(fetchUserProfile(userToken2));
           setModal1Open(false);
         } else {
@@ -288,7 +296,12 @@ function Navbar() {
             (responseData.data.status === "success" ||
               responseData.data.status === "successful")
           ) {
-            // Payment successful - refresh profile
+            // Payment successful - track conversion and refresh profile
+            trackPurchaseConversion({
+              value: parseFloat(transactionAmount) || 1.0,
+              currency: userCurrency || "NGN",
+              transactionId: paystackReference,
+            });
             dispatch(fetchUserProfile(userToken2));
           } else {
             Swal.fire({
@@ -380,6 +393,7 @@ function Navbar() {
           payment_method: "card,mobilemoney,ussd",
           type: "TOPUP",
         };
+        setTransactionAmount(amount); // Store amount for conversion tracking
         setAmount("");
 
         // Changed from fetch to axios
@@ -503,6 +517,7 @@ function Navbar() {
           sessionCode: null,
           stakeHolders: null,
         };
+        setTransactionAmount(amount); // Store amount for conversion tracking
         setAmount("");
         setPaystackLoading(true);
 

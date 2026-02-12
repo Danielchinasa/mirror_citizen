@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -53,6 +53,33 @@
     /> -->
     <title>e-citizen - your one-stop shop for Identity Verification</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=AW-17949220362"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-XSHE0JCXW1");
+      gtag("config", "AW-17949220362");
+    </script>
+
+    <!-- Event snippet for Purchase conversion page -->
+    <script>
+      gtag("event", "conversion", {
+        send_to: "AW-17949220362/8vVvCL6dtfcbEIq87e5C",
+        value: 1.0,
+        currency: "USD",
+        transaction_id: "",
+        // 'new_customer': true /* calculate dynamically, populate with true/false */,
+      });
+    </script>
   </head>
   <body>
     <noscript>Verify your Nigerian identity easily.</noscript>
@@ -101,19 +128,6 @@
 
     <!-- End Google Tag Manager (noscript) -->
 
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-XSHE0JCXW1"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-XSHE0JCXW1");
-    </script>
-
     <!-- Meta Pixel Code -->
     <script>
       !(function (f, b, e, v, n, t, s) {
@@ -137,7 +151,7 @@
         window,
         document,
         "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
+        "https://connect.facebook.net/en_US/fbevents.js",
       );
       fbq("init", "2360229257499914");
       fbq("track", "PageView");
@@ -168,7 +182,7 @@
       }
       console.log(
         "is Analytics on",
-        hasAnalyticsConsent(document.cookie.match(/(^| )cc_cookie=([^;]+)/))
+        hasAnalyticsConsent(document.cookie.match(/(^| )cc_cookie=([^;]+)/)),
       );
       // Load Google Tag Manager if user has consented to analytics
       if (
@@ -196,7 +210,7 @@
           function () {
             (w[o].q = w[o].q || []).push(arguments);
           };
-        (js = d.createElement(s)), (fjs = d.getElementsByTagName(s)[0]);
+        ((js = d.createElement(s)), (fjs = d.getElementsByTagName(s)[0]));
         js.id = o;
         js.src = f;
         js.async = 1;
@@ -206,7 +220,7 @@
         document,
         "script",
         "ebanqo_widget",
-        "https://widget.ebanqo.io/app.js"
+        "https://widget.ebanqo.io/app.js",
       );
       ebanqo_widget("init", {
         url: "https://webchat.ebanqo.io/v2/BiosecSolutions",
@@ -234,14 +248,14 @@
               (n.id = s + t),
               (n.async = 1),
               (n.src = m),
-              n)
+              n),
             );
       })(
         window,
         document,
         "_pm",
         "PostmanRunObject",
-        "https://run.pstmn.io/button.js"
+        "https://run.pstmn.io/button.js",
       );
     </script>
   </body>
