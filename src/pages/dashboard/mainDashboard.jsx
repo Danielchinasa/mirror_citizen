@@ -873,9 +873,12 @@ const MainDashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const userDetails = useSelector((state) => state.userDetails);
   const [modal1Open, setModal1Open] = useState(false);
+  const [openPaystackModal, setOpenPaystackModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
+  const [paystackReference, setPaystackReference] = useState("");
   const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
+  const [paystackLoading, setPaystackLoading] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -912,6 +915,106 @@ const MainDashboard = () => {
     }
     // dispatch(fetchUserProfile(userToken));
     // setModal1Open(false);
+  };
+
+  const handlePaystackModalClose = async () => {
+    setOpenPaystackModal(false);
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        },
+      );
+
+      // Check if the request was successful (status code 200-299)
+      if (!response.ok) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+        if (
+          responseData.data.status === "successful" ||
+          responseData.status === "success"
+        ) {
+          if (
+            responseData.data &&
+            (responseData.data.status === "success" ||
+              responseData.data.status === "successful")
+          ) {
+            // Payment successful - refresh profile
+            dispatch(fetchUserProfile(userToken));
+          } else {
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Failed Payment",
+              text: responseData.data.processor_response,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        }
+      }
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "There was an issue making payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+      return;
+    }
   };
   const handleOk = async () => {
     const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
@@ -1047,6 +1150,7 @@ const MainDashboard = () => {
           stakeHolders: null,
         };
         setAmount("");
+        setPaystackLoading(true);
 
         try {
           const responseData = await initiatePaystackPayment(
@@ -1054,11 +1158,15 @@ const MainDashboard = () => {
             userToken,
           );
 
-          if (responseData.status === "success" && responseData.data) {
-            // Redirect to Paystack payment page
-            window.location.href = responseData.data.authorization_url;
+          if (responseData.status && responseData.data) {
+            // Open Paystack payment page in modal
+            setPaymentUrl(responseData.data.authorization_url);
+            setPaystackReference(responseData.data.reference);
+            setOpenPaystackModal(true);
+            setPaystackLoading(false);
           } else {
             console.error("Paystack response invalid");
+            setPaystackLoading(false);
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -1072,6 +1180,7 @@ const MainDashboard = () => {
           }
         } catch (error) {
           console.error("Paystack error:", error);
+          setPaystackLoading(false);
           Swal.fire({
             background: bgContainer,
             color: text,
@@ -1158,154 +1267,161 @@ const MainDashboard = () => {
 
   // Usage
   return (
-    <div style={{ backgroundColor: bgContainer }}>
-      <Container>
-        <Spin
-          spinning={loadingSmall}
-          tip="Fetching result ..."
-          colorBgMask="red"
-          style={{
-            fontSize: "85px",
-            fontWeight: "bold",
-            color: text,
-          }}
-        >
-          <InfoSec>
-            <Row gutter={20}>
-              <Col
-                span={6}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Card
-                  style={{
-                    marginTop: "10px",
-                    border: "3px #0DC939 solid",
-                    borderRadius: "12px",
-                    background: "#EBFFF0",
-                    boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-                  }}
+    <>
+      <Spin
+        spinning={paystackLoading}
+        size="large"
+        tip="Loading Paystack payment..."
+        fullscreen
+      />
+      <div style={{ backgroundColor: bgContainer }}>
+        <Container>
+          <Spin
+            spinning={loadingSmall}
+            tip="Fetching result ..."
+            colorBgMask="red"
+            style={{
+              fontSize: "85px",
+              fontWeight: "bold",
+              color: text,
+            }}
+          >
+            <InfoSec>
+              <Row gutter={20}>
+                <Col
+                  span={6}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
                 >
-                  <CustomStatistic
-                    title="Total verifications "
-                    value={totalVerificationCount}
-                    valueStyle={{
-                      color: "#3f8600",
-                      fontSize: "50px",
-                      fontWeight: "600",
-                      fontFamily: "Poppins, sans-serif",
-                      textAlign: "center",
-                    }}
-                  />
-                </Card>
-              </Col>
-              <Col
-                span={6}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Card
-                  style={{
-                    marginTop: "10px",
-                    border: "3px #0DC939 solid",
-                    borderRadius: "12px",
-                    background: "#EBFFF0",
-                    boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-                  }}
-                >
-                  <CustomStatistic
-                    title="Successful verifications "
-                    value={completedVerificationCount}
-                    valueStyle={{
-                      color: "#3f8600",
-                      fontSize: "50px",
-                      fontWeight: "600",
-                      fontFamily: "Poppins, sans-serif",
-                      textAlign: "center",
-                    }}
-                  />
-                </Card>
-              </Col>
-              <Col
-                span={6}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Card
-                  style={{
-                    marginTop: "10px",
-                    border: "3px #0DC939 solid",
-                    borderRadius: "12px",
-                    background: "#EBFFF0",
-                    boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-                  }}
-                >
-                  <CustomStatistic
-                    title="Unsuccessful verifications "
-                    value={failedVerificationCount}
-                    valueStyle={{
-                      color: "#3f8600",
-                      fontSize: "50px",
-                      fontWeight: "600",
-                      fontFamily: "Poppins, sans-serif",
-                      textAlign: "center",
-                    }}
-                  />
-                </Card>
-              </Col>
-            </Row>
-            <div style={{ marginTop: "30px" }}>
-              {/* <Heading4>Recent Activities</Heading4> */}
-              <MainButton
-                type="primary"
-                style={{ float: "right" }}
-                onClick={showModal}
-              >
-                View Wallet
-              </MainButton>
-              <Modal
-                title="User Wallet"
-                visible={isModalVisible}
-                onOk={handleOk}
-                okText="Proceed to Payment"
-                onCancel={handleCancel}
-                width={300}
-              >
-                <Title level={5}> Wallet Balance:</Title>
-                <Title level={3} style={{ color: "#0DC939" }}>
-                  {userCurrency.toUpperCase() === "NGN"
-                    ? formatToNaira(userBalance)
-                    : `${formatToDollar(userBalance)}`}
-                </Title>
-
-                <Divider style={{ border: "1px solid #D9D9D9" }} />
-                <Title level={5}>Fund Wallet</Title>
-                <Title level={5}>Select Payment Method</Title>
-                <Radio.Group
-                  value={walletPaymentMethod}
-                  onChange={(e) => setWalletPaymentMethod(e.target.value)}
-                  style={{ width: "100%", marginBottom: "15px" }}
-                >
-                  <Radio
-                    value={1}
+                  <Card
                     style={{
-                      display: "block",
-                      border: "1px solid #e8e8e8",
-                      borderRadius: "5px",
-                      padding: "10px",
-                      marginBottom: "10px",
-                      fontWeight: "bold",
+                      marginTop: "10px",
+                      border: "3px #0DC939 solid",
+                      borderRadius: "12px",
+                      background: "#EBFFF0",
+                      boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
-                    FlutterWave
-                  </Radio>
-                  {/* {userCurrency.toUpperCase() !== "NGN" && (
+                    <CustomStatistic
+                      title="Total verifications "
+                      value={totalVerificationCount}
+                      valueStyle={{
+                        color: "#3f8600",
+                        fontSize: "50px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins, sans-serif",
+                        textAlign: "center",
+                      }}
+                    />
+                  </Card>
+                </Col>
+                <Col
+                  span={6}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
+                >
+                  <Card
+                    style={{
+                      marginTop: "10px",
+                      border: "3px #0DC939 solid",
+                      borderRadius: "12px",
+                      background: "#EBFFF0",
+                      boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
+                    }}
+                  >
+                    <CustomStatistic
+                      title="Successful verifications "
+                      value={completedVerificationCount}
+                      valueStyle={{
+                        color: "#3f8600",
+                        fontSize: "50px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins, sans-serif",
+                        textAlign: "center",
+                      }}
+                    />
+                  </Card>
+                </Col>
+                <Col
+                  span={6}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
+                >
+                  <Card
+                    style={{
+                      marginTop: "10px",
+                      border: "3px #0DC939 solid",
+                      borderRadius: "12px",
+                      background: "#EBFFF0",
+                      boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
+                    }}
+                  >
+                    <CustomStatistic
+                      title="Unsuccessful verifications "
+                      value={failedVerificationCount}
+                      valueStyle={{
+                        color: "#3f8600",
+                        fontSize: "50px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins, sans-serif",
+                        textAlign: "center",
+                      }}
+                    />
+                  </Card>
+                </Col>
+              </Row>
+              <div style={{ marginTop: "30px" }}>
+                {/* <Heading4>Recent Activities</Heading4> */}
+                <MainButton
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={showModal}
+                >
+                  View Wallet
+                </MainButton>
+                <Modal
+                  title="User Wallet"
+                  visible={isModalVisible}
+                  onOk={handleOk}
+                  okText="Proceed to Payment"
+                  onCancel={handleCancel}
+                  width={300}
+                >
+                  <Title level={5}> Wallet Balance:</Title>
+                  <Title level={3} style={{ color: "#0DC939" }}>
+                    {userCurrency.toUpperCase() === "NGN"
+                      ? formatToNaira(userBalance)
+                      : `${formatToDollar(userBalance)}`}
+                  </Title>
+
+                  <Divider style={{ border: "1px solid #D9D9D9" }} />
+                  <Title level={5}>Fund Wallet</Title>
+                  <Title level={5}>Select Payment Method</Title>
+                  <Radio.Group
+                    value={walletPaymentMethod}
+                    onChange={(e) => setWalletPaymentMethod(e.target.value)}
+                    style={{ width: "100%", marginBottom: "15px" }}
+                  >
+                    <Radio
+                      value={1}
+                      style={{
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      FlutterWave
+                    </Radio>
+                    {/* {userCurrency.toUpperCase() !== "NGN" && (
                     <Radio
                       value={2}
                       style={{
@@ -1326,103 +1442,133 @@ const MainDashboard = () => {
                       />
                     </Radio>
                   )} */}
-                  {userCurrency.toUpperCase() === "NGN" && (
-                    <Radio
-                      value={3}
-                      style={{
-                        display: "block",
-                        border: "1px solid #e8e8e8",
-                        borderRadius: "5px",
-                        padding: "10px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Paystack
-                    </Radio>
-                  )}
-                </Radio.Group>
-                <p>
-                  Enter Amount to Fund Wallet (Minimum:{" "}
-                  {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
-                </p>
-                <Input
-                  type="number"
-                  placeholder={`Enter amount (min: ${
-                    userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
-                  })`}
-                  value={amount}
-                  onChange={handleChange}
-                  min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
-                />
-                {amount &&
-                  parseFloat(amount) <
-                    (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
-                    <p
-                      style={{
-                        color: "red",
-                        fontSize: "12px",
-                        marginTop: "5px",
-                      }}
-                    >
-                      Minimum top-up amount is{" "}
-                      {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"}
-                    </p>
-                  )}
-              </Modal>
-            </div>
-            {/* <div class="postman-run-button"
+                    {userCurrency.toUpperCase() === "NGN" && (
+                      <Radio
+                        value={3}
+                        style={{
+                          display: "block",
+                          border: "1px solid #e8e8e8",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Paystack
+                      </Radio>
+                    )}
+                  </Radio.Group>
+                  <p>
+                    Enter Amount to Fund Wallet (Minimum:{" "}
+                    {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
+                  </p>
+                  <Input
+                    type="number"
+                    placeholder={`Enter amount (min: ${
+                      userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
+                    })`}
+                    value={amount}
+                    onChange={handleChange}
+                    min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
+                  />
+                  {amount &&
+                    parseFloat(amount) <
+                      (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
+                      <p
+                        style={{
+                          color: "red",
+                          fontSize: "12px",
+                          marginTop: "5px",
+                        }}
+                      >
+                        Minimum top-up amount is{" "}
+                        {userCurrency.toUpperCase() === "NGN"
+                          ? "₦1,000"
+                          : "$10"}
+                      </p>
+                    )}
+                </Modal>
+              </div>
+              {/* <div class="postman-run-button"
             data-postman-action="collection/fork"
             data-postman-visibility="public"
             data-postman-var-1="40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96"
             data-postman-collection-url="entityId=40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96&entityType=collection&workspaceId=7222a8fe-9b7b-4ba7-9aa1-46b4cd965d34">
             </div> */}
-          </InfoSec>
-          <Tabs
-            defaultActiveKey="1"
-            items={items}
-            onChange={onChange}
-            style={{
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
-              padding: "20px",
-              marginTop: "40px",
-              marginBottom: "40px",
-            }}
-          />
-          <Notification />
-          <Modal
-            // title="Complete Wallet TopUp"
-            style={{
-              top: 20,
-            }}
-            width={1000}
-            open={modal1Open}
-            onOk={handleModalOk}
-            onCancel={handleModalOk}
-            maskClosable={false}
-            footer={[
-              <Button
-                type="dashed"
-                style={{ color: text }}
-                onClick={handleModalOk}
-              >
-                Close
-              </Button>,
-            ]}
-          >
-            <iframe
-              id="inlineFrameExample"
-              title="Inline Frame Example"
-              width="100%"
-              height="600"
-              src={paymentUrl}
-              // ref={iframeRef}
-              // onLoad={handleIframeLoad}
-            ></iframe>
-            {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
-          </Modal>
-        </Spin>
-      </Container>
-    </div>
+            </InfoSec>
+            <Tabs
+              defaultActiveKey="1"
+              items={items}
+              onChange={onChange}
+              style={{
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
+                padding: "20px",
+                marginTop: "40px",
+                marginBottom: "40px",
+              }}
+            />
+            <Notification />
+            <Modal
+              // title="Complete Wallet TopUp"
+              style={{
+                top: 20,
+              }}
+              width={1000}
+              open={modal1Open}
+              onOk={handleModalOk}
+              onCancel={handleModalOk}
+              maskClosable={false}
+              footer={[
+                <Button
+                  type="dashed"
+                  style={{ color: text }}
+                  onClick={handleModalOk}
+                >
+                  Close
+                </Button>,
+              ]}
+            >
+              <iframe
+                id="inlineFrameExample"
+                title="Inline Frame Example"
+                width="100%"
+                height="600"
+                src={paymentUrl}
+                // ref={iframeRef}
+                // onLoad={handleIframeLoad}
+              ></iframe>
+              {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+            </Modal>
+            <Modal
+              style={{
+                top: 20,
+              }}
+              width={1000}
+              open={openPaystackModal}
+              onOk={handlePaystackModalClose}
+              onCancel={handlePaystackModalClose}
+              maskClosable={false}
+              footer={[
+                <Button
+                  type="dashed"
+                  style={{ color: text }}
+                  onClick={handlePaystackModalClose}
+                >
+                  Close
+                </Button>,
+              ]}
+            >
+              <iframe
+                id="paystackPaymentFrame"
+                title="Paystack Payment"
+                width="100%"
+                height="600"
+                src={paymentUrl}
+              ></iframe>
+            </Modal>
+          </Spin>
+        </Container>
+      </div>
+    </>
   );
 };
 

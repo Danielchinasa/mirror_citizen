@@ -16,7 +16,7 @@ import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
-import { Button, Flex, Modal, Radio } from "antd";
+import { Button, Flex, Modal, Radio, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -194,9 +194,12 @@ function Navbar() {
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal1Open, setModal1Open] = useState(false);
+  const [openPaystackModal, setOpenPaystackModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
+  const [paystackReference, setPaystackReference] = useState("");
   const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
+  const [paystackLoading, setPaystackLoading] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -234,6 +237,106 @@ function Navbar() {
     }
     // dispatch(fetchUserProfile(userToken2));
     // setModal1Open(false);
+  };
+
+  const handlePaystackModalClose = async () => {
+    setOpenPaystackModal(false);
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken2}`,
+          },
+        },
+      );
+
+      // Check if the request was successful (status code 200-299)
+      if (!response.ok) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+        if (
+          responseData.data.status === "successful" ||
+          responseData.status === "success"
+        ) {
+          if (
+            responseData.data &&
+            (responseData.data.status === "success" ||
+              responseData.data.status === "successful")
+          ) {
+            // Payment successful - refresh profile
+            dispatch(fetchUserProfile(userToken2));
+          } else {
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Failed Payment",
+              text: responseData.data.processor_response,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        }
+      }
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "There was an issue making payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+      return;
+    }
   };
   const handleOk = async () => {
     const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
@@ -401,18 +504,23 @@ function Navbar() {
           stakeHolders: null,
         };
         setAmount("");
+        setPaystackLoading(true);
 
         try {
           const responseData = await initiatePaystackPayment(
             postData,
             userToken2,
           );
-
-          if (responseData.status === "success" && responseData.data) {
-            // Redirect to Paystack payment page
-            window.location.href = responseData.data.authorization_url;
+          console.log("Paystack Response Data:", responseData);
+          if (responseData.status && responseData.data) {
+            // Open Paystack payment page in modal
+            setPaymentUrl(responseData.data.authorization_url);
+            setPaystackReference(responseData.data.reference);
+            setOpenPaystackModal(true);
+            setPaystackLoading(false);
           } else {
             console.error("Paystack response invalid");
+            setPaystackLoading(false);
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -431,6 +539,7 @@ function Navbar() {
           }
         } catch (error) {
           console.error("Paystack error:", error);
+          setPaystackLoading(false);
           Swal.fire({
             background: bgContainer,
             color: text,
@@ -488,6 +597,12 @@ function Navbar() {
 
   return (
     <>
+      <Spin
+        spinning={paystackLoading}
+        size="large"
+        tip="Loading Paystack payment..."
+        fullscreen
+      />
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
@@ -793,6 +908,33 @@ function Navbar() {
                           ></iframe>
                           {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
                         </Modal>
+                        <Modal
+                          style={{
+                            top: 20,
+                          }}
+                          width={1000}
+                          open={openPaystackModal}
+                          onOk={handlePaystackModalClose}
+                          onCancel={handlePaystackModalClose}
+                          maskClosable={false}
+                          footer={[
+                            <Button
+                              style={{ color: text }}
+                              type="dashed"
+                              onClick={handlePaystackModalClose}
+                            >
+                              Close
+                            </Button>,
+                          ]}
+                        >
+                          <iframe
+                            id="paystackPaymentFrame"
+                            title="Paystack Payment"
+                            width="100%"
+                            height="600"
+                            src={paymentUrl}
+                          ></iframe>
+                        </Modal>
                       </div>
 
                       <NavItemBtn>
@@ -975,6 +1117,33 @@ function Navbar() {
                             // onLoad={handleIframeLoad}
                           ></iframe>
                           {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+                        </Modal>
+                        <Modal
+                          style={{
+                            top: 20,
+                          }}
+                          width={1000}
+                          open={openPaystackModal}
+                          onOk={handlePaystackModalClose}
+                          onCancel={handlePaystackModalClose}
+                          maskClosable={false}
+                          footer={[
+                            <Button
+                              danger
+                              type="dashed"
+                              onClick={handlePaystackModalClose}
+                            >
+                              Close
+                            </Button>,
+                          ]}
+                        >
+                          <iframe
+                            id="paystackPaymentFrame"
+                            title="Paystack Payment"
+                            width="100%"
+                            height="600"
+                            src={paymentUrl}
+                          ></iframe>
                         </Modal>
                       </div>
                       <UserDropdown />
