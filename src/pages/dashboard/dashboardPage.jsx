@@ -241,6 +241,7 @@ const DashboardPage = () => {
   const [financialProcessingFee, setFinancialProcessingFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const [flutterWaveCurrency, setFlutterWaveCurrency] = useState("NGN");
+  const [paystackCurrency, setPaystackCurrency] = useState("NGN");
   const [value, setValue] = useState();
   const [stolenCheckFee, setStolenCheckFee] = useState("");
   const [stolenCheckServiceFee, setStolenCheckServiceFee] = useState("");
@@ -1110,11 +1111,13 @@ const DashboardPage = () => {
 
     if (e.target.value == 2) {
       setFlutterWaveCurrency("USD");
+      setPaystackCurrency("USD");
       // setCurrencyCheck("USD");
       setOutsideNgWithNiara(false);
     } else if (e.target.value == 1) {
       // setCurrencyCheck("NGN");
       setFlutterWaveCurrency("NGN");
+      setPaystackCurrency("NGN");
       setOutsideNgWithNiara(true);
 
       setOutsideNgWithNiaraPrice(totalveriNiara);
@@ -1615,7 +1618,7 @@ const DashboardPage = () => {
       //!!LIVE PAYMENT ENDS
       else if (paymentMethod === 3) {
         //!!PAYPAL PAYMENT START
-        localStorage.setItem("paymentType", "CARD");
+        localStorage.setItem("paymentType", "INSTANT");
 
         if (bvnFilled) {
           if (areNoneChecked()) {
@@ -1659,7 +1662,7 @@ const DashboardPage = () => {
                   ? `${outsideNgWithNiaraPrice}`
                   : `${totalServiceCost}`
                 : `${totalServiceCost}`,
-            currency: "USD",
+            currency: paystackCurrency,
             email: userEmail,
             type: "VERIFICATION",
             stakeHolders: "NON-STAKEHOLDER",
@@ -1832,7 +1835,7 @@ const DashboardPage = () => {
                   ? `${outsideNgWithNiaraPrice}`
                   : `${totalServiceCost}`
                 : `${totalServiceCost}`,
-            currency: "NGN",
+            currency: paystackCurrency,
             type: "VERIFICATION",
             sessionCode: localStorage.getItem("sessionCode"),
             stakeHolders: null,
@@ -5457,21 +5460,20 @@ const DashboardPage = () => {
                           />
                         </Radio>
                       )} */}
-                        {currencyCheck.toUpperCase() === "NGN" && (
-                          <Radio
-                            style={{
-                              display: "block",
-                              border: "1px solid #e8e8e8",
-                              borderRadius: "5px",
-                              padding: "10px",
-                              marginBottom: "10px",
-                              fontWeight: "bold",
-                            }}
-                            value={4}
-                          >
-                            Pay with Paystack (NAIRA or USD)
-                          </Radio>
-                        )}
+
+                        <Radio
+                          style={{
+                            display: "block",
+                            border: "1px solid #e8e8e8",
+                            borderRadius: "5px",
+                            padding: "10px",
+                            marginBottom: "10px",
+                            fontWeight: "bold",
+                          }}
+                          value={4}
+                        >
+                          Pay with Paystack (NAIRA or USD)
+                        </Radio>
                       </Radio.Group>
                     </div>
                   </Col>
