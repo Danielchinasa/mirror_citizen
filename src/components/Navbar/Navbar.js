@@ -498,7 +498,7 @@ function Navbar() {
         // Paystack payment
         const postData = {
           amount: amount,
-          currency: "NGN",
+          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
           type: "TOPUP",
           sessionCode: null,
           stakeHolders: null,
@@ -823,20 +823,20 @@ function Navbar() {
                                 />
                               </Radio>
                             )} */}
-                            {userCurrency.toUpperCase() === "NGN" && (
-                              <Radio
-                                value={3}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Paystack
-                              </Radio>
-                            )}
+                            {/* {userCurrency.toUpperCase() === "NGN" && ( */}
+                            <Radio
+                              value={3}
+                              style={{
+                                display: "block",
+                                border: "1px solid #e8e8e8",
+                                borderRadius: "5px",
+                                padding: "10px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Paystack
+                            </Radio>
+                            {/* )} */}
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
@@ -1033,20 +1033,20 @@ function Navbar() {
                                 />
                               </Radio>
                             )} */}
-                            {userCurrency.toUpperCase() === "NGN" && (
-                              <Radio
-                                value={3}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Paystack
-                              </Radio>
-                            )}
+                            {/* {userCurrency.toUpperCase() === "NGN" && ( */}
+                            <Radio
+                              value={3}
+                              style={{
+                                display: "block",
+                                border: "1px solid #e8e8e8",
+                                borderRadius: "5px",
+                                padding: "10px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Paystack
+                            </Radio>
+                            {/* )} */}
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}

@@ -939,7 +939,7 @@ const BusinessName = () => {
                 currencyCheck.toUpperCase() === "USD"
                   ? stakeHolderFeeUsd
                   : stakeHolderFeeUsd,
-              currency: "NGN",
+              currency: currencyCheck,
               type: "STAKEHOLDERS",
               sessionCode: null,
               stakeHolders: "STAKEHOLDERS",
