@@ -14,14 +14,17 @@ import baseUrl from "../apiConfig";
  */
 export const initiatePaystackPayment = async (paymentData, userToken) => {
   try {
-    const response = await fetch(`${baseUrl}/payment/paystack-initiate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
+    const response = await fetch(
+      `${baseUrl}/payment/paystack/paystack-initiate`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(paymentData),
       },
-      body: JSON.stringify(paymentData),
-    });
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -45,14 +48,14 @@ export const initiatePaystackPayment = async (paymentData, userToken) => {
 export const checkPaystackPaymentStatus = async (reference, userToken) => {
   try {
     const response = await fetch(
-      `${baseUrl}/payment/paystack-verify?reference=${reference}`,
+      `${baseUrl}/payment/paystack/paystack-verify?reference=${reference}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-      }
+      },
     );
 
     if (!response.ok) {
