@@ -41,6 +41,7 @@ import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { trackPurchaseConversion } from "../../hooks/analytics";
 const { Title } = Typography;
 
 const data = [
@@ -879,6 +880,7 @@ const MainDashboard = () => {
   const [paystackReference, setPaystackReference] = useState("");
   const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
   const [paystackLoading, setPaystackLoading] = useState(false);
+  const [transactionAmount, setTransactionAmount] = useState(0);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -902,6 +904,12 @@ const MainDashboard = () => {
       if (response.ok) {
         const responseData = await response.json();
         if (responseData.status === "success") {
+          // Track conversion
+          trackPurchaseConversion({
+            value: parseFloat(transactionAmount) || 1.0,
+            currency: userCurrency || "NGN",
+            transactionId: transactionRef,
+          });
           dispatch(fetchUserProfile(userToken));
           setModal1Open(false);
         } else {
@@ -966,7 +974,12 @@ const MainDashboard = () => {
             (responseData.data.status === "success" ||
               responseData.data.status === "successful")
           ) {
-            // Payment successful - refresh profile
+            // Payment successful - track conversion and refresh profile
+            trackPurchaseConversion({
+              value: parseFloat(transactionAmount) || 1.0,
+              currency: userCurrency || "NGN",
+              transactionId: paystackReference,
+            });
             dispatch(fetchUserProfile(userToken));
           } else {
             Swal.fire({
@@ -1054,6 +1067,7 @@ const MainDashboard = () => {
           payment_method: "card,mobilemoney,ussd",
           type: "TOPUP",
         };
+        setTransactionAmount(amount); // Store amount for conversion tracking
         setAmount("");
 
         const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
@@ -1149,6 +1163,7 @@ const MainDashboard = () => {
           sessionCode: null,
           stakeHolders: null,
         };
+        setTransactionAmount(amount); // Store amount for conversion tracking
         setAmount("");
         setPaystackLoading(true);
 
