@@ -1228,6 +1228,28 @@ const DashboardPage = () => {
     setLoadingSmall(true);
     // handleCancel();
     // setLoading(true);
+
+    // Check if currency is selected when payment is in USD
+    if (currencyCheck.toUpperCase() === "USD" && !value) {
+      setLoadingSmall(false);
+      setIsConfirmedBtnClicked(false);
+      setMakingPayment(false);
+      setIsConfirmedBtnClicked(false);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Currency Not Selected",
+        text: "Please select a payment currency (Naira or USD) before proceeding.",
+        icon: "warning",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      return;
+    }
+
     if (paymentMethod !== null) {
       // Log the selected payment method
       const userBalance = userDetails?.walletBalance || 0;
