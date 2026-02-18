@@ -9,7 +9,9 @@ import {
   Button,
   Divider,
   Spin,
+  Radio,
 } from "antd";
+import paypal from "../../images/paypal.png";
 import {
   Container,
   InfoSec,
@@ -38,6 +40,8 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import { initiatePaystackPayment } from "../../services/paystackService";
+import { trackPurchaseConversion } from "../../hooks/analytics";
 const { Title } = Typography;
 
 const data = [
@@ -129,7 +133,7 @@ const MainDashboard = () => {
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
-          userToken
+          userToken,
         );
         console.log("Service Fees");
         console.log(response.data.data[0].price);
@@ -175,14 +179,29 @@ const MainDashboard = () => {
     console.log(consent);
     const currentDate = new Date();
     const fortyEightHoursAgo = new Date(
-      currentDate.getTime() - 48 * 60 * 60 * 1000
+      currentDate.getTime() - 48 * 60 * 60 * 1000,
     );
     const twentyFourHoursAgo = new Date(
-      currentDate.getTime() - 24 * 60 * 60 * 1000
+      currentDate.getTime() - 24 * 60 * 60 * 1000,
     );
     const sevenDaysAgo = new Date(
-      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
     );
+
+    if (consent === "initiate") {
+      setLoadingSmall(false);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "Failed to load result.",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+      });
+      return;
+    }
 
     // Your existing logic for handling different scenarios
     if (
@@ -276,7 +295,7 @@ const MainDashboard = () => {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
       if (response.ok) {
         setLoadingSmall(false);
@@ -310,8 +329,6 @@ const MainDashboard = () => {
             },
           });
           return;
-
-          return;
         } else {
           navigateToResultPage(record);
           console.log("Consent data found:", data);
@@ -335,6 +352,10 @@ const MainDashboard = () => {
     } else if (record.type === "Vehicle Profile") {
       history.push("/vehicle");
     } else if (record.type === "Business Profile") {
+      localStorage.setItem(
+        "stakeHolderSessionCode",
+        record.matchingSession.sessionCode,
+      );
       history.push("/businessName"); // Assuming it's "/businessName" for both cases
     } else if (record.type === "Financial Profile") {
       history.push("/financial");
@@ -416,7 +437,7 @@ const MainDashboard = () => {
   const filteredData =
     verificationData && verificationData.requests
       ? verificationData.requests
-          .filter((record) => record.status?.toLowerCase() !== "initiate")
+          // .filter((record) => record.status?.toLowerCase() !== "initiate")
           .filter((record) => {
             return Object.keys(record).some(
               (key) =>
@@ -424,7 +445,7 @@ const MainDashboard = () => {
                 record[key]
                   .toString()
                   .toLowerCase()
-                  .includes(searchText.toLowerCase())
+                  .includes(searchText.toLowerCase()),
             );
           })
       : [];
@@ -438,7 +459,7 @@ const MainDashboard = () => {
           record[key]
             .toString()
             .toLowerCase()
-            .includes(searchTextTransaction.toLowerCase())
+            .includes(searchTextTransaction.toLowerCase()),
       );
     });
 
@@ -491,13 +512,13 @@ const MainDashboard = () => {
       render: (text, record) => {
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
-          currentDate.getTime() - 24 * 60 * 60 * 1000
+          currentDate.getTime() - 24 * 60 * 60 * 1000,
         ); // 24 hours in milliseconds
         const fortyEightHoursAgo = new Date(
-          currentDate.getTime() - 48 * 60 * 60 * 1000
+          currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
         const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
         );
 
         let formattedValue = record.searchValue;
@@ -609,13 +630,13 @@ const MainDashboard = () => {
         const { insertionDate, type, consent, status } = record;
         const currentDate = new Date();
         const twentyFourHoursAgo = new Date(
-          currentDate.getTime() - 24 * 60 * 60 * 1000
+          currentDate.getTime() - 24 * 60 * 60 * 1000,
         ); // 24 hours in milliseconds
         const fortyEightHoursAgo = new Date(
-          currentDate.getTime() - 48 * 60 * 60 * 1000
+          currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
         const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
         );
 
         if (status.toLowerCase() === "expired") {
@@ -672,9 +693,9 @@ const MainDashboard = () => {
   ];
   const columns2 = [
     {
-      title: "Transaction ID",
-      dataIndex: "transactionID",
-      key: "transactionID",
+      title: "Transaction Ref",
+      dataIndex: "transactionRef",
+      key: "transactionRef",
     },
     {
       title: "Date and Time",
@@ -853,8 +874,13 @@ const MainDashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const userDetails = useSelector((state) => state.userDetails);
   const [modal1Open, setModal1Open] = useState(false);
+  const [openPaystackModal, setOpenPaystackModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
+  const [paystackReference, setPaystackReference] = useState("");
+  const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
+  const [paystackLoading, setPaystackLoading] = useState(false);
+  const [transactionAmount, setTransactionAmount] = useState(0);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -872,12 +898,18 @@ const MainDashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
 
       if (response.ok) {
         const responseData = await response.json();
         if (responseData.status === "success") {
+          // Track conversion
+          trackPurchaseConversion({
+            value: parseFloat(transactionAmount) || 1.0,
+            currency: userCurrency || "NGN",
+            transactionId: transactionRef,
+          });
           dispatch(fetchUserProfile(userToken));
           setModal1Open(false);
         } else {
@@ -891,6 +923,111 @@ const MainDashboard = () => {
     }
     // dispatch(fetchUserProfile(userToken));
     // setModal1Open(false);
+  };
+
+  const handlePaystackModalClose = async () => {
+    setOpenPaystackModal(false);
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        },
+      );
+
+      // Check if the request was successful (status code 200-299)
+      if (!response.ok) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+        if (
+          responseData.data.status === "successful" ||
+          responseData.status === "success"
+        ) {
+          if (
+            responseData.data &&
+            (responseData.data.status === "success" ||
+              responseData.data.status === "successful")
+          ) {
+            // Payment successful - track conversion and refresh profile
+            trackPurchaseConversion({
+              value: parseFloat(transactionAmount) || 1.0,
+              currency: userCurrency || "NGN",
+              transactionId: paystackReference,
+            });
+            dispatch(fetchUserProfile(userToken));
+          } else {
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Failed Payment",
+              text: responseData.data.processor_response,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        }
+      }
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "There was an issue making payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+      return;
+    }
   };
   const handleOk = async () => {
     const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
@@ -920,42 +1057,156 @@ const MainDashboard = () => {
 
     setIsModalVisible(false);
     try {
-      // Assuming postData is the data you want to send to the endpoint
-      const postData = {
-        amount: amount,
-        currency: userCurrency,
-        country: "NG",
-        description: "Wallet top up",
-        payment_method: "card,mobilemoney,ussd",
-        type: "TOPUP",
-      };
-      setAmount("");
+      if (walletPaymentMethod === 1) {
+        // FlutterWave payment
+        const postData = {
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        };
+        setTransactionAmount(amount); // Store amount for conversion tracking
+        setAmount("");
 
-      const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-        body: JSON.stringify(postData),
-      });
+        const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify(postData),
+        });
 
-      // Check if the request was successful (status code 200-299)
-      if (response.ok) {
-        // Handle successful response here
-        const responseData = await response.json();
-        console.log(responseData.data.link);
-        if (responseData.data && responseData.data.link) {
-          console.log("Embedding URL:", responseData.data.link);
-          setPaymentUrl(responseData.data.link);
-          setTransactionRef(responseData.data.txRef);
-          setModal1Open(true);
+        // Check if the request was successful (status code 200-299)
+        if (response.ok) {
+          // Handle successful response here
+          const responseData = await response.json();
+          console.log(responseData.data.link);
+          if (responseData.data && responseData.data.link) {
+            console.log("Embedding URL:", responseData.data.link);
+            setPaymentUrl(responseData.data.link);
+            setTransactionRef(responseData.data.txRef);
+            setModal1Open(true);
+          } else {
+            console.error("Response data does not contain a link");
+          }
         } else {
-          console.error("Response data does not contain a link");
+          // Handle errors here
+          console.error("Failed to post data:", response.statusText);
         }
-      } else {
-        // Handle errors here
-        console.error("Failed to post data:", response.statusText);
+      } else if (walletPaymentMethod === 2) {
+        // PayPal payment
+        const postData = {
+          tx_ref: `WALLET_${Date.now()}`,
+          amount: amount,
+          currency: "USD",
+          email: userEmail,
+          type: "TOPUP",
+          stakeHolders: "NON-STAKEHOLDER",
+          return_url: window.location.origin + "/payment/success",
+          cancel_url: window.location.origin + "/payment/failure",
+        };
+        setAmount("");
+
+        const response = await fetch(`${baseUrl}/payment/paypal/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify(postData),
+        });
+
+        // Check if the request was successful (status code 200-299)
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log("PayPal Response Data:", responseData);
+
+          if (responseData.status === "success" && responseData.approval_url) {
+            // Redirect to PayPal approval URL
+            window.location.href = responseData.approval_url;
+          } else {
+            console.error("PayPal response does not contain approval URL");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize PayPal payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+            });
+          }
+        } else {
+          // Handle errors here
+          console.error("Failed to post data:", response.statusText);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Failed to initialize PayPal payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+          });
+        }
+      } else if (walletPaymentMethod === 3) {
+        // Paystack payment
+        const postData = {
+          amount: amount,
+          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
+          type: "TOPUP",
+          sessionCode: null,
+          stakeHolders: null,
+        };
+        setTransactionAmount(amount); // Store amount for conversion tracking
+        setAmount("");
+        setPaystackLoading(true);
+
+        try {
+          const responseData = await initiatePaystackPayment(
+            postData,
+            userToken,
+          );
+
+          if (responseData.status && responseData.data) {
+            // Open Paystack payment page in modal
+            setPaymentUrl(responseData.data.authorization_url);
+            setPaystackReference(responseData.data.reference);
+            setOpenPaystackModal(true);
+            setPaystackLoading(false);
+          } else {
+            console.error("Paystack response invalid");
+            setPaystackLoading(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize Paystack payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Paystack error:", error);
+          setPaystackLoading(false);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: error.message || "Failed to initialize Paystack payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+          });
+        }
       }
     } catch (error) {
       // Handle any unexpected errors
@@ -974,14 +1225,14 @@ const MainDashboard = () => {
       const completedVerifications =
         verificationData &&
         verificationData.requests.filter(
-          (verification) => verification.consent !== "terminated"
+          (verification) => verification.consent !== "terminated",
         );
       setCompletedVerificationCount(verificationData.totalSuccessfulCount);
 
       const failedVerifications =
         verificationData &&
         verificationData.requests.filter(
-          (verification) => verification.status === "terminated"
+          (verification) => verification.status === "terminated",
         );
       setFailedVerificationCount(verificationData.totalUnsuccessfulCount);
     } else {
@@ -1031,216 +1282,308 @@ const MainDashboard = () => {
 
   // Usage
   return (
-    <div style={{ backgroundColor: bgContainer }}>
-      <Container>
-        <Spin
-          spinning={loadingSmall}
-          tip="Fetching result ..."
-          colorBgMask="red"
-          style={{
-            fontSize: "85px",
-            fontWeight: "bold",
-            color: text,
-          }}
-        >
-          <InfoSec>
-            <Row gutter={20}>
-              <Col
-                span={6}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Card
-                  style={{
-                    marginTop: "10px",
-                    border: "3px #0DC939 solid",
-                    borderRadius: "12px",
-                    background: "#EBFFF0",
-                    boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-                  }}
+    <>
+      <Spin
+        spinning={paystackLoading}
+        size="large"
+        tip="Loading Paystack payment..."
+        fullscreen
+      />
+      <div style={{ backgroundColor: bgContainer }}>
+        <Container>
+          <Spin
+            spinning={loadingSmall}
+            tip="Fetching result ..."
+            colorBgMask="red"
+            style={{
+              fontSize: "85px",
+              fontWeight: "bold",
+              color: text,
+            }}
+          >
+            <InfoSec>
+              <Row gutter={20}>
+                <Col
+                  span={6}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
                 >
-                  <CustomStatistic
-                    title="Total verifications "
-                    value={totalVerificationCount}
-                    valueStyle={{
-                      color: "#3f8600",
-                      fontSize: "50px",
-                      fontWeight: "600",
-                      fontFamily: "Poppins, sans-serif",
-                      textAlign: "center",
+                  <Card
+                    style={{
+                      marginTop: "10px",
+                      border: "3px #0DC939 solid",
+                      borderRadius: "12px",
+                      background: "#EBFFF0",
+                      boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
-                  />
-                </Card>
-              </Col>
-              <Col
-                span={6}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Card
-                  style={{
-                    marginTop: "10px",
-                    border: "3px #0DC939 solid",
-                    borderRadius: "12px",
-                    background: "#EBFFF0",
-                    boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-                  }}
+                  >
+                    <CustomStatistic
+                      title="Total verifications "
+                      value={totalVerificationCount}
+                      valueStyle={{
+                        color: "#3f8600",
+                        fontSize: "50px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins, sans-serif",
+                        textAlign: "center",
+                      }}
+                    />
+                  </Card>
+                </Col>
+                <Col
+                  span={6}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
                 >
-                  <CustomStatistic
-                    title="Successful verifications "
-                    value={completedVerificationCount}
-                    valueStyle={{
-                      color: "#3f8600",
-                      fontSize: "50px",
-                      fontWeight: "600",
-                      fontFamily: "Poppins, sans-serif",
-                      textAlign: "center",
+                  <Card
+                    style={{
+                      marginTop: "10px",
+                      border: "3px #0DC939 solid",
+                      borderRadius: "12px",
+                      background: "#EBFFF0",
+                      boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
-                  />
-                </Card>
-              </Col>
-              <Col
-                span={6}
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 8 }}
-                lg={{ span: 8 }}
-              >
-                <Card
-                  style={{
-                    marginTop: "10px",
-                    border: "3px #0DC939 solid",
-                    borderRadius: "12px",
-                    background: "#EBFFF0",
-                    boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
-                  }}
+                  >
+                    <CustomStatistic
+                      title="Successful verifications "
+                      value={completedVerificationCount}
+                      valueStyle={{
+                        color: "#3f8600",
+                        fontSize: "50px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins, sans-serif",
+                        textAlign: "center",
+                      }}
+                    />
+                  </Card>
+                </Col>
+                <Col
+                  span={6}
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 8 }}
                 >
-                  <CustomStatistic
-                    title="Unsuccessful verifications "
-                    value={failedVerificationCount}
-                    valueStyle={{
-                      color: "#3f8600",
-                      fontSize: "50px",
-                      fontWeight: "600",
-                      fontFamily: "Poppins, sans-serif",
-                      textAlign: "center",
+                  <Card
+                    style={{
+                      marginTop: "10px",
+                      border: "3px #0DC939 solid",
+                      borderRadius: "12px",
+                      background: "#EBFFF0",
+                      boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
-                  />
-                </Card>
-              </Col>
-            </Row>
-            <div style={{ marginTop: "30px" }}>
-              {/* <Heading4>Recent Activities</Heading4> */}
-              <MainButton
-                type="primary"
-                style={{ float: "right" }}
-                onClick={showModal}
-              >
-                View Wallet
-              </MainButton>
-              <Modal
-                title="User Wallet"
-                visible={isModalVisible}
-                onOk={handleOk}
-                okText="Proceed to Payment"
-                onCancel={handleCancel}
-                width={300}
-              >
-                <Title level={5}> Wallet Balance:</Title>
-                <Title level={3} style={{ color: "#0DC939" }}>
-                  {userCurrency.toUpperCase() === "NGN"
-                    ? formatToNaira(userBalance)
-                    : `${formatToDollar(userBalance)}`}
-                </Title>
+                  >
+                    <CustomStatistic
+                      title="Unsuccessful verifications "
+                      value={failedVerificationCount}
+                      valueStyle={{
+                        color: "#3f8600",
+                        fontSize: "50px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins, sans-serif",
+                        textAlign: "center",
+                      }}
+                    />
+                  </Card>
+                </Col>
+              </Row>
+              <div style={{ marginTop: "30px" }}>
+                {/* <Heading4>Recent Activities</Heading4> */}
+                <MainButton
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={showModal}
+                >
+                  View Wallet
+                </MainButton>
+                <Modal
+                  title="User Wallet"
+                  visible={isModalVisible}
+                  onOk={handleOk}
+                  okText="Proceed to Payment"
+                  onCancel={handleCancel}
+                  width={300}
+                >
+                  <Title level={5}> Wallet Balance:</Title>
+                  <Title level={3} style={{ color: "#0DC939" }}>
+                    {userCurrency.toUpperCase() === "NGN"
+                      ? formatToNaira(userBalance)
+                      : `${formatToDollar(userBalance)}`}
+                  </Title>
 
-                <Divider style={{ border: "1px solid #D9D9D9" }} />
-                <Title level={5}>Fund Wallet</Title>
-                <p>
-                  Enter Amount to Fund Wallet (Minimum:{" "}
-                  {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
-                </p>
-                <Input
-                  type="number"
-                  placeholder={`Enter amount (min: ${
-                    userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
-                  })`}
-                  value={amount}
-                  onChange={handleChange}
-                  min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
-                />
-                {amount &&
-                  parseFloat(amount) <
-                    (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
-                    <p
+                  <Divider style={{ border: "1px solid #D9D9D9" }} />
+                  <Title level={5}>Fund Wallet</Title>
+                  <Title level={5}>Select Payment Method</Title>
+                  <Radio.Group
+                    value={walletPaymentMethod}
+                    onChange={(e) => setWalletPaymentMethod(e.target.value)}
+                    style={{ width: "100%", marginBottom: "15px" }}
+                  >
+                    <Radio
+                      value={1}
                       style={{
-                        color: "red",
-                        fontSize: "12px",
-                        marginTop: "5px",
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        fontWeight: "bold",
                       }}
                     >
-                      Minimum top-up amount is{" "}
-                      {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"}
-                    </p>
-                  )}
-              </Modal>
-            </div>
-            {/* <div class="postman-run-button"
+                      FlutterWave
+                    </Radio>
+                    {/* {userCurrency.toUpperCase() !== "NGN" && (
+                    <Radio
+                      value={2}
+                      style={{
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      PayPal
+                      <img
+                        src={paypal}
+                        alt="paypal"
+                        width={60}
+                        style={{ float: "right", marginTop: "5px" }}
+                      />
+                    </Radio>
+                  )} */}
+                    {/* {userCurrency.toUpperCase() === "NGN" && ( */}
+                    <Radio
+                      value={3}
+                      style={{
+                        display: "block",
+                        border: "1px solid #e8e8e8",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Paystack
+                    </Radio>
+                    {/* )} */}
+                  </Radio.Group>
+                  <p>
+                    Enter Amount to Fund Wallet (Minimum:{" "}
+                    {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
+                  </p>
+                  <Input
+                    type="number"
+                    placeholder={`Enter amount (min: ${
+                      userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
+                    })`}
+                    value={amount}
+                    onChange={handleChange}
+                    min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
+                  />
+                  {amount &&
+                    parseFloat(amount) <
+                      (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
+                      <p
+                        style={{
+                          color: "red",
+                          fontSize: "12px",
+                          marginTop: "5px",
+                        }}
+                      >
+                        Minimum top-up amount is{" "}
+                        {userCurrency.toUpperCase() === "NGN"
+                          ? "₦1,000"
+                          : "$10"}
+                      </p>
+                    )}
+                </Modal>
+              </div>
+              {/* <div class="postman-run-button"
             data-postman-action="collection/fork"
             data-postman-visibility="public"
             data-postman-var-1="40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96"
             data-postman-collection-url="entityId=40145473-bda811be-4766-4cd3-9f4f-1245bf3aaa96&entityType=collection&workspaceId=7222a8fe-9b7b-4ba7-9aa1-46b4cd965d34">
             </div> */}
-          </InfoSec>
-          <Tabs
-            defaultActiveKey="1"
-            items={items}
-            onChange={onChange}
-            style={{
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
-              padding: "20px",
-              marginTop: "40px",
-              marginBottom: "40px",
-            }}
-          />
-          <Notification />
-          <Modal
-            // title="Complete Wallet TopUp"
-            style={{
-              top: 20,
-            }}
-            width={1000}
-            open={modal1Open}
-            onOk={handleModalOk}
-            onCancel={handleModalOk}
-            maskClosable={false}
-            footer={[
-              <Button
-                type="dashed"
-                style={{ color: text }}
-                onClick={handleModalOk}
-              >
-                Close
-              </Button>,
-            ]}
-          >
-            <iframe
-              id="inlineFrameExample"
-              title="Inline Frame Example"
-              width="100%"
-              height="600"
-              src={paymentUrl}
-              // ref={iframeRef}
-              // onLoad={handleIframeLoad}
-            ></iframe>
-            {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
-          </Modal>
-        </Spin>
-      </Container>
-    </div>
+            </InfoSec>
+            <Tabs
+              defaultActiveKey="1"
+              items={items}
+              onChange={onChange}
+              style={{
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
+                padding: "20px",
+                marginTop: "40px",
+                marginBottom: "40px",
+              }}
+            />
+            <Notification />
+            <Modal
+              // title="Complete Wallet TopUp"
+              style={{
+                top: 20,
+              }}
+              width={1000}
+              open={modal1Open}
+              onOk={handleModalOk}
+              onCancel={handleModalOk}
+              maskClosable={false}
+              footer={[
+                <Button
+                  type="dashed"
+                  style={{ color: text }}
+                  onClick={handleModalOk}
+                >
+                  Close
+                </Button>,
+              ]}
+            >
+              <iframe
+                id="inlineFrameExample"
+                title="Inline Frame Example"
+                width="100%"
+                height="600"
+                src={paymentUrl}
+                // ref={iframeRef}
+                // onLoad={handleIframeLoad}
+              ></iframe>
+              {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+            </Modal>
+            <Modal
+              style={{
+                top: 20,
+              }}
+              width={1000}
+              open={openPaystackModal}
+              onOk={handlePaystackModalClose}
+              onCancel={handlePaystackModalClose}
+              maskClosable={false}
+              footer={[
+                <Button
+                  type="dashed"
+                  style={{ color: text }}
+                  onClick={handlePaystackModalClose}
+                >
+                  Close
+                </Button>,
+              ]}
+            >
+              <iframe
+                id="paystackPaymentFrame"
+                title="Paystack Payment"
+                width="100%"
+                height="600"
+                src={paymentUrl}
+              ></iframe>
+            </Modal>
+          </Spin>
+        </Container>
+      </div>
+    </>
   );
 };
 

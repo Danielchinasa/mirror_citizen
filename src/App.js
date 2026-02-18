@@ -48,6 +48,10 @@ import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
 import usePageTracking from "./hooks/usePageTracking";
+import PaymentSuccess from "./pages/Payment/PaymentSuccess";
+import PaymentFailure from "./pages/Payment/PaymentFailure";
+import PaymentCancel from "./pages/Payment/PaymentCancel";
+import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -202,6 +206,14 @@ function App() {
             <Route path="/sms" exact component={Sms} />
             <Route path="/privacy_policy" exact component={PrivacyPolicy} />
             <Route path="/terms_of_service" exact component={TermsOfService} />
+            <Route path="/payment/success" exact component={PaymentSuccess} />
+            <Route path="/payment/failure" exact component={PaymentFailure} />
+            <Route path="/payment/cancel" exact component={PaymentCancel} />
+            <Route
+              path="/payment/paystack-redirect"
+              exact
+              component={PaystackRedirect}
+            />
             <Route path="/reach/:CLICK_ID" exact component={Home} />
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPassword} />

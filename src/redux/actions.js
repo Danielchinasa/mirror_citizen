@@ -35,7 +35,10 @@ export const updatePassword = (credentials) => async (dispatch) => {
 
 export const signIn = (credentials) => async (dispatch) => {
   try {
-    const response = await apiPost("/auth/login", credentials);
+    // const response = await apiPost("/auth/login", credentials);
+
+    //new login api to decommision old one
+    const response = await apiPost("/auth/login-enhanced", credentials);
     // Check if the response is an error object
 
     const userData = response;
@@ -524,11 +527,10 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
 
       const restructuredData = {
-        // payment: {
-        //   currency: currencyCheck || "NGN",
-        //   transactionID: transactionID || randomTransactionId,
-        //   paymentType: paymentType || "INSTANT",
-        // },
+        payment: {
+          currency: currencyCheck || "NGN",
+          paymentType: paymentType || "INSTANT",
+        },
         "search-extension": {
           "phone-number": formData.phone || "",
         },
