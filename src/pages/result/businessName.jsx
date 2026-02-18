@@ -249,8 +249,8 @@ const BusinessName = () => {
       input: "radio",
       inputOptions: {
         "Payment from Wallet": "Payment from Wallet",
-        "Instant Payment (Flutterwave)": "Instant Payment (Flutterwave)",
-        "Instant Payment (Paystack)": "Instant Payment (Paystack)",
+        "Instant Payment (Flutterwave)": "Pay with Flutterwave (NAIRA)",
+        "Instant Payment (Paystack)": "Pay with Paystack (NAIRA or USD)",
       },
       customClass: {
         input: token.bgContainer == "#354138" ? "dark-mode" : "custom-input",

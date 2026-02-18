@@ -36,6 +36,7 @@ import {
 } from "../../globalStyles";
 import flutterwave from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import flutterwaveWhite from "../../images/flutterwave-logos-white.png";
+import paystack from "../../images/icon_paystack.png";
 import paypal from "../../images/paypal.png";
 
 import {
@@ -2442,7 +2443,7 @@ const DashboardPage = () => {
             }}
             value={2}
           >
-            Instant Payment (NAIRA)
+            Pay with Flutterwave (NAIRA)
           </Radio>
           {/* {currencyCheck.toUpperCase() !== "NGN" && (
             <Radio
@@ -5407,8 +5408,8 @@ const DashboardPage = () => {
                     span={8}
                     xs={{ span: 24 }}
                     sm={{ span: 24 }}
-                    md={{ span: 7 }}
-                    lg={{ span: 7 }}
+                    md={{ span: 10 }}
+                    lg={{ span: 10 }}
                     style={{
                       textAlign: "left",
                       padding: "10px",
@@ -5454,7 +5455,7 @@ const DashboardPage = () => {
                           }}
                           value={2}
                         >
-                          Instant Payment (NAIRA)
+                          Pay with Flutterwave (NAIRA)
                           <Img
                             src={isDark ? flutterwaveWhite : flutterwave}
                             alt={"flutter wave"}
@@ -5495,6 +5496,12 @@ const DashboardPage = () => {
                           value={4}
                         >
                           Pay with Paystack (NAIRA or USD)
+                          <Img
+                            src={isDark ? paystack : paystack}
+                            alt={"paystack"}
+                            width={80}
+                            style={{ float: "right", paddingTop: "10px" }}
+                          />
                         </Radio>
                       </Radio.Group>
                     </div>
