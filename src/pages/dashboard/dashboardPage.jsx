@@ -65,6 +65,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
+import { trackGA4Event } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
@@ -1133,8 +1134,8 @@ const DashboardPage = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount:
-      currencyCheck.toUpperCase() == "USD"
-        ? outsideNgWithNiara == true
+      currencyCheck.toUpperCase() === "USD"
+        ? outsideNgWithNiara === true
           ? `${outsideNgWithNiaraPrice}`
           : `${totalServiceCost}`
         : `${totalServiceCost}`,
@@ -1460,6 +1461,7 @@ const DashboardPage = () => {
               window.location.reload();
             }
           });
+          return;
         } finally {
           handleCancel();
 
@@ -1536,9 +1538,6 @@ const DashboardPage = () => {
                 setTransactionRef(responseData.data.txRef);
                 localStorage.setItem("transactionID", responseData.data.txRef);
                 localStorage.setItem("paymentType", "INSTANT");
-
-                // //!Call the PaymentChecker function??//
-                // startPaymentChecker(responseData.data.txRef);
 
                 //!------------- Open the FlutterWave modal for payment --------------//
                 setOpenFlutterwaveModal(true);
@@ -2931,7 +2930,7 @@ const DashboardPage = () => {
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total service cost doesn't go below 0
     });
     setTotalveriNiara((prevTotalFees) => {
-      const newTotalFees = prevTotalFees - businessUsdFee;
+      const newTotalFees = prevTotalFees - businessNameUsdFee;
       return newTotalFees < 0 ? 0 : newTotalFees; // Ensure total verification cost doesn't go below 0
     });
   };
@@ -3802,7 +3801,13 @@ const DashboardPage = () => {
                         }}
                       >
                         <Row
-                          onClick={() => setSelectedProfile("basic")}
+                          onClick={() => {
+                            setSelectedProfile("basic");
+                            trackGA4Event &&
+                              trackGA4Event("select_profile", {
+                                profile_type: "basic",
+                              });
+                          }}
                           style={{
                             backgroundColor:
                               selectedProfile === "basic"
@@ -3934,7 +3939,13 @@ const DashboardPage = () => {
                         </Form>
 
                         <Row
-                          onClick={() => setSelectedProfile("business")}
+                          onClick={() => {
+                            setSelectedProfile("business");
+                            trackGA4Event &&
+                              trackGA4Event("select_profile", {
+                                profile_type: "business",
+                              });
+                          }}
                           style={{
                             backgroundColor:
                               selectedProfile === "business"
@@ -4031,7 +4042,13 @@ const DashboardPage = () => {
                         </Form>
 
                         <Row
-                          onClick={() => setSelectedProfile("financial")}
+                          onClick={() => {
+                            setSelectedProfile("financial");
+                            trackGA4Event &&
+                              trackGA4Event("select_profile", {
+                                profile_type: "financial",
+                              });
+                          }}
                           style={{
                             backgroundColor:
                               selectedProfile === "financial"
@@ -4103,7 +4120,13 @@ const DashboardPage = () => {
                         </Form>
 
                         <Row
-                          onClick={() => setSelectedProfile("vehicle")}
+                          onClick={() => {
+                            setSelectedProfile("vehicle");
+                            trackGA4Event &&
+                              trackGA4Event("select_profile", {
+                                profile_type: "vehicle",
+                              });
+                          }}
                           style={{
                             backgroundColor:
                               selectedProfile === "vehicle"

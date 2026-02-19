@@ -37,6 +37,7 @@ import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleLogin from "react-apple-login";
+import { trackGA4Event } from "../../hooks/analytics";
 
 const { useToken } = theme;
 
@@ -73,7 +74,7 @@ const LoginForm = (props) => {
     () => ({
       name: "Ant Design",
     }),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -91,7 +92,7 @@ const LoginForm = (props) => {
         } catch (error2) {
           console.error(
             "Error fetching IP address from secondary URL:",
-            error2
+            error2,
           );
           setIpAddress(null); // Set IP address to null if both URLs fail
         }
@@ -202,6 +203,9 @@ const LoginForm = (props) => {
       };
 
       if (response.jwtToken) {
+        // On successful login with jwtToken, fire GA4 event
+
+        trackGA4Event("login", { method: "email" });
         // On successful login with jwtToken, navigate to the main dashboard
         localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
