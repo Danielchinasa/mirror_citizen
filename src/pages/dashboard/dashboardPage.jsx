@@ -2443,7 +2443,7 @@ const DashboardPage = () => {
             }}
             value={2}
           >
-            Pay with Flutterwave (NAIRA)
+            Pay with Flutterwave
           </Radio>
           {/* {currencyCheck.toUpperCase() !== "NGN" && (
             <Radio
@@ -5408,8 +5408,8 @@ const DashboardPage = () => {
                     span={8}
                     xs={{ span: 24 }}
                     sm={{ span: 24 }}
-                    md={{ span: 10 }}
-                    lg={{ span: 10 }}
+                    md={{ span: 8 }}
+                    lg={{ span: 8 }}
                     style={{
                       textAlign: "left",
                       padding: "10px",
@@ -5455,13 +5455,13 @@ const DashboardPage = () => {
                           }}
                           value={2}
                         >
-                          Pay with Flutterwave (NAIRA)
-                          <Img
+                          Pay with Flutterwave
+                          {/* <Img
                             src={isDark ? flutterwaveWhite : flutterwave}
                             alt={"flutter wave"}
                             width={80}
                             style={{ float: "right", paddingTop: "10px" }}
-                          />
+                          /> */}
                         </Radio>
                         {/* {currencyCheck.toUpperCase() !== "NGN" && (
                         <Radio
@@ -5495,13 +5495,13 @@ const DashboardPage = () => {
                           }}
                           value={4}
                         >
-                          Pay with Paystack (NAIRA or USD)
-                          <Img
+                          Pay with Paystack
+                          {/* <Img
                             src={isDark ? paystack : paystack}
                             alt={"paystack"}
                             width={80}
                             style={{ float: "right", paddingTop: "10px" }}
-                          />
+                          /> */}
                         </Radio>
                       </Radio.Group>
                     </div>
