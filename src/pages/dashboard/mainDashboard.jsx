@@ -42,6 +42,7 @@ import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
+import { trackGA4Event } from "../../hooks/analytics";
 const { Title } = Typography;
 
 const data = [
@@ -208,11 +209,11 @@ const MainDashboard = () => {
       ((record.type === "Basic Profile" ||
         record.type === "Financial Profile" ||
         record.type === "Search-Extension") &&
-        new Date(insertionDate) < fortyEightHoursAgo) ||
+        new Date(record.insertionDate) < fortyEightHoursAgo) ||
       (record.consent === "pending" &&
-        new Date(insertionDate) < twentyFourHoursAgo) ||
+        new Date(record.insertionDate) < twentyFourHoursAgo) ||
       (record.type === "Vehicle Profile" &&
-        new Date(insertionDate) < sevenDaysAgo)
+        new Date(record.insertionDate) < sevenDaysAgo)
     ) {
       // message.error("Verification Result or Consent Expired");
       setLoadingSmall(false);
@@ -974,6 +975,20 @@ const MainDashboard = () => {
             (responseData.data.status === "success" ||
               responseData.data.status === "successful")
           ) {
+            // Payment successful - fire GA4 add_payment_info event
+            trackGA4Event("add_payment_info", {
+              payment_type: "Paystack",
+              transaction_id: paystackReference,
+              value: parseFloat(transactionAmount) || 1.0,
+              currency: userCurrency || "NGN",
+            });
+            // Payment successful - fire GA4 purchase event
+            trackGA4Event("purchase", {
+              transaction_id: paystackReference,
+              value: parseFloat(transactionAmount) || 1.0,
+              currency: userCurrency || "NGN",
+              items: [{ id: paystackReference, name: "Paystack Payment" }],
+            });
             // Payment successful - track conversion and refresh profile
             trackPurchaseConversion({
               value: parseFloat(transactionAmount) || 1.0,
@@ -1177,6 +1192,14 @@ const MainDashboard = () => {
             // Open Paystack payment page in modal
             setPaymentUrl(responseData.data.authorization_url);
             setPaystackReference(responseData.data.reference);
+            // Fire GA4 begin_checkout event
+            trackGA4Event("begin_checkout", {
+              items: [
+                { id: responseData.data.reference, name: "Paystack Payment" },
+              ],
+              value: amount,
+              currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
+            });
             setOpenPaystackModal(true);
             setPaystackLoading(false);
           } else {

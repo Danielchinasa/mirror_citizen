@@ -44,3 +44,6 @@ export const trackPurchaseConversion = ({
     window.gtag("event", "conversion", conversionData);
   }
 };
+
+// GA4 custom event utility
+export { trackGA4Event } from "./ga4Events";

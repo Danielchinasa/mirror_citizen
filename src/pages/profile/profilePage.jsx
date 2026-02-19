@@ -78,6 +78,20 @@ const ProfilePage = () => {
         rcNumber: userDetails.rcNumber || "",
         designation: userDetails.designation || "",
       }));
+      // GA4: Track profile view event
+      try {
+        // Dynamically import to avoid SSR issues if any
+        // eslint-disable-next-line global-require
+        const { trackGA4Event } = require("../../hooks/analytics");
+        trackGA4Event &&
+          trackGA4Event("view_profile", {
+            profile_id: userDetails.id || userDetails._id || undefined,
+            profile_name:
+              userDetails.firstName || userDetails.businessName || undefined,
+          });
+      } catch (e) {
+        // fail silently
+      }
     }
   }, [userDetails]);
 
@@ -115,7 +129,7 @@ const ProfilePage = () => {
     if (profileImageNew) {
       payload.profileImage = profileImageNew.replace(
         /^data:image\/[a-z]+;base64,/,
-        ""
+        "",
       );
     }
 
@@ -149,7 +163,7 @@ const ProfilePage = () => {
           ...prevFormData,
           profileImage: reader.result.replace(
             /^data:image\/[a-z]+;base64,/,
-            ""
+            "",
           ),
         }));
       };

@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import React from "react";
 
+import { trackGA4Event } from "../../hooks/analytics";
 import { Img } from "../../globalStyles";
 import lady from "../../images/check_credit_scores_on_ecitizen.png";
 import LoginForm from "./loginForm";
