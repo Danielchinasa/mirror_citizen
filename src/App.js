@@ -209,12 +209,11 @@ function App() {
             <Route path="/payment/success" exact component={PaymentSuccess} />
             <Route path="/payment/failure" exact component={PaymentFailure} />
             <Route path="/payment/cancel" exact component={PaymentCancel} />
-            {/* Temporarily hidden - Paystack Payment */}
-            {/* <Route
+            <Route
               path="/payment/paystack-redirect"
               exact
               component={PaystackRedirect}
-            /> */}
+            />
             <Route path="/reach/:CLICK_ID" exact component={Home} />
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPassword} />
