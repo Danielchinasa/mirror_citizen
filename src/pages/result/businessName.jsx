@@ -242,16 +242,24 @@ const BusinessName = () => {
 
   const handleButtonClick = async (cacid) => {
     dispatch(fetchUserProfile(userToken));
+
+    // Build payment options dynamically - exclude Paystack for USD
+    const paymentOptions = {
+      "Payment from Wallet": "Payment from Wallet",
+      "Instant Payment (Flutterwave)": "Pay with Flutterwave",
+    };
+
+    // Only add Paystack option if currency is not USD
+    if (currencyCheck.toUpperCase() !== "USD") {
+      paymentOptions["Instant Payment (Paystack)"] = "Pay with Paystack";
+    }
+
     Swal.fire({
       background: bgContainer,
       color: text,
       title: "Select Payment Method",
       input: "radio",
-      inputOptions: {
-        "Payment from Wallet": "Payment from Wallet",
-        "Instant Payment (Flutterwave)": "Pay with Flutterwave",
-        "Instant Payment (Paystack)": "Pay with Paystack",
-      },
+      inputOptions: paymentOptions,
       customClass: {
         input: token.bgContainer == "#354138" ? "dark-mode" : "custom-input",
         popup: "swal-wide",

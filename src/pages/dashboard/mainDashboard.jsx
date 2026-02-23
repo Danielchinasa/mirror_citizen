@@ -1480,9 +1480,9 @@ const MainDashboard = () => {
                       />
                     </Radio>
                   )} */}
-                    {/* {userCurrency.toUpperCase() === "NGN" && ( */}
                     <Radio
                       value={3}
+                      disabled={userCurrency.toUpperCase() === "USD"}
                       style={{
                         display: "block",
                         border: "1px solid #e8e8e8",
@@ -1491,9 +1491,10 @@ const MainDashboard = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Paystack
+                      Paystack{" "}
+                      {userCurrency.toUpperCase() === "USD" &&
+                        "(Not available for USD)"}
                     </Radio>
-                    {/* )} */}
                   </Radio.Group>
                   <p>
                     Enter Amount to Fund Wallet (Minimum:{" "}

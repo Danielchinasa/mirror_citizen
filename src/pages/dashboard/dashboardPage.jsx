@@ -5517,8 +5517,11 @@ const DashboardPage = () => {
                             fontWeight: "bold",
                           }}
                           value={4}
+                          disabled={paystackCurrency === "USD"}
                         >
-                          Pay with Paystack
+                          Pay with Paystack{" "}
+                          {paystackCurrency === "USD" &&
+                            "(Not available for USD)"}
                           {/* <Img
                             src={isDark ? paystack : paystack}
                             alt={"paystack"}
