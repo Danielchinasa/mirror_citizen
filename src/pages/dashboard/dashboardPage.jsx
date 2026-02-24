@@ -3390,6 +3390,11 @@ const DashboardPage = () => {
             ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99
             : (prevTotalServiceCost) => prevTotalServiceCost + financialFee, // Use same service fee as base financial fee
         );
+        setTotalveriNiara(
+          currencyCheck.toUpperCase() === "USD"
+            ? (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee
+            : (prevTotalveriNiara) => prevTotalveriNiara + 0, // No change for NGN users as totalServiceCost already handles it
+        );
       }
     } else if (
       prevNumberOfCheckedCheckboxes >= 2 &&
@@ -3405,6 +3410,11 @@ const DashboardPage = () => {
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99
           : (prevTotalServiceCost) => prevTotalServiceCost - financialFee, // Remove same service fee as base financial fee
+      );
+      setTotalveriNiara(
+        currencyCheck.toUpperCase() === "USD"
+          ? (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee
+          : (prevTotalveriNiara) => prevTotalveriNiara - 0, // No change for NGN users as totalServiceCost already handles it
       );
     }
 
@@ -3423,6 +3433,11 @@ const DashboardPage = () => {
           ? (prevTotalServiceCost) => prevTotalServiceCost + 1.99 - 0.97 // Add third bureau then apply discount
           : (prevTotalServiceCost) => prevTotalServiceCost + financialFee - 800, // Add third bureau then apply discount
       );
+      setTotalveriNiara(
+        currencyCheck.toUpperCase() === "USD"
+          ? (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee - 800 // Add third bureau NGN equivalent then apply discount
+          : (prevTotalveriNiara) => prevTotalveriNiara + 0, // No change for NGN users as totalServiceCost already handles it
+      );
     } else if (
       prevNumberOfCheckedCheckboxes === 3 &&
       numberOfCheckedCheckboxes !== 3
@@ -3437,6 +3452,11 @@ const DashboardPage = () => {
         currencyCheck.toUpperCase() === "USD"
           ? (prevTotalServiceCost) => prevTotalServiceCost - 1.99 + 0.97 // Remove third bureau and remove discount
           : (prevTotalServiceCost) => prevTotalServiceCost - financialFee + 800, // Remove third bureau and remove discount
+      );
+      setTotalveriNiara(
+        currencyCheck.toUpperCase() === "USD"
+          ? (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee + 800 // Remove third bureau NGN equivalent and remove discount
+          : (prevTotalveriNiara) => prevTotalveriNiara - 0, // No change for NGN users as totalServiceCost already handles it
       );
     }
 
