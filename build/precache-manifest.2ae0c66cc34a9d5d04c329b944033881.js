@@ -1,10 +1,14 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
+<<<<<<<< HEAD:build/precache-manifest.2ae0c66cc34a9d5d04c329b944033881.js
 <<<<<<<< HEAD:build/precache-manifest.392f770ebf222728f9e08ae77ad015d8.js
     "revision": "f00f26a3bbbf8b196d7d59dbea114814",
 ========
     "revision": "968f2c11e8813bd0e5e54ae836eb3319",
 >>>>>>>> 5043eaf7f4301fbdfdc93f18b274b1423e820dcc:build/precache-manifest.2ae0c66cc34a9d5d04c329b944033881.js
+========
+    "revision": "f00f26a3bbbf8b196d7d59dbea114814",
+>>>>>>>> main:build/precache-manifest.392f770ebf222728f9e08ae77ad015d8.js
     "url": "/index.html"
   },
   {
@@ -12,11 +16,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/2.ec61a722.chunk.css"
   },
   {
+<<<<<<<< HEAD:build/precache-manifest.2ae0c66cc34a9d5d04c329b944033881.js
 <<<<<<<< HEAD:build/precache-manifest.392f770ebf222728f9e08ae77ad015d8.js
     "revision": "a1660687be1b45290240",
 ========
     "revision": "313e1950b30a58241f8d",
 >>>>>>>> 5043eaf7f4301fbdfdc93f18b274b1423e820dcc:build/precache-manifest.2ae0c66cc34a9d5d04c329b944033881.js
+========
+    "revision": "a1660687be1b45290240",
+>>>>>>>> main:build/precache-manifest.392f770ebf222728f9e08ae77ad015d8.js
     "url": "/static/css/main.6f9be82c.chunk.css"
   },
   {
@@ -28,6 +36,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/2.0320330e.chunk.js.LICENSE.txt"
   },
   {
+<<<<<<<< HEAD:build/precache-manifest.2ae0c66cc34a9d5d04c329b944033881.js
 <<<<<<<< HEAD:build/precache-manifest.392f770ebf222728f9e08ae77ad015d8.js
     "revision": "a1660687be1b45290240",
     "url": "/static/js/main.f24cfcb4.chunk.js"
@@ -35,6 +44,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "revision": "313e1950b30a58241f8d",
     "url": "/static/js/main.6a83a743.chunk.js"
 >>>>>>>> 5043eaf7f4301fbdfdc93f18b274b1423e820dcc:build/precache-manifest.2ae0c66cc34a9d5d04c329b944033881.js
+========
+    "revision": "a1660687be1b45290240",
+    "url": "/static/js/main.f24cfcb4.chunk.js"
+>>>>>>>> main:build/precache-manifest.392f770ebf222728f9e08ae77ad015d8.js
   },
   {
     "revision": "dfe3d817a9ac0c05d2c9",
