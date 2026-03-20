@@ -1450,7 +1450,7 @@ const DashboardPage = () => {
               currency: isUSD ? "USD" : "NGN",
               value: getFinalAmount(),
               transactionId: randomTransactionId,
-              paymentType: "WEB",
+              paymentType: "WALLET",
               items,
             });
             //!------------------- Do the Verification ------------------------//
