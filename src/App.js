@@ -57,7 +57,7 @@ import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 import { ThemeProvider } from "./components/ThemeProvider";
 
 function App() {
-  ReactGA.initialize("G-XSHE0JCXW1");
+  ReactGA.initialize("G-DDKNJYDMQ7");
   usePageTracking();
   useEffect(() => {
     CookieConsent.run({
