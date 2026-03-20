@@ -1217,6 +1217,43 @@ const DashboardPage = () => {
   }
   const randomTransactionId = generateTransactionId();
 
+  const buildItems = (formData, fees) => {
+    const items = [];
+
+    Object.keys(formData).forEach((field) => {
+      if (
+        typeof formData[field] === "string" &&
+        formData[field].trim() !== "" &&
+        fees[field] !== undefined
+      ) {
+        items.push({
+          item_id: field,
+          item_name: field,
+          price: fees[field],
+          quantity: 1,
+        });
+      }
+    });
+
+    return items;
+  };
+
+  const getFinalAmount = () => {
+    return userCurrency.toUpperCase() === "NGN" &&
+      currencyCheck.toUpperCase() === "NGN"
+      ? totalServiceCost
+      : currencyCheck.toUpperCase() === "USD" &&
+        userCurrency.toUpperCase() === "NGN"
+      ? totalveriNiara
+      : currencyCheck.toUpperCase() === "USD" &&
+        userCurrency.toUpperCase() === "USD"
+      ? totalServiceCost
+      : userCurrency.toUpperCase() === "NGN" &&
+        currencyCheck.toUpperCase() !== "NGN"
+      ? outsideNgWithNiaraPrice
+      : totalServiceCost;
+  };
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1381,6 +1418,41 @@ const DashboardPage = () => {
           const data = await response.json();
 
           if (response.ok && data.status === "success") {
+            //GA4
+            const formDataFees = {
+              nin: ninFee,
+              phone: phoneFee,
+              vin: vinVehicleFee,
+              license_number: vehicleFee,
+              rc: businessFee,
+              business_name: businessFee,
+              bvn: financialFee,
+              face: faceFee,
+            };
+
+            const formDataUsdFees = {
+              nin: ninUsdFee,
+              phone: phoneUsdFee,
+              vin: vinVehicleUsdFee,
+              license_number: vehicleUsdFee,
+              rc: businessUsdFee,
+              business_name: businessUsdFee,
+              bvn: financialUsdFee,
+              face: faceUsdFee,
+            };
+            
+            const isUSD = currencyCheck.toUpperCase() === "USD";
+            const fees = isUSD ? formDataUsdFees : formDataFees;
+
+            const items = buildItems(formData, fees);
+
+            logPurchase({
+              currency: isUSD ? "USD" : "NGN",
+              value: getFinalAmount(),
+              transactionId: randomTransactionId,
+              paymentType: "WEB",
+              items,
+            });
             //!------------------- Do the Verification ------------------------//
             handleSubmit();
             //!------------------- Do the Verification End ------------------------//
@@ -1614,6 +1686,20 @@ const DashboardPage = () => {
     }
   };
 
+  const logPurchase = ({
+    currency,
+    value,
+    transactionId,
+    paymentType,
+  }) => {
+    ReactGA.event("purchase", {
+      currency: currency,
+      value: value,
+      transaction_id: transactionId,
+      payment_type: paymentType,
+    });
+  };
+
   const handleMakePayment = () => {
     if (!checkboxCheckedConfirm) {
       return (
@@ -1652,6 +1738,7 @@ const DashboardPage = () => {
     let calculatedTotalnaira = 0;
 
     if (currencyCheck.toUpperCase() === "USD") {
+      
       Object.keys(formData).forEach((field) => {
         // Check if the field has data and if there's a corresponding fee
         if (
@@ -1833,6 +1920,7 @@ const DashboardPage = () => {
         console.error("Error fetching user profile:", error);
       });
   };
+
   const handleMakePaymentForLiveFace = () => {
     const formDataFees = {
       nin: ninFee + 100,

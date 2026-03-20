@@ -47,13 +47,16 @@ import ReactGA from "react-ga4";
 import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
+
 import usePageTracking from "./hooks/usePageTracking";
+import AnalyticsTracker from "./AnalyticsTracker";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
 
 function App() {
-  ReactGA.initialize("G-XSHE0JCXW1");
+  // ReactGA.initialize("G-XSHE0JCXW1");
+  ReactGA.initialize("G-DDKNJYDMQ7");
   usePageTracking();
   useEffect(() => {
     CookieConsent.run({
@@ -179,6 +182,7 @@ function App() {
 
   return (
     <Router>
+      <AnalyticsTracker />
       {/* <ConfigProvider
         theme={{
           token: {

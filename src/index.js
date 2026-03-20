@@ -8,6 +8,7 @@ import App from "./App";
 import InactivityDetector from "./InactivityDetector";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
