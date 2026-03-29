@@ -52,6 +52,7 @@ import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
+import ApiDocsPage from "./pages/apiDocs/apiDocsPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -246,6 +247,7 @@ function App() {
             <ProtectedRoute path="/business" component={Business} />
             <ProtectedRoute path="/financial" component={Financial} />
             <Route path="/faq" component={FaqPage} />
+            <Route path="/api-docs" component={ApiDocsPage} />
             <ProtectedRoute path="/profile" component={ProfilePage} />
             {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
             <ProtectedRoute path="/main-dashboard" component={MainDashboard} />

@@ -233,6 +233,9 @@ function Footer() {
                       Blog
                     </a>
                   </FooterLinkItems>
+                  <FooterLinkItems>
+                    <FooterLink to="/api-docs">API Documentation</FooterLink>
+                  </FooterLinkItems>
                 </div>
               </Col>
               <Col className="gutter-row" xs={12} sm={12} md={6} lg={6} xl={6}>
