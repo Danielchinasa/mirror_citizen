@@ -215,7 +215,7 @@ const LoginForm = (props) => {
           label: "Normal Signin Success",
           value: 1,
         });
-        history.push("/main-dashboard");
+        history.push("/sandbox");
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: response }); // Set error message
         Swal.fire({
@@ -475,7 +475,7 @@ const LoginForm = (props) => {
         <Spin spinning={loading} tip="Logging in...">
           <StyledForm onSubmit={handleSignIn}>
             <Heading $token={token}>Login</Heading>
-            <Space direction="vertical" style={{ width: "100%" }}>
+            {/*<Space direction="vertical" style={{ width: "100%" }}>
               <GoogleSignInButton
                 onClick={(e) => {
                   e.preventDefault();
@@ -514,10 +514,10 @@ const LoginForm = (props) => {
                 render={({ onClick }) => (
                   <AppleSignInButton onClick={onClick} />
                 )}
-              /> */}
+              /> *}
             </Space>
 
-            <Divider>OR</Divider>
+            <Divider>OR</Divider>*/}
             {formErrors.general && (
               <Alert
                 message={formErrors.general}
@@ -579,18 +579,18 @@ const LoginForm = (props) => {
 
             {/* // Google SSO button */}
 
-            <Subtitle
+            {/*<Subtitle
               color="light"
               $token={token}
               style={{ marginTop: "15px" }}
             >
-              Don’t have an account? {/* <BtnLink to="/sign-up"> */}
+              Don't have an account? {/* <BtnLink to="/sign-up"> *}
               <BtnLink to="/individual/sign-up/1">
                 <span style={{ color: "#09C93A", cursor: "pointer" }}>
                   Register here
                 </span>
               </BtnLink>
-            </Subtitle>
+            </Subtitle>*/}
             <Subtitle color="light" $token={token}>
               Forgot password?{" "}
               <span style={{ color: "#09C93A" }}>

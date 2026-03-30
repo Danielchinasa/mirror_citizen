@@ -277,7 +277,8 @@ const ApiDocsPage = () => {
                   fontFamily: "'Fira Code', 'Courier New', monospace",
                 }}
               >
-                https://&lt;host&gt;/api/v1/lookup
+                {/* https://&lt;host&gt;/api/v1/lookup */}
+                https://api.e-citizen.ng/api/v2
               </Text>
             </div>
           </Card>
