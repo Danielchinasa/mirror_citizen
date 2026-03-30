@@ -1,0 +1,21 @@
+.clickable-row {
+    cursor: pointer !important;
+  }
+  .custom-swal-button {
+    background-color: #0DC939 !important; /* Example color */
+    color: white; /* Text color */
+  }
+  .swal-wide{
+    width:auto !important;
+}
+
+.dark-mode {
+  background-color: #354138 !important;
+  color: white !important;
+}
+
+/* Dark mode */
+.custom-input{
+  background-color: #fff !important; /* Dark gray */
+  color: #000 !important; /* White */}
+

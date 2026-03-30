@@ -53,6 +53,7 @@ import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 import ApiDocsPage from "./pages/apiDocs/apiDocsPage";
+import SandboxPage from "./pages/sandbox/sandboxPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -228,6 +229,7 @@ function App() {
             <Route path="/password-confirm" component={PasswordResetConfirm} />
             <Route path="/contact" component={ContactPage} />
             <ProtectedRoute path="/dashboard" component={DashboardPage} />
+            <ProtectedRoute path="/sandbox" component={SandboxPage} />
             <Route path="/disclaimer" component={Disclaimer} />
             <ProtectedRoute path="/consent" component={Consent} />
             <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />

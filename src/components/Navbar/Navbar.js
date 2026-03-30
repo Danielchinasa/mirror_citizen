@@ -656,7 +656,7 @@ function Navbar() {
                     </NavBtnLink>
                   </NavItemBtn>
                   <NavItemBtn>
-                    <NavBtnLink to="/dashboard">
+                    <NavBtnLink to="/sandbox">
                       <MainButton
                         type="primary"
                         style={{
@@ -664,7 +664,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        Identity Verification
+                        Sandbox
                       </MainButton>
                     </NavBtnLink>
                   </NavItemBtn>
