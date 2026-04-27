@@ -62,14 +62,14 @@ const HeroSection = ({
                   Your{" "}
                   <span
                     style={{
-                      color: "#09C93A",
+                      color: "#C8A84E",
                       fontFamily: "Poppins",
                       fontWeight: "700",
                     }}
                   >
-                    one-stop shop
+                    trusted platform
                   </span>{" "}
-                  for identity verification
+                  for identity verification in Uganda
                 </Heading>
                 <Link to={isAuthenticated ? "/dashboard" : "/login"}>
                   <MainButton

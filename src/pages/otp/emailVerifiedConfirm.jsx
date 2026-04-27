@@ -54,7 +54,7 @@ const EmailVerifiedConfirm = () => {
           <CenterText>
             <InfoSec>
               <CheckCircleOutlined
-                style={{ fontSize: "92px", color: "#09C93A" }}
+                style={{ fontSize: "92px", color: "#C8A84E" }}
               />
               <Title>Email verified successfully</Title>
               <Subtitle color="light" $token={token}>

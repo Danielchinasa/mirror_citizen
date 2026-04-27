@@ -4,12 +4,12 @@ export const homeObjOne = {
   lightTopLine: true,
   lightText: true,
   lightTextDesc: true,
-  headline: "Your one-stop shop for identity verification",
+  headline: "Your trusted platform for identity verification in Uganda",
   description: "How it works",
   buttonLabel: "Verify Identity",
   imgStart: "",
   img: require("../../images/Hero_image_new.png"),
-  alt: "VIN_verification_platform_in_nigeria",
+  alt: "identity_verification_platform_in_uganda",
   start: "",
 };
 
@@ -20,9 +20,9 @@ export const homeObjTwo = {
   lightText: true,
   lightTextDesc: true,
   topLine: "Instant Setup",
-  headline: "Extremely quick onboarding process",
+  headline: "Quick and seamless onboarding process",
   description:
-    "Once you've joined, our team of specialist will reach out to you and get you set up in minutes.",
+    "Once you've registered, our team will get you set up and verified in minutes.",
   buttonLabel: "Learn More",
   imgStart: "",
   img: require("../../images/svg-2.svg"),
@@ -36,11 +36,10 @@ export const homeObjThree = {
   lightTopLine: false,
   lightText: false,
   lightTextDesc: false,
-  topLine: "Sarah Jeni",
+  topLine: "Trusted by Thousands",
   headline:
-    "Ultra helped me increase my revenue by over 3X in less than 3 months!",
-  description:
-    "Their team is wonderful! I can't believe I didn't start working with them earlier.",
+    "e-Citizen Uganda has helped us verify identities with confidence and speed.",
+  description: "A reliable platform that delivers accurate results every time.",
   buttonLabel: "View Case Study",
   imgStart: "start",
   img: require("../../images/profile.jpg"),
@@ -55,9 +54,9 @@ export const homeObjFour = {
   lightText: true,
   lightTextDesc: true,
   topLine: "Secure Database",
-  headline: "All your data is stored on our secure server",
+  headline: "All your data is stored on our secure servers",
   description:
-    "You will never have to worry about your information getting leaked. Our team of security experts will ensure your records are kept safe.",
+    "Your information is protected with enterprise-grade security. Our team ensures your records remain safe and confidential at all times.",
   buttonLabel: "Sign Up Now",
   imgStart: "start",
   img: require("../../images/svg-3.svg"),

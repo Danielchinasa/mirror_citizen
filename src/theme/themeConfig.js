@@ -1,15 +1,15 @@
 export const lightTheme = {
   token: {
-    colorPrimary: "#0DC939",
-    colorSuccess: "#52c41a",
-    colorWarning: "blue",
-    colorError: "blue",
-    colorInfo: "blue",
+    colorPrimary: "#C8A84E",
+    colorSuccess: "#C8A84E",
+    colorWarning: "#B8292F",
+    colorError: "#B8292F",
+    colorInfo: "#C8A84E",
     colorTextBase: "rgba(0, 0, 0, 0.85)",
     bgContainer: "#ffffff",
     btnBackground: "#ffffff",
-    headingTextColor: "#344138",
-    footerBackground: "#354138",
+    headingTextColor: "#1C1C1C",
+    footerBackground: "#1C1C1C",
     text: "#000",
     text2: "#CCCCCC",
     text3: "#fff",
@@ -18,7 +18,7 @@ export const lightTheme = {
   },
   components: {
     Button: {
-      primaryShadow: "0 2px 0 rgba(5, 48, 89, 0.045)",
+      primaryShadow: "0 2px 0 rgba(0, 0, 0, 0.06)",
     },
     Card: {
       padding: 20,
@@ -28,16 +28,16 @@ export const lightTheme = {
 
 export const darkTheme = {
   token: {
-    colorPrimary: "#0DC939",
-    colorSuccess: "red",
-    colorWarning: "red",
-    colorError: "red",
-    colorInfo: "#354138",
+    colorPrimary: "#C8A84E",
+    colorSuccess: "#B8292F",
+    colorWarning: "#B8292F",
+    colorError: "#B8292F",
+    colorInfo: "#1C1C1C",
     colorTextBase: "rgba(255, 255, 255, 0.85)",
-    bgContainer: "#354138",
-    btnBackground: "#354138",
+    bgContainer: "#1C1C1C",
+    btnBackground: "#1C1C1C",
     headingTextColor: "#ffffff",
-    footerBackground: "#0DC939",
+    footerBackground: "#C8A84E",
     text: "#ffffff",
     text2: "#CCCCCC",
     text3: "#000",
@@ -46,7 +46,7 @@ export const darkTheme = {
   },
   components: {
     Button: {
-      primaryShadow: "0 2px 0 rgba(0, 0, 0, 0.045)",
+      primaryShadow: "0 2px 0 rgba(0, 0, 0, 0.06)",
     },
     Card: {
       padding: 20,

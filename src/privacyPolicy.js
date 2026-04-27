@@ -20,7 +20,7 @@ const privacyPolicy = `
 </ul>
 <h6>Purpose of Data Collected and Processed</h6>
 <p>e-citizenTM collects Personal Data for only for the purposes identified here and for which Consent has been obtained.
-In line with the provisions of the NDPA, processing of Personal Data for e-citizenTM shall be lawful if at least one of the following applies:</p>
+In line with the provisions of the DPA, processing of Personal Data for e-citizenTM shall be lawful if at least one of the following applies:</p>
 <ul>
   <li>the Data Subject has given Consent to the processing of his/her Personal Data for one or more specific purposes,</li>
   <li>the processing is necessary for the performance of an agreement to which the Data Subject is party or in order to take steps at the request of the Data Subject prior to entering into an agreement,</li>
@@ -46,7 +46,7 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
   <li>an express request for deletion by the Data Subject; except where such Data Subject is under an investigation or under a subsisting contract which may require further processing or where the data relates to criminal records; or</li>
   <li>whether the Company has another lawful basis for retaining that information beyond the period for which it is necessary to serve the original purpose.</li>
 </ul>
-<p>Notwithstanding the foregoing and pursuant to the NDPA, the Company shall be entitled to retain and process Personal Data for archiving, scientific research, historical research, or statistical purposes for public interest.</p>
+<p>Notwithstanding the foregoing and pursuant to the DPA, the Company shall be entitled to retain and process Personal Data for archiving, scientific research, historical research, or statistical purposes for public interest.</p>
 
 <p>The Company would forthwith delete Personal Data in the Company’s possession where such Personal Data is no longer required for e-citizenTM access or in line with the Company’s Retention Policy, provided no law or regulation being in force requires the Company to retain such Personal Data.</p>
 <p>Personal  Data from  the  NIMC  system retrieved  for  transmission  as  part  of  an e-citizen™ verification process shall be retained for a maximum of 24 hours while awaiting the Data Subject’s consent, and a maximum of a further 24 hours after consent has been granted, during which time the e-citizen™ user who requested the data will be able to access </p>
@@ -84,7 +84,7 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
 </ul>
 <h6>Transfer of Personal data to Foreign Country</h6>
 <p>
-Transfer of Personal Data out of Nigeria would be in accordance with the provisions of the NDPA. The Company will record the basis for any transfer and take all necessary steps to ensure that the Personal Data is transmitted in a safe and secure manner. Details of the protection given to your information when it is transferred outside Nigeria shall be provided to you upon request.</p>
+Transfer of Personal Data out of Uganda would be in accordance with the provisions of the Data Protection and Privacy Act. The Company will record the basis for any transfer and take all necessary steps to ensure that the Personal Data is transmitted in a safe and secure manner. Details of the protection given to your information when it is transferred outside Uganda shall be provided to you upon request.</p>
 <h6>Changes to the Policy </h6>
 <p>The Company reserves the right to change, amend or alter this Policy at any point in time. If we amend this Policy, we will provide you with the updated version.  </p>
 <h6>Glossary </h6>
@@ -96,8 +96,8 @@ Transfer of Personal Data out of Nigeria would be in accordance with the provisi
 <p>means a person or organization that processes Personal Data on behalf and on instructions of the Company.  </p>
 <h6>Data Subject</h6>
 <p>means any person who can be identified, directly or indirectly, by reference to an identification number or to one or more factors specific to his physical, physiological, mental, economic, cultural, or social identity.</p>
-<h6>NDPA</h6>
-<p>means the Nigeria Data Protection Act, 2023. </p>
+<h6>DPA</h6>
+<p>means the Uganda Data Protection and Privacy Act, 2019. </p>
 <h6>Personal Data</h6>
 <p>means any information relating to an identified or identifiable natural person (‘Data Subject’); an identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person; It can be anything from a name, address, a photo, an email address, bank details, posts on social networking websites, medical information, and other unique identifier such as but not limited to MAC address, IP address, IMEI number, IMSI number, SIM, Personal Identifiable Information (PII) and others. </p>
 

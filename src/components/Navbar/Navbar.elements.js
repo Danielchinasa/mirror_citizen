@@ -72,7 +72,7 @@ export const NavMenu = styled.ul`
     top: 80px;
     opacity: 1;
     transition: all 0.5s ease;
-    background-color: #101522;
+    background-color: #1c1c1c;
     padding-left: 0px !important;
     left: ${({ click }) => (click ? 0 : "-100%")};
   }
@@ -110,7 +110,7 @@ export const NavLinks = styled(Link)`
     display: table;
 
     &:hover {
-      color: #4b59f7;
+      color: #c8a84e;
       transition: all 0.3s ease;
     }
   }

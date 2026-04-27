@@ -32,7 +32,7 @@ const InactivityDetector = () => {
           text: "We will log you out in 10 seconds if no response",
           icon: "warning",
           showCancelButton: true,
-          cancelButtonColor: "#0DC939",
+          cancelButtonColor: "#C8A84E",
           confirmButtonText: "Logout",
           confirmButtonColor: "#BFBFBF",
           cancelButtonText: "Stay logged in",

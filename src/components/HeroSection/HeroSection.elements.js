@@ -84,7 +84,7 @@ export const ImgWrapper = styled.div`
 `;
 
 export const TopLine = styled.div`
-  color: ${({ lightTopLine }) => (lightTopLine ? "#a9b3c1" : "#4B59F7")};
+  color: ${({ lightTopLine }) => (lightTopLine ? "#a9b3c1" : "#C8A84E")};
   font-size: 18px;
   line-height: 16px;
   font-weight: 700;
@@ -117,8 +117,8 @@ export const Subtitle = styled.p`
   line-height: 24px;
   color: ${(props) =>
     props.color === "primary"
-      ? "#09C93A"
+      ? "#C8A84E"
       : props.color === "light"
-      ? "#a9b3c1"
-      : "#1c2237"};
+        ? "#a9b3c1"
+        : "#1c2237"};
 `;

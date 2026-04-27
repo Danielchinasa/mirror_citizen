@@ -549,7 +549,7 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: "green",
+                color: "#C8A84E",
                 fontWeight: "bold",
               }}
             >
@@ -956,7 +956,7 @@ const MainDashboard = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#C8A84E",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -1010,7 +1010,7 @@ const MainDashboard = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#C8A84E",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1035,7 +1035,7 @@ const MainDashboard = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#C8A84E",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -1336,9 +1336,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #0DC939 solid",
+                      border: "3px #C8A84E solid",
                       borderRadius: "12px",
-                      background: "#EBFFF0",
+                      background: "#FFF8E7",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1365,9 +1365,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #0DC939 solid",
+                      border: "3px #C8A84E solid",
                       borderRadius: "12px",
-                      background: "#EBFFF0",
+                      background: "#FFF8E7",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1394,9 +1394,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #0DC939 solid",
+                      border: "3px #C8A84E solid",
                       borderRadius: "12px",
-                      background: "#EBFFF0",
+                      background: "#FFF8E7",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1432,7 +1432,7 @@ const MainDashboard = () => {
                   width={300}
                 >
                   <Title level={5}> Wallet Balance:</Title>
-                  <Title level={3} style={{ color: "#0DC939" }}>
+                  <Title level={3} style={{ color: "#C8A84E" }}>
                     {userCurrency.toUpperCase() === "NGN"
                       ? formatToNaira(userBalance)
                       : `${formatToDollar(userBalance)}`}

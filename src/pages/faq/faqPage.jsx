@@ -15,10 +15,10 @@ const FaqPage = () => {
       title: "Does e-Citizen comply with privacy standards?",
       content: (
         <p>
-          Yes, the platform is consent‑driven and adheres to Nigeria’s Nigeria
-          Data Protection Act (NDPA), General Data Protection Regulation (GDPR),
-          and specific agency regulations. Identity verification requests
-          require user consent.
+          Yes, the platform is consent‑driven and adheres to Uganda's Data
+          Protection and Privacy Act (DPA), General Data Protection Regulation
+          (GDPR), and specific agency regulations. Identity verification
+          requests require user consent.
         </p>
       ),
     },
@@ -27,13 +27,13 @@ const FaqPage = () => {
       title: "What data requires consent?",
       content: (
         <p>
-          ‘Personal Data’ which is defined under the Nigerian Data Protection
-          Act (NDPA) as ‘any information relating to an individual, who can be
-          identified or is identifiable, directly or indirectly, by reference to
-          an identifier such as a name, an identification number, location data,
-          an online identifier or one or more factors specific to the physical,
-          physiological, genetic, psychological, cultural, social, or economic
-          identity of that individual.’
+          'Personal Data' which is defined under the Ugandan Data Protection and
+          Privacy Act (DPA) as 'any information relating to an individual, who
+          can be identified or is identifiable, directly or indirectly, by
+          reference to an identifier such as a name, an identification number,
+          location data, an online identifier or one or more factors specific to
+          the physical, physiological, genetic, psychological, cultural, social,
+          or economic identity of that individual.’
         </p>
       ),
     },
@@ -57,9 +57,9 @@ const FaqPage = () => {
       content: (
         <>
           <p>
-            Certain information is considered private according to GDPR and
-            NDPA, and this data requires your express consent to be viewed by a
-            third party. Your privacy is important to us!
+            Certain information is considered private according to GDPR and DPA,
+            and this data requires your express consent to be viewed by a third
+            party. Your privacy is important to us!
           </p>
           <p>
             Person Identity Profile: The consent request is sent to the
@@ -78,7 +78,7 @@ const FaqPage = () => {
       content: (
         <p>
           The National Identification Number (NIN) is an 11-digit unique number
-          issued to all Nigerians and Legal Residents. The NIN links an
+          issued to all Ugandans and Legal Residents. The NIN links an
           individual’s identity across the different agency databases; providing
           it for verification enables a robust background check.
         </p>
@@ -89,7 +89,7 @@ const FaqPage = () => {
       title: "Why do I need to pay before verifying a NIN?",
       content: (
         <p>
-          e-Citizen™.ng is a premium service because we put in international
+          e-Citizen™ is a premium service because we put in international
           standards and best practices to integrate data from multiple agencies
           who charge for access.
         </p>
@@ -107,18 +107,18 @@ const FaqPage = () => {
     },
     {
       key: "8",
-      title: "Is my verification result saved on e-Citizen™.ng website?",
+      title: "Is my verification result saved on e-Citizen™ website?",
       content: (
         <>
           <p>
             Verification results are temporarily stored to the user’s account so
             they can view their search history later. However, search results
             will be deleted after the data retention period as specified in our
-            data retention policy at e-citizen.ng.
+            data retention policy at e-citizen.ug.
           </p>
           <p>
             If your question is not answered above, please feel free to write us
-            from our contact page or send an email to info@e‑citizen.ng
+            from our contact page or send an email to info@e‑citizen.ug
           </p>
         </>
       ),
@@ -140,7 +140,7 @@ const FaqPage = () => {
       content: (
         <p>
           Please check your spam/junk folder. If still not received, email
-          info@e-citizen.ng or WhatsApp +234 (0) 704 008 2933.
+          info@e-citizen.ug or WhatsApp +256 (0) 700 000 000.
           <p>
             Note: Verification emails are only sent to users who provided an
             email address during registration. If you did not input an email,
@@ -154,9 +154,8 @@ const FaqPage = () => {
       title: "Is my personal information secure?",
       content: (
         <p>
-          Yes. Your data is protected by the NDPA and GDPR and accessed only
-          with your consent. You can review our full privacy policy on our
-          website.
+          Yes. Your data is protected by the DPA and GDPR and accessed only with
+          your consent. You can review our full privacy policy on our website.
         </p>
       ),
     },
@@ -165,7 +164,7 @@ const FaqPage = () => {
       title: "I paid but got nothing",
       content: (
         <p>
-          Send an email to info@e‑citizen.ng with the payment reference, amount,
+          Send an email to info@e‑citizen.ug with the payment reference, amount,
           and the service paid for.
         </p>
       ),
@@ -196,7 +195,7 @@ const FaqPage = () => {
     },
     {
       key: "2",
-      title: "Do I need a credit score in Nigeria?",
+      title: "Do I need a credit score in Uganda?",
       content: (
         <p>
           Yes. As long as you are making transactions and using credit
@@ -210,7 +209,7 @@ const FaqPage = () => {
     },
     {
       key: "3",
-      title: "Who can use my credit score in Nigeria?",
+      title: "Who can use my credit score in Uganda?",
       content: (
         <p>
           Creditors, landlords, employees, banks, and credit organizations can
@@ -410,7 +409,7 @@ const FaqPage = () => {
         <p>
           A vehicle history report chronicles the life of a vehicle abroad, and
           contains information such as Accident History, Actual Mileage,
-          Maintenance History, Date of Shipping to Nigeria or another
+          Maintenance History, Date of Shipping to Uganda or another
           destination, type, number of owners, etc.
         </p>
       ),
@@ -420,9 +419,9 @@ const FaqPage = () => {
       title: "What is a Vehicle Registration Number Search",
       content: (
         <p>
-          This service is uses a Nigerian vehicle registration number to verify
-          if the vehicle is registered in Nigeria, and whether or not a vehicle
-          has been reported as stolen or missing.
+          This service uses a Ugandan vehicle registration number to verify if
+          the vehicle is registered in Uganda, and whether or not a vehicle has
+          been reported as stolen or missing.
         </p>
       ),
     },

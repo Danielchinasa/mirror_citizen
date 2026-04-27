@@ -38,7 +38,7 @@ const AppLogout = ({ children }) => {
         timerProgressBar: true,
         showCancelButton: false,
         showConfirmButton: true,
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#C8A84E",
         confirmButtonText: "Stay logged in",
         allowOutsideClick: false,
         allowEscapeKey: false,

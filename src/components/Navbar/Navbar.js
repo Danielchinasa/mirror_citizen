@@ -277,7 +277,7 @@ function Navbar() {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#C8A84E",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -317,7 +317,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#C8A84E",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -342,7 +342,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#C8A84E",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -371,7 +371,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#C8A84E",
       });
       return;
     }
@@ -429,7 +429,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#C8A84E",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -451,7 +451,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#C8A84E",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -505,7 +505,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#C8A84E",
           });
         }
       } else if (walletPaymentMethod === 3) {
@@ -549,7 +549,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#C8A84E",
             });
           }
         } catch (error) {
@@ -568,7 +568,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#C8A84E",
           });
         }
       }
@@ -589,7 +589,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#C8A84E",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -772,7 +772,7 @@ function Navbar() {
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
-                          <span style={{ color: "#0DC939" }}>
+                          <span style={{ color: "#C8A84E" }}>
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
@@ -788,7 +788,7 @@ function Navbar() {
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
-                          <Title level={3} style={{ color: "#0DC939" }}>
+                          <Title level={3} style={{ color: "#C8A84E" }}>
                             {userCurrency.toUpperCase() === "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}
@@ -982,7 +982,7 @@ function Navbar() {
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
-                          <span style={{ color: "#0DC939" }}>
+                          <span style={{ color: "#C8A84E" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
@@ -999,7 +999,7 @@ function Navbar() {
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
-                          <Title level={3} style={{ color: "#0DC939" }}>
+                          <Title level={3} style={{ color: "#C8A84E" }}>
                             {userCurrency.toUpperCase() === "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}

@@ -21,7 +21,7 @@ export const Footer1Container = styled.div`
 `;
 
 export const FooterContainer = styled.div`
-  background-color: #354138;
+  background-color: #1c1c1c;
   padding: 0 0 2rem 0;
   display: flex;
   flex-direction: column;
@@ -41,8 +41,9 @@ export const FooterSubscription = styled.section`
 `;
 
 export const FooterSubHeading = styled.p`
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
   margin-bottom: 24px;
   font-size: 24px;
 `;
@@ -148,7 +149,7 @@ export const FooterLink = styled(Link)`
   margin-bottom: 0.5rem;
 
   &:hover {
-    color: #0467fb;
+    color: #c8a84e;
     transition: 0.3s ease-out;
     cursor: pointer;
   }
@@ -182,7 +183,7 @@ export const SocialLogo = styled(Link)`
   margin-bottom: 16px;
 
   &:hover {
-    color: #0467fb;
+    color: #c8a84e;
     transition: 0.3s ease-out;
   }
 `;

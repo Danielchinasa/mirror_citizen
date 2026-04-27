@@ -50,7 +50,7 @@ function Footer() {
 
   return (
     <>
-      <div style={{ backgroundColor: isDark ? "#212121" : "#354138" }}>
+      <div style={{ backgroundColor: isDark ? "#212121" : "#1C1C1C" }}>
         <div class="container text-left">
           <div class="row" style={{ borderBottom: "1px solid #fff" }}>
             <Row>
@@ -189,7 +189,7 @@ function Footer() {
                       <FaFacebookF size={20} />
                     </a> */}
                     <a
-                      href="https://www.instagram.com/ecitizenng/"
+                      href="https://www.instagram.com/ecitizen_ug/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: "inherit", cursor: "pointer" }}
@@ -197,7 +197,7 @@ function Footer() {
                       <FaInstagram size={20} />
                     </a>
                     <a
-                      href="https://x.com/ecitizenng"
+                      href="https://x.com/ecitizen_ug"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: "inherit", cursor: "pointer" }}
@@ -221,7 +221,7 @@ function Footer() {
                   </FooterLinkItems>
                   <FooterLinkItems>
                     <a
-                      href="https://blog.e-citizen.ng/"
+                      href="https://blog.e-citizen.ug/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -290,7 +290,7 @@ function Footer() {
         <SocialMedia>
           <SocialMediaWrap>
             <WebsiteRights>
-              © e-citizen {date.getFullYear()}. All Rights Reserved
+              © e-citizen Uganda {date.getFullYear()}. All Rights Reserved
             </WebsiteRights>
           </SocialMediaWrap>
         </SocialMedia>

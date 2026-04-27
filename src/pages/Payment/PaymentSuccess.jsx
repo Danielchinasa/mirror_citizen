@@ -74,7 +74,7 @@ const PaymentSuccess = () => {
       }}
     >
       <Result
-        icon={<CheckCircleOutlined style={{ color: "#52c41a" }} />}
+        icon={<CheckCircleOutlined style={{ color: "#C8A84E" }} />}
         status="success"
         title={<span style={{ color: text }}>Payment Successful!</span>}
         subTitle={
@@ -94,8 +94,8 @@ const PaymentSuccess = () => {
             key="dashboard"
             onClick={handleGoToDashboard}
             style={{
-              backgroundColor: "#0DC939",
-              borderColor: "#0DC939",
+              backgroundColor: "#C8A84E",
+              borderColor: "#C8A84E",
             }}
           >
             Go to Dashboard

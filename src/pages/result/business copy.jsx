@@ -160,7 +160,7 @@ const Business = () => {
     <Container $token={token}>
       <InfoSec>
         <Link to="/main-dashboard">
-          <p style={{ color: "#0DC939", cursor: "pointer" }}>Go back</p>
+          <p style={{ color: "#C8A84E", cursor: "pointer" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>
           <Heading4>Business Verification Result</Heading4>

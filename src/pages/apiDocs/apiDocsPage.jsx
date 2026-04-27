@@ -42,7 +42,7 @@ const CodeBlock = ({ children }) => {
 
 const MethodBadge = ({ method }) => {
   const colorMap = {
-    POST: "#09C93A",
+    POST: "#C8A84E",
     GET: "#1890ff",
     PUT: "#faad14",
     DELETE: "#f5222d",
@@ -125,7 +125,7 @@ const EndpointCard = ({
           code
           style={{
             fontSize: "14px",
-            color: isDark ? "#8fd49e" : "#354138",
+            color: isDark ? "#E0CC8A" : "#1C1C1C",
             background: "transparent",
             border: "none",
             fontFamily: "'Fira Code', 'Courier New', monospace",
@@ -154,7 +154,7 @@ const EndpointCard = ({
       >
         <Panel
           header={
-            <Text strong style={{ color: isDark ? "#8fd49e" : "#09C93A" }}>
+            <Text strong style={{ color: isDark ? "#E0CC8A" : "#C8A84E" }}>
               Request Body
             </Text>
           }
@@ -165,7 +165,7 @@ const EndpointCard = ({
         {responses.map((resp, index) => (
           <Panel
             header={
-              <Text strong style={{ color: isDark ? "#8fd49e" : "#09C93A" }}>
+              <Text strong style={{ color: isDark ? "#E0CC8A" : "#C8A84E" }}>
                 {resp.label}
               </Text>
             }
@@ -181,7 +181,7 @@ const EndpointCard = ({
 
 const ApiDocsPage = () => {
   const { isDark } = useTheme();
-  const iconStyle = { fontSize: "20px", color: "#09C93A" };
+  const iconStyle = { fontSize: "20px", color: "#C8A84E" };
 
   return (
     <InfoSec>
@@ -196,12 +196,12 @@ const ApiDocsPage = () => {
               marginBottom: "16px",
             }}
           >
-            <ApiOutlined style={{ fontSize: "36px", color: "#09C93A" }} />
+            <ApiOutlined style={{ fontSize: "36px", color: "#C8A84E" }} />
             <Title
               style={{
                 margin: 0,
                 fontFamily: "Poppins",
-                color: isDark ? "#fff" : "#354138",
+                color: isDark ? "#fff" : "#1C1C1C",
               }}
             >
               API Documentation
@@ -246,14 +246,14 @@ const ApiDocsPage = () => {
             <CodeOutlined
               style={{
                 fontSize: "28px",
-                color: "#09C93A",
+                color: "#C8A84E",
                 marginBottom: "12px",
               }}
             />
             <Title
               level={5}
               style={{
-                color: isDark ? "#fff" : "#354138",
+                color: isDark ? "#fff" : "#1C1C1C",
                 fontFamily: "Poppins",
               }}
             >
@@ -271,7 +271,7 @@ const ApiDocsPage = () => {
                 code
                 style={{
                   fontSize: "14px",
-                  color: isDark ? "#8fd49e" : "#354138",
+                  color: isDark ? "#E0CC8A" : "#1C1C1C",
                   background: "transparent",
                   border: "none",
                   fontFamily: "'Fira Code', 'Courier New', monospace",
@@ -297,14 +297,14 @@ const ApiDocsPage = () => {
             <SafetyCertificateOutlined
               style={{
                 fontSize: "28px",
-                color: "#09C93A",
+                color: "#C8A84E",
                 marginBottom: "12px",
               }}
             />
             <Title
               level={5}
               style={{
-                color: isDark ? "#fff" : "#354138",
+                color: isDark ? "#fff" : "#1C1C1C",
                 fontFamily: "Poppins",
               }}
             >
@@ -330,7 +330,7 @@ const ApiDocsPage = () => {
                 code
                 style={{
                   fontSize: "14px",
-                  color: isDark ? "#8fd49e" : "#354138",
+                  color: isDark ? "#E0CC8A" : "#1C1C1C",
                   background: "transparent",
                   border: "none",
                   fontFamily: "'Fira Code', 'Courier New', monospace",
@@ -356,14 +356,14 @@ const ApiDocsPage = () => {
             <WalletOutlined
               style={{
                 fontSize: "28px",
-                color: "#09C93A",
+                color: "#C8A84E",
                 marginBottom: "12px",
               }}
             />
             <Title
               level={5}
               style={{
-                color: isDark ? "#fff" : "#354138",
+                color: isDark ? "#fff" : "#1C1C1C",
                 fontFamily: "Poppins",
               }}
             >
@@ -394,7 +394,7 @@ const ApiDocsPage = () => {
           level={2}
           style={{
             fontFamily: "Poppins",
-            color: isDark ? "#fff" : "#354138",
+            color: isDark ? "#fff" : "#1C1C1C",
             marginBottom: "24px",
           }}
         >
@@ -440,7 +440,7 @@ const ApiDocsPage = () => {
   "dateOfBirth": "1990-01-01",
   "phoneNumber": "08012345678",
   "gender": "Male",
-  "address": "Abuja, Nigeria",
+  "address": "Kampala, Uganda",
   "photo": "base64EncodedImageString"
 }`,
                 },
@@ -523,7 +523,7 @@ const ApiDocsPage = () => {
   "data": {
     "phone_number": "08012345678",
     "network": "MTN",
-    "country": "Nigeria",
+    "country": "Uganda",
     "is_active": true,
     "line_type": "mobile"
   },
@@ -730,7 +730,7 @@ const ApiDocsPage = () => {
       "vin": "1HGCM82633A123456",
       "stolen": true,
       "reported_date": "2024-11-15",
-      "reporting_country": "Nigeria"
+      "reporting_country": "Uganda"
     }
   ],
   "pdfUrl": "https://your-domain.com/files/vin-report-44556.pdf"

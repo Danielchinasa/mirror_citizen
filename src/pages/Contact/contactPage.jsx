@@ -40,10 +40,10 @@ const ContactPage = () => {
                   <MailOutlined
                     style={{
                       fontSize: "22px",
-                      color: "#09c93a",
+                      color: "#C8A84E",
                     }}
                   />
-                  <h5> info@e-citizen.ng</h5>
+                  <h5> info@e-citizen.ug</h5>
                 </Space>
               </Col>
             </Row>
@@ -106,7 +106,7 @@ const ContactPage = () => {
             <h1 style={{ color: text }}>Contact Us</h1>
             <p>
               Our Email Address:{" "}
-              <a href="mailto:info@e-citizen.ng">info@e-citizen.ng</a>
+              <a href="mailto:info@e-citizen.ug">info@e-citizen.ug</a>
             </p>
             <p>
               Feel free to reach out to us via email for any inquiries or
