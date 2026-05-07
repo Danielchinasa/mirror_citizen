@@ -4236,10 +4236,11 @@ const DashboardPage = () => {
                                 }}
                               >
                                 Vehicle History (VIN)
-                                <img src={clearvin} alt="" width={150} />
+                                {/* <img src={clearvin} alt="" width={150} /> */}
                               </Radio>
                               <Radio
                                 value="license_number"
+                                disabled
                                 size="large"
                                 onClick={() => {
                                   trackEvent({
@@ -4957,13 +4958,13 @@ const DashboardPage = () => {
                               }}
                             />
 
-                            <Checkbox
+                            {/* <Checkbox
                               onChange={handleCheckboxChange}
                               checked={isChecked}
                             >
                               Also search Stolen Vehicles database? (Extra
                               charge)
-                            </Checkbox>
+                            </Checkbox> */}
                           </div>
                         )}
                         {/* {selectedForm === "license_number" && ( */}

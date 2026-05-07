@@ -51,6 +51,9 @@ const Vehicle = () => {
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("-");
+  const [fuelType, setFuelType] = useState("-");
+  const [transmission, setTransmission] = useState("-");
   const [vin, setVin] = useState("-");
   const [year, setYear] = useState("-");
   const [madeIn, setMadeIn] = useState("-");
@@ -91,7 +94,10 @@ const Vehicle = () => {
         const vehicleData = postResponse.data.data;
 
         setLoading(false);
-        const vinSpec = vehicleData.vin || "-";
+        const vinSpec = vehicleData.vehicleName || "-";
+        const name = vehicleData.vin || "-";
+        const fuelType = vehicleData.fuelType || "-";
+        const transmission = vehicleData.transmission || "-";
         const year = vehicleData.year || "-";
         const madein = vehicleData.madeIn || "-";
         const model = vehicleData.model || "-";
@@ -104,6 +110,9 @@ const Vehicle = () => {
         const image = vehicleData.previewImageURL || "-";
         const pdfUri = vehicleData.pdfUri || "-";
         const stolen = vehicleData.stolen;
+        setName(name);
+        setFuelType(fuelType);
+        setTransmission(transmission);
         setVin(vinSpec);
         setYear(year);
         setMadeIn(madein);
@@ -174,12 +183,12 @@ const Vehicle = () => {
                 <div>
                   <Text>Vehicle History Profile </Text>
                   <RightOutlined />
-                  <Text>Vehicle History (VIN)</Text>
+                  <Text>Vehicle History (VIN - {`${vin}`})</Text>
                   {/* <RightOutlined />
                 <Text>Clear VIN</Text> */}
                 </div>
               </div>
-              <Divider />
+              {/* <Divider />
               <div
                 style={{
                   display: "flex",
@@ -190,8 +199,6 @@ const Vehicle = () => {
               >
                 <div>
                   <Text>CLEAR VIN PREVIEW REPORT</Text>
-                  {/* <RightOutlined />
-                <Text>Clear VIN</Text> */}
                 </div>
 
                 <div>
@@ -213,7 +220,7 @@ const Vehicle = () => {
                     <DownloadOutlined /> Download PDF for Full Report
                   </a>
                 </div>
-              </div>
+              </div> */}
 
               <Divider />
               <Row gutter={16}>
@@ -232,7 +239,7 @@ const Vehicle = () => {
                   {/* )} */}
                 </Col>
                 <Col span={6}>
-                  {renderDetail(<FaTeethOpen />, "Vin", `${vin}`)}
+                  {renderDetail(<FaTeethOpen />, "Name", `${vin}`)}
                   <Divider />
 
                   {renderDetail(<FaCalendarAlt />, "Year", `${year}`)}
@@ -251,10 +258,10 @@ const Vehicle = () => {
                 <Col span={6}>
                   {renderDetail(<FaCarAlt />, "Make", `${make}`)}
                   <Divider />
-                  {renderDetail(<FaCarAlt />, "Style", `${style}`)}
+                  {renderDetail(<FaCarAlt />, "Fuel Type", `${fuelType}`)}
                 </Col>
                 <Divider />
-                <Col span={6}>
+                {/* <Col span={6}>
                   {renderDetail(
                     <LiaFileInvoiceDollarSolid />,
                     "Msrp",
@@ -271,19 +278,19 @@ const Vehicle = () => {
                   {renderDetail(<TbSteeringWheel />, "Steering Type", `-`)}
                   <Divider />
                   {renderDetail(<GiCarWheel />, "Tires", `-`)}
-                </Col>
+                </Col> */}
                 <Col span={6}>
-                  {renderDetail(<GiChemicalTank />, "Tank Size", `-`)}
-                  <Divider />
-                  {renderDetail(<LuCar />, "Wheel drive", `-`)}
+                  {renderDetail(<GiChemicalTank />, "Transmission", `${transmission}`)}
+                  {/* <Divider />
+                  {renderDetail(<LuCar />, "Wheel drive", `-`)} */}
                 </Col>
-                <Col span={6}>
+                {/* <Col span={6}>
                   {renderDetail(<AiOutlineColumnWidth />, "Overall Width", `-`)}
                   <Divider />
                   {renderDetail(<IoMdSpeedometer />, "Highway Mileage", `-`)}
-                </Col>
+                </Col> */}
               </Row>
-              <Divider />
+              {/* <Divider /> */}
               {/* <div>
               <a
                 href={`https://e-citizen.ng:8444${pdfUri}`}
@@ -300,7 +307,7 @@ const Vehicle = () => {
                 Download PDF for Full Report
               </a>
             </div> */}
-              {stolen === null ? (
+              {/* {stolen === null ? (
                 ""
               ) : (
                 <div>
@@ -383,7 +390,7 @@ const Vehicle = () => {
                     </div>
                   </Col>
                 </Row>
-              )}
+              )} */}
             </DynamicCard>
           </Spin>
         </InfoSec>
