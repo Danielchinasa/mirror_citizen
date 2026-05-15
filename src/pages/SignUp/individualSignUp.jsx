@@ -323,7 +323,7 @@ const IndividualSignUp = () => {
         background: bgContainer,
         color: text,
         title: "Error",
-        text: response,
+        text: "Sign up failed. Please try again.",
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",

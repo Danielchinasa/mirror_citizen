@@ -140,7 +140,7 @@ const FaqPage = () => {
       content: (
         <p>
           Please check your spam/junk folder. If still not received, email
-          info@e-citizen.ng or WhatsApp +234 (0) 704 008 2933.
+          info@e-citizen.ng
           <p>
             Note: Verification emails are only sent to users who provided an
             email address during registration. If you did not input an email,

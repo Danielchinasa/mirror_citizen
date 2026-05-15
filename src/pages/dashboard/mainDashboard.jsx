@@ -1044,6 +1044,95 @@ const MainDashboard = () => {
       return;
     }
   };
+
+  // Auto-close FlutterWave modal when payment reaches a terminal state
+  useEffect(() => {
+    if (!modal1Open || !transactionRef) return;
+    const TERMINAL = [
+      "successful",
+      "success",
+      "failed",
+      "abandoned",
+      "cancelled",
+      "error",
+      "reversed",
+    ];
+    let handled = false;
+    const intervalId = setInterval(async () => {
+      if (handled) return;
+      try {
+        const response = await fetch(
+          `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+          },
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const status = (data?.data?.status || "").toLowerCase();
+          if (TERMINAL.includes(status) || data?.status === "success") {
+            handled = true;
+            handleModalOk();
+          }
+        } else {
+          handled = true;
+          handleModalOk();
+        }
+      } catch (e) {
+        // Network error – keep polling
+      }
+    }, 4000);
+    return () => clearInterval(intervalId);
+  }, [modal1Open, transactionRef]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-close Paystack modal when payment reaches a terminal state
+  useEffect(() => {
+    if (!openPaystackModal || !paystackReference) return;
+    const TERMINAL = [
+      "successful",
+      "success",
+      "failed",
+      "abandoned",
+      "cancelled",
+      "error",
+      "reversed",
+    ];
+    let handled = false;
+    const intervalId = setInterval(async () => {
+      if (handled) return;
+      try {
+        const response = await fetch(
+          `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+          },
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const status = (data?.data?.status || "").toLowerCase();
+          if (TERMINAL.includes(status) || data?.status === "success") {
+            handled = true;
+            handlePaystackModalClose();
+          }
+        } else {
+          handled = true;
+          handlePaystackModalClose();
+        }
+      } catch (e) {
+        // Network error – keep polling
+      }
+    }, 4000);
+    return () => clearInterval(intervalId);
+  }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleOk = async () => {
     const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
 
