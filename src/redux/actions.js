@@ -3,6 +3,21 @@ import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
+import ReactGA from "react-ga4";
+
+const logPurchase = ({
+  currency,
+  value,
+  transactionId,
+  paymentType,
+}) => {
+  ReactGA.event("purchase", {
+    currency: currency,
+    value: value,
+    transaction_id: transactionId,
+    payment_type: paymentType,
+  });
+};
 
 export const updatePassword = (credentials) => async (dispatch) => {
   try {
@@ -669,6 +684,31 @@ export const initiateStakeHoldersRequest =
     }
   };
 
+
+const buildItems = (formData) => {
+  const items = [];
+
+  Object.keys(formData).forEach((field) => {
+    if (
+      typeof formData[field] === "string" &&
+      formData[field].trim() !== ""
+    ) {
+      items.push({
+        item_id: field,
+        item_name: field,
+        price: 1, // fallback if you don’t have per-field pricing here
+        quantity: 1,
+      });
+    }
+  });
+
+  return items;
+};
+
+const getStoredAmount = () => {
+  return Number(localStorage.getItem("totalAmount") || 0);
+};
+
 export const completeVerificationRequest =
   (formData, token) => async (dispatch) => {
     try {
@@ -756,6 +796,30 @@ export const completeVerificationRequest =
         type: "SEND_VERIFICATION_REQUEST_SUCCESS",
         payload: response,
       });
+
+      // ✅ GA4 Purchase Tracking
+      try {
+        const currency = currencyCheck || "NGN";
+        const transactionId =
+          transactionID || randomTransactionId;
+        const payment = paymentType || "INSTANT";
+
+        // You can improve this if you have exact total stored
+        const value =
+          parseFloat(localStorage.getItem("totalAmount")) || 0;
+
+        const items = buildItems(formData);
+
+        logPurchase({
+          currency,
+          value,
+          transactionId,
+          paymentType: payment,
+          items,
+        });
+      } catch (err) {
+        console.error("GA4 logPurchase error:", err);
+      }
 
       // Return the user data upon successful verification
       return response;
