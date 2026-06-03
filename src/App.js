@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import GlobalStyles from "./globalStyles";
 import { Navbar, Footer } from "./components";
 import Home from "./pages/HomePage/Home";
@@ -52,6 +57,7 @@ import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
+import NinVerificationPage from "./pages/NinLanding/NinVerificationPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -198,114 +204,103 @@ function App() {
       <ThemeProvider>
         <GlobalStyles />
         <ScrollToTop />
-        <Navbar />
-
-        <Switch>
-          <AppLogout>
-            <Route path="/" exact component={Home} />
-            <Route path="/sms" exact component={Sms} />
-            <Route path="/privacy_policy" exact component={PrivacyPolicy} />
-            <Route path="/terms_of_service" exact component={TermsOfService} />
-            <Route path="/payment/success" exact component={PaymentSuccess} />
-            <Route path="/payment/failure" exact component={PaymentFailure} />
-            <Route path="/payment/cancel" exact component={PaymentCancel} />
-            <Route
-              path="/payment/paystack-redirect"
-              exact
-              component={PaystackRedirect}
-            />
-            <Route path="/reach/:CLICK_ID" exact component={Home} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/verify-otp" component={VerifyOtp} />
-            <Route path="/email-confirm" component={EmailVerifiedConfirm} />
-            <Route path="/check-email" component={CheckPasswordResetLink} />
-            <ProtectedRoute
-              path="/set-new-password"
-              component={SetNewPassword}
-            />
-            <Route path="/password-confirm" component={PasswordResetConfirm} />
-            <Route path="/contact" component={ContactPage} />
-            <ProtectedRoute path="/dashboard" component={DashboardPage} />
-            <Route path="/disclaimer" component={Disclaimer} />
-            <ProtectedRoute path="/consent" component={Consent} />
-            <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
-            <ProtectedRoute
-              path="/identity-verification-result"
-              component={Result}
-            />
-            <ProtectedRoute
-              path="/nin-verification-result"
-              component={PremblyNinResult}
-            />
-            <ProtectedRoute
-              path="/comprehensive-search-result"
-              component={SearchExtensionResult}
-            />
-            <ProtectedRoute
-              path="/vehicle-profile-result"
-              component={Vehicle}
-            />
-            <ProtectedRoute
-              path="/vehicle-registration-result"
-              component={Vehicle2}
-            />
-            <ProtectedRoute
-              path="/vehicle-authentication-result"
-              component={LegitCar}
-            />
-            <ProtectedRoute
-              path="/business-name-result"
-              component={BusinessName}
-            />
-            <ProtectedRoute
-              path="/business-profile-result"
-              component={Business}
-            />
-            <ProtectedRoute
-              path="/financial-profile-result"
-              component={Financial}
-            />
-            <Route path="/faq" component={FaqPage} />
-            <ProtectedRoute path="/profile" component={ProfilePage} />
-            {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
-            <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
-            <Route path="/products" component={Products} />
-            <Route path="/sign-up" component={SignUpPage} />
-            <Route path="/notFoundPage" component={NotFoundPage} />
-            <Route path="/individual/sign-up/1" component={IndividualSignUp} />
-            <Route path="/individual/sign-up/2" component={BusinessSignUp} />
-            <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
-            <Route
-              path="/reset-password/:email/:token"
-              exact
-              component={ResetPasswordPage}
-            />
-          </AppLogout>
-        </Switch>
-
-        <Footer />
-        {/* <CookieConsent
-          location="bottom"
-          buttonText="Accept All Cookies"
-          cookieName="myAwesomeCookieName2"
-          style={{ background: "#2B373B" }}
-          buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
-          expires={150}
-        >
-          Our website uses cookies to enhance your browsing experience and
-          provide personalized content and targeted advertising. <br />
-          We may collect information about your visit to our website, including
-          your IP address, browser type, device identifiers, and browsing
-          behavior, to analyze traffic and improve our services.
-          <br />
-          By clicking "Accept All Cookies" or continuing to use our website, you
-          agree to our use of cookies and the terms of our Privacy Policy.
-        </CookieConsent> */}
+        <AppContent />
 
         {/* </ConfigProvider> */}
       </ThemeProvider>
     </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const isNinLanding = location.pathname === "/nin-verification";
+
+  return (
+    <>
+      {!isNinLanding && <Navbar />}
+
+      <Switch>
+        <Route path="/nin-verification" exact component={NinVerificationPage} />
+        <AppLogout>
+          <Route path="/" exact component={Home} />
+          <Route path="/sms" exact component={Sms} />
+          <Route path="/privacy_policy" exact component={PrivacyPolicy} />
+          <Route path="/terms_of_service" exact component={TermsOfService} />
+          <Route path="/payment/success" exact component={PaymentSuccess} />
+          <Route path="/payment/failure" exact component={PaymentFailure} />
+          <Route path="/payment/cancel" exact component={PaymentCancel} />
+          <Route
+            path="/payment/paystack-redirect"
+            exact
+            component={PaystackRedirect}
+          />
+          <Route path="/reach/:CLICK_ID" exact component={Home} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/forgot-password" component={ForgotPassword} />
+          <Route path="/verify-otp" component={VerifyOtp} />
+          <Route path="/email-confirm" component={EmailVerifiedConfirm} />
+          <Route path="/check-email" component={CheckPasswordResetLink} />
+          <ProtectedRoute path="/set-new-password" component={SetNewPassword} />
+          <Route path="/password-confirm" component={PasswordResetConfirm} />
+          <Route path="/contact" component={ContactPage} />
+          <ProtectedRoute path="/dashboard" component={DashboardPage} />
+          <Route path="/disclaimer" component={Disclaimer} />
+          <ProtectedRoute path="/consent" component={Consent} />
+          <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
+          <ProtectedRoute
+            path="/identity-verification-result"
+            component={Result}
+          />
+          <ProtectedRoute
+            path="/nin-verification-result"
+            component={PremblyNinResult}
+          />
+          <ProtectedRoute
+            path="/comprehensive-search-result"
+            component={SearchExtensionResult}
+          />
+          <ProtectedRoute path="/vehicle-profile-result" component={Vehicle} />
+          <ProtectedRoute
+            path="/vehicle-registration-result"
+            component={Vehicle2}
+          />
+          <ProtectedRoute
+            path="/vehicle-authentication-result"
+            component={LegitCar}
+          />
+          <ProtectedRoute
+            path="/business-name-result"
+            component={BusinessName}
+          />
+          <ProtectedRoute
+            path="/business-profile-result"
+            component={Business}
+          />
+          <ProtectedRoute
+            path="/financial-profile-result"
+            component={Financial}
+          />
+          <Route path="/faq" component={FaqPage} />
+          <ProtectedRoute path="/profile" component={ProfilePage} />
+          {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
+          <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
+          <Route path="/products" component={Products} />
+          <Route path="/sign-up" component={SignUpPage} />
+          <Route path="/notFoundPage" component={NotFoundPage} />
+          <Route path="/individual/sign-up/1" component={IndividualSignUp} />
+          <Route path="/individual/sign-up/2" component={BusinessSignUp} />
+          <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
+          <Route
+            path="/reset-password/:email/:token"
+            exact
+            component={ResetPasswordPage}
+          />
+        </AppLogout>
+      </Switch>
+
+      {!isNinLanding && <Footer />}
+    </>
   );
 }
 
