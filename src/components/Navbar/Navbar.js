@@ -107,7 +107,7 @@ function Navbar() {
       key: "2",
       label: (
         <a href="/profile" style={{ textDecoration: "none" }}>
-          Profile
+          My Profile
         </a>
       ),
     },
@@ -740,7 +740,7 @@ function Navbar() {
                         }}
                         $token={token}
                       >
-                        Dashboard
+                        View Dashboard
                       </OutlineButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -753,7 +753,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        Identity Verification
+                        Verify Now
                       </MainButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -834,7 +834,7 @@ function Navbar() {
                       </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
-                          <MainButton type="primary">Profile</MainButton>
+                          <MainButton type="primary">My Profile</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
