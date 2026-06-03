@@ -383,7 +383,7 @@ const IndividualSignUp = () => {
 
         if (userData.jwtToken) {
           localStorage.setItem("IpAddress", ipAddress);
-          history.push("/main-dashboard");
+          history.push("/dashboard");
         } else {
           Swal.fire({
             background: bgContainer,
@@ -480,7 +480,7 @@ const IndividualSignUp = () => {
 
       if (userDataFb.jwtToken) {
         localStorage.setItem("IpAddress", ipAddress);
-        history.push("/main-dashboard");
+        history.push("/dashboard");
       } else {
         throw new Error("Login failed");
       }
