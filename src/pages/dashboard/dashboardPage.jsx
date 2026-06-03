@@ -1323,7 +1323,7 @@ const DashboardPage = () => {
 
         //!!-------------------- Check for Wallet balance ------------------//
         if (
-          userBalance.toLocaleString() <
+          userBalance <
           (userCurrency.toUpperCase() === "NGN" &&
           currencyCheck.toUpperCase() === "NGN"
             ? totalServiceCost

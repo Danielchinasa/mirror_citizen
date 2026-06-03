@@ -229,22 +229,43 @@ function App() {
             <ProtectedRoute path="/dashboard" component={DashboardPage} />
             <Route path="/disclaimer" component={Disclaimer} />
             <ProtectedRoute path="/consent" component={Consent} />
-            <ProtectedRoute path="/liveFace" component={LiveFaceScreen} />
-            <ProtectedRoute path="/result" component={Result} />
+            <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
             <ProtectedRoute
-              path="/premblyNinResult"
+              path="/identity-verification-result"
+              component={Result}
+            />
+            <ProtectedRoute
+              path="/nin-verification-result"
               component={PremblyNinResult}
             />
             <ProtectedRoute
-              path="/search-extension"
+              path="/comprehensive-search-result"
               component={SearchExtensionResult}
             />
-            <ProtectedRoute path="/vehicle" component={Vehicle} />
-            <ProtectedRoute path="/vehicle2" component={Vehicle2} />
-            <ProtectedRoute path="/legit-car" component={LegitCar} />
-            <ProtectedRoute path="/businessName" component={BusinessName} />
-            <ProtectedRoute path="/business" component={Business} />
-            <ProtectedRoute path="/financial" component={Financial} />
+            <ProtectedRoute
+              path="/vehicle-profile-result"
+              component={Vehicle}
+            />
+            <ProtectedRoute
+              path="/vehicle-registration-result"
+              component={Vehicle2}
+            />
+            <ProtectedRoute
+              path="/vehicle-authentication-result"
+              component={LegitCar}
+            />
+            <ProtectedRoute
+              path="/business-name-result"
+              component={BusinessName}
+            />
+            <ProtectedRoute
+              path="/business-profile-result"
+              component={Business}
+            />
+            <ProtectedRoute
+              path="/financial-profile-result"
+              component={Financial}
+            />
             <Route path="/faq" component={FaqPage} />
             <ProtectedRoute path="/profile" component={ProfilePage} />
             {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
