@@ -137,7 +137,7 @@ const NinCta = () => {
           </CtaDesc>
         </CtaContent>
         <CtaRight>
-          <CtaButton to="/login">
+          <CtaButton to="/verification-login">
             Verify NIN Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>

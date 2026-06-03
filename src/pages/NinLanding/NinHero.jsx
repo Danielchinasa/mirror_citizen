@@ -34,7 +34,7 @@ const NinHero = () => {
             verification for individuals and&nbsp;businesses.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/login">
+            <PrimaryBtn to="/verification-login">
               Verify NIN Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">

@@ -137,7 +137,7 @@ const PhoneCta = () => {
           </CtaDesc>
         </CtaContent>
         <CtaRight>
-          <CtaButton to="/login">
+          <CtaButton to="/verification-login">
             Verify Phone Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>

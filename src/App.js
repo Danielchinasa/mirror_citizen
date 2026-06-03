@@ -59,6 +59,7 @@ import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 import NinVerificationPage from "./pages/NinLanding/NinVerificationPage";
 import PhoneVerificationPage from "./pages/PhoneLanding/PhoneVerificationPage";
+import VerificationLoginPage from "./pages/VerificationLogin/VerificationLoginPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -217,7 +218,8 @@ function AppContent() {
   const location = useLocation();
   const isNinLanding = location.pathname === "/nin-verification";
   const isPhoneLanding = location.pathname === "/phone-number-verification";
-  const isLandingPage = isNinLanding || isPhoneLanding;
+  const isVerificationLogin = location.pathname === "/verification-login";
+  const isLandingPage = isNinLanding || isPhoneLanding || isVerificationLogin;
 
   return (
     <>
@@ -229,6 +231,11 @@ function AppContent() {
           path="/phone-number-verification"
           exact
           component={PhoneVerificationPage}
+        />
+        <Route
+          path="/verification-login"
+          exact
+          component={VerificationLoginPage}
         />
         <AppLogout>
           <Route path="/" exact component={Home} />
