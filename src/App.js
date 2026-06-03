@@ -58,6 +58,7 @@ import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 import NinVerificationPage from "./pages/NinLanding/NinVerificationPage";
+import BusinessVerificationPage from "./pages/BusinessLanding/BusinessVerificationPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -215,13 +216,20 @@ function App() {
 function AppContent() {
   const location = useLocation();
   const isNinLanding = location.pathname === "/nin-verification";
+  const isBusinessLanding = location.pathname === "/business-verification";
+  const hideGlobalNav = isNinLanding || isBusinessLanding;
 
   return (
     <>
-      {!isNinLanding && <Navbar />}
+      {!hideGlobalNav && <Navbar />}
 
       <Switch>
         <Route path="/nin-verification" exact component={NinVerificationPage} />
+        <Route
+          path="/business-verification"
+          exact
+          component={BusinessVerificationPage}
+        />
         <AppLogout>
           <Route path="/" exact component={Home} />
           <Route path="/sms" exact component={Sms} />
@@ -299,7 +307,7 @@ function AppContent() {
         </AppLogout>
       </Switch>
 
-      {!isNinLanding && <Footer />}
+      {!hideGlobalNav && <Footer />}
     </>
   );
 }
