@@ -27,7 +27,7 @@ const Consent = ({ history }) => {
         // Make an API request to check consent status
         const response = await apiGet(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
         const consentStatus = response.consent; // Adjust this based on your API response structure
 
@@ -36,7 +36,7 @@ const Consent = ({ history }) => {
           setIsConsentGranted(true);
           clearInterval(intervalId); // Stop polling
           // localStorage.removeItem("verificationRequestId");
-          history.push("/result");
+          history.push("/identity-verification-result");
         }
       } catch (error) {
         // Handle errors if needed
