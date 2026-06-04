@@ -13,9 +13,11 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import { Link } from "react-router-dom";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 
 function PhoneNavbar() {
   const [click, setClick] = useState(false);
+  const verifyLink = useAuthRedirect("/verify/phone");
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
@@ -61,18 +63,12 @@ function PhoneNavbar() {
             </NinNavLink>
           </NinNavItem>
           <NinNavItem>
-            <NinNavLinkRouter
-              to="/verification-login?redirect=/verify/phone"
-              onClick={closeMobileMenu}
-            >
+            <NinNavLinkRouter to={verifyLink} onClick={closeMobileMenu}>
               Login
             </NinNavLinkRouter>
           </NinNavItem>
           <NinNavItem>
-            <NinCtaButton
-              to="/verification-login?redirect=/verify/phone"
-              onClick={closeMobileMenu}
-            >
+            <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
               Verify Phone Now <FaArrowRight />
             </NinCtaButton>
           </NinNavItem>

@@ -13,9 +13,11 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import { Link } from "react-router-dom";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 
 function BusinessNavbar() {
   const [click, setClick] = useState(false);
+  const verifyLink = useAuthRedirect("/verify/business");
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
@@ -61,18 +63,12 @@ function BusinessNavbar() {
             </NinNavLink>
           </NinNavItem>
           <NinNavItem>
-            <NinNavLinkRouter
-              to="/verification-login?redirect=/verify/business"
-              onClick={closeMobileMenu}
-            >
+            <NinNavLinkRouter to={verifyLink} onClick={closeMobileMenu}>
               Login
             </NinNavLinkRouter>
           </NinNavItem>
           <NinNavItem>
-            <NinCtaButton
-              to="/verification-login?redirect=/verify/business"
-              onClick={closeMobileMenu}
-            >
+            <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
               Verify Company Now <FaArrowRight />
             </NinCtaButton>
           </NinNavItem>

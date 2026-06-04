@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaArrowRight, FaEye } from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/credit_profile.png";
 import {
   HeroSectionWrapper,
@@ -21,6 +22,8 @@ const SmallerHeroImage = styled(HeroBgImage)`
 `;
 
 const FinancialHero = () => {
+  const verifyLink = useAuthRedirect("/verify/bvn");
+
   return (
     <HeroSectionWrapper>
       <SmallerHeroImage src={heroImg} alt="Credit Profile on eCitizen" />
@@ -39,7 +42,7 @@ const FinancialHero = () => {
             renting and due diligence decisions.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/verification-login?redirect=/verify/bvn">
+            <PrimaryBtn to={verifyLink}>
               Check Credit Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">

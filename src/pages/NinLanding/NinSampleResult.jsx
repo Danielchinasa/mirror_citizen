@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ninSampleImg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import {
   SampleSectionWrapper,
@@ -14,6 +15,8 @@ import {
 } from "./NinLanding.elements";
 
 const NinSampleResult = () => {
+  const verifyLink = useAuthRedirect("/verify/nin");
+
   return (
     <SampleSectionWrapper id="sample-result">
       <SampleContent>
@@ -43,7 +46,7 @@ const NinSampleResult = () => {
               <FaCheckCircle /> Address and state of origin
             </CheckItem>
           </CheckList>
-          <PrimaryBtn to="/verification-login?redirect=/verify/nin">
+          <PrimaryBtn to={verifyLink}>
             Try It Now <FaArrowRight />
           </PrimaryBtn>
         </SampleInfo>

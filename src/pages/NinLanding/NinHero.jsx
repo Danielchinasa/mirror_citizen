@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowRight, FaEye } from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ninHeroImg from "../../images/nin_verification_hero2.png";
 import {
   HeroSectionWrapper,
@@ -16,6 +17,8 @@ import {
 } from "./NinLanding.elements";
 
 const NinHero = () => {
+  const verifyLink = useAuthRedirect("/verify/nin");
+
   return (
     <HeroSectionWrapper>
       <HeroBgImage src={ninHeroImg} alt="NIN Verification on eCitizen" />
@@ -34,7 +37,7 @@ const NinHero = () => {
             verification for individuals and&nbsp;businesses.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/verification-login?redirect=/verify/nin">
+            <PrimaryBtn to={verifyLink}>
               Verify NIN Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,10 +12,6 @@ import {
   FaArrowRight,
   FaArrowLeft,
   FaWallet,
-  FaCreditCard,
-  FaUniversity,
-  FaMobileAlt,
-  FaExchangeAlt,
   FaIdCard,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -24,11 +20,11 @@ import {
   completeVerificationRequest,
   fetchUserProfile,
 } from "../../redux/actions";
-import { apiPostInternalCall } from "../../apiUtils";
-import {
-  initiatePaystackPayment,
-  redirectToPaystack,
-} from "../../services/paystackService";
+import { apiPostInternalCall, apiGet } from "../../apiUtils";
+import { initiatePaystackPayment } from "../../services/paystackService";
+import baseUrl from "../../apiConfig";
+import paystackLogo from "../../images/paystack.png";
+import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 
 import {
@@ -79,7 +75,6 @@ import {
   PaymentMethodSub,
   PaymentOption,
   PaymentOptionLabel,
-  PaymentOptionBadge,
   SummaryCard,
   SummaryTitle,
   SummaryAmount,
@@ -115,48 +110,26 @@ import {
   ErrorAlert,
 } from "./VerifyPage.elements";
 
-const STEPS = ["Search", "Payment", "Processing", "Result"];
+// Steps are now dynamic — defined inside the component based on config.requiresConsent
 
 const PAYMENT_METHODS = [
-  {
-    id: "paystack",
-    label: "Paystack",
-    icon: null,
-    badge: null,
-    paymentType: "INSTANT",
-    paymentMethodId: 5,
-  },
   {
     id: "wallet",
     label: "Wallet",
     icon: FaWallet,
-    badge: null,
     paymentType: "WALLET",
-    paymentMethodId: 1,
   },
   {
-    id: "card",
-    label: "Card",
-    icon: FaCreditCard,
-    badge: null,
+    id: "flutterwave",
+    label: "",
+    icon: null,
     paymentType: "INSTANT",
-    paymentMethodId: 5,
   },
   {
-    id: "transfer",
-    label: "Transfer",
-    icon: FaExchangeAlt,
-    badge: null,
+    id: "paystack",
+    label: "Paystack",
+    icon: null,
     paymentType: "INSTANT",
-    paymentMethodId: 5,
-  },
-  {
-    id: "bank",
-    label: "Bank",
-    icon: FaUniversity,
-    badge: null,
-    paymentType: "INSTANT",
-    paymentMethodId: 5,
   },
 ];
 
@@ -181,13 +154,30 @@ const VerifyPage = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
-  const [paymentMethod, setPaymentMethod] = useState("paystack");
+  const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
+  const [paystackModalOpen, setPaystackModalOpen] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
+  const [paystackReference, setPaystackReference] = useState("");
+  const [activeGateway, setActiveGateway] = useState(""); // "paystack" or "flutterwave"
+  const [consentPending, setConsentPending] = useState(false);
+  const [consentRequestId, setConsentRequestId] = useState("");
+  const pollingRef = useRef(null);
+  const pendingApiFormRef = useRef(null);
+  const consentPollingRef = useRef(null);
+
+  // Dynamic steps based on whether this verification type requires consent
+  const requiresConsent = config?.requiresConsent || false;
+  const STEPS = requiresConsent
+    ? ["Search", "Payment", "Processing", "Consent", "Result"]
+    : ["Search", "Payment", "Processing", "Result"];
+  const RESULT_STEP = requiresConsent ? 4 : 3;
+  const CONSENT_STEP = 3;
 
   // Redirect if invalid type
   useEffect(() => {
@@ -195,6 +185,92 @@ const VerifyPage = () => {
       history.replace("/dashboard");
     }
   }, [config, history]);
+
+  // Poll payment status for Paystack or Flutterwave
+  useEffect(() => {
+    if (!paystackModalOpen || !paystackReference) return;
+
+    const terminalStatuses = [
+      "successful",
+      "success",
+      "failed",
+      "abandoned",
+      "cancelled",
+      "error",
+      "reversed",
+    ];
+
+    const checkEndpoint =
+      activeGateway === "flutterwave"
+        ? `${baseUrl}/payment/check?transactionRef=${paystackReference}`
+        : `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`;
+
+    pollingRef.current = setInterval(async () => {
+      try {
+        const res = await fetch(checkEndpoint, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const status = (
+            data?.status ||
+            data?.data?.status ||
+            ""
+          ).toLowerCase();
+          if (terminalStatuses.includes(status)) {
+            handlePaystackModalClose();
+          }
+        }
+      } catch {
+        // Ignore polling errors
+      }
+    }, 4000);
+
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [paystackModalOpen, paystackReference, userToken, activeGateway]);
+
+  // Consent polling
+  useEffect(() => {
+    if (!consentPending || !consentRequestId) return;
+
+    const checkConsent = async () => {
+      try {
+        const response = await apiGet(
+          `/verification/check-consent/${consentRequestId}`,
+          userToken,
+        );
+        if (response?.consent === "granted") {
+          setConsentPending(false);
+          setCurrentStep(RESULT_STEP);
+          if (consentPollingRef.current)
+            clearInterval(consentPollingRef.current);
+        }
+      } catch (err) {
+        console.error("Consent check error:", err);
+      }
+    };
+
+    // Check immediately, then poll every 15 seconds
+    checkConsent();
+    consentPollingRef.current = setInterval(checkConsent, 15000);
+
+    return () => {
+      if (consentPollingRef.current) clearInterval(consentPollingRef.current);
+    };
+  }, [consentPending, consentRequestId, userToken]);
+
+  // Clean up polling on unmount
+  useEffect(() => {
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+      if (consentPollingRef.current) clearInterval(consentPollingRef.current);
+    };
+  }, []);
 
   // Fetch service prices
   useEffect(() => {
@@ -432,8 +508,9 @@ const VerifyPage = () => {
       // 2. Process payment based on method
       if (paymentMethod === "wallet") {
         await handleWalletPayment(randomTransactionId, apiFormData);
+      } else if (paymentMethod === "flutterwave") {
+        await handleFlutterwavePayment(randomTransactionId, apiFormData);
       } else {
-        // Paystack / Card / Transfer / Bank - all go through Paystack
         await handlePaystackPayment(randomTransactionId, apiFormData);
       }
     } catch (err) {
@@ -509,19 +586,122 @@ const VerifyPage = () => {
       const response = await initiatePaystackPayment(paymentData, userToken);
 
       if (response?.data?.authorization_url) {
-        // Store data for post-payment completion
-        localStorage.setItem("pendingVerificationType", type);
-        localStorage.setItem("pendingFormData", JSON.stringify(apiFormData));
-        localStorage.setItem("paystackReference", response.data.reference);
-
-        // Redirect to Paystack
-        redirectToPaystack(response.data.authorization_url, false);
+        pendingApiFormRef.current = apiFormData;
+        setPaymentUrl(response.data.authorization_url);
+        setPaystackReference(response.data.reference);
+        setActiveGateway("paystack");
+        setPaystackModalOpen(true);
+        setLoading(false);
+        setCurrentStep(1); // Stay on payment step while modal is open
       } else {
         throw new Error("Failed to initialize payment gateway");
       }
     } catch (err) {
       throw err;
     }
+  };
+
+  const handleFlutterwavePayment = async (transactionId, apiFormData) => {
+    try {
+      const postData = {
+        amount: totalAmount,
+        currency: currencyCheck,
+        country: "NG",
+        description: "Payment for verification",
+        payment_method: "card,mobilemoney,ussd",
+        type: "VERIFICATION",
+        sessionCode: localStorage.getItem("sessionCode"),
+      };
+
+      const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(postData),
+      });
+
+      const responseData = await response.json();
+
+      if (responseData?.data?.link) {
+        pendingApiFormRef.current = apiFormData;
+        setPaymentUrl(responseData.data.link);
+        setPaystackReference(responseData.data.txRef || transactionId);
+        localStorage.setItem(
+          "transactionID",
+          responseData.data.txRef || transactionId,
+        );
+        setActiveGateway("flutterwave");
+        setPaystackModalOpen(true);
+        setLoading(false);
+        setCurrentStep(1);
+      } else {
+        throw new Error("Failed to initialize Flutterwave payment");
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const handlePaystackModalClose = async () => {
+    if (pollingRef.current) clearInterval(pollingRef.current);
+    setPaystackModalOpen(false);
+    setPaymentUrl("");
+
+    if (!paystackReference) return;
+
+    const checkEndpoint =
+      activeGateway === "flutterwave"
+        ? `${baseUrl}/payment/check?transactionRef=${paystackReference}`
+        : `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`;
+
+    try {
+      const res = await fetch(checkEndpoint, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      if (!res.ok) {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Cancelled",
+          text: "Your payment was cancelled or declined.",
+          confirmButtonColor: "#09c93a",
+        });
+        return;
+      }
+
+      const data = await res.json();
+      const status = (data?.status || data?.data?.status || "").toLowerCase();
+
+      if (status === "successful" || status === "success") {
+        // Payment succeeded — proceed with verification
+        setLoading(true);
+        setCurrentStep(2); // Processing
+        if (pendingApiFormRef.current) {
+          await handleCompleteVerification(pendingApiFormRef.current);
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: "Your payment could not be completed. Please try again.",
+          confirmButtonColor: "#09c93a",
+        });
+      }
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Could not verify payment status. Please check your dashboard.",
+        confirmButtonColor: "#09c93a",
+      });
+    }
+
+    setPaystackReference("");
   };
 
   const handleCompleteVerification = async (apiFormData) => {
@@ -533,70 +713,230 @@ const VerifyPage = () => {
       dispatch(fetchUserProfile(userToken));
       setLoading(false);
 
-      // Handle different response types
-      if (response?.basic?.status === true) {
-        setCurrentStep(3);
-        setVerificationResult(response.basic);
-        Swal.fire({
-          icon: "success",
-          title: "Verification Successful",
-          text: "Your verification has been completed successfully.",
-          confirmButtonColor: "#09c93a",
-        }).then(() => {
-          history.push("/main-dashboard");
-        });
-      } else if (
-        response?.["search-extension"]?.phoneVerification?.status === true
+      // Determine result and result page route
+      let result = null;
+      let resultTitle = "Verification Successful";
+      let resultDetail = "";
+      let resultRoute = "/main-dashboard";
+
+      if (
+        response.basic &&
+        response.basic.status &&
+        response.basic.status === true
       ) {
-        setCurrentStep(3);
-        setVerificationResult(response["search-extension"].phoneVerification);
-        Swal.fire({
-          icon: "success",
-          title: "Phone Verification Successful",
-          text: "Phone number has been verified successfully.",
-          confirmButtonColor: "#09c93a",
-        }).then(() => {
-          history.push("/main-dashboard");
-        });
-      } else if (response?.business?.success === true) {
-        setCurrentStep(3);
-        setVerificationResult(response.business);
-        Swal.fire({
-          icon: "success",
-          title: "Business Verification Successful",
-          text: "Business has been verified successfully.",
-          confirmButtonColor: "#09c93a",
-        }).then(() => {
-          history.push("/main-dashboard");
-        });
+        result =
+          response.basic?.nin_data || response.basic?.data || response.basic;
+        resultDetail =
+          response.basic.detail || "Your NIN verification was successful.";
+        resultRoute = "/main-dashboard";
       } else if (
-        response?.["search-extension"]?.bvnVerification?.status === true
+        response.basic &&
+        typeof response.basic.status === "boolean" &&
+        response.basic.status === false
       ) {
-        setCurrentStep(3);
-        setVerificationResult(response["search-extension"].bvnVerification);
         Swal.fire({
-          icon: "success",
-          title: "BVN Verification Successful",
-          text: "BVN has been verified successfully.",
+          icon: "error",
+          title: "Verification Failed",
+          text: response.basic.detail,
           confirmButtonColor: "#09c93a",
-        }).then(() => {
-          history.push("/main-dashboard");
         });
+        setCurrentStep(1);
+        return;
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].phoneVerification &&
+        response["search-extension"].phoneVerification.status === true
+      ) {
+        result = response["search-extension"].phoneVerification;
+        resultDetail =
+          response["search-extension"].phoneVerification.detail ||
+          "Phone verification was successful.";
+        resultRoute = "/main-dashboard";
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].phoneVerification &&
+        response["search-extension"].phoneVerification.status === false
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Verification Failed",
+          text:
+            response["search-extension"].phoneVerification.detail ||
+            "Verification failed",
+          confirmButtonColor: "#09c93a",
+        });
+        setCurrentStep(1);
+        return;
+      } else if (
+        response["search-extension"] &&
+        response["search-extension"].bvnVerification &&
+        response["search-extension"].bvnVerification.status === true
+      ) {
+        result = response["search-extension"].bvnVerification;
+        resultDetail =
+          response["search-extension"].bvnVerification.detail ||
+          "BVN verification was successful.";
+        resultRoute = "/main-dashboard";
+      } else if (response.business && response.business.success === true) {
+        const bizData = Array.isArray(response.business.data)
+          ? response.business.data[0]?.data
+          : response.business.data;
+        result = bizData || response.business;
+        resultTitle = "Business Verification Successful";
+        resultDetail =
+          bizData?.approvedName || "Business has been verified successfully.";
+        resultRoute = "/main-dashboard";
+      } else if (response.business && response.business.success === false) {
+        Swal.fire({
+          icon: "error",
+          title: "Verification Failed",
+          text: response.business.message,
+          confirmButtonColor: "#09c93a",
+        });
+        setCurrentStep(1);
+        return;
+      } else if (response.financial && response.financial.success === true) {
+        result = response.financial;
+        resultDetail =
+          response.financial.message ||
+          "Financial verification was successful.";
+        resultRoute = "/main-dashboard";
+      } else if (response.financial && response.financial.success === false) {
+        Swal.fire({
+          icon: "error",
+          title: "Verification Failed",
+          text: response.financial.message,
+          confirmButtonColor: "#09c93a",
+        });
+        setCurrentStep(1);
+        return;
+      } else if (
+        response?.advance ||
+        response?.firstCentral ||
+        response?.crc ||
+        response?.creditRegistry
+      ) {
+        // Credit bureau — check which bureaus returned data
+        const bureauResults = [];
+        const bureauErrors = [];
+        if (response?.crc) {
+          if (response.crc.data && response.crc.data !== "null")
+            bureauResults.push("CRC");
+          else if (response.crc.error)
+            bureauErrors.push(
+              "CRC: " + (response.crc.error.message || "Failed"),
+            );
+        }
+        if (response?.firstCentral) {
+          if (
+            response.firstCentral.data &&
+            response.firstCentral.data !== "null"
+          )
+            bureauResults.push("First Central");
+          else if (response.firstCentral.error)
+            bureauErrors.push(
+              "First Central: " +
+                (response.firstCentral.error.message || "Failed"),
+            );
+        }
+        if (response?.creditRegistry) {
+          if (
+            response.creditRegistry.data &&
+            response.creditRegistry.data !== "null"
+          )
+            bureauResults.push("Credit Registry");
+          else if (response.creditRegistry.error)
+            bureauErrors.push(
+              "Credit Registry: " +
+                (response.creditRegistry.error.message || "Failed"),
+            );
+        }
+        if (response?.advance) {
+          if (response.advance.data && response.advance.data !== "null")
+            bureauResults.push("Advance");
+          else if (response.advance.error)
+            bureauErrors.push(
+              "Advance: " + (response.advance.error.message || "Failed"),
+            );
+        }
+
+        const hasAnyData = bureauResults.length > 0;
+
+        if (hasAnyData) {
+          result = {
+            bureauResults,
+            bureauErrors,
+            advance: response?.advance,
+            firstCentral: response?.firstCentral,
+            crc: response?.crc,
+            creditRegistry: response?.creditRegistry,
+          };
+          resultTitle =
+            bureauErrors.length > 0
+              ? "Partial Results Available"
+              : "Credit Profile Results";
+          resultDetail = `Data received from: ${bureauResults.join(", ")}.`;
+          resultRoute = "/financial-profile-result";
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Verification Failed",
+            text:
+              bureauErrors.length > 0
+                ? bureauErrors.join("\n")
+                : "Verification failed. Please try again.",
+            confirmButtonColor: "#09c93a",
+          });
+          setCurrentStep(1);
+          return;
+        }
+      }
+
+      if (result) {
+        setVerificationResult({
+          data: result,
+          title: resultTitle,
+          detail: resultDetail,
+          route: resultRoute,
+        });
+
+        if (requiresConsent) {
+          // Extract requestId from API response for consent polling
+          const requestId =
+            response.basic?.data?.requestId ||
+            response.basic?.requestId ||
+            response["search-extension"]?.bvnVerification?.requestId ||
+            response.financial?.requestId ||
+            "";
+
+          if (requestId) {
+            setConsentRequestId(requestId);
+            localStorage.setItem("verificationRequestId", requestId);
+            setConsentPending(true);
+            setCurrentStep(CONSENT_STEP);
+          } else {
+            // No requestId — consent may already be granted, show results
+            setCurrentStep(RESULT_STEP);
+          }
+        } else {
+          setCurrentStep(RESULT_STEP);
+        }
       } else {
-        // Generic error handling
+        // Verification failed — generic fallback
         const errorMsg =
-          response?.basic?.message ||
-          response?.["search-extension"]?.phoneVerification?.message ||
+          response?.basic?.detail ||
+          response?.["search-extension"]?.phoneVerification?.detail ||
+          response?.["search-extension"]?.bvnVerification?.detail ||
           response?.business?.message ||
+          response?.financial?.message ||
           "Verification could not be completed. A refund has been initiated.";
         Swal.fire({
           icon: "error",
           title: "Verification Failed",
           text: errorMsg,
           confirmButtonColor: "#09c93a",
-        }).then(() => {
-          window.location.reload();
         });
+        setCurrentStep(1);
       }
     } catch (err) {
       setLoading(false);
@@ -606,8 +946,6 @@ const VerifyPage = () => {
         title: "Service Unavailable",
         text: "Service is currently unavailable. A refund has been initiated.",
         confirmButtonColor: "#09c93a",
-      }).then(() => {
-        window.location.reload();
       });
     }
   };
@@ -933,10 +1271,21 @@ const VerifyPage = () => {
               {method.icon && (
                 <method.icon style={{ fontSize: 16, color: "#555" }} />
               )}
-              <PaymentOptionLabel>{method.label}</PaymentOptionLabel>
-              {method.badge && (
-                <PaymentOptionBadge>{method.badge}</PaymentOptionBadge>
+              {method.id === "paystack" && (
+                <img
+                  src={paystackLogo}
+                  alt="Paystack"
+                  style={{ height: 16, objectFit: "contain" }}
+                />
               )}
+              {method.id === "flutterwave" && (
+                <img
+                  src={flutterwaveLogo}
+                  alt="Flutterwave"
+                  style={{ height: 16, objectFit: "contain" }}
+                />
+              )}
+              <PaymentOptionLabel>{method.label}</PaymentOptionLabel>
               {method.id === "wallet" && (
                 <span
                   style={{
@@ -1107,28 +1456,461 @@ const VerifyPage = () => {
     </ProcessingWrapper>
   );
 
-  const renderResultStep = () => (
-    <ProcessingWrapper>
-      <div
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: "50%",
-          background: "#e6f9ed",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 24,
-        }}
-      >
-        <FaCheckCircle style={{ fontSize: 28, color: "#09c93a" }} />
+  const getResultPreviewFields = () => {
+    if (!verificationResult?.data) return [];
+    const data = verificationResult.data;
+    const fields = [];
+
+    // NIN / basic result (API returns lowercase: firstname, middlename, surname)
+    if (data.firstname || data.firstName || data.surname || data.lastname) {
+      const fname = data.firstname || data.firstName;
+      const mname = data.middlename || data.middleName;
+      const lname = data.surname || data.lastname;
+      if (fname) fields.push({ label: "First Name", value: fname });
+      if (mname) fields.push({ label: "Middle Name", value: mname });
+      if (lname) fields.push({ label: "Last Name", value: lname });
+      if (data.gender)
+        fields.push({
+          label: "Gender",
+          value:
+            data.gender === "m"
+              ? "Male"
+              : data.gender === "f"
+                ? "Female"
+                : data.gender,
+        });
+      if (data.birthDate || data.dateOfBirth || data.birthdate)
+        fields.push({
+          label: "Date of Birth",
+          value: data.birthDate || data.dateOfBirth || data.birthdate,
+        });
+      if (data.telephoneno || data.telephoneNo || data.phone)
+        fields.push({
+          label: "Phone",
+          value: data.telephoneno || data.telephoneNo || data.phone,
+        });
+      if (data.residenceAddress || data.residence_address)
+        fields.push({
+          label: "Address",
+          value: data.residenceAddress || data.residence_address,
+        });
+    }
+
+    // Phone verification
+    if (data.network) {
+      if (data.name) fields.push({ label: "Owner Name", value: data.name });
+      if (data.network) fields.push({ label: "Network", value: data.network });
+      if (data.status) fields.push({ label: "Status", value: data.status });
+    }
+
+    // Business (API returns: approvedName, rcNumber, registrationDate, address, email, lga, state, classificationId)
+    if (data.approvedName || data.companyName || data.company_name) {
+      fields.push({
+        label: "Business Name",
+        value: data.approvedName || data.companyName || data.company_name,
+      });
+      if (data.rcNumber || data.rc_number)
+        fields.push({
+          label: "RC Number",
+          value: data.rcNumber || data.rc_number,
+        });
+      if (data.registrationDate)
+        fields.push({
+          label: "Registration Date",
+          value: new Date(data.registrationDate).toLocaleDateString(),
+        });
+      if (data.address && data.address !== "null")
+        fields.push({ label: "Address", value: data.address });
+      if (data.state && data.state !== "null")
+        fields.push({ label: "State", value: data.state });
+      if (data.lga && data.lga !== "null")
+        fields.push({ label: "LGA", value: data.lga });
+      if (data.email && data.email !== "null")
+        fields.push({ label: "Email", value: data.email });
+      if (data.companyStatus)
+        fields.push({ label: "Status", value: data.companyStatus });
+    }
+
+    // Credit bureau
+    if (data.advance || data.crc || data.firstCentral || data.creditRegistry) {
+      if (data.crc) fields.push({ label: "CRC", value: "Data received" });
+      if (data.firstCentral)
+        fields.push({ label: "First Central", value: "Data received" });
+      if (data.creditRegistry)
+        fields.push({ label: "Credit Registry", value: "Data received" });
+    }
+
+    // Generic fallback — show first few string fields
+    if (fields.length === 0) {
+      Object.entries(data)
+        .slice(0, 5)
+        .forEach(([key, val]) => {
+          if (
+            typeof val === "string" &&
+            val &&
+            val !== "null" &&
+            key !== "status" &&
+            key !== "detail" &&
+            key !== "photo" &&
+            key !== "signature" &&
+            key !== "rawData"
+          ) {
+            fields.push({
+              label: key
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (s) => s.toUpperCase()),
+              value: val,
+            });
+          }
+        });
+    }
+
+    return fields.slice(0, 8); // Show max 8 fields
+  };
+
+  const renderConsentStep = () => (
+    <FormCard>
+      <div style={{ textAlign: "center", padding: "40px 20px" }}>
+        <ProcessingSpinner />
+        <ProcessingText style={{ marginTop: 24 }}>
+          Awaiting Consent
+        </ProcessingText>
+        <ProcessingSub
+          style={{ maxWidth: 520, margin: "12px auto 0", lineHeight: 1.7 }}
+        >
+          We have sent a consent request to the data subject and are currently
+          awaiting their response. An email will be sent to you regarding the
+          status of your request.
+        </ProcessingSub>
+        <ProcessingSub
+          style={{
+            maxWidth: 520,
+            margin: "16px auto 0",
+            fontSize: 13,
+            color: "#999",
+          }}
+        >
+          The data subject's information will be retained for 24 hours from the
+          moment they grant consent. This page will automatically update when
+          consent is granted.
+        </ProcessingSub>
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            justifyContent: "center",
+            marginTop: 32,
+          }}
+        >
+          <ClearBtn onClick={() => history.push("/main-dashboard")}>
+            Return to Dashboard
+          </ClearBtn>
+        </div>
       </div>
-      <ProcessingText>Verification Complete!</ProcessingText>
-      <ProcessingSub>
-        Your results are ready. Redirecting to your dashboard...
-      </ProcessingSub>
-    </ProcessingWrapper>
+    </FormCard>
   );
+
+  const renderResultStep = () => {
+    const previewFields = getResultPreviewFields();
+    const resultRoute = verificationResult?.route || "/main-dashboard";
+    const resultTitle = verificationResult?.title || "Verification Complete!";
+    const resultDetail = verificationResult?.detail || "";
+    const bureauResults = verificationResult?.data?.bureauResults || [];
+    const bureauErrors = verificationResult?.data?.bureauErrors || [];
+
+    return (
+      <FormCard>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: "50%",
+              background: "#e6f9ed",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 16px",
+            }}
+          >
+            <FaCheckCircle style={{ fontSize: 28, color: "#09c93a" }} />
+          </div>
+          <ProcessingText>{resultTitle}</ProcessingText>
+          <ProcessingSub>
+            {resultDetail ||
+              "Your verification has been completed successfully."}
+          </ProcessingSub>
+        </div>
+
+        {/* Summary of what was submitted */}
+        <div
+          style={{
+            background: "#f9fafb",
+            border: "1px solid #e5e7eb",
+            borderRadius: 10,
+            padding: "20px 24px",
+            marginBottom: 20,
+          }}
+        >
+          <h4
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 600,
+              fontSize: 15,
+              color: "#354138",
+              margin: "0 0 16px",
+            }}
+          >
+            Verification Summary
+          </h4>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "12px 24px",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#999",
+                  fontFamily: "Nunito, sans-serif",
+                  marginBottom: 2,
+                }}
+              >
+                Service
+              </div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "#333",
+                  fontFamily: "Nunito, sans-serif",
+                  fontWeight: 600,
+                }}
+              >
+                {config.serviceName}
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#999",
+                  fontFamily: "Nunito, sans-serif",
+                  marginBottom: 2,
+                }}
+              >
+                Amount Paid
+              </div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "#333",
+                  fontFamily: "Nunito, sans-serif",
+                  fontWeight: 600,
+                }}
+              >
+                {currencySymbol}
+                {totalAmount.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </div>
+            </div>
+            {config.fields.map((field) =>
+              formData[field.name]?.trim() ? (
+                <div key={field.name}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "#999",
+                      fontFamily: "Nunito, sans-serif",
+                      marginBottom: 2,
+                    }}
+                  >
+                    {field.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: "#333",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {formData[field.name]}
+                  </div>
+                </div>
+              ) : null,
+            )}
+            <div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#999",
+                  fontFamily: "Nunito, sans-serif",
+                  marginBottom: 2,
+                }}
+              >
+                Status
+              </div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "#09c93a",
+                  fontFamily: "Nunito, sans-serif",
+                  fontWeight: 700,
+                }}
+              >
+                <FaCheckCircle
+                  style={{ marginRight: 4, verticalAlign: "middle" }}
+                />
+                Successful
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bureau-specific results */}
+        {(bureauResults.length > 0 || bureauErrors.length > 0) && (
+          <div
+            style={{
+              background: "#f9fafb",
+              border: "1px solid #e5e7eb",
+              borderRadius: 10,
+              padding: "20px 24px",
+              marginBottom: 20,
+            }}
+          >
+            <h4
+              style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 600,
+                fontSize: 15,
+                color: "#354138",
+                margin: "0 0 12px",
+              }}
+            >
+              Bureau Results
+            </h4>
+            {bureauResults.map((bureau, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <FaCheckCircle style={{ color: "#09c93a", fontSize: 14 }} />
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "Nunito, sans-serif",
+                    color: "#333",
+                  }}
+                >
+                  {bureau} — Data received
+                </span>
+              </div>
+            ))}
+            {bureauErrors.map((err, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <span style={{ color: "#dc2626", fontSize: 14 }}>✕</span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "Nunito, sans-serif",
+                    color: "#dc2626",
+                  }}
+                >
+                  {err}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Preview fields from response data */}
+        {previewFields.length > 0 && (
+          <div
+            style={{
+              background: "#f9fafb",
+              border: "1px solid #e5e7eb",
+              borderRadius: 10,
+              padding: "20px 24px",
+              marginBottom: 24,
+            }}
+          >
+            <h4
+              style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 600,
+                fontSize: 15,
+                color: "#354138",
+                margin: "0 0 16px",
+              }}
+            >
+              Result Preview
+            </h4>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "12px 24px",
+              }}
+            >
+              {previewFields.map((field, i) => (
+                <div key={i}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "#999",
+                      fontFamily: "Nunito, sans-serif",
+                      marginBottom: 2,
+                    }}
+                  >
+                    {field.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: "#333",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {field.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+          <ContinueBtn
+            onClick={() => history.push(resultRoute)}
+            style={{ justifyContent: "center" }}
+          >
+            View Full Results <FaArrowRight />
+          </ContinueBtn>
+          <ClearBtn onClick={() => history.push("/main-dashboard")}>
+            Go to Dashboard
+          </ClearBtn>
+        </div>
+      </FormCard>
+    );
+  };
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -1139,6 +1921,8 @@ const VerifyPage = () => {
       case 2:
         return renderProcessingStep();
       case 3:
+        return requiresConsent ? renderConsentStep() : renderResultStep();
+      case 4:
         return renderResultStep();
       default:
         return renderSearchStep();
@@ -1203,6 +1987,87 @@ const VerifyPage = () => {
           ))}
         </TrustBarInner>
       </TrustBar>
+
+      {/* Paystack Payment Modal */}
+      {paystackModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1000,
+            background: "rgba(0, 0, 0, 0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              width: "95%",
+              maxWidth: 600,
+              maxHeight: "90vh",
+              overflow: "hidden",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "16px 24px",
+                borderBottom: "1px solid #e5e7eb",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: "Poppins, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 16,
+                  color: "#354138",
+                }}
+              >
+                Complete Payment —{" "}
+                {activeGateway === "flutterwave" ? "Flutterwave" : "Paystack"}
+              </h3>
+              <button
+                onClick={handlePaystackModalClose}
+                style={{
+                  background: "none",
+                  border: "none",
+                  fontSize: 20,
+                  cursor: "pointer",
+                  color: "#999",
+                  padding: "4px 8px",
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <iframe
+              title={
+                activeGateway === "flutterwave"
+                  ? "Flutterwave Payment"
+                  : "Paystack Payment"
+              }
+              src={paymentUrl}
+              style={{
+                width: "100%",
+                height: 600,
+                border: "none",
+              }}
+            />
+          </div>
+        </div>
+      )}
     </PageWrapper>
   );
 };

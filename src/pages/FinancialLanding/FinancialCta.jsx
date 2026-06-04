@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
 
 const CtaWrapper = styled.section`
@@ -123,6 +124,8 @@ const CtaPrice = styled.span`
 `;
 
 const FinancialCta = () => {
+  const verifyLink = useAuthRedirect("/verify/bvn");
+
   return (
     <CtaWrapper>
       <CtaInner>
@@ -137,7 +140,7 @@ const FinancialCta = () => {
           </CtaDesc>
         </CtaContent>
         <CtaRight>
-          <CtaButton to="/verification-login?redirect=/verify/bvn">
+          <CtaButton to={verifyLink}>
             Check Credit Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>

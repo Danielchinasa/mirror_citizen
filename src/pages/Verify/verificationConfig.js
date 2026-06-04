@@ -47,6 +47,7 @@ const verificationConfig = {
     serviceName: "NIN Verification",
     serviceFieldKey: "nin",
     priceIndex: 0,
+    requiresConsent: true,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
@@ -239,6 +240,7 @@ const verificationConfig = {
     serviceName: "BVN Verification",
     serviceFieldKey: "bvn",
     priceIndex: 4,
+    requiresConsent: true,
     bureaus: [
       { id: "crc", label: "Credit Risk Certification (CRC)", fieldName: "crc" },
       { id: "firstCentral", label: "First Central", fieldName: "firstCentral" },

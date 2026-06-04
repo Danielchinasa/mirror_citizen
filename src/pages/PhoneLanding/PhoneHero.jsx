@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowRight, FaEye } from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/phone_number_verification.png";
 import {
   HeroSectionWrapper,
@@ -17,6 +18,8 @@ import {
 } from "./PhoneLanding.elements";
 
 const PhoneHero = () => {
+  const verifyLink = useAuthRedirect("/verify/phone");
+
   return (
     <HeroSectionWrapper>
       <HeroBgImage src={heroImg} alt="Phone Number Verification on eCitizen" />
@@ -31,7 +34,7 @@ const PhoneHero = () => {
             onboarding, due diligence and fraud&nbsp;prevention.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/verification-login?redirect=/verify/phone">
+            <PrimaryBtn to={verifyLink}>
               Verify Phone Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">

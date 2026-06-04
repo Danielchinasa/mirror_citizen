@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
 
 const CtaWrapper = styled.section`
@@ -123,6 +124,8 @@ const CtaPrice = styled.span`
 `;
 
 const NinCta = () => {
+  const verifyLink = useAuthRedirect("/verify/nin");
+
   return (
     <CtaWrapper>
       <CtaInner>
@@ -137,7 +140,7 @@ const NinCta = () => {
           </CtaDesc>
         </CtaContent>
         <CtaRight>
-          <CtaButton to="/verification-login?redirect=/verify/nin">
+          <CtaButton to={verifyLink}>
             Verify NIN Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>

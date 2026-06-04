@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowRight, FaEye, FaCheckCircle } from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/business_verification2.png";
 import {
   HeroSectionWrapper,
@@ -19,6 +20,8 @@ import {
 } from "./BusinessLanding.elements";
 
 const BusinessHero = () => {
+  const verifyLink = useAuthRedirect("/verify/business");
+
   return (
     <HeroSectionWrapper>
       <HeroBgImage src={heroImg} alt="Business Verification on eCitizen" />
@@ -33,7 +36,7 @@ const BusinessHero = () => {
             securely in seconds. Make confident business decisions.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/verification-login?redirect=/verify/business">
+            <PrimaryBtn to={verifyLink}>
               Verify Company Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">
