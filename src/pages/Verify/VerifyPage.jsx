@@ -71,6 +71,7 @@ import {
   PriceAmount,
   PriceBreakdown,
   PriceRow,
+  PriceTotalRow,
   IdTypeDisplay,
   PaymentGrid,
   PaymentMethodsCard,
@@ -174,7 +175,8 @@ const VerifyPage = () => {
   const dispatch = useDispatch();
 
   const config = verificationConfig[type];
-  const userToken = useSelector((state) => state.userToken);
+  const user = useSelector((state) => state.user);
+  const userToken = user?.jwtToken || "";
   const userDetails = useSelector((state) => state.userDetails);
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -185,6 +187,7 @@ const VerifyPage = () => {
   const [pricingData, setPricingData] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [verificationResult, setVerificationResult] = useState(null);
+  const [selectedBureaus, setSelectedBureaus] = useState({});
 
   // Redirect if invalid type
   useEffect(() => {
@@ -235,12 +238,29 @@ const VerifyPage = () => {
   const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
   const isNGN = currencyCheck.toUpperCase() === "NGN";
 
+  const bureauCount = config?.bureaus
+    ? Object.values(selectedBureaus).filter(Boolean).length
+    : 0;
+  const allBureausSelected =
+    config?.bureaus && bureauCount === config.bureaus.length;
+  const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
+  const discount =
+    allBureausSelected && config?.allBureausDiscount
+      ? isNGN
+        ? config.allBureausDiscount.ngn
+        : config.allBureausDiscount.usd
+      : 0;
+
   const totalAmount = pricingData
     ? isNGN
-      ? pricingData.price + pricingData.serviceFee + pricingData.vat
-      : pricingData.priceUsd +
-        (pricingData.serviceFeeusd || 0) +
-        (pricingData.vatUsd || 0)
+      ? ((pricingData.serviceFee || 0) +
+          (pricingData.processingFee || 0) +
+          (pricingData.vat || 0)) *
+          bureauMultiplier -
+        discount
+      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
+          bureauMultiplier -
+        discount
     : 0;
 
   const currencySymbol = isNGN ? "₦" : "$";
@@ -262,26 +282,68 @@ const VerifyPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // For eitherOr fields, clear the sibling field
+    const currentField = config.fields.find((f) => f.name === name);
+    const updates = { [name]: value };
+    if (currentField?.eitherOr) {
+      config.fields.forEach((f) => {
+        if (f.eitherOr === currentField.eitherOr && f.name !== name) {
+          updates[f.name] = "";
+        }
+      });
+    }
+
+    setFormData((prev) => ({ ...prev, ...updates }));
     setError("");
   };
 
   const handleClear = () => {
     setFormData({});
+    setSelectedBureaus({});
     setError("");
   };
 
   const isFormValid = () => {
-    return config.fields
+    // Check all strictly required fields
+    const requiredValid = config.fields
       .filter((f) => f.required)
       .every((f) => formData[f.name]?.trim());
+
+    // Check either/or groups (at least one must be filled)
+    const eitherOrGroups = {};
+    config.fields.forEach((f) => {
+      if (f.eitherOr) {
+        if (!eitherOrGroups[f.eitherOr]) eitherOrGroups[f.eitherOr] = [];
+        eitherOrGroups[f.eitherOr].push(f.name);
+      }
+    });
+    const eitherOrValid = Object.values(eitherOrGroups).every((group) =>
+      group.some((name) => formData[name]?.trim()),
+    );
+
+    // Check bureau selection (at least one required if config has bureaus)
+    const bureauValid = config.bureaus
+      ? Object.values(selectedBureaus).some(Boolean)
+      : true;
+
+    return requiredValid && eitherOrValid && bureauValid;
   };
 
   /* ── Step navigation ── */
 
   const handleContinueToPayment = () => {
     if (!isFormValid()) {
-      setError("Please fill in all required fields.");
+      const hasEitherOr = config.fields.some((f) => f.eitherOr);
+      const noBureauSelected =
+        config.bureaus && !Object.values(selectedBureaus).some(Boolean);
+      setError(
+        noBureauSelected
+          ? "Please select at least one credit bureau."
+          : hasEitherOr
+            ? "Please fill in at least one of the fields."
+            : "Please fill in all required fields.",
+      );
       return;
     }
     setError("");
@@ -326,6 +388,13 @@ const VerifyPage = () => {
         apiForm[field.name] = formData[field.name];
       }
     });
+
+    // Map selected bureaus to API form
+    if (config.bureaus) {
+      config.bureaus.forEach((bureau) => {
+        apiForm[bureau.fieldName] = selectedBureaus[bureau.id] ? true : "";
+      });
+    }
 
     return apiForm;
   };
@@ -589,42 +658,149 @@ const VerifyPage = () => {
             </IdTypeDisplay>
           </FormGroup>
 
-          {config.fields.map((field) => (
-            <FormGroup key={field.name}>
+          {config.fields.map((field, idx) => (
+            <React.Fragment key={field.name}>
+              {field.eitherOr &&
+                idx > 0 &&
+                config.fields[idx - 1]?.eitherOr === field.eitherOr && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      margin: "4px 0 12px",
+                    }}
+                  >
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#999",
+                        fontFamily: "Nunito, sans-serif",
+                      }}
+                    >
+                      OR
+                    </span>
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                  </div>
+                )}
+              <FormGroup>
+                <FormLabel>
+                  {field.label}
+                  {field.required && (
+                    <span style={{ color: "#dc2626" }}> *</span>
+                  )}
+                </FormLabel>
+                {field.type === "select" ? (
+                  <FormSelect
+                    name={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">{field.placeholder}</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </FormSelect>
+                ) : (
+                  <FormInput
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                    maxLength={field.maxLength}
+                  />
+                )}
+                {field.showCounter && (
+                  <CharCounter>
+                    {(formData[field.name] || "").length}/{field.maxLength}
+                  </CharCounter>
+                )}
+              </FormGroup>
+            </React.Fragment>
+          ))}
+
+          {config.bureaus && (
+            <FormGroup>
               <FormLabel>
-                {field.label}
-                {field.required && <span style={{ color: "#dc2626" }}> *</span>}
+                Select Credit Bureau(s){" "}
+                <span style={{ color: "#dc2626" }}> *</span>
               </FormLabel>
-              {field.type === "select" ? (
-                <FormSelect
-                  name={field.name}
-                  value={formData[field.name] || ""}
-                  onChange={handleInputChange}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  marginTop: 4,
+                }}
+              >
+                {config.bureaus.map((bureau) => (
+                  <label
+                    key={bureau.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      padding: "10px 14px",
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#09c93a" : "#e5e7eb"}`,
+                      borderRadius: 8,
+                      cursor: "pointer",
+                      background: selectedBureaus[bureau.id]
+                        ? "#f0fdf4"
+                        : "#fff",
+                      transition: "all 0.15s",
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      color: "#333",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={!!selectedBureaus[bureau.id]}
+                      onChange={(e) => {
+                        setSelectedBureaus((prev) => ({
+                          ...prev,
+                          [bureau.id]: e.target.checked,
+                        }));
+                        setError("");
+                      }}
+                      style={{ accentColor: "#09c93a", width: 16, height: 16 }}
+                    />
+                    {bureau.label}
+                  </label>
+                ))}
+              </div>
+              {allBureausSelected && config.allBureausDiscount && (
+                <div
+                  style={{
+                    marginTop: 8,
+                    padding: "8px 12px",
+                    background: "#f0fdf4",
+                    border: "1px solid #d1fae5",
+                    borderRadius: 6,
+                    fontSize: 13,
+                    color: "#16a34a",
+                    fontFamily: "Nunito, sans-serif",
+                    fontWeight: 600,
+                  }}
                 >
-                  <option value="">{field.placeholder}</option>
-                  {field.options.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </FormSelect>
-              ) : (
-                <FormInput
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  value={formData[field.name] || ""}
-                  onChange={handleInputChange}
-                  maxLength={field.maxLength}
-                />
-              )}
-              {field.showCounter && (
-                <CharCounter>
-                  {(formData[field.name] || "").length}/{field.maxLength}
-                </CharCounter>
+                  🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
+                  {(isNGN
+                    ? config.allBureausDiscount.ngn
+                    : config.allBureausDiscount.usd
+                  ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </div>
               )}
             </FormGroup>
-          ))}
+          )}
 
           <YouWillGetCard>
             <YouWillGetTitle>You will get</YouWillGetTitle>
@@ -651,44 +827,73 @@ const VerifyPage = () => {
               : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
           <PriceBreakdown>
-            <PriceRow>
-              <span>Service</span>
-              <span>{config.serviceName}</span>
-            </PriceRow>
-            {pricingData && (
-              <>
-                <PriceRow>
-                  <span>Base price</span>
-                  <span>
-                    {currencySymbol}
-                    {(isNGN
-                      ? pricingData.price
-                      : pricingData.priceUsd
-                    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                  </span>
-                </PriceRow>
-                <PriceRow>
-                  <span>Service fee</span>
-                  <span>
-                    {currencySymbol}
-                    {(isNGN
-                      ? pricingData.serviceFee
-                      : pricingData.serviceFeeusd || 0
-                    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                  </span>
-                </PriceRow>
-                <PriceRow>
-                  <span>VAT</span>
-                  <span>
-                    {currencySymbol}
-                    {(isNGN
-                      ? pricingData.vat
-                      : pricingData.vatUsd || 0
-                    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                  </span>
-                </PriceRow>
-              </>
-            )}
+            {pricingData &&
+              (() => {
+                const processingFees = isNGN
+                  ? (pricingData.serviceFee || 0) +
+                    (pricingData.processingFee || 0)
+                  : pricingData.serviceFeeusd || 0;
+                const taxCharges = isNGN
+                  ? pricingData.vat || 0
+                  : pricingData.vatUsd || 0;
+                const perBureau = processingFees + taxCharges;
+                const subtotal = perBureau * bureauMultiplier;
+                const totalToPay = subtotal - discount;
+                return (
+                  <>
+                    <PriceRow>
+                      <span>
+                        Processing fees
+                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                      </span>
+                      <span>
+                        {currencySymbol}
+                        {(processingFees * bureauMultiplier).toLocaleString(
+                          undefined,
+                          {
+                            minimumFractionDigits: 2,
+                          },
+                        )}
+                      </span>
+                    </PriceRow>
+                    <PriceRow>
+                      <span>
+                        Tax & charges
+                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                      </span>
+                      <span>
+                        {currencySymbol}
+                        {(taxCharges * bureauMultiplier).toLocaleString(
+                          undefined,
+                          {
+                            minimumFractionDigits: 2,
+                          },
+                        )}
+                      </span>
+                    </PriceRow>
+                    {discount > 0 && (
+                      <PriceRow>
+                        <span style={{ color: "#16a34a" }}>Discount</span>
+                        <span style={{ color: "#16a34a" }}>
+                          -{currencySymbol}
+                          {discount.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                          })}
+                        </span>
+                      </PriceRow>
+                    )}
+                    <PriceTotalRow>
+                      <span>Total to be paid</span>
+                      <span>
+                        {currencySymbol}
+                        {totalToPay.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                        })}
+                      </span>
+                    </PriceTotalRow>
+                  </>
+                );
+              })()}
           </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
@@ -769,7 +974,11 @@ const VerifyPage = () => {
           <SummaryRow>
             <SummaryLabel>Value</SummaryLabel>
             <SummaryValue>
-              {formData[config.serviceFieldKey] || "—"}
+              {formData[config.serviceFieldKey] ||
+                config.fields
+                  .map((f) => formData[f.name])
+                  .find((v) => v?.trim()) ||
+                "—"}
             </SummaryValue>
           </SummaryRow>
           <SummaryRow>
@@ -785,36 +994,51 @@ const VerifyPage = () => {
                   margin: "12px 0",
                 }}
               />
+              {config.bureaus && bureauCount > 0 && (
+                <SummaryRow>
+                  <SummaryLabel>Bureaus</SummaryLabel>
+                  <SummaryValue>{bureauCount} selected</SummaryValue>
+                </SummaryRow>
+              )}
               <SummaryRow>
-                <SummaryLabel>Service Fee</SummaryLabel>
+                <SummaryLabel>
+                  Processing Fee
+                  {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(isNGN
-                    ? pricingData.price
-                    : pricingData.priceUsd
+                  {(
+                    (isNGN
+                      ? (pricingData.serviceFee || 0) +
+                        (pricingData.processingFee || 0)
+                      : pricingData.serviceFeeusd || 0) * bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               <SummaryRow>
-                <SummaryLabel>Processing Fee</SummaryLabel>
+                <SummaryLabel>
+                  Tax & charges
+                  {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(isNGN
-                    ? pricingData.serviceFee
-                    : pricingData.serviceFeeusd || 0
+                  {(
+                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
+                    bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
-              <SummaryRow>
-                <SummaryLabel>VAT</SummaryLabel>
-                <SummaryValue>
-                  {currencySymbol}
-                  {(isNGN
-                    ? pricingData.vat
-                    : pricingData.vatUsd || 0
-                  ).toLocaleString()}
-                </SummaryValue>
-              </SummaryRow>
+              {discount > 0 && (
+                <SummaryRow>
+                  <SummaryLabel style={{ color: "#16a34a" }}>
+                    Discount
+                  </SummaryLabel>
+                  <SummaryValue style={{ color: "#16a34a" }}>
+                    -{currencySymbol}
+                    {discount.toLocaleString()}
+                  </SummaryValue>
+                </SummaryRow>
+              )}
             </>
           )}
 

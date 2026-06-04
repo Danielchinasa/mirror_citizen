@@ -480,6 +480,17 @@ export const PriceRow = styled.div`
   }
 `;
 
+export const PriceTotalRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: #333;
+  font-weight: 700;
+  padding-top: 10px;
+  border-top: 1px solid #d1fae5;
+`;
+
 export const SidebarTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;

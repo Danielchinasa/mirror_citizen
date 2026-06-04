@@ -73,20 +73,6 @@ const verificationConfig = {
         showCounter: true,
         required: true,
       },
-      {
-        name: "purpose",
-        label: "Purpose (optional)",
-        placeholder: "Select purpose",
-        type: "select",
-        required: false,
-        options: [
-          "Identity Verification",
-          "Fraud Prevention",
-          "Customer Onboarding",
-          "Due Diligence",
-          "Other",
-        ],
-      },
     ],
     youWillGet: [
       { icon: FaUser, text: "Owner information" },
@@ -118,7 +104,7 @@ const verificationConfig = {
       "Enter company details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/business_verification2.png"),
     breadcrumb: ["Verify Business", "Business Verification"],
-    idTypeLabel: "Business Registration (RC Number)",
+    idTypeLabel: "Business Registration (RC Number / Business Name)",
     fields: [
       {
         name: "rc",
@@ -127,21 +113,18 @@ const verificationConfig = {
         type: "text",
         maxLength: 10,
         showCounter: false,
-        required: true,
+        required: false,
+        eitherOr: "business",
       },
       {
-        name: "purpose",
-        label: "Purpose (optional)",
-        placeholder: "Select purpose",
-        type: "select",
+        name: "business_name",
+        label: "Business Name",
+        placeholder: "Enter Business Name",
+        type: "text",
+        maxLength: 100,
+        showCounter: false,
         required: false,
-        options: [
-          "Due Diligence",
-          "Partnership Verification",
-          "Investment Check",
-          "Compliance",
-          "Other",
-        ],
+        eitherOr: "business",
       },
     ],
     youWillGet: [
@@ -241,20 +224,6 @@ const verificationConfig = {
         showCounter: true,
         required: true,
       },
-      {
-        name: "purpose",
-        label: "Purpose (optional)",
-        placeholder: "Select purpose",
-        type: "select",
-        required: false,
-        options: [
-          "Financial Verification",
-          "KYC",
-          "Loan Application",
-          "Background Check",
-          "Other",
-        ],
-      },
     ],
     youWillGet: [
       { icon: FaUser, text: "Full personal details" },
@@ -270,6 +239,16 @@ const verificationConfig = {
     serviceName: "BVN Verification",
     serviceFieldKey: "bvn",
     priceIndex: 4,
+    bureaus: [
+      { id: "crc", label: "Credit Risk Certification (CRC)", fieldName: "crc" },
+      { id: "firstCentral", label: "First Central", fieldName: "firstCentral" },
+      {
+        id: "creditRegistry",
+        label: "Credit Registry",
+        fieldName: "creditRegistry",
+      },
+    ],
+    allBureausDiscount: { ngn: 800, usd: 0.97 },
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
