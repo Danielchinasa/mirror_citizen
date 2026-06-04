@@ -221,7 +221,8 @@ function AppContent() {
   const isPhoneLanding = location.pathname === "/phone-number-verification";
   const isBusinessLanding = location.pathname === "/business-verification";
   const isVerificationLogin = location.pathname === "/verification-login";
-  const isLandingPage = isNinLanding || isPhoneLanding || isBusinessLanding || isVerificationLogin;
+  const isLandingPage =
+    isNinLanding || isPhoneLanding || isBusinessLanding || isVerificationLogin;
 
   return (
     <>

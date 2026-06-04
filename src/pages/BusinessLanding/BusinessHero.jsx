@@ -33,7 +33,7 @@ const BusinessHero = () => {
             securely in seconds. Make confident business decisions.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/login">
+            <PrimaryBtn to="/verification-login">
               Verify Company Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">

@@ -504,7 +504,7 @@ const BusinessLoginSample = () => {
                 </RememberLabel>
                 <ForgotLink to="/forgot-password">Forgot password?</ForgotLink>
               </FormRow>
-              <LoginBtn to="/login">Login</LoginBtn>
+              <LoginBtn to="/verification-login">Login</LoginBtn>
               <RegisterText>
                 Don't have an account? <Link to="/sign-up">Register here</Link>
               </RegisterText>
