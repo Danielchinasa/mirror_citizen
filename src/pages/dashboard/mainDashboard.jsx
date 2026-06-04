@@ -40,6 +40,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -1634,6 +1635,7 @@ const MainDashboard = () => {
                 marginBottom: "40px",
               }}
             />
+            <RecommendedOffers variant="green" />
             <Notification />
             <Modal
               // title="Complete Wallet TopUp"

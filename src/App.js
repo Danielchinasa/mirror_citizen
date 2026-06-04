@@ -62,6 +62,7 @@ import PhoneVerificationPage from "./pages/PhoneLanding/PhoneVerificationPage";
 import BusinessVerificationPage from "./pages/BusinessLanding/BusinessVerificationPage";
 import VerificationLoginPage from "./pages/VerificationLogin/VerificationLoginPage";
 import FinancialVerificationPage from "./pages/FinancialLanding/FinancialVerificationPage";
+import VehicleVerificationPage from "./pages/VehicleLanding/VehicleVerificationPage";
 import VerifyPage from "./pages/Verify/VerifyPage";
 
 //theming
@@ -223,12 +224,14 @@ function AppContent() {
   const isPhoneLanding = location.pathname === "/phone-number-verification";
   const isBusinessLanding = location.pathname === "/business-verification";
   const isFinancialLanding = location.pathname === "/credit-profile";
+  const isVehicleLanding = location.pathname === "/vehicle-verification";
   const isVerificationLogin = location.pathname === "/verification-login";
   const isLandingPage =
     isNinLanding ||
     isPhoneLanding ||
     isBusinessLanding ||
     isFinancialLanding ||
+    isVehicleLanding ||
     isVerificationLogin;
 
   return (
@@ -251,6 +254,11 @@ function AppContent() {
           path="/credit-profile"
           exact
           component={FinancialVerificationPage}
+        />
+        <Route
+          path="/vehicle-verification"
+          exact
+          component={VehicleVerificationPage}
         />
         <Route
           path="/verification-login"

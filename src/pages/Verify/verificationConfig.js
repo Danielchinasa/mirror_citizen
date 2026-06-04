@@ -10,6 +10,9 @@ import {
   FaMapMarkerAlt,
   FaBolt,
   FaFileAlt,
+  FaCar,
+  FaShieldAlt,
+  FaHistory,
 } from "react-icons/fa";
 
 const verificationConfig = {
@@ -251,6 +254,48 @@ const verificationConfig = {
       },
     ],
     allBureausDiscount: { ngn: 800, usd: 0.97 },
+    trustBar: [
+      { title: "Secure & Private", desc: "Your data is protected" },
+      { title: "Instant Results", desc: "Get results in seconds" },
+      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "500,000+ Users", desc: "Trust e-citizen" },
+    ],
+  },
+
+  vehicle: {
+    heroTitle: "Check Vehicle",
+    heroHighlight: "History",
+    heroSubtitle:
+      "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
+    heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
+    breadcrumb: ["Verify Vehicle", "Vehicle Verification"],
+    idTypeLabel: "Vehicle Identification Number (VIN)",
+    fields: [
+      {
+        name: "vin",
+        label: "VIN (Vehicle Identification Number)",
+        placeholder: "Enter VIN",
+        type: "text",
+        maxLength: 17,
+        showCounter: true,
+        required: true,
+      },
+    ],
+    youWillGet: [
+      { icon: FaCar, text: "Vehicle details" },
+      { icon: FaHistory, text: "Ownership history" },
+      { icon: FaShieldAlt, text: "Theft / watchlist status" },
+      { icon: FaCheckCircle, text: "Verification status" },
+      { icon: FaBolt, text: "Instant results" },
+    ],
+    sampleResult: {
+      name: "Toyota Corolla 2018",
+      identifier: "VIN: ******5678",
+      tags: ["Make/Model", "Ownership", "Status", "And more..."],
+    },
+    serviceName: "Vehicle Verification",
+    serviceFieldKey: "vin",
+    priceIndex: 5,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },

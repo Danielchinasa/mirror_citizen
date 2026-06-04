@@ -26,6 +26,7 @@ import baseUrl from "../../apiConfig";
 import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 
 import {
   PageWrapper,
@@ -1952,7 +1953,10 @@ const VerifyPage = () => {
       {renderStepper()}
 
       {/* Content */}
-      <ContentWrapper>{renderStepContent()}</ContentWrapper>
+      <ContentWrapper>
+        {renderStepContent()}
+        <RecommendedOffers variant="green" />
+      </ContentWrapper>
 
       {/* Trust Bar */}
       <TrustBar>

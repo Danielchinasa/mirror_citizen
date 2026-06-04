@@ -38,7 +38,7 @@ const PhoneTrustBar = () => {
           </TrustIconCircle>
           <TrustText>
             <TrustTitle>Compliant</TrustTitle>
-            <TrustDesc>NDPC & NIMC Aligned</TrustDesc>
+            <TrustDesc>NDPC</TrustDesc>
           </TrustText>
         </TrustItem>
         <TrustItem>

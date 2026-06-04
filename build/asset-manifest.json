@@ -1,22 +1,23 @@
 {
   "files": {
     "main.css": "/static/css/main.6f9be82c.chunk.css",
-    "main.js": "/static/js/main.d3a936bc.chunk.js",
-    "main.js.map": "/static/js/main.d3a936bc.chunk.js.map",
+    "main.js": "/static/js/main.88eab04b.chunk.js",
+    "main.js.map": "/static/js/main.88eab04b.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.75b217e0.chunk.js": "/static/js/2.75b217e0.chunk.js",
-    "static/js/2.75b217e0.chunk.js.map": "/static/js/2.75b217e0.chunk.js.map",
+    "static/js/2.b163739b.chunk.js": "/static/js/2.b163739b.chunk.js",
+    "static/js/2.b163739b.chunk.js.map": "/static/js/2.b163739b.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.43f3b9e513a751c099d5516cf23bd24e.js": "/precache-manifest.43f3b9e513a751c099d5516cf23bd24e.js",
+    "precache-manifest.241666b6d4c25144f75c610398b48d6a.js": "/precache-manifest.241666b6d4c25144f75c610398b48d6a.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.6f9be82c.chunk.css.map": "/static/css/main.6f9be82c.chunk.css.map",
-    "static/js/2.75b217e0.chunk.js.LICENSE.txt": "/static/js/2.75b217e0.chunk.js.LICENSE.txt",
+    "static/js/2.b163739b.chunk.js.LICENSE.txt": "/static/js/2.b163739b.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/Hero_image_new.png": "/static/media/Hero_image_new.353f76f7.png",
     "static/media/NIN_verification_on_ecitizen.png": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
+    "static/media/VIN_verification_platform_in_nigeria.png": "/static/media/VIN_verification_platform_in_nigeria.918a4489.png",
     "static/media/Verify_NIN_on_ecitizen.jpg": "/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg",
     "static/media/business_verification.png": "/static/media/business_verification.8488509c.png",
     "static/media/business_verification2.png": "/static/media/business_verification2.83483cfb.png",
@@ -51,8 +52,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.75b217e0.chunk.js",
+    "static/js/2.b163739b.chunk.js",
     "static/css/main.6f9be82c.chunk.css",
-    "static/js/main.d3a936bc.chunk.js"
+    "static/js/main.88eab04b.chunk.js"
   ]
 }
