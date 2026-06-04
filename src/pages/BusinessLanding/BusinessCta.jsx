@@ -137,7 +137,7 @@ const BusinessCta = () => {
           </CtaDesc>
         </CtaContent>
         <CtaRight>
-          <CtaButton to="/verification-login">
+          <CtaButton to="/verification-login?redirect=/verify/business">
             Verify Company Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>

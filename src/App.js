@@ -61,6 +61,8 @@ import NinVerificationPage from "./pages/NinLanding/NinVerificationPage";
 import PhoneVerificationPage from "./pages/PhoneLanding/PhoneVerificationPage";
 import BusinessVerificationPage from "./pages/BusinessLanding/BusinessVerificationPage";
 import VerificationLoginPage from "./pages/VerificationLogin/VerificationLoginPage";
+import FinancialVerificationPage from "./pages/FinancialLanding/FinancialVerificationPage";
+import VerifyPage from "./pages/Verify/VerifyPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -220,9 +222,14 @@ function AppContent() {
   const isNinLanding = location.pathname === "/nin-verification";
   const isPhoneLanding = location.pathname === "/phone-number-verification";
   const isBusinessLanding = location.pathname === "/business-verification";
+  const isFinancialLanding = location.pathname === "/credit-profile";
   const isVerificationLogin = location.pathname === "/verification-login";
   const isLandingPage =
-    isNinLanding || isPhoneLanding || isBusinessLanding || isVerificationLogin;
+    isNinLanding ||
+    isPhoneLanding ||
+    isBusinessLanding ||
+    isFinancialLanding ||
+    isVerificationLogin;
 
   return (
     <>
@@ -241,10 +248,16 @@ function AppContent() {
           component={BusinessVerificationPage}
         />
         <Route
+          path="/credit-profile"
+          exact
+          component={FinancialVerificationPage}
+        />
+        <Route
           path="/verification-login"
           exact
           component={VerificationLoginPage}
         />
+        <Route path="/verify/:type" component={VerifyPage} />
         <AppLogout>
           <Route path="/" exact component={Home} />
           <Route path="/sms" exact component={Sms} />

@@ -43,7 +43,7 @@ const NinSampleResult = () => {
               <FaCheckCircle /> Address and state of origin
             </CheckItem>
           </CheckList>
-          <PrimaryBtn to="/verification-login">
+          <PrimaryBtn to="/verification-login?redirect=/verify/nin">
             Try It Now <FaArrowRight />
           </PrimaryBtn>
         </SampleInfo>

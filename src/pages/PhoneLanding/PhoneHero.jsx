@@ -31,7 +31,7 @@ const PhoneHero = () => {
             onboarding, due diligence and fraud&nbsp;prevention.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/verification-login">
+            <PrimaryBtn to="/verification-login?redirect=/verify/phone">
               Verify Phone Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">

@@ -1,6 +1,7 @@
 import React from "react";
+import styled from "styled-components";
 import { FaArrowRight, FaEye } from "react-icons/fa";
-import ninHeroImg from "../../images/nin_verification_hero2.png";
+import heroImg from "../../images/credit_profile.png";
 import {
   HeroSectionWrapper,
   HeroBgImage,
@@ -13,36 +14,40 @@ import {
   PrimaryBtn,
   SecondaryBtn,
   PriceBadge,
-} from "./NinLanding.elements";
+} from "../NinLanding/NinLanding.elements";
 
-const NinHero = () => {
+const SmallerHeroImage = styled(HeroBgImage)`
+  max-height: 460px;
+`;
+
+const FinancialHero = () => {
   return (
     <HeroSectionWrapper>
-      <HeroBgImage src={ninHeroImg} alt="NIN Verification on eCitizen" />
+      <SmallerHeroImage src={heroImg} alt="Credit Profile on eCitizen" />
       <HeroContainer>
         <HeroContent>
-          <HeroTag>NIN VERIFICATION</HeroTag>
+          <HeroTag>CREDIT PROFILE</HeroTag>
           <HeroTitle>
-            Verify your
+            Check your
             <br />
-            <span>NIN online</span>
+            <span>credit profile</span>
             <br />
             in seconds
           </HeroTitle>
           <HeroSubtitle>
-            Instant, secure and reliable National Identification Number (NIN)
-            verification for individuals and&nbsp;businesses.
+            Access a fast, secure BVN-based credit profile to support lending,
+            renting and due diligence decisions.
           </HeroSubtitle>
           <HeroButtons>
-            <PrimaryBtn to="/verification-login?redirect=/verify/nin">
-              Verify NIN Now <FaArrowRight />
+            <PrimaryBtn to="/verification-login?redirect=/verify/bvn">
+              Check Credit Now <FaArrowRight />
             </PrimaryBtn>
             <SecondaryBtn href="#sample-result">
               See Sample Result <FaEye />
             </SecondaryBtn>
           </HeroButtons>
           <PriceBadge>
-            From <span>N</span>600 per verification
+            From <span>N</span>1,500 per report
           </PriceBadge>
         </HeroContent>
       </HeroContainer>
@@ -50,4 +55,4 @@ const NinHero = () => {
   );
 };
 
-export default NinHero;
+export default FinancialHero;

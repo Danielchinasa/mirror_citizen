@@ -122,7 +122,7 @@ const CtaPrice = styled.span`
   }
 `;
 
-const NinCta = () => {
+const FinancialCta = () => {
   return (
     <CtaWrapper>
       <CtaInner>
@@ -130,19 +130,18 @@ const NinCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your NIN?</CtaTitle>
+          <CtaTitle>Ready to check a credit profile?</CtaTitle>
           <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-citizen
-            for fast, accurate and secure identity verification.
+            Get a secure, BVN-based credit profile in seconds and make better
+            decisions with confidence.
           </CtaDesc>
         </CtaContent>
         <CtaRight>
-          <CtaButton to="/verification-login?redirect=/verify/nin">
-            Verify NIN Now <FaArrowRight />
+          <CtaButton to="/verification-login?redirect=/verify/bvn">
+            Check Credit Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>
-            <FaCheckCircle /> Starting from <strong>N</strong>600 per
-            verification
+            <FaCheckCircle /> Starting from <strong>N</strong>1,500 per report
           </CtaPrice>
         </CtaRight>
       </CtaInner>
@@ -150,4 +149,4 @@ const NinCta = () => {
   );
 };
 
-export default NinCta;
+export default FinancialCta;

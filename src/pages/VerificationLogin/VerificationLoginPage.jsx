@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
@@ -46,6 +46,10 @@ import {
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+
+  const redirectTo =
+    new URLSearchParams(location.search).get("redirect") || "/dashboard";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -145,7 +149,7 @@ const VerificationLoginPage = () => {
           label: "Normal Signin Success",
           value: 1,
         });
-        history.push("/dashboard");
+        history.push(redirectTo);
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: "Incorrect email or password" });
       } else if (response === "IP address not provided in payload") {
@@ -180,7 +184,7 @@ const VerificationLoginPage = () => {
 
         if (res.jwtToken) {
           localStorage.setItem("IpAddress", ipAddress);
-          history.push("/dashboard");
+          history.push(redirectTo);
         } else {
           setFormErrors({ general: "Google login failed." });
         }
@@ -217,7 +221,7 @@ const VerificationLoginPage = () => {
 
       if (res.jwtToken) {
         localStorage.setItem("IpAddress", ipAddress);
-        history.push("/dashboard");
+        history.push(redirectTo);
       } else {
         setFormErrors({ general: "Facebook login failed." });
       }

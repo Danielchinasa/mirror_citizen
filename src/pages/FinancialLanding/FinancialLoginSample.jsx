@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  FaEye,
-  FaEyeSlash,
-  FaCheckCircle,
-  FaInfoCircle,
-  FaUserCircle,
-} from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
+import defaultDp from "../../images/defaultDp.png";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -91,7 +86,6 @@ const SSOButton = styled.button`
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.2s;
-  width: 100%;
 
   &:hover {
     background: #f9fafb;
@@ -326,34 +320,39 @@ const ResultTop = styled.div`
   }
 `;
 
-const PhoneIcon = styled.div`
+const ResultPhoto = styled.div`
   width: 70px;
   height: 70px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
   border: 2px solid #e5e7eb;
-  background: #f3f4f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  svg {
-    font-size: 28px;
-    color: #555;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
-const ResultGrid = styled.div`
+const ResultInfo = styled.div`
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
 
-  @media screen and (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
+const ResultName = styled.div`
+  font-family: "Nunito", sans-serif;
+  font-size: 11px;
+  color: #999;
+`;
+
+const ResultNameValue = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1a1a1a;
 `;
 
 const ResultField = styled.div`
@@ -374,30 +373,135 @@ const ResultValue = styled.span`
   color: #1a1a1a;
 `;
 
-const VerifiedBadge = styled.span`
+/* Credit Score Section */
+
+const CreditScoreArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+  }
+`;
+
+const CreditScoreCircle = styled.div`
+  text-align: center;
+`;
+
+const CreditScoreLabel = styled.div`
+  font-family: "Nunito", sans-serif;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+`;
+
+const CreditScoreNumber = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  color: #1a1a1a;
+  line-height: 1;
+`;
+
+const CreditScoreBadge = styled.span`
+  display: inline-block;
+  background: #e6f9ed;
   color: #09c93a;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
+  padding: 3px 12px;
+  border-radius: 16px;
+  margin-top: 4px;
+`;
+
+const CreditMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const CreditMetaItem = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CreditMetaLabel = styled.span`
+  font-family: "Nunito", sans-serif;
+  font-size: 11px;
+  color: #999;
+`;
+
+const CreditMetaValue = styled.span`
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: #09c93a;
+`;
+
+const CreditMetaValueNeutral = styled.span`
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1a1a1a;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+
+  svg {
+    color: #09c93a;
+    font-size: 12px;
+  }
 `;
 
-const ResultFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #e5e7eb;
-  padding-top: 12px;
-  margin-top: 16px;
-  font-family: "Nunito", sans-serif;
-  font-size: 12px;
-  color: #999;
+/* Stats Row */
 
-  @media screen and (max-width: 600px) {
-    flex-direction: column;
-    gap: 4px;
+const StatsRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 16px;
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const StatItem = styled.div`
+  background: #f9fafb;
+  padding: 14px 16px;
+  text-align: center;
+`;
+
+const StatLabel = styled.div`
+  font-family: "Nunito", sans-serif;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+`;
+
+const StatValue = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1a1a1a;
+`;
+
+const StatValueGreen = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #09c93a;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  svg {
+    font-size: 12px;
   }
 `;
 
@@ -416,7 +520,7 @@ const ResultDisclaimer = styled.div`
   }
 `;
 
-const PhoneLoginSample = () => {
+const FinancialLoginSample = () => {
   const [showPass, setShowPass] = useState(false);
 
   return (
@@ -464,7 +568,7 @@ const PhoneLoginSample = () => {
                 </RememberLabel>
                 <ForgotLink to="/forgot-password">Forgot password?</ForgotLink>
               </FormRow>
-              <LoginBtn to="/verification-login?redirect=/verify/phone">
+              <LoginBtn to="/verification-login?redirect=/verify/bvn">
                 Login
               </LoginBtn>
               <RegisterText>
@@ -481,42 +585,67 @@ const PhoneLoginSample = () => {
             <SampleBadge>This is a sample only</SampleBadge>
           </SampleHeader>
           <SampleCardSub>
-            See an example of a phone number verification result.
+            See an example of a Credit Profile result.
           </SampleCardSub>
           <ResultCard>
             <ResultTop>
-              <PhoneIcon>
-                <FaUserCircle />
-              </PhoneIcon>
-              <ResultGrid>
+              <ResultPhoto>
+                <img src={defaultDp} alt="Sample person" />
+              </ResultPhoto>
+              <ResultInfo>
                 <ResultField>
-                  <ResultLabel>Phone Number</ResultLabel>
-                  <ResultValue>0803 *** 5678</ResultValue>
+                  <ResultName>Customer Name</ResultName>
+                  <ResultNameValue>ADEBAYO CHINEDU MICHAEL</ResultNameValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Verification Status</ResultLabel>
-                  <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
-                  </VerifiedBadge>
+                  <ResultLabel>BVN</ResultLabel>
+                  <ResultValue>1234 5678 901**</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Status</ResultLabel>
-                  <VerifiedBadge>Active</VerifiedBadge>
+                  <ResultLabel>Report Date</ResultLabel>
+                  <ResultValue>16 May 2024</ResultValue>
                 </ResultField>
-                <ResultField>
-                  <ResultLabel>Region</ResultLabel>
-                  <ResultValue>Lagos</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>Confidence Score</ResultLabel>
-                  <ResultValue>98%</ResultValue>
-                </ResultField>
-              </ResultGrid>
+              </ResultInfo>
+              <CreditScoreArea>
+                <CreditScoreCircle>
+                  <CreditScoreLabel>Credit Score</CreditScoreLabel>
+                  <CreditScoreNumber>742</CreditScoreNumber>
+                  <CreditScoreBadge>Good</CreditScoreBadge>
+                </CreditScoreCircle>
+                <CreditMeta>
+                  <CreditMetaItem>
+                    <CreditMetaLabel>Rating</CreditMetaLabel>
+                    <CreditMetaValue>Good</CreditMetaValue>
+                  </CreditMetaItem>
+                  <CreditMetaItem>
+                    <CreditMetaLabel>Confidence Score</CreditMetaLabel>
+                    <CreditMetaValueNeutral>
+                      96% <FaCheckCircle />
+                    </CreditMetaValueNeutral>
+                  </CreditMetaItem>
+                </CreditMeta>
+              </CreditScoreArea>
             </ResultTop>
-            <ResultFooter>
-              <span>Verified on 25 May 2025, 12:45 PM</span>
-              <span>Ref: ECPH202505251245ABC0</span>
-            </ResultFooter>
+            <StatsRow>
+              <StatItem>
+                <StatLabel>Active Loans</StatLabel>
+                <StatValue>2</StatValue>
+              </StatItem>
+              <StatItem>
+                <StatLabel>Repayment Status</StatLabel>
+                <StatValueGreen>On track</StatValueGreen>
+              </StatItem>
+              <StatItem>
+                <StatLabel>Bureaus Checked</StatLabel>
+                <StatValue>3</StatValue>
+              </StatItem>
+              <StatItem>
+                <StatLabel>Confidence Score</StatLabel>
+                <StatValueGreen>
+                  96% <FaCheckCircle />
+                </StatValueGreen>
+              </StatItem>
+            </StatsRow>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
@@ -528,4 +657,4 @@ const PhoneLoginSample = () => {
   );
 };
 
-export default PhoneLoginSample;
+export default FinancialLoginSample;
