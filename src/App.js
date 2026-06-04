@@ -257,8 +257,20 @@ function AppContent() {
           exact
           component={VerificationLoginPage}
         />
-        <Route path="/verify/:type" component={VerifyPage} />
         <AppLogout>
+          <Route
+            path="/verify/:type"
+            render={(props) => {
+              const type = props.match.params.type;
+              return (
+                <ProtectedRoute
+                  path="/verify/:type"
+                  component={VerifyPage}
+                  redirectTo={`/verification-login?redirect=/verify/${type}`}
+                />
+              );
+            }}
+          />
           <Route path="/" exact component={Home} />
           <Route path="/sms" exact component={Sms} />
           <Route path="/privacy_policy" exact component={PrivacyPolicy} />

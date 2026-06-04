@@ -62,14 +62,17 @@ function BusinessNavbar() {
           </NinNavItem>
           <NinNavItem>
             <NinNavLinkRouter
-              to="/verification-login"
+              to="/verification-login?redirect=/verify/business"
               onClick={closeMobileMenu}
             >
               Login
             </NinNavLinkRouter>
           </NinNavItem>
           <NinNavItem>
-            <NinCtaButton to="/verification-login" onClick={closeMobileMenu}>
+            <NinCtaButton
+              to="/verification-login?redirect=/verify/business"
+              onClick={closeMobileMenu}
+            >
               Verify Company Now <FaArrowRight />
             </NinCtaButton>
           </NinNavItem>

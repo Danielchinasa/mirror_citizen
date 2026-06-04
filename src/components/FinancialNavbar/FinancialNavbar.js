@@ -62,7 +62,7 @@ function FinancialNavbar() {
           </NinNavItem>
           <NinNavItem>
             <NinNavLinkRouter
-              to="/verification-login"
+              to="/verification-login?redirect=/verify/bvn"
               onClick={closeMobileMenu}
             >
               Login

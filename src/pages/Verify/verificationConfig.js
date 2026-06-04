@@ -31,20 +31,6 @@ const verificationConfig = {
         showCounter: true,
         required: true,
       },
-      {
-        name: "purpose",
-        label: "Purpose (optional)",
-        placeholder: "Select purpose",
-        type: "select",
-        required: false,
-        options: [
-          "Employment Verification",
-          "KYC / Identity Verification",
-          "Background Check",
-          "Personal Use",
-          "Other",
-        ],
-      },
     ],
     youWillGet: [
       { icon: FaUser, text: "Full personal details" },

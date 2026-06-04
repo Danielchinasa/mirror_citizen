@@ -123,6 +123,10 @@ export const HeroTitle = styled.h1`
 
   span {
     color: #09c93a;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.1;
   }
 
   @media screen and (max-width: 768px) {
@@ -241,8 +245,8 @@ export const ContentWrapper = styled.div`
 
 export const SearchGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 24px;
+  grid-template-columns: 1fr 280px;
+  gap: 28px;
   align-items: start;
 
   @media screen and (max-width: 960px) {
@@ -390,13 +394,90 @@ export const ContinueBtn = styled.button`
   }
 `;
 
-/* ─── You Will Get Sidebar ─── */
+/* ─── You Will Get (horizontal row inside card) ─── */
+
+export const YouWillGetCard = styled.div`
+  background: #f0fdf4;
+  border: 1px solid #d1fae5;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+`;
+
+export const YouWillGetTitle = styled.h4`
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #354138;
+  margin: 0 0 12px;
+`;
+
+export const YouWillGetRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+`;
+
+export const YouWillGetItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: #333;
+
+  svg {
+    color: #09c93a;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+`;
+
+/* ─── Price Sidebar ─── */
 
 export const SidebarCard = styled.div`
   background: #f0fdf4;
   border: 1px solid #d1fae5;
   border-radius: 12px;
   padding: 28px 24px;
+`;
+
+export const PriceLabel = styled.div`
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 4px;
+`;
+
+export const PriceAmount = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #09c93a;
+  margin-bottom: 20px;
+`;
+
+export const PriceBreakdown = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #d1fae5;
+`;
+
+export const PriceRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: #555;
+
+  span:last-child {
+    font-weight: 600;
+    color: #333;
+  }
 `;
 
 export const SidebarTitle = styled.h3`
@@ -433,7 +514,7 @@ export const SidebarNote = styled.p`
   color: #555;
   margin: 16px 0 0;
   padding-top: 12px;
-  border-top: 1px solid #d1fae5;
+  border-top: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -883,12 +964,14 @@ export const IdTypeDisplay = styled.div`
   padding: 14px 16px;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  margin-bottom: 20px;
   background: #f9fafb;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   font-weight: 600;
   color: #333;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
 
   svg {
     color: #09c93a;

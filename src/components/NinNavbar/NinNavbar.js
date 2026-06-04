@@ -62,14 +62,17 @@ function NinNavbar() {
           </NinNavItem>
           <NinNavItem>
             <NinNavLinkRouter
-              to="/verification-login"
+              to="/verification-login?redirect=/verify/nin"
               onClick={closeMobileMenu}
             >
               Login
             </NinNavLinkRouter>
           </NinNavItem>
           <NinNavItem>
-            <NinCtaButton to="/verification-login" onClick={closeMobileMenu}>
+            <NinCtaButton
+              to="/verification-login?redirect=/verify/nin"
+              onClick={closeMobileMenu}
+            >
               Verify NIN Now <FaArrowRight />
             </NinCtaButton>
           </NinNavItem>

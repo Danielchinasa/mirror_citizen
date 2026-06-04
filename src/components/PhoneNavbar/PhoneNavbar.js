@@ -62,14 +62,17 @@ function PhoneNavbar() {
           </NinNavItem>
           <NinNavItem>
             <NinNavLinkRouter
-              to="/verification-login"
+              to="/verification-login?redirect=/verify/phone"
               onClick={closeMobileMenu}
             >
               Login
             </NinNavLinkRouter>
           </NinNavItem>
           <NinNavItem>
-            <NinCtaButton to="/verification-login" onClick={closeMobileMenu}>
+            <NinCtaButton
+              to="/verification-login?redirect=/verify/phone"
+              onClick={closeMobileMenu}
+            >
               Verify Phone Now <FaArrowRight />
             </NinCtaButton>
           </NinNavItem>

@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
+import { useDispatch } from "react-redux";
+import { signIn, fetchUserProfile } from "../../redux/actions";
+import axios from "axios";
+import Cookies from "js-cookie";
+import ReCAPTCHA from "react-google-recaptcha";
+import Swal from "sweetalert2";
+import { useGoogleLogin } from "@react-oauth/google";
+import { apiPost } from "../../apiUtils";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { trackEvent, trackGA4Event } from "../../hooks/analytics";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -210,11 +220,11 @@ const ForgotLink = styled(Link)`
   }
 `;
 
-const LoginBtn = styled(Link)`
+const LoginBtn = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background: #09c93a;
+  background: ${(props) => (props.disabled ? "#ccc" : "#09c93a")};
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -222,13 +232,50 @@ const LoginBtn = styled(Link)`
   font-weight: 600;
   font-size: 15px;
   text-align: center;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   text-decoration: none;
   transition: background 0.2s;
 
   &:hover {
-    background: #16ef4d;
+    background: ${(props) => (props.disabled ? "#ccc" : "#16ef4d")};
     color: #fff;
+  }
+`;
+
+const ErrorAlert = styled.div`
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  margin-bottom: 8px;
+`;
+
+const SpinnerOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  z-index: 10;
+`;
+
+const Spinner = styled.div`
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #09c93a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -521,61 +568,392 @@ const ResultDisclaimer = styled.div`
 `;
 
 const FinancialLoginSample = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const redirectTo = "/verify/bvn";
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const [ipAddress, setIpAddress] = useState(null);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+
+  useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        setIpAddress(response.data.ip);
+      } catch (error1) {
+        try {
+          const response = await axios.get("https://ipapi.co/json/");
+          setIpAddress(response.data.ip);
+        } catch (error2) {
+          setIpAddress(null);
+        }
+      }
+    };
+    fetchIpAddress();
+
+    const rememberedEmail = Cookies.get("rememberedEmail");
+    if (rememberedEmail) {
+      setFormData((prev) => ({ ...prev, email: rememberedEmail }));
+    }
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+    setFormErrors({ ...formErrors, [name]: null });
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.email) {
+      errors.email = "Please enter your email";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)
+    ) {
+      errors.email = "Invalid email format";
+    }
+    if (!formData.password) {
+      errors.password = "Please enter your password";
+    } else if (formData.password.length < 8) {
+      errors.password = "Password must be 8 characters or more";
+    }
+    return errors;
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    trackEvent({
+      action: "click_normail_signin_attempt",
+      category: "Authentication Attempt",
+      label: "Normal Signin Attempt",
+      value: 1,
+    });
+
+    if (formData.rememberMe) {
+      Cookies.set("rememberedEmail", formData.email, { expires: 7 });
+    } else {
+      Cookies.remove("rememberedEmail");
+    }
+
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setFormErrors({});
+    setLoading(true);
+
+    try {
+      const payload = {
+        ...formData,
+        ipAddress,
+        deviceToken: localStorage.getItem("clientToken"),
+      };
+
+      const response = await dispatch(signIn(payload));
+
+      if (response.jwtToken) {
+        trackGA4Event("login", { method: "email" });
+        localStorage.setItem("IpAddress", ipAddress);
+        trackEvent({
+          action: "click_normail_signin_sucess",
+          category: "Authentication Success",
+          label: "Normal Signin Success",
+          value: 1,
+        });
+        history.push(redirectTo);
+      } else if (response === "Incorrect email or password") {
+        setFormErrors({ general: "Incorrect email or password" });
+        Swal.fire({
+          title: "Error",
+          text: "Incorrect email or password",
+          icon: "error",
+          customClass: { confirmButton: "custom-swal-button" },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else if (response === "IP address not provided in payload") {
+        setFormErrors({
+          general:
+            "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time.",
+        });
+        Swal.fire({
+          title: "Error",
+          text: "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time.",
+          icon: "error",
+          customClass: { confirmButton: "custom-swal-button" },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setFormErrors({ general: "Login failed. Please try again." });
+        Swal.fire({
+          title: "Error",
+          text: "Login Failed",
+          icon: "error",
+          customClass: { confirmButton: "custom-swal-button" },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      }
+    } catch (error) {
+      setFormErrors({ general: "Login failed. Please try again." });
+      Swal.fire({
+        title: "Error",
+        text: "Login Failed",
+        icon: "error",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        setLoading(true);
+        const payload = {
+          accessToken: response.access_token,
+          deviceToken: localStorage.getItem("clientToken"),
+          ipAddress,
+          deviceName: "Web app",
+        };
+
+        const res = await apiPost("/openauth/google-login", payload);
+        Swal.fire({
+          title: "Success",
+          text: "Google login successful!",
+          icon: "success",
+          customClass: { confirmButton: "custom-swal-button" },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        dispatch({ type: "SIGN_IN", payload: res });
+        dispatch(fetchUserProfile(res.jwtToken));
+
+        if (res.jwtToken) {
+          localStorage.setItem("IpAddress", ipAddress);
+          history.push(redirectTo);
+        } else {
+          setFormErrors({ general: "Google login failed." });
+          Swal.fire({
+            title: "Error",
+            text: "Login failed",
+            icon: "error",
+            customClass: { confirmButton: "custom-swal-button" },
+          });
+        }
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.message ||
+          "Google login failed. Please try again.";
+        setFormErrors({ general: errorMessage });
+        Swal.fire({
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+          customClass: { confirmButton: "custom-swal-button" },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
+
+  const handleFacebook = async (fbRes) => {
+    if (!fbRes || !fbRes.accessToken) {
+      setFormErrors({ general: "Facebook login was cancelled or failed." });
+      Swal.fire({
+        title: "Facebook Login",
+        text: "Facebook login was cancelled or failed.",
+        icon: "error",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const payload = {
+        accessToken: fbRes.accessToken,
+        deviceToken: localStorage.getItem("clientToken"),
+        ipAddress,
+        deviceName: "Web app",
+      };
+
+      const res = await apiPost("/openauth/facebook", payload);
+      Swal.fire({
+        title: "Success",
+        text: "Facebook login successful!",
+        icon: "success",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      dispatch({ type: "SIGN_IN", payload: res });
+      dispatch(fetchUserProfile(res.jwtToken));
+
+      if (res.jwtToken) {
+        localStorage.setItem("IpAddress", ipAddress);
+        history.push(redirectTo);
+      } else {
+        setFormErrors({ general: "Facebook login failed." });
+        Swal.fire({
+          title: "Error",
+          text: "Facebook login failed",
+          icon: "error",
+          customClass: { confirmButton: "custom-swal-button" },
+        });
+      }
+    } catch (err) {
+      const errorMessage =
+        err?.response?.data?.message ||
+        "Facebook login failed. Please try again.";
+      setFormErrors({ general: errorMessage });
+      Swal.fire({
+        title: "Error",
+        text: errorMessage,
+        icon: "error",
+        customClass: { confirmButton: "custom-swal-button" },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SectionWrapper id="sample-result">
       <TwoColGrid>
         {/* Login Card */}
-        <LoginCard>
+        <LoginCard style={{ position: "relative" }}>
+          {loading && (
+            <SpinnerOverlay>
+              <Spinner />
+            </SpinnerOverlay>
+          )}
+
           <LoginCardTitle>Login / Continue</LoginCardTitle>
           <LoginCardSub>
             Sign in or continue to start your verification.
           </LoginCardSub>
-          <LoginLayout>
-            <SSOCol>
-              <SSOButton type="button">
-                <FcGoogle /> Continue with Google
-              </SSOButton>
-              <SSOButton type="button">
-                <FaFacebook color="#1877F2" /> Continue with Facebook
-              </SSOButton>
-            </SSOCol>
-            <Divider>OR</Divider>
-            <FormCol>
-              <div>
-                <FormLabel>Email address</FormLabel>
-                <FormInput type="email" placeholder="Enter your email" />
-              </div>
-              <div>
-                <FormLabel>Password</FormLabel>
-                <PasswordWrapper>
+          <form onSubmit={handleSignIn}>
+            <LoginLayout>
+              <SSOCol>
+                <SSOButton
+                  type="button"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    trackEvent({
+                      action: "click_google_signin",
+                      category: "Authentication",
+                      label: "Google Sign-In Button",
+                      value: 1,
+                    });
+                    googleLogin();
+                  }}
+                >
+                  <FcGoogle /> Continue with Google
+                </SSOButton>
+                <FacebookLogin
+                  appId="541710452150170"
+                  autoLoad={false}
+                  fields="name,picture"
+                  scope="public_profile"
+                  callback={handleFacebook}
+                  render={(renderProps) => (
+                    <SSOButton type="button" onClick={renderProps.onClick}>
+                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                    </SSOButton>
+                  )}
+                />
+              </SSOCol>
+              <Divider>OR</Divider>
+              <FormCol>
+                {formErrors.general && (
+                  <ErrorAlert>{formErrors.general}</ErrorAlert>
+                )}
+                <div>
+                  <FormLabel>Email address</FormLabel>
                   <FormInput
-                    type={showPass ? "text" : "password"}
-                    placeholder="Enter your password"
+                    type="email"
+                    placeholder="Enter your email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
-                  <PasswordToggle
-                    type="button"
-                    onClick={() => setShowPass(!showPass)}
-                  >
-                    {showPass ? <FaEyeSlash /> : <FaEye />}
-                  </PasswordToggle>
-                </PasswordWrapper>
-              </div>
-              <FormRow>
-                <RememberLabel>
-                  <input type="checkbox" /> Remember me
-                </RememberLabel>
-                <ForgotLink to="/forgot-password">Forgot password?</ForgotLink>
-              </FormRow>
-              <LoginBtn to="/verification-login?redirect=/verify/bvn">
-                Login
-              </LoginBtn>
-              <RegisterText>
-                Don't have an account? <Link to="/sign-up">Register here</Link>
-              </RegisterText>
-            </FormCol>
-          </LoginLayout>
+                  {formErrors.email && (
+                    <ErrorAlert>{formErrors.email}</ErrorAlert>
+                  )}
+                </div>
+                <div>
+                  <FormLabel>Password</FormLabel>
+                  <PasswordWrapper>
+                    <FormInput
+                      type={showPass ? "text" : "password"}
+                      placeholder="Enter your password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                    <PasswordToggle
+                      type="button"
+                      onClick={() => setShowPass(!showPass)}
+                    >
+                      {showPass ? <FaEyeSlash /> : <FaEye />}
+                    </PasswordToggle>
+                  </PasswordWrapper>
+                  {formErrors.password && (
+                    <ErrorAlert>{formErrors.password}</ErrorAlert>
+                  )}
+                </div>
+                <FormRow>
+                  <RememberLabel>
+                    <input
+                      type="checkbox"
+                      name="rememberMe"
+                      checked={formData.rememberMe}
+                      onChange={handleInputChange}
+                    />{" "}
+                    Remember me
+                  </RememberLabel>
+                  <ForgotLink to="/forgot-password">
+                    Forgot password?
+                  </ForgotLink>
+                </FormRow>
+                <ReCAPTCHA
+                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                  onChange={() => setIsCaptchaVerified(true)}
+                  style={{ marginBottom: 4 }}
+                />
+                <LoginBtn type="submit" disabled={!isCaptchaVerified}>
+                  Login
+                </LoginBtn>
+                <RegisterText>
+                  Don't have an account?{" "}
+                  <Link to="/individual/sign-up/1">Register here</Link>
+                </RegisterText>
+              </FormCol>
+            </LoginLayout>
+          </form>
         </LoginCard>
 
         {/* Sample Result Card */}

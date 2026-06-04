@@ -63,6 +63,14 @@ import {
   SidebarTitle,
   SidebarItem,
   SidebarNote,
+  YouWillGetRow,
+  YouWillGetItem,
+  YouWillGetCard,
+  YouWillGetTitle,
+  PriceLabel,
+  PriceAmount,
+  PriceBreakdown,
+  PriceRow,
   IdTypeDisplay,
   PaymentGrid,
   PaymentMethodsCard,
@@ -563,81 +571,139 @@ const VerifyPage = () => {
   );
 
   const renderSearchStep = () => (
-    <SearchGrid>
-      <FormCard>
-        <FormCardTitle>Enter Verification Details</FormCardTitle>
-        <FormCardSub>
-          Fill in the details below to begin your verification.
-        </FormCardSub>
+    <FormCard>
+      <FormCardTitle>Enter search details</FormCardTitle>
+      <FormCardSub>
+        Provide the details of the individual you want to verify.
+      </FormCardSub>
 
-        {error && <ErrorAlert>{error}</ErrorAlert>}
+      {error && <ErrorAlert>{error}</ErrorAlert>}
 
-        <IdTypeDisplay>
-          <FaIdCard />
-          {config.idTypeLabel}
-        </IdTypeDisplay>
-
-        {config.fields.map((field) => (
-          <FormGroup key={field.name}>
-            <FormLabel>
-              {field.label}
-              {field.required && <span style={{ color: "#dc2626" }}> *</span>}
-            </FormLabel>
-            {field.type === "select" ? (
-              <FormSelect
-                name={field.name}
-                value={formData[field.name] || ""}
-                onChange={handleInputChange}
-              >
-                <option value="">{field.placeholder}</option>
-                {field.options.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </FormSelect>
-            ) : (
-              <FormInput
-                type={field.type}
-                name={field.name}
-                placeholder={field.placeholder}
-                value={formData[field.name] || ""}
-                onChange={handleInputChange}
-                maxLength={field.maxLength}
-              />
-            )}
-            {field.showCounter && (
-              <CharCounter>
-                {(formData[field.name] || "").length}/{field.maxLength}
-              </CharCounter>
-            )}
+      <SearchGrid>
+        <div>
+          <FormGroup>
+            <FormLabel>ID Type</FormLabel>
+            <IdTypeDisplay>
+              <FaIdCard />
+              {config.idTypeLabel}
+            </IdTypeDisplay>
           </FormGroup>
-        ))}
 
-        <FormActions>
-          <ClearBtn onClick={handleClear}>Clear</ClearBtn>
+          {config.fields.map((field) => (
+            <FormGroup key={field.name}>
+              <FormLabel>
+                {field.label}
+                {field.required && <span style={{ color: "#dc2626" }}> *</span>}
+              </FormLabel>
+              {field.type === "select" ? (
+                <FormSelect
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={handleInputChange}
+                >
+                  <option value="">{field.placeholder}</option>
+                  {field.options.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </FormSelect>
+              ) : (
+                <FormInput
+                  type={field.type}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  value={formData[field.name] || ""}
+                  onChange={handleInputChange}
+                  maxLength={field.maxLength}
+                />
+              )}
+              {field.showCounter && (
+                <CharCounter>
+                  {(formData[field.name] || "").length}/{field.maxLength}
+                </CharCounter>
+              )}
+            </FormGroup>
+          ))}
+
+          <YouWillGetCard>
+            <YouWillGetTitle>You will get</YouWillGetTitle>
+            <YouWillGetRow>
+              {config.youWillGet.map((item, i) => (
+                <YouWillGetItem key={i}>
+                  <item.icon />
+                  {item.text}
+                </YouWillGetItem>
+              ))}
+            </YouWillGetRow>
+          </YouWillGetCard>
+
+          <SidebarNote>
+            <FaShieldAlt /> Your data is secure and used only for verification.
+          </SidebarNote>
+        </div>
+
+        <SidebarCard>
+          <PriceLabel>Amount</PriceLabel>
+          <PriceAmount>
+            {loadingPrice
+              ? "Loading..."
+              : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+          </PriceAmount>
+          <PriceBreakdown>
+            <PriceRow>
+              <span>Service</span>
+              <span>{config.serviceName}</span>
+            </PriceRow>
+            {pricingData && (
+              <>
+                <PriceRow>
+                  <span>Base price</span>
+                  <span>
+                    {currencySymbol}
+                    {(isNGN
+                      ? pricingData.price
+                      : pricingData.priceUsd
+                    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  </span>
+                </PriceRow>
+                <PriceRow>
+                  <span>Service fee</span>
+                  <span>
+                    {currencySymbol}
+                    {(isNGN
+                      ? pricingData.serviceFee
+                      : pricingData.serviceFeeusd || 0
+                    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  </span>
+                </PriceRow>
+                <PriceRow>
+                  <span>VAT</span>
+                  <span>
+                    {currencySymbol}
+                    {(isNGN
+                      ? pricingData.vat
+                      : pricingData.vatUsd || 0
+                    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  </span>
+                </PriceRow>
+              </>
+            )}
+          </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
             disabled={!isFormValid()}
+            style={{ width: "100%", justifyContent: "center" }}
           >
             Continue to Payment <FaArrowRight />
           </ContinueBtn>
-        </FormActions>
-      </FormCard>
+        </SidebarCard>
+      </SearchGrid>
 
-      <SidebarCard>
-        <SidebarTitle>You will get</SidebarTitle>
-        {config.youWillGet.map((item, i) => (
-          <SidebarItem key={i}>
-            <item.icon />
-            {item.text}
-          </SidebarItem>
-        ))}
-        <SidebarNote>
-          <FaShieldAlt /> Secure and encrypted verification
-        </SidebarNote>
-      </SidebarCard>
-    </SearchGrid>
+      <FormActions>
+        <ClearBtn onClick={handleClear}>Clear</ClearBtn>
+      </FormActions>
+    </FormCard>
   );
 
   const renderPaymentStep = () => (
