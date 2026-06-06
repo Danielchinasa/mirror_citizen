@@ -211,11 +211,11 @@ const verificationConfig = {
   },
 
   bvn: {
-    heroTitle: "Verify Your BVN",
-    heroHighlight: "in seconds",
+    heroTitle: "Verify Your ",
+    heroHighlight: "BVN in seconds",
     heroSubtitle:
       "Enter your BVN, pay securely and get financial verification results instantly.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/credit_profile.png"),
     breadcrumb: ["Verify Financial", "BVN Verification"],
     idTypeLabel: "Bank Verification Number (BVN)",
     fields: [
@@ -263,8 +263,8 @@ const verificationConfig = {
   },
 
   vehicle: {
-    heroTitle: "Check Vehicle",
-    heroHighlight: "History",
+    heroTitle: "Check ",
+    heroHighlight: "Vehicle History",
     heroSubtitle:
       "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
     heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
