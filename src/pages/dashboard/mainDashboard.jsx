@@ -40,6 +40,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -349,21 +350,21 @@ const MainDashboard = () => {
     const searchParameter = record.searchParameter;
     localStorage.setItem("verificationRequestId", record.id);
     if (searchParameter === "Vehicle Registration Number") {
-      history.push("/vehicle2");
+      history.push("/vehicle-registration-result");
     } else if (record.type === "Vehicle Profile") {
-      history.push("/vehicle");
+      history.push("/vehicle-profile-result");
     } else if (record.type === "Business Profile") {
       localStorage.setItem(
         "stakeHolderSessionCode",
         record.matchingSession.sessionCode,
       );
-      history.push("/businessName"); // Assuming it's "/businessName" for both cases
+      history.push("/business-name-result");
     } else if (record.type === "Financial Profile") {
-      history.push("/financial");
+      history.push("/financial-profile-result");
     } else if (record.type === "Search-Extension") {
-      history.push("/search-extension");
+      history.push("/comprehensive-search-result");
     } else {
-      history.push("/premblyNinResult");
+      history.push("/nin-verification-result");
     }
     // else {
     //   history.push("/result");
@@ -1634,6 +1635,7 @@ const MainDashboard = () => {
                 marginBottom: "40px",
               }}
             />
+            <RecommendedOffers variant="green" />
             <Notification />
             <Modal
               // title="Complete Wallet TopUp"

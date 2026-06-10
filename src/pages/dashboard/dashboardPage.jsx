@@ -783,6 +783,84 @@ const DashboardPage = () => {
           }
         });
       } else if (
+        response.advance ||
+        response.firstCentral ||
+        response.crc ||
+        response.creditRegistry
+      ) {
+        // Collect error messages from each bureau that failed
+        const bureauErrors = [];
+        if (response.advance?.error?.message) {
+          bureauErrors.push(`${response.advance.error.message}`);
+        }
+        if (response.firstCentral?.error?.message) {
+          bureauErrors.push(
+            `FirstCentral: ${response.firstCentral.error.message}`,
+          );
+        }
+        if (response.crc?.error?.message) {
+          bureauErrors.push(`CRC: ${response.crc.error.message}`);
+        }
+        if (response.creditRegistry?.error?.message) {
+          bureauErrors.push(
+            `CreditRegistry: ${response.creditRegistry.error.message}`,
+          );
+        }
+
+        // A bureau has data if its data field exists and isn't the string "null"
+        const hasAnyData =
+          (response.advance?.data && response.advance.data !== "null") ||
+          (response.firstCentral?.data &&
+            response.firstCentral.data !== "null") ||
+          (response.crc?.data && response.crc.data !== "null") ||
+          (response.creditRegistry?.data &&
+            response.creditRegistry.data !== "null");
+
+        if (hasAnyData) {
+          // At least one bureau returned data — go to result page
+          if (bureauErrors.length > 0) {
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Partial Results",
+              text: `Some bureaus could not be reached:\n${bureauErrors.join("\n")}`,
+              icon: "warning",
+              customClass: { confirmButton: "custom-swal-button" },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "View Results",
+              confirmButtonColor: "#0DC939",
+            }).then(() => {
+              history.push("/financial-profile-result");
+            });
+          } else {
+            history.push("/financial-profile-result");
+          }
+        } else {
+          // All bureaus failed — show the specific error messages
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Verification Failed",
+            text:
+              bureauErrors.length > 0
+                ? bureauErrors.join("\n")
+                : "Verification failed. Please try again.",
+            icon: "error",
+            customClass: { confirmButton: "custom-swal-button" },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        }
+      } else if (
         response.bulkNin &&
         response.bulkNin.status === "Bulk verification completed"
       ) {
@@ -1323,7 +1401,7 @@ const DashboardPage = () => {
 
         //!!-------------------- Check for Wallet balance ------------------//
         if (
-          userBalance.toLocaleString() <
+          userBalance <
           (userCurrency.toUpperCase() === "NGN" &&
           currencyCheck.toUpperCase() === "NGN"
             ? totalServiceCost
