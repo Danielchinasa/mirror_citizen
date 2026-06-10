@@ -340,7 +340,6 @@ export const PriceBadge = styled.div`
   border-radius: 20px;
 
   span {
-    text-decoration: line-through;
     margin-right: 2px;
   }
 `;

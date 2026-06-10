@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import useServicePrices from "../../hooks/useServicePrices";
 import heroImg from "../../images/credit_profile.png";
 import {
   HeroSectionWrapper,
@@ -23,6 +24,7 @@ const SmallerHeroImage = styled(HeroBgImage)`
 
 const FinancialHero = () => {
   const verifyLink = useAuthRedirect("/verify/bvn");
+  const { getPrice } = useServicePrices();
 
   return (
     <HeroSectionWrapper>
@@ -50,7 +52,7 @@ const FinancialHero = () => {
             </SecondaryBtn>
           </HeroButtons>
           <PriceBadge>
-            From <span>N</span>1,500 per report
+            From <span>{getPrice(4) || "₦1,500"}</span> per report
           </PriceBadge>
         </HeroContent>
       </HeroContainer>

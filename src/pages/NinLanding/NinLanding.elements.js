@@ -265,7 +265,6 @@ export const PriceBadge = styled.div`
   margin-bottom: 20px;
 
   span {
-    text-decoration: line-through;
     margin-right: 2px;
   }
 `;

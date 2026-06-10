@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaEye, FaCheckCircle } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import useServicePrices from "../../hooks/useServicePrices";
 import heroImg from "../../images/business_verification2.png";
 import {
   HeroSectionWrapper,
@@ -21,6 +22,7 @@ import {
 
 const BusinessHero = () => {
   const verifyLink = useAuthRedirect("/verify/business");
+  const { getPrice } = useServicePrices();
 
   return (
     <HeroSectionWrapper>
@@ -45,10 +47,10 @@ const BusinessHero = () => {
           </HeroButtons>
           <PriceBadgesRow>
             <PriceBadge>
-              Basic check from <span>N</span>100
+              Basic check from <span>{getPrice(2) || "₦100"}</span>
             </PriceBadge>
             <PriceBadge>
-              Advanced profile from <span>N</span>800
+              Advanced profile from <span>{getPrice(3) || "₦800"}</span>
             </PriceBadge>
           </PriceBadgesRow>
           <HeroChecks>

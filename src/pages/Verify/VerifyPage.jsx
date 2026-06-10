@@ -1407,7 +1407,7 @@ const VerifyPage = () => {
           <div style={{ marginTop: 16 }}>
             <ClearBtn onClick={handleBackToSearch} style={{ width: "100%" }}>
               <FaArrowLeft style={{ marginRight: 8 }} />
-              Back to Search
+              Back
             </ClearBtn>
           </div>
         </SummaryCard>

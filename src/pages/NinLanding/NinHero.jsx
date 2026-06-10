@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import useServicePrices from "../../hooks/useServicePrices";
 import ninHeroImg from "../../images/nin_verification_hero2.png";
 import {
   HeroSectionWrapper,
@@ -18,6 +19,7 @@ import {
 
 const NinHero = () => {
   const verifyLink = useAuthRedirect("/verify/nin");
+  const { getPrice } = useServicePrices();
 
   return (
     <HeroSectionWrapper>
@@ -45,7 +47,7 @@ const NinHero = () => {
             </SecondaryBtn>
           </HeroButtons>
           <PriceBadge>
-            From <span>N</span>600 per verification
+            From <span>{getPrice(0) || "₦600"}</span> per verification
           </PriceBadge>
         </HeroContent>
       </HeroContainer>

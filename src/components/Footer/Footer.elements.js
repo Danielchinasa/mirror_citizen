@@ -1,214 +1,186 @@
 import styled from "styled-components";
-import { FaMagento } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-import { theme } from "antd";
-
-// Get the useToken hook from antd
-const { useToken } = theme;
-
-export const Footer1Container = styled.div`
-  background-color: ${({ theme }) => theme.footerBackground};
-  padding-left: 60px;
-  padding-right: 60px;
-  padding-top: 30px;
-
-  @media (max-width: 768px) {
-    padding-left: 0; // Remove padding on smaller screens
-    padding-right: 0;
-    padding-top: 0; // Remove padding on smaller screens
-  }
-`;
-
-export const FooterContainer = styled.div`
-  background-color: #354138;
-  padding: 0 0 2rem 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const FooterSubscription = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 24px;
-  padding: 24px;
+export const FooterWrapper = styled.footer`
+  background: #354138;
   color: #fff;
-`;
+  padding: 60px 50px 0;
 
-export const FooterSubHeading = styled.p`
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  margin-bottom: 24px;
-  font-size: 24px;
-`;
-
-export const FooterSubText = styled.p`
-  margin-bottom: 24px;
-  font-size: 20px;
-`;
-
-export const Form = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media screen and (max-width: 820px) {
-    flex-direction: column;
-    width: 80%;
+  @media screen and (max-width: 768px) {
+    padding: 40px 30px 0;
   }
 `;
 
-export const FormInput = styled.input`
-  padding: 10px 20px;
-  border-radius: 2px;
-  margin-right: 10px;
-  outline: none;
-  border: none;
+export const FooterInner = styled.div`
+  max-width: 1300px;
+  margin: 0 auto;
+`;
+
+export const FooterTop = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+  padding-bottom: 40px;
+
+  @media screen and (max-width: 960px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const BrandCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const BrandLogo = styled.img`
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  align-self: flex-start;
+
+  @media screen and (max-width: 600px) {
+    align-self: center;
+  }
+`;
+
+export const BrandDesc = styled.p`
+  font-family: "Nunito", sans-serif;
   font-size: 16px;
-  border: 1px solid #fff;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 280px;
 
-  &::placeholder {
-    color: #242424;
-  }
-
-  @media screen and (max-width: 820px) {
-    width: 100%;
-    margin: 0 0 16px 0;
-  }
-`;
-
-export const FooterLinksContainer = styled.div`
-  width: 100%;
-  max-width: 1000px;
-  display: flex;
-  justify-content: center;
-
-  @media screen and (max-width: 820px) {
-    // padding-top: 32px;
+  @media screen and (max-width: 600px) {
+    text-align: center;
+    max-width: 100%;
   }
 `;
 
-export const FooterLinksWrapper = styled.div`
+export const SocialRow = styled.div`
   display: flex;
+  gap: 16px;
 
-  @media screen and (max-width: 820px) {
-    flex-direction: column;
+  @media screen and (max-width: 600px) {
+    justify-content: center;
   }
 `;
 
-export const FooterLinkItems = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin-top: 10px;
-  text-align: left;
-  width: 100%;
-  box-sizing: border-box;
+export const SocialIcon = styled.a`
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #fff;
+  }
+`;
+
+export const FooterCol = styled.div``;
+
+export const FooterColTitle = styled.h4`
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
   color: #fff;
-
-  @media screen and (max-width: 420px) {
-    margin: 0;
-    padding: 10px;
-    width: 100%;
-  }
-`;
-
-export const FooterLinkTitle = styled.h2`
-  margin-bottom: 16px;
-`;
-
-export const FooterLogoArea = styled.img`
-  padding-left: 15px;
-  border-bottom-left-radius: 10px;
-  max-width: 100%;
-`;
-export const FooterLogoArea2 = styled.img`
-  padding-bottom: 8px;
-  padding-right: 5px;
-  margin-top: 45px;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-`;
-
-export const FooterLogoArea3 = styled.img`
-  padding-bottom: 8px;
-  padding-right: 5px;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
+  margin: 0 0 16px;
 `;
 
 export const FooterLink = styled(Link)`
-  color: #fff;
+  display: block;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
+  transition: color 0.2s;
 
   &:hover {
-    color: #0467fb;
-    transition: 0.3s ease-out;
-    cursor: pointer;
+    color: #fff;
   }
 `;
 
-export const SocialMedia = styled.section`
-  max-width: 1000px;
-  width: 100%;
-`;
-
-export const SocialMediaWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  max-width: 1000px;
-  margin: 40px auto 0 auto;
-
-  @media screen and (max-width: 820px) {
-    flex-direction: column;
-  }
-`;
-
-export const SocialLogo = styled(Link)`
-  color: #fff;
-  justify-self: start;
+export const ExternalLink = styled.a`
+  display: block;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  transition: color 0.2s;
 
   &:hover {
-    color: #0467fb;
-    transition: 0.3s ease-out;
+    color: #fff;
   }
 `;
 
-export const SocialIcon = styled(FaMagento)`
-  margin-right: 10px;
+export const AppCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
-export const WebsiteRights = styled.small`
-  color: #fff;
-  margin-bottom: 16px;
+export const AppBadge = styled.a`
+  display: inline-block;
+  text-decoration: none;
+  width: fit-content;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  img {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
 `;
 
-export const SocialIcons = styled.div`
+export const FooterBottom = styled.div`
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 240px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
 `;
 
-export const SocialIconLink = styled.a`
-  color: #fff;
-  font-size: 24px;
+export const Copyright = styled.span`
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+`;
+
+export const LegalLinks = styled.div`
+  display: flex;
+  gap: 20px;
+
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+
+export const LegalLink = styled.span`
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  cursor: pointer;
 
   &:hover {
-    color: #0467fb;
-    transition: 0.3s ease-out;
+    color: #fff;
   }
 `;

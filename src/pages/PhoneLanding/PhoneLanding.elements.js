@@ -334,7 +334,6 @@ export const PriceBadge = styled.div`
   animation: ${fadeSlideUp} 0.7s ease-out 0.8s forwards;
 
   span {
-    text-decoration: line-through;
     margin-right: 2px;
   }
 `;

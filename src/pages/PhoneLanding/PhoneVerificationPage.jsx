@@ -7,7 +7,7 @@ import PhoneHowItWorks from "./PhoneHowItWorks";
 import PhoneLoginSample from "./PhoneLoginSample";
 import PhoneCompliance from "./PhoneCompliance";
 import PhoneCta from "./PhoneCta";
-import PhoneLandingFooter from "./PhoneLandingFooter";
+import Footer from "../../components/Footer/Footer";
 import { PageWrapper } from "./PhoneLanding.elements";
 
 const PhoneVerificationPage = () => {
@@ -21,7 +21,7 @@ const PhoneVerificationPage = () => {
       <PhoneLoginSample />
       <PhoneCompliance />
       <PhoneCta />
-      <PhoneLandingFooter />
+      <Footer />
     </PageWrapper>
   );
 };

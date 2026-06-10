@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import useServicePrices from "../../hooks/useServicePrices";
 import vehicleHeroImg from "../../images/VIN_verification_platform_in_nigeria.png";
 import {
   HeroSectionWrapper,
@@ -19,6 +20,7 @@ import {
 
 const VehicleHero = () => {
   const verifyLink = useAuthRedirect("/verify/vehicle");
+  const { getPrice } = useServicePrices();
 
   return (
     <HeroSectionWrapper>
@@ -48,7 +50,7 @@ const VehicleHero = () => {
           </HeroButtons>
           <PriceBadgesRow>
             <PriceBadge>
-              VIN checks from <span>₦6,000</span>
+              VIN checks from <span>{getPrice(5) || "₦6,000"}</span>
             </PriceBadge>
           </PriceBadgesRow>
         </HeroContent>

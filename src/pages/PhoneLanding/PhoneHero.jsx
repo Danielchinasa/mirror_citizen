@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import useServicePrices from "../../hooks/useServicePrices";
 import heroImg from "../../images/phone_number_verification.png";
 import {
   HeroSectionWrapper,
@@ -19,6 +20,7 @@ import {
 
 const PhoneHero = () => {
   const verifyLink = useAuthRedirect("/verify/phone");
+  const { getPrice } = useServicePrices();
 
   return (
     <HeroSectionWrapper>
@@ -42,7 +44,7 @@ const PhoneHero = () => {
             </SecondaryBtn>
           </HeroButtons>
           <PriceBadge>
-            From <span>N</span>800 per verification
+            From <span>{getPrice(9) || "₦800"}</span> per verification
           </PriceBadge>
           <HeroMobileImage
             src={heroImg}

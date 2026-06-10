@@ -7,7 +7,7 @@ import FinancialHowItWorks from "./FinancialHowItWorks";
 import FinancialLoginSample from "./FinancialLoginSample";
 import FinancialCompliance from "./FinancialCompliance";
 import FinancialCta from "./FinancialCta";
-import FinancialLandingFooter from "./FinancialLandingFooter";
+import Footer from "../../components/Footer/Footer";
 import { PageWrapper } from "../NinLanding/NinLanding.elements";
 
 const FinancialVerificationPage = () => {
@@ -21,7 +21,7 @@ const FinancialVerificationPage = () => {
       <FinancialLoginSample />
       <FinancialCompliance />
       <FinancialCta />
-      <FinancialLandingFooter />
+      <Footer />
     </PageWrapper>
   );
 };
