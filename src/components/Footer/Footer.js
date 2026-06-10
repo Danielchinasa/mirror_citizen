@@ -67,7 +67,7 @@ function Footer() {
             <FooterLink to="/vehicle-verification">
               Vehicle Verification
             </FooterLink>
-            <FooterLink to="/contact">API for Business</FooterLink>
+            <FooterLink to="/api-docs">API for Business</FooterLink>
           </FooterCol>
 
           <FooterCol>

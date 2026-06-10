@@ -64,6 +64,7 @@ import VerificationLoginPage from "./pages/VerificationLogin/VerificationLoginPa
 import FinancialVerificationPage from "./pages/FinancialLanding/FinancialVerificationPage";
 import VehicleVerificationPage from "./pages/VehicleLanding/VehicleVerificationPage";
 import VerifyPage from "./pages/Verify/VerifyPage";
+import ApiDocsPage from "./pages/apiDocs/apiDocsPage";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -338,6 +339,7 @@ function AppContent() {
             component={Financial}
           />
           <Route path="/faq" component={FaqPage} />
+          <Route path="/api-docs" component={ApiDocsPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />
           {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
           <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
