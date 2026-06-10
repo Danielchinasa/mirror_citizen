@@ -335,7 +335,7 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                Get trusted results in minutes.
+                Get trusted results in seconds.
               </span>
             </HeroTitle>
             <HeroSubtitle>
