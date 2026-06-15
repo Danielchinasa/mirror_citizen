@@ -2302,7 +2302,7 @@ const DashboardPage = () => {
             padding: "15px",
           }}
         >
-          {/* <Checkbox onChange={onChange2}> */}
+          {/* <Checkbox placeholder="(originally commented out)" /> */}
           <ol style={{ fontSize: "17px" }}>
             {isBasicOn || isFinancialOn ? (
               <li style={{ padding: "20px" }}>
@@ -2332,8 +2332,6 @@ const DashboardPage = () => {
               , and you accept that you will not be refunded
             </li>
           </ol>
-
-          {/* </Checkbox> */}
         </div>
       ) : (
         ""
@@ -2365,7 +2363,7 @@ const DashboardPage = () => {
               you will not be refunded for incorrect information or lack of
               consent
             </li>
-            <li style={{ padding: "20px" }}>
+            {/* <li style={{ padding: "20px" }}>
               You understand and accept the following{" "}
               <b>
                 terms and conditions pertaining to ClearVIN’s vehicle history
@@ -2426,7 +2424,7 @@ const DashboardPage = () => {
                   </li>
                 </ol>
               </ol>
-            </li>
+            </li> */}
           </ul>
           {/* </Checkbox> */}
         </div>

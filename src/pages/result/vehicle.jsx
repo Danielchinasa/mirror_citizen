@@ -39,6 +39,7 @@ import { LuCar } from "react-icons/lu";
 import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import Reach1 from "../../images/reach1.jpeg";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
@@ -86,7 +87,7 @@ const Vehicle = () => {
         // Make an API request to check consent status
         const postResponse = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         // Handle the response from the post request as needed
@@ -280,7 +281,11 @@ const Vehicle = () => {
                   {renderDetail(<GiCarWheel />, "Tires", `-`)}
                 </Col> */}
                 <Col span={6}>
-                  {renderDetail(<GiChemicalTank />, "Transmission", `${transmission}`)}
+                  {renderDetail(
+                    <GiChemicalTank />,
+                    "Transmission",
+                    `${transmission}`,
+                  )}
                   {/* <Divider />
                   {renderDetail(<LuCar />, "Wheel drive", `-`)} */}
                 </Col>
@@ -394,6 +399,10 @@ const Vehicle = () => {
             </DynamicCard>
           </Spin>
         </InfoSec>
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
+        {/*
         <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
@@ -407,7 +416,7 @@ const Vehicle = () => {
                 backgroundPosition: "center",
                 marginRight: "10px",
                 height: "200px",
-                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+                cursor: "pointer",
               }}
               onClick={() => {
                 window.open(
@@ -424,7 +433,7 @@ const Vehicle = () => {
                 backgroundPosition: "center",
                 height: "200px",
                 marginRight: "10px",
-                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+                cursor: "pointer",
               }}
               onClick={() => {
                 window.open(
@@ -435,6 +444,7 @@ const Vehicle = () => {
             ></div>
           </div>
         </div>
+        */}
       </Container>
     </div>
   );

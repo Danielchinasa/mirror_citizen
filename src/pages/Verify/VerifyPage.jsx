@@ -13,6 +13,7 @@ import {
   FaArrowLeft,
   FaWallet,
   FaIdCard,
+  FaInfoCircle,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
@@ -108,6 +109,30 @@ import {
   ProcessingSpinner,
   ProcessingText,
   ProcessingSub,
+  PopupOverlay,
+  PopupCard,
+  PopupHeader,
+  PopupMeta,
+  PopupIcon,
+  PopupTitle,
+  PopupSubtitle,
+  PopupCloseButton,
+  PopupBody,
+  PopupRow,
+  PopupField,
+  PopupFieldLabel,
+  PopupFieldValue,
+  PopupActionRow,
+  ResultCardPopup,
+  ResultTopPopup,
+  ResultPhotoPopup,
+  ResultGridPopup,
+  ResultFieldPopup,
+  ResultLabelPopup,
+  ResultValuePopup,
+  VerifiedBadgePopup,
+  ResultFooterPopup,
+  ResultDisclaimerPopup,
   ErrorAlert,
 } from "./VerifyPage.elements";
 
@@ -166,6 +191,7 @@ const VerifyPage = () => {
   const [paymentUrl, setPaymentUrl] = useState("");
   const [paystackReference, setPaystackReference] = useState("");
   const [activeGateway, setActiveGateway] = useState(""); // "paystack" or "flutterwave"
+  const [showResultPopup, setShowResultPopup] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const pollingRef = useRef(null);
@@ -917,10 +943,12 @@ const VerifyPage = () => {
             setCurrentStep(CONSENT_STEP);
           } else {
             // No requestId — consent may already be granted, show results
+            setShowResultPopup(true);
             setCurrentStep(RESULT_STEP);
           }
         } else {
-          setCurrentStep(RESULT_STEP);
+          setShowResultPopup(true);
+          setCurrentStep(2); // Keep processing visible while popup appears
         }
       } else {
         // Verification failed — generic fallback
@@ -1955,10 +1983,148 @@ const VerifyPage = () => {
       {/* Content */}
       <ContentWrapper>
         {renderStepContent()}
-        <RecommendedOffers variant="green" />
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
       </ContentWrapper>
 
       {/* Trust Bar */}
+      {showResultPopup && verificationResult && (
+        <PopupOverlay>
+          <PopupCard>
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon>
+                  <FaCheckCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>{verificationResult.title}</PopupTitle>
+                  <PopupSubtitle>{verificationResult.detail}</PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton
+                onClick={() => {
+                  setShowResultPopup(false);
+                  setCurrentStep(RESULT_STEP);
+                }}
+              >
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody>
+              <ResultCardPopup>
+                <ResultTopPopup>
+                  <ResultPhotoPopup>
+                    {(() => {
+                      const data = verificationResult?.data;
+                      if (!data) return <FaUserCircle />;
+
+                      // Try multiple possible keys for image data
+                      let photoSrc =
+                        data.photo ||
+                        data.signature ||
+                        data.image ||
+                        data.profilePhoto ||
+                        data.profilePic ||
+                        data.picture ||
+                        data.biometricPhoto ||
+                        data.facialImage ||
+                        data.faceImage ||
+                        data.photoUrl ||
+                        data.imageUrl;
+
+                      if (photoSrc) {
+                        // Add data URI prefix if it's raw base64
+                        if (!photoSrc.startsWith("data:")) {
+                          // Detect image type from base64 signature
+                          if (
+                            photoSrc.startsWith("/9j/") ||
+                            photoSrc.startsWith("iVBORw0KGgo")
+                          ) {
+                            const mimeType = photoSrc.startsWith("/9j/")
+                              ? "image/jpeg"
+                              : "image/png";
+                            photoSrc = `data:${mimeType};base64,${photoSrc}`;
+                          }
+                        }
+
+                        return (
+                          <img
+                            src={photoSrc}
+                            alt="Verification photo"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                            onError={(e) => {
+                              console.warn(
+                                "Image failed to load, falling back to icon",
+                              );
+                              e.target.style.display = "none";
+                            }}
+                          />
+                        );
+                      }
+                      return <FaUserCircle />;
+                    })()}
+                  </ResultPhotoPopup>
+                  <ResultGridPopup>
+                    {getResultPreviewFields().map((field, idx) => (
+                      <ResultFieldPopup key={idx}>
+                        <ResultLabelPopup>{field.label}</ResultLabelPopup>
+                        {field.label === "Verification Status" ? (
+                          <VerifiedBadgePopup>
+                            VERIFIED <FaCheckCircle />
+                          </VerifiedBadgePopup>
+                        ) : (
+                          <ResultValuePopup>{field.value}</ResultValuePopup>
+                        )}
+                      </ResultFieldPopup>
+                    ))}
+                  </ResultGridPopup>
+                </ResultTopPopup>
+                <ResultFooterPopup>
+                  <span>
+                    Verified on{" "}
+                    {new Date().toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span>
+                    Ref: {localStorage.getItem("transactionID") || "N/A"}
+                  </span>
+                </ResultFooterPopup>
+              </ResultCardPopup>
+              <ResultDisclaimerPopup>
+                <FaInfoCircle />
+                Results are based on data available at the time of verification.
+              </ResultDisclaimerPopup>
+              <PopupActionRow>
+                <ContinueBtn
+                  onClick={() => {
+                    setShowResultPopup(false);
+                    history.push("/main-dashboard");
+                  }}
+                >
+                  View full result <FaArrowRight />
+                </ContinueBtn>
+                <ClearBtn
+                  onClick={() => {
+                    setShowResultPopup(false);
+                    setCurrentStep(RESULT_STEP);
+                  }}
+                >
+                  Close
+                </ClearBtn>
+              </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
       <TrustBar>
         <TrustBarInner>
           {[
