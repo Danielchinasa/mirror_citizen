@@ -39,6 +39,7 @@ import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { RiHomeOfficeLine } from "react-icons/ri";
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
@@ -157,7 +158,7 @@ const Financial = () => {
         // Make an API request to check consent status
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         if (response.data.consent === "pending") {
@@ -198,7 +199,7 @@ const Financial = () => {
             // setCheckCreditRegistryDataStats(true);
 
             setCreditRegistryDataStats(
-              response.data["creditRegistry-data"]["data"]
+              response.data["creditRegistry-data"]["data"],
             );
           }
         }
@@ -210,7 +211,7 @@ const Financial = () => {
             // setCheckFirstCentralDataStats(true);
 
             setFirstCentralDataStats(
-              response.data["firstCentral-data"]["data"]
+              response.data["firstCentral-data"]["data"],
             );
           }
         }
@@ -364,7 +365,7 @@ const Financial = () => {
                           <div class="col-12">
                             {renderDetail(
                               "Date of Birth",
-                              basicData[0].dateOfBirth || "-"
+                              basicData[0].dateOfBirth || "-",
                             )}
                           </div>
                           <div class="col-12">
@@ -379,7 +380,7 @@ const Financial = () => {
                           <div class="col-12">
                             {renderDetail(
                               "Address",
-                              basicData[0].address || "-"
+                              basicData[0].address || "-",
                             )}
                           </div>
                           <div class="col-12">
@@ -875,7 +876,7 @@ const Financial = () => {
                           {crcsummaryData &&
                           crcsummaryData.highestLoanAmount !== null
                             ? formatAmountToNaira(
-                                crcsummaryData.highestLoanAmount
+                                crcsummaryData.highestLoanAmount,
                               )
                             : "-"}
                         </h6>
@@ -975,7 +976,7 @@ const Financial = () => {
                           {crcsummaryData &&
                           crcsummaryData.totalOutstanding !== null
                             ? formatAmountToNaira(
-                                crcsummaryData.totalOutstanding
+                                crcsummaryData.totalOutstanding,
                               )
                             : "-"}
                         </h6>
@@ -1178,7 +1179,7 @@ const Financial = () => {
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.highestLoanAmount !== null
                             ? formatAmountToNaira(
-                                creditRegistrySummaryData.highestLoanAmount
+                                creditRegistrySummaryData.highestLoanAmount,
                               )
                             : "-"}
                         </h6>
@@ -1231,7 +1232,7 @@ const Financial = () => {
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.totalOverdue !== null
                             ? formatAmountToNaira(
-                                creditRegistrySummaryData.totalOverdue
+                                creditRegistrySummaryData.totalOverdue,
                               )
                             : "-"}
                         </h6>
@@ -1256,7 +1257,7 @@ const Financial = () => {
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.totalBorrowed !== null
                             ? formatAmountToNaira(
-                                creditRegistrySummaryData.totalBorrowed
+                                creditRegistrySummaryData.totalBorrowed,
                               )
                             : "-"}
                         </h6>
@@ -1283,7 +1284,7 @@ const Financial = () => {
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.totalOutstanding !== null
                             ? formatAmountToNaira(
-                                creditRegistrySummaryData.totalOutstanding
+                                creditRegistrySummaryData.totalOutstanding,
                               )
                             : "-"}
                         </h6>
@@ -1466,10 +1467,10 @@ const Financial = () => {
             </DynamicCard>
           </Spin>
         </InfoSec>
-        <Title level={5} style={{ marginTop: "20px" }}>
-          Your Offers
-        </Title>
-        <div class="container">
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
+        <div class="container" style={{ display: "none" }}>
           <div class="row">
             <div
               className="col-sm-4 col-md-6 col-lg-3 mb-3"
@@ -1484,7 +1485,7 @@ const Financial = () => {
               onClick={() => {
                 window.open(
                   "https://clk1.reachclk.com/avnq9z?landing_id=325&creative_id=1735",
-                  "_blank"
+                  "_blank",
                 );
               }}
             ></div>
@@ -1501,7 +1502,7 @@ const Financial = () => {
               onClick={() => {
                 window.open(
                   "https://clk1.reachclk.com/I4KDDU?adv_sub1=info%40biosec.com.ng&landing_id=627&creative_id=1658",
-                  "_blank"
+                  "_blank",
                 );
               }}
             ></div>

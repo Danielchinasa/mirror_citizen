@@ -17,6 +17,7 @@ import axios from "axios";
 import { Typography } from "antd";
 import Icon, { RightOutlined, UserOutlined } from "@ant-design/icons";
 import Reach1 from "../../images/reach1.jpeg";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
@@ -39,7 +40,7 @@ const LegitCar = () => {
         // Make an API request to check consent status
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         const chasisNumberFromResponse = response.data.data.chasisNumber || "";
@@ -109,6 +110,10 @@ const LegitCar = () => {
           </Row>
         </Card>
       </InfoSec>
+      <div style={{ display: "none" }}>
+        <RecommendedOffers variant="green" />
+      </div>
+      {/*
       <Title level={5} style={{ marginTop: "20px" }}>
         Your Offers
       </Title>
@@ -121,7 +126,7 @@ const LegitCar = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "200px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              cursor: "pointer",
             }}
             onClick={() => {
               window.open(
@@ -138,7 +143,7 @@ const LegitCar = () => {
               backgroundPosition: "center",
               height: "200px",
               marginRight: "10px",
-              cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+              cursor: "pointer",
             }}
             onClick={() => {
               window.open(
@@ -147,40 +152,9 @@ const LegitCar = () => {
               );
             }}
           ></div>
-          {/* <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Finance your Next Car</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#DDF9EA",
-                }}
-              >
-                <p class="card-text">
-                  Find financial offers that are tailored to your credit score.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-            <div class="card">
-              <div class="card-header">Credit Cards</div>
-              <div
-                class="card-body"
-                style={{
-                  paddingTop: "30px",
-                  paddingBottom: "30px",
-                  backgroundColor: "#ECF5F8",
-                }}
-              >
-                <p class="card-text">Credit Cards handpicked for you</p>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
+      */}
     </Container>
   );
 };

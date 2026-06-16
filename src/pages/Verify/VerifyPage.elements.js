@@ -241,6 +241,213 @@ export const ContentWrapper = styled.div`
   }
 `;
 
+export const PopupOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+export const PopupCard = styled.div`
+  width: min(680px, 100%);
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  animation: ${fadeIn} 0.25s ease-out;
+`;
+
+export const PopupHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px 24px 0;
+`;
+
+export const PopupMeta = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+`;
+
+export const PopupIcon = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ecfdf5;
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+`;
+
+export const PopupTitle = styled.h3`
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #111827;
+`;
+
+export const PopupSubtitle = styled.p`
+  margin: 8px 0 0;
+  font-family: "Nunito", sans-serif;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 15px;
+`;
+
+export const PopupCloseButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+`;
+
+export const PopupBody = styled.div`
+  padding: 24px;
+`;
+
+export const PopupRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+`;
+
+export const PopupField = styled.div`
+  flex: 1 1 45%;
+  min-width: 180px;
+`;
+
+export const PopupFieldLabel = styled.div`
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 6px;
+`;
+
+export const PopupFieldValue = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+`;
+
+export const PopupActionRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 18px;
+`;
+
+export const ResultCardPopup = styled.div`
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  margin-bottom: 20px;
+`;
+
+export const ResultTopPopup = styled.div`
+  display: flex;
+  gap: 24px;
+  padding: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+`;
+
+export const ResultPhotoPopup = styled.div`
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+  font-size: 32px;
+  flex-shrink: 0;
+`;
+
+export const ResultGridPopup = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 20px 32px;
+  width: 100%;
+`;
+
+export const ResultFieldPopup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const ResultLabelPopup = styled.span`
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+`;
+
+export const ResultValuePopup = styled.span`
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+`;
+
+export const VerifiedBadgePopup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #16a34a;
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+`;
+
+export const ResultFooterPopup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 28px 24px;
+  border-top: 1px solid #f3f4f6;
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: #6b7280;
+`;
+
+export const ResultDisclaimerPopup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+`;
+
 /* ─── Search Form ─── */
 
 export const SearchGrid = styled.div`

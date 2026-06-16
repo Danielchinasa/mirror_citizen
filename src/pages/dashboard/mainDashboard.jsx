@@ -1635,7 +1635,9 @@ const MainDashboard = () => {
                 marginBottom: "40px",
               }}
             />
-            <RecommendedOffers variant="green" />
+            <div style={{ display: "none" }}>
+              <RecommendedOffers variant="green" />
+            </div>
             <Notification />
             <Modal
               // title="Complete Wallet TopUp"

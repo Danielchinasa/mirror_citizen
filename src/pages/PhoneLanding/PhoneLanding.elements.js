@@ -87,6 +87,15 @@ export const PrimaryBtn = styled(Link)`
     font-size: 16px;
     padding: 10px 28px;
   }
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 20px;
+    white-space: normal;
+    text-align: center;
+  }
 `;
 
 export const SecondaryBtn = styled.a`
@@ -115,6 +124,15 @@ export const SecondaryBtn = styled.a`
   @media screen and (max-width: 480px) {
     font-size: 16px;
     padding: 10px 28px;
+  }
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 20px;
+    white-space: normal;
+    text-align: center;
   }
 `;
 
@@ -163,23 +181,26 @@ export const HeroSectionWrapper = styled.section`
 
   @media screen and (max-width: 960px) {
     min-height: auto;
-    padding: 40px 0 40px;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 0 40px;
 
     &::after {
       width: 100%;
-      height: 40%;
-      top: auto;
-      bottom: 0;
+      height: 100%;
+      top: 0;
+      bottom: auto;
       background: linear-gradient(
         180deg,
-        rgba(224, 239, 224, 0) 0%,
-        #e0efe0 60%
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.78) 46%,
+        rgba(224, 239, 224, 0.72) 100%
       );
     }
   }
 
   @media screen and (max-width: 600px) {
-    padding: 30px 0 30px;
+    padding: 36px 0 32px;
   }
 `;
 
@@ -201,8 +222,9 @@ export const HeroBgImage = styled.img`
 
 export const HeroMobileImage = styled.img`
   display: none;
-  width: 100%;
+  width: min(82vw, 520px);
   max-width: 500px;
+  max-height: 320px;
   margin: 30px auto 0;
   object-fit: contain;
   position: relative;
@@ -210,6 +232,12 @@ export const HeroMobileImage = styled.img`
 
   @media screen and (max-width: 960px) {
     display: block;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: min(90vw, 420px);
+    max-height: 260px;
+    margin-top: 24px;
   }
 `;
 
@@ -280,8 +308,16 @@ export const HeroTitle = styled.h1`
     animation: ${shimmer} 3s linear infinite;
   }
 
+  @media screen and (max-width: 960px) {
+    font-size: 40px;
+  }
+
   @media screen and (max-width: 768px) {
-    font-size: 36px;
+    font-size: 34px;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 28px;
   }
 `;
 
@@ -332,6 +368,8 @@ export const PriceBadge = styled.div`
   margin-bottom: 16px;
   opacity: 0;
   animation: ${fadeSlideUp} 0.7s ease-out 0.8s forwards;
+  max-width: 100%;
+  text-align: center;
 
   span {
     margin-right: 2px;
