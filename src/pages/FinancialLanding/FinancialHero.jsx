@@ -20,6 +20,14 @@ import {
 
 const SmallerHeroImage = styled(HeroBgImage)`
   max-height: 460px;
+
+  @media screen and (max-width: 960px) {
+    max-height: 320px;
+  }
+
+  @media screen and (max-width: 600px) {
+    max-height: 260px;
+  }
 `;
 
 const FinancialHero = () => {

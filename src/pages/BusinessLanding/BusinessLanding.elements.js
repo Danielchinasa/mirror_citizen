@@ -96,6 +96,15 @@ export const PrimaryBtn = styled(Link)`
     font-size: 16px;
     padding: 10px 28px;
   }
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 20px;
+    white-space: normal;
+    text-align: center;
+  }
 `;
 
 export const SecondaryBtn = styled.a`
@@ -124,6 +133,15 @@ export const SecondaryBtn = styled.a`
   @media screen and (max-width: 480px) {
     font-size: 16px;
     padding: 10px 28px;
+  }
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 20px;
+    white-space: normal;
+    text-align: center;
   }
 `;
 
@@ -172,23 +190,26 @@ export const HeroSectionWrapper = styled.section`
 
   @media screen and (max-width: 960px) {
     min-height: auto;
-    padding: 40px 0 40px;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 0 40px;
 
     &::after {
       width: 100%;
-      height: 40%;
-      top: auto;
-      bottom: 0;
+      height: 100%;
+      top: 0;
+      bottom: auto;
       background: linear-gradient(
         180deg,
-        rgba(224, 239, 224, 0) 0%,
-        #e0efe0 60%
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.78) 46%,
+        rgba(224, 239, 224, 0.72) 100%
       );
     }
   }
 
   @media screen and (max-width: 600px) {
-    padding: 30px 0 30px;
+    padding: 36px 0 32px;
   }
 `;
 
@@ -204,7 +225,25 @@ export const HeroBgImage = styled.img`
   animation: ${floatUp} 4s ease-in-out infinite;
 
   @media screen and (max-width: 960px) {
-    display: none;
+    position: relative;
+    order: 2;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    transform: none;
+    width: min(82vw, 520px);
+    height: auto;
+    max-height: 320px;
+    margin: 28px auto 0;
+    z-index: 2;
+    animation: none;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: min(90vw, 420px);
+    max-height: 260px;
+    margin-top: 24px;
   }
 `;
 
@@ -215,6 +254,7 @@ export const HeroContainer = styled.div`
   width: 100%;
 
   @media screen and (max-width: 960px) {
+    order: 1;
     text-align: center;
     padding: 0 30px;
   }
@@ -275,8 +315,16 @@ export const HeroTitle = styled.h1`
     animation: ${shimmer} 3s linear infinite;
   }
 
+  @media screen and (max-width: 960px) {
+    font-size: 40px;
+  }
+
   @media screen and (max-width: 768px) {
-    font-size: 36px;
+    font-size: 34px;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 28px;
   }
 `;
 
@@ -338,6 +386,8 @@ export const PriceBadge = styled.div`
   font-size: 14px;
   padding: 8px 18px;
   border-radius: 20px;
+  max-width: 100%;
+  text-align: center;
 
   span {
     margin-right: 2px;
