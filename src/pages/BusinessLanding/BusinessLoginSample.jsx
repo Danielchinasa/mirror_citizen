@@ -49,6 +49,10 @@ const LoginCard = styled.div`
   border-radius: 12px;
   padding: 36px 32px;
 
+  @media screen and (max-width: 960px) {
+    order: 2;
+  }
+
   @media screen and (max-width: 768px) {
     padding: 28px 20px;
   }
@@ -289,6 +293,10 @@ const SampleCard = styled.div`
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 36px 32px;
+
+  @media screen and (max-width: 960px) {
+    order: 1;
+  }
 
   @media screen and (max-width: 768px) {
     padding: 28px 20px;

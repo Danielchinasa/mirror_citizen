@@ -64,6 +64,13 @@ function Footer() {
           <FooterCol>
             <FooterColTitle>Services</FooterColTitle>
             <FooterLink to="/nin-verification">NIN Verification</FooterLink>
+            <FooterLink to="/phone-number-verification">
+              Phone Number Verification
+            </FooterLink>
+            <FooterLink to="/business-verification">
+              Business Verification
+            </FooterLink>
+            <FooterLink to="/credit-profile">Credit Profile</FooterLink>
             <FooterLink to="/vehicle-verification">
               Vehicle Verification
             </FooterLink>
