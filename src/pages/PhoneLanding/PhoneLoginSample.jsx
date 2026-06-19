@@ -10,6 +10,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
+import phoneSampleAvatar from "../../images/avatar1.jpg";
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
@@ -392,6 +393,12 @@ const PhoneIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   svg {
     font-size: 28px;
@@ -858,12 +865,20 @@ const PhoneLoginSample = () => {
           <ResultCard>
             <ResultTop>
               <PhoneIcon>
-                <FaUserCircle />
+                <img src={phoneSampleAvatar} alt="Sample person" />
               </PhoneIcon>
               <ResultGrid>
                 <ResultField>
+                  <ResultLabel>Full Name</ResultLabel>
+                  <ResultValue>ADAOBI CHIOMA NWOSU</ResultValue>
+                </ResultField>
+                <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>
                   <ResultValue>0803 *** 5678</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>NIN</ResultLabel>
+                  <ResultValue>5923 4107 8**</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Verification Status</ResultLabel>
@@ -872,16 +887,40 @@ const PhoneLoginSample = () => {
                   </VerifiedBadge>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Status</ResultLabel>
-                  <VerifiedBadge>Active</VerifiedBadge>
+                  <ResultLabel>Date of Birth</ResultLabel>
+                  <ResultValue>08-03-1994</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Region</ResultLabel>
-                  <ResultValue>Lagos</ResultValue>
+                  <ResultLabel>Gender</ResultLabel>
+                  <ResultValue>Female</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Confidence Score</ResultLabel>
-                  <ResultValue>98%</ResultValue>
+                  <ResultLabel>Birth Country</ResultLabel>
+                  <ResultValue>Nigeria</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Residence Address</ResultLabel>
+                  <ResultValue>7 OKAFOR CLOSE, FESTAC TOWN</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Next of Kin First Name</ResultLabel>
+                  <ResultValue>CHUKWUEMEKA</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Next of Kin Middle Name</ResultLabel>
+                  <ResultValue>TOCHUKWU</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Next of Kin Town</ResultLabel>
+                  <ResultValue>ONITSHA</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Next of Kin LGA</ResultLabel>
+                  <ResultValue>Onitsha North</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Next of Kin Address</ResultLabel>
+                  <ResultValue>15 MARKET ROAD, ONITSHA</ResultValue>
                 </ResultField>
               </ResultGrid>
             </ResultTop>

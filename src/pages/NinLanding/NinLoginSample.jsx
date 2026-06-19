@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
+import ninSampleAvatar from "../../images/BW7A9844.png";
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
@@ -849,7 +850,7 @@ const NinLoginSample = () => {
           <ResultCard>
             <ResultTop>
               <ResultPhoto>
-                <img src={defaultDp} alt="Sample person" />
+                <img src={ninSampleAvatar} alt="Sample person" />
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>

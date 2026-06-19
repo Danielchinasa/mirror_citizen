@@ -9,7 +9,9 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import defaultDp from "../../images/defaultDp.png";
-import ninSampleAvatar from "../../images/nin_sample_avatar.png";
+import ninSampleAvatar from "../../images/BW7A9844.png";
+import financialSampleAvatar from "../../images/avatar2.jpg";
+import phoneSampleAvatar from "../../images/avatar1.jpg";
 
 const sampleData = {
   nin: {
@@ -36,41 +38,71 @@ const sampleData = {
   },
   phone: {
     subtitle: "See an example of a phone number verification result.",
-    icon: FaUserCircle,
+    image: phoneSampleAvatar,
     fields: [
+      ["Full Name", "ADAOBI CHIOMA NWOSU"],
+      ["First Name", "ADAOBI"],
+      ["Middle Name", "CHIOMA"],
+      ["Surname", "NWOSU"],
+      ["NIN", "5923 4107 8**"],
       ["Phone Number", "0803 *** 5678"],
       ["Verification Status", "VERIFIED", "verified"],
-      ["Status", "Active", "verified"],
-      ["Region", "Lagos"],
-      ["Confidence Score", "98%"],
-      ["Reference", "ECPH202505251245ABC0"],
+      ["Date of Birth", "08-03-1994"],
+      ["Gender", "Female"],
+      ["Birth Country", "Nigeria"],
+      ["Residence Address", "7 OKAFOR CLOSE, FESTAC TOWN"],
+      ["Next of Kin First Name", "CHUKWUEMEKA"],
+      ["Next of Kin Middle Name", "TOCHUKWU"],
+      ["Next of Kin Town", "ONITSHA"],
+      ["Next of Kin LGA", "Onitsha North"],
+      ["Next of Kin Address", "15 MARKET ROAD, ONITSHA"],
     ],
   },
   business: {
     subtitle: "See an example of a company verification result.",
     icon: FaBuilding,
     fields: [
-      ["Company Name", "ADEBAYO GLOBAL SERVICES LTD"],
-      ["RC Number", "RC 1234567"],
-      ["Status", "ACTIVE / VERIFIED", "verified"],
-      ["Company Type", "Private Limited Liability"],
-      ["Registered Address", "12 Adeola Odeku Street, Victoria Island, Lagos"],
-      ["Directors", "3"],
-      ["Date Incorporated", "12 Feb 2019"],
-      ["Confidence Score", "98%"],
+      ["Company Name", "BIOSEC SOLUTIONS LIMITED"],
+      ["RC Number", "RC 456823"],
+      ["CAC ID", "2198456"],
+      ["Verification Status", "VERIFIED", "verified"],
+      ["Classification", "Private Limited Liability"],
+      ["Registration Date", "08 May 2015"],
+      ["Verification Date", "14 Mar 2025"],
+    ],
+    stakeholders: [
+      {
+        name: "BABATUNDE ADEWALE OKONKWO",
+        role: "Director",
+        nationality: "Nigerian",
+      },
+      {
+        name: "CHIDINMA GRACE OBIORA",
+        role: "Director / Shareholder",
+        nationality: "Nigerian",
+      },
+      {
+        name: "ROTIMI FEMI ADEYEMI",
+        role: "Shareholder",
+        nationality: "Nigerian",
+      },
     ],
   },
   financial: {
     subtitle: "See an example of a Credit Profile result.",
-    image: defaultDp,
+    image: financialSampleAvatar,
     fields: [
-      ["Customer Name", "ADEBAYO CHINEDU MICHAEL"],
-      ["BVN", "1234 5678 901**"],
-      ["Report Date", "16 May 2024"],
-      ["Credit Score", "742"],
+      ["Customer Name", "CHIJIOKE OLUWASEUN ADEBAYO"],
+      ["BVN", "2234 5678 9**"],
+      ["Gender", "Male"],
+      ["Phone Number", "0802 *** 7654"],
+      ["Address", "45 Awolowo Road, Ikoyi, Lagos"],
+      ["Report Date", "14 Mar 2025"],
+      ["Credit Score", "718"],
       ["Rating", "Good", "verified"],
-      ["Active Loans", "2"],
-      ["Repayment Status", "On track", "verified"],
+      ["CRC", "Success", "verified"],
+      ["First Central", "Success", "verified"],
+      ["Credit Registry", "Success", "verified"],
       ["Bureaus Checked", "3"],
     ],
   },
@@ -158,6 +190,25 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
               ))}
             </ResultGrid>
           </Top>
+          {sample.stakeholders && (
+            <StakeholderSection>
+              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+              <StakeholderTable>
+                <StakeholderRow $header>
+                  <StakeholderCell $header>Name</StakeholderCell>
+                  <StakeholderCell $header>Role</StakeholderCell>
+                  <StakeholderCell $header>Nationality</StakeholderCell>
+                </StakeholderRow>
+                {sample.stakeholders.map((s, i) => (
+                  <StakeholderRow key={i}>
+                    <StakeholderCell>{s.name}</StakeholderCell>
+                    <StakeholderCell>{s.role}</StakeholderCell>
+                    <StakeholderCell>{s.nationality}</StakeholderCell>
+                  </StakeholderRow>
+                ))}
+              </StakeholderTable>
+            </StakeholderSection>
+          )}
         </ResultCard>
 
         <Disclaimer>
@@ -349,6 +400,59 @@ const Disclaimer = styled.div`
   svg {
     color: #09c93a;
     flex-shrink: 0;
+  }
+`;
+
+const StakeholderSection = styled.div`
+  margin-top: 16px;
+  border-top: 1px solid #edf0f2;
+  padding-top: 14px;
+`;
+
+const StakeholderSectionTitle = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #354138;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+`;
+
+const StakeholderTable = styled.div`
+  border: 1px solid #edf0f2;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const StakeholderRow = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr;
+  background: ${(props) => (props.$header ? "#f4f7f5" : "#fff")};
+  border-bottom: 1px solid #edf0f2;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const StakeholderCell = styled.div`
+  padding: 9px 12px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: ${(props) => (props.$header ? "800" : "600")};
+  color: ${(props) => (props.$header ? "#8a94a6" : "#344054")};
+  text-transform: ${(props) => (props.$header ? "uppercase" : "none")};
+  overflow-wrap: anywhere;
+
+  @media screen and (max-width: 480px) {
+    &:last-child {
+      display: none;
+    }
   }
 `;
 

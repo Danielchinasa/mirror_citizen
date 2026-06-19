@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
+import financialSampleAvatar from "../../images/avatar2.jpg";
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
@@ -976,26 +977,38 @@ const FinancialLoginSample = () => {
           <ResultCard>
             <ResultTop>
               <ResultPhoto>
-                <img src={defaultDp} alt="Sample person" />
+                <img src={financialSampleAvatar} alt="Sample person" />
               </ResultPhoto>
               <ResultInfo>
                 <ResultField>
                   <ResultName>Customer Name</ResultName>
-                  <ResultNameValue>ADEBAYO CHINEDU MICHAEL</ResultNameValue>
+                  <ResultNameValue>CHIJIOKE OLUWASEUN ADEBAYO</ResultNameValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>BVN</ResultLabel>
-                  <ResultValue>1234 5678 901**</ResultValue>
+                  <ResultValue>2234 5678 9**</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Gender</ResultLabel>
+                  <ResultValue>Male</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Phone Number</ResultLabel>
+                  <ResultValue>0802 *** 7654</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Address</ResultLabel>
+                  <ResultValue>45 Awolowo Road, Ikoyi, Lagos</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Report Date</ResultLabel>
-                  <ResultValue>16 May 2024</ResultValue>
+                  <ResultValue>14 Mar 2025</ResultValue>
                 </ResultField>
               </ResultInfo>
               <CreditScoreArea>
                 <CreditScoreCircle>
                   <CreditScoreLabel>Credit Score</CreditScoreLabel>
-                  <CreditScoreNumber>742</CreditScoreNumber>
+                  <CreditScoreNumber>718</CreditScoreNumber>
                   <CreditScoreBadge>Good</CreditScoreBadge>
                 </CreditScoreCircle>
                 <CreditMeta>
@@ -1004,9 +1017,9 @@ const FinancialLoginSample = () => {
                     <CreditMetaValue>Good</CreditMetaValue>
                   </CreditMetaItem>
                   <CreditMetaItem>
-                    <CreditMetaLabel>Confidence Score</CreditMetaLabel>
+                    <CreditMetaLabel>Bureaus Checked</CreditMetaLabel>
                     <CreditMetaValueNeutral>
-                      96% <FaCheckCircle />
+                      3 <FaCheckCircle />
                     </CreditMetaValueNeutral>
                   </CreditMetaItem>
                 </CreditMeta>
@@ -1014,22 +1027,26 @@ const FinancialLoginSample = () => {
             </ResultTop>
             <StatsRow>
               <StatItem>
-                <StatLabel>Active Loans</StatLabel>
-                <StatValue>2</StatValue>
+                <StatLabel>CRC</StatLabel>
+                <StatValueGreen>
+                  Success <FaCheckCircle />
+                </StatValueGreen>
               </StatItem>
               <StatItem>
-                <StatLabel>Repayment Status</StatLabel>
-                <StatValueGreen>On track</StatValueGreen>
+                <StatLabel>First Central</StatLabel>
+                <StatValueGreen>
+                  Success <FaCheckCircle />
+                </StatValueGreen>
+              </StatItem>
+              <StatItem>
+                <StatLabel>Credit Registry</StatLabel>
+                <StatValueGreen>
+                  Success <FaCheckCircle />
+                </StatValueGreen>
               </StatItem>
               <StatItem>
                 <StatLabel>Bureaus Checked</StatLabel>
                 <StatValue>3</StatValue>
-              </StatItem>
-              <StatItem>
-                <StatLabel>Confidence Score</StatLabel>
-                <StatValueGreen>
-                  96% <FaCheckCircle />
-                </StatValueGreen>
               </StatItem>
             </StatsRow>
           </ResultCard>
