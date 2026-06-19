@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.6f9be82c.chunk.css",
-    "main.js": "/static/js/main.bcde3d3d.chunk.js",
-    "main.js.map": "/static/js/main.bcde3d3d.chunk.js.map",
+    "main.js": "/static/js/main.1466c736.chunk.js",
+    "main.js.map": "/static/js/main.1466c736.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.0f34a82e.chunk.js": "/static/js/2.0f34a82e.chunk.js",
-    "static/js/2.0f34a82e.chunk.js.map": "/static/js/2.0f34a82e.chunk.js.map",
+    "static/js/2.86b88b85.chunk.js": "/static/js/2.86b88b85.chunk.js",
+    "static/js/2.86b88b85.chunk.js.map": "/static/js/2.86b88b85.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.1bc197ef2b7ede3b9bd97e7afddba2a2.js": "/precache-manifest.1bc197ef2b7ede3b9bd97e7afddba2a2.js",
+    "precache-manifest.c1a60b48b06139efa1f8cbb17b7ef3fb.js": "/precache-manifest.c1a60b48b06139efa1f8cbb17b7ef3fb.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.6f9be82c.chunk.css.map": "/static/css/main.6f9be82c.chunk.css.map",
-    "static/js/2.0f34a82e.chunk.js.LICENSE.txt": "/static/js/2.0f34a82e.chunk.js.LICENSE.txt",
+    "static/js/2.86b88b85.chunk.js.LICENSE.txt": "/static/js/2.86b88b85.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/Hero_image_new.png": "/static/media/Hero_image_new.353f76f7.png",
     "static/media/NIN_verification_on_ecitizen.png": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -34,6 +34,7 @@
     "static/media/lady.svg": "/static/media/lady.82ff32ba.svg",
     "static/media/ndpr.png": "/static/media/ndpr.411010b5.png",
     "static/media/nidologo.png": "/static/media/nidologo.c6aae41a.png",
+    "static/media/nin_sample_avatar.png": "/static/media/nin_sample_avatar.6f36e55b.png",
     "static/media/nin_verification_hero2.png": "/static/media/nin_verification_hero2.b2e64c4e.png",
     "static/media/paypal.png": "/static/media/paypal.db850f0f.png",
     "static/media/paystack.png": "/static/media/paystack.46ac45bf.png",
@@ -48,8 +49,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.0f34a82e.chunk.js",
+    "static/js/2.86b88b85.chunk.js",
     "static/css/main.6f9be82c.chunk.css",
-    "static/js/main.bcde3d3d.chunk.js"
+    "static/js/main.1466c736.chunk.js"
   ]
 }
