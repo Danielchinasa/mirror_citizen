@@ -19,11 +19,13 @@ import {
   FaBuilding,
   FaCreditCard,
   FaCar,
+  FaPhoneAlt,
   FaCheckCircle,
   FaPlayCircle,
   FaUsers,
   FaFileAlt,
 } from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/Hero_image_new.png";
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
@@ -103,6 +105,11 @@ const Home = () => {
   const { token } = useToken();
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
+  const ninVerify = useAuthRedirect("/verify/nin");
+  const businessVerify = useAuthRedirect("/verify/business");
+  const bvnVerify = useAuthRedirect("/verify/bvn");
+  const vehicleVerify = useAuthRedirect("/verify/vehicle");
+  const phoneVerify = useAuthRedirect("/verify/phone");
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -480,7 +487,7 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to="/nin-verification" $popular>
+            <ServiceBtn to={ninVerify} $popular>
               Verify Now
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
@@ -516,7 +523,7 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to="/business-verification">Verify Now</ServiceBtn>
+            <ServiceBtn to={businessVerify}>Verify Now</ServiceBtn>
             <LearnMoreLink to="/business-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -550,7 +557,7 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to="/credit-profile">Verify Now</ServiceBtn>
+            <ServiceBtn to={bvnVerify}>Verify Now</ServiceBtn>
             <LearnMoreLink to="/credit-profile">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -582,8 +589,42 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to="/vehicle-verification">Verify Now</ServiceBtn>
+            <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Phone Number Verification */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaPhoneAlt />
+            </ServiceIcon>
+            <ServiceName>Phone Number Verification</ServiceName>
+            <ServiceDesc>
+              Verify phone number ownership and network details.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[8]?.price
+                ? `₦${Number(servicePrices.data[8].price).toLocaleString()}`
+                : "₦100"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Number ownership verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Network provider details
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Phone status check
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in minutes
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={phoneVerify}>Verify Now</ServiceBtn>
+            <LearnMoreLink to="/phone-number-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
