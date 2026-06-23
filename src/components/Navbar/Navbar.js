@@ -745,7 +745,7 @@ function Navbar() {
                     </NavBtnLink>
                   </NavItemBtn>
                   <NavItemBtn>
-                    <NavBtnLink to="/dashboard">
+                    <NavBtnLink to="/">
                       <MainButton
                         type="primary"
                         style={{
