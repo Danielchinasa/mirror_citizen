@@ -49,6 +49,10 @@ const LoginCard = styled.div`
   border-radius: 12px;
   padding: 36px 32px;
 
+  @media screen and (max-width: 960px) {
+    order: 2;
+  }
+
   @media screen and (max-width: 768px) {
     padding: 28px 20px;
   }
@@ -290,6 +294,10 @@ const SampleCard = styled.div`
   border-radius: 12px;
   padding: 36px 32px;
 
+  @media screen and (max-width: 960px) {
+    order: 1;
+  }
+
   @media screen and (max-width: 768px) {
     padding: 28px 20px;
   }
@@ -485,6 +493,59 @@ const ResultFooter = styled.div`
   @media screen and (max-width: 600px) {
     flex-direction: column;
     gap: 4px;
+  }
+`;
+
+const StakeholderSection = styled.div`
+  margin-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 14px;
+`;
+
+const StakeholderSectionTitle = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #354138;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+`;
+
+const StakeholderTable = styled.div`
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const StakeholderRow = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr;
+  background: ${(props) => (props.$header ? "#f9fafb" : "#fff")};
+  border-bottom: 1px solid #e5e7eb;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const StakeholderCell = styled.div`
+  padding: 9px 12px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: ${(props) => (props.$header ? "700" : "600")};
+  color: ${(props) => (props.$header ? "#999" : "#1a1a1a")};
+  text-transform: ${(props) => (props.$header ? "uppercase" : "none")};
+  overflow-wrap: anywhere;
+
+  @media screen and (max-width: 480px) {
+    &:last-child {
+      display: none;
+    }
   }
 `;
 
@@ -893,54 +954,69 @@ const BusinessLoginSample = () => {
                 <FaBuilding />
               </CompanyIcon>
               <CompanyInfo>
-                <CompanyName>ADEBAYO GLOBAL SERVICES LTD</CompanyName>
-                <CompanyRc>RC 1234567</CompanyRc>
+                <CompanyName>BIOSEC SOLUTIONS LIMITED</CompanyName>
+                <CompanyRc>RC 456823</CompanyRc>
                 <VerifiedBadge>
-                  ACTIVE / VERIFIED <FaCheckCircle />
+                  VERIFIED <FaCheckCircle />
                 </VerifiedBadge>
               </CompanyInfo>
-              <ScoreSection>
-                <ScoreLabel>Confidence Score</ScoreLabel>
-                <ScoreCircle>98%</ScoreCircle>
-              </ScoreSection>
             </ResultTop>
             <ResultFooter style={{ marginTop: 0 }}>
-              <span>Verified on 25 May 2025, 12:35 PM</span>
-              <span>Ref: EC20250525123545ABCD</span>
+              <span>Verified on 14 Mar 2025, 10:22 AM</span>
+              <span>CAC ID: 2198456</span>
             </ResultFooter>
             <ResultDivider />
             <ResultGrid>
               <ResultField>
-                <ResultLabel>Company Type</ResultLabel>
+                <ResultLabel>Classification</ResultLabel>
                 <ResultValue>Private Limited Liability</ResultValue>
               </ResultField>
               <ResultField>
-                <ResultLabel>Registered Address</ResultLabel>
-                <ResultValue>
-                  12 Adeola Odeku Street, Victoria Island, Lagos
-                </ResultValue>
+                <ResultLabel>RC Number</ResultLabel>
+                <ResultValue>RC 456823</ResultValue>
               </ResultField>
               <ResultField>
-                <ResultLabel>Directors</ResultLabel>
-                <ResultValue>3</ResultValue>
+                <ResultLabel>CAC ID</ResultLabel>
+                <ResultValue>2198456</ResultValue>
               </ResultField>
               <ResultField>
-                <ResultLabel>Date Incorporated</ResultLabel>
-                <ResultValue>12 Feb 2019</ResultValue>
+                <ResultLabel>Registration Date</ResultLabel>
+                <ResultValue>08 May 2015</ResultValue>
               </ResultField>
               <ResultField>
-                <ResultLabel>Status</ResultLabel>
-                <ResultValue>Active</ResultValue>
+                <ResultLabel>Verification Status</ResultLabel>
+                <ResultValue>VERIFIED</ResultValue>
               </ResultField>
               <ResultField>
-                <ResultLabel>Shareholders</ResultLabel>
-                <ResultValue>2</ResultValue>
-              </ResultField>
-              <ResultField>
-                <ResultLabel>Nature of Business</ResultLabel>
-                <ResultValue>General Contract Merchandise</ResultValue>
+                <ResultLabel>Verification Date</ResultLabel>
+                <ResultValue>14 Mar 2025</ResultValue>
               </ResultField>
             </ResultGrid>
+            <StakeholderSection>
+              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+              <StakeholderTable>
+                <StakeholderRow $header>
+                  <StakeholderCell $header>Name</StakeholderCell>
+                  <StakeholderCell $header>Role</StakeholderCell>
+                  <StakeholderCell $header>Nationality</StakeholderCell>
+                </StakeholderRow>
+                <StakeholderRow>
+                  <StakeholderCell>BABATUNDE ADEWALE OKONKWO</StakeholderCell>
+                  <StakeholderCell>Director</StakeholderCell>
+                  <StakeholderCell>Nigerian</StakeholderCell>
+                </StakeholderRow>
+                <StakeholderRow>
+                  <StakeholderCell>CHIDINMA GRACE OBIORA</StakeholderCell>
+                  <StakeholderCell>Director / Shareholder</StakeholderCell>
+                  <StakeholderCell>Nigerian</StakeholderCell>
+                </StakeholderRow>
+                <StakeholderRow>
+                  <StakeholderCell>ROTIMI FEMI ADEYEMI</StakeholderCell>
+                  <StakeholderCell>Shareholder</StakeholderCell>
+                  <StakeholderCell>Nigerian</StakeholderCell>
+                </StakeholderRow>
+              </StakeholderTable>
+            </StakeholderSection>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
