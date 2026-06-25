@@ -761,9 +761,9 @@ function Navbar() {
             <PublicCenter>
               <CountryPill type="button" aria-label="Select country">
                 <span className="flag" role="img" aria-label="Uganda flag">
-                  🇺🇬
+                  🇰🇪
                 </span>
-                Uganda
+                Kenya
                 <DownOutlined className="chev" />
               </CountryPill>
 
@@ -811,13 +811,22 @@ function Navbar() {
 
           <PublicMobilePanel $open={click}>
             <PublicMobileMenu>
-              <PublicMobileLink to="/nin-verification" onClick={closeMobileMenu}>
+              <PublicMobileLink
+                to="/nin-verification"
+                onClick={closeMobileMenu}
+              >
                 National ID
               </PublicMobileLink>
-              <PublicMobileLink to="/vehicle-verification" onClick={closeMobileMenu}>
+              <PublicMobileLink
+                to="/vehicle-verification"
+                onClick={closeMobileMenu}
+              >
                 VIN Verification
               </PublicMobileLink>
-              <PublicMobileAnchor href="#how-it-works" onClick={closeMobileMenu}>
+              <PublicMobileAnchor
+                href="#how-it-works"
+                onClick={closeMobileMenu}
+              >
                 How it works
               </PublicMobileAnchor>
               <PublicMobileLink to="/faq" onClick={closeMobileMenu}>

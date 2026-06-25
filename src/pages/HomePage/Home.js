@@ -24,7 +24,7 @@ import {
 } from "react-icons/fa";
 import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import heroImg from "../../images/uganda.png";
+import heroImg from "../../images/kenya.png";
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
 import osiaImg from "../../images/osia.png";
@@ -105,6 +105,7 @@ const Home = () => {
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
   const ninVerify = useAuthRedirect("/verify/nin");
+  const alienCardVerify = useAuthRedirect("/verify/nin");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
 
   useEffect(() => {
@@ -331,24 +332,29 @@ const Home = () => {
               Verify your identity in{" "}
               <span
                 style={{
-                  color: "#DD0201",
+                  color: "#D80111",
                   fontFamily: "inherit",
                   fontSize: "inherit",
                   fontWeight: "inherit",
                 }}
               >
-                Uganda.{" "}
+                Kenya.{" "}
               </span>
               Fast, secure and trusted.
             </HeroTitle>
             <HeroSubtitle>
-              Official identity verification services for individuals and
-              businesses across Uganda and the diaspora.
+              Official identity verification for individuals and businesses
+              across Kenya and the diaspora.
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={ctaLink}>
                 Verify National ID <FaArrowRight />
               </PrimaryBtn>
+              <SecondaryBtn href="#how-it-works">
+                Verify Alien Card <FaPlayCircle />
+              </SecondaryBtn>
+            </HeroButtons>
+            <HeroButtons>
               <SecondaryBtn href="#how-it-works">
                 Check VIN <FaPlayCircle />
               </SecondaryBtn>
@@ -389,7 +395,7 @@ const Home = () => {
                 <img src={avatar3} alt="user" />
                 <img src={avatar4} alt="user" />
               </AvatarStack>
-              Join 500,000+ Ugandans who trust e-raia
+              Join 500,000+ Kenyans who trust e-raia
             </SocialProof>
           </HeroContent>
         </HeroContainer>
@@ -483,6 +489,40 @@ const Home = () => {
             <ServiceBtn to={ninVerify} $popular>
               Verify Now
             </ServiceBtn>
+            <LearnMoreLink to="/nin-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Alien Card Verification */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaIdCard />
+            </ServiceIcon>
+            <ServiceName>Alien Card Verification</ServiceName>
+            <ServiceDesc>
+              Verify Kenya Alien Card details quickly and securely.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[0]?.price
+                ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
+                : "₦100"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Alien Card lookup
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Holder name validation
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Document status check
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Fast results
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={alienCardVerify}>Verify Now</ServiceBtn>
             <LearnMoreLink to="/nin-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>

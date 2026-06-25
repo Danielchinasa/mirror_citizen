@@ -37,13 +37,13 @@ export const FooterStrip = styled.div`
   width: 100%;
   height: 18px;
   background: linear-gradient(
-    90deg,
-    #0b0b0b 0%,
-    #0b0b0b 20%,
-    #d7b800 20%,
-    #f2c400 40%,
-    #dd0201 40%,
-    #dd0201 100%
+    180deg,
+    #0c0d0c 0%,
+    #0c0d0c 33.33%,
+    #fa181f 33.33%,
+    #fa181f 66.66%,
+    #005900 66.66%,
+    #005900 100%
   );
   position: relative;
   overflow: hidden;
@@ -52,13 +52,6 @@ export const FooterStrip = styled.div`
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.45) 0%,
-      rgba(255, 255, 255, 0.1) 42%,
-      rgba(255, 255, 255, 0) 43%,
-      rgba(255, 255, 255, 0) 100%
-    );
     mix-blend-mode: screen;
     pointer-events: none;
   }

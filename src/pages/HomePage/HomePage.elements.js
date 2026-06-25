@@ -59,13 +59,13 @@ export const HeroStrip = styled.div`
   width: 100%;
   height: 18px;
   background: linear-gradient(
-    90deg,
-    #0b0b0b 0%,
-    #0b0b0b 20%,
-    #d7b800 20%,
-    #f2c400 40%,
-    #dd0201 40%,
-    #dd0201 100%
+    180deg,
+    #0c0d0c 0%,
+    #0c0d0c 33.33%,
+    #fa181f 33.33%,
+    #fa181f 66.66%,
+    #005900 66.66%,
+    #005900 100%
   );
   position: relative;
   overflow: hidden;
@@ -86,7 +86,7 @@ export const HeroStrip = styled.div`
 export const HeroBgImage = styled.img`
   position: absolute;
   right: 0;
-  top: 60%;
+  top: 65%;
   transform: translateY(-50%);
   height: 100%;
   max-height: 530px;
@@ -149,7 +149,7 @@ export const HeroContent = styled.div`
 export const HeroTag = styled.span`
   display: inline-block;
   background: #fdecec;
-  color: #b91c1c;
+  color: #d80111;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
   font-size: 14px;
@@ -169,7 +169,7 @@ export const HeroTitle = styled.h1`
   margin-bottom: 24px;
 
   span {
-    color: #dd0201;
+    color: #d80111;
   }
 
   @media screen and (max-width: 960px) {
@@ -190,7 +190,7 @@ export const HeroSubtitle = styled.p`
   font-size: 18px;
   color: #555;
   line-height: 1.6;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
   max-width: 440px;
 
   @media screen and (max-width: 960px) {
@@ -217,7 +217,7 @@ export const HeroButtons = styled.div`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #dd0201;
+  background-color: #d80111;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -229,12 +229,12 @@ export const PrimaryBtn = styled(Link)`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(220, 5, 2, 0.24);
+  box-shadow: 0px 4px 12px rgba(216, 1, 17, 0.24);
   transition: all 0.3s ease-out;
   white-space: nowrap;
 
   &:hover {
-    background-color: #ff4d4f;
+    background-color: #ee1020;
     color: #fff;
   }
 
@@ -266,8 +266,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    border-color: #dd0201;
-    color: #dd0201;
+    border-color: #d80111;
+    color: #d80111;
   }
 
   @media screen and (max-width: 600px) {
@@ -307,7 +307,7 @@ export const TrustIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dd0201;
+  color: #d80111;
   font-size: 14px;
   flex-shrink: 0;
 `;
@@ -433,7 +433,7 @@ export const StepNumber = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #dd0201;
+  background: #d80111;
   margin-right: 8px;
   color: #fff;
   font-family: "Poppins", sans-serif;
@@ -455,7 +455,7 @@ export const StepIconBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dd0201;
+  color: #d80111;
   font-size: 24px;
   flex-shrink: 0;
   box-shadow: 0 8px 20px rgba(220, 5, 2, 0.08);
@@ -484,7 +484,7 @@ export const StepArrow = styled.div`
   gap: 8px;
   min-width: 96px;
   margin-top: 34px;
-  color: #dd0201;
+  color: #d80111;
   font-size: 18px;
 
   &::before,
@@ -521,7 +521,7 @@ export const ServicesSection = styled.section`
 
 export const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 360px));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   justify-content: center;
   gap: 20px;
   margin-bottom: 32px;
@@ -538,7 +538,7 @@ export const CardsGrid = styled.div`
 `;
 
 export const ServiceCard = styled.div`
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#DD0201" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#D80111" : "#e5e7eb")};
   border-radius: 14px;
   padding: 24px 20px;
   text-align: center;
@@ -555,7 +555,7 @@ export const PopularBadge = styled.span`
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #dd0201;
+  background: #d80111;
   color: #fff;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
@@ -575,7 +575,7 @@ export const ServiceIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dd0201;
+  color: #d80111;
   font-size: 24px;
   margin: 0 auto 16px;
 `;
@@ -621,7 +621,7 @@ export const FeatureItem = styled.li`
   gap: 8px;
 
   svg {
-    color: #dd0201;
+    color: #d80111;
     font-size: 12px;
     flex-shrink: 0;
   }
@@ -638,14 +638,14 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#DD0201" : "#fff")};
+  background: ${({ $popular }) => ($popular ? "#D80111" : "#fff")};
   color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#DD0201" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#D80111" : "#e5e7eb")};
 
   &:hover {
-    background: ${({ $popular }) => ($popular ? "#FF4D4F" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#DD0201")};
-    border-color: #dd0201;
+    background: ${({ $popular }) => ($popular ? "#ee1020" : "#f9fafb")};
+    color: ${({ $popular }) => ($popular ? "#fff" : "#D80111")};
+    border-color: #d80111;
   }
 `;
 
@@ -656,12 +656,12 @@ export const LearnMoreLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #dd0201;
+  color: #d80111;
   text-decoration: none;
   margin-top: 12px;
 
   &:hover {
-    color: #b91c1c;
+    color: #d80111;
   }
 `;
 
@@ -672,11 +672,11 @@ export const ViewAllLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #dd0201;
+  color: #d80111;
   text-decoration: none;
 
   &:hover {
-    color: #b91c1c;
+    color: #d80111;
   }
 `;
 
@@ -797,7 +797,7 @@ export const CtaShield = styled.div`
 
   svg {
     font-size: 26px;
-    color: #dd0201;
+    color: #d80111;
   }
 `;
 
@@ -821,7 +821,7 @@ export const CtaDesc = styled.p`
 `;
 
 export const CtaButton = styled(Link)`
-  background: #dd0201;
+  background: #d80111;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -838,7 +838,7 @@ export const CtaButton = styled(Link)`
   flex-shrink: 0;
 
   &:hover {
-    background: #ff4d4f;
+    background: #ee1020;
     color: #fff;
   }
 `;
