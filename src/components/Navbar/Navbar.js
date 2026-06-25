@@ -6,6 +6,24 @@ import {
   NavMenu,
   NavItemBtn,
   NavBtnLink,
+  PublicNav,
+  PublicNavInner,
+  PublicBrand,
+  PublicCenter,
+  CountryPill,
+  PublicNavGroup,
+  PublicTrigger,
+  PublicNavLink,
+  PublicAnchor,
+  PublicLanguage,
+  PublicActions,
+  PublicLogin,
+  PublicCta,
+  PublicHamburger,
+  PublicMobilePanel,
+  PublicMobileMenu,
+  PublicMobileLink,
+  PublicMobileAnchor,
 } from "./Navbar.elements";
 import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
@@ -173,6 +191,21 @@ function Navbar() {
       </Dropdown>
     );
   };
+
+  const servicesMenu = (
+    <Menu>
+      <Menu.Item key="services-nin">
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
+          National ID
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="services-vin">
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
+          VIN Verification
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
 
   useEffect(() => {
     // Dispatch fetchUserProfile action when component mounts
@@ -698,6 +731,78 @@ function Navbar() {
   const { isDark } = useTheme();
   const { token } = theme.useToken(); // Get token from useToken
   const { text, bgContainer } = token;
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <PublicNav>
+          <PublicNavInner>
+            <PublicBrand to="/">
+              <span className="brand-red">e</span>
+              <span className="brand-dot">-</span>
+              raia<span className="brand-dot">.com</span>
+            </PublicBrand>
+
+            <PublicCenter>
+              <CountryPill type="button" aria-label="Select country">
+                <span className="flag" role="img" aria-label="Uganda flag">
+                  🇺🇬
+                </span>
+                Uganda
+                <DownOutlined className="chev" />
+              </CountryPill>
+
+              <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
+                <PublicTrigger type="button">
+                  Services <DownOutlined className="chev" />
+                </PublicTrigger>
+              </Dropdown>
+
+              <PublicAnchor href="#how-it-works">How it works</PublicAnchor>
+              <PublicAnchor href="#services">Pricing</PublicAnchor>
+              <PublicNavLink to="/faq">FAQ</PublicNavLink>
+              <PublicNavLink to="/contact">Support</PublicNavLink>
+            </PublicCenter>
+
+            <PublicActions>
+              <PublicLanguage>EN | SW</PublicLanguage>
+              <PublicLogin to="/login">Log in</PublicLogin>
+              <PublicCta to="/login">Get Started</PublicCta>
+              <PublicHamburger onClick={handleClick} aria-label="Open menu">
+                {click ? <FaTimes /> : <FaBars />}
+              </PublicHamburger>
+            </PublicActions>
+          </PublicNavInner>
+
+          <PublicMobilePanel $open={click}>
+            <PublicMobileMenu>
+              <PublicMobileLink to="/nin-verification" onClick={closeMobileMenu}>
+                National ID
+              </PublicMobileLink>
+              <PublicMobileLink to="/vehicle-verification" onClick={closeMobileMenu}>
+                VIN Verification
+              </PublicMobileLink>
+              <PublicMobileAnchor href="#how-it-works" onClick={closeMobileMenu}>
+                How it works
+              </PublicMobileAnchor>
+              <PublicMobileLink to="/faq" onClick={closeMobileMenu}>
+                FAQ
+              </PublicMobileLink>
+              <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
+                Support
+              </PublicMobileLink>
+              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
+                Log in
+              </PublicMobileLink>
+              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
+                Get Started
+              </PublicMobileLink>
+            </PublicMobileMenu>
+          </PublicMobilePanel>
+        </PublicNav>
+      </>
+    );
+  }
 
   return (
     <>

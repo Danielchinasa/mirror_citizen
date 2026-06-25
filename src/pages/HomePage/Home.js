@@ -441,7 +441,7 @@ const Home = () => {
       </HowSection>
 
       {/* ── Service Cards ── */}
-      <ServicesSection>
+      <ServicesSection id="services">
         <SectionHeading>
           Choose the verification that fits your needs
         </SectionHeading>

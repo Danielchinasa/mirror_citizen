@@ -2,12 +2,34 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const FooterWrapper = styled.footer`
-  background: #354138;
-  color: #fff;
-  padding: 60px 50px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+  color: #111827;
+  padding: 0 24px 0;
+  position: relative;
+  overflow: hidden;
 
   @media screen and (max-width: 768px) {
-    padding: 40px 30px 0;
+    padding: 0 16px 0;
+  }
+`;
+
+export const PublicBrand = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #111827;
+  text-decoration: none;
+
+  .brand-red {
+    color: #dd0201;
+  }
+
+  .brand-dot {
+    color: #111827;
   }
 `;
 
@@ -49,6 +71,7 @@ export const FooterStrip = styled.div`
 export const FooterInner = styled.div`
   max-width: 1300px;
   margin: 0 auto;
+  padding: 48px 0 0;
 `;
 
 export const FooterTop = styled.div`
@@ -87,7 +110,7 @@ export const BrandLogo = styled.img`
 export const BrandDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #4b5563;
   line-height: 1.6;
   margin: 0;
   max-width: 280px;
@@ -108,12 +131,12 @@ export const SocialRow = styled.div`
 `;
 
 export const SocialIcon = styled.a`
-  color: rgba(255, 255, 255, 0.6);
+  color: #6b7280;
   font-size: 18px;
   transition: color 0.2s;
 
   &:hover {
-    color: #fff;
+    color: #dd0201;
   }
 `;
 
@@ -123,21 +146,32 @@ export const FooterColTitle = styled.h4`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 18px;
-  color: #fff;
+  color: #111827;
   margin: 0 0 16px;
+  position: relative;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 3px;
+    border-radius: 999px;
+    background: #dd0201;
+    margin-top: 8px;
+  }
 `;
 
 export const FooterLink = styled(Link)`
   display: block;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #4b5563;
   text-decoration: none;
   margin-bottom: 10px;
   transition: color 0.2s;
 
   &:hover {
-    color: #fff;
+    color: #dd0201;
   }
 `;
 
@@ -145,13 +179,13 @@ export const ExternalLink = styled.a`
   display: block;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #4b5563;
   text-decoration: none;
   margin-bottom: 10px;
   transition: color 0.2s;
 
   &:hover {
-    color: #fff;
+    color: #dd0201;
   }
 `;
 
@@ -180,7 +214,7 @@ export const AppBadge = styled.a`
 `;
 
 export const FooterBottom = styled.div`
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(17, 24, 39, 0.08);
   padding: 20px 0;
   display: flex;
   justify-content: space-between;
@@ -196,7 +230,7 @@ export const FooterBottom = styled.div`
 export const Copyright = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6b7280;
 `;
 
 export const LegalLinks = styled.div`
@@ -211,11 +245,11 @@ export const LegalLinks = styled.div`
 export const LegalLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6b7280;
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: #fff;
+    color: #dd0201;
   }
 `;
