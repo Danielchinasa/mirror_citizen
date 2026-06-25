@@ -312,6 +312,18 @@ export const PublicActions = styled.div`
   }
 `;
 
+export const PublicHeaderLanguage = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.04);
+  }
+`;
+
 export const PublicLogin = styled(Link)`
   color: #111827;
   text-decoration: none;
@@ -386,6 +398,54 @@ export const PublicMobileMenu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 14px;
+`;
+
+export const PublicMobileLanguage = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 4px 0 14px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+  }
+`;
+
+export const PublicMobileLanguageLabel = styled.span`
+  color: #6b7280;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+export const PublicLanguageToggleGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.04);
+`;
+
+export const PublicLanguageToggle = styled.button`
+  border: none;
+  background: ${({ $active }) => ($active ? "#DD0201" : "transparent")};
+  color: ${({ $active }) => ($active ? "#fff" : "#111827")};
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
 `;
 
 export const PublicMobileLink = styled(Link)`

@@ -5,7 +5,6 @@ import {
   FooterInner,
   FooterTop,
   BrandCol,
-  BrandLogo,
   BrandDesc,
   SocialRow,
   SocialIcon,
@@ -22,7 +21,6 @@ import {
   PublicBrand,
 } from "./Footer.elements";
 
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import { Modal } from "antd";

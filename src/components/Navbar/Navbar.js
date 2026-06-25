@@ -17,11 +17,14 @@ import {
   PublicAnchor,
   PublicLanguage,
   PublicActions,
+  PublicHeaderLanguage,
   PublicLogin,
   PublicCta,
   PublicHamburger,
   PublicMobilePanel,
   PublicMobileMenu,
+  PublicLanguageToggleGroup,
+  PublicLanguageToggle,
   PublicMobileLink,
   PublicMobileAnchor,
 } from "./Navbar.elements";
@@ -135,9 +138,21 @@ function Navbar() {
     },
   ];
   const [visible, setVisible] = useState(false);
+  const [mobileLanguage, setMobileLanguage] = useState(() => {
+    if (typeof window === "undefined") return "EN";
+    return window.localStorage.getItem("siteLanguage") || "EN";
+  });
 
   const handleVisibleChange = (flag) => {
     setVisible(flag);
+  };
+
+  const handleLanguageChange = (language) => {
+    setMobileLanguage(language);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("siteLanguage", language);
+      document.documentElement.lang = language === "SE" ? "sv" : "en";
+    }
   };
 
   const menu = (
@@ -765,6 +780,26 @@ function Navbar() {
             </PublicCenter>
 
             <PublicActions>
+              <PublicHeaderLanguage>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "SE"}
+                    onClick={() => handleLanguageChange("SE")}
+                    aria-pressed={mobileLanguage === "SE"}
+                  >
+                    SE
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={mobileLanguage === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
+              </PublicHeaderLanguage>
               <PublicLanguage>EN | SW</PublicLanguage>
               <PublicLogin to="/login">Log in</PublicLogin>
               <PublicCta to="/login">Get Started</PublicCta>
