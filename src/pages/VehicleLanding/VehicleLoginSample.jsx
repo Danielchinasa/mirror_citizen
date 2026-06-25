@@ -178,7 +178,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #09c93a;
+    border-color: #DD0201;
   }
 `;
 
@@ -218,7 +218,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #09c93a;
+  color: #DD0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -231,7 +231,7 @@ const LoginBtn = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background: ${(props) => (props.disabled ? "#ccc" : "#09c93a")};
+  background: ${(props) => (props.disabled ? "#ccc" : "#DD0201")};
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -243,7 +243,7 @@ const LoginBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: ${(props) => (props.disabled ? "#ccc" : "#16ef4d")};
+    background: ${(props) => (props.disabled ? "#ccc" : "#FF4D4F")};
     color: #fff;
   }
 `;
@@ -274,7 +274,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #09c93a;
+  border-top-color: #DD0201;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -293,7 +293,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #09c93a;
+    color: #DD0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -337,8 +337,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: #fff;
-  border: 1px solid #09c93a;
-  color: #09c93a;
+  border: 1px solid #DD0201;
+  color: #DD0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -384,14 +384,14 @@ const ResultPhoto = styled.div`
   overflow: hidden;
   flex-shrink: 0;
   border: 2px solid #e5e7eb;
-  background: #e6f9ed;
+  background: #fdecec;
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
     font-size: 32px;
-    color: #09c93a;
+    color: #DD0201;
   }
 `;
 
@@ -426,7 +426,7 @@ const ResultValue = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #09c93a;
+  color: #DD0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -436,7 +436,7 @@ const VerifiedBadge = styled.span`
 `;
 
 const ClearBadge = styled.span`
-  color: #09c93a;
+  color: #DD0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;

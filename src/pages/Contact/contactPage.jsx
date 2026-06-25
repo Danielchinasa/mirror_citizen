@@ -40,7 +40,7 @@ const ContactPage = () => {
                   <MailOutlined
                     style={{
                       fontSize: "22px",
-                      color: "#09c93a",
+                      color: "#DD0201",
                     }}
                   />
                   <h5> info@e-citizen.ng</h5>

@@ -329,7 +329,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Error",
           text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
       }
     };
@@ -548,7 +548,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: err.message || "An error occurred. Please try again.",
-        confirmButtonColor: "#09c93a",
+        confirmButtonColor: "#DD0201",
       });
     }
   };
@@ -562,7 +562,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Wallet Balance Low",
         text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
-        confirmButtonColor: "#09c93a",
+        confirmButtonColor: "#DD0201",
       });
       return;
     }
@@ -696,7 +696,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
         return;
       }
@@ -716,7 +716,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
       }
     } catch {
@@ -724,7 +724,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: "Could not verify payment status. Please check your dashboard.",
-        confirmButtonColor: "#09c93a",
+        confirmButtonColor: "#DD0201",
       });
     }
 
@@ -765,7 +765,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.basic.detail,
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -790,7 +790,7 @@ const VerifyPage = () => {
           text:
             response["search-extension"].phoneVerification.detail ||
             "Verification failed",
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -818,7 +818,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.business.message,
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -833,7 +833,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.financial.message,
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -912,7 +912,7 @@ const VerifyPage = () => {
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
                 : "Verification failed. Please try again.",
-            confirmButtonColor: "#09c93a",
+            confirmButtonColor: "#DD0201",
           });
           setCurrentStep(1);
           return;
@@ -963,7 +963,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: errorMsg,
-          confirmButtonColor: "#09c93a",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
       }
@@ -974,7 +974,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Service Unavailable",
         text: "Service is currently unavailable. A refund has been initiated.",
-        confirmButtonColor: "#09c93a",
+        confirmButtonColor: "#DD0201",
       });
     }
   };
@@ -1117,11 +1117,11 @@ const VerifyPage = () => {
                       alignItems: "center",
                       gap: 10,
                       padding: "10px 14px",
-                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#09c93a" : "#e5e7eb"}`,
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DD0201" : "#e5e7eb"}`,
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
-                        ? "#f0fdf4"
+                        ? "#fef2f2"
                         : "#fff",
                       transition: "all 0.15s",
                       fontFamily: "Nunito, sans-serif",
@@ -1139,7 +1139,7 @@ const VerifyPage = () => {
                         }));
                         setError("");
                       }}
-                      style={{ accentColor: "#09c93a", width: 16, height: 16 }}
+                      style={{ accentColor: "#DD0201", width: 16, height: 16 }}
                     />
                     {bureau.label}
                   </label>
@@ -1150,7 +1150,7 @@ const VerifyPage = () => {
                   style={{
                     marginTop: 8,
                     padding: "8px 12px",
-                    background: "#f0fdf4",
+                    background: "#fef2f2",
                     border: "1px solid #d1fae5",
                     borderRadius: 6,
                     fontSize: 13,
@@ -1428,7 +1428,7 @@ const VerifyPage = () => {
           </PayBtn>
 
           <SecuredBy>
-            <FaShieldAlt style={{ color: "#09c93a" }} />
+            <FaShieldAlt style={{ color: "#DD0201" }} />
             Secured and encrypted payment
           </SecuredBy>
 
@@ -1655,14 +1655,14 @@ const VerifyPage = () => {
               width: 56,
               height: 56,
               borderRadius: "50%",
-              background: "#e6f9ed",
+              background: "#fdecec",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               margin: "0 auto 16px",
             }}
           >
-            <FaCheckCircle style={{ fontSize: 28, color: "#09c93a" }} />
+            <FaCheckCircle style={{ fontSize: 28, color: "#DD0201" }} />
           </div>
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
@@ -1786,7 +1786,7 @@ const VerifyPage = () => {
               <div
                 style={{
                   fontSize: 14,
-                  color: "#09c93a",
+                  color: "#DD0201",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: 700,
                 }}
@@ -1832,7 +1832,7 @@ const VerifyPage = () => {
                   marginBottom: 8,
                 }}
               >
-                <FaCheckCircle style={{ color: "#09c93a", fontSize: 14 }} />
+                <FaCheckCircle style={{ color: "#DD0201", fontSize: 14 }} />
                 <span
                   style={{
                     fontSize: 14,

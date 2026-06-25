@@ -296,7 +296,7 @@ const CloseButton = styled.button`
 
   &:hover {
     background: #f9fafb;
-    color: #09c93a;
+    color: #DD0201;
   }
 `;
 
@@ -321,8 +321,8 @@ const Avatar = styled.div`
   width: 86px;
   height: 86px;
   border-radius: 50%;
-  background: #e6f9ed;
-  color: #09c93a;
+  background: #fdecec;
+  color: #DD0201;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -381,7 +381,7 @@ const VerifiedValue = styled(ResultValue)`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #09c93a;
+  color: #DD0201;
 
   svg {
     font-size: 12px;
@@ -398,7 +398,7 @@ const Disclaimer = styled.div`
   color: #667085;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     flex-shrink: 0;
   }
 `;

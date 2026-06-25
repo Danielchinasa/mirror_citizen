@@ -478,7 +478,7 @@ const BusinessSignUp2 = () => {
                     className={"input-phone-number mb-3"}
                     inputStyle={{
                       width: "100%",
-                      borderColor: isFocused ? "#09c93a" : "",
+                      borderColor: isFocused ? "#DD0201" : "",
                       borderRadius: "5px",
                       background: "rgba(53, 65, 56, 0.1)",
                     }}
@@ -543,7 +543,7 @@ const BusinessSignUp2 = () => {
                   <Checkbox onChange={onChangeIsAccepted}>
                     I certify that I have read and accepted the{" "}
                     <span
-                      style={{ color: "#09C93A", cursor: "pointer" }}
+                      style={{ color: "#DD0201", cursor: "pointer" }}
                       onClick={handleClickPrivacyPolicy}
                     >
                       e-citizen™ Privacy Policy

@@ -62,7 +62,7 @@ const CheckPasswordResetLink = () => {
               </StyledForm>
               <Subtitle color="light" $token={token}>
                 Didn’t receive an email?{" "}
-                <strong style={{ color: "#09C93A" }}>Click to resend</strong>
+                <strong style={{ color: "#DD0201" }}>Click to resend</strong>
               </Subtitle>
             </InfoSec>
           </CenterText>

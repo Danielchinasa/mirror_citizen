@@ -16,17 +16,15 @@ import {
   FaBolt,
   FaShieldAlt,
   FaUser,
-  FaBuilding,
-  FaCreditCard,
   FaCar,
-  FaPhoneAlt,
   FaCheckCircle,
   FaPlayCircle,
-  FaUsers,
-  FaFileAlt,
+  FaIdCard,
+  FaUpload,
 } from "react-icons/fa";
+import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import heroImg from "../../images/Hero_image_new.png";
+import heroImg from "../../images/uganda.png";
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
 import osiaImg from "../../images/osia.png";
@@ -37,6 +35,7 @@ import avatar4 from "../../images/avatar4.jpg";
 
 import {
   HeroWrapper,
+  HeroStrip,
   HeroBgImage,
   HeroContainer,
   HeroContent,
@@ -106,10 +105,7 @@ const Home = () => {
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
   const ninVerify = useAuthRedirect("/verify/nin");
-  const businessVerify = useAuthRedirect("/verify/business");
-  const bvnVerify = useAuthRedirect("/verify/bvn");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
-  const phoneVerify = useAuthRedirect("/verify/phone");
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -331,30 +327,30 @@ const Home = () => {
         <HeroBgImage src={heroImg} alt="e-citizen verification platform" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>FAST. SECURE. TRUSTED.</HeroTag>
             <HeroTitle>
-              Choose the verification you need.{" "}
+              Verify your identity in{" "}
               <span
                 style={{
-                  color: "#09c93a",
+                  color: "#DD0201",
                   fontFamily: "inherit",
                   fontSize: "inherit",
                   fontWeight: "inherit",
                 }}
               >
-                Get trusted results in seconds.
+                Uganda.{" "}
               </span>
+              Fast, secure and trusted.
             </HeroTitle>
             <HeroSubtitle>
-              Secure, reliable and compliant identity verification for
-              individuals and businesses.
+              Official identity verification services for individuals and
+              businesses across Uganda and the diaspora.
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={ctaLink}>
-                Start Verification <FaArrowRight />
+                Verify National ID <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#how-it-works">
-                <FaPlayCircle /> See How It Works
+                Check VIN <FaPlayCircle />
               </SecondaryBtn>
             </HeroButtons>
             <TrustIndicators>
@@ -363,7 +359,7 @@ const Home = () => {
                   <FaLock />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Secure & Private</TrustTitle>
+                  <TrustTitle>100% Secure</TrustTitle>
                   <TrustDesc>Your data is protected</TrustDesc>
                 </TrustLabel>
               </TrustItem>
@@ -372,8 +368,8 @@ const Home = () => {
                   <FaBolt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Fast Results</TrustTitle>
-                  <TrustDesc>Results in minutes</TrustDesc>
+                  <TrustTitle>Instand Results</TrustTitle>
+                  <TrustDesc>Results in seconds</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -381,8 +377,8 @@ const Home = () => {
                   <FaShieldAlt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Trusted Platform</TrustTitle>
-                  <TrustDesc>Government compliant</TrustDesc>
+                  <TrustTitle>Government Compliant</TrustTitle>
+                  <TrustDesc>Official & reliable records</TrustDesc>
                 </TrustLabel>
               </TrustItem>
             </TrustIndicators>
@@ -393,11 +389,12 @@ const Home = () => {
                 <img src={avatar3} alt="user" />
                 <img src={avatar4} alt="user" />
               </AvatarStack>
-              Join 500,000+ Nigerians who trust e-citizen
+              Join 500,000+ Ugandans who trust e-raia
             </SocialProof>
           </HeroContent>
         </HeroContainer>
       </HeroWrapper>
+      <HeroStrip aria-hidden="true" />
 
       {/* ── How It Works ── */}
       <HowSection id="how-it-works">
@@ -408,11 +405,11 @@ const Home = () => {
             <StepTop>
               <StepNumber>1</StepNumber>
               <StepIconBox>
-                <FaUsers />
+                <FaIdCard />
               </StepIconBox>
             </StepTop>
             <StepName>Choose a service</StepName>
-            <StepDesc>Select the type of verification you need</StepDesc>
+            <StepDesc>Select National ID or VIN Verification.</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -421,13 +418,11 @@ const Home = () => {
             <StepTop>
               <StepNumber>2</StepNumber>
               <StepIconBox>
-                <FaFileAlt />
+                <FaUpload />
               </StepIconBox>
             </StepTop>
-            <StepName>Provide your information</StepName>
-            <StepDesc>
-              Fill in your details and upload required documents
-            </StepDesc>
+            <StepName>Submit details</StepName>
+            <StepDesc>Enter required information securely.</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -436,13 +431,11 @@ const Home = () => {
             <StepTop>
               <StepNumber>3</StepNumber>
               <StepIconBox>
-                <FaCheckCircle />
+                <FaShieldAlt />
               </StepIconBox>
             </StepTop>
-            <StepName>Get trusted results</StepName>
-            <StepDesc>
-              Make payment and receive your results in minutes
-            </StepDesc>
+            <StepName>Get results</StepName>
+            <StepDesc>Receive instant verification results.</StepDesc>
           </StepCard>
         </StepsRow>
       </HowSection>
@@ -464,9 +457,9 @@ const Home = () => {
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
-            <ServiceName>Person Identity Verification</ServiceName>
+            <ServiceName>National ID Verification</ServiceName>
             <ServiceDesc>
-              Verify your personal identity with a government-issued ID.
+              Verity Ugando Notional Identity Card details in real-time.
             </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[0]?.price
@@ -475,10 +468,10 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> Full name verification
+                <FaCheckCircle /> National ID lookup
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Date of birth verification
+                <FaCheckCircle /> Full name verification
               </FeatureItem>
               <FeatureItem>
                 <FaCheckCircle /> Photo ID verification
@@ -495,81 +488,15 @@ const Home = () => {
             </LearnMoreLink>
           </ServiceCard>
 
-          {/* Business Profile */}
-          <ServiceCard>
-            <ServiceIcon>
-              <FaBuilding />
-            </ServiceIcon>
-            <ServiceName>Business Profile Verification</ServiceName>
-            <ServiceDesc>
-              Verify your business information and registration.
-            </ServiceDesc>
-            <ServicePrice>
-              {servicePrices?.data?.[2]?.price
-                ? `₦${Number(servicePrices.data[2].price).toLocaleString()}`
-                : "₦100"}
-            </ServicePrice>
-            <FeatureList>
-              <FeatureItem>
-                <FaCheckCircle /> Business registration check
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> CAC verification
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Owner verification
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Results in minutes
-              </FeatureItem>
-            </FeatureList>
-            <ServiceBtn to={businessVerify}>Verify Now</ServiceBtn>
-            <LearnMoreLink to="/business-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
-            </LearnMoreLink>
-          </ServiceCard>
-
-          {/* Financial Credit */}
-          <ServiceCard>
-            <ServiceIcon>
-              <FaCreditCard />
-            </ServiceIcon>
-            <ServiceName>Financial Credit Verification</ServiceName>
-            <ServiceDesc>
-              Check credit history and financial standing.
-            </ServiceDesc>
-            <ServicePrice>
-              {servicePrices?.data?.[4]?.price
-                ? `₦${Number(servicePrices.data[4].price).toLocaleString()}`
-                : "₦1,700"}
-            </ServicePrice>
-            <FeatureList>
-              <FeatureItem>
-                <FaCheckCircle /> Credit history report
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Debt verification
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Financial standing
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Results in minutes
-              </FeatureItem>
-            </FeatureList>
-            <ServiceBtn to={bvnVerify}>Verify Now</ServiceBtn>
-            <LearnMoreLink to="/credit-profile">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
-            </LearnMoreLink>
-          </ServiceCard>
-
-          {/* Vehicle History */}
+          {/* VIN Verification */}
           <ServiceCard>
             <ServiceIcon>
               <FaCar />
             </ServiceIcon>
-            <ServiceName>Vehicle History Verification</ServiceName>
-            <ServiceDesc>Verify vehicle history and ownership.</ServiceDesc>
+            <ServiceName>VIN Verification</ServiceName>
+            <ServiceDesc>
+              Verify vehicle identification number and details.
+            </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[5]?.price
                 ? `₦${Number(servicePrices.data[5].price).toLocaleString()}`
@@ -577,13 +504,13 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> Ownership verification
+                <FaCheckCircle /> VIN lookup
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Accident history
+                <FaCheckCircle /> Vehicle details
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Theft records check
+                <FaCheckCircle /> Ownership history
               </FeatureItem>
               <FeatureItem>
                 <FaCheckCircle /> Results in minutes
@@ -594,42 +521,10 @@ const Home = () => {
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
-
-          {/* Phone Number Verification */}
-          <ServiceCard>
-            <ServiceIcon>
-              <FaPhoneAlt />
-            </ServiceIcon>
-            <ServiceName>Phone Number Verification</ServiceName>
-            <ServiceDesc>
-              Verify phone number ownership and network details.
-            </ServiceDesc>
-            <ServicePrice>
-              {servicePrices?.data?.[8]?.price
-                ? `₦${Number(servicePrices.data[8].price).toLocaleString()}`
-                : "₦100"}
-            </ServicePrice>
-            <FeatureList>
-              <FeatureItem>
-                <FaCheckCircle /> Number ownership verification
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Network provider details
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Phone status check
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Results in minutes
-              </FeatureItem>
-            </FeatureList>
-            <ServiceBtn to={phoneVerify}>Verify Now</ServiceBtn>
-            <LearnMoreLink to="/phone-number-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
-            </LearnMoreLink>
-          </ServiceCard>
         </CardsGrid>
       </ServicesSection>
+
+      <NinLoginSample />
 
       {/* ── Compliance ── */}
       <ComplianceSection>

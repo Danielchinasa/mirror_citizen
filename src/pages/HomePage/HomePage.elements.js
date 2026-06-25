@@ -10,7 +10,7 @@ export const HeroWrapper = styled.section`
   min-height: 580px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #ffffff 0%, #f0f7f0 50%, #e0efe0 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #fff1f1 50%, #fce8e8 100%);
   padding: 60px 0;
   overflow: hidden;
 
@@ -45,7 +45,7 @@ export const HeroWrapper = styled.section`
         180deg,
         #ffffff 0%,
         rgba(255, 255, 255, 0.78) 46%,
-        rgba(224, 239, 224, 0.72) 100%
+        rgba(252, 232, 232, 0.72) 100%
       );
     }
   }
@@ -55,13 +55,41 @@ export const HeroWrapper = styled.section`
   }
 `;
 
+export const HeroStrip = styled.div`
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(
+    90deg,
+    #0b0b0b 0%,
+    #0b0b0b 20%,
+    #d7b800 20%,
+    #f2c400 40%,
+    #dd0201 40%,
+    #dd0201 100%
+  );
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 600px) {
+    height: 12px;
+  }
+`;
+
 export const HeroBgImage = styled.img`
   position: absolute;
   right: 0;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
   height: 100%;
-  max-height: 580px;
+  max-height: 530px;
   object-fit: contain;
   pointer-events: none;
   z-index: 0;
@@ -120,8 +148,8 @@ export const HeroContent = styled.div`
 
 export const HeroTag = styled.span`
   display: inline-block;
-  background: #e6f9ed;
-  color: #068a28;
+  background: #fdecec;
+  color: #b91c1c;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
   font-size: 14px;
@@ -141,7 +169,7 @@ export const HeroTitle = styled.h1`
   margin-bottom: 24px;
 
   span {
-    color: #09c93a;
+    color: #dd0201;
   }
 
   @media screen and (max-width: 960px) {
@@ -189,7 +217,7 @@ export const HeroButtons = styled.div`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #09c93a;
+  background-color: #dd0201;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -201,12 +229,12 @@ export const PrimaryBtn = styled(Link)`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(9, 201, 58, 0.3);
+  box-shadow: 0px 4px 12px rgba(220, 5, 2, 0.24);
   transition: all 0.3s ease-out;
   white-space: nowrap;
 
   &:hover {
-    background-color: #16ef4d;
+    background-color: #ff4d4f;
     color: #fff;
   }
 
@@ -238,8 +266,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    border-color: #09c93a;
-    color: #09c93a;
+    border-color: #dd0201;
+    color: #dd0201;
   }
 
   @media screen and (max-width: 600px) {
@@ -275,11 +303,11 @@ export const TrustIcon = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #e6f9ed;
+  background: #fdecec;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #09c93a;
+  color: #dd0201;
   font-size: 14px;
   flex-shrink: 0;
 `;
@@ -376,7 +404,7 @@ export const StepsRow = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 0;
+  gap: 14px;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -391,42 +419,46 @@ export const StepCard = styled.div`
   align-items: center;
   max-width: 260px;
   text-align: center;
-  padding: 0 20px;
+  padding: 0 16px;
 `;
 
 export const StepTop = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 0;
+  margin-bottom: 18px;
 `;
 
 export const StepNumber = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #09c93a;
+  background: #dd0201;
+  margin-right: 8px;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-bottom: 6px;
 `;
 
 export const StepIconBox = styled.div`
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  background: #f5f5f5;
+  border-radius: 50%;
+  background: #fef2f2;
+  border: 1px solid rgba(220, 5, 2, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
-  font-size: 18px;
+  color: #dd0201;
+  font-size: 24px;
   flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(220, 5, 2, 0.08);
 `;
 
 export const StepName = styled.h3`
@@ -448,10 +480,24 @@ export const StepDesc = styled.p`
 export const StepArrow = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  margin-top: 22px;
-  color: #09c93a;
-  font-size: 20px;
+  justify-content: center;
+  gap: 8px;
+  min-width: 96px;
+  margin-top: 34px;
+  color: #dd0201;
+  font-size: 18px;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    border-top: 2px dashed #d1d5db;
+  }
+
+  svg {
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -475,8 +521,9 @@ export const ServicesSection = styled.section`
 
 export const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 360px));
+  justify-content: center;
+  gap: 20px;
   margin-bottom: 32px;
 
   @media screen and (max-width: 960px) {
@@ -491,9 +538,9 @@ export const CardsGrid = styled.div`
 `;
 
 export const ServiceCard = styled.div`
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#09c93a" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#DD0201" : "#e5e7eb")};
   border-radius: 14px;
-  padding: 28px 24px;
+  padding: 24px 20px;
   text-align: center;
   position: relative;
   transition: box-shadow 0.3s;
@@ -508,7 +555,7 @@ export const PopularBadge = styled.span`
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #09c93a;
+  background: #dd0201;
   color: #fff;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
@@ -524,11 +571,11 @@ export const ServiceIcon = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: #f0fdf4;
+  background: #fef2f2;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #09c93a;
+  color: #dd0201;
   font-size: 24px;
   margin: 0 auto 16px;
 `;
@@ -574,7 +621,7 @@ export const FeatureItem = styled.li`
   gap: 8px;
 
   svg {
-    color: #09c93a;
+    color: #dd0201;
     font-size: 12px;
     flex-shrink: 0;
   }
@@ -591,14 +638,14 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#09c93a" : "#fff")};
+  background: ${({ $popular }) => ($popular ? "#DD0201" : "#fff")};
   color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#09c93a" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#DD0201" : "#e5e7eb")};
 
   &:hover {
-    background: ${({ $popular }) => ($popular ? "#16ef4d" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#09c93a")};
-    border-color: #09c93a;
+    background: ${({ $popular }) => ($popular ? "#FF4D4F" : "#f9fafb")};
+    color: ${({ $popular }) => ($popular ? "#fff" : "#DD0201")};
+    border-color: #dd0201;
   }
 `;
 
@@ -609,12 +656,12 @@ export const LearnMoreLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #09c93a;
+  color: #dd0201;
   text-decoration: none;
   margin-top: 12px;
 
   &:hover {
-    color: #078a28;
+    color: #b91c1c;
   }
 `;
 
@@ -625,11 +672,11 @@ export const ViewAllLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #09c93a;
+  color: #dd0201;
   text-decoration: none;
 
   &:hover {
-    color: #078a28;
+    color: #b91c1c;
   }
 `;
 
@@ -724,7 +771,7 @@ export const CtaSection = styled.section`
 `;
 
 export const CtaInner = styled.div`
-  background: #f0fdf4;
+  background: #fef2f2;
   border-radius: 14px;
   padding: 36px 40px;
   display: flex;
@@ -742,7 +789,7 @@ export const CtaShield = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #d1fae5;
+  background: #eec3c3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -750,7 +797,7 @@ export const CtaShield = styled.div`
 
   svg {
     font-size: 26px;
-    color: #09c93a;
+    color: #dd0201;
   }
 `;
 
@@ -774,7 +821,7 @@ export const CtaDesc = styled.p`
 `;
 
 export const CtaButton = styled(Link)`
-  background: #09c93a;
+  background: #dd0201;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -791,7 +838,7 @@ export const CtaButton = styled(Link)`
   flex-shrink: 0;
 
   &:hover {
-    background: #16ef4d;
+    background: #ff4d4f;
     color: #fff;
   }
 `;

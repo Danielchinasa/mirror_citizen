@@ -409,7 +409,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -521,7 +521,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -573,7 +573,7 @@ const DashboardPage = () => {
       //     allowEscapeKey: false,
       //     showConfirmButton: true,
       //     confirmButtonText: "OK",
-      //     confirmButtonColor: "#0DC939",
+      //     confirmButtonColor: "#DD0201",
       //   }).then((result) => {
       //     /* Read more about handling dismissals below */
       //     if (result.isConfirmed) {
@@ -621,7 +621,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -667,7 +667,7 @@ const DashboardPage = () => {
       //     allowEscapeKey: false,
       //     showConfirmButton: true,
       //     confirmButtonText: "OK",
-      //     confirmButtonColor: "#0DC939",
+      //     confirmButtonColor: "#DD0201",
       //   }).then((result) => {
       //     if (result.isConfirmed) {
       //       window.location.reload();
@@ -688,7 +688,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -738,7 +738,7 @@ const DashboardPage = () => {
           },
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -774,7 +774,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -830,7 +830,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "View Results",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then(() => {
               history.push("/financial-profile-result");
             });
@@ -853,7 +853,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -877,7 +877,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -899,7 +899,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -925,7 +925,7 @@ const DashboardPage = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#DD0201",
       }).then((result) => {
         /* Read more about handling dismissals below */
         if (result.isConfirmed) {
@@ -1390,7 +1390,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1433,7 +1433,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1508,7 +1508,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1533,7 +1533,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1636,7 +1636,7 @@ const DashboardPage = () => {
                   allowEscapeKey: false,
                   showConfirmButton: true,
                   confirmButtonText: "OK",
-                  confirmButtonColor: "#0DC939",
+                  confirmButtonColor: "#DD0201",
                 }).then((result) => {
                   if (result.isConfirmed) {
                     window.location.reload();
@@ -1658,7 +1658,7 @@ const DashboardPage = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
+                confirmButtonColor: "#DD0201",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1681,7 +1681,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1704,7 +1704,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1809,7 +1809,7 @@ const DashboardPage = () => {
                   allowEscapeKey: false,
                   showConfirmButton: true,
                   confirmButtonText: "OK",
-                  confirmButtonColor: "#0DC939",
+                  confirmButtonColor: "#DD0201",
                 }).then((result) => {
                   if (result.isConfirmed) {
                     window.location.reload();
@@ -1831,7 +1831,7 @@ const DashboardPage = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
+                confirmButtonColor: "#DD0201",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1854,7 +1854,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1877,7 +1877,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1974,7 +1974,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1998,7 +1998,7 @@ const DashboardPage = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
+            confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -2461,8 +2461,8 @@ const DashboardPage = () => {
             disabled={isConfirmedBtnClicked}
             style={{
               marginRight: 10,
-              backgroundColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939",
-              borderColor: isConfirmedBtnClicked ? "#d9d9d9" : "#0DC939",
+              backgroundColor: isConfirmedBtnClicked ? "#d9d9d9" : "#DD0201",
+              borderColor: isConfirmedBtnClicked ? "#d9d9d9" : "#DD0201",
               cursor: isConfirmedBtnClicked ? "not-allowed" : "pointer",
             }}
           >
@@ -2576,8 +2576,8 @@ const DashboardPage = () => {
           disabled={!checkboxCheckedConfirm}
           style={{
             marginRight: 10,
-            backgroundColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9", // Set the colors based on checkbox state
-            borderColor: checkboxCheckedConfirm ? "#0DC939" : "#d9d9d9",
+            backgroundColor: checkboxCheckedConfirm ? "#DD0201" : "#d9d9d9", // Set the colors based on checkbox state
+            borderColor: checkboxCheckedConfirm ? "#DD0201" : "#d9d9d9",
             cursor: checkboxCheckedConfirm ? "pointer" : "not-allowed", // Change cursor based on checkbox state
           }}
         >
@@ -2592,7 +2592,7 @@ const DashboardPage = () => {
 
   const buttonStyle = {
     padding: "10px", // Adjust the padding as needed
-    backgroundColor: "#0DC939",
+    backgroundColor: "#DD0201",
     color: "white",
     border: "none",
     cursor: "pointer",
@@ -3245,7 +3245,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -3283,7 +3283,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -3308,7 +3308,7 @@ const DashboardPage = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#DD0201",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -3348,7 +3348,7 @@ const DashboardPage = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
+          confirmButtonColor: "#DD0201",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -3386,7 +3386,7 @@ const DashboardPage = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
+              confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -3411,7 +3411,7 @@ const DashboardPage = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#0DC939",
+        confirmButtonColor: "#DD0201",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -3871,7 +3871,7 @@ const DashboardPage = () => {
   //             allowEscapeKey: false,
   //             showConfirmButton: true,
   //             confirmButtonText: "OK",
-  //             confirmButtonColor: "#0DC939",
+  //             confirmButtonColor: "#DD0201",
   //           }).then((result) => {
   //             if (result.isConfirmed) {
   //               window.location.reload();
@@ -3893,7 +3893,7 @@ const DashboardPage = () => {
   //           allowEscapeKey: false,
   //           showConfirmButton: true,
   //           confirmButtonText: "OK",
-  //           confirmButtonColor: "#0DC939",
+  //           confirmButtonColor: "#DD0201",
   //         }).then((result) => {
   //           if (result.isConfirmed) {
   //             window.location.reload();
@@ -3995,7 +3995,7 @@ const DashboardPage = () => {
                           style={{
                             backgroundColor:
                               selectedProfile === "basic"
-                                ? "#0DC939"
+                                ? "#DD0201"
                                 : "#EAFFF0",
                             paddingTop: "30px",
                             paddingBottom: "30px",
@@ -4035,7 +4035,7 @@ const DashboardPage = () => {
                                     fill={
                                       selectedProfile === "basic"
                                         ? "#EAFFF0"
-                                        : "#0DC939"
+                                        : "#DD0201"
                                     }
                                   />
                                   <path
@@ -4043,7 +4043,7 @@ const DashboardPage = () => {
                                     fill={
                                       selectedProfile === "basic"
                                         ? "#EAFFF0"
-                                        : "#0DC939"
+                                        : "#DD0201"
                                     }
                                   />
                                 </g>
@@ -4133,7 +4133,7 @@ const DashboardPage = () => {
                           style={{
                             backgroundColor:
                               selectedProfile === "business"
-                                ? "#0DC939"
+                                ? "#DD0201"
                                 : "#EAFFF0",
                             paddingTop: "30px",
                             paddingBottom: "30px",
@@ -4165,7 +4165,7 @@ const DashboardPage = () => {
                                   fill={
                                     selectedProfile === "business"
                                       ? "#EAFFF0"
-                                      : "#0DC939"
+                                      : "#DD0201"
                                   }
                                 />
                                 <path
@@ -4173,7 +4173,7 @@ const DashboardPage = () => {
                                   fill={
                                     selectedProfile === "business"
                                       ? "#EAFFF0"
-                                      : "#0DC939"
+                                      : "#DD0201"
                                   }
                                 />
                               </svg>
@@ -4236,7 +4236,7 @@ const DashboardPage = () => {
                           style={{
                             backgroundColor:
                               selectedProfile === "financial"
-                                ? "#0DC939"
+                                ? "#DD0201"
                                 : "#EAFFF0",
                             paddingTop: "30px",
                             paddingBottom: "30px",
@@ -4268,7 +4268,7 @@ const DashboardPage = () => {
                                   fill={
                                     selectedProfile === "financial"
                                       ? "#FFFFFF"
-                                      : "#0DC939"
+                                      : "#DD0201"
                                   }
                                 />
                               </svg>
@@ -4314,7 +4314,7 @@ const DashboardPage = () => {
                           style={{
                             backgroundColor:
                               selectedProfile === "vehicle"
-                                ? "#0DC939"
+                                ? "#DD0201"
                                 : "#EAFFF0",
                             paddingTop: "30px",
                             paddingBottom: "30px",
@@ -4359,7 +4359,7 @@ const DashboardPage = () => {
                                   fill={
                                     selectedProfile === "vehicle"
                                       ? "#EAFFF0"
-                                      : "#0DC939"
+                                      : "#DD0201"
                                   }
                                 />
                                 <path
@@ -4367,7 +4367,7 @@ const DashboardPage = () => {
                                   fill={
                                     selectedProfile === "vehicle"
                                       ? "#EAFFF0"
-                                      : "#0DC939"
+                                      : "#DD0201"
                                   }
                                 />
                               </svg>
@@ -4438,7 +4438,7 @@ const DashboardPage = () => {
                       <Tag
                         closeIcon={<CloseCircleOutlined />}
                         onClose={console.log}
-                        color="#0DC939"
+                        color="#DD0201"
                       >
                         Tag 2
                       </Tag>
@@ -4502,7 +4502,7 @@ const DashboardPage = () => {
                                       title: "Error",
                                       text: "NIN must be exactly 11 digits.",
                                       icon: "error",
-                                      confirmButtonColor: "#0DC939",
+                                      confirmButtonColor: "#DD0201",
                                     });
                                   }
                                 }}
@@ -4545,7 +4545,7 @@ const DashboardPage = () => {
                                       title: "Error",
                                       text: "NIN must be exactly 11 digits.",
                                       icon: "error",
-                                      confirmButtonColor: "#0DC939",
+                                      confirmButtonColor: "#DD0201",
                                     });
                                   }
                                 }}
@@ -5043,7 +5043,7 @@ const DashboardPage = () => {
                                     title: "Error",
                                     text: "BVN must be exactly 11 digits.",
                                     icon: "error",
-                                    confirmButtonColor: "#0DC939",
+                                    confirmButtonColor: "#DD0201",
                                   });
                                 }
                               }}
@@ -5116,7 +5116,7 @@ const DashboardPage = () => {
                                     title: "Error",
                                     text: "VIN must be exactly 17 characters.",
                                     icon: "error",
-                                    confirmButtonColor: "#0DC939",
+                                    confirmButtonColor: "#DD0201",
                                   });
                                 }
                               }}
@@ -5733,14 +5733,14 @@ const DashboardPage = () => {
                       <Checkbox onChange={onChangePayment}>
                         I certify that I have read and accepted the{" "}
                         <span
-                          style={{ color: "#09C93A", cursor: "pointer" }}
+                          style={{ color: "#DD0201", cursor: "pointer" }}
                           onClick={handleClickPrivacyPolicy}
                         >
                           e-citizen™ Privacy Policy
                         </span>{" "}
                         and{" "}
                         <span
-                          style={{ color: "#09C93A", cursor: "pointer" }}
+                          style={{ color: "#DD0201", cursor: "pointer" }}
                           onClick={handleClickTerms}
                         >
                           Terms of Service
@@ -5786,11 +5786,11 @@ const DashboardPage = () => {
                         style={{
                           backgroundColor:
                             checkboxChecked && !makingPayment
-                              ? "#0DC939"
+                              ? "#DD0201"
                               : "#d9d9d9", // Set the colors based on checkbox state
                           borderColor:
                             checkboxChecked && !makingPayment
-                              ? "#0DC939"
+                              ? "#DD0201"
                               : "#d9d9d9",
                           cursor:
                             checkboxChecked && !makingPayment

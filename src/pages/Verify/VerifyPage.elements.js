@@ -58,7 +58,7 @@ export const NavAvatar = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #09c93a;
+  background: #DD0201;
   color: #fff;
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@ export const Breadcrumb = styled.div`
   span {
     color: #555;
     &:last-child {
-      color: #09c93a;
+      color: #DD0201;
       font-weight: 600;
     }
   }
@@ -122,7 +122,7 @@ export const HeroTitle = styled.h1`
   margin: 0 0 16px;
 
   span {
-    color: #09c93a;
+    color: #DD0201;
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 48px;
@@ -204,7 +204,7 @@ export const StepCircle = styled.div`
   transition: all 0.3s;
 
   background: ${(props) =>
-    props.active ? "#09c93a" : props.completed ? "#09c93a" : "#e5e7eb"};
+    props.active ? "#DD0201" : props.completed ? "#DD0201" : "#e5e7eb"};
   color: ${(props) => (props.active || props.completed ? "#fff" : "#999")};
 `;
 
@@ -223,7 +223,7 @@ export const StepLabel = styled.span`
 export const StepLine = styled.div`
   flex: 1;
   height: 2px;
-  background: ${(props) => (props.completed ? "#09c93a" : "#e5e7eb")};
+  background: ${(props) => (props.completed ? "#DD0201" : "#e5e7eb")};
   margin: 0 8px;
   transition: background 0.3s;
 `;
@@ -517,7 +517,7 @@ export const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #09c93a;
+    border-color: #DD0201;
   }
 `;
 
@@ -539,7 +539,7 @@ export const FormSelect = styled.select`
   background-position: right 14px center;
 
   &:focus {
-    border-color: #09c93a;
+    border-color: #DD0201;
   }
 `;
 
@@ -577,7 +577,7 @@ export const ClearBtn = styled.button`
 `;
 
 export const ContinueBtn = styled.button`
-  background: #09c93a;
+  background: #DD0201;
   border: none;
   border-radius: 10px;
   padding: 12px 36px;
@@ -592,7 +592,7 @@ export const ContinueBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #16ef4d;
+    background: #FF4D4F;
   }
 
   &:disabled {
@@ -604,7 +604,7 @@ export const ContinueBtn = styled.button`
 /* ─── You Will Get (horizontal row inside card) ─── */
 
 export const YouWillGetCard = styled.div`
-  background: #f0fdf4;
+  background: #fef2f2;
   border: 1px solid #d1fae5;
   border-radius: 10px;
   padding: 18px 20px;
@@ -635,7 +635,7 @@ export const YouWillGetItem = styled.div`
   color: #333;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     font-size: 14px;
     flex-shrink: 0;
   }
@@ -644,7 +644,7 @@ export const YouWillGetItem = styled.div`
 /* ─── Price Sidebar ─── */
 
 export const SidebarCard = styled.div`
-  background: #f0fdf4;
+  background: #fef2f2;
   border: 1px solid #d1fae5;
   border-radius: 12px;
   padding: 28px 24px;
@@ -661,7 +661,7 @@ export const PriceAmount = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 32px;
-  color: #09c93a;
+  color: #DD0201;
   margin-bottom: 20px;
 `;
 
@@ -716,7 +716,7 @@ export const SidebarItem = styled.div`
   color: #333;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     font-size: 16px;
     flex-shrink: 0;
   }
@@ -738,7 +738,7 @@ export const SidebarNote = styled.p`
   gap: 6px;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     font-size: 14px;
   }
 `;
@@ -783,23 +783,23 @@ export const PaymentOption = styled.label`
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border: 2px solid ${(props) => (props.selected ? "#09c93a" : "#e5e7eb")};
+  border: 2px solid ${(props) => (props.selected ? "#DD0201" : "#e5e7eb")};
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.2s;
-  background: ${(props) => (props.selected ? "#f0fdf4" : "#fff")};
+  background: ${(props) => (props.selected ? "#fef2f2" : "#fff")};
 
   &:last-child {
     margin-bottom: 0;
   }
 
   &:hover {
-    border-color: #09c93a;
+    border-color: #DD0201;
   }
 
   input[type="radio"] {
-    accent-color: #09c93a;
+    accent-color: #DD0201;
   }
 `;
 
@@ -821,8 +821,8 @@ export const PaymentOptionBadge = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 10px;
   font-weight: 700;
-  color: #09c93a;
-  background: #e6f9ed;
+  color: #DD0201;
+  background: #fdecec;
   padding: 2px 8px;
   border-radius: 4px;
   text-transform: uppercase;
@@ -847,7 +847,7 @@ export const SummaryAmount = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: #09c93a;
+  color: #DD0201;
 `;
 
 export const SummaryHeader = styled.div`
@@ -884,7 +884,7 @@ export const SummaryValue = styled.span`
 export const PayBtn = styled.button`
   width: 100%;
   padding: 14px;
-  background: #09c93a;
+  background: #DD0201;
   border: none;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
@@ -900,7 +900,7 @@ export const PayBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #16ef4d;
+    background: #FF4D4F;
   }
 
   &:disabled {
@@ -952,7 +952,7 @@ export const SampleTitle = styled.h3`
 export const SampleViewLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #09c93a;
+  color: #DD0201;
   font-weight: 600;
   cursor: pointer;
 
@@ -987,7 +987,7 @@ export const SampleAvatar = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #e6f9ed;
+  background: #fdecec;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -995,7 +995,7 @@ export const SampleAvatar = styled.div`
 
   svg {
     font-size: 22px;
-    color: #09c93a;
+    color: #DD0201;
   }
 `;
 
@@ -1023,8 +1023,8 @@ export const VerifiedBadge = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #e6f9ed;
-  color: #09c93a;
+  background: #fdecec;
+  color: #DD0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -1052,7 +1052,7 @@ export const SampleTag = styled.span`
   gap: 4px;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     font-size: 10px;
   }
 `;
@@ -1094,13 +1094,13 @@ export const TrustIcon = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #e6f9ed;
+  background: #fdecec;
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     font-size: 16px;
   }
 `;
@@ -1139,7 +1139,7 @@ export const ProcessingSpinner = styled.div`
   width: 56px;
   height: 56px;
   border: 4px solid #e5e7eb;
-  border-top-color: #09c93a;
+  border-top-color: #DD0201;
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
   margin-bottom: 24px;
@@ -1192,7 +1192,7 @@ export const IdTypeDisplay = styled.div`
   background-position: right 14px center;
 
   svg {
-    color: #09c93a;
+    color: #DD0201;
     font-size: 16px;
   }
 `;

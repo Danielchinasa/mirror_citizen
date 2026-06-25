@@ -32,7 +32,7 @@ const BenefitsGrid = styled.div`
 `;
 
 const BenefitCard = styled.div`
-  background: #f0fdf4;
+  background: #fef2f2;
   border-radius: 12px;
   padding: 28px 22px;
   display: flex;
@@ -49,11 +49,11 @@ const BenefitIcon = styled.div`
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #e6f9ed;
+  background: #fdecec;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #09c93a;
+  color: #DD0201;
   font-size: 22px;
   flex-shrink: 0;
 `;

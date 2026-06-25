@@ -1,5 +1,5 @@
 import React from "react";
-import { FaKeyboard, FaCreditCard, FaCheckCircle } from "react-icons/fa";
+import { FaIdCard, FaUpload, FaShieldAlt, FaArrowRight } from "react-icons/fa";
 import styled from "styled-components";
 
 const HowWrapper = styled.section`
@@ -23,7 +23,7 @@ const HowHeader = styled.div`
 const HowLine = styled.div`
   width: 60px;
   height: 2px;
-  background: #09c93a;
+  background: #DD0201;
 
   @media screen and (max-width: 600px) {
     width: 30px;
@@ -47,7 +47,7 @@ const StepsRow = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 0;
+  gap: 14px;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -58,10 +58,12 @@ const StepsRow = styled.div`
 
 const StepItem = styled.div`
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
   flex: 0 0 auto;
-  max-width: 280px;
+  max-width: 250px;
+  text-align: center;
 
   @media screen and (max-width: 768px) {
     max-width: 100%;
@@ -71,36 +73,41 @@ const StepItem = styled.div`
 `;
 
 const StepNumberCircle = styled.div`
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 2px solid #09c93a;
-  color: #09c93a;
+  background: #DD0201;
+  color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-bottom: 6px;
 `;
 
 const StepIconBox = styled.div`
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: #f0f0f0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fef2f2;
+  border: 1px solid rgba(220, 5, 2, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
-  font-size: 18px;
+  color: #DD0201;
+  font-size: 24px;
   flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(220, 5, 2, 0.08);
 `;
 
 const StepText = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding-top: 16px;
 `;
 
 const StepName = styled.h3`
@@ -108,7 +115,7 @@ const StepName = styled.h3`
   font-weight: 600;
   font-size: 16px;
   color: #1a1a1a;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
 `;
 
 const StepDesc = styled.p`
@@ -122,13 +129,23 @@ const StepDesc = styled.p`
 const DottedConnector = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  margin-top: 18px;
+  justify-content: center;
+  gap: 8px;
+  min-width: 96px;
+  margin-top: 34px;
+  color: #DD0201;
+  font-size: 18px;
 
-  &::before {
+  &::before,
+  &::after {
     content: "";
-    width: 60px;
-    border-top: 2px dashed #ccc;
+    flex: 1;
+    border-top: 2px dashed #d1d5db;
+  }
+
+  svg {
+    flex-shrink: 0;
+    margin: 0 2px;
   }
 
   @media screen and (max-width: 768px) {
@@ -148,35 +165,37 @@ const NinHowItWorks = () => {
         <StepItem>
           <StepNumberCircle>1</StepNumberCircle>
           <StepIconBox>
-            <FaKeyboard />
+            <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Enter NIN details</StepName>
-            <StepDesc>
-              Provide the NIN and basic information to get started.
-            </StepDesc>
+            <StepName>Choose a service</StepName>
+            <StepDesc>Select National ID or VIN Verification.</StepDesc>
           </StepText>
         </StepItem>
-        <DottedConnector />
+        <DottedConnector>
+          <FaArrowRight />
+        </DottedConnector>
         <StepItem>
           <StepNumberCircle>2</StepNumberCircle>
           <StepIconBox>
-            <FaCreditCard />
+            <FaUpload />
           </StepIconBox>
           <StepText>
-            <StepName>Make payment</StepName>
-            <StepDesc>Secure payment from as low as ₦600.</StepDesc>
+            <StepName>Submit details</StepName>
+            <StepDesc>Enter required information securely.</StepDesc>
           </StepText>
         </StepItem>
-        <DottedConnector />
+        <DottedConnector>
+          <FaArrowRight />
+        </DottedConnector>
         <StepItem>
           <StepNumberCircle>3</StepNumberCircle>
           <StepIconBox>
-            <FaCheckCircle />
+            <FaShieldAlt />
           </StepIconBox>
           <StepText>
-            <StepName>View result instantly</StepName>
-            <StepDesc>Get verification result in seconds.</StepDesc>
+            <StepName>Get results</StepName>
+            <StepDesc>Receive instant verification results.</StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>

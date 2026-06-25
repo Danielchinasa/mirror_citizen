@@ -60,7 +60,7 @@ export const NinNavLink = styled.a`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #09c93a;
+    color: #DD0201;
   }
 
   @media screen and (max-width: 768px) {
@@ -78,7 +78,7 @@ export const NinNavLinkRouter = styled(Link)`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #09c93a;
+    color: #DD0201;
   }
 
   @media screen and (max-width: 768px) {
@@ -87,7 +87,7 @@ export const NinNavLinkRouter = styled(Link)`
 `;
 
 export const NinCtaButton = styled(Link)`
-  background-color: #09c93a;
+  background-color: #DD0201;
   color: #fff;
   font-family: Arial, sans-serif;
   font-weight: 900;
@@ -105,7 +105,7 @@ export const NinCtaButton = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #16ef4d;
+    background-color: #FF4D4F;
     color: #fff;
   }
 

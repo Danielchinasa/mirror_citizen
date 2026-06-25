@@ -327,14 +327,14 @@ const ResetPasswordForm = ({ email, token }) => {
             {/* <Subtitle color="light">
               Don’t have an account?{" "}
               <BtnLink to="/sign-up">
-                <span style={{ color: "#09C93A", cursor: "pointer" }}>
+                <span style={{ color: "#DD0201", cursor: "pointer" }}>
                   Register here
                 </span>
               </BtnLink>
             </Subtitle>
             <Subtitle color="light">
               Forgot password?{" "}
-              <span style={{ color: "#09C93A" }}>
+              <span style={{ color: "#DD0201" }}>
                 <BtnLink to="/forgot-password">Click me!</BtnLink>
               </span>
             </Subtitle> */}

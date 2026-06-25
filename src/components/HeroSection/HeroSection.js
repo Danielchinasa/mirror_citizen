@@ -62,7 +62,7 @@ const HeroSection = ({
                   Your{" "}
                   <span
                     style={{
-                      color: "#09C93A",
+                      color: "#DD0201",
                       fontFamily: "Poppins",
                       fontWeight: "700",
                     }}

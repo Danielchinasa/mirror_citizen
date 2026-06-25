@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  FooterStrip,
   FooterWrapper,
   FooterInner,
   FooterTop,
@@ -34,7 +35,9 @@ function Footer() {
   const [isOpen2, setIsOpen2] = useState(false);
 
   return (
-    <FooterWrapper>
+    <>
+      <FooterStrip aria-hidden="true" />
+      <FooterWrapper>
       <FooterInner>
         <FooterTop>
           <BrandCol>
@@ -146,7 +149,8 @@ function Footer() {
       >
         <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
       </Modal>
-    </FooterWrapper>
+      </FooterWrapper>
+    </>
   );
 }
 

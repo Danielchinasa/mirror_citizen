@@ -52,7 +52,7 @@ export const NavLink = styled(Link)`
   transition: color 0.2s;
 
   &:hover {
-    color: #09c93a;
+    color: #DD0201;
   }
 `;
 
@@ -62,7 +62,7 @@ export const MainContent = styled.main`
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f9fafb 0%, #f0fdf4 50%, #e6f9ed 100%);
+  background: linear-gradient(135deg, #f9fafb 0%, #fef2f2 50%, #fdecec 100%);
   position: relative;
   overflow: hidden;
 
@@ -76,7 +76,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(9, 201, 58, 0.08) 0%,
+      rgba(220, 5, 2, 0.08) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -92,7 +92,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(9, 201, 58, 0.06) 0%,
+      rgba(220, 5, 2, 0.06) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -105,11 +105,11 @@ export const LoginCard = styled.div`
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(9, 201, 58, 0.12);
+  border: 1px solid rgba(220, 5, 2, 0.12);
   border-radius: 16px;
   padding: 40px 36px;
   box-shadow:
-    0 8px 32px rgba(9, 201, 58, 0.08),
+    0 8px 32px rgba(220, 5, 2, 0.08),
     0 2px 8px rgba(0, 0, 0, 0.04);
   opacity: 0;
   animation: ${fadeSlideUp} 0.5s ease-out 0.1s forwards;
@@ -221,7 +221,7 @@ export const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #09c93a;
+    border-color: #DD0201;
   }
 `;
 
@@ -262,7 +262,7 @@ export const RememberLabel = styled.label`
 export const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #09c93a;
+  color: #DD0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -275,7 +275,7 @@ export const LoginButton = styled.button`
   display: block;
   width: 100%;
   padding: 12px;
-  background: #09c93a;
+  background: #DD0201;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -286,7 +286,7 @@ export const LoginButton = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #16ef4d;
+    background: #FF4D4F;
   }
 
   &:disabled {
@@ -303,7 +303,7 @@ export const RegisterText = styled.p`
   margin: 16px 0 0;
 
   a {
-    color: #09c93a;
+    color: #DD0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -342,7 +342,7 @@ export const Spinner = styled.div`
   width: 32px;
   height: 32px;
   border: 3px solid #e5e7eb;
-  border-top-color: #09c93a;
+  border-top-color: #DD0201;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 
