@@ -24,7 +24,7 @@ import {
 } from "react-icons/fa";
 import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import heroImg from "../../images/uganda.png";
+import heroImg from "../../images/ghana.png";
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
 import osiaImg from "../../images/osia.png";
@@ -331,23 +331,24 @@ const Home = () => {
               Verify your identity in{" "}
               <span
                 style={{
-                  color: "#DD0201",
+                  color: "#02831C",
                   fontFamily: "inherit",
                   fontSize: "inherit",
                   fontWeight: "inherit",
                 }}
               >
-                Uganda.{" "}
+                Ghana.{" "}
               </span>
               Fast, secure and trusted.
             </HeroTitle>
             <HeroSubtitle>
               Official identity verification services for individuals and
-              businesses across Uganda and the diaspora.
+              businesses across Ghana and the diaspora.
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={ctaLink}>
-                Verify National ID <FaArrowRight />
+                Verify Ghana ID
+                <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#how-it-works">
                 Check VIN <FaPlayCircle />
@@ -389,7 +390,7 @@ const Home = () => {
                 <img src={avatar3} alt="user" />
                 <img src={avatar4} alt="user" />
               </AvatarStack>
-              Join 500,000+ Ugandans who trust e-raia
+              4.8/5 from 8,000+ reviews
             </SocialProof>
           </HeroContent>
         </HeroContainer>
@@ -409,7 +410,7 @@ const Home = () => {
               </StepIconBox>
             </StepTop>
             <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepDesc>Select Ghana ID or VIN Verification</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -422,7 +423,7 @@ const Home = () => {
               </StepIconBox>
             </StepTop>
             <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepDesc>Enter required information securely</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -446,8 +447,7 @@ const Home = () => {
           Choose the verification that fits your needs
         </SectionHeading>
         <SectionSub>
-          Fast, reliable and secure verification services for individuals and
-          businesses.
+          Simple, transparent pricing Affordable rates for everyone.
         </SectionSub>
 
         <CardsGrid>
@@ -457,9 +457,9 @@ const Home = () => {
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
-            <ServiceName>National ID Verification</ServiceName>
+            <ServiceName>Ghana ID Card</ServiceName>
             <ServiceDesc>
-              Verity Ugando Notional Identity Card details in real-time.
+              Verify Ghana National Identity Card details in real-time.
             </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[0]?.price

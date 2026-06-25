@@ -72,5 +72,5 @@ a {
 
 /* For hover state */
 .ant-radio:hover .ant-radio-inner {
-  border-color: #DD0201 !important; /* Hover border color */
+  border-color: #02831C !important; /* Hover border color */
 }

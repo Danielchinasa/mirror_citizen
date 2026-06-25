@@ -40,7 +40,7 @@ const PaymentFailure = () => {
       }}
     >
       <Result
-        icon={<CloseCircleOutlined style={{ color: "#ff4d4f" }} />}
+        icon={<CloseCircleOutlined style={{ color: "#09c93a" }} />}
         status="error"
         title={<span style={{ color: text }}>Payment Failed</span>}
         subTitle={
@@ -61,8 +61,8 @@ const PaymentFailure = () => {
             key="retry"
             onClick={handleTryAgain}
             style={{
-              backgroundColor: "#DD0201",
-              borderColor: "#DD0201",
+              backgroundColor: "#02831C",
+              borderColor: "#02831C",
               marginRight: "10px",
             }}
           >

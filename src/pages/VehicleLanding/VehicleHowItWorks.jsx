@@ -23,7 +23,7 @@ const HowHeader = styled.div`
 const HowLine = styled.div`
   width: 60px;
   height: 2px;
-  background: #DD0201;
+  background: #02831c;
 
   @media screen and (max-width: 600px) {
     width: 30px;
@@ -76,7 +76,7 @@ const StepNumberCircle = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #02831c;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -92,15 +92,15 @@ const StepIconBox = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #fef2f2;
-  border: 1px solid rgba(220, 5, 2, 0.12);
+  background: #f0fdf4;
+  border: 1px solid rgba(2, 131, 28, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #02831c;
   font-size: 24px;
   flex-shrink: 0;
-  box-shadow: 0 8px 20px rgba(220, 5, 2, 0.08);
+  box-shadow: 0 8px 20px rgba(2, 131, 28, 0.08);
 `;
 
 const StepText = styled.div`
@@ -133,7 +133,7 @@ const DottedConnector = styled.div`
   gap: 8px;
   min-width: 96px;
   margin-top: 34px;
-  color: #DD0201;
+  color: #02831c;
   font-size: 18px;
 
   &::before,

@@ -325,7 +325,7 @@ function Navbar() {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#02831C",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -365,7 +365,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#DD0201",
+              confirmButtonColor: "#02831C",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -390,7 +390,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#02831C",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -508,7 +508,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#02831C",
       });
       return;
     }
@@ -566,7 +566,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#DD0201",
+              confirmButtonColor: "#02831C",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -588,7 +588,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#DD0201",
+            confirmButtonColor: "#02831C",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -642,7 +642,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#DD0201",
+            confirmButtonColor: "#02831C",
           });
         }
       } else if (walletPaymentMethod === 3) {
@@ -686,7 +686,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#DD0201",
+              confirmButtonColor: "#02831C",
             });
           }
         } catch (error) {
@@ -705,7 +705,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#DD0201",
+            confirmButtonColor: "#02831C",
           });
         }
       }
@@ -726,7 +726,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#02831C",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -755,15 +755,15 @@ function Navbar() {
             <PublicBrand to="/">
               <span className="brand-red">e</span>
               <span className="brand-dot">-</span>
-              raia<span className="brand-dot">.com</span>
+              citizen<span className="brand-dot">.africa</span>
             </PublicBrand>
 
             <PublicCenter>
               <CountryPill type="button" aria-label="Select country">
-                <span className="flag" role="img" aria-label="Uganda flag">
-                  🇺🇬
+                <span className="flag" role="img" aria-label="Ghana flag">
+                  🇬🇭
                 </span>
-                Uganda
+                Ghana
                 <DownOutlined className="chev" />
               </CountryPill>
 
@@ -811,13 +811,22 @@ function Navbar() {
 
           <PublicMobilePanel $open={click}>
             <PublicMobileMenu>
-              <PublicMobileLink to="/nin-verification" onClick={closeMobileMenu}>
+              <PublicMobileLink
+                to="/nin-verification"
+                onClick={closeMobileMenu}
+              >
                 National ID
               </PublicMobileLink>
-              <PublicMobileLink to="/vehicle-verification" onClick={closeMobileMenu}>
+              <PublicMobileLink
+                to="/vehicle-verification"
+                onClick={closeMobileMenu}
+              >
                 VIN Verification
               </PublicMobileLink>
-              <PublicMobileAnchor href="#how-it-works" onClick={closeMobileMenu}>
+              <PublicMobileAnchor
+                href="#how-it-works"
+                onClick={closeMobileMenu}
+              >
                 How it works
               </PublicMobileAnchor>
               <PublicMobileLink to="/faq" onClick={closeMobileMenu}>
@@ -1000,7 +1009,7 @@ function Navbar() {
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
-                          <span style={{ color: "#DD0201" }}>
+                          <span style={{ color: "#02831C" }}>
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
@@ -1016,7 +1025,7 @@ function Navbar() {
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
-                          <Title level={3} style={{ color: "#DD0201" }}>
+                          <Title level={3} style={{ color: "#02831C" }}>
                             {userCurrency.toUpperCase() === "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}
@@ -1210,7 +1219,7 @@ function Navbar() {
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
-                          <span style={{ color: "#DD0201" }}>
+                          <span style={{ color: "#02831C" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
@@ -1227,7 +1236,7 @@ function Navbar() {
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
-                          <Title level={3} style={{ color: "#DD0201" }}>
+                          <Title level={3} style={{ color: "#02831C" }}>
                             {userCurrency.toUpperCase() === "NGN"
                               ? formatToNaira(userBalance)
                               : `${formatToDollar(userBalance)}`}

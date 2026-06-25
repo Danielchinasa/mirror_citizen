@@ -31,7 +31,7 @@ export const SectionSubtitle = styled.p`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #DD0201;
+  background-color: #02831c;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -53,7 +53,7 @@ export const PrimaryBtn = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #09c93a;
     color: #fff;
   }
 
@@ -69,7 +69,7 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #DD0201;
+  color: #02831c;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -80,7 +80,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #DD0201;
+  border: 1px solid #02831c;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -91,8 +91,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #FF4D4F;
-    border-color: #FF4D4F;
+    color: #09c93a;
+    border-color: #09c93a;
   }
 
   @media screen and (max-width: 600px) {
@@ -112,7 +112,7 @@ export const HeroSectionWrapper = styled.section`
   min-height: 580px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #ffffff 0%, #fff1f1 50%, #fce8e8 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #f2fff5 50%, #e9fbe9 100%);
   padding: 60px 0;
   overflow: hidden;
 
@@ -142,7 +142,7 @@ export const HeroSectionWrapper = styled.section`
     background: linear-gradient(
       180deg,
       rgba(224, 239, 224, 0) 0%,
-      #fce8e8 100%
+      #e9fbe9 100%
     );
     z-index: 1;
     pointer-events: none;
@@ -238,8 +238,8 @@ export const HeroContent = styled.div`
 
 export const HeroTag = styled.span`
   display: inline-block;
-  background: #fdecec;
-  color: #b91c1c;
+  background: #dcfce7;
+  color: #02831c;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
   font-size: 14px;
@@ -259,7 +259,7 @@ export const HeroTitle = styled.h1`
   margin-bottom: 24px;
 
   span {
-    color: #DD0201;
+    color: #02831c;
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
@@ -312,7 +312,7 @@ export const HeroButtons = styled.div`
 
 export const PriceBadge = styled.div`
   display: inline-block;
-  background: #fdecec;
+  background: #dcfce7;
   color: #1a1a1a;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
@@ -379,11 +379,11 @@ export const TrustIconCircle = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${(props) => props.bg || "#fdecec"};
+  background: ${(props) => props.bg || "#dcfce7"};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #02831c;
   font-size: 16px;
   flex-shrink: 0;
 `;
@@ -448,7 +448,7 @@ export const StepNumber = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #02831c;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -477,7 +477,7 @@ export const StepDesc = styled.p`
 /* ─── Features ─── */
 
 export const FeaturesSectionWrapper = styled.section`
-  background: #fef2f2;
+  background: #f0fdf4;
   padding: 80px 50px;
 
   @media screen and (max-width: 768px) {
@@ -509,7 +509,7 @@ export const FeatureCard = styled.div`
 `;
 
 export const FeatureIcon = styled.div`
-  color: #DD0201;
+  color: #02831c;
   font-size: 36px;
   margin-bottom: 16px;
 `;
@@ -606,7 +606,7 @@ export const CheckItem = styled.li`
   line-height: 24px;
 
   svg {
-    color: #DD0201;
+    color: #02831c;
     flex-shrink: 0;
   }
 `;
@@ -614,7 +614,7 @@ export const CheckItem = styled.li`
 /* ─── CTA ─── */
 
 export const CtaSectionWrapper = styled.section`
-  background: #DD0201;
+  background: #02831c;
   padding: 60px 50px;
   text-align: center;
 
@@ -648,7 +648,7 @@ export const CtaDesc = styled.p`
 
 export const CtaButton = styled(Link)`
   background-color: #fff;
-  color: #DD0201;
+  color: #02831c;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -664,6 +664,6 @@ export const CtaButton = styled(Link)`
 
   &:hover {
     background-color: #f0f0f0;
-    color: #FF4D4F;
+    color: #09c93a;
   }
 `;

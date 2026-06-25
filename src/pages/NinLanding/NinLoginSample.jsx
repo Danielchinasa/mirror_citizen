@@ -176,7 +176,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #02831c;
   }
 `;
 
@@ -216,7 +216,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #02831c;
   text-decoration: none;
   font-weight: 600;
 
@@ -229,7 +229,7 @@ const LoginBtn = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background: ${(props) => (props.disabled ? "#ccc" : "#DD0201")};
+  background: ${(props) => (props.disabled ? "#ccc" : "#02831C")};
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -242,13 +242,13 @@ const LoginBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: ${(props) => (props.disabled ? "#ccc" : "#FF4D4F")};
+    background: ${(props) => (props.disabled ? "#ccc" : "#09C93A")};
     color: #fff;
   }
 `;
 
 const ErrorAlert = styled.div`
-  background: #fef2f2;
+  background: #f0fdf4;
   border: 1px solid #fecaca;
   color: #dc2626;
   padding: 8px 12px;
@@ -273,7 +273,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #02831c;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -292,7 +292,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #DD0201;
+    color: #02831c;
     font-weight: 600;
     text-decoration: none;
 
@@ -336,8 +336,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: #fff;
-  border: 1px solid #DD0201;
-  color: #DD0201;
+  border: 1px solid #02831c;
+  color: #02831c;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -422,7 +422,7 @@ const ResultValue = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #DD0201;
+  color: #02831c;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -855,7 +855,7 @@ const NinLoginSample = () => {
               <ResultGrid>
                 <ResultField>
                   <ResultLabel>Full Name</ResultLabel>
-                  <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
+                  <ResultValue>KOFI KWAME MENSAH</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>

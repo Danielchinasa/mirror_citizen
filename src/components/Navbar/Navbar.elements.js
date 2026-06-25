@@ -173,7 +173,7 @@ export const PublicBrand = styled(Link)`
   text-decoration: none;
 
   .brand-red {
-    color: #DD0201;
+    color: #02831C;
   }
 
   .brand-dot {
@@ -241,7 +241,7 @@ export const PublicTrigger = styled.button`
   padding: 0;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 
   .chev {
@@ -259,7 +259,7 @@ export const PublicNavLink = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 `;
 
@@ -272,7 +272,7 @@ export const PublicAnchor = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 `;
 
@@ -285,7 +285,7 @@ export const PublicTextLink = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 `;
 
@@ -333,7 +333,7 @@ export const PublicLogin = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 
   @media screen and (max-width: 1024px) {
@@ -348,17 +348,17 @@ export const PublicCta = styled(Link)`
   min-height: 46px;
   padding: 0 28px;
   border-radius: 10px;
-  background: #DD0201;
+  background: #02831C;
   color: #fff;
   text-decoration: none;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 15px;
-  box-shadow: 0 8px 18px rgba(221, 2, 1, 0.22);
+  box-shadow: 0 8px 18px rgba(2, 131, 28, 0.22);
   transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    background: #FF4D4F;
+    background: #09C93A;
     color: #fff;
     transform: translateY(-1px);
   }
@@ -432,7 +432,7 @@ export const PublicLanguageToggleGroup = styled.div`
 
 export const PublicLanguageToggle = styled.button`
   border: none;
-  background: ${({ $active }) => ($active ? "#DD0201" : "transparent")};
+  background: ${({ $active }) => ($active ? "#02831C" : "transparent")};
   color: ${({ $active }) => ($active ? "#fff" : "#111827")};
   font-family: "Nunito", sans-serif;
   font-size: 13px;
@@ -457,7 +457,7 @@ export const PublicMobileLink = styled(Link)`
   padding: 6px 0;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 `;
 
@@ -470,6 +470,6 @@ export const PublicMobileAnchor = styled.a`
   padding: 6px 0;
 
   &:hover {
-    color: #DD0201;
+    color: #02831C;
   }
 `;

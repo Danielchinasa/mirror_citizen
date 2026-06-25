@@ -5,7 +5,7 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
 
 const CtaWrapper = styled.section`
-  background: #fef2f2;
+  background: #f0fdf4;
   padding: 40px 50px;
 
   @media screen and (max-width: 768px) {
@@ -39,7 +39,7 @@ const CtaShield = styled.div`
 
   svg {
     font-size: 30px;
-    color: #DD0201;
+    color: #02831c;
   }
 `;
 
@@ -81,14 +81,14 @@ const CtaRight = styled.div`
 `;
 
 const CtaButton = styled(Link)`
-  background: #DD0201;
+  background: #02831c;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border-radius: 10px;
-  border: 2px solid #DD0201;
+  border: 2px solid #02831c;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -98,8 +98,8 @@ const CtaButton = styled(Link)`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background: #FF4D4F;
-    border-color: #FF4D4F;
+    background: #09c93a;
+    border-color: #09c93a;
     color: #fff;
   }
 `;
@@ -113,7 +113,7 @@ const CtaPrice = styled.span`
   color: #555;
 
   svg {
-    color: #DD0201;
+    color: #02831c;
     font-size: 14px;
   }
 

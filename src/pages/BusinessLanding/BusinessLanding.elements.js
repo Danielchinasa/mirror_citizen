@@ -57,7 +57,7 @@ const pulseGlow = keyframes`
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
   }
   50% {
-    box-shadow: 0px 8px 24px rgba(220, 5, 2, 0.4);
+    box-shadow: 0px 8px 24px rgba(2, 131, 28, 0.4);
   }
 `;
 
@@ -68,7 +68,7 @@ export const PageWrapper = styled.div`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #DD0201;
+  background-color: #02831C;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -86,10 +86,10 @@ export const PrimaryBtn = styled(Link)`
   animation: ${pulseGlow} 2.5s ease-in-out infinite 1.5s;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #09C93A;
     color: #fff;
     animation: none;
-    box-shadow: 0px 8px 24px rgba(220, 5, 2, 0.5);
+    box-shadow: 0px 8px 24px rgba(2, 131, 28, 0.5);
   }
 
   @media screen and (max-width: 480px) {
@@ -109,13 +109,13 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #DD0201;
+  color: #02831C;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
   padding: 12px 36px;
   border-radius: 10px;
-  border: 1px solid #DD0201;
+  border: 1px solid #02831C;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -126,8 +126,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #FF4D4F;
-    border-color: #FF4D4F;
+    color: #09C93A;
+    border-color: #09C93A;
   }
 
   @media screen and (max-width: 480px) {
@@ -152,7 +152,7 @@ export const HeroSectionWrapper = styled.section`
   min-height: 580px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #ffffff 0%, #fff1f1 50%, #fce8e8 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #f2fff5 50%, #e9fbe9 100%);
   padding: 60px 0;
   overflow: hidden;
 
@@ -182,7 +182,7 @@ export const HeroSectionWrapper = styled.section`
     background: linear-gradient(
       180deg,
       rgba(224, 239, 224, 0) 0%,
-      #fce8e8 100%
+      #e9fbe9 100%
     );
     z-index: 1;
     pointer-events: none;
@@ -279,8 +279,8 @@ export const HeroContent = styled.div`
 
 export const HeroTag = styled.span`
   display: inline-block;
-  background: #fdecec;
-  color: #b91c1c;
+  background: #dcfce7;
+  color: #02831c;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
   font-size: 14px;
@@ -304,11 +304,11 @@ export const HeroTitle = styled.h1`
   animation: ${fadeSlideUp} 0.7s ease-out 0.25s forwards;
 
   span {
-    color: #DD0201;
+    color: #02831C;
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
-    background: linear-gradient(90deg, #DD0201 0%, #FF4D4F 50%, #DD0201 100%);
+    background: linear-gradient(90deg, #02831C 0%, #09C93A 50%, #02831C 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -379,7 +379,7 @@ export const PriceBadgesRow = styled.div`
 
 export const PriceBadge = styled.div`
   display: inline-block;
-  background: #fdecec;
+  background: #dcfce7;
   color: #1a1a1a;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
@@ -416,7 +416,7 @@ export const HeroCheck = styled.span`
   color: #555;
 
   svg {
-    color: #DD0201;
+    color: #02831C;
     font-size: 14px;
   }
 `;
@@ -472,11 +472,11 @@ export const TrustIconCircle = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${(props) => props.bg || "#fdecec"};
+  background: ${(props) => props.bg || "#dcfce7"};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #02831C;
   font-size: 16px;
   flex-shrink: 0;
 `;
