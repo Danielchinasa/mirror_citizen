@@ -31,7 +31,7 @@ export const SectionSubtitle = styled.p`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #DD0201;
+  background-color: #FD7A00;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -53,7 +53,7 @@ export const PrimaryBtn = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #FF8C1A;
     color: #fff;
   }
 
@@ -69,7 +69,7 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #DD0201;
+  color: #FD7A00;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -80,7 +80,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #DD0201;
+  border: 1px solid #FD7A00;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -91,8 +91,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #FF4D4F;
-    border-color: #FF4D4F;
+    color: #FF8C1A;
+    border-color: #FF8C1A;
   }
 
   @media screen and (max-width: 600px) {
@@ -259,7 +259,7 @@ export const HeroTitle = styled.h1`
   margin-bottom: 24px;
 
   span {
-    color: #DD0201;
+    color: #FD7A00;
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
@@ -383,7 +383,7 @@ export const TrustIconCircle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #FD7A00;
   font-size: 16px;
   flex-shrink: 0;
 `;
@@ -448,7 +448,7 @@ export const StepNumber = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #FD7A00;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -509,7 +509,7 @@ export const FeatureCard = styled.div`
 `;
 
 export const FeatureIcon = styled.div`
-  color: #DD0201;
+  color: #FD7A00;
   font-size: 36px;
   margin-bottom: 16px;
 `;
@@ -606,7 +606,7 @@ export const CheckItem = styled.li`
   line-height: 24px;
 
   svg {
-    color: #DD0201;
+    color: #FD7A00;
     flex-shrink: 0;
   }
 `;
@@ -614,7 +614,7 @@ export const CheckItem = styled.li`
 /* ─── CTA ─── */
 
 export const CtaSectionWrapper = styled.section`
-  background: #DD0201;
+  background: #FD7A00;
   padding: 60px 50px;
   text-align: center;
 
@@ -648,7 +648,7 @@ export const CtaDesc = styled.p`
 
 export const CtaButton = styled(Link)`
   background-color: #fff;
-  color: #DD0201;
+  color: #FD7A00;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -664,6 +664,6 @@ export const CtaButton = styled(Link)`
 
   &:hover {
     background-color: #f0f0f0;
-    color: #FF4D4F;
+    color: #FF8C1A;
   }
 `;

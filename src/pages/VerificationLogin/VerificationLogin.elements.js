@@ -52,7 +52,7 @@ export const NavLink = styled(Link)`
   transition: color 0.2s;
 
   &:hover {
-    color: #DD0201;
+    color: #FD7A00;
   }
 `;
 
@@ -76,7 +76,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(220, 5, 2, 0.08) 0%,
+      rgba(253, 122, 0, 0.08) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -92,7 +92,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(220, 5, 2, 0.06) 0%,
+      rgba(253, 122, 0, 0.06) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -105,11 +105,11 @@ export const LoginCard = styled.div`
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(220, 5, 2, 0.12);
+  border: 1px solid rgba(253, 122, 0, 0.12);
   border-radius: 16px;
   padding: 40px 36px;
   box-shadow:
-    0 8px 32px rgba(220, 5, 2, 0.08),
+    0 8px 32px rgba(253, 122, 0, 0.08),
     0 2px 8px rgba(0, 0, 0, 0.04);
   opacity: 0;
   animation: ${fadeSlideUp} 0.5s ease-out 0.1s forwards;
@@ -221,7 +221,7 @@ export const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #FD7A00;
   }
 `;
 
@@ -262,7 +262,7 @@ export const RememberLabel = styled.label`
 export const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #FD7A00;
   text-decoration: none;
   font-weight: 600;
 
@@ -275,7 +275,7 @@ export const LoginButton = styled.button`
   display: block;
   width: 100%;
   padding: 12px;
-  background: #DD0201;
+  background: #FD7A00;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -286,7 +286,7 @@ export const LoginButton = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #FF8C1A;
   }
 
   &:disabled {
@@ -303,7 +303,7 @@ export const RegisterText = styled.p`
   margin: 16px 0 0;
 
   a {
-    color: #DD0201;
+    color: #FD7A00;
     font-weight: 600;
     text-decoration: none;
 
@@ -342,7 +342,7 @@ export const Spinner = styled.div`
   width: 32px;
   height: 32px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #FD7A00;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 

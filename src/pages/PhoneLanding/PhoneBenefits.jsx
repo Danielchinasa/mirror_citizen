@@ -44,7 +44,7 @@ const BenefitIcon = styled.div`
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #FD7A00;
   display: flex;
   align-items: center;
   justify-content: center;

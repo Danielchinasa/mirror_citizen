@@ -1,6 +1,6 @@
 export const lightTheme = {
   token: {
-    colorPrimary: "#DD0201",
+    colorPrimary: "#FD7A00",
     colorSuccess: "#52c41a",
     colorWarning: "blue",
     colorError: "blue",
@@ -28,7 +28,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   token: {
-    colorPrimary: "#DD0201",
+    colorPrimary: "#FD7A00",
     colorSuccess: "red",
     colorWarning: "red",
     colorError: "red",
@@ -37,7 +37,7 @@ export const darkTheme = {
     bgContainer: "#354138",
     btnBackground: "#354138",
     headingTextColor: "#ffffff",
-    footerBackground: "#DD0201",
+    footerBackground: "#FD7A00",
     text: "#ffffff",
     text2: "#CCCCCC",
     text3: "#000",

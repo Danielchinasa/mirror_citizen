@@ -275,7 +275,7 @@ const VerifyOtp = () => {
                     <p style={{ color: text }}>I didn’t receive the OTP</p>
                     <p>
                       <strong
-                        style={{ color: "#DD0201", cursor: "pointer" }}
+                        style={{ color: "#FD7A00", cursor: "pointer" }}
                         onClick={handleReSendOTP}
                       >
                         Resend Code

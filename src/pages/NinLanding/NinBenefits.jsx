@@ -53,7 +53,7 @@ const BenefitIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #FD7A00;
   font-size: 18px;
   flex-shrink: 0;
 `;

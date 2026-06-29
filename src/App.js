@@ -201,11 +201,11 @@ function App() {
       {/* <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#DD0201",
+            colorPrimary: "#FD7A00",
           },
           components: {
             Input: {
-              colorPrimary: "#DD0201",
+              colorPrimary: "#FD7A00",
             },
           },
         }}

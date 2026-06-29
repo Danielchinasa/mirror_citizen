@@ -48,7 +48,7 @@ const pulseGlow = keyframes`
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
   }
   50% {
-    box-shadow: 0px 8px 24px rgba(220, 5, 2, 0.4);
+    box-shadow: 0px 8px 24px rgba(253, 122, 0, 0.4);
   }
 `;
 
@@ -59,7 +59,7 @@ export const PageWrapper = styled.div`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #DD0201;
+  background-color: #FD7A00;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -77,10 +77,10 @@ export const PrimaryBtn = styled(Link)`
   animation: ${pulseGlow} 2.5s ease-in-out infinite 1.5s;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #FF8C1A;
     color: #fff;
     animation: none;
-    box-shadow: 0px 8px 24px rgba(220, 5, 2, 0.5);
+    box-shadow: 0px 8px 24px rgba(253, 122, 0, 0.5);
   }
 
   @media screen and (max-width: 480px) {
@@ -100,13 +100,13 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #DD0201;
+  color: #FD7A00;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
   padding: 12px 36px;
   border-radius: 10px;
-  border: 1px solid #DD0201;
+  border: 1px solid #FD7A00;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -117,8 +117,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #FF4D4F;
-    border-color: #FF4D4F;
+    color: #FF8C1A;
+    border-color: #FF8C1A;
   }
 
   @media screen and (max-width: 480px) {
@@ -297,11 +297,11 @@ export const HeroTitle = styled.h1`
   animation: ${fadeSlideUp} 0.7s ease-out 0.25s forwards;
 
   span {
-    color: #DD0201;
+    color: #FD7A00;
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
-    background: linear-gradient(90deg, #DD0201 0%, #FF4D4F 50%, #DD0201 100%);
+    background: linear-gradient(90deg, #FD7A00 0%, #FF8C1A 50%, #FD7A00 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -398,7 +398,7 @@ export const HeroCheck = styled.span`
   color: #555;
 
   svg {
-    color: #DD0201;
+    color: #FD7A00;
     font-size: 14px;
   }
 `;
@@ -458,7 +458,7 @@ export const TrustIconCircle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #FD7A00;
   font-size: 16px;
   flex-shrink: 0;
 `;

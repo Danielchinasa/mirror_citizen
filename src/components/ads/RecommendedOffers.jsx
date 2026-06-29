@@ -62,7 +62,7 @@ export default RecommendedOffers;
 
 const Wrapper = styled.div`
   border: 1.5px solid
-    ${({ $variant }) => ($variant === "blue" ? "#3b82f6" : "#DD0201")};
+    ${({ $variant }) => ($variant === "blue" ? "#3b82f6" : "#FD7A00")};
   border-radius: 14px;
   padding: 28px 28px 20px;
   margin-top: 32px;
@@ -163,7 +163,7 @@ const OfferLink = styled.a`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #DD0201;
+  color: #FD7A00;
   text-decoration: none;
   display: inline-flex;
   align-items: center;

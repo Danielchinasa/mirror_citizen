@@ -25,7 +25,7 @@ export const PublicBrand = styled(Link)`
   text-decoration: none;
 
   .brand-red {
-    color: #dd0201;
+    color: #fd7a00;
   }
 
   .brand-dot {
@@ -42,8 +42,8 @@ export const FooterStrip = styled.div`
     #0b0b0b 20%,
     #d7b800 20%,
     #f2c400 40%,
-    #dd0201 40%,
-    #dd0201 100%
+    #fd7a00 40%,
+    #fd7a00 100%
   );
   position: relative;
   overflow: hidden;
@@ -136,7 +136,7 @@ export const SocialIcon = styled.a`
   transition: color 0.2s;
 
   &:hover {
-    color: #dd0201;
+    color: #fd7a00;
   }
 `;
 
@@ -156,7 +156,7 @@ export const FooterColTitle = styled.h4`
     width: 42px;
     height: 3px;
     border-radius: 999px;
-    background: #dd0201;
+    background: #fd7a00;
     margin-top: 8px;
   }
 `;
@@ -171,7 +171,7 @@ export const FooterLink = styled(Link)`
   transition: color 0.2s;
 
   &:hover {
-    color: #dd0201;
+    color: #fd7a00;
   }
 `;
 
@@ -185,7 +185,7 @@ export const ExternalLink = styled.a`
   transition: color 0.2s;
 
   &:hover {
-    color: #dd0201;
+    color: #fd7a00;
   }
 `;
 
@@ -250,6 +250,6 @@ export const LegalLink = styled.span`
   cursor: pointer;
 
   &:hover {
-    color: #dd0201;
+    color: #fd7a00;
   }
 `;

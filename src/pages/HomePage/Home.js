@@ -16,16 +16,16 @@ import {
   FaLock,
   FaBolt,
   FaShieldAlt,
-  FaUser,
+  FaIdCard,
   FaCar,
+  FaAddressCard,
   FaCheckCircle,
   FaPlayCircle,
-  FaIdCard,
   FaUpload,
 } from "react-icons/fa";
 import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import heroImg from "../../images/uganda.png";
+import heroImg from "../../images/Côte_d’Ivoire.png";
 import ndprImg from "../../images/ndpr.png";
 import gdprImg from "../../images/gdpr.jpg";
 import nimcImg from "../../images/nidologo.png";
@@ -70,7 +70,6 @@ import {
   ServicesSection,
   CardsGrid,
   ServiceCard,
-  PopularBadge,
   ServiceIcon,
   ServiceName,
   ServiceDesc,
@@ -109,6 +108,7 @@ const Home = () => {
   const { bgContainer, text } = token;
   const ninVerify = useAuthRedirect("/verify/nin");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
+  const residentVerify = useAuthRedirect("/verify/nin");
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -334,7 +334,7 @@ const Home = () => {
               {t("home.hero.titlePrefix")}{" "}
               <span
                 style={{
-                  color: "#DD0201",
+                  color: "#FD7A00",
                   fontFamily: "inherit",
                   fontSize: "inherit",
                   fontWeight: "inherit",
@@ -446,11 +446,10 @@ const Home = () => {
         <SectionSub>{t("home.services.subtitle")}</SectionSub>
 
         <CardsGrid>
-          {/* Person Identity */}
-          <ServiceCard $popular>
-            <PopularBadge>{t("home.services.popular")}</PopularBadge>
+          {/* Carte Nationale d'Identité (NNI) */}
+          <ServiceCard>
             <ServiceIcon>
-              <FaUser />
+              <FaIdCard />
             </ServiceIcon>
             <ServiceName>{t("home.services.nin.name")}</ServiceName>
             <ServiceDesc>{t("home.services.nin.desc")}</ServiceDesc>
@@ -473,7 +472,7 @@ const Home = () => {
                 <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} $popular>
+            <ServiceBtn to={ninVerify}>
               {t("home.services.verifyNow")}
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
@@ -482,7 +481,42 @@ const Home = () => {
             </LearnMoreLink>
           </ServiceCard>
 
-          {/* VIN Verification */}
+          {/* Carte de Résident */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaAddressCard />
+            </ServiceIcon>
+            <ServiceName>{t("home.services.resident.name")}</ServiceName>
+            <ServiceDesc>{t("home.services.resident.desc")}</ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[1]?.price
+                ? `USh ${Number(servicePrices.data[1].price).toLocaleString()}`
+                : "USh 500"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> {t("home.services.feature.residentLookup")}
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> {t("home.services.feature.residentStatus")}
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> {t("home.services.feature.residentAddress")}
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={residentVerify}>
+              {t("home.services.verifyNow")}
+            </ServiceBtn>
+            <LearnMoreLink to="/nin-verification">
+              {t("home.services.learnMore")}{" "}
+              <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Vérification VIN */}
           <ServiceCard>
             <ServiceIcon>
               <FaCar />

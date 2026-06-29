@@ -39,7 +39,7 @@ const CtaShield = styled.div`
 
   svg {
     font-size: 30px;
-    color: #DD0201;
+    color: #FD7A00;
   }
 `;
 
@@ -81,14 +81,14 @@ const CtaRight = styled.div`
 `;
 
 const CtaButton = styled(Link)`
-  background: #DD0201;
+  background: #FD7A00;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border-radius: 10px;
-  border: 2px solid #DD0201;
+  border: 2px solid #FD7A00;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -98,8 +98,8 @@ const CtaButton = styled(Link)`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background: #FF4D4F;
-    border-color: #FF4D4F;
+    background: #FF8C1A;
+    border-color: #FF8C1A;
     color: #fff;
   }
 `;
@@ -113,7 +113,7 @@ const CtaPrice = styled.span`
   color: #555;
 
   svg {
-    color: #DD0201;
+    color: #FD7A00;
     font-size: 14px;
   }
 

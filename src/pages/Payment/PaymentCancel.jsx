@@ -67,8 +67,8 @@ const PaymentCancel = () => {
             key="retry"
             onClick={handleTryAgain}
             style={{
-              backgroundColor: "#DD0201",
-              borderColor: "#DD0201",
+              backgroundColor: "#FD7A00",
+              borderColor: "#FD7A00",
               marginRight: "10px",
             }}
           >

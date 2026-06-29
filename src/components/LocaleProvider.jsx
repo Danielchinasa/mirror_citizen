@@ -10,10 +10,12 @@ import translations from "../locales/translations";
 const STORAGE_KEY = "siteLanguage";
 const LocaleContext = createContext(null);
 
+const SUPPORTED_LANGUAGES = ["FR"];
+
 const getInitialLanguage = () => {
-  if (typeof window === "undefined") return "EN";
+  if (typeof window === "undefined") return "FR";
   const storedLanguage = window.localStorage.getItem(STORAGE_KEY);
-  return storedLanguage === "SW" ? "SW" : "EN";
+  return SUPPORTED_LANGUAGES.includes(storedLanguage) ? storedLanguage : "FR";
 };
 
 export function LocaleProvider({ children }) {
@@ -22,7 +24,7 @@ export function LocaleProvider({ children }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(STORAGE_KEY, language);
-    document.documentElement.lang = language === "SW" ? "sw" : "en";
+    document.documentElement.lang = "fr";
   }, [language]);
 
   const value = useMemo(() => {
@@ -31,7 +33,7 @@ export function LocaleProvider({ children }) {
       language,
       setLanguage,
       t: (key, fallback) =>
-        current[key] || translations.EN[key] || fallback || key,
+        current[key] || translations.FR[key] || fallback || key,
     };
   }, [language]);
 
