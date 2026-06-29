@@ -282,9 +282,9 @@ const NinLandingFooter = () => {
 
           <FooterCol>
             <FooterColTitle>Support</FooterColTitle>
-            <FooterLink to="/faq">Help Center</FooterLink>
+            <FooterLink to="/faq-ghana">Help Center</FooterLink>
             <FooterLink to="/contact">Contact Us</FooterLink>
-            <FooterLink to="/faq">FAQs</FooterLink>
+            <FooterLink to="/faq-ghana">FAQs</FooterLink>
           </FooterCol>
 
           <FooterCol>

@@ -775,21 +775,21 @@ function Navbar() {
 
               <PublicAnchor href="#how-it-works">How it works</PublicAnchor>
               <PublicAnchor href="#services">Pricing</PublicAnchor>
-              <PublicNavLink to="/faq">FAQ</PublicNavLink>
+              <PublicNavLink to="/faq-ghana">FAQ</PublicNavLink>
               <PublicNavLink to="/contact">Support</PublicNavLink>
             </PublicCenter>
 
             <PublicActions>
               <PublicHeaderLanguage>
                 <PublicLanguageToggleGroup>
-                  <PublicLanguageToggle
+                  {/* <PublicLanguageToggle
                     type="button"
                     $active={mobileLanguage === "SE"}
                     onClick={() => handleLanguageChange("SE")}
                     aria-pressed={mobileLanguage === "SE"}
                   >
                     SE
-                  </PublicLanguageToggle>
+                  </PublicLanguageToggle> */}
                   <PublicLanguageToggle
                     type="button"
                     $active={mobileLanguage === "EN"}
@@ -800,7 +800,7 @@ function Navbar() {
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
-              <PublicLanguage>EN | SW</PublicLanguage>
+              <PublicLanguage>EN</PublicLanguage>
               <PublicLogin to="/login">Log in</PublicLogin>
               <PublicCta to="/login">Get Started</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
@@ -829,7 +829,7 @@ function Navbar() {
               >
                 How it works
               </PublicMobileAnchor>
-              <PublicMobileLink to="/faq" onClick={closeMobileMenu}>
+              <PublicMobileLink to="/faq-ghana" onClick={closeMobileMenu}>
                 FAQ
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
@@ -991,7 +991,7 @@ function Navbar() {
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
-                        <NavBtnLink to="/faq">
+                        <NavBtnLink to="/faq-ghana">
                           <MainButton type="primary">FAQs</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>

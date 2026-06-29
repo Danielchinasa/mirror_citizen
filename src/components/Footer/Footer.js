@@ -98,7 +98,7 @@ function Footer() {
             <FooterCol>
               <FooterColTitle>Support</FooterColTitle>
               <FooterLink to="/contact">Contact</FooterLink>
-              <FooterLink to="/faq">FAQs</FooterLink>
+              <FooterLink to="/faq-ghana">FAQs</FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"
                 target="_blank"

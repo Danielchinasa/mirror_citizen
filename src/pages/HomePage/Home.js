@@ -351,7 +351,7 @@ const Home = () => {
                 <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#how-it-works">
-                Check VIN <FaPlayCircle />
+                Check VIN <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>
             <TrustIndicators>
