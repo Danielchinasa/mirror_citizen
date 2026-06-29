@@ -151,9 +151,12 @@ function Navbar() {
     setMobileLanguage(language);
     if (typeof window !== "undefined") {
       window.localStorage.setItem("siteLanguage", language);
-      document.documentElement.lang = language === "SE" ? "sv" : "en";
+      document.documentElement.lang = language === "SW" ? "sw" : "en";
+      window.dispatchEvent(new Event("siteLanguageChanged"));
     }
   };
+
+  const isSw = mobileLanguage === "SW";
 
   const menu = (
     <Menu>
@@ -211,12 +214,12 @@ function Navbar() {
     <Menu>
       <Menu.Item key="services-nin">
         <Link to="/nin-verification" style={{ textDecoration: "none" }}>
-          National ID
+          {isSw ? "Kitambulisho cha Taifa" : "National ID"}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
         <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
-          VIN Verification
+          {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
         </Link>
       </Menu.Item>
     </Menu>
@@ -769,14 +772,21 @@ function Navbar() {
 
               <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
-                  Services <DownOutlined className="chev" />
+                  {isSw ? "Huduma" : "Services"}{" "}
+                  <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
 
-              <PublicAnchor href="#how-it-works">How it works</PublicAnchor>
-              <PublicAnchor href="#services">Pricing</PublicAnchor>
-              <PublicNavLink to="/faq">FAQ</PublicNavLink>
-              <PublicNavLink to="/contact">Support</PublicNavLink>
+              <PublicAnchor href="#how-it-works">
+                {isSw ? "Inavyofanya kazi" : "How it works"}
+              </PublicAnchor>
+              <PublicAnchor href="#services">
+                {isSw ? "Bei" : "Pricing"}
+              </PublicAnchor>
+              <PublicNavLink to="/faq-kenya">FAQ</PublicNavLink>
+              <PublicNavLink to="/contact">
+                {isSw ? "Msaada" : "Support"}
+              </PublicNavLink>
             </PublicCenter>
 
             <PublicActions>
@@ -784,11 +794,11 @@ function Navbar() {
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
                     type="button"
-                    $active={mobileLanguage === "SE"}
-                    onClick={() => handleLanguageChange("SE")}
-                    aria-pressed={mobileLanguage === "SE"}
+                    $active={mobileLanguage === "SW"}
+                    onClick={() => handleLanguageChange("SW")}
+                    aria-pressed={mobileLanguage === "SW"}
                   >
-                    SE
+                    SW
                   </PublicLanguageToggle>
                   <PublicLanguageToggle
                     type="button"
@@ -800,9 +810,28 @@ function Navbar() {
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
-              <PublicLanguage>EN | SW</PublicLanguage>
-              <PublicLogin to="/login">Log in</PublicLogin>
-              <PublicCta to="/login">Get Started</PublicCta>
+              <PublicLanguage>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={mobileLanguage === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "SW"}
+                    onClick={() => handleLanguageChange("SW")}
+                    aria-pressed={mobileLanguage === "SW"}
+                  >
+                    SW
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
+              </PublicLanguage>
+              <PublicLogin to="/login">{isSw ? "Ingia" : "Log in"}</PublicLogin>
+              <PublicCta to="/login">{isSw ? "Anza" : "Get Started"}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -815,31 +844,31 @@ function Navbar() {
                 to="/nin-verification"
                 onClick={closeMobileMenu}
               >
-                National ID
+                {isSw ? "Kitambulisho cha Taifa" : "National ID"}
               </PublicMobileLink>
               <PublicMobileLink
                 to="/vehicle-verification"
                 onClick={closeMobileMenu}
               >
-                VIN Verification
+                {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
               </PublicMobileLink>
               <PublicMobileAnchor
                 href="#how-it-works"
                 onClick={closeMobileMenu}
               >
-                How it works
+                {isSw ? "Inavyofanya kazi" : "How it works"}
               </PublicMobileAnchor>
-              <PublicMobileLink to="/faq" onClick={closeMobileMenu}>
+              <PublicMobileLink to="/faq-kenya" onClick={closeMobileMenu}>
                 FAQ
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
-                Support
+                {isSw ? "Msaada" : "Support"}
               </PublicMobileLink>
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                Log in
+                {isSw ? "Ingia" : "Log in"}
               </PublicMobileLink>
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                Get Started
+                {isSw ? "Anza" : "Get Started"}
               </PublicMobileLink>
             </PublicMobileMenu>
           </PublicMobilePanel>
@@ -991,7 +1020,7 @@ function Navbar() {
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
-                        <NavBtnLink to="/faq">
+                        <NavBtnLink to="/faq-kenya">
                           <MainButton type="primary">FAQs</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>

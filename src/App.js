@@ -34,6 +34,7 @@ import VerifyOtp from "./pages/otp/verifyOtp";
 import EmailVerifiedConfirm from "./pages/otp/emailVerifiedConfirm";
 import UpdateProfilePage from "./pages/profile/updateProfilePage";
 import FaqPage from "./pages/faq/faqPage";
+import KenyaFaqPage from "./pages/faq/kenyaFaqPage";
 import Vehicle from "./pages/result/vehicle";
 import Vehicle2 from "./pages/result/vehicle2";
 import Business from "./pages/result/business";
@@ -339,6 +340,7 @@ function AppContent() {
             component={Financial}
           />
           <Route path="/faq" component={FaqPage} />
+          <Route path="/faq-kenya" component={KenyaFaqPage} />
           <Route path="/api-docs" component={ApiDocsPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />
           {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}

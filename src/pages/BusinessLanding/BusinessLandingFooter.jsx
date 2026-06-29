@@ -259,9 +259,9 @@ const BusinessLandingFooter = () => {
 
           <FooterCol>
             <FooterColTitle>Support</FooterColTitle>
-            <FooterLink to="/faq">Help Center</FooterLink>
+            <FooterLink to="/faq-kenya">Help Center</FooterLink>
             <FooterLink to="/contact">Contact Us</FooterLink>
-            <FooterLink to="/faq">FAQs</FooterLink>
+            <FooterLink to="/faq-kenya">FAQs</FooterLink>
           </FooterCol>
 
           <FooterCol>

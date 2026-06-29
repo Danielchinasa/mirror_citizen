@@ -95,9 +95,15 @@ import {
 } from "./HomePage.elements";
 const { useToken } = theme;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
+};
+
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
   const [servicePrices, setServicePrices] = useState(null);
+  const [language, setLanguage] = useState(getLanguage);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -129,6 +135,16 @@ const Home = () => {
     };
 
     fetchIpAddress();
+  }, []);
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -320,6 +336,7 @@ const Home = () => {
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const ctaLink = isAuthenticated ? "/dashboard" : "/login";
+  const isSw = language === "SW";
 
   return (
     <>
@@ -329,7 +346,9 @@ const Home = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              Verify your identity in{" "}
+              {isSw
+                ? "Thibitisha utambulisho wako nchini"
+                : "Verify your identity in"}{" "}
               <span
                 style={{
                   color: "#D80111",
@@ -340,23 +359,30 @@ const Home = () => {
               >
                 Kenya.{" "}
               </span>
-              Fast, secure and trusted.
+              {isSw
+                ? "Haraka, salama na ya kuaminika."
+                : "Fast, secure and trusted."}
             </HeroTitle>
             <HeroSubtitle>
-              Official identity verification for individuals and businesses
-              across Kenya and the diaspora.
+              {isSw
+                ? "Huduma rasmi za uthibitishaji wa utambulisho kwa watu binafsi na biashara kote Kenya na diaspora."
+                : "Official identity verification for individuals and businesses across Kenya and the diaspora."}
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={ctaLink}>
-                Verify National ID <FaArrowRight />
+                {isSw
+                  ? "Thibitisha Kitambulisho cha Taifa"
+                  : "Verify National ID"}{" "}
+                <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#how-it-works">
-                Verify Alien Card <FaPlayCircle />
+                {isSw ? "Thibitisha Alien Card" : "Verify Alien Card"}{" "}
+                <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>
             <HeroButtons>
               <SecondaryBtn href="#how-it-works">
-                Check VIN <FaPlayCircle />
+                {isSw ? "Kagua VIN" : "Check VIN"} <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>
             <TrustIndicators>
@@ -365,8 +391,14 @@ const Home = () => {
                   <FaLock />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>100% Secure</TrustTitle>
-                  <TrustDesc>Your data is protected</TrustDesc>
+                  <TrustTitle>
+                    {isSw ? "Salama kwa 100%" : "100% Secure"}
+                  </TrustTitle>
+                  <TrustDesc>
+                    {isSw
+                      ? "Taarifa zako zinalindwa"
+                      : "Your data is protected"}
+                  </TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -374,8 +406,12 @@ const Home = () => {
                   <FaBolt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Instand Results</TrustTitle>
-                  <TrustDesc>Results in seconds</TrustDesc>
+                  <TrustTitle>
+                    {isSw ? "Matokeo ya Haraka" : "Instant Results"}
+                  </TrustTitle>
+                  <TrustDesc>
+                    {isSw ? "Matokeo ndani ya sekunde" : "Results in seconds"}
+                  </TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -383,8 +419,14 @@ const Home = () => {
                   <FaShieldAlt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Government Compliant</TrustTitle>
-                  <TrustDesc>Official & reliable records</TrustDesc>
+                  <TrustTitle>
+                    {isSw ? "Inazingatia Serikali" : "Government Compliant"}
+                  </TrustTitle>
+                  <TrustDesc>
+                    {isSw
+                      ? "Rekodi rasmi na za kuaminika"
+                      : "Official & reliable records"}
+                  </TrustDesc>
                 </TrustLabel>
               </TrustItem>
             </TrustIndicators>
@@ -395,7 +437,9 @@ const Home = () => {
                 <img src={avatar3} alt="user" />
                 <img src={avatar4} alt="user" />
               </AvatarStack>
-              Join 500,000+ Kenyans who trust e-raia
+              {isSw
+                ? "Jiunge na Wakenya zaidi ya 500,000 wanaoamini e-raia"
+                : "Join 500,000+ Kenyans who trust e-raia"}
             </SocialProof>
           </HeroContent>
         </HeroContainer>
@@ -404,8 +448,14 @@ const Home = () => {
 
       {/* ── How It Works ── */}
       <HowSection id="how-it-works">
-        <SectionHeading>How it works</SectionHeading>
-        <SectionSub>Get verified in just 3 simple steps</SectionSub>
+        <SectionHeading>
+          {isSw ? "Inavyofanya kazi" : "How it works"}
+        </SectionHeading>
+        <SectionSub>
+          {isSw
+            ? "Thibitishwa kwa hatua 3 rahisi"
+            : "Get verified in just 3 simple steps"}
+        </SectionSub>
         <StepsRow>
           <StepCard>
             <StepTop>
@@ -414,8 +464,12 @@ const Home = () => {
                 <FaIdCard />
               </StepIconBox>
             </StepTop>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>{isSw ? "Chagua huduma" : "Choose a service"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Chagua Kitambulisho cha Taifa au Uthibitishaji wa VIN."
+                : "Select National ID or VIN Verification."}
+            </StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -427,8 +481,12 @@ const Home = () => {
                 <FaUpload />
               </StepIconBox>
             </StepTop>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>{isSw ? "Wasilisha taarifa" : "Submit details"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Ingiza taarifa zinazohitajika kwa usalama."
+                : "Enter required information securely."}
+            </StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -440,8 +498,12 @@ const Home = () => {
                 <FaShieldAlt />
               </StepIconBox>
             </StepTop>
-            <StepName>Get results</StepName>
-            <StepDesc>Receive instant verification results.</StepDesc>
+            <StepName>{isSw ? "Pata matokeo" : "Get results"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Pokea matokeo ya uthibitishaji mara moja."
+                : "Receive instant verification results."}
+            </StepDesc>
           </StepCard>
         </StepsRow>
       </HowSection>
@@ -449,23 +511,34 @@ const Home = () => {
       {/* ── Service Cards ── */}
       <ServicesSection id="services">
         <SectionHeading>
-          Choose the verification that fits your needs
+          {isSw
+            ? "Chagua uthibitishaji unaokufaa"
+            : "Choose the verification that fits your needs"}
         </SectionHeading>
         <SectionSub>
-          Fast, reliable and secure verification services for individuals and
-          businesses.
+          {isSw
+            ? "Huduma za uthibitishaji wa haraka, salama na za kuaminika kwa watu binafsi na biashara."
+            : "Fast, reliable and secure verification services for individuals and businesses."}
         </SectionSub>
 
         <CardsGrid>
           {/* Person Identity */}
           <ServiceCard $popular>
-            <PopularBadge>MOST POPULAR</PopularBadge>
+            <PopularBadge>
+              {isSw ? "INAYOPENDWA ZAIDI" : "MOST POPULAR"}
+            </PopularBadge>
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
-            <ServiceName>National ID Verification</ServiceName>
+            <ServiceName>
+              {isSw
+                ? "Uthibitishaji wa Kitambulisho cha Taifa"
+                : "National ID Verification"}
+            </ServiceName>
             <ServiceDesc>
-              Verity Ugando Notional Identity Card details in real-time.
+              {isSw
+                ? "Thibitisha taarifa za Kitambulisho cha Taifa cha Kenya kwa wakati halisi."
+                : "Verify Kenya National Identity Card details in real-time."}
             </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[0]?.price
@@ -474,23 +547,34 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> National ID lookup
+                <FaCheckCircle />{" "}
+                {isSw
+                  ? "Utafutaji wa Kitambulisho cha Taifa"
+                  : "National ID lookup"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Full name verification
+                <FaCheckCircle />{" "}
+                {isSw
+                  ? "Uthibitishaji wa jina kamili"
+                  : "Full name verification"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Photo ID verification
+                <FaCheckCircle />{" "}
+                {isSw
+                  ? "Uthibitishaji wa picha ya kitambulisho"
+                  : "Photo ID verification"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle />{" "}
+                {isSw ? "Matokeo ndani ya dakika" : "Results in minutes"}
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={ninVerify} $popular>
-              Verify Now
+              {isSw ? "Thibitisha Sasa" : "Verify Now"}
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+              {isSw ? "Jifunze zaidi" : "Learn more"}{" "}
+              <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
 
@@ -499,9 +583,13 @@ const Home = () => {
             <ServiceIcon>
               <FaIdCard />
             </ServiceIcon>
-            <ServiceName>Alien Card Verification</ServiceName>
+            <ServiceName>
+              {isSw ? "Uthibitishaji wa Alien Card" : "Alien Card Verification"}
+            </ServiceName>
             <ServiceDesc>
-              Verify Kenya Alien Card details quickly and securely.
+              {isSw
+                ? "Thibitisha taarifa za Alien Card ya Kenya haraka na kwa usalama."
+                : "Verify Kenya Alien Card details quickly and securely."}
             </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[0]?.price
@@ -510,21 +598,29 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> Alien Card lookup
+                <FaCheckCircle />{" "}
+                {isSw ? "Utafutaji wa Alien Card" : "Alien Card lookup"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Holder name validation
+                <FaCheckCircle />{" "}
+                {isSw
+                  ? "Uthibitishaji wa jina la mmiliki"
+                  : "Holder name validation"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Document status check
+                <FaCheckCircle />{" "}
+                {isSw ? "Ukaguzi wa hali ya hati" : "Document status check"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Fast results
+                <FaCheckCircle /> {isSw ? "Matokeo ya haraka" : "Fast results"}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={alienCardVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn to={alienCardVerify}>
+              {isSw ? "Thibitisha Sasa" : "Verify Now"}
+            </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+              {isSw ? "Jifunze zaidi" : "Learn more"}{" "}
+              <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
 
@@ -533,9 +629,13 @@ const Home = () => {
             <ServiceIcon>
               <FaCar />
             </ServiceIcon>
-            <ServiceName>VIN Verification</ServiceName>
+            <ServiceName>
+              {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
+            </ServiceName>
             <ServiceDesc>
-              Verify vehicle identification number and details.
+              {isSw
+                ? "Thibitisha nambari ya utambulisho wa gari na taarifa zake."
+                : "Verify vehicle identification number and details."}
             </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[5]?.price
@@ -544,21 +644,26 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> VIN lookup
+                <FaCheckCircle /> {isSw ? "Utafutaji wa VIN" : "VIN lookup"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Vehicle details
+                <FaCheckCircle /> {isSw ? "Taarifa za gari" : "Vehicle details"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Ownership history
+                <FaCheckCircle />{" "}
+                {isSw ? "Historia ya umiliki" : "Ownership history"}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle />{" "}
+                {isSw ? "Matokeo ndani ya dakika" : "Results in minutes"}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn to={vehicleVerify}>
+              {isSw ? "Thibitisha Sasa" : "Verify Now"}
+            </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+              {isSw ? "Jifunze zaidi" : "Learn more"}{" "}
+              <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
         </CardsGrid>
@@ -571,9 +676,15 @@ const Home = () => {
         <ComplianceInner>
           <ComplianceText>
             <ComplianceTitle>
-              Trusted. Compliant. Built for you.
+              {isSw
+                ? "Unaaminika. Unafuata sheria. Umejengwa kwa ajili yako."
+                : "Trusted. Compliant. Built for you."}
             </ComplianceTitle>
-            <ComplianceDesc>Your data is safe with us.</ComplianceDesc>
+            <ComplianceDesc>
+              {isSw
+                ? "Taarifa zako ziko salama nasi."
+                : "Your data is safe with us."}
+            </ComplianceDesc>
           </ComplianceText>
           <ComplianceLogos>
             <ComplianceBadge>
@@ -596,13 +707,18 @@ const Home = () => {
             <FaCheckCircle />
           </CtaShield>
           <CtaContent>
-            <CtaTitle>Ready to get verified?</CtaTitle>
+            <CtaTitle>
+              {isSw ? "Uko tayari kuthibitishwa?" : "Ready to get verified?"}
+            </CtaTitle>
             <CtaDesc>
-              Join thousands of Nigerians who trust e-citizen for their
-              verification needs.
+              {isSw
+                ? "Jiunge na maelfu ya Wakenya wanaoiamini e-raia kwa mahitaji yao ya uthibitishaji."
+                : "Join thousands of Kenyans who trust e-raia for their verification needs."}
             </CtaDesc>
           </CtaContent>
-          <CtaButton to={ctaLink}>Get Started Now</CtaButton>
+          <CtaButton to={ctaLink}>
+            {isSw ? "Anza Sasa" : "Get Started Now"}
+          </CtaButton>
         </CtaInner>
       </CtaSection>
 
