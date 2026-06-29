@@ -767,14 +767,6 @@ function Navbar() {
             </PublicBrand>
 
             <PublicCenter>
-              <Dropdown overlay={countriesMenu} trigger={["click"]} arrow>
-                <PublicTrigger type="button">
-                  <span className="flag" role="img" aria-label="Uganda flag">
-                    🇺🇬
-                  </span>
-                  {t("nav.country")} <DownOutlined className="chev" />
-                </PublicTrigger>
-              </Dropdown>
               <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
                   {t("nav.services")} <DownOutlined className="chev" />
@@ -789,6 +781,14 @@ function Navbar() {
             </PublicCenter>
 
             <PublicActions>
+              <Dropdown overlay={countriesMenu} trigger={["click"]} arrow>
+                <PublicTrigger type="button">
+                  <span className="flag" role="img" aria-label="Uganda flag">
+                    🇺🇬
+                  </span>
+                  {t("nav.country")} <DownOutlined className="chev" />
+                </PublicTrigger>
+              </Dropdown>
               <PublicHeaderLanguage>
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
@@ -829,7 +829,7 @@ function Navbar() {
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
-              <PublicLogin to="/login">{t("nav.login")}</PublicLogin>
+
               <PublicCta to="/login">{t("nav.getStarted")}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
@@ -863,9 +863,7 @@ function Navbar() {
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 {t("nav.support")}
               </PublicMobileLink>
-              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                {t("nav.login")}
-              </PublicMobileLink>
+
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
                 {t("nav.getStarted")}
               </PublicMobileLink>

@@ -27,6 +27,7 @@ import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/uganda.png";
 import ndprImg from "../../images/ndpr.png";
+import gdprImg from "../../images/gdpr.jpg";
 import nimcImg from "../../images/nidologo.png";
 import osiaImg from "../../images/osia.png";
 import avatar1 from "../../images/avatar1.jpg";
@@ -455,8 +456,8 @@ const Home = () => {
             <ServiceDesc>{t("home.services.nin.desc")}</ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[0]?.price
-                ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
-                : "₦100"}
+                ? `USh ${Number(servicePrices.data[0].price).toLocaleString()}`
+                : "USh 100"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -490,8 +491,8 @@ const Home = () => {
             <ServiceDesc>{t("home.services.vin.desc")}</ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[5]?.price
-                ? `₦${Number(servicePrices.data[5].price).toLocaleString()}`
-                : "₦2,500"}
+                ? `USh ${Number(servicePrices.data[5].price).toLocaleString()}`
+                : "USh 2,500"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -528,6 +529,9 @@ const Home = () => {
             <ComplianceDesc>{t("home.compliance.desc")}</ComplianceDesc>
           </ComplianceText>
           <ComplianceLogos>
+            <ComplianceBadge>
+              <img src={gdprImg} alt="GDPR" />
+            </ComplianceBadge>
             <ComplianceBadge>
               <img src={ndprImg} alt="NDPC" />
             </ComplianceBadge>
