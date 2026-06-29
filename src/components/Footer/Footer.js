@@ -88,6 +88,9 @@ function Footer() {
               <FooterLink to="/nin-verification">
                 National ID Verification
               </FooterLink>
+              <FooterLink to="/nin-verification">
+                Alien Card Verification
+              </FooterLink>
 
               <FooterLink to="/vehicle-verification">
                 VIN Verification
@@ -98,7 +101,7 @@ function Footer() {
             <FooterCol>
               <FooterColTitle>Support</FooterColTitle>
               <FooterLink to="/contact">Contact</FooterLink>
-              <FooterLink to="/faq">FAQs</FooterLink>
+              <FooterLink to="/faq-uganda">FAQs</FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"
                 target="_blank"

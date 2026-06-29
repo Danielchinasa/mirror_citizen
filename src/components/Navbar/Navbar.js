@@ -50,6 +50,7 @@ import Swal from "sweetalert2";
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../../components/LocaleProvider";
 import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
@@ -62,6 +63,7 @@ const { Title } = Typography;
 
 function Navbar() {
   const history = useHistory();
+  const { language, setLanguage, t } = useLocale();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const dispatch = useDispatch();
@@ -138,21 +140,12 @@ function Navbar() {
     },
   ];
   const [visible, setVisible] = useState(false);
-  const [mobileLanguage, setMobileLanguage] = useState(() => {
-    if (typeof window === "undefined") return "EN";
-    return window.localStorage.getItem("siteLanguage") || "EN";
-  });
-
   const handleVisibleChange = (flag) => {
     setVisible(flag);
   };
 
   const handleLanguageChange = (language) => {
-    setMobileLanguage(language);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("siteLanguage", language);
-      document.documentElement.lang = language === "SE" ? "sv" : "en";
-    }
+    setLanguage(language);
   };
 
   const menu = (
@@ -211,12 +204,27 @@ function Navbar() {
     <Menu>
       <Menu.Item key="services-nin">
         <Link to="/nin-verification" style={{ textDecoration: "none" }}>
-          National ID
+          {t("nav.nationalId")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
         <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
-          VIN Verification
+          {t("nav.vinVerification")}
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const countriesMenu = (
+    <Menu>
+      <Menu.Item key="country-kenya">
+        <Link to="/kenya" style={{ textDecoration: "none" }}>
+          🇰🇪 Kenya
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="country-ghana">
+        <Link to="/ghana" style={{ textDecoration: "none" }}>
+          🇬🇭 Ghana
         </Link>
       </Menu.Item>
     </Menu>
@@ -759,24 +767,25 @@ function Navbar() {
             </PublicBrand>
 
             <PublicCenter>
-              <CountryPill type="button" aria-label="Select country">
-                <span className="flag" role="img" aria-label="Uganda flag">
-                  🇺🇬
-                </span>
-                Uganda
-                <DownOutlined className="chev" />
-              </CountryPill>
-
-              <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
+              <Dropdown overlay={countriesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
-                  Services <DownOutlined className="chev" />
+                  <span className="flag" role="img" aria-label="Uganda flag">
+                    🇺🇬
+                  </span>
+                  {t("nav.country")} <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
-
-              <PublicAnchor href="#how-it-works">How it works</PublicAnchor>
-              <PublicAnchor href="#services">Pricing</PublicAnchor>
-              <PublicNavLink to="/faq">FAQ</PublicNavLink>
-              <PublicNavLink to="/contact">Support</PublicNavLink>
+              <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
+                <PublicTrigger type="button">
+                  {t("nav.services")} <DownOutlined className="chev" />
+                </PublicTrigger>
+              </Dropdown>
+              <PublicAnchor href="#how-it-works">
+                {t("nav.howItWorks")}
+              </PublicAnchor>
+              <PublicAnchor href="#services">{t("nav.pricing")}</PublicAnchor>
+              <PublicNavLink to="/faq-uganda">{t("nav.faq")}</PublicNavLink>
+              <PublicNavLink to="/contact">{t("nav.support")}</PublicNavLink>
             </PublicCenter>
 
             <PublicActions>
@@ -784,25 +793,44 @@ function Navbar() {
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
                     type="button"
-                    $active={mobileLanguage === "SE"}
-                    onClick={() => handleLanguageChange("SE")}
-                    aria-pressed={mobileLanguage === "SE"}
+                    $active={language === "SW"}
+                    onClick={() => handleLanguageChange("SW")}
+                    aria-pressed={language === "SW"}
                   >
-                    SE
+                    SW
                   </PublicLanguageToggle>
                   <PublicLanguageToggle
                     type="button"
-                    $active={mobileLanguage === "EN"}
+                    $active={language === "EN"}
                     onClick={() => handleLanguageChange("EN")}
-                    aria-pressed={mobileLanguage === "EN"}
+                    aria-pressed={language === "EN"}
                   >
                     EN
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
-              <PublicLanguage>EN | SW</PublicLanguage>
-              <PublicLogin to="/login">Log in</PublicLogin>
-              <PublicCta to="/login">Get Started</PublicCta>
+              <PublicLanguage>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={language === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "SW"}
+                    onClick={() => handleLanguageChange("SW")}
+                    aria-pressed={language === "SW"}
+                  >
+                    SW
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
+              </PublicLanguage>
+              <PublicLogin to="/login">{t("nav.login")}</PublicLogin>
+              <PublicCta to="/login">{t("nav.getStarted")}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -811,26 +839,35 @@ function Navbar() {
 
           <PublicMobilePanel $open={click}>
             <PublicMobileMenu>
-              <PublicMobileLink to="/nin-verification" onClick={closeMobileMenu}>
-                National ID
+              <PublicMobileLink
+                to="/nin-verification"
+                onClick={closeMobileMenu}
+              >
+                {t("nav.nationalId")}
               </PublicMobileLink>
-              <PublicMobileLink to="/vehicle-verification" onClick={closeMobileMenu}>
-                VIN Verification
+              <PublicMobileLink
+                to="/vehicle-verification"
+                onClick={closeMobileMenu}
+              >
+                {t("nav.vinVerification")}
               </PublicMobileLink>
-              <PublicMobileAnchor href="#how-it-works" onClick={closeMobileMenu}>
-                How it works
+              <PublicMobileAnchor
+                href="#how-it-works"
+                onClick={closeMobileMenu}
+              >
+                {t("nav.howItWorks")}
               </PublicMobileAnchor>
-              <PublicMobileLink to="/faq" onClick={closeMobileMenu}>
-                FAQ
+              <PublicMobileLink to="/faq-uganda" onClick={closeMobileMenu}>
+                {t("nav.faq")}
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
-                Support
+                {t("nav.support")}
               </PublicMobileLink>
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                Log in
+                {t("nav.login")}
               </PublicMobileLink>
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                Get Started
+                {t("nav.getStarted")}
               </PublicMobileLink>
             </PublicMobileMenu>
           </PublicMobilePanel>
@@ -982,7 +1019,7 @@ function Navbar() {
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
-                        <NavBtnLink to="/faq">
+                        <NavBtnLink to="/faq-uganda">
                           <MainButton type="primary">FAQs</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>

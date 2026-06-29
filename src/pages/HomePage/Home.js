@@ -8,6 +8,7 @@ import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../../components/LocaleProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import {
@@ -103,6 +104,7 @@ const Home = () => {
 
   const { token } = useToken();
   const { isDark } = useTheme();
+  const { t } = useLocale();
   const { bgContainer, text } = token;
   const ninVerify = useAuthRedirect("/verify/nin");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
@@ -328,7 +330,7 @@ const Home = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              Verify your identity in{" "}
+              {t("home.hero.titlePrefix")}{" "}
               <span
                 style={{
                   color: "#DD0201",
@@ -337,20 +339,17 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                Uganda.{" "}
+                {t("home.hero.titleCountry")}{" "}
               </span>
-              Fast, secure and trusted.
+              {t("home.hero.titleSuffix")}
             </HeroTitle>
-            <HeroSubtitle>
-              Official identity verification services for individuals and
-              businesses across Uganda and the diaspora.
-            </HeroSubtitle>
+            <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={ctaLink}>
-                Verify National ID <FaArrowRight />
+                {t("home.hero.verifyNationalId")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#how-it-works">
-                Check VIN <FaPlayCircle />
+                {t("home.hero.checkVin")} <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>
             <TrustIndicators>
@@ -359,8 +358,8 @@ const Home = () => {
                   <FaLock />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>100% Secure</TrustTitle>
-                  <TrustDesc>Your data is protected</TrustDesc>
+                  <TrustTitle>{t("home.trust.secureTitle")}</TrustTitle>
+                  <TrustDesc>{t("home.trust.secureDesc")}</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -368,8 +367,8 @@ const Home = () => {
                   <FaBolt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Instand Results</TrustTitle>
-                  <TrustDesc>Results in seconds</TrustDesc>
+                  <TrustTitle>{t("home.trust.instantTitle")}</TrustTitle>
+                  <TrustDesc>{t("home.trust.instantDesc")}</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -377,8 +376,8 @@ const Home = () => {
                   <FaShieldAlt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Government Compliant</TrustTitle>
-                  <TrustDesc>Official & reliable records</TrustDesc>
+                  <TrustTitle>{t("home.trust.compliantTitle")}</TrustTitle>
+                  <TrustDesc>{t("home.trust.compliantDesc")}</TrustDesc>
                 </TrustLabel>
               </TrustItem>
             </TrustIndicators>
@@ -389,7 +388,7 @@ const Home = () => {
                 <img src={avatar3} alt="user" />
                 <img src={avatar4} alt="user" />
               </AvatarStack>
-              Join 500,000+ Ugandans who trust e-raia
+              {t("home.socialProof")}
             </SocialProof>
           </HeroContent>
         </HeroContainer>
@@ -398,8 +397,8 @@ const Home = () => {
 
       {/* ── How It Works ── */}
       <HowSection id="how-it-works">
-        <SectionHeading>How it works</SectionHeading>
-        <SectionSub>Get verified in just 3 simple steps</SectionSub>
+        <SectionHeading>{t("home.how.title")}</SectionHeading>
+        <SectionSub>{t("home.how.subtitle")}</SectionSub>
         <StepsRow>
           <StepCard>
             <StepTop>
@@ -408,8 +407,8 @@ const Home = () => {
                 <FaIdCard />
               </StepIconBox>
             </StepTop>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>{t("home.how.step1Name")}</StepName>
+            <StepDesc>{t("home.how.step1Desc")}</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -421,8 +420,8 @@ const Home = () => {
                 <FaUpload />
               </StepIconBox>
             </StepTop>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>{t("home.how.step2Name")}</StepName>
+            <StepDesc>{t("home.how.step2Desc")}</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -434,33 +433,26 @@ const Home = () => {
                 <FaShieldAlt />
               </StepIconBox>
             </StepTop>
-            <StepName>Get results</StepName>
-            <StepDesc>Receive instant verification results.</StepDesc>
+            <StepName>{t("home.how.step3Name")}</StepName>
+            <StepDesc>{t("home.how.step3Desc")}</StepDesc>
           </StepCard>
         </StepsRow>
       </HowSection>
 
       {/* ── Service Cards ── */}
       <ServicesSection id="services">
-        <SectionHeading>
-          Choose the verification that fits your needs
-        </SectionHeading>
-        <SectionSub>
-          Fast, reliable and secure verification services for individuals and
-          businesses.
-        </SectionSub>
+        <SectionHeading>{t("home.services.title")}</SectionHeading>
+        <SectionSub>{t("home.services.subtitle")}</SectionSub>
 
         <CardsGrid>
           {/* Person Identity */}
           <ServiceCard $popular>
-            <PopularBadge>MOST POPULAR</PopularBadge>
+            <PopularBadge>{t("home.services.popular")}</PopularBadge>
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
-            <ServiceName>National ID Verification</ServiceName>
-            <ServiceDesc>
-              Verity Ugando Notional Identity Card details in real-time.
-            </ServiceDesc>
+            <ServiceName>{t("home.services.nin.name")}</ServiceName>
+            <ServiceDesc>{t("home.services.nin.desc")}</ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[0]?.price
                 ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
@@ -468,23 +460,24 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> National ID lookup
+                <FaCheckCircle /> {t("home.services.feature.ninLookup")}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Full name verification
+                <FaCheckCircle /> {t("home.services.feature.fullName")}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Photo ID verification
+                <FaCheckCircle /> {t("home.services.feature.photoId")}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={ninVerify} $popular>
-              Verify Now
+              {t("home.services.verifyNow")}
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+              {t("home.services.learnMore")}{" "}
+              <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
 
@@ -493,10 +486,8 @@ const Home = () => {
             <ServiceIcon>
               <FaCar />
             </ServiceIcon>
-            <ServiceName>VIN Verification</ServiceName>
-            <ServiceDesc>
-              Verify vehicle identification number and details.
-            </ServiceDesc>
+            <ServiceName>{t("home.services.vin.name")}</ServiceName>
+            <ServiceDesc>{t("home.services.vin.desc")}</ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[5]?.price
                 ? `₦${Number(servicePrices.data[5].price).toLocaleString()}`
@@ -504,21 +495,24 @@ const Home = () => {
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> VIN lookup
+                <FaCheckCircle /> {t("home.services.feature.vinLookup")}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Vehicle details
+                <FaCheckCircle /> {t("home.services.feature.vehicleDetails")}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Ownership history
+                <FaCheckCircle /> {t("home.services.feature.ownershipHistory")}
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn to={vehicleVerify}>
+              {t("home.services.verifyNow")}
+            </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+              {t("home.services.learnMore")}{" "}
+              <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
         </CardsGrid>
@@ -530,10 +524,8 @@ const Home = () => {
       <ComplianceSection>
         <ComplianceInner>
           <ComplianceText>
-            <ComplianceTitle>
-              Trusted. Compliant. Built for you.
-            </ComplianceTitle>
-            <ComplianceDesc>Your data is safe with us.</ComplianceDesc>
+            <ComplianceTitle>{t("home.compliance.title")}</ComplianceTitle>
+            <ComplianceDesc>{t("home.compliance.desc")}</ComplianceDesc>
           </ComplianceText>
           <ComplianceLogos>
             <ComplianceBadge>
@@ -556,13 +548,10 @@ const Home = () => {
             <FaCheckCircle />
           </CtaShield>
           <CtaContent>
-            <CtaTitle>Ready to get verified?</CtaTitle>
-            <CtaDesc>
-              Join thousands of Nigerians who trust e-citizen for their
-              verification needs.
-            </CtaDesc>
+            <CtaTitle>{t("home.cta.title")}</CtaTitle>
+            <CtaDesc>{t("home.cta.desc")}</CtaDesc>
           </CtaContent>
-          <CtaButton to={ctaLink}>Get Started Now</CtaButton>
+          <CtaButton to={ctaLink}>{t("home.cta.button")}</CtaButton>
         </CtaInner>
       </CtaSection>
 
