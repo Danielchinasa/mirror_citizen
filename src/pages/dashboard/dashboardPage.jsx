@@ -1339,6 +1339,20 @@ const DashboardPage = () => {
       : totalServiceCost;
   };
 
+  const logPurchase = ({
+    currency,
+    value,
+    transactionId,
+    paymentType,
+  }) => {
+    ReactGA.event("purchase", {
+      currency: currency,
+      value: value,
+      transaction_id: transactionId,
+      payment_type: paymentType,
+    });
+  };
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1792,21 +1806,7 @@ const DashboardPage = () => {
         //!!PAYPAL PAYMENT START
         localStorage.setItem("paymentType", "INSTANT");
 
-  const logPurchase = ({
-    currency,
-    value,
-    transactionId,
-    paymentType,
-  }) => {
-    ReactGA.event("purchase", {
-      currency: currency,
-      value: value,
-      transaction_id: transactionId,
-      payment_type: paymentType,
-    });
-  };
-
-  const handleMakePayment = () => {
+  const handleMakePayment = async () => {
     if (!checkboxCheckedConfirm) {
       return (
         <Alert message="Kindly select a payment method" type="info" showIcon />

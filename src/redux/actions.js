@@ -684,10 +684,7 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 56f02a71825d596e3ab5eaf7249a102aea847d9e
 const buildItems = (formData) => {
   const items = [];
 
