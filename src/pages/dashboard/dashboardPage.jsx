@@ -1792,6 +1792,28 @@ const DashboardPage = () => {
         //!!PAYPAL PAYMENT START
         localStorage.setItem("paymentType", "INSTANT");
 
+  const logPurchase = ({
+    currency,
+    value,
+    transactionId,
+    paymentType,
+  }) => {
+    ReactGA.event("purchase", {
+      currency: currency,
+      value: value,
+      transaction_id: transactionId,
+      payment_type: paymentType,
+    });
+  };
+
+  const handleMakePayment = () => {
+    if (!checkboxCheckedConfirm) {
+      return (
+        <Alert message="Kindly select a payment method" type="info" showIcon />
+      );
+    }
+    setIsConfirmedBtnClicked(false);
+    setMakingPayment(true);
         if (bvnFilled) {
           if (areNoneChecked()) {
             setLoading(false);
@@ -1961,7 +1983,7 @@ const DashboardPage = () => {
         handleCancel();
       }
       //!!PAYPAL PAYMENT ENDS
-      else if (paymentMethod === 4) {
+    }else if (paymentMethod === 4) {
         //!!PAYSTACK PAYMENT START
         localStorage.setItem("paymentType", "CARD");
 
