@@ -48,6 +48,7 @@ import AppleSignInButton from "../../components/sso_button/appleSignInButton";
 import FacebookLogin from "react-facebook-login";
 import AppleLogin from "react-apple-login";
 import { apiPost } from "../../apiUtils";
+import { trackGA4Event } from "../../hooks/analytics";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -116,7 +117,7 @@ const IndividualSignUp = () => {
     () => ({
       name: "Ant Design",
     }),
-    []
+    [],
   );
 
   const focusOnErrorField = (fieldName) => {
@@ -289,8 +290,10 @@ const IndividualSignUp = () => {
       // }
 
       if (response === "success") {
-        // On successful login, navigate to the main dashboard
+        // On successful sign up, fire GA4 event
 
+        trackGA4Event("sign_up", { method: "email" });
+        // On successful login, navigate to the main dashboard
         trackEvent({
           action: "click_individual_signup_form_success",
           category: "Account Creation Success",
@@ -320,7 +323,7 @@ const IndividualSignUp = () => {
         background: bgContainer,
         color: text,
         title: "Error",
-        text: response,
+        text: "Sign up failed. Please try again.",
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -357,7 +360,7 @@ const IndividualSignUp = () => {
 
         const res = await apiPostInternalCall(
           `/openauth/google-login`,
-          payload
+          payload,
         );
         const userData = res.data;
         Swal.fire({

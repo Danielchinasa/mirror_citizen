@@ -5,19 +5,19 @@ import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
 import ReactGA from "react-ga4";
 
-  const logPurchase = ({
-    currency,
-    value,
-    transactionId,
-    paymentType,
-  }) => {
-    ReactGA.event("purchase", {
-      currency: currency,
-      value: value,
-      transaction_id: transactionId,
-      payment_type: paymentType,
-    });
-  };
+const logPurchase = ({
+  currency,
+  value,
+  transactionId,
+  paymentType,
+}) => {
+  ReactGA.event("purchase", {
+    currency: currency,
+    value: value,
+    transaction_id: transactionId,
+    payment_type: paymentType,
+  });
+};
 
 export const updatePassword = (credentials) => async (dispatch) => {
   try {
@@ -684,6 +684,10 @@ export const initiateStakeHoldersRequest =
     }
   };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 56f02a71825d596e3ab5eaf7249a102aea847d9e
 const buildItems = (formData) => {
   const items = [];
 

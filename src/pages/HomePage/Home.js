@@ -1,27 +1,115 @@
 import React, { useEffect, useState } from "react";
-import HeroSection from "../../components/HeroSection/HeroSection";
 import NewsletterSection from "../../components/newsletter/newsLetterSection";
-import { homeObjOne } from "./Data";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import {
+  FaArrowRight,
+  FaLock,
+  FaBolt,
+  FaShieldAlt,
+  FaUser,
+  FaBuilding,
+  FaCreditCard,
+  FaCar,
+  FaPhoneAlt,
+  FaCheckCircle,
+  FaPlayCircle,
+  FaUsers,
+  FaFileAlt,
+} from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
+import heroImg from "../../images/Hero_image_new.png";
+import ndprImg from "../../images/ndpr.png";
+import nimcImg from "../../images/nidologo.png";
+import osiaImg from "../../images/osia.png";
+import avatar1 from "../../images/avatar1.jpg";
+import avatar2 from "../../images/avatar2.jpg";
+import avatar3 from "../../images/avatar3.jpg";
+import avatar4 from "../../images/avatar4.jpg";
+
+import {
+  HeroWrapper,
+  HeroBgImage,
+  HeroContainer,
+  HeroContent,
+  HeroTag,
+  HeroTitle,
+  HeroSubtitle,
+  HeroButtons,
+  PrimaryBtn,
+  SecondaryBtn,
+  TrustIndicators,
+  TrustItem,
+  TrustIcon,
+  TrustLabel,
+  TrustTitle,
+  TrustDesc,
+  SocialProof,
+  AvatarStack,
+  Stars,
+  HowSection,
+  SectionHeading,
+  SectionSub,
+  StepsRow,
+  StepCard,
+  StepTop,
+  StepNumber,
+  StepIconBox,
+  StepName,
+  StepDesc,
+  StepArrow,
+  ServicesSection,
+  CardsGrid,
+  ServiceCard,
+  PopularBadge,
+  ServiceIcon,
+  ServiceName,
+  ServiceDesc,
+  ServicePrice,
+  FeatureList,
+  FeatureItem,
+  ServiceBtn,
+  LearnMoreLink,
+  ViewAllLink,
+  ComplianceSection,
+  ComplianceInner,
+  ComplianceText,
+  ComplianceTitle,
+  ComplianceDesc,
+  ComplianceLogos,
+  ComplianceBadge,
+  CtaSection,
+  CtaInner,
+  CtaShield,
+  CtaContent,
+  CtaTitle,
+  CtaDesc,
+  CtaButton,
+} from "./HomePage.elements";
 const { useToken } = theme;
 
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
+  const [servicePrices, setServicePrices] = useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const { token } = useToken();
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
+  const ninVerify = useAuthRedirect("/verify/nin");
+  const businessVerify = useAuthRedirect("/verify/business");
+  const bvnVerify = useAuthRedirect("/verify/bvn");
+  const vehicleVerify = useAuthRedirect("/verify/vehicle");
+  const phoneVerify = useAuthRedirect("/verify/phone");
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -36,7 +124,7 @@ const Home = () => {
         } catch (error2) {
           console.error(
             "Error fetching IP address from secondary URL:",
-            error2
+            error2,
           );
           setIpAddress(null);
         }
@@ -45,6 +133,21 @@ const Home = () => {
 
     fetchIpAddress();
   }, []);
+
+  useEffect(() => {
+    if (!ipAddress) return;
+    const fetchServicePrices = async () => {
+      try {
+        const data = await apiPost("/transaction/public/service-prices", {
+          ipAddress,
+        });
+        setServicePrices(data);
+      } catch (error) {
+        console.error("Failed to fetch service prices:", error);
+      }
+    };
+    fetchServicePrices();
+  }, [ipAddress]);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -155,12 +258,12 @@ const Home = () => {
           if (notification.isNotDisplayed()) {
             console.warn(
               "⚠️ One Tap not displayed:",
-              notification.getNotDisplayedReason()
+              notification.getNotDisplayedReason(),
             );
             // Check specifically if the reason is 'popup_blocked'
             if (notification.getNotDisplayedReason() === "popup_blocked") {
               console.log(
-                "Popup blocked. Initiating redirect for Google login."
+                "Popup blocked. Initiating redirect for Google login.",
               );
               // Trigger Google login via redirect flow
               // This is the key change: manually construct the redirect URL
@@ -180,13 +283,13 @@ const Home = () => {
           if (notification.isSkippedMoment()) {
             console.warn(
               "⚠️ One Tap skipped:",
-              notification.getSkippedReason()
+              notification.getSkippedReason(),
             );
           }
           if (notification.isDismissedMoment()) {
             console.warn(
               "⚠️ One Tap dismissed:",
-              notification.getDismissedReason()
+              notification.getDismissedReason(),
             );
           }
         });
@@ -218,9 +321,357 @@ const Home = () => {
   //   }
   // };
 
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const ctaLink = isAuthenticated ? "/dashboard" : "/login";
+
   return (
     <>
-      <HeroSection {...homeObjOne} />
+      {/* ── Hero ── */}
+      <HeroWrapper>
+        <HeroBgImage src={heroImg} alt="e-citizen verification platform" />
+        <HeroContainer>
+          <HeroContent>
+            <HeroTag>FAST. SECURE. TRUSTED.</HeroTag>
+            <HeroTitle>
+              Choose the verification you need.{" "}
+              <span
+                style={{
+                  color: "#09c93a",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                Get trusted results in seconds.
+              </span>
+            </HeroTitle>
+            <HeroSubtitle>
+              Secure, reliable and compliant identity verification for
+              individuals and businesses.
+            </HeroSubtitle>
+            <HeroButtons>
+              <PrimaryBtn to={ctaLink}>
+                Start Verification <FaArrowRight />
+              </PrimaryBtn>
+              <SecondaryBtn href="#how-it-works">
+                <FaPlayCircle /> See How It Works
+              </SecondaryBtn>
+            </HeroButtons>
+            <TrustIndicators>
+              <TrustItem>
+                <TrustIcon>
+                  <FaLock />
+                </TrustIcon>
+                <TrustLabel>
+                  <TrustTitle>Secure & Private</TrustTitle>
+                  <TrustDesc>Your data is protected</TrustDesc>
+                </TrustLabel>
+              </TrustItem>
+              <TrustItem>
+                <TrustIcon>
+                  <FaBolt />
+                </TrustIcon>
+                <TrustLabel>
+                  <TrustTitle>Fast Results</TrustTitle>
+                  <TrustDesc>Results in minutes</TrustDesc>
+                </TrustLabel>
+              </TrustItem>
+              <TrustItem>
+                <TrustIcon>
+                  <FaShieldAlt />
+                </TrustIcon>
+                <TrustLabel>
+                  <TrustTitle>Trusted Platform</TrustTitle>
+                  <TrustDesc>Government compliant</TrustDesc>
+                </TrustLabel>
+              </TrustItem>
+            </TrustIndicators>
+            <SocialProof>
+              <AvatarStack>
+                <img src={avatar1} alt="user" />
+                <img src={avatar2} alt="user" />
+                <img src={avatar3} alt="user" />
+                <img src={avatar4} alt="user" />
+              </AvatarStack>
+              Join 500,000+ Nigerians who trust e-citizen
+            </SocialProof>
+          </HeroContent>
+        </HeroContainer>
+      </HeroWrapper>
+
+      {/* ── How It Works ── */}
+      <HowSection id="how-it-works">
+        <SectionHeading>How it works</SectionHeading>
+        <SectionSub>Get verified in just 3 simple steps</SectionSub>
+        <StepsRow>
+          <StepCard>
+            <StepTop>
+              <StepNumber>1</StepNumber>
+              <StepIconBox>
+                <FaUsers />
+              </StepIconBox>
+            </StepTop>
+            <StepName>Choose a service</StepName>
+            <StepDesc>Select the type of verification you need</StepDesc>
+          </StepCard>
+          <StepArrow>
+            <FaArrowRight />
+          </StepArrow>
+          <StepCard>
+            <StepTop>
+              <StepNumber>2</StepNumber>
+              <StepIconBox>
+                <FaFileAlt />
+              </StepIconBox>
+            </StepTop>
+            <StepName>Provide your information</StepName>
+            <StepDesc>
+              Fill in your details and upload required documents
+            </StepDesc>
+          </StepCard>
+          <StepArrow>
+            <FaArrowRight />
+          </StepArrow>
+          <StepCard>
+            <StepTop>
+              <StepNumber>3</StepNumber>
+              <StepIconBox>
+                <FaCheckCircle />
+              </StepIconBox>
+            </StepTop>
+            <StepName>Get trusted results</StepName>
+            <StepDesc>
+              Make payment and receive your results in minutes
+            </StepDesc>
+          </StepCard>
+        </StepsRow>
+      </HowSection>
+
+      {/* ── Service Cards ── */}
+      <ServicesSection>
+        <SectionHeading>
+          Choose the verification that fits your needs
+        </SectionHeading>
+        <SectionSub>
+          Fast, reliable and secure verification services for individuals and
+          businesses.
+        </SectionSub>
+
+        <CardsGrid>
+          {/* Person Identity */}
+          <ServiceCard $popular>
+            <PopularBadge>MOST POPULAR</PopularBadge>
+            <ServiceIcon>
+              <FaUser />
+            </ServiceIcon>
+            <ServiceName>Person Identity Verification</ServiceName>
+            <ServiceDesc>
+              Verify your personal identity with a government-issued ID.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[0]?.price
+                ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
+                : "₦100"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Full name verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Date of birth verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Photo ID verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in minutes
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={ninVerify} $popular>
+              Verify Now
+            </ServiceBtn>
+            <LearnMoreLink to="/nin-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Business Profile */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaBuilding />
+            </ServiceIcon>
+            <ServiceName>Business Profile Verification</ServiceName>
+            <ServiceDesc>
+              Verify your business information and registration.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[2]?.price
+                ? `₦${Number(servicePrices.data[2].price).toLocaleString()}`
+                : "₦100"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Business registration check
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> CAC verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Owner verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in minutes
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={businessVerify}>Verify Now</ServiceBtn>
+            <LearnMoreLink to="/business-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Financial Credit */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaCreditCard />
+            </ServiceIcon>
+            <ServiceName>Financial Credit Verification</ServiceName>
+            <ServiceDesc>
+              Check credit history and financial standing.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[4]?.price
+                ? `₦${Number(servicePrices.data[4].price).toLocaleString()}`
+                : "₦1,700"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Credit history report
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Debt verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Financial standing
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in minutes
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={bvnVerify}>Verify Now</ServiceBtn>
+            <LearnMoreLink to="/credit-profile">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Vehicle History */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaCar />
+            </ServiceIcon>
+            <ServiceName>Vehicle History Verification</ServiceName>
+            <ServiceDesc>Verify vehicle history and ownership.</ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[5]?.price
+                ? `₦${Number(servicePrices.data[5].price).toLocaleString()}`
+                : "₦2,500"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Ownership verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Accident history
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Theft records check
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in minutes
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>
+            <LearnMoreLink to="/vehicle-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Phone Number Verification */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaPhoneAlt />
+            </ServiceIcon>
+            <ServiceName>Phone Number Verification</ServiceName>
+            <ServiceDesc>
+              Verify phone number ownership and network details.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[8]?.price
+                ? `₦${Number(servicePrices.data[8].price).toLocaleString()}`
+                : "₦100"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Number ownership verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Network provider details
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Phone status check
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in minutes
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn to={phoneVerify}>Verify Now</ServiceBtn>
+            <LearnMoreLink to="/phone-number-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+        </CardsGrid>
+      </ServicesSection>
+
+      {/* ── Compliance ── */}
+      <ComplianceSection>
+        <ComplianceInner>
+          <ComplianceText>
+            <ComplianceTitle>
+              Trusted. Compliant. Built for you.
+            </ComplianceTitle>
+            <ComplianceDesc>Your data is safe with us.</ComplianceDesc>
+          </ComplianceText>
+          <ComplianceLogos>
+            <ComplianceBadge>
+              <img src={ndprImg} alt="NDPC" />
+            </ComplianceBadge>
+            <ComplianceBadge>
+              <img src={nimcImg} alt="NCMC" style={{ maxHeight: 48 }} />
+            </ComplianceBadge>
+            <ComplianceBadge>
+              <img src={osiaImg} alt="OSIA" style={{ maxHeight: 48 }} />
+            </ComplianceBadge>
+          </ComplianceLogos>
+        </ComplianceInner>
+      </ComplianceSection>
+
+      {/* ── CTA ── */}
+      <CtaSection>
+        <CtaInner>
+          <CtaShield>
+            <FaCheckCircle />
+          </CtaShield>
+          <CtaContent>
+            <CtaTitle>Ready to get verified?</CtaTitle>
+            <CtaDesc>
+              Join thousands of Nigerians who trust e-citizen for their
+              verification needs.
+            </CtaDesc>
+          </CtaContent>
+          <CtaButton to={ctaLink}>Get Started Now</CtaButton>
+        </CtaInner>
+      </CtaSection>
+
+      <div style={{ height: 40 }} />
       <NewsletterSection visible={false} onClose={() => {}} />
     </>
   );

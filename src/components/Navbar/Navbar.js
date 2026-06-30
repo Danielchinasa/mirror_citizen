@@ -16,13 +16,14 @@ import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
-import { Button, Flex, Modal } from "antd";
+import { Button, Flex, Modal, Radio, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, fetchUserProfile } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Space, Divider, Input } from "antd";
+import paypal from "../../images/paypal.png";
 import ReactGA from "react-ga4";
 import Swal from "sweetalert2";
 import { ThemeToggle } from "../../components/ThemeToggle";
@@ -31,6 +32,8 @@ import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
+import { initiatePaystackPayment } from "../../services/paystackService";
+import { trackPurchaseConversion } from "../../hooks/analytics";
 
 const { useToken } = theme;
 
@@ -104,7 +107,7 @@ function Navbar() {
       key: "2",
       label: (
         <a href="/profile" style={{ textDecoration: "none" }}>
-          Profile
+          My Profile
         </a>
       ),
     },
@@ -154,8 +157,8 @@ function Navbar() {
               userDetails && userDetails?.profileImageLocation
                 ? `${imageBaseUrl}${userDetails?.profileImageLocation}`
                 : isDark
-                ? defaultDpDark
-                : defaultDp
+                  ? defaultDpDark
+                  : defaultDp
             }
             alt="User Avatar"
             style={{
@@ -192,8 +195,13 @@ function Navbar() {
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal1Open, setModal1Open] = useState(false);
+  const [openPaystackModal, setOpenPaystackModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
+  const [paystackReference, setPaystackReference] = useState("");
+  const [walletPaymentMethod, setWalletPaymentMethod] = useState(1);
+  const [paystackLoading, setPaystackLoading] = useState(false);
+  const [transactionAmount, setTransactionAmount] = useState(0);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -212,12 +220,18 @@ function Navbar() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken2}`,
           },
-        }
+        },
       );
 
       if (response.ok) {
         const responseData = await response.json();
         if (responseData.status === "success") {
+          // Track conversion
+          trackPurchaseConversion({
+            value: parseFloat(transactionAmount) || 1.0,
+            currency: userCurrency || "NGN",
+            transactionId: transactionRef,
+          });
           dispatch(fetchUserProfile(userToken2));
           setModal1Open(false);
         } else {
@@ -232,6 +246,200 @@ function Navbar() {
     // dispatch(fetchUserProfile(userToken2));
     // setModal1Open(false);
   };
+
+  const handlePaystackModalClose = async () => {
+    setOpenPaystackModal(false);
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken2}`,
+          },
+        },
+      );
+
+      // Check if the request was successful (status code 200-299)
+      if (!response.ok) {
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Error",
+          text: "Payment Cancelled or Declined",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+        if (
+          responseData.data.status === "successful" ||
+          responseData.status === "success"
+        ) {
+          if (
+            responseData.data &&
+            (responseData.data.status === "success" ||
+              responseData.data.status === "successful")
+          ) {
+            // Payment successful - track conversion and refresh profile
+            trackPurchaseConversion({
+              value: parseFloat(transactionAmount) || 1.0,
+              currency: userCurrency || "NGN",
+              transactionId: paystackReference,
+            });
+            dispatch(fetchUserProfile(userToken2));
+          } else {
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Failed Payment",
+              text: responseData.data.processor_response,
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
+        }
+      }
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      Swal.fire({
+        background: bgContainer,
+        color: text,
+        title: "Error",
+        text: "There was an issue making payment",
+        icon: "error",
+        customClass: {
+          confirmButton: "custom-swal-button",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0DC939",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+      return;
+    }
+  };
+
+  // Auto-close FlutterWave modal when payment reaches a terminal state
+  useEffect(() => {
+    if (!modal1Open || !transactionRef) return;
+    const TERMINAL = [
+      "successful",
+      "success",
+      "failed",
+      "abandoned",
+      "cancelled",
+      "error",
+      "reversed",
+    ];
+    let handled = false;
+    const intervalId = setInterval(async () => {
+      if (handled) return;
+      try {
+        const response = await fetch(
+          `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken2}`,
+            },
+          },
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const status = (data?.data?.status || "").toLowerCase();
+          if (TERMINAL.includes(status) || data?.status === "success") {
+            handled = true;
+            handleModalOk();
+          }
+        } else {
+          handled = true;
+          handleModalOk();
+        }
+      } catch (e) {
+        // Network error – keep polling
+      }
+    }, 4000);
+    return () => clearInterval(intervalId);
+  }, [modal1Open, transactionRef]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-close Paystack modal when payment reaches a terminal state
+  useEffect(() => {
+    if (!openPaystackModal || !paystackReference) return;
+    const TERMINAL = [
+      "successful",
+      "success",
+      "failed",
+      "abandoned",
+      "cancelled",
+      "error",
+      "reversed",
+    ];
+    let handled = false;
+    const intervalId = setInterval(async () => {
+      if (handled) return;
+      try {
+        const response = await fetch(
+          `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken2}`,
+            },
+          },
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const status = (data?.data?.status || "").toLowerCase();
+          if (TERMINAL.includes(status) || data?.status === "success") {
+            handled = true;
+            handlePaystackModalClose();
+          }
+        } else {
+          handled = true;
+          handlePaystackModalClose();
+        }
+      } catch (e) {
+        // Network error – keep polling
+      }
+    }, 4000);
+    return () => clearInterval(intervalId);
+  }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleOk = async () => {
     const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
 
@@ -264,41 +472,66 @@ function Navbar() {
 
     setIsModalVisible(false);
     try {
-      const postData = {
-        amount: amount,
-        currency: userCurrency,
-        country: "NG",
-        description: "Wallet top up",
-        payment_method: "card,mobilemoney,ussd",
-        type: "TOPUP",
-      };
-      setAmount("");
+      if (walletPaymentMethod === 1) {
+        // FlutterWave payment
+        const postData = {
+          amount: amount,
+          currency: userCurrency,
+          country: "NG",
+          description: "Wallet top up",
+          payment_method: "card,mobilemoney,ussd",
+          type: "TOPUP",
+        };
+        setTransactionAmount(amount); // Store amount for conversion tracking
+        setAmount("");
 
-      // Changed from fetch to axios
-      const response = await axios.post(
-        `${baseUrl}/payment/flexi-initiate`,
-        postData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken2}`,
+        // Changed from fetch to axios
+        const response = await axios.post(
+          `${baseUrl}/payment/flexi-initiate`,
+          postData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken2}`,
+            },
           },
-        }
-      );
+        );
 
-      const responseData = response.data; // Axios puts the response data in the 'data' property
+        const responseData = response.data; // Axios puts the response data in the 'data' property
 
-      if (responseData.status === "success") {
-        if (responseData.data && responseData.data.link) {
-          setPaymentUrl(responseData.data.link);
-          setTransactionRef(responseData.data.txRef);
-          setModal1Open(true);
+        if (responseData.status === "success") {
+          if (responseData.data && responseData.data.link) {
+            setPaymentUrl(responseData.data.link);
+            setTransactionRef(responseData.data.txRef);
+            setModal1Open(true);
+          } else {
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Response data does not contain a link",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+            return;
+          }
         } else {
           Swal.fire({
             background: bgContainer,
             color: text,
             title: "Error",
-            text: "Response data does not contain a link",
+            text: "Failed to initialize payment",
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -315,27 +548,118 @@ function Navbar() {
           });
           return;
         }
-      } else {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text: "Failed to initialize payment",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
+      } else if (walletPaymentMethod === 2) {
+        // PayPal payment
+        const postData = {
+          tx_ref: `WALLET_${Date.now()}`,
+          amount: amount,
+          currency: "USD",
+          email: userDetails?.email || "",
+          type: "TOPUP",
+          stakeHolders: "NON-STAKEHOLDER",
+          return_url: window.location.origin + "/payment/success",
+          cancel_url: window.location.origin + "/payment/failure",
+        };
+        setAmount("");
+
+        const response = await axios.post(
+          `${baseUrl}/payment/paypal/create`,
+          postData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken2}`,
+            },
           },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
+        );
+
+        const responseData = response.data;
+        console.log("PayPal Response Data:", responseData);
+
+        if (responseData.status === "success" && responseData.approval_url) {
+          // Redirect to PayPal approval URL
+          window.location.href = responseData.approval_url;
+        } else {
+          console.error("PayPal response does not contain approval URL");
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Failed to initialize PayPal payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          });
+        }
+      } else if (walletPaymentMethod === 3) {
+        // Paystack payment
+        const postData = {
+          amount: amount,
+          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
+          type: "TOPUP",
+          sessionCode: null,
+          stakeHolders: null,
+        };
+        setTransactionAmount(amount); // Store amount for conversion tracking
+        setAmount("");
+        setPaystackLoading(true);
+
+        try {
+          const responseData = await initiatePaystackPayment(
+            postData,
+            userToken2,
+          );
+          console.log("Paystack Response Data:", responseData);
+          if (responseData.status && responseData.data) {
+            // Open Paystack payment page in modal
+            setPaymentUrl(responseData.data.authorization_url);
+            setPaystackReference(responseData.data.reference);
+            setOpenPaystackModal(true);
+            setPaystackLoading(false);
+          } else {
+            console.error("Paystack response invalid");
+            setPaystackLoading(false);
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Error",
+              text: "Failed to initialize Paystack payment",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#0DC939",
+            });
           }
-        });
-        return;
+        } catch (error) {
+          console.error("Paystack error:", error);
+          setPaystackLoading(false);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: error.message || "Failed to initialize Paystack payment",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          });
+        }
       }
     } catch (error) {
       // Axios errors are typically in error.response or error.message
@@ -377,6 +701,12 @@ function Navbar() {
 
   return (
     <>
+      <Spin
+        spinning={paystackLoading}
+        size="large"
+        tip="Loading Paystack payment..."
+        fullscreen
+      />
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
@@ -410,12 +740,12 @@ function Navbar() {
                         }}
                         $token={token}
                       >
-                        Dashboard
+                        View Dashboard
                       </OutlineButton>
                     </NavBtnLink>
                   </NavItemBtn>
                   <NavItemBtn>
-                    <NavBtnLink to="/dashboard">
+                    <NavBtnLink to="/">
                       <MainButton
                         type="primary"
                         style={{
@@ -423,7 +753,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        Identity Verification
+                        Verify Now
                       </MainButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -504,7 +834,7 @@ function Navbar() {
                       </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
-                          <MainButton type="primary">Profile</MainButton>
+                          <MainButton type="primary">My Profile</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
@@ -555,6 +885,64 @@ function Navbar() {
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
                           <Title level={5}>Fund Wallet</Title>
+                          <Title level={5}>Select Payment Method</Title>
+                          <Radio.Group
+                            value={walletPaymentMethod}
+                            onChange={(e) =>
+                              setWalletPaymentMethod(e.target.value)
+                            }
+                            style={{ width: "100%", marginBottom: "15px" }}
+                          >
+                            <Radio
+                              value={1}
+                              style={{
+                                display: "block",
+                                border: "1px solid #e8e8e8",
+                                borderRadius: "5px",
+                                padding: "10px",
+                                marginBottom: "10px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              FlutterWave
+                            </Radio>
+                            {/* {userCurrency.toUpperCase() !== "NGN" && (
+                              <Radio
+                                value={2}
+                                style={{
+                                  display: "block",
+                                  border: "1px solid #e8e8e8",
+                                  borderRadius: "5px",
+                                  padding: "10px",
+                                  marginBottom: "10px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                PayPal
+                                <img
+                                  src={paypal}
+                                  alt="paypal"
+                                  width={60}
+                                  style={{ float: "right", marginTop: "5px" }}
+                                />
+                              </Radio>
+                            )} */}
+                            <Radio
+                              value={3}
+                              disabled={userCurrency.toUpperCase() === "USD"}
+                              style={{
+                                display: "block",
+                                border: "1px solid #e8e8e8",
+                                borderRadius: "5px",
+                                padding: "10px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Paystack{" "}
+                              {userCurrency.toUpperCase() === "USD" &&
+                                "(Not available for USD)"}
+                            </Radio>
+                          </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
                             {userCurrency.toUpperCase() === "NGN"
@@ -625,6 +1013,33 @@ function Navbar() {
                           ></iframe>
                           {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
                         </Modal>
+                        <Modal
+                          style={{
+                            top: 20,
+                          }}
+                          width={1000}
+                          open={openPaystackModal}
+                          onOk={handlePaystackModalClose}
+                          onCancel={handlePaystackModalClose}
+                          maskClosable={false}
+                          footer={[
+                            <Button
+                              style={{ color: text }}
+                              type="dashed"
+                              onClick={handlePaystackModalClose}
+                            >
+                              Close
+                            </Button>,
+                          ]}
+                        >
+                          <iframe
+                            id="paystackPaymentFrame"
+                            title="Paystack Payment"
+                            width="100%"
+                            height="600"
+                            src={paymentUrl}
+                          ></iframe>
+                        </Modal>
                       </div>
 
                       <NavItemBtn>
@@ -681,6 +1096,64 @@ function Navbar() {
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
                           <Title level={5}>Fund Wallet</Title>
+                          <Title level={5}>Select Payment Method</Title>
+                          <Radio.Group
+                            value={walletPaymentMethod}
+                            onChange={(e) =>
+                              setWalletPaymentMethod(e.target.value)
+                            }
+                            style={{ width: "100%", marginBottom: "15px" }}
+                          >
+                            <Radio
+                              value={1}
+                              style={{
+                                display: "block",
+                                border: "1px solid #e8e8e8",
+                                borderRadius: "5px",
+                                padding: "10px",
+                                marginBottom: "10px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              FlutterWave
+                            </Radio>
+                            {/* {userCurrency.toUpperCase() !== "NGN" && (
+                              <Radio
+                                value={2}
+                                style={{
+                                  display: "block",
+                                  border: "1px solid #e8e8e8",
+                                  borderRadius: "5px",
+                                  padding: "10px",
+                                  marginBottom: "10px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                PayPal
+                                <img
+                                  src={paypal}
+                                  alt="paypal"
+                                  width={60}
+                                  style={{ float: "right", marginTop: "5px" }}
+                                />
+                              </Radio>
+                            )} */}
+                            <Radio
+                              value={3}
+                              disabled={userCurrency.toUpperCase() === "USD"}
+                              style={{
+                                display: "block",
+                                border: "1px solid #e8e8e8",
+                                borderRadius: "5px",
+                                padding: "10px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Paystack{" "}
+                              {userCurrency.toUpperCase() === "USD" &&
+                                "(Not available for USD)"}
+                            </Radio>
+                          </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
                             {userCurrency.toUpperCase() === "NGN"
@@ -750,6 +1223,33 @@ function Navbar() {
                             // onLoad={handleIframeLoad}
                           ></iframe>
                           {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
+                        </Modal>
+                        <Modal
+                          style={{
+                            top: 20,
+                          }}
+                          width={1000}
+                          open={openPaystackModal}
+                          onOk={handlePaystackModalClose}
+                          onCancel={handlePaystackModalClose}
+                          maskClosable={false}
+                          footer={[
+                            <Button
+                              danger
+                              type="dashed"
+                              onClick={handlePaystackModalClose}
+                            >
+                              Close
+                            </Button>,
+                          ]}
+                        >
+                          <iframe
+                            id="paystackPaymentFrame"
+                            title="Paystack Payment"
+                            width="100%"
+                            height="600"
+                            src={paymentUrl}
+                          ></iframe>
                         </Modal>
                       </div>
                       <UserDropdown />

@@ -45,6 +45,7 @@ import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { imageBaseUrl } from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
+import { trackGA4Event } from "../../hooks/analytics";
 
 const { Title, Text } = Typography;
 
@@ -115,7 +116,7 @@ const Result = () => {
         // Make an API request to check consent status
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         if (response.data.consent === "pending") {
@@ -123,6 +124,13 @@ const Result = () => {
         } else {
           setLoading(false);
         }
+
+        // Fire GA4 check_completed event after consent check and data load
+
+        trackGA4Event("check_completed", {
+          profile_id: requestId,
+          result: response.data.consent,
+        });
 
         const firstNameFromResponse = response.data.data.firstName || "";
         const middleNameFromResponse = response.data.data.middleName || "";
@@ -302,52 +310,52 @@ const Result = () => {
                   {renderDetail(
                     <FaGlobe />,
                     "Country of Birth",
-                    `${birthCountry}`
+                    `${birthCountry}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <FaHome />,
                     "Residence Address",
-                    `${residenceAddress}`
+                    `${residenceAddress}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "State of Birth",
-                    `${birthState}`
+                    `${birthState}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Residence State",
-                    `${residenceState}`
+                    `${residenceState}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "LGA of Birth",
-                    `${originState}`
+                    `${originState}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Residence LGA",
-                    `${residenceLGA}`
+                    `${residenceLGA}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <IoSchoolSharp />,
                     "Profession",
-                    `${profession}`
+                    `${profession}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <IoSchoolSharp />,
                     "Education Level",
-                    `${educationLevel}`
+                    `${educationLevel}`,
                   )}
                 </Col>
                 <Divider />
@@ -355,7 +363,7 @@ const Result = () => {
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Origin State",
-                    `${originState}`
+                    `${originState}`,
                   )}
                   <Divider />
                   {renderDetail(<GiBodyHeight />, "Height", `${height}`)}
@@ -364,20 +372,20 @@ const Result = () => {
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Origin LGA",
-                    `${originLGA}`
+                    `${originLGA}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <GiBigDiamondRing />,
                     "Marital Status",
-                    `${maritalStatus}`
+                    `${maritalStatus}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Origin Place",
-                    `${originPlace}`
+                    `${originPlace}`,
                   )}
                 </Col>
                 <Col span={6}>
