@@ -350,7 +350,14 @@ const Home = () => {
               individuals and businesses.
             </HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn to={ctaLink}>
+              <PrimaryBtn
+                to="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("verification-services");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
                 Start Verification <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#how-it-works">
@@ -448,7 +455,7 @@ const Home = () => {
       </HowSection>
 
       {/* ── Service Cards ── */}
-      <ServicesSection>
+      <ServicesSection id="verification-services">
         <SectionHeading>
           Choose the verification that fits your needs
         </SectionHeading>
