@@ -43,6 +43,8 @@ export const NinNavMenu = styled.ul`
 `;
 
 export const NinNavItem = styled.li`
+  position: relative;
+
   @media screen and (max-width: 768px) {
     width: 100%;
     text-align: center;
@@ -121,5 +123,56 @@ export const NinHamburgerIcon = styled.div`
 
   @media screen and (max-width: 768px) {
     display: block;
+  }
+`;
+
+export const DropdownWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 220px;
+  padding: 6px 0;
+  z-index: 1000;
+
+  @media screen and (max-width: 768px) {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    margin-top: 8px;
+    background: transparent;
+  }
+`;
+
+export const DropdownItem = styled(Link)`
+  display: block;
+  padding: 10px 18px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: #f5f5f5;
+    color: #09c93a;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 10px 24px;
+    color: #555;
+
+    &:hover {
+      background: transparent;
+      color: #09c93a;
+    }
   }
 `;

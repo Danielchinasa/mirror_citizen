@@ -855,15 +855,15 @@ const NinLoginSample = () => {
               <ResultGrid>
                 <ResultField>
                   <ResultLabel>Full Name</ResultLabel>
-                  <ResultValue>DANIEL CHINASA OKORO</ResultValue>
+                  <ResultValue>KUNLE BASHR CHINASA</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>
-                  <ResultValue>0803 *** 5678</ResultValue>
+                  <ResultValue>08032222222</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>NIN</ResultLabel>
-                  <ResultValue>1234 5678 90**</ResultValue>
+                  <ResultValue>12345678910</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Verification Status</ResultLabel>

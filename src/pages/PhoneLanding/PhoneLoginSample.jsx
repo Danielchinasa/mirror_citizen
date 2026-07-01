@@ -874,11 +874,11 @@ const PhoneLoginSample = () => {
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>
-                  <ResultValue>0803 *** 5678</ResultValue>
+                  <ResultValue>08032222222</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>NIN</ResultLabel>
-                  <ResultValue>5923 4107 8**</ResultValue>
+                  <ResultValue>12345678910</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Verification Status</ResultLabel>
@@ -903,7 +903,7 @@ const PhoneLoginSample = () => {
                   <ResultValue>7 OKAFOR CLOSE, FESTAC TOWN</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Next of Kin First Name</ResultLabel>
+                  <ResultLabel>Next of Kin Full Name</ResultLabel>
                   <ResultValue>CHUKWUEMEKA</ResultValue>
                 </ResultField>
                 <ResultField>

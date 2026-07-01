@@ -710,7 +710,7 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <Link to={isAuthenticated ? "/dashboard" : "/"}>
+            <Link to="/">
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
                 src={isDark ? LogoWhite : Logo}
@@ -792,33 +792,6 @@ function Navbar() {
                       </NavBtnLink>
                     )}
                   </NavItemBtn>
-                  {/* <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink
-                        to="/sign-up"
-                        style={{
-                          fontFamily: "Poppins",
-                          fontWeight: "700",
-                        }}
-                      >
-                        <MainButton type="primary">SIGN UP</MainButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/sign-up">
-                        <MainButton
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          SIGN UP
-                        </MainButton>
-                      </NavBtnLink>
-                    )}
-                  </NavItemBtn> */}
                   <ThemeToggle />
                 </>
               )}
