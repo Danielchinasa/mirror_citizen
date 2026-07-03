@@ -20,8 +20,9 @@ import {
   initiateVerificationRequest,
   completeVerificationRequest,
   fetchUserProfile,
+  fetchVerificationServicePrices,
 } from "../../redux/actions";
-import { apiPostInternalCall, apiGet } from "../../apiUtils";
+import { apiGet } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import baseUrl from "../../apiConfig";
 import paystackLogo from "../../images/paystack.png";
@@ -305,24 +306,11 @@ const VerifyPage = () => {
 
     const fetchPrices = async () => {
       try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await apiPostInternalCall(
-          `/transaction/service-prices`,
-          { ipAddress },
-          userToken,
+        const pricingData = await dispatch(
+          fetchVerificationServicePrices(config, userToken),
         );
         setLoadingPrice(false);
-        const serviceData = response.data.data[config.priceIndex];
-        setPricingData({
-          price: serviceData.price,
-          serviceFee: serviceData.serviceFee,
-          vat: serviceData.VAT,
-          priceUsd: serviceData.price2,
-          serviceFeeusd: serviceData.serviceFee2,
-          vatUsd: serviceData.VAT2,
-          processingFee: serviceData.processingFee || 0,
-          rate: response.data.rate,
-        });
+        setPricingData(pricingData);
       } catch (err) {
         setLoadingPrice(false);
         Swal.fire({
@@ -464,6 +452,7 @@ const VerifyPage = () => {
 
   const buildApiFormData = () => {
     const apiForm = {
+      serviceCode: config.serviceCode || "",
       nin: "",
       phone: "",
       firstname: "",

@@ -48,6 +48,8 @@ const verificationConfig = {
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
     serviceName: "NIN Verification",
+    serviceCode: "ID_CARD",
+    apiServiceName: "ID_CARD",
     serviceFieldKey: "nin",
     priceIndex: 0,
     requiresConsent: true,
@@ -294,6 +296,8 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
+    serviceCode: "VIN",
+    apiServiceName: "VIN",
     serviceFieldKey: "vin",
     priceIndex: 5,
     trustBar: [
