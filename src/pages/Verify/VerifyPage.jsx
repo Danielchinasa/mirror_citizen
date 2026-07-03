@@ -18,6 +18,7 @@ import {
 import Swal from "sweetalert2";
 import {
   initiateVerificationRequest,
+  initiateAfricaVerificationRequest,
   completeVerificationRequest,
   fetchUserProfile,
 } from "../../redux/actions";
@@ -36,6 +37,7 @@ import {
   HeroInner,
   HeroText,
   HeroTitle,
+  HeroTitleContinue,
   HeroSubtitle,
   HeroImage,
   StepperWrapper,
@@ -517,11 +519,16 @@ const VerifyPage = () => {
     localStorage.setItem("totalAmount", totalAmount);
 
     const apiFormData = buildApiFormData();
+    apiFormData.serviceCode = config.serviceCode;
 
     try {
       // 1. Initiate verification
+      const initiateAction =
+        type === "nin"
+          ? initiateAfricaVerificationRequest
+          : initiateVerificationRequest;
       const initiateResponse = await dispatch(
-        initiateVerificationRequest(apiFormData, userToken),
+        initiateAction(apiFormData, userToken),
       );
 
       if (initiateResponse?.sessionStatus === "INITIATED") {
@@ -1970,6 +1977,7 @@ const VerifyPage = () => {
           <HeroText>
             <HeroTitle>
               {config.heroTitle} <span>{config.heroHighlight}</span>
+              {config.heroTitleContinue}
             </HeroTitle>
             <HeroSubtitle>{config.heroSubtitle}</HeroSubtitle>
           </HeroText>

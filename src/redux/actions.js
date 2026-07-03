@@ -5,12 +5,7 @@ import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
 import ReactGA from "react-ga4";
 
-const logPurchase = ({
-  currency,
-  value,
-  transactionId,
-  paymentType,
-}) => {
+const logPurchase = ({ currency, value, transactionId, paymentType }) => {
   ReactGA.event("purchase", {
     currency: currency,
     value: value,
@@ -23,7 +18,7 @@ export const updatePassword = (credentials) => async (dispatch) => {
   try {
     const response = await apiPost(
       `/form/reset-password/${credentials.email}/password`,
-      { newPassword: credentials.newpassword, token: credentials.token }
+      { newPassword: credentials.newpassword, token: credentials.token },
     );
 
     // Return the user data upon successful login
@@ -168,7 +163,7 @@ export const fetchVerificationData = (token, page = 0, size = 10) => {
       const response = await apiPost(
         `/user/matching-requests`,
         { page, size }, // Payload
-        token
+        token,
       );
 
       dispatch({
@@ -342,7 +337,7 @@ export const sendVerificationRequest =
       const response = await apiPost(
         `/verification/call-external-apis`,
         restructuredData,
-        token
+        token,
       );
 
       const userData = response;
@@ -413,7 +408,7 @@ export const fetchVerificationResult = (requestId, token) => {
       // Make an API call to fetch verification data
       const response = await apiGet(
         `/verification/check-consent/${requestId}`,
-        token
+        token,
       );
 
       // Dispatch the fetched data to the store
@@ -542,6 +537,7 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
 
       const restructuredData = {
+        serviceCode: formData.serviceCode || "",
         payment: {
           currency: currencyCheck || "NGN",
           paymentType: paymentType || "INSTANT",
@@ -599,7 +595,7 @@ export const initiateVerificationRequest =
       const response = await apiPost(
         `/verification/initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // dispatch({
@@ -621,6 +617,88 @@ export const initiateVerificationRequest =
         };
       } else {
         // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        return { status: "failed", message: "Error setting up the request" };
+      }
+    }
+  };
+
+export const initiateAfricaVerificationRequest =
+  (formData, token) => async (dispatch) => {
+    try {
+      const CLICK_ID = localStorage.getItem("CLICK_ID");
+      const currencyCheck = localStorage.getItem("currencyCheck");
+      const transactionID = localStorage.getItem("transactionID");
+      const paymentType = localStorage.getItem("paymentType");
+      function generateTransactionId() {
+        const length = 16;
+        let transactionId = "EA";
+        for (let i = 0; i < length - 2; i++) {
+          transactionId += Math.floor(Math.random() * 10);
+        }
+        return transactionId;
+      }
+
+      const randomTransactionId = generateTransactionId();
+
+      const restructuredData = {
+        serviceCode: formData.serviceCode || "",
+        payment: {
+          currency: currencyCheck || "NGN",
+          paymentType: paymentType || "INSTANT",
+        },
+        "search-extension": {
+          "phone-number": formData.phone || "",
+        },
+        basic: {
+          nin: formData.nin || "",
+          nin_csv: formData.nin_csv || "",
+          dateOfBirth: formData.dateOfBirth || "",
+          gender: formData.gender || "",
+          firstname: formData.firstname || "",
+          lastname: formData.lastname || "",
+          liveFaceNin: formData.liveFaceNin || "",
+          face: formData.face || "",
+          finger: formData.finger || "",
+        },
+        reach: {
+          CLICK_ID: CLICK_ID || "",
+        },
+      };
+
+      // Remove fields with empty strings from the payload
+      Object.keys(restructuredData).forEach((section) => {
+        if (
+          typeof restructuredData[section] !== "object" ||
+          restructuredData[section] === null
+        )
+          return;
+        Object.keys(restructuredData[section]).forEach((field) => {
+          if (restructuredData[section][field] === "") {
+            delete restructuredData[section][field];
+          }
+        });
+        if (Object.keys(restructuredData[section]).length === 0) {
+          delete restructuredData[section];
+        }
+      });
+      const response = await apiPost(
+        `/africa/verification/UG/initiate`,
+        restructuredData,
+        token,
+      );
+
+      return response;
+    } catch (error) {
+      if (error.response) {
+        return error.response;
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        return {
+          status: "failed",
+          message: "No response received from the server",
+        };
+      } else {
         console.error("Error setting up the request:", error.message);
         return { status: "failed", message: "Error setting up the request" };
       }
@@ -661,7 +739,7 @@ export const initiateStakeHoldersRequest =
       const response = await apiPost(
         `/verification/initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // Return the user data upon successful verification
@@ -684,15 +762,11 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-
 const buildItems = (formData) => {
   const items = [];
 
   Object.keys(formData).forEach((field) => {
-    if (
-      typeof formData[field] === "string" &&
-      formData[field].trim() !== ""
-    ) {
+    if (typeof formData[field] === "string" && formData[field].trim() !== "") {
       items.push({
         item_id: field,
         item_name: field,
@@ -789,7 +863,7 @@ export const completeVerificationRequest =
       const response = await apiPost(
         `/verification/complete `,
         restructuredData,
-        token
+        token,
       );
 
       dispatch({
@@ -800,13 +874,11 @@ export const completeVerificationRequest =
       // ✅ GA4 Purchase Tracking
       try {
         const currency = currencyCheck || "NGN";
-        const transactionId =
-          transactionID || randomTransactionId;
+        const transactionId = transactionID || randomTransactionId;
         const payment = paymentType || "INSTANT";
 
         // You can improve this if you have exact total stored
-        const value =
-          parseFloat(localStorage.getItem("totalAmount")) || 0;
+        const value = parseFloat(localStorage.getItem("totalAmount")) || 0;
 
         const items = buildItems(formData);
 
@@ -868,7 +940,7 @@ export const paymentInitializationRequest =
       const response = await apiPost(
         `/payment/flexi-initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // Return the user data upon successful verification

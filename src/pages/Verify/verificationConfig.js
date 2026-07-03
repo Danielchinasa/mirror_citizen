@@ -17,8 +17,9 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your National ID",
-    heroHighlight: "in seconds",
+    heroTitle: "Verify Your",
+    heroTitleContinue: "in seconds",
+    heroHighlight: "National ID ",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
@@ -48,6 +49,7 @@ const verificationConfig = {
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
     serviceName: "National ID Verification",
+    serviceCode: "NATIONAL_ID",
     serviceFieldKey: "nin",
     priceIndex: 0,
     requiresConsent: true,
@@ -60,8 +62,8 @@ const verificationConfig = {
   },
 
   phone: {
-    heroTitle: "Verify a Phone",
-    heroHighlight: "Number",
+    heroTitle: "Verify a ",
+    heroHighlight: "Phone Number",
     heroSubtitle:
       "Enter a phone number, pay securely and get verification results instantly.",
     heroImage: require("../../images/phone_number_verification.png"),
@@ -91,6 +93,7 @@ const verificationConfig = {
       tags: ["Owner Name", "Network", "Status", "And more..."],
     },
     serviceName: "Phone Verification",
+    serviceCode: "PHONE",
     serviceFieldKey: "phone",
     priceIndex: 9,
     trustBar: [
@@ -144,6 +147,7 @@ const verificationConfig = {
       tags: ["Company Name", "Directors", "Status", "And more..."],
     },
     serviceName: "Business Verification",
+    serviceCode: "BUSINESS",
     serviceFieldKey: "rc",
     priceIndex: 2,
     trustBar: [
@@ -200,6 +204,7 @@ const verificationConfig = {
       tags: ["Business Name", "Directors", "Status", "And more..."],
     },
     serviceName: "Business Name Verification",
+    serviceCode: "BUSINESS_NAME",
     serviceFieldKey: "business_name",
     priceIndex: 3,
     trustBar: [
@@ -241,6 +246,7 @@ const verificationConfig = {
       tags: ["Full Name", "Bank Details", "Status", "And more..."],
     },
     serviceName: "BVN Verification",
+    serviceCode: "BVN",
     serviceFieldKey: "bvn",
     priceIndex: 4,
     requiresConsent: true,
@@ -294,6 +300,7 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
+    serviceCode: "VIN_ID",
     serviceFieldKey: "vin",
     priceIndex: 5,
     trustBar: [
