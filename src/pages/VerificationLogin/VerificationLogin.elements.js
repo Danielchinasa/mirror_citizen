@@ -41,18 +41,96 @@ export const NavLinks = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
+
+  @media screen and (max-width: 960px) {
+    gap: 16px;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const NavLink = styled(Link)`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--ec-text-secondary);
   text-decoration: none;
   transition: color 0.2s;
+  white-space: nowrap;
 
   &:hover {
     color: var(--ec-primary);
+  }
+
+  &:last-child {
+    background: var(--ec-primary);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 8px;
+
+    &:hover {
+      background: var(--ec-primary-hover);
+      color: #fff;
+    }
+  }
+`;
+
+export const HamburgerBtn = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--ec-text);
+  cursor: pointer;
+  padding: 4px;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+export const MobileMenu = styled.div`
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: ${({ open }) => (open ? "flex" : "none")};
+    flex-direction: column;
+    background: var(--ec-bg);
+    border-bottom: 1px solid var(--ec-border-light);
+    padding: 12px 20px 16px;
+    gap: 4px;
+
+    a {
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ec-text-secondary);
+      text-decoration: none;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--ec-border-light);
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--ec-primary);
+      }
+
+      &:last-child {
+        border-bottom: none;
+        margin-top: 8px;
+        background: var(--ec-primary);
+        color: #fff;
+        text-align: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+
+        &:hover {
+          background: var(--ec-primary-hover);
+        }
+      }
+    }
   }
 `;
 
