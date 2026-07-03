@@ -14,6 +14,7 @@ import {
   FaWallet,
   FaIdCard,
   FaInfoCircle,
+  FaBuilding,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
@@ -805,13 +806,21 @@ const VerifyPage = () => {
           "BVN verification was successful.";
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === true) {
-        const bizData = Array.isArray(response.business.data)
-          ? response.business.data[0]?.data
-          : response.business.data;
-        result = bizData || response.business;
+        const bizArray = Array.isArray(response.business.data)
+          ? response.business.data.map((item) => item.data || item)
+          : [response.business.data];
+        const firstBiz = bizArray[0];
+        result = {
+          _isBusinessList: true,
+          businesses: bizArray,
+          ...(firstBiz || {}),
+        };
         resultTitle = "Business Verification Successful";
         resultDetail =
-          bizData?.approvedName || "Business has been verified successfully.";
+          bizArray.length > 1
+            ? `${bizArray.length} companies found matching your search.`
+            : firstBiz?.approvedName ||
+              "Business has been verified successfully.";
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === false) {
         Swal.fire({
@@ -2012,93 +2021,230 @@ const VerifyPage = () => {
               </PopupCloseButton>
             </PopupHeader>
             <PopupBody>
-              <ResultCardPopup>
-                <ResultTopPopup>
-                  <ResultPhotoPopup>
-                    {(() => {
-                      const data = verificationResult?.data;
-                      if (!data) return <FaUserCircle />;
-
-                      // Try multiple possible keys for image data
-                      let photoSrc =
-                        data.photo ||
-                        data.signature ||
-                        data.image ||
-                        data.profilePhoto ||
-                        data.profilePic ||
-                        data.picture ||
-                        data.biometricPhoto ||
-                        data.facialImage ||
-                        data.faceImage ||
-                        data.photoUrl ||
-                        data.imageUrl;
-
-                      if (photoSrc) {
-                        // Add data URI prefix if it's raw base64
-                        if (!photoSrc.startsWith("data:")) {
-                          // Detect image type from base64 signature
-                          if (
-                            photoSrc.startsWith("/9j/") ||
-                            photoSrc.startsWith("iVBORw0KGgo")
-                          ) {
-                            const mimeType = photoSrc.startsWith("/9j/")
-                              ? "image/jpeg"
-                              : "image/png";
-                            photoSrc = `data:${mimeType};base64,${photoSrc}`;
-                          }
-                        }
-
-                        return (
-                          <img
-                            src={photoSrc}
-                            alt="Verification photo"
+              {/* Business list result */}
+              {verificationResult.data?._isBusinessList ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 16,
+                      padding: "10px 16px",
+                      background: "var(--ec-primary-bg)",
+                      borderRadius: 10,
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      color: "var(--ec-primary)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    <FaBuilding />
+                    {verificationResult.data.businesses.length}{" "}
+                    {verificationResult.data.businesses.length === 1
+                      ? "company"
+                      : "companies"}{" "}
+                    found
+                  </div>
+                  <div
+                    style={{
+                      maxHeight: 380,
+                      overflowY: "auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                      marginBottom: 16,
+                      paddingRight: 4,
+                    }}
+                  >
+                    {verificationResult.data.businesses.map((biz, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          border: "1px solid var(--ec-border)",
+                          borderRadius: 12,
+                          padding: "16px 20px",
+                          background: "var(--ec-bg-card)",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: 14,
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 42,
+                            height: 42,
+                            borderRadius: "50%",
+                            background: "var(--ec-primary-bg)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                            color: "var(--ec-primary)",
+                            fontSize: 18,
+                          }}
+                        >
+                          <FaBuilding />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div
                             style={{
-                              width: "100%",
-                              height: "100%",
-                              borderRadius: "50%",
-                              objectFit: "cover",
+                              fontFamily: "Poppins, sans-serif",
+                              fontWeight: 700,
+                              fontSize: 15,
+                              color: "var(--ec-text)",
+                              marginBottom: 4,
+                              wordBreak: "break-word",
                             }}
-                            onError={(e) => {
-                              console.warn(
-                                "Image failed to load, falling back to icon",
-                              );
-                              e.target.style.display = "none";
+                          >
+                            {biz.approvedName || biz.companyName || "N/A"}
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: "4px 16px",
+                              fontFamily: "Nunito, sans-serif",
+                              fontSize: 13,
                             }}
-                          />
-                        );
-                      }
-                      return <FaUserCircle />;
-                    })()}
-                  </ResultPhotoPopup>
-                  <ResultGridPopup>
-                    {getResultPreviewFields().map((field, idx) => (
-                      <ResultFieldPopup key={idx}>
-                        <ResultLabelPopup>{field.label}</ResultLabelPopup>
-                        {field.label === "Verification Status" ? (
-                          <VerifiedBadgePopup>
-                            VERIFIED <FaCheckCircle />
-                          </VerifiedBadgePopup>
-                        ) : (
-                          <ResultValuePopup>{field.value}</ResultValuePopup>
-                        )}
-                      </ResultFieldPopup>
+                          >
+                            {(biz.rcNumber || biz.rc_number) && (
+                              <span style={{ color: "var(--ec-text-muted)" }}>
+                                RC:{" "}
+                                <strong style={{ color: "var(--ec-text)" }}>
+                                  {biz.rcNumber || biz.rc_number}
+                                </strong>
+                              </span>
+                            )}
+                            {biz.registrationDate && (
+                              <span style={{ color: "var(--ec-text-muted)" }}>
+                                Reg:{" "}
+                                <strong style={{ color: "var(--ec-text)" }}>
+                                  {new Date(
+                                    biz.registrationDate,
+                                  ).toLocaleDateString()}
+                                </strong>
+                              </span>
+                            )}
+                            {biz.classificationId && (
+                              <span style={{ color: "var(--ec-text-muted)" }}>
+                                Type:{" "}
+                                <strong style={{ color: "var(--ec-text)" }}>
+                                  {biz.classificationId === "1"
+                                    ? "Business Name"
+                                    : biz.classificationId === "2"
+                                      ? "Limited Company"
+                                      : biz.classificationId}
+                                </strong>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <VerifiedBadgePopup
+                          style={{ flexShrink: 0, alignSelf: "center" }}
+                        >
+                          <FaCheckCircle /> Verified
+                        </VerifiedBadgePopup>
+                      </div>
                     ))}
-                  </ResultGridPopup>
-                </ResultTopPopup>
-                <ResultFooterPopup>
-                  <span>
-                    Verified on{" "}
-                    {new Date().toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <span>
-                    Ref: {localStorage.getItem("transactionID") || "N/A"}
-                  </span>
-                </ResultFooterPopup>
-              </ResultCardPopup>
+                  </div>
+                  <ResultFooterPopup
+                    style={{ borderTop: "none", padding: "0 0 12px" }}
+                  >
+                    <span>
+                      Verified on{" "}
+                      {new Date().toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>
+                      Ref: {localStorage.getItem("transactionID") || "N/A"}
+                    </span>
+                  </ResultFooterPopup>
+                </>
+              ) : (
+                /* Non-business single result */
+                <ResultCardPopup>
+                  <ResultTopPopup>
+                    <ResultPhotoPopup>
+                      {(() => {
+                        const data = verificationResult?.data;
+                        if (!data) return <FaUserCircle />;
+                        let photoSrc =
+                          data.photo ||
+                          data.signature ||
+                          data.image ||
+                          data.profilePhoto ||
+                          data.profilePic ||
+                          data.picture ||
+                          data.biometricPhoto ||
+                          data.facialImage ||
+                          data.faceImage ||
+                          data.photoUrl ||
+                          data.imageUrl;
+                        if (photoSrc) {
+                          if (!photoSrc.startsWith("data:")) {
+                            if (
+                              photoSrc.startsWith("/9j/") ||
+                              photoSrc.startsWith("iVBORw0KGgo")
+                            ) {
+                              const mimeType = photoSrc.startsWith("/9j/")
+                                ? "image/jpeg"
+                                : "image/png";
+                              photoSrc = `data:${mimeType};base64,${photoSrc}`;
+                            }
+                          }
+                          return (
+                            <img
+                              src={photoSrc}
+                              alt="Verification photo"
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                              }}
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                              }}
+                            />
+                          );
+                        }
+                        return <FaUserCircle />;
+                      })()}
+                    </ResultPhotoPopup>
+                    <ResultGridPopup>
+                      {getResultPreviewFields().map((field, idx) => (
+                        <ResultFieldPopup key={idx}>
+                          <ResultLabelPopup>{field.label}</ResultLabelPopup>
+                          {field.label === "Verification Status" ? (
+                            <VerifiedBadgePopup>
+                              VERIFIED <FaCheckCircle />
+                            </VerifiedBadgePopup>
+                          ) : (
+                            <ResultValuePopup>{field.value}</ResultValuePopup>
+                          )}
+                        </ResultFieldPopup>
+                      ))}
+                    </ResultGridPopup>
+                  </ResultTopPopup>
+                  <ResultFooterPopup>
+                    <span>
+                      Verified on{" "}
+                      {new Date().toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>
+                      Ref: {localStorage.getItem("transactionID") || "N/A"}
+                    </span>
+                  </ResultFooterPopup>
+                </ResultCardPopup>
+              )}
               <ResultDisclaimerPopup>
                 <FaInfoCircle />
                 Results are based on data available at the time of verification.

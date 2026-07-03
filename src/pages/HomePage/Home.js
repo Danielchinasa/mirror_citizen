@@ -471,7 +471,7 @@ const Home = () => {
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
-            <ServiceName>Person Identity Verification</ServiceName>
+            <ServiceName>NIN Verification</ServiceName>
             <ServiceDesc>
               Verify your personal identity with a government-issued ID.
             </ServiceDesc>
