@@ -37,6 +37,26 @@ export const NavLogo = styled(Link)`
   }
 `;
 
+export const NavBrand = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #111827;
+  text-decoration: none;
+
+  .brand-red {
+    color: #dd0201;
+  }
+
+  .brand-dot {
+    color: #111827;
+  }
+`;
+
 export const NavLinks = styled.div`
   display: flex;
   align-items: center;
@@ -52,7 +72,7 @@ export const NavLink = styled(Link)`
   transition: color 0.2s;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -221,7 +241,7 @@ export const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -262,7 +282,7 @@ export const RememberLabel = styled.label`
 export const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -275,7 +295,7 @@ export const LoginButton = styled.button`
   display: block;
   width: 100%;
   padding: 12px;
-  background: #DD0201;
+  background: #dd0201;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -286,7 +306,7 @@ export const LoginButton = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
   }
 
   &:disabled {
@@ -303,7 +323,7 @@ export const RegisterText = styled.p`
   margin: 16px 0 0;
 
   a {
-    color: #DD0201;
+    color: #dd0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -342,7 +362,7 @@ export const Spinner = styled.div`
   width: 32px;
   height: 32px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 

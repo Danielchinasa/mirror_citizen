@@ -13,12 +13,10 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
-
 import {
   PageWrapper,
   LoginNav,
-  NavLogo,
+  NavBrand,
   NavLinks,
   NavLink,
   MainContent,
@@ -68,11 +66,21 @@ const VerificationLoginPage = () => {
         const response = await axios.get("https://api.ipbase.com/v1/json/");
         setIpAddress(response.data.ip);
       } catch (error1) {
+        console.error("Error fetching IP from primary URL:", error1);
         try {
           const response = await axios.get("https://ipapi.co/json/");
           setIpAddress(response.data.ip);
         } catch (error2) {
-          setIpAddress(null);
+          console.error("Error fetching IP from secondary URL:", error2);
+          try {
+            const response = await axios.get(
+              "https://api.ipify.org?format=json",
+            );
+            setIpAddress(response.data.ip);
+          } catch (error3) {
+            console.error("Error fetching IP from tertiary URL:", error3);
+            setIpAddress(null);
+          }
         }
       }
     };
@@ -239,9 +247,11 @@ const VerificationLoginPage = () => {
   return (
     <PageWrapper>
       <LoginNav>
-        <NavLogo to="/">
-          <img src={Logo} alt="eCitizen" />
-        </NavLogo>
+        <NavBrand to="/">
+          <span className="brand-red">e</span>
+          <span className="brand-dot">-</span>
+          raia<span className="brand-dot">.com</span>
+        </NavBrand>
         <NavLinks>
           <NavLink to="/individual/sign-up/1">Register</NavLink>
         </NavLinks>

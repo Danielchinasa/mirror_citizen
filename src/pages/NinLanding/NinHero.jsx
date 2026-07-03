@@ -43,7 +43,7 @@ const NinHero = () => {
               in seconds
             </HeroTitle>
             <HeroSubtitle>
-              Instant, secure and reliable National Identification Number (NIN)
+              Instant, secure and reliable National Identification Number
               verification for individuals and&nbsp;businesses.
             </HeroSubtitle>
             <HeroButtons>

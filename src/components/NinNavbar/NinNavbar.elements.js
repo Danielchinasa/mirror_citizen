@@ -2,6 +2,26 @@ import styled from "styled-components";
 import { Container } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
+export const NinBrand = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #111827;
+  text-decoration: none;
+
+  .brand-red {
+    color: #dd0201;
+  }
+
+  .brand-dot {
+    color: #111827;
+  }
+`;
+
 export const NinNav = styled.nav`
   background: #fff;
   height: 80px;
@@ -60,7 +80,7 @@ export const NinNavLink = styled.a`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 
   @media screen and (max-width: 768px) {
@@ -78,7 +98,7 @@ export const NinNavLinkRouter = styled(Link)`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 
   @media screen and (max-width: 768px) {
@@ -87,7 +107,7 @@ export const NinNavLinkRouter = styled(Link)`
 `;
 
 export const NinCtaButton = styled(Link)`
-  background-color: #DD0201;
+  background-color: #dd0201;
   color: #fff;
   font-family: Arial, sans-serif;
   font-weight: 900;
@@ -105,7 +125,7 @@ export const NinCtaButton = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #ff4d4f;
     color: #fff;
   }
 

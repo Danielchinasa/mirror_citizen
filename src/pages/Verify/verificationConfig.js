@@ -17,13 +17,13 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your NIN",
+    heroTitle: "Verify Your National ID",
     heroHighlight: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
-    breadcrumb: ["Verify Identity", "NIN Verification"],
-    idTypeLabel: "National Identification Number (NIN)",
+    breadcrumb: ["Verify Identity", "National ID Verification"],
+    idTypeLabel: "National Identification Number",
     fields: [
       {
         name: "nin",
@@ -44,10 +44,10 @@ const verificationConfig = {
     ],
     sampleResult: {
       name: "Grace Ojocheneimi David",
-      identifier: "NIN: 43832856233",
+      identifier: "National ID: 43832856233",
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
-    serviceName: "NIN Verification",
+    serviceName: "National ID Verification",
     serviceFieldKey: "nin",
     priceIndex: 0,
     requiresConsent: true,
