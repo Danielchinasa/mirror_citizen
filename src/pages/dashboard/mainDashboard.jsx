@@ -550,7 +550,7 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: "green",
+                color: "#02831C",
                 fontWeight: "bold",
               }}
             >
@@ -1358,7 +1358,7 @@ const MainDashboard = () => {
     <div className="custom-statistic">
       <div
         className="custom-statistic-title"
-        style={{ textAlign: "center", color: "#3f8600" }}
+        style={{ textAlign: "center", color: "#02831C" }}
       >
         {title}
       </div>
@@ -1436,7 +1436,7 @@ const MainDashboard = () => {
                       title="Total verifications "
                       value={totalVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: "#02831C",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1465,7 +1465,7 @@ const MainDashboard = () => {
                       title="Successful verifications "
                       value={completedVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: "#02831C",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1494,7 +1494,7 @@ const MainDashboard = () => {
                       title="Unsuccessful verifications "
                       value={failedVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: "#02831C",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",

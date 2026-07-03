@@ -317,7 +317,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Error",
           text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
       }
     };
@@ -326,8 +326,8 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
-  const isNGN = currencyCheck.toUpperCase() === "NGN";
+  const currencyCheck = localStorage.getItem("currencyCheck") || "GHS";
+  const isGHS = currencyCheck.toUpperCase() === "GHS";
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -337,13 +337,13 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isNGN
+      ? isGHS
         ? config.allBureausDiscount.ngn
         : config.allBureausDiscount.usd
       : 0;
 
   const totalAmount = pricingData
-    ? isNGN
+    ? isGHS
       ? ((pricingData.serviceFee || 0) +
           (pricingData.processingFee || 0) +
           (pricingData.vat || 0)) *
@@ -354,7 +354,7 @@ const VerifyPage = () => {
         discount
     : 0;
 
-  const currencySymbol = isNGN ? "₦" : "$";
+  const currencySymbol = isGHS ? "GH₵" : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -453,7 +453,9 @@ const VerifyPage = () => {
   const buildApiFormData = () => {
     const apiForm = {
       serviceCode: config.serviceCode || "",
+      idNumber: "",
       nin: "",
+      alien_card: "",
       phone: "",
       firstname: "",
       lastname: "",
@@ -472,6 +474,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
+      consent: "true",
     };
 
     // Map form fields to API form
@@ -512,12 +515,14 @@ const VerifyPage = () => {
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
+      const initiatePayload = initiateResponse?.data || initiateResponse || {};
 
-      if (initiateResponse?.sessionStatus === "INITIATED") {
-        localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+      if (initiatePayload?.status === "INITIATED") {
+        localStorage.setItem("sessionCode", initiatePayload?.sessionId);
+        apiFormData.sessionId = initiatePayload?.sessionId;
       } else {
         throw new Error(
-          initiateResponse?.message || "Failed to initiate verification",
+          initiatePayload?.message || "Failed to initiate verification",
         );
       }
 
@@ -537,7 +542,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: err.message || "An error occurred. Please try again.",
-        confirmButtonColor: "#02831C",
+        confirmButtonColor: "#DD0201",
       });
     }
   };
@@ -551,7 +556,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Wallet Balance Low",
         text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
-        confirmButtonColor: "#02831C",
+        confirmButtonColor: "#DD0201",
       });
       return;
     }
@@ -685,7 +690,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
         return;
       }
@@ -705,7 +710,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
       }
     } catch {
@@ -713,7 +718,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: "Could not verify payment status. Please check your dashboard.",
-        confirmButtonColor: "#02831C",
+        confirmButtonColor: "#DD0201",
       });
     }
 
@@ -735,7 +740,13 @@ const VerifyPage = () => {
       let resultDetail = "";
       let resultRoute = "/main-dashboard";
 
-      if (
+      if (response?.status === "COMPLETED" && response?.result) {
+        result = response.result;
+        resultTitle = `${config.serviceName} Successful`;
+        resultDetail =
+          response.resultText || `${config.serviceName} was successful.`;
+        resultRoute = "/main-dashboard";
+      } else if (
         response.basic &&
         response.basic.status &&
         response.basic.status === true
@@ -743,7 +754,7 @@ const VerifyPage = () => {
         result =
           response.basic?.nin_data || response.basic?.data || response.basic;
         resultDetail =
-          response.basic.detail || "Your NIN verification was successful.";
+          response.basic.detail || "Your National ID was successful.";
         resultRoute = "/main-dashboard";
       } else if (
         response.basic &&
@@ -754,7 +765,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.basic.detail,
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -779,7 +790,7 @@ const VerifyPage = () => {
           text:
             response["search-extension"].phoneVerification.detail ||
             "Verification failed",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -807,7 +818,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.business.message,
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -822,7 +833,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.financial.message,
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
         return;
@@ -901,7 +912,7 @@ const VerifyPage = () => {
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
                 : "Verification failed. Please try again.",
-            confirmButtonColor: "#02831C",
+            confirmButtonColor: "#DD0201",
           });
           setCurrentStep(1);
           return;
@@ -952,7 +963,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: errorMsg,
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
       }
@@ -963,7 +974,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Service Unavailable",
         text: "Service is currently unavailable. A refund has been initiated.",
-        confirmButtonColor: "#02831C",
+        confirmButtonColor: "#DD0201",
       });
     }
   };
@@ -1106,7 +1117,7 @@ const VerifyPage = () => {
                       alignItems: "center",
                       gap: 10,
                       padding: "10px 14px",
-                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#02831C" : "#e5e7eb"}`,
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DD0201" : "#e5e7eb"}`,
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
@@ -1128,7 +1139,7 @@ const VerifyPage = () => {
                         }));
                         setError("");
                       }}
-                      style={{ accentColor: "#02831C", width: 16, height: 16 }}
+                      style={{ accentColor: "#DD0201", width: 16, height: 16 }}
                     />
                     {bureau.label}
                   </label>
@@ -1149,7 +1160,7 @@ const VerifyPage = () => {
                   }}
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
-                  {(isNGN
+                  {(isGHS
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -1185,11 +1196,11 @@ const VerifyPage = () => {
           <PriceBreakdown>
             {pricingData &&
               (() => {
-                const processingFees = isNGN
+                const processingFees = isGHS
                   ? (pricingData.serviceFee || 0) +
                     (pricingData.processingFee || 0)
                   : pricingData.serviceFeeusd || 0;
-                const taxCharges = isNGN
+                const taxCharges = isGHS
                   ? pricingData.vat || 0
                   : pricingData.vatUsd || 0;
                 const perBureau = processingFees + taxCharges;
@@ -1375,7 +1386,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN
+                    (isGHS
                       ? (pricingData.serviceFee || 0) +
                         (pricingData.processingFee || 0)
                       : pricingData.serviceFeeusd || 0) * bureauMultiplier
@@ -1390,7 +1401,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
+                    (isGHS ? pricingData.vat : pricingData.vatUsd || 0) *
                     bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
@@ -1417,7 +1428,7 @@ const VerifyPage = () => {
           </PayBtn>
 
           <SecuredBy>
-            <FaShieldAlt style={{ color: "#02831C" }} />
+            <FaShieldAlt style={{ color: "#DD0201" }} />
             Secured and encrypted payment
           </SecuredBy>
 
@@ -1644,14 +1655,14 @@ const VerifyPage = () => {
               width: 56,
               height: 56,
               borderRadius: "50%",
-              background: "#dcfce7",
+              background: "#fdecec",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               margin: "0 auto 16px",
             }}
           >
-            <FaCheckCircle style={{ fontSize: 28, color: "#02831C" }} />
+            <FaCheckCircle style={{ fontSize: 28, color: "#DD0201" }} />
           </div>
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
@@ -1775,7 +1786,7 @@ const VerifyPage = () => {
               <div
                 style={{
                   fontSize: 14,
-                  color: "#02831C",
+                  color: "#DD0201",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: 700,
                 }}
@@ -1821,7 +1832,7 @@ const VerifyPage = () => {
                   marginBottom: 8,
                 }}
               >
-                <FaCheckCircle style={{ color: "#02831C", fontSize: 14 }} />
+                <FaCheckCircle style={{ color: "#DD0201", fontSize: 14 }} />
                 <span
                   style={{
                     fontSize: 14,

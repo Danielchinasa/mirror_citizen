@@ -59,24 +59,13 @@ const VerificationLoginPage = () => {
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const [ipAddress, setIpAddress] = useState(null);
+  const [ipAddress, setIpAddress] = useState("41.212.86.175");
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   useEffect(() => {
-    const fetchIpAddress = async () => {
-      try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
-      } catch (error1) {
-        try {
-          const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
-        } catch (error2) {
-          setIpAddress(null);
-        }
-      }
-    };
-    fetchIpAddress();
+    // TODO: remove hardcoded IP before release
+    // const fetchIpAddress = async () => { ... }
+    // fetchIpAddress();
 
     const rememberedEmail = Cookies.get("rememberedEmail");
     if (rememberedEmail) {

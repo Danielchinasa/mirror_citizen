@@ -59,7 +59,7 @@ const LoginForm = (props) => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const [ipAddress, setIpAddress] = useState(null);
+  const [ipAddress, setIpAddress] = useState("41.212.86.175");
   const [ipCountry, setIpCountry] = useState(null);
 
   const openNotification = (placement) => {
@@ -78,28 +78,9 @@ const LoginForm = (props) => {
   );
 
   useEffect(() => {
-    const fetchIpAddress = async () => {
-      try {
-        // Attempt to fetch IP address from the first URL
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
-      } catch (error1) {
-        console.error("Error fetching IP address from primary URL:", error1);
-        try {
-          // Attempt to fetch IP address from the second URL if the first one fails
-          const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
-        } catch (error2) {
-          console.error(
-            "Error fetching IP address from secondary URL:",
-            error2,
-          );
-          setIpAddress(null); // Set IP address to null if both URLs fail
-        }
-      }
-    };
-
-    fetchIpAddress();
+    // TODO: remove hardcoded IP before release
+    // const fetchIpAddress = async () => { ... }
+    // fetchIpAddress();
 
     // Retrieve email from cookie and set in state when component mounts
     const rememberedEmail = Cookies.get("rememberedEmail");

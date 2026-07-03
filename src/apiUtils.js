@@ -14,8 +14,8 @@ export const apiGet = async (endpoint, token = null, options = {}) => {
     }
 
     const response = await axios.get(`${baseUrl}${endpoint}`, {
-      headers,
       ...options,
+      headers,
     });
 
     if (response.status < 200 || response.status >= 300) {
@@ -32,7 +32,7 @@ export const apiGet = async (endpoint, token = null, options = {}) => {
 export const apiGetInternalCall = async (
   endpoint,
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
     const headers = {
@@ -45,8 +45,8 @@ export const apiGetInternalCall = async (
     }
 
     const response = await axios.get(`${baseUrl}${endpoint}`, {
-      headers,
       ...options,
+      headers,
     });
 
     if (response.status < 200 || response.status >= 300) {
@@ -65,7 +65,7 @@ export const apiPost = async (
   endpoint,
   data = {},
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
     const headers = {
@@ -78,8 +78,8 @@ export const apiPost = async (
     }
 
     const response = await axios.post(`${baseUrl}${endpoint}`, data, {
-      headers,
       ...options,
+      headers,
     });
 
     if (response.status < 200 || response.status >= 300) {
@@ -97,7 +97,7 @@ export const apiPostInternalCall = async (
   endpoint,
   data = {},
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
     const headers = {
@@ -110,8 +110,8 @@ export const apiPostInternalCall = async (
     }
 
     const response = await axios.post(`${baseUrl}${endpoint}`, data, {
-      headers,
       ...options,
+      headers,
     });
 
     if (response.status < 200 || response.status >= 300) {
@@ -130,7 +130,7 @@ export const apiPut = async (
   endpoint,
   data = {},
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
     const headers = {
@@ -143,8 +143,8 @@ export const apiPut = async (
     }
 
     const response = await axios.put(`${baseUrl}${endpoint}`, data, {
-      headers,
       ...options,
+      headers,
     });
 
     if (response.status < 200 || response.status >= 300) {

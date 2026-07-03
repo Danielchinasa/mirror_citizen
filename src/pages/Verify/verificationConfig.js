@@ -17,17 +17,18 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your NIN",
-    heroHighlight: "in seconds",
+    heroTitle: "Verify Your ",
+    heroHighlight: "National ID",
+    heroTitleContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
-    breadcrumb: ["Verify Identity", "NIN Verification"],
-    idTypeLabel: "National Identification Number (NIN)",
+    breadcrumb: ["Verify Identity", "National ID"],
+    idTypeLabel: "National ID",
     fields: [
       {
-        name: "nin",
-        label: "NIN",
+        name: "idNumber",
+        label: "National ID",
         placeholder: "Enter 11 digits NIN",
         type: "text",
         maxLength: 11,
@@ -47,10 +48,10 @@ const verificationConfig = {
       identifier: "NIN: 43832856233",
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
-    serviceName: "NIN Verification",
-    serviceCode: "ID_CARD",
-    apiServiceName: "ID_CARD",
-    serviceFieldKey: "nin",
+    serviceName: "National ID",
+    serviceCode: "NATIONAL_ID",
+    apiServiceName: "National ID",
+    serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: true,
     trustBar: [
@@ -296,7 +297,7 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
-    serviceCode: "VIN",
+    serviceCode: "VIN_ID",
     apiServiceName: "VIN",
     serviceFieldKey: "vin",
     priceIndex: 5,
