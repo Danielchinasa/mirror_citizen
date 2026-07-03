@@ -111,7 +111,7 @@ const Home = () => {
   const { isDark } = useTheme();
   const { bgContainer, text } = token;
   const ninVerify = useAuthRedirect("/verify/nin");
-  const alienCardVerify = useAuthRedirect("/verify/nin");
+  const alienCardVerify = useAuthRedirect("/verify/alien");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
 
   useEffect(() => {

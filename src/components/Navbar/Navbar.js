@@ -888,15 +888,11 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <Link to={isAuthenticated ? "/dashboard" : "/"}>
-              {/* <Logo style={{ marginTop: "10px" }} /> */}
-              <img
-                src={isDark ? LogoWhite : Logo}
-                alt="Logo"
-                width={230}
-                style={{ marginTop: "10px", cursor: "pointer" }}
-              />
-            </Link>
+            <PublicBrand to="/">
+              <span className="brand-red">e</span>
+              <span className="brand-dot">-</span>
+              raia<span className="brand-dot">.com</span>
+            </PublicBrand>
             <HamburgerIcon onClick={handleClick}>
               {click ? (
                 <FaTimes />

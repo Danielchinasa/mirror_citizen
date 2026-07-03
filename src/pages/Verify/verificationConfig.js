@@ -17,13 +17,14 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your NIN",
-    heroHighlight: "in seconds",
+    heroTitle: "Verify Your ",
+    heroHighlight: "National ID",
+    heroTitleContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
-    breadcrumb: ["Verify Identity", "NIN Verification"],
-    idTypeLabel: "National Identification Number (NIN)",
+    breadcrumb: ["Verify Identity", "National ID"],
+    idTypeLabel: "National ID",
     fields: [
       {
         name: "nin",
@@ -47,7 +48,9 @@ const verificationConfig = {
       identifier: "NIN: 43832856233",
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
-    serviceName: "NIN Verification",
+    serviceName: "National ID",
+    serviceCode: "NATIONAL_ID",
+    apiServiceName: "National ID",
     serviceFieldKey: "nin",
     priceIndex: 0,
     requiresConsent: true,
@@ -262,6 +265,51 @@ const verificationConfig = {
     ],
   },
 
+  alien: {
+    heroTitle: "Verify Your ",
+    heroHighlight: "Alien Card",
+    heroTitleContinue: "in seconds",
+    heroSubtitle:
+      "Enter details, pay securely and get accurate results instantly.",
+    heroImage: require("../../images/nin_verification_hero2.png"),
+    breadcrumb: ["Verify Identity", "Alien Card Verification"],
+    idTypeLabel: "Alien Card Number",
+    fields: [
+      {
+        name: "alien_card",
+        label: "Alien Card Number",
+        placeholder: "Enter Alien Card Number",
+        type: "text",
+        maxLength: 20,
+        showCounter: true,
+        required: true,
+      },
+    ],
+    youWillGet: [
+      { icon: FaUser, text: "Full personal details" },
+      { icon: FaIdCard, text: "Card details" },
+      { icon: FaCheckCircle, text: "Verification status" },
+      { icon: FaBolt, text: "Instant results" },
+    ],
+    sampleResult: {
+      name: "Jane Doe",
+      identifier: "Alien Card: ******1234",
+      tags: ["Full Name", "Card Number", "Status", "And more..."],
+    },
+    serviceName: "Alien Card Verification",
+    serviceCode: "ALIEN_ID",
+    apiServiceName: "Alien Card",
+    serviceFieldKey: "alien_card",
+    priceIndex: 0,
+    requiresConsent: true,
+    trustBar: [
+      { title: "Secure & Private", desc: "Your data is protected" },
+      { title: "Instant Results", desc: "Get results in seconds" },
+      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "500,000+ Users", desc: "Trust e-citizen" },
+    ],
+  },
+
   vehicle: {
     heroTitle: "Check ",
     heroHighlight: "Vehicle History",
@@ -294,6 +342,8 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
+    serviceCode: "VIN_ID",
+    apiServiceName: "VIN",
     serviceFieldKey: "vin",
     priceIndex: 5,
     trustBar: [

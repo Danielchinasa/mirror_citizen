@@ -176,7 +176,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -216,7 +216,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -273,7 +273,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -292,7 +292,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #DD0201;
+    color: #dd0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -336,8 +336,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: #fff;
-  border: 1px solid #DD0201;
-  color: #DD0201;
+  border: 1px solid #dd0201;
+  color: #dd0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -422,7 +422,7 @@ const ResultValue = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -844,9 +844,7 @@ const NinLoginSample = () => {
             <SampleCardTitle>Sample result</SampleCardTitle>
             <SampleBadge>This is a sample only</SampleBadge>
           </SampleHeader>
-          <SampleCardSub>
-            See an example of a NIN verification result.
-          </SampleCardSub>
+          <SampleCardSub>See an example of a National ID result.</SampleCardSub>
           <ResultCard>
             <ResultTop>
               <ResultPhoto>

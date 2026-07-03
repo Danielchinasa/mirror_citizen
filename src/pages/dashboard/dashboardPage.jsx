@@ -1446,17 +1446,18 @@ const DashboardPage = () => {
         const initiateResponse = await dispatch(
           initiateVerificationRequest(formData, userToken),
         );
+        const walletSessionId = initiateResponse?.sessionId;
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
         if (initiateResponse?.sessionStatus == "INITIATED") {
-          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          localStorage.setItem("sessionCode", walletSessionId);
           setIsConfirmedBtnClicked(false);
           setLoadingSmall(false);
         }
         try {
           const apiUrl = `${baseUrl}/transaction/wallet-payment`;
           const requestBody = {
-            sessionCode: localStorage.getItem("sessionCode"),
+            sessionCode: walletSessionId,
             userNIN: userNin,
             transactionID: randomTransactionId,
             currency: localStorage.getItem("currency") || "NGN",
@@ -1576,10 +1577,11 @@ const DashboardPage = () => {
         const initiateResponse = await dispatch(
           initiateVerificationRequest(formData, userToken),
         );
+        const flwSessionId = initiateResponse?.sessionId;
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
         if (initiateResponse?.sessionStatus == "INITIATED") {
-          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          localStorage.setItem("sessionCode", flwSessionId);
           setIsConfirmedBtnClicked(false);
           setLoadingSmall(false);
         }
@@ -1596,7 +1598,7 @@ const DashboardPage = () => {
             description: "Payment for verification",
             payment_method: "card,mobilemoney,ussd",
             type: "VERIFICATION",
-            sessionCode: localStorage.getItem("sessionCode"),
+            sessionCode: flwSessionId,
           };
           const response = await fetch(`${baseUrl}/payment/flexi-initiate`, {
             method: "POST",
@@ -1746,10 +1748,11 @@ const DashboardPage = () => {
         const initiateResponse = await dispatch(
           initiateVerificationRequest(formData, userToken),
         );
+        const paypalSessionId = initiateResponse?.sessionId;
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
         if (initiateResponse?.sessionStatus == "INITIATED") {
-          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          localStorage.setItem("sessionCode", paypalSessionId);
           setIsConfirmedBtnClicked(false);
           setLoadingSmall(false);
         }
@@ -1766,7 +1769,7 @@ const DashboardPage = () => {
             email: userEmail,
             type: "VERIFICATION",
             stakeHolders: "NON-STAKEHOLDER",
-            sessionCode: localStorage.getItem("sessionCode"),
+            sessionCode: paypalSessionId,
             return_url: window.location.origin + "/payment/success",
             cancel_url: window.location.origin + "/payment/failure",
           };
@@ -1919,10 +1922,11 @@ const DashboardPage = () => {
         const initiateResponse = await dispatch(
           initiateVerificationRequest(formData, userToken),
         );
+        const paystackSessionId = initiateResponse?.sessionId;
         setIsConfirmedBtnClicked(false);
         setLoadingSmall(false);
         if (initiateResponse?.sessionStatus == "INITIATED") {
-          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          localStorage.setItem("sessionCode", paystackSessionId);
           setIsConfirmedBtnClicked(false);
           setLoadingSmall(false);
         }
@@ -1937,7 +1941,7 @@ const DashboardPage = () => {
                 : `${totalServiceCost}`,
             currency: paystackCurrency,
             type: "VERIFICATION",
-            sessionCode: localStorage.getItem("sessionCode"),
+            sessionCode: paystackSessionId,
             stakeHolders: null,
           };
 

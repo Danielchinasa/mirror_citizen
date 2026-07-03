@@ -21,13 +21,13 @@ const NinSampleResult = () => {
     <SampleSectionWrapper id="sample-result">
       <SampleContent>
         <SampleImageWrapper>
-          <img src={ninSampleImg} alt="Sample NIN Verification Result" />
+          <img src={ninSampleImg} alt="Sample National ID Result" />
         </SampleImageWrapper>
         <SampleInfo>
           <SampleTitle>What You Get in a NIN Report</SampleTitle>
           <SampleDesc>
-            Each NIN verification returns comprehensive identity details sourced
-            from official records, helping you make informed decisions.
+            Each National ID returns comprehensive identity details sourced from
+            official records, helping you make informed decisions.
           </SampleDesc>
           <CheckList>
             <CheckItem>

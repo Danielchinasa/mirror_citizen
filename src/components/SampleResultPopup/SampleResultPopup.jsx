@@ -15,7 +15,7 @@ import phoneSampleAvatar from "../../images/avatar1.jpg";
 
 const sampleData = {
   nin: {
-    subtitle: "See an example of a NIN verification result.",
+    subtitle: "See an example of a National ID result.",
     image: ninSampleAvatar,
     fields: [
       ["Full Name", "DANIEL CHINASA OKORO"],
@@ -296,7 +296,7 @@ const CloseButton = styled.button`
 
   &:hover {
     background: #f9fafb;
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -322,7 +322,7 @@ const Avatar = styled.div`
   height: 86px;
   border-radius: 50%;
   background: #fdecec;
-  color: #DD0201;
+  color: #dd0201;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -381,7 +381,7 @@ const VerifiedValue = styled(ResultValue)`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #DD0201;
+  color: #dd0201;
 
   svg {
     font-size: 12px;
@@ -398,7 +398,7 @@ const Disclaimer = styled.div`
   color: #667085;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     flex-shrink: 0;
   }
 `;

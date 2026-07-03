@@ -31,10 +31,10 @@ const NinHero = () => {
   return (
     <>
       <HeroSectionWrapper>
-        <HeroBgImage src={ninHeroImg} alt="NIN Verification on eCitizen" />
+        <HeroBgImage src={ninHeroImg} alt="National ID on eCitizen" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>NIN VERIFICATION</HeroTag>
+            <HeroTag>National ID</HeroTag>
             <HeroTitle>
               Verify your
               <br />
