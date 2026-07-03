@@ -19,7 +19,7 @@ const ComplianceInner = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 40px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 40px;
 
@@ -37,7 +37,7 @@ const ComplianceTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 6px;
 
   @media screen and (max-width: 768px) {
@@ -48,7 +48,7 @@ const ComplianceTitle = styled.h3`
 const ComplianceDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0;
 `;
 
@@ -72,7 +72,7 @@ const LogoBadge = styled.div`
   justify-content: center;
   min-width: 80px;
   min-height: 50px;
-  background: #fff;
+  background: var(--ec-logo-badge-bg);
 
   img {
     max-height: 36px;
@@ -85,7 +85,7 @@ const LogoText = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 800;
   font-size: ${(props) => props.size || "18px"};
-  color: ${(props) => props.color || "#1a1a1a"};
+  color: ${(props) => props.color || "var(--ec-text)"};
   letter-spacing: ${(props) => props.spacing || "0"};
 `;
 

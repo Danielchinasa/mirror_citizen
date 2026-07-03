@@ -3,7 +3,7 @@ import { Container } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
 export const NinNav = styled.nav`
-  background: #fff;
+  background: var(--ec-bg);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -35,7 +35,7 @@ export const NinNavMenu = styled.ul`
     position: absolute;
     top: 80px;
     left: 0;
-    background: #fff;
+    background: var(--ec-bg);
     padding: 20px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     gap: 0;
@@ -53,7 +53,7 @@ export const NinNavItem = styled.li`
 `;
 
 export const NinNavLink = styled.a`
-  color: #333;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
@@ -62,7 +62,7 @@ export const NinNavLink = styled.a`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #09c93a;
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 768px) {
@@ -71,7 +71,7 @@ export const NinNavLink = styled.a`
 `;
 
 export const NinNavLinkRouter = styled(Link)`
-  color: #333;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
@@ -80,7 +80,7 @@ export const NinNavLinkRouter = styled(Link)`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #09c93a;
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 768px) {
@@ -89,7 +89,7 @@ export const NinNavLinkRouter = styled(Link)`
 `;
 
 export const NinCtaButton = styled(Link)`
-  background-color: #09c93a;
+  background-color: var(--ec-primary);
   color: #fff;
   font-family: Arial, sans-serif;
   font-weight: 900;
@@ -107,7 +107,7 @@ export const NinCtaButton = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #16ef4d;
+    background-color: var(--ec-primary-hover);
     color: #fff;
   }
 
@@ -131,8 +131,8 @@ export const DropdownWrapper = styled.div`
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   min-width: 220px;
@@ -156,23 +156,25 @@ export const DropdownItem = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: var(--ec-text);
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 
   &:hover {
-    background: #f5f5f5;
-    color: #09c93a;
+    background: var(--ec-bg-secondary);
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 768px) {
     padding: 10px 24px;
-    color: #555;
+    color: var(--ec-text-secondary);
 
     &:hover {
       background: transparent;
-      color: #09c93a;
+      color: var(--ec-primary);
     }
   }
 `;

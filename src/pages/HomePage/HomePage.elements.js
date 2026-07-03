@@ -10,7 +10,7 @@ export const HeroWrapper = styled.section`
   min-height: 580px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #ffffff 0%, #f0f7f0 50%, #e0efe0 100%);
+  background: var(--ec-hero-gradient);
   padding: 60px 0;
   overflow: hidden;
 
@@ -21,11 +21,7 @@ export const HeroWrapper = styled.section`
     left: 0;
     width: 60%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      #ffffff 35%,
-      rgba(255, 255, 255, 0) 100%
-    );
+    background: var(--ec-hero-overlay);
     z-index: 1;
     pointer-events: none;
   }
@@ -41,12 +37,7 @@ export const HeroWrapper = styled.section`
       height: 100%;
       top: 0;
       bottom: auto;
-      background: linear-gradient(
-        180deg,
-        #ffffff 0%,
-        rgba(255, 255, 255, 0.78) 46%,
-        rgba(224, 239, 224, 0.72) 100%
-      );
+      background: var(--ec-hero-overlay-mobile);
     }
   }
 
@@ -120,8 +111,8 @@ export const HeroContent = styled.div`
 
 export const HeroTag = styled.span`
   display: inline-block;
-  background: #e6f9ed;
-  color: #068a28;
+  background: var(--ec-tag-bg);
+  color: var(--ec-tag-text);
   font-family: "Nunito", sans-serif;
   font-weight: 800;
   font-size: 14px;
@@ -137,11 +128,11 @@ export const HeroTitle = styled.h1`
   font-size: 48px;
   font-weight: 700;
   line-height: 1.1;
-  color: #354138;
+  color: var(--ec-heading);
   margin-bottom: 24px;
 
   span {
-    color: #09c93a;
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 960px) {
@@ -160,7 +151,7 @@ export const HeroTitle = styled.h1`
 export const HeroSubtitle = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #555;
+  color: var(--ec-text-secondary);
   line-height: 1.6;
   margin-bottom: 32px;
   max-width: 440px;
@@ -189,7 +180,7 @@ export const HeroButtons = styled.div`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #09c93a;
+  background-color: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -206,7 +197,7 @@ export const PrimaryBtn = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #16ef4d;
+    background-color: var(--ec-primary-hover);
     color: #fff;
   }
 
@@ -222,13 +213,13 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #333;
+  color: var(--ec-text);
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
   padding: 12px 32px;
   border-radius: 10px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -238,8 +229,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    border-color: #09c93a;
-    color: #09c93a;
+    border-color: var(--ec-primary);
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 600px) {
@@ -275,11 +266,11 @@ export const TrustIcon = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #e6f9ed;
+  background: var(--ec-primary-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #09c93a;
+  color: var(--ec-primary);
   font-size: 14px;
   flex-shrink: 0;
 `;
@@ -291,14 +282,14 @@ export const TrustTitle = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 13px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 export const TrustDesc = styled.span`
   display: block;
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
 `;
 
 export const SocialProof = styled.div`
@@ -307,7 +298,7 @@ export const SocialProof = styled.div`
   gap: 12px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
 
   @media screen and (max-width: 960px) {
     justify-content: center;
@@ -322,7 +313,7 @@ export const AvatarStack = styled.div`
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 2px solid var(--ec-bg);
     margin-left: -8px;
     object-fit: cover;
 
@@ -357,7 +348,7 @@ export const SectionHeading = styled.h2`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 32px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin-bottom: 8px;
 
   @media screen and (max-width: 768px) {
@@ -368,7 +359,7 @@ export const SectionHeading = styled.h2`
 export const SectionSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin-bottom: 48px;
 `;
 
@@ -405,7 +396,7 @@ export const StepNumber = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #09c93a;
+  background: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -420,11 +411,11 @@ export const StepIconBox = styled.div`
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: #f5f5f5;
+  background: var(--ec-step-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
+  color: var(--ec-text-secondary);
   font-size: 18px;
   flex-shrink: 0;
 `;
@@ -433,14 +424,14 @@ export const StepName = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 6px;
 `;
 
 export const StepDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 1.5;
   margin: 0;
 `;
@@ -450,7 +441,7 @@ export const StepArrow = styled.div`
   align-items: center;
   padding: 0 16px;
   margin-top: 22px;
-  color: #09c93a;
+  color: var(--ec-primary);
   font-size: 20px;
 
   @media screen and (max-width: 768px) {
@@ -491,15 +482,17 @@ export const CardsGrid = styled.div`
 `;
 
 export const ServiceCard = styled.div`
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#09c93a" : "#e5e7eb")};
+  border: 1.5px solid
+    ${({ $popular }) => ($popular ? "var(--ec-primary)" : "var(--ec-border)")};
   border-radius: 14px;
   padding: 28px 24px;
   text-align: center;
   position: relative;
+  background: var(--ec-bg-card);
   transition: box-shadow 0.3s;
 
   &:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px var(--ec-shadow);
   }
 `;
 
@@ -508,7 +501,7 @@ export const PopularBadge = styled.span`
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #09c93a;
+  background: var(--ec-primary);
   color: #fff;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
@@ -524,11 +517,11 @@ export const ServiceIcon = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: #f0fdf4;
+  background: var(--ec-bg-card-alt);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #09c93a;
+  color: var(--ec-primary);
   font-size: 24px;
   margin: 0 auto 16px;
 `;
@@ -537,14 +530,14 @@ export const ServiceName = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 6px;
 `;
 
 export const ServiceDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 1.5;
   margin: 0 0 16px;
 `;
@@ -553,7 +546,7 @@ export const ServicePrice = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 28px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin-bottom: 16px;
 `;
 
@@ -567,14 +560,14 @@ export const FeatureList = styled.ul`
 export const FeatureItem = styled.li`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
   padding: 4px 0;
   display: flex;
   align-items: center;
   gap: 8px;
 
   svg {
-    color: #09c93a;
+    color: var(--ec-primary);
     font-size: 12px;
     flex-shrink: 0;
   }
@@ -591,14 +584,17 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#09c93a" : "#fff")};
-  color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#09c93a" : "#e5e7eb")};
+  background: ${({ $popular }) =>
+    $popular ? "var(--ec-primary)" : "var(--ec-bg-card)"};
+  color: ${({ $popular }) => ($popular ? "#fff" : "var(--ec-text)")};
+  border: 1.5px solid
+    ${({ $popular }) => ($popular ? "var(--ec-primary)" : "var(--ec-border)")};
 
   &:hover {
-    background: ${({ $popular }) => ($popular ? "#16ef4d" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#09c93a")};
-    border-color: #09c93a;
+    background: ${({ $popular }) =>
+      $popular ? "var(--ec-primary-hover)" : "var(--ec-bg-secondary)"};
+    color: ${({ $popular }) => ($popular ? "#fff" : "var(--ec-primary)")};
+    border-color: var(--ec-primary);
   }
 `;
 
@@ -609,12 +605,12 @@ export const LearnMoreLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #09c93a;
+  color: var(--ec-primary);
   text-decoration: none;
   margin-top: 12px;
 
   &:hover {
-    color: #078a28;
+    color: var(--ec-primary-dark);
   }
 `;
 
@@ -625,11 +621,11 @@ export const ViewAllLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #09c93a;
+  color: var(--ec-primary);
   text-decoration: none;
 
   &:hover {
-    color: #078a28;
+    color: var(--ec-primary-dark);
   }
 `;
 
@@ -648,8 +644,8 @@ export const ComplianceSection = styled.section`
 `;
 
 export const ComplianceInner = styled.div`
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-compliance-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 14px;
   padding: 32px 40px;
   display: flex;
@@ -671,14 +667,14 @@ export const ComplianceTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 export const ComplianceDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0;
 `;
 
@@ -724,7 +720,7 @@ export const CtaSection = styled.section`
 `;
 
 export const CtaInner = styled.div`
-  background: #f0fdf4;
+  background: var(--ec-cta-bg);
   border-radius: 14px;
   padding: 36px 40px;
   display: flex;
@@ -742,7 +738,7 @@ export const CtaShield = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #d1fae5;
+  background: var(--ec-cta-shield-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -750,7 +746,7 @@ export const CtaShield = styled.div`
 
   svg {
     font-size: 26px;
-    color: #09c93a;
+    color: var(--ec-primary);
   }
 `;
 
@@ -762,19 +758,19 @@ export const CtaTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 export const CtaDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin: 0;
 `;
 
 export const CtaButton = styled(Link)`
-  background: #09c93a;
+  background: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -791,7 +787,7 @@ export const CtaButton = styled(Link)`
   flex-shrink: 0;
 
   &:hover {
-    background: #16ef4d;
+    background: var(--ec-primary-hover);
     color: #fff;
   }
 `;

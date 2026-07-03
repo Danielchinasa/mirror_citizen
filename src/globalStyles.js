@@ -15,6 +15,11 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Nunito';
     cursor: default;
 }
+body {
+  background-color: var(--ec-bg, #ffffff);
+  color: var(--ec-text, #1a1a1a);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(155, 155, 155, 0.5) transparent;

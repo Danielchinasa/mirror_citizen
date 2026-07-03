@@ -23,7 +23,7 @@ const HowHeader = styled.div`
 const HowLine = styled.div`
   width: 60px;
   height: 2px;
-  background: #09c93a;
+  background: var(--ec-primary);
 
   @media screen and (max-width: 600px) {
     width: 30px;
@@ -34,7 +34,7 @@ const HowTitle = styled.h2`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 28px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0;
   white-space: nowrap;
 
@@ -74,8 +74,8 @@ const StepNumberCircle = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid #09c93a;
-  color: #09c93a;
+  border: 2px solid var(--ec-primary);
+  color: var(--ec-primary);
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -89,11 +89,11 @@ const StepIconBox = styled.div`
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: #f0f0f0;
+  background: var(--ec-step-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
+  color: var(--ec-text-secondary);
   font-size: 18px;
   flex-shrink: 0;
 `;
@@ -107,14 +107,14 @@ const StepName = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 const StepDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 1.5;
   margin: 0;
 `;
