@@ -59,7 +59,7 @@ const LoginForm = (props) => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const [ipAddress, setIpAddress] = useState(null);
+  const [ipAddress, setIpAddress] = useState("41.212.86.175"); // TODO: remove hardcoded IP before release
   const [ipCountry, setIpCountry] = useState(null);
 
   const openNotification = (placement) => {
@@ -82,19 +82,19 @@ const LoginForm = (props) => {
       try {
         // Attempt to fetch IP address from the first URL
         const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
+        // setIpAddress(response.data.ip); // TODO: restore when removing hardcoded IP
       } catch (error1) {
         console.error("Error fetching IP address from primary URL:", error1);
         try {
           // Attempt to fetch IP address from the second URL if the first one fails
           const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
+          // setIpAddress(response.data.ip); // TODO: restore when removing hardcoded IP
         } catch (error2) {
           console.error(
             "Error fetching IP address from secondary URL:",
             error2,
           );
-          setIpAddress(null); // Set IP address to null if both URLs fail
+          // setIpAddress(null); // TODO: restore when removing hardcoded IP
         }
       }
     };

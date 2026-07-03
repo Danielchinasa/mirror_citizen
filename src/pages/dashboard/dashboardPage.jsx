@@ -1460,7 +1460,7 @@ const DashboardPage = () => {
             sessionCode: walletSessionId,
             userNIN: userNin,
             transactionID: randomTransactionId,
-            currency: localStorage.getItem("currency") || "NGN",
+            currency: localStorage.getItem("currency") || "KES",
             paymentType: localStorage.getItem("paymentType") || "WALLET",
             amount:
               userCurrency.toUpperCase() === "NGN" &&

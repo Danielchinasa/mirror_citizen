@@ -37,7 +37,9 @@ export const fetchVerificationServicePrices =
           : services[config.apiServiceName];
         rate = response.data?.rate;
       } else {
-        const ipAddress = localStorage.getItem("IpAddress");
+        // TODO: remove hardcoded IP before release
+        // const ipAddress = localStorage.getItem("IpAddress");
+        const ipAddress = "41.212.86.175";
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
@@ -332,7 +334,7 @@ export const sendVerificationRequest =
 
       const restructuredData = {
         payment: {
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "KES",
           transactionID: transactionID || randomTransactionId,
           paymentType: paymentType || "INSTANT",
         },
@@ -370,16 +372,28 @@ export const sendVerificationRequest =
         },
       };
 
-      // Remove fields with empty strings from the payload
+      // Remove empty nested fields and empty root strings while preserving booleans like consent
       Object.keys(restructuredData).forEach((section) => {
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
+        const sectionData = restructuredData[section];
 
-        // Remove the section if it has no fields
-        if (Object.keys(restructuredData[section]).length === 0) {
+        if (
+          sectionData &&
+          typeof sectionData === "object" &&
+          !Array.isArray(sectionData)
+        ) {
+          Object.keys(sectionData).forEach((field) => {
+            if (sectionData[field] === "") {
+              delete sectionData[field];
+            }
+          });
+
+          if (Object.keys(sectionData).length === 0) {
+            delete restructuredData[section];
+          }
+          return;
+        }
+
+        if (sectionData === "") {
           delete restructuredData[section];
         }
       });
@@ -588,14 +602,16 @@ export const initiateVerificationRequest =
       const restructuredData = {
         ...(formData.serviceCode && { serviceCode: formData.serviceCode }),
         payment: {
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "KES",
           paymentType: paymentType || "INSTANT",
         },
+        consent: "true",
         "search-extension": {
           "phone-number": formData.phone || "",
         },
         basic: {
           // phoneNumber: formData.phone || "",
+          idNumber: formData.idNumber || "",
           nin: formData.nin || "",
           nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",
@@ -629,16 +645,28 @@ export const initiateVerificationRequest =
         },
       };
 
-      // Remove fields with empty strings from the payload
+      // Remove empty nested fields and empty root strings while preserving booleans like consent
       Object.keys(restructuredData).forEach((section) => {
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
+        const sectionData = restructuredData[section];
 
-        // Remove the section if it has no fields
-        if (Object.keys(restructuredData[section]).length === 0) {
+        if (
+          sectionData &&
+          typeof sectionData === "object" &&
+          !Array.isArray(sectionData)
+        ) {
+          Object.keys(sectionData).forEach((field) => {
+            if (sectionData[field] === "") {
+              delete sectionData[field];
+            }
+          });
+
+          if (Object.keys(sectionData).length === 0) {
+            delete restructuredData[section];
+          }
+          return;
+        }
+
+        if (sectionData === "") {
           delete restructuredData[section];
         }
       });
@@ -646,6 +674,7 @@ export const initiateVerificationRequest =
         `/africa/verification/KE/initiate`,
         restructuredData,
         token,
+        { headers: { "X-Forwarded-For": "41.212.86.175" } }, // TODO: remove hardcoded IP before release
       );
 
       // dispatch({
@@ -691,16 +720,28 @@ export const initiateStakeHoldersRequest =
         },
       };
 
-      // Remove fields with empty strings from the payload
+      // Remove empty nested fields and empty root strings while preserving booleans like consent
       Object.keys(restructuredData).forEach((section) => {
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
+        const sectionData = restructuredData[section];
 
-        // Remove the section if it has no fields
-        if (Object.keys(restructuredData[section]).length === 0) {
+        if (
+          sectionData &&
+          typeof sectionData === "object" &&
+          !Array.isArray(sectionData)
+        ) {
+          Object.keys(sectionData).forEach((field) => {
+            if (sectionData[field] === "") {
+              delete sectionData[field];
+            }
+          });
+
+          if (Object.keys(sectionData).length === 0) {
+            delete restructuredData[section];
+          }
+          return;
+        }
+
+        if (sectionData === "") {
           delete restructuredData[section];
         }
       });
@@ -708,6 +749,7 @@ export const initiateStakeHoldersRequest =
         `/africa/verification/KE/initiate`,
         restructuredData,
         token,
+        { headers: { "X-Forwarded-For": "41.212.86.175" } }, // TODO: remove hardcoded IP before release
       );
 
       // Return the user data upon successful verification
@@ -771,19 +813,23 @@ export const completeVerificationRequest =
 
       const restructuredData = {
         payment: {
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "KES",
           transactionID: transactionID || randomTransactionId,
           paymentType: paymentType || "INSTANT",
         },
-        sessionCode: localStorage.getItem("sessionCode") || "",
+        sessionId:
+          formData.sessionId || localStorage.getItem("sessionCode") || "",
         sessionStatus: "COMPLETED",
         paymentType: paymentType || "INSTANT",
+        idNumber: formData.idNumber || "",
+        consent: "true",
         "search-extension": {
           "phone-number": formData.phone || "",
         },
         basic: {
           // phoneNumber: formData.phone || "",
           nin: formData.nin || "",
+          idNumber: formData.idNumber || "",
           nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",
           gender: formData.gender || "",
@@ -829,7 +875,7 @@ export const completeVerificationRequest =
         }
       });
       const response = await apiPost(
-        `/verification/complete `,
+        `/africa/verification/KE/complete`,
         restructuredData,
         token,
       );
@@ -841,7 +887,7 @@ export const completeVerificationRequest =
 
       // ✅ GA4 Purchase Tracking
       try {
-        const currency = currencyCheck || "NGN";
+        const currency = currencyCheck || "KES";
         const transactionId = transactionID || randomTransactionId;
         const payment = paymentType || "INSTANT";
 
@@ -887,7 +933,7 @@ export const paymentInitializationRequest =
       const currencyCheck = localStorage.getItem("currencyCheck");
       const paymentType = localStorage.getItem("paymentType");
       const restructuredData = {
-        currency: currencyCheck || "NGN",
+        currency: currencyCheck || "KES",
         sessionCode: localStorage.getItem("sessionCode") || "",
         type: paymentType || "INSTANT",
       };

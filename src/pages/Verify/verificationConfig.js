@@ -27,8 +27,8 @@ const verificationConfig = {
     idTypeLabel: "National ID",
     fields: [
       {
-        name: "nin",
-        label: "NIN",
+        name: "idNumber",
+        label: "National ID",
         placeholder: "Enter 11 digits NIN",
         type: "text",
         maxLength: 11,
@@ -51,7 +51,7 @@ const verificationConfig = {
     serviceName: "National ID",
     serviceCode: "NATIONAL_ID",
     apiServiceName: "National ID",
-    serviceFieldKey: "nin",
+    serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: true,
     trustBar: [

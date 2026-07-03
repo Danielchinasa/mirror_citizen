@@ -101,6 +101,8 @@ const MainDashboard = () => {
   const { token } = theme.useToken();
   const { isDark } = useTheme();
   const { bgContainer, text, text3 } = token;
+  const PRIMARY_COLOR = "#DD0201";
+  const PRIMARY_SOFT_BG = "#FDECEC";
 
   useEffect(() => {
     dispatch(fetchUserProfile(userToken));
@@ -550,7 +552,7 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: "green",
+                color: PRIMARY_COLOR,
                 fontWeight: "bold",
               }}
             >
@@ -1358,7 +1360,7 @@ const MainDashboard = () => {
     <div className="custom-statistic">
       <div
         className="custom-statistic-title"
-        style={{ textAlign: "center", color: "#3f8600" }}
+        style={{ textAlign: "center", color: PRIMARY_COLOR }}
       >
         {title}
       </div>
@@ -1426,9 +1428,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #DD0201 solid",
+                      border: `3px ${PRIMARY_COLOR} solid`,
                       borderRadius: "12px",
-                      background: "#FDECEC",
+                      background: PRIMARY_SOFT_BG,
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1436,7 +1438,7 @@ const MainDashboard = () => {
                       title="Total verifications "
                       value={totalVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: PRIMARY_COLOR,
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1455,9 +1457,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #DD0201 solid",
+                      border: `3px ${PRIMARY_COLOR} solid`,
                       borderRadius: "12px",
-                      background: "#FDECEC",
+                      background: PRIMARY_SOFT_BG,
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1465,7 +1467,7 @@ const MainDashboard = () => {
                       title="Successful verifications "
                       value={completedVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: PRIMARY_COLOR,
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1484,9 +1486,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #DD0201 solid",
+                      border: `3px ${PRIMARY_COLOR} solid`,
                       borderRadius: "12px",
-                      background: "#FDECEC",
+                      background: PRIMARY_SOFT_BG,
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1494,7 +1496,7 @@ const MainDashboard = () => {
                       title="Unsuccessful verifications "
                       value={failedVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: PRIMARY_COLOR,
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1522,7 +1524,7 @@ const MainDashboard = () => {
                   width={300}
                 >
                   <Title level={5}> Wallet Balance:</Title>
-                  <Title level={3} style={{ color: "#DD0201" }}>
+                  <Title level={3} style={{ color: PRIMARY_COLOR }}>
                     {userCurrency.toUpperCase() === "NGN"
                       ? formatToNaira(userBalance)
                       : `${formatToDollar(userBalance)}`}

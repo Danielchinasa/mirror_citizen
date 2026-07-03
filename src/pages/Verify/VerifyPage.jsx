@@ -326,8 +326,8 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
-  const isNGN = currencyCheck.toUpperCase() === "NGN";
+  const currencyCheck = localStorage.getItem("currencyCheck") || "KES";
+  const isKES = currencyCheck.toUpperCase() === "KES";
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -337,13 +337,13 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isNGN
+      ? isKES
         ? config.allBureausDiscount.ngn
         : config.allBureausDiscount.usd
       : 0;
 
   const totalAmount = pricingData
-    ? isNGN
+    ? isKES
       ? ((pricingData.serviceFee || 0) +
           (pricingData.processingFee || 0) +
           (pricingData.vat || 0)) *
@@ -354,7 +354,7 @@ const VerifyPage = () => {
         discount
     : 0;
 
-  const currencySymbol = isNGN ? "₦" : "$";
+  const currencySymbol = isKES ? "KSh" : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -453,6 +453,7 @@ const VerifyPage = () => {
   const buildApiFormData = () => {
     const apiForm = {
       serviceCode: config.serviceCode || "",
+      idNumber: "",
       nin: "",
       phone: "",
       firstname: "",
@@ -473,6 +474,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
+      consent: "true",
     };
 
     // Map form fields to API form
@@ -513,12 +515,14 @@ const VerifyPage = () => {
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
+      const initiatePayload = initiateResponse?.data || initiateResponse || {};
 
-      if (initiateResponse?.status === "INITIATED") {
-        localStorage.setItem("sessionCode", initiateResponse?.sessionId);
+      if (initiatePayload?.status === "INITIATED") {
+        localStorage.setItem("sessionCode", initiatePayload?.sessionId);
+        apiFormData.sessionId = initiatePayload?.sessionId;
       } else {
         throw new Error(
-          initiateResponse?.message || "Failed to initiate verification",
+          initiatePayload?.message || "Failed to initiate verification",
         );
       }
 
@@ -736,7 +740,13 @@ const VerifyPage = () => {
       let resultDetail = "";
       let resultRoute = "/main-dashboard";
 
-      if (
+      if (response?.status === "COMPLETED" && response?.result) {
+        result = response.result;
+        resultTitle = `${config.serviceName} Successful`;
+        resultDetail =
+          response.resultText || `${config.serviceName} was successful.`;
+        resultRoute = "/main-dashboard";
+      } else if (
         response.basic &&
         response.basic.status &&
         response.basic.status === true
@@ -1150,7 +1160,7 @@ const VerifyPage = () => {
                   }}
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
-                  {(isNGN
+                  {(isKES
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -1186,11 +1196,11 @@ const VerifyPage = () => {
           <PriceBreakdown>
             {pricingData &&
               (() => {
-                const processingFees = isNGN
+                const processingFees = isKES
                   ? (pricingData.serviceFee || 0) +
                     (pricingData.processingFee || 0)
                   : pricingData.serviceFeeusd || 0;
-                const taxCharges = isNGN
+                const taxCharges = isKES
                   ? pricingData.vat || 0
                   : pricingData.vatUsd || 0;
                 const perBureau = processingFees + taxCharges;
@@ -1376,7 +1386,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN
+                    (isKES
                       ? (pricingData.serviceFee || 0) +
                         (pricingData.processingFee || 0)
                       : pricingData.serviceFeeusd || 0) * bureauMultiplier
@@ -1391,7 +1401,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
+                    (isKES ? pricingData.vat : pricingData.vatUsd || 0) *
                     bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
@@ -1480,21 +1490,41 @@ const VerifyPage = () => {
     const data = verificationResult.data;
     const fields = [];
 
+    // New KE complete response format (e.g. Smile ID)
+    if (data.idType) fields.push({ label: "ID Type", value: data.idType });
+    if (data.idNumber)
+      fields.push({ label: "ID Number", value: data.idNumber });
+    if (data.vin) fields.push({ label: "VIN", value: data.vin });
+    if (data.licenseNumber)
+      fields.push({ label: "License Number", value: data.licenseNumber });
+    if (data.fullName)
+      fields.push({ label: "Full Name", value: data.fullName });
+    if (data.lastName)
+      fields.push({ label: "Last Name", value: data.lastName });
+
     // NIN / basic result (API returns lowercase: firstname, middlename, surname)
-    if (data.firstname || data.firstName || data.surname || data.lastname) {
+    if (
+      data.firstname ||
+      data.firstName ||
+      data.surname ||
+      data.lastname ||
+      data.lastName
+    ) {
       const fname = data.firstname || data.firstName;
       const mname = data.middlename || data.middleName;
-      const lname = data.surname || data.lastname;
+      const lname = data.surname || data.lastname || data.lastName;
       if (fname) fields.push({ label: "First Name", value: fname });
       if (mname) fields.push({ label: "Middle Name", value: mname });
-      if (lname) fields.push({ label: "Last Name", value: lname });
+      if (lname && !fields.some((field) => field.label === "Last Name")) {
+        fields.push({ label: "Last Name", value: lname });
+      }
       if (data.gender)
         fields.push({
           label: "Gender",
           value:
-            data.gender === "m"
+            String(data.gender).toLowerCase() === "m"
               ? "Male"
-              : data.gender === "f"
+              : String(data.gender).toLowerCase() === "f"
                 ? "Female"
                 : data.gender,
         });
@@ -1513,6 +1543,10 @@ const VerifyPage = () => {
           label: "Address",
           value: data.residenceAddress || data.residence_address,
         });
+    }
+
+    if (data.address && !fields.some((field) => field.label === "Address")) {
+      fields.push({ label: "Address", value: data.address });
     }
 
     // Phone verification
