@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.1639b676.chunk.css",
-    "main.js": "/static/js/main.6b3fa6e7.chunk.js",
-    "main.js.map": "/static/js/main.6b3fa6e7.chunk.js.map",
+    "main.css": "/static/css/main.6d8116c5.chunk.css",
+    "main.js": "/static/js/main.bb6b593f.chunk.js",
+    "main.js.map": "/static/js/main.bb6b593f.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.61267ce2.chunk.js": "/static/js/2.61267ce2.chunk.js",
-    "static/js/2.61267ce2.chunk.js.map": "/static/js/2.61267ce2.chunk.js.map",
+    "static/js/2.898cbe52.chunk.js": "/static/js/2.898cbe52.chunk.js",
+    "static/js/2.898cbe52.chunk.js.map": "/static/js/2.898cbe52.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.497cb224ddc1ec437207fcf3c0a3e3d7.js": "/precache-manifest.497cb224ddc1ec437207fcf3c0a3e3d7.js",
+    "precache-manifest.27643e4cda8d28d0ceddbf2117af955e.js": "/precache-manifest.27643e4cda8d28d0ceddbf2117af955e.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
-    "static/css/main.1639b676.chunk.css.map": "/static/css/main.1639b676.chunk.css.map",
-    "static/js/2.61267ce2.chunk.js.LICENSE.txt": "/static/js/2.61267ce2.chunk.js.LICENSE.txt",
+    "static/css/main.6d8116c5.chunk.css.map": "/static/css/main.6d8116c5.chunk.css.map",
+    "static/js/2.898cbe52.chunk.js.LICENSE.txt": "/static/js/2.898cbe52.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -31,6 +31,7 @@
     "static/media/google-logo.svg": "/static/media/google-logo.45aebcf8.svg",
     "static/media/icon_paystack.png": "/static/media/icon_paystack.769ee98d.png",
     "static/media/individual.svg": "/static/media/individual.6bec09d4.svg",
+    "static/media/kenya.png": "/static/media/kenya.f69deb9f.png",
     "static/media/lady.svg": "/static/media/lady.82ff32ba.svg",
     "static/media/ndpr.png": "/static/media/ndpr.411010b5.png",
     "static/media/nidologo.png": "/static/media/nidologo.c6aae41a.png",
@@ -43,14 +44,13 @@
     "static/media/slide.svg": "/static/media/slide.523f0de7.svg",
     "static/media/slide2.svg": "/static/media/slide2.31054a14.svg",
     "static/media/svg-1.svg": "/static/media/svg-1.55cfb481.svg",
-    "static/media/svg-2.svg": "/static/media/svg-2.d4846e11.svg",
-    "static/media/uganda.png": "/static/media/uganda.fc095381.png"
+    "static/media/svg-2.svg": "/static/media/svg-2.d4846e11.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.61267ce2.chunk.js",
-    "static/css/main.1639b676.chunk.css",
-    "static/js/main.6b3fa6e7.chunk.js"
+    "static/js/2.898cbe52.chunk.js",
+    "static/css/main.6d8116c5.chunk.css",
+    "static/js/main.bb6b593f.chunk.js"
   ]
 }

@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 /* ─── Shared ─── */
 
 export const PageWrapper = styled.div`
-  background: #fff;
+  background: var(--ec-bg);
 `;
 
 export const SectionTitle = styled.h2`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 40px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   text-align: center;
   margin-bottom: 16px;
 
@@ -23,7 +23,7 @@ export const SectionTitle = styled.h2`
 export const SectionSubtitle = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #777;
+  color: var(--ec-text-muted);
   text-align: center;
   line-height: 24px;
   max-width: 600px;
@@ -31,7 +31,7 @@ export const SectionSubtitle = styled.p`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #DD0201;
+  background-color: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -53,7 +53,7 @@ export const PrimaryBtn = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #ff4d4f;
     color: #fff;
   }
 
@@ -69,7 +69,7 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #DD0201;
+  color: var(--ec-primary);
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -80,7 +80,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #DD0201;
+  border: 1px solid var(--ec-primary);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -91,8 +91,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #FF4D4F;
-    border-color: #FF4D4F;
+    color: #ff4d4f;
+    border-color: #ff4d4f;
   }
 
   @media screen and (max-width: 600px) {
@@ -112,7 +112,7 @@ export const HeroSectionWrapper = styled.section`
   min-height: 580px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #ffffff 0%, #fff1f1 50%, #fce8e8 100%);
+  background: var(--ec-hero-gradient);
   padding: 60px 0;
   overflow: hidden;
 
@@ -123,11 +123,7 @@ export const HeroSectionWrapper = styled.section`
     left: 0;
     width: 60%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      #ffffff 35%,
-      rgba(255, 255, 255, 0) 100%
-    );
+    background: var(--ec-hero-overlay);
     z-index: 1;
     pointer-events: none;
   }
@@ -139,11 +135,7 @@ export const HeroSectionWrapper = styled.section`
     left: 0;
     width: 100%;
     height: 30%;
-    background: linear-gradient(
-      180deg,
-      rgba(224, 239, 224, 0) 0%,
-      #fce8e8 100%
-    );
+    background: var(--ec-hero-bottom-gradient);
     z-index: 1;
     pointer-events: none;
   }
@@ -159,12 +151,7 @@ export const HeroSectionWrapper = styled.section`
       height: 100%;
       top: 0;
       bottom: auto;
-      background: linear-gradient(
-        180deg,
-        #ffffff 0%,
-        rgba(255, 255, 255, 0.78) 46%,
-        rgba(224, 239, 224, 0.72) 100%
-      );
+      background: var(--ec-hero-overlay-mobile);
     }
   }
 
@@ -255,11 +242,11 @@ export const HeroTitle = styled.h1`
   font-weight: 700;
   font-size: 48px;
   line-height: 1.1;
-  color: #354138;
+  color: var(--ec-heading);
   margin-bottom: 24px;
 
   span {
-    color: #DD0201;
+    color: var(--ec-primary);
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
@@ -281,7 +268,7 @@ export const HeroTitle = styled.h1`
 export const HeroSubtitle = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #555;
+  color: var(--ec-text-secondary);
   line-height: 24px;
   margin-bottom: 35px;
   max-width: 440px;
@@ -313,7 +300,7 @@ export const HeroButtons = styled.div`
 export const PriceBadge = styled.div`
   display: inline-block;
   background: #fdecec;
-  color: #1a1a1a;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -383,7 +370,7 @@ export const TrustIconCircle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: var(--ec-primary);
   font-size: 16px;
   flex-shrink: 0;
 `;
@@ -397,13 +384,13 @@ export const TrustTitle = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 export const TrustDesc = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
 `;
 
 /* ─── How It Works ─── */
@@ -433,7 +420,7 @@ export const StepsGrid = styled.div`
 `;
 
 export const StepCard = styled.div`
-  background: #f9fafb;
+  background: var(--ec-bg-secondary);
   border-radius: 12px;
   padding: 30px 24px;
   text-align: center;
@@ -448,7 +435,7 @@ export const StepNumber = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #DD0201;
+  background: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -463,21 +450,21 @@ export const StepTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 18px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin-bottom: 8px;
 `;
 
 export const StepDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 24px;
 `;
 
 /* ─── Features ─── */
 
 export const FeaturesSectionWrapper = styled.section`
-  background: #fef2f2;
+  background: var(--ec-error-bg);
   padding: 80px 50px;
 
   @media screen and (max-width: 768px) {
@@ -501,7 +488,7 @@ export const FeaturesGrid = styled.div`
 `;
 
 export const FeatureCard = styled.div`
-  background: #fff;
+  background: var(--ec-bg);
   border-radius: 12px;
   padding: 32px 24px;
   text-align: center;
@@ -509,7 +496,7 @@ export const FeatureCard = styled.div`
 `;
 
 export const FeatureIcon = styled.div`
-  color: #DD0201;
+  color: var(--ec-primary);
   font-size: 36px;
   margin-bottom: 16px;
 `;
@@ -518,14 +505,14 @@ export const FeatureTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin-bottom: 10px;
 `;
 
 export const FeatureDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 24px;
 `;
 
@@ -573,7 +560,7 @@ export const SampleTitle = styled.h2`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 40px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin-bottom: 16px;
 
   @media screen and (max-width: 768px) {
@@ -584,7 +571,7 @@ export const SampleTitle = styled.h2`
 export const SampleDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #555;
+  color: var(--ec-text-secondary);
   line-height: 24px;
   margin-bottom: 24px;
 `;
@@ -601,12 +588,12 @@ export const CheckItem = styled.li`
   gap: 10px;
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #333;
+  color: var(--ec-text);
   margin-bottom: 12px;
   line-height: 24px;
 
   svg {
-    color: #DD0201;
+    color: var(--ec-primary);
     flex-shrink: 0;
   }
 `;
@@ -614,7 +601,7 @@ export const CheckItem = styled.li`
 /* ─── CTA ─── */
 
 export const CtaSectionWrapper = styled.section`
-  background: #DD0201;
+  background: var(--ec-primary);
   padding: 60px 50px;
   text-align: center;
 
@@ -648,7 +635,7 @@ export const CtaDesc = styled.p`
 
 export const CtaButton = styled(Link)`
   background-color: #fff;
-  color: #DD0201;
+  color: var(--ec-primary);
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -664,6 +651,6 @@ export const CtaButton = styled(Link)`
 
   &:hover {
     background-color: #f0f0f0;
-    color: #FF4D4F;
+    color: #ff4d4f;
   }
 `;

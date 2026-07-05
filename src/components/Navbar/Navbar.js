@@ -762,14 +762,6 @@ function Navbar() {
             </PublicBrand>
 
             <PublicCenter>
-              <CountryPill type="button" aria-label="Select country">
-                <span className="flag" role="img" aria-label="Uganda flag">
-                  🇰🇪
-                </span>
-                Kenya
-                <DownOutlined className="chev" />
-              </CountryPill>
-
               <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
                   {isSw ? "Huduma" : "Services"}{" "}
@@ -790,6 +782,13 @@ function Navbar() {
             </PublicCenter>
 
             <PublicActions>
+              <CountryPill type="button" aria-label="Select country">
+                <span className="flag" role="img" aria-label="Kenya flag">
+                  🇰🇪
+                </span>
+                Kenya
+                <DownOutlined className="chev" />
+              </CountryPill>
               <PublicHeaderLanguage>
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
@@ -830,7 +829,7 @@ function Navbar() {
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
-              <PublicLogin to="/login">{isSw ? "Ingia" : "Log in"}</PublicLogin>
+              <ThemeToggle />
               <PublicCta to="/login">{isSw ? "Anza" : "Get Started"}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
@@ -863,9 +862,6 @@ function Navbar() {
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 {isSw ? "Msaada" : "Support"}
-              </PublicMobileLink>
-              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                {isSw ? "Ingia" : "Log in"}
               </PublicMobileLink>
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
                 {isSw ? "Anza" : "Get Started"}

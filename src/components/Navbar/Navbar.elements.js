@@ -29,7 +29,7 @@ export const NavbarContainer = styled(Container)`
 `;
 
 export const NavLogo = styled(Link)`
-  color: #000;
+  color: var(--ec-text);
   justify-self: flex-start;
   cursor: pointer;
   text-decoration: none;
@@ -138,7 +138,7 @@ export const NavBtnLink = styled(Link)`
 `;
 
 export const PublicNav = styled.nav`
-  background: #fff;
+  background: var(--ec-bg);
   position: sticky;
   top: 0;
   z-index: 999;
@@ -169,7 +169,7 @@ export const PublicBrand = styled(Link)`
   font-size: 30px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
 
   .brand-red {
@@ -177,7 +177,7 @@ export const PublicBrand = styled(Link)`
   }
 
   .brand-dot {
-    color: #111827;
+    color: var(--ec-text);
   }
 `;
 
@@ -203,7 +203,7 @@ export const CountryPill = styled.button`
   gap: 10px;
   border: none;
   background: transparent;
-  color: #111827;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -217,7 +217,7 @@ export const CountryPill = styled.button`
 
   .chev {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--ec-text-muted);
   }
 `;
 
@@ -233,7 +233,7 @@ export const PublicTrigger = styled.button`
   gap: 6px;
   border: none;
   background: transparent;
-  color: #111827;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -246,12 +246,12 @@ export const PublicTrigger = styled.button`
 
   .chev {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--ec-text-muted);
   }
 `;
 
 export const PublicNavLink = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -264,7 +264,7 @@ export const PublicNavLink = styled(Link)`
 `;
 
 export const PublicAnchor = styled.a`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -277,7 +277,7 @@ export const PublicAnchor = styled.a`
 `;
 
 export const PublicTextLink = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -290,7 +290,7 @@ export const PublicTextLink = styled(Link)`
 `;
 
 export const PublicLanguage = styled.div`
-  color: #111827;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -325,7 +325,7 @@ export const PublicHeaderLanguage = styled.div`
 `;
 
 export const PublicLogin = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -374,7 +374,7 @@ export const PublicHamburger = styled.button`
   display: none;
   border: none;
   background: transparent;
-  color: #111827;
+  color: var(--ec-text);
   font-size: 1.8rem;
   cursor: pointer;
 
@@ -391,7 +391,7 @@ export const PublicMobilePanel = styled.div`
   @media screen and (max-width: 1024px) {
     display: ${({ $open }) => ($open ? "block" : "none")};
     border-top: 1px solid rgba(17, 24, 39, 0.08);
-    background: #fff;
+    background: var(--ec-bg);
     padding: 16px 24px 22px;
   }
 `;
@@ -417,7 +417,7 @@ export const PublicMobileLanguage = styled.div`
 `;
 
 export const PublicMobileLanguageLabel = styled.span`
-  color: #6b7280;
+  color: var(--ec-text-muted);
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -434,8 +434,9 @@ export const PublicLanguageToggleGroup = styled.div`
 
 export const PublicLanguageToggle = styled.button`
   border: none;
-  background: ${({ $active }) => ($active ? "#DD0201" : "transparent")};
-  color: ${({ $active }) => ($active ? "#fff" : "#111827")};
+  background: ${({ $active }) =>
+    $active ? "var(--ec-primary)" : "transparent"};
+  color: ${({ $active }) => ($active ? "#fff" : "var(--ec-text)")};
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -454,7 +455,7 @@ export const PublicLanguageToggle = styled.button`
 `;
 
 export const PublicMobileLink = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
@@ -467,7 +468,7 @@ export const PublicMobileLink = styled(Link)`
 `;
 
 export const PublicMobileAnchor = styled.a`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 16px;

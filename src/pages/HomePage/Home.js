@@ -369,7 +369,14 @@ const Home = () => {
                 : "Official identity verification for individuals and businesses across Kenya and the diaspora."}
             </HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn to={ctaLink}>
+              <PrimaryBtn
+                to="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("services");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
                 {isSw
                   ? "Thibitisha Kitambulisho cha Taifa"
                   : "Verify National ID"}{" "}
@@ -381,7 +388,7 @@ const Home = () => {
               </SecondaryBtn>
             </HeroButtons>
             <HeroButtons>
-              <SecondaryBtn href="#how-it-works">
+              <SecondaryBtn href="#services">
                 {isSw ? "Kagua VIN" : "Check VIN"} <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>

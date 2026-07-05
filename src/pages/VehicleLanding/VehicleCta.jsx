@@ -5,7 +5,7 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
 
 const CtaWrapper = styled.section`
-  background: #fef2f2;
+  background: var(--ec-error-bg);
   padding: 40px 50px;
 
   @media screen and (max-width: 768px) {
@@ -31,7 +31,7 @@ const CtaShield = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #d1fae5;
+  background: var(--ec-cta-shield-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,7 +39,7 @@ const CtaShield = styled.div`
 
   svg {
     font-size: 30px;
-    color: #DD0201;
+    color: var(--ec-primary);
   }
 `;
 
@@ -51,7 +51,7 @@ const CtaTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 
   @media screen and (max-width: 768px) {
@@ -62,7 +62,7 @@ const CtaTitle = styled.h3`
 const CtaDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #555;
+  color: var(--ec-text-secondary);
   line-height: 1.6;
   margin: 0;
   max-width: 480px;
@@ -81,14 +81,14 @@ const CtaRight = styled.div`
 `;
 
 const CtaButton = styled(Link)`
-  background: #DD0201;
+  background: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border-radius: 10px;
-  border: 2px solid #DD0201;
+  border: 2px solid var(--ec-primary);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -110,10 +110,10 @@ const CtaPrice = styled.span`
   gap: 6px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
 
   svg {
-    color: #DD0201;
+    color: var(--ec-primary);
     font-size: 14px;
   }
 `;
