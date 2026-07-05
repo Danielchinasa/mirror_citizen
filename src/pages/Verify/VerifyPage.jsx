@@ -2197,8 +2197,8 @@ const VerifyPage = () => {
                   <FaInfoCircle />
                 </PopupIcon>
                 <div>
-                  <PopupTitle>Disclaimer</PopupTitle>
-                  <PopupSubtitle>Please review before proceeding</PopupSubtitle>
+                  <PopupTitle>Avis de non-responsabilité</PopupTitle>
+                  <PopupSubtitle>Veuillez vérifier avant de continuer</PopupSubtitle>
                 </div>
               </PopupMeta>
               <PopupCloseButton onClick={() => setShowPayDisclaimer(false)}>
@@ -2224,25 +2224,27 @@ const VerifyPage = () => {
                       color: "var(--ec-text)",
                     }}
                   >
-                    By clicking, you indicate that:
+                    En cliquant, vous indiquez que :
                     <ul style={{ margin: "8px 0 0", paddingLeft: 20 }}>
                       <li style={{ marginBottom: 12 }}>
-                        You confirm that search details are correct, and you
-                        confirm that you will <strong>not be refunded</strong>{" "}
-                        for incorrect information.
+                        Vous confirmez que les détails de recherche sont
+                        corrects et vous acceptez de{" "}
+                        <strong>ne pas être remboursé</strong> pour des
+                        informations incorrectes.
                       </li>
                       <li style={{ marginBottom: 12 }}>
-                        You understand and accept that vehicle history data is
-                        sourced from third-party providers and{" "}
-                        <strong>may not contain all records</strong> for every
-                        vehicle.
+                        Vous comprenez et acceptez que les données d'historique
+                        du véhicule proviennent de fournisseurs tiers et{" "}
+                        <strong>peuvent ne pas contenir tous les
+                        enregistrements</strong> pour chaque véhicule.
                       </li>
                       <li style={{ marginBottom: 0 }}>
-                        You understand that{" "}
+                        Vous comprenez que{" "}
                         <strong>
-                          search results may come back without any data
+                          les résultats de recherche peuvent revenir sans
+                          données
                         </strong>
-                        , and you accept that you will not be refunded.
+                        , et vous acceptez de ne pas être remboursé.
                       </li>
                     </ul>
                   </div>
@@ -2259,25 +2261,26 @@ const VerifyPage = () => {
                   >
                     {requiresConsent && (
                       <li style={{ marginBottom: 12 }}>
-                        You confirm that you understand and accept that{" "}
-                        <strong>consent is required</strong> from the data
-                        subject being verified before you can access their data,
-                        and you accept that you will not be refunded if consent
-                        is withheld.
+                        Vous confirmez que vous comprenez et acceptez qu'un{" "}
+                        <strong>consentement est requis</strong> du sujet des
+                        données vérifié avant de pouvoir accéder à ses données,
+                        et vous acceptez de ne pas être remboursé si le
+                        consentement est refusé.
                       </li>
                     )}
                     <li style={{ marginBottom: 12 }}>
-                      You confirm and accept that the{" "}
-                      <strong>search details are correct</strong>, and you
-                      accept that you will not be refunded for incorrect
-                      information.
+                      Vous confirmez et acceptez que les{" "}
+                      <strong>détails de recherche sont corrects</strong>, et
+                      vous acceptez de ne pas être remboursé pour des
+                      informations incorrectes.
                     </li>
                     <li style={{ marginBottom: 0 }}>
-                      You understand and accept that{" "}
+                      Vous comprenez et acceptez que{" "}
                       <strong>
-                        search results may come back without any data
+                        les résultats de recherche peuvent revenir sans
+                        données
                       </strong>
-                      , and you accept that you will not be refunded.
+                      , et vous acceptez de ne pas être remboursé.
                     </li>
                   </ol>
                 )}
@@ -2292,7 +2295,7 @@ const VerifyPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                By proceeding, you agree to our{" "}
+                En continuant, vous acceptez nos{" "}
                 <a
                   href="/terms_of_service"
                   target="_blank"
@@ -2303,9 +2306,9 @@ const VerifyPage = () => {
                     textDecoration: "none",
                   }}
                 >
-                  Terms of Service
+                  Conditions d'utilisation
                 </a>{" "}
-                and{" "}
+                et notre{" "}
                 <a
                   href="/privacy_policy"
                   target="_blank"
@@ -2316,7 +2319,7 @@ const VerifyPage = () => {
                     textDecoration: "none",
                   }}
                 >
-                  Privacy Policy
+                  Politique de confidentialité
                 </a>
                 .
               </div>
@@ -2327,10 +2330,10 @@ const VerifyPage = () => {
                     handlePay();
                   }}
                 >
-                  I Understand, Continue <FaArrowRight />
+                  Je comprends, Continuer <FaArrowRight />
                 </ContinueBtn>
                 <ClearBtn onClick={() => setShowPayDisclaimer(false)}>
-                  Cancel
+                  Annuler
                 </ClearBtn>
               </PopupActionRow>
             </PopupBody>

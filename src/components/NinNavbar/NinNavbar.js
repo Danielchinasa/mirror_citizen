@@ -11,8 +11,7 @@ import {
 } from "./NinNavbar.elements";
 import { FaTimes, FaBars } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
-import { Link } from "react-router-dom";
+import { PublicBrand } from "../Navbar/Navbar.elements";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../SampleResultPopup/SampleResultPopup";
 
@@ -41,14 +40,11 @@ function NinNavbar() {
     <>
       <NinNav>
         <NinNavbarContainer>
-          <Link to="/nin-verification">
-            <img
-              src={Logo}
-              alt="eCitizen Logo"
-              width={200}
-              style={{ cursor: "pointer" }}
-            />
-          </Link>
+          <PublicBrand to="/nin-verification">
+              <span className="brand-red">e</span>
+              <span className="brand-dot">-</span>
+              citoyen<span className="brand-dot">.africa</span>
+            </PublicBrand>
 
           <NinHamburgerIcon onClick={handleClick}>
             {click ? <FaTimes /> : <FaBars />}

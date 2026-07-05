@@ -32,8 +32,6 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
-import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
@@ -870,15 +868,11 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <Link to={isAuthenticated ? "/dashboard" : "/"}>
-              {/* <Logo style={{ marginTop: "10px" }} /> */}
-              <img
-                src={isDark ? LogoWhite : Logo}
-                alt="Logo"
-                width={230}
-                style={{ marginTop: "10px", cursor: "pointer" }}
-              />
-            </Link>
+            <PublicBrand to={isAuthenticated ? "/dashboard" : "/"}>
+              <span className="brand-red">e</span>
+              <span className="brand-dot">-</span>
+              citoyen<span className="brand-dot">.africa</span>
+            </PublicBrand>
             <HamburgerIcon onClick={handleClick}>
               {click ? (
                 <FaTimes />
