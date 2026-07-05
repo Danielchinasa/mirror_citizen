@@ -21,7 +21,7 @@ const useServicePrices = () => {
 
   const getPrice = (index) => {
     const price = prices?.[index]?.price;
-    return price ? `₦${Number(price).toLocaleString()}` : null;
+    return price ? `KHs${Number(price).toLocaleString()}` : null;
   };
 
   return { prices, getPrice };

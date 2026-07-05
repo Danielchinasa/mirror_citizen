@@ -32,7 +32,10 @@ const PhoneHero = () => {
   return (
     <>
       <HeroSectionWrapper>
-        <HeroBgImage src={heroImg} alt="Phone Number Verification on eCitizen" />
+        <HeroBgImage
+          src={heroImg}
+          alt="Phone Number Verification on eCitizen"
+        />
         <HeroContainer>
           <HeroContent>
             <HeroTag>PHONE VERIFICATION</HeroTag>
@@ -52,7 +55,7 @@ const PhoneHero = () => {
               </SecondaryBtn>
             </HeroButtons>
             <PriceBadge>
-              From <span>{getPrice(9) || "₦800"}</span> per verification
+              From <span>{getPrice(9) || "KHs800"}</span> per verification
             </PriceBadge>
             <HeroMobileImage
               src={heroImg}

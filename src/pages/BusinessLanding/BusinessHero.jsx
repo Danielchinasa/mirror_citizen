@@ -55,10 +55,10 @@ const BusinessHero = () => {
             </HeroButtons>
             <PriceBadgesRow>
               <PriceBadge>
-                Basic check from <span>{getPrice(2) || "₦100"}</span>
+                Basic check from <span>{getPrice(2) || "KHs100"}</span>
               </PriceBadge>
               <PriceBadge>
-                Advanced profile from <span>{getPrice(3) || "₦800"}</span>
+                Advanced profile from <span>{getPrice(3) || "KHs800"}</span>
               </PriceBadge>
             </PriceBadgesRow>
             <HeroChecks>

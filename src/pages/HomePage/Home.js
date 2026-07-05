@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
-import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import { apiGet, apiPost, apiPostInternalCall } from "../../apiUtils";
 import {
   FaArrowRight,
   FaLock,
@@ -148,19 +148,17 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (!ipAddress) return;
     const fetchServicePrices = async () => {
       try {
-        const data = await apiPost("/transaction/public/service-prices", {
-          ipAddress,
-        });
-        setServicePrices(data);
+        const response = await apiGet("/africa/countries/KE/service-prices");
+        const services = response.data?.data || response.data || response;
+        setServicePrices(services);
       } catch (error) {
         console.error("Failed to fetch service prices:", error);
       }
     };
     fetchServicePrices();
-  }, [ipAddress]);
+  }, []);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -548,9 +546,14 @@ const Home = () => {
                 : "Verify Kenya National Identity Card details in real-time."}
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[0]?.price
-                ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
-                : "₦100"}
+              {(() => {
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "National ID")
+                  : null;
+                return s?.price
+                  ? `KSh${Number(s.price).toLocaleString()}`
+                  : "KSh—";
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -599,9 +602,14 @@ const Home = () => {
                 : "Verify Kenya Alien Card details quickly and securely."}
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[0]?.price
-                ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
-                : "₦100"}
+              {(() => {
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "Alien Card")
+                  : null;
+                return s?.price
+                  ? `KSh${Number(s.price).toLocaleString()}`
+                  : "KSh—";
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -645,9 +653,14 @@ const Home = () => {
                 : "Verify vehicle identification number and details."}
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[5]?.price
-                ? `₦${Number(servicePrices.data[5].price).toLocaleString()}`
-                : "₦2,500"}
+              {(() => {
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "VIN")
+                  : null;
+                return s?.price
+                  ? `KSh${Number(s.price).toLocaleString()}`
+                  : "KSh—";
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>

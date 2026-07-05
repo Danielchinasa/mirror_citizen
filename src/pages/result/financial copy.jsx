@@ -218,7 +218,7 @@ const Financial = () => {
     }
 
     // Add Naira symbol to the beginning
-    amountArr.unshift("₦");
+    amountArr.unshift("KHs");
 
     // Join the array back into a string
     return amountArr.join("");
