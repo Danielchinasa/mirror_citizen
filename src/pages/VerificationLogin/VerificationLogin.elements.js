@@ -62,7 +62,7 @@ export const MainContent = styled.main`
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f9fafb 0%, #fef2f2 50%, #fdecec 100%);
+  background: var(--ec-login-bg);
   position: relative;
   overflow: hidden;
 
@@ -102,7 +102,7 @@ export const MainContent = styled.main`
 export const LoginCard = styled.div`
   width: 100%;
   max-width: 460px;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--ec-login-card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(220, 5, 2, 0.12);
@@ -212,6 +212,7 @@ export const FormInput = styled.input`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   color: var(--ec-text);
+  background: var(--ec-bg-input);
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -286,7 +287,7 @@ export const LoginButton = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
   }
 
   &:disabled {
@@ -330,7 +331,7 @@ export const SpinnerOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--ec-spinner-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
