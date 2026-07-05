@@ -192,6 +192,7 @@ const VerifyPage = () => {
   const [paystackReference, setPaystackReference] = useState("");
   const [activeGateway, setActiveGateway] = useState(""); // "paystack" or "flutterwave"
   const [showResultPopup, setShowResultPopup] = useState(false);
+  const [showPayDisclaimer, setShowPayDisclaimer] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const pollingRef = useRef(null);
@@ -1440,7 +1441,10 @@ const VerifyPage = () => {
             </>
           )}
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
+          <PayBtn
+            onClick={() => setShowPayDisclaimer(true)}
+            disabled={loading || loadingPrice}
+          >
             <FaLock />
             {loading
               ? "Processing..."
@@ -2177,6 +2181,162 @@ const VerifyPage = () => {
           ))}
         </TrustBarInner>
       </TrustBar>
+
+      {/* Pre-Payment Disclaimer Modal */}
+      {showPayDisclaimer && (
+        <PopupOverlay>
+          <PopupCard style={{ maxWidth: 560 }}>
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(2, 131, 28, 0.10)",
+                    color: "#02831C",
+                  }}
+                >
+                  <FaInfoCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Disclaimer</PopupTitle>
+                  <PopupSubtitle>Please review before proceeding</PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowPayDisclaimer(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody>
+              <div
+                style={{
+                  background: "rgba(2, 131, 28, 0.06)",
+                  border: "1px solid rgba(2, 131, 28, 0.2)",
+                  borderRadius: 10,
+                  padding: "16px 20px",
+                  marginBottom: 20,
+                }}
+              >
+                {type === "vehicle" ? (
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                      color: "var(--ec-text)",
+                    }}
+                  >
+                    By clicking, you indicate that:
+                    <ul style={{ margin: "8px 0 0", paddingLeft: 20 }}>
+                      <li style={{ marginBottom: 12 }}>
+                        You confirm that search details are correct, and you
+                        confirm that you will <strong>not be refunded</strong>{" "}
+                        for incorrect information.
+                      </li>
+                      <li style={{ marginBottom: 12 }}>
+                        You understand and accept that vehicle history data is
+                        sourced from third-party providers and{" "}
+                        <strong>may not contain all records</strong> for every
+                        vehicle.
+                      </li>
+                      <li style={{ marginBottom: 0 }}>
+                        You understand that{" "}
+                        <strong>
+                          search results may come back without any data
+                        </strong>
+                        , and you accept that you will not be refunded.
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <ol
+                    style={{
+                      margin: 0,
+                      paddingLeft: 20,
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                      color: "var(--ec-text)",
+                    }}
+                  >
+                    {requiresConsent && (
+                      <li style={{ marginBottom: 12 }}>
+                        You confirm that you understand and accept that{" "}
+                        <strong>consent is required</strong> from the data
+                        subject being verified before you can access their data,
+                        and you accept that you will not be refunded if consent
+                        is withheld.
+                      </li>
+                    )}
+                    <li style={{ marginBottom: 12 }}>
+                      You confirm and accept that the{" "}
+                      <strong>search details are correct</strong>, and you
+                      accept that you will not be refunded for incorrect
+                      information.
+                    </li>
+                    <li style={{ marginBottom: 0 }}>
+                      You understand and accept that{" "}
+                      <strong>
+                        search results may come back without any data
+                      </strong>
+                      , and you accept that you will not be refunded.
+                    </li>
+                  </ol>
+                )}
+              </div>
+              <div
+                style={{
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 13,
+                  color: "var(--ec-text-muted)",
+                  textAlign: "center",
+                  marginBottom: 20,
+                  lineHeight: 1.6,
+                }}
+              >
+                By proceeding, you agree to our{" "}
+                <a
+                  href="/terms_of_service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a
+                  href="/privacy_policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Privacy Policy
+                </a>
+                .
+              </div>
+              <PopupActionRow style={{ justifyContent: "center" }}>
+                <ContinueBtn
+                  onClick={() => {
+                    setShowPayDisclaimer(false);
+                    handlePay();
+                  }}
+                >
+                  I Understand, Continue <FaArrowRight />
+                </ContinueBtn>
+                <ClearBtn onClick={() => setShowPayDisclaimer(false)}>
+                  Cancel
+                </ClearBtn>
+              </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
 
       {/* Paystack Payment Modal */}
       {paystackModalOpen && (
