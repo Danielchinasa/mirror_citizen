@@ -68,7 +68,7 @@ const FinancialHero = () => {
               </SecondaryBtn>
             </HeroButtons>
             <PriceBadge>
-              From <span>{getPrice(4) || "₦1,500"}</span> per report
+              From <span>{getPrice(4) || "GH₵1,500"}</span> per report
             </PriceBadge>
           </HeroContent>
         </HeroContainer>

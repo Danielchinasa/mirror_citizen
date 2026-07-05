@@ -498,7 +498,7 @@ function Navbar() {
         color: text,
         title: "Error",
         text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"
+          userCurrency.toUpperCase() === "NGN" ? "GH₵1,000" : "$10"
         }`,
         icon: "error",
         customClass: {
@@ -1091,7 +1091,7 @@ function Navbar() {
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
                             {userCurrency.toUpperCase() === "NGN"
-                              ? "₦1,000"
+                              ? "GH₵1,000"
                               : "$10"}
                             )
                           </p>
@@ -1122,7 +1122,7 @@ function Navbar() {
                               >
                                 Minimum top-up amount is{" "}
                                 {userCurrency.toUpperCase() === "NGN"
-                                  ? "₦1,000"
+                                  ? "GH₵1,000"
                                   : "$10"}
                               </p>
                             )}
@@ -1218,7 +1218,7 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#02831C" }}>
                             {" "}
-                            {/* ₦{userBalance.toLocaleString()} */}
+                            {/* GH₵{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
@@ -1302,7 +1302,7 @@ function Navbar() {
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
                             {userCurrency.toUpperCase() === "NGN"
-                              ? "₦1,000"
+                              ? "GH₵1,000"
                               : "$10"}
                             )
                           </p>
@@ -1333,7 +1333,7 @@ function Navbar() {
                               >
                                 Minimum top-up amount is{" "}
                                 {userCurrency.toUpperCase() === "NGN"
-                                  ? "₦1,000"
+                                  ? "GH₵1,000"
                                   : "$10"}
                               </p>
                             )}

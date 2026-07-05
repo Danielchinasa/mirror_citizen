@@ -1144,7 +1144,7 @@ const MainDashboard = () => {
         color: text,
         title: "Error",
         text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"
+          userCurrency.toUpperCase() === "NGN" ? "GH₵1,000" : "$10"
         }`,
         icon: "error",
         customClass: {
@@ -1588,7 +1588,7 @@ const MainDashboard = () => {
                   </Radio.Group>
                   <p>
                     Enter Amount to Fund Wallet (Minimum:{" "}
-                    {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
+                    {userCurrency.toUpperCase() === "NGN" ? "GH₵1,000" : "$10"})
                   </p>
                   <Input
                     type="number"
@@ -1611,7 +1611,7 @@ const MainDashboard = () => {
                       >
                         Minimum top-up amount is{" "}
                         {userCurrency.toUpperCase() === "NGN"
-                          ? "₦1,000"
+                          ? "GH₵1,000"
                           : "$10"}
                       </p>
                     )}

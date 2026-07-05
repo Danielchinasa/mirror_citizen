@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiPost } from "../apiUtils";
+import { apiGet } from "../apiUtils";
 
 const useServicePrices = () => {
   const [prices, setPrices] = useState(null);
@@ -7,11 +7,9 @@ const useServicePrices = () => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const ipAddress = localStorage.getItem("IpAddress") || "";
-        const data = await apiPost("/transaction/public/service-prices", {
-          ipAddress,
-        });
-        setPrices(data?.data || null);
+        const response = await apiGet("/africa/countries/GH/service-prices");
+        const services = response.data?.data || response.data || response;
+        setPrices(Array.isArray(services) ? services : null);
       } catch (error) {
         console.error("Failed to fetch service prices:", error);
       }
@@ -19,9 +17,13 @@ const useServicePrices = () => {
     fetchPrices();
   }, []);
 
-  const getPrice = (index) => {
-    const price = prices?.[index]?.price;
-    return price ? `₦${Number(price).toLocaleString()}` : null;
+  // Accept a service name string, e.g. "ID Card", "VIN"
+  const getPrice = (serviceName) => {
+    if (!Array.isArray(prices)) return null;
+    const found = prices.find(
+      (s) => s.service?.toLowerCase() === serviceName?.toLowerCase(),
+    );
+    return found?.price ? `GH₵${Number(found.price).toLocaleString()}` : null;
   };
 
   return { prices, getPrice };

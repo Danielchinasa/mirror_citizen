@@ -532,7 +532,7 @@ export const fetchVerificationServicePrices =
 
       if (config.serviceCode) {
         const response = await apiGetInternalCall(
-          `/africa/countries/KE/service-prices`,
+          `/africa/countries/GH/service-prices`,
           token,
         );
         const services = response.data?.data || response.data || [];

@@ -50,7 +50,7 @@ const verificationConfig = {
     },
     serviceName: "National ID",
     serviceCode: "NATIONAL_ID",
-    apiServiceName: "National ID",
+    apiServiceName: "ID Card",
     serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: true,

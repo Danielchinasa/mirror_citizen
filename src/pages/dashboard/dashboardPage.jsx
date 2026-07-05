@@ -5502,7 +5502,7 @@ const DashboardPage = () => {
                                   {currencyCheck.toUpperCase() === "USD" ? (
                                     <p style={{ color: "green" }}>-$0.97</p>
                                   ) : (
-                                    <p style={{ color: "green" }}>-₦800.00</p>
+                                    <p style={{ color: "green" }}>-GH₵800.00</p>
                                   )}
                                 </Col>
                               </Row>
@@ -5523,7 +5523,7 @@ const DashboardPage = () => {
                             {/* {currencyCheck.toUpperCase() === "USD" ? (
                         <p>{`$${rawServiceFee.toFixed(2)}`}</p>
                       ) : (
-                        <p>{`₦${rawServiceFee.toFixed(2)}`}</p>
+                        <p>{`GH₵${rawServiceFee.toFixed(2)}`}</p>
                       )} */}
 
                             {currencyCheck.toUpperCase() === "USD" ? (
