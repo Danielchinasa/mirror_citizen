@@ -2412,6 +2412,44 @@ const VerifyPage = () => {
                   </ol>
                 )}
               </div>
+              <div
+                style={{
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 13,
+                  color: "var(--ec-text-muted)",
+                  textAlign: "center",
+                  marginBottom: 20,
+                  lineHeight: 1.6,
+                }}
+              >
+                By proceeding, you agree to our{" "}
+                <a
+                  href="/terms_of_service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a
+                  href="/privacy_policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Privacy Policy
+                </a>
+                .
+              </div>
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
                   I Understand, Continue <FaArrowRight />
