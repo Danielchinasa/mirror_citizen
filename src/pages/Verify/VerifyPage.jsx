@@ -338,8 +338,8 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
-  const isNGN = currencyCheck.toUpperCase() === "NGN";
+  const currencyCheck = localStorage.getItem("currencyCheck") || "XOF";
+  const isLocal = currencyCheck.toUpperCase() === "XOF";
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -349,13 +349,13 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isNGN
+      ? isLocal
         ? config.allBureausDiscount.ngn
         : config.allBureausDiscount.usd
       : 0;
 
   const totalAmount = pricingData
-    ? isNGN
+    ? isLocal
       ? ((pricingData.serviceFee || 0) +
           (pricingData.processingFee || 0) +
           (pricingData.vat || 0)) *
@@ -366,7 +366,7 @@ const VerifyPage = () => {
         discount
     : 0;
 
-  const currencySymbol = isNGN ? "₦" : "$";
+  const currencySymbol = isLocal ? "FCFA " : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -520,12 +520,32 @@ const VerifyPage = () => {
 
     try {
       // 1. Initiate verification
-      const initiateResponse = await dispatch(
-        initiateVerificationRequest(apiFormData, userToken),
-      );
+      let initiateResponse;
+      if (config.countryCode && config.serviceCode) {
+        // Africa country-specific endpoint
+        const payload = {
+          serviceCode: config.serviceCode,
+          ...apiFormData,
+        };
+        initiateResponse = await apiPostInternalCall(
+          `/africa/verification/${config.countryCode}/initiate`,
+          payload,
+          userToken,
+        );
+        initiateResponse = initiateResponse?.data || initiateResponse;
+      } else {
+        initiateResponse = await dispatch(
+          initiateVerificationRequest(apiFormData, userToken),
+        );
+      }
 
-      if (initiateResponse?.sessionStatus === "INITIATED") {
-        localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+      if (
+        initiateResponse?.sessionStatus === "INITIATED" ||
+        initiateResponse?.status === "INITIATED"
+      ) {
+        const sessionKey =
+          initiateResponse?.sessionCode || initiateResponse?.sessionId;
+        localStorage.setItem("sessionCode", sessionKey);
       } else {
         throw new Error(
           initiateResponse?.message || "Failed to initiate verification",
@@ -1160,7 +1180,7 @@ const VerifyPage = () => {
                   }}
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
-                  {(isNGN
+                  {(isLocal
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -1196,11 +1216,11 @@ const VerifyPage = () => {
           <PriceBreakdown>
             {pricingData &&
               (() => {
-                const processingFees = isNGN
+                const processingFees = isLocal
                   ? (pricingData.serviceFee || 0) +
                     (pricingData.processingFee || 0)
                   : pricingData.serviceFeeusd || 0;
-                const taxCharges = isNGN
+                const taxCharges = isLocal
                   ? pricingData.vat || 0
                   : pricingData.vatUsd || 0;
                 const perBureau = processingFees + taxCharges;
@@ -1386,7 +1406,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN
+                    (isLocal
                       ? (pricingData.serviceFee || 0) +
                         (pricingData.processingFee || 0)
                       : pricingData.serviceFeeusd || 0) * bureauMultiplier
@@ -1401,7 +1421,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
+                    (isLocal ? pricingData.vat : pricingData.vatUsd || 0) *
                     bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>

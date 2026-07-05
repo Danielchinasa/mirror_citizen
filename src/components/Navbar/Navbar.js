@@ -814,6 +814,7 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
 
+              <ThemeToggle />
               <PublicCta to="/login">{t("nav.getStarted")}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}

@@ -13,7 +13,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
+import { PublicBrand } from "../../components/Navbar/Navbar.elements";
 
 import {
   PageWrapper,
@@ -72,7 +72,7 @@ const VerificationLoginPage = () => {
           const response = await axios.get("https://ipapi.co/json/");
           setIpAddress(response.data.ip);
         } catch (error2) {
-          setIpAddress(null);
+          setIpAddress("105.235.70.1");
         }
       }
     };
@@ -239,11 +239,17 @@ const VerificationLoginPage = () => {
   return (
     <PageWrapper>
       <LoginNav>
-        <NavLogo to="/">
-          <img src={Logo} alt="eCitizen" />
-        </NavLogo>
+        <PublicBrand to="/">
+          <span className="brand-red">e</span>
+          <span className="brand-dot">-</span>
+          citoyen<span className="brand-dot">.africa</span>
+        </PublicBrand>
         <NavLinks>
-          <NavLink to="/individual/sign-up/1">Register</NavLink>
+          <NavLink to="/nin-verification">CNI</NavLink>
+          <NavLink to="/vehicle-verification">VIN</NavLink>
+          <NavLink to="/faq">FAQ</NavLink>
+          <NavLink to="/contact">Support</NavLink>
+          <NavLink to="/individual/sign-up/1">S'inscrire</NavLink>
         </NavLinks>
       </LoginNav>
 

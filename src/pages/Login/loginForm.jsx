@@ -94,7 +94,7 @@ const LoginForm = (props) => {
             "Error fetching IP address from secondary URL:",
             error2,
           );
-          setIpAddress(null); // Set IP address to null if both URLs fail
+          setIpAddress("105.235.70.1");
         }
       }
     };

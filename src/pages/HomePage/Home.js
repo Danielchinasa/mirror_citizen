@@ -108,7 +108,7 @@ const Home = () => {
   const { bgContainer, text } = token;
   const ninVerify = useAuthRedirect("/verify/nin");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
-  const residentVerify = useAuthRedirect("/verify/nin");
+  const residentVerify = useAuthRedirect("/verify/resident");
 
   useEffect(() => {
     const fetchIpAddress = async () => {
