@@ -34,7 +34,7 @@ const HowTitle = styled.h2`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 28px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0;
   white-space: nowrap;
 
@@ -92,7 +92,7 @@ const StepIconBox = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #f0fdf4;
+  background: var(--ec-bg-card-alt);
   border: 1px solid rgba(2, 131, 28, 0.12);
   display: flex;
   align-items: center;
@@ -114,14 +114,14 @@ const StepName = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 6px;
 `;
 
 const StepDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 1.5;
   margin: 0;
 `;

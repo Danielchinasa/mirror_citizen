@@ -41,7 +41,7 @@ const TwoColGrid = styled.div`
 /* ─── Login Card ─── */
 
 const LoginCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 32px;
 
@@ -58,14 +58,14 @@ const LoginCardTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 const LoginCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 24px;
 `;
 
@@ -92,18 +92,18 @@ const SSOButton = styled.button`
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--ec-bg);
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.2s;
 
   &:hover {
-    background: #f9fafb;
+    background: var(--ec-bg-secondary);
   }
 
   svg {
@@ -120,7 +120,7 @@ const Divider = styled.div`
   padding: 0 12px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #999;
+  color: var(--ec-text-faint);
   align-self: stretch;
 
   &::before,
@@ -128,7 +128,7 @@ const Divider = styled.div`
     content: "";
     flex: 1;
     width: 1px;
-    background: #e5e7eb;
+    background: var(--ec-border);
   }
 
   @media screen and (max-width: 600px) {
@@ -156,23 +156,23 @@ const FormLabel = styled.label`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin-bottom: 2px;
 `;
 
 const FormInput = styled.input`
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
   outline: none;
   box-sizing: border-box;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--ec-input-placeholder);
   }
 
   &:focus {
@@ -191,7 +191,7 @@ const PasswordToggle = styled.button`
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #999;
+  color: var(--ec-text-faint);
   cursor: pointer;
   font-size: 16px;
   padding: 0;
@@ -209,7 +209,7 @@ const RememberLabel = styled.label`
   gap: 6px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
   cursor: pointer;
 `;
 
@@ -248,9 +248,9 @@ const LoginBtn = styled.button`
 `;
 
 const ErrorAlert = styled.div`
-  background: #f0fdf4;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: var(--ec-bg-card-alt);
+  border: 1px solid var(--ec-error-border);
+  color: var(--ec-error-text);
   padding: 8px 12px;
   border-radius: 6px;
   font-family: "Nunito", sans-serif;
@@ -272,7 +272,7 @@ const SpinnerOverlay = styled.div`
 const Spinner = styled.div`
   width: 36px;
   height: 36px;
-  border: 3px solid #e5e7eb;
+  border: 3px solid var(--ec-border);
   border-top-color: #02831c;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -287,7 +287,7 @@ const Spinner = styled.div`
 const RegisterText = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   text-align: center;
   margin: 12px 0 0;
 
@@ -305,7 +305,7 @@ const RegisterText = styled.p`
 /* ─── Sample Result Card ─── */
 
 const SampleCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 32px;
 
@@ -329,13 +329,13 @@ const SampleCardTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0;
 `;
 
 const SampleBadge = styled.span`
   display: inline-block;
-  background: #fff;
+  background: var(--ec-bg);
   border: 1px solid #02831c;
   color: #02831c;
   font-family: "Nunito", sans-serif;
@@ -349,13 +349,13 @@ const SampleBadge = styled.span`
 const SampleCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 20px;
 `;
 
 const ResultCard = styled.div`
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg-secondary);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 24px;
 
@@ -401,14 +401,14 @@ const ResultInfo = styled.div`
 const ResultName = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
 `;
 
 const ResultNameValue = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 const ResultField = styled.div`
@@ -419,14 +419,14 @@ const ResultField = styled.div`
 const ResultLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
 `;
 
 const ResultValue = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 /* Credit Score Section */
@@ -449,7 +449,7 @@ const CreditScoreCircle = styled.div`
 const CreditScoreLabel = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
   margin-bottom: 4px;
 `;
 
@@ -457,13 +457,13 @@ const CreditScoreNumber = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 42px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   line-height: 1;
 `;
 
 const CreditScoreBadge = styled.span`
   display: inline-block;
-  background: #dcfce7;
+  background: var(--ec-primary-bg);
   color: #02831c;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -487,7 +487,7 @@ const CreditMetaItem = styled.div`
 const CreditMetaLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
 `;
 
 const CreditMetaValue = styled.span`
@@ -501,7 +501,7 @@ const CreditMetaValueNeutral = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 13px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -518,8 +518,8 @@ const StatsRow = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: #e5e7eb;
-  border-top: 1px solid #e5e7eb;
+  background: var(--ec-border);
+  border-top: 1px solid var(--ec-border);
   margin-top: 16px;
 
   @media screen and (max-width: 480px) {
@@ -528,7 +528,7 @@ const StatsRow = styled.div`
 `;
 
 const StatItem = styled.div`
-  background: #f9fafb;
+  background: var(--ec-bg-secondary);
   padding: 14px 16px;
   text-align: center;
 `;
@@ -536,7 +536,7 @@ const StatItem = styled.div`
 const StatLabel = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
   margin-bottom: 4px;
 `;
 
@@ -544,7 +544,7 @@ const StatValue = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 const StatValueGreen = styled.div`

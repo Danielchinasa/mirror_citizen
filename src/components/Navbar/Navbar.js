@@ -801,6 +801,7 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
               <PublicLanguage>EN</PublicLanguage>
+              <ThemeToggle />
               <PublicLogin to="/login">Log in</PublicLogin>
               <PublicCta to="/login">Get Started</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">

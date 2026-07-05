@@ -138,7 +138,7 @@ export const NavBtnLink = styled(Link)`
 `;
 
 export const PublicNav = styled.nav`
-  background: #fff;
+  background: var(--ec-bg);
   position: sticky;
   top: 0;
   z-index: 999;
@@ -169,15 +169,15 @@ export const PublicBrand = styled(Link)`
   font-size: 30px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
 
   .brand-red {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 
   .brand-dot {
-    color: #111827;
+    color: var(--ec-text);
   }
 `;
 
@@ -203,7 +203,7 @@ export const CountryPill = styled.button`
   gap: 10px;
   border: none;
   background: transparent;
-  color: #111827;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -217,7 +217,7 @@ export const CountryPill = styled.button`
 
   .chev {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--ec-text-muted);
   }
 `;
 
@@ -233,7 +233,7 @@ export const PublicTrigger = styled.button`
   gap: 6px;
   border: none;
   background: transparent;
-  color: #111827;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -241,17 +241,17 @@ export const PublicTrigger = styled.button`
   padding: 0;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 
   .chev {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--ec-text-muted);
   }
 `;
 
 export const PublicNavLink = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -259,12 +259,12 @@ export const PublicNavLink = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 `;
 
 export const PublicAnchor = styled.a`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -272,12 +272,12 @@ export const PublicAnchor = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 `;
 
 export const PublicTextLink = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -285,12 +285,12 @@ export const PublicTextLink = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 `;
 
 export const PublicLanguage = styled.div`
-  color: #111827;
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -325,7 +325,7 @@ export const PublicHeaderLanguage = styled.div`
 `;
 
 export const PublicLogin = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
@@ -333,7 +333,7 @@ export const PublicLogin = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 1024px) {
@@ -348,7 +348,7 @@ export const PublicCta = styled(Link)`
   min-height: 46px;
   padding: 0 28px;
   border-radius: 10px;
-  background: #02831C;
+  background: var(--ec-primary);
   color: #fff;
   text-decoration: none;
   font-family: "Poppins", sans-serif;
@@ -358,7 +358,7 @@ export const PublicCta = styled(Link)`
   transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    background: #09C93A;
+    background: var(--ec-primary);
     color: #fff;
     transform: translateY(-1px);
   }
@@ -372,7 +372,7 @@ export const PublicHamburger = styled.button`
   display: none;
   border: none;
   background: transparent;
-  color: #111827;
+  color: var(--ec-text);
   font-size: 1.8rem;
   cursor: pointer;
 
@@ -389,7 +389,7 @@ export const PublicMobilePanel = styled.div`
   @media screen and (max-width: 1024px) {
     display: ${({ $open }) => ($open ? "block" : "none")};
     border-top: 1px solid rgba(17, 24, 39, 0.08);
-    background: #fff;
+    background: var(--ec-bg);
     padding: 16px 24px 22px;
   }
 `;
@@ -415,7 +415,7 @@ export const PublicMobileLanguage = styled.div`
 `;
 
 export const PublicMobileLanguageLabel = styled.span`
-  color: #6b7280;
+  color: var(--ec-text-muted);
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -449,7 +449,7 @@ export const PublicLanguageToggle = styled.button`
 `;
 
 export const PublicMobileLink = styled(Link)`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
@@ -457,12 +457,12 @@ export const PublicMobileLink = styled(Link)`
   padding: 6px 0;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 `;
 
 export const PublicMobileAnchor = styled.a`
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
@@ -470,6 +470,6 @@ export const PublicMobileAnchor = styled.a`
   padding: 6px 0;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 `;

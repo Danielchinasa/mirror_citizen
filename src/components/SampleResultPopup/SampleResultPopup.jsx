@@ -235,7 +235,7 @@ const Dialog = styled.div`
   width: min(760px, 100%);
   max-height: calc(100vh - 48px);
   overflow-y: auto;
-  background: #fff;
+  background: var(--ec-bg);
   border-radius: 12px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
   padding: 24px;
@@ -260,7 +260,7 @@ const Title = styled.h2`
   font-family: "Poppins", sans-serif;
   font-size: 24px;
   font-weight: 800;
-  color: #354138;
+  color: var(--ec-heading);
 `;
 
 const Badge = styled.span`
@@ -278,16 +278,16 @@ const Subtitle = styled.p`
   margin: 8px 0 0;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: #667085;
+  color: var(--ec-text-muted);
 `;
 
 const CloseButton = styled.button`
   width: 38px;
   height: 38px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
-  background: #fff;
-  color: #354138;
+  background: var(--ec-bg);
+  color: var(--ec-heading);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -295,14 +295,14 @@ const CloseButton = styled.button`
   flex-shrink: 0;
 
   &:hover {
-    background: #f9fafb;
+    background: var(--ec-bg-secondary);
     color: #02831C;
   }
 `;
 
 const ResultCard = styled.div`
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg-secondary);
+  border: 1px solid var(--ec-border);
   border-radius: 10px;
   padding: 18px;
 `;
@@ -321,7 +321,7 @@ const Avatar = styled.div`
   width: 86px;
   height: 86px;
   border-radius: 50%;
-  background: #dcfce7;
+  background: var(--ec-primary-bg);
   color: #02831C;
   display: flex;
   align-items: center;
@@ -354,8 +354,8 @@ const ResultGrid = styled.div`
 
 const ResultField = styled.div`
   min-width: 0;
-  background: #fff;
-  border: 1px solid #edf0f2;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   padding: 12px;
 `;
@@ -365,7 +365,7 @@ const ResultLabel = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 12px;
   font-weight: 800;
-  color: #8a94a6;
+  color: var(--ec-text-faint);
   text-transform: uppercase;
 `;
 
@@ -373,7 +373,7 @@ const ResultValue = styled.div`
   font-family: "Poppins", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #344054;
+  color: var(--ec-text);
   overflow-wrap: anywhere;
 `;
 
@@ -395,7 +395,7 @@ const Disclaimer = styled.div`
   margin-top: 14px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #667085;
+  color: var(--ec-text-muted);
 
   svg {
     color: #02831C;
@@ -405,7 +405,7 @@ const Disclaimer = styled.div`
 
 const StakeholderSection = styled.div`
   margin-top: 16px;
-  border-top: 1px solid #edf0f2;
+  border-top: 1px solid var(--ec-border);
   padding-top: 14px;
 `;
 
@@ -413,14 +413,14 @@ const StakeholderSectionTitle = styled.div`
   font-family: "Poppins", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #354138;
+  color: var(--ec-heading);
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 `;
 
 const StakeholderTable = styled.div`
-  border: 1px solid #edf0f2;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   overflow: hidden;
 `;
@@ -429,7 +429,7 @@ const StakeholderRow = styled.div`
   display: grid;
   grid-template-columns: 2fr 1.5fr 1fr;
   background: ${(props) => (props.$header ? "#f4f7f5" : "#fff")};
-  border-bottom: 1px solid #edf0f2;
+  border-bottom: 1px solid var(--ec-border);
 
   &:last-child {
     border-bottom: none;

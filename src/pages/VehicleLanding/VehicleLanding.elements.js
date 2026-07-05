@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 /* ─── Shared ─── */
 
 export const PageWrapper = styled.div`
-  background: #fff;
+  background: var(--ec-bg);
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #02831C;
+  background-color: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -30,7 +30,7 @@ export const PrimaryBtn = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #09C93A;
+    background-color: var(--ec-primary);
     color: #fff;
   }
 
@@ -46,7 +46,7 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #02831C;
+  color: var(--ec-primary);
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -57,7 +57,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #02831C;
+  border: 1px solid var(--ec-primary);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -68,8 +68,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #09C93A;
-    border-color: #09C93A;
+    color: var(--ec-primary);
+    border-color: var(--ec-primary);
   }
 
   @media screen and (max-width: 600px) {
@@ -89,61 +89,11 @@ export const HeroSectionWrapper = styled.section`
   min-height: 580px;
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #ffffff 0%, #f2fff5 50%, #e9fbe9 100%);
+  background: var(--ec-hero-gradient);
   padding: 60px 0;
   overflow: hidden;
 
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      #ffffff 35%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 30%;
-    background: linear-gradient(
-      180deg,
-      rgba(224, 239, 224, 0) 0%,
-      #e9fbe9 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  @media screen and (max-width: 960px) {
-    min-height: auto;
-    flex-direction: column;
-    align-items: center;
-    padding: 48px 0 40px;
-
-    &::after {
-      width: 100%;
-      height: 100%;
-      top: 0;
-      bottom: auto;
-      background: linear-gradient(
-        180deg,
-        #ffffff 0%,
-        rgba(255, 255, 255, 0.78) 46%,
-        rgba(224, 239, 224, 0.72) 100%
-      );
-    }
-  }
+  &::after {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 60%;\n    height: 100%;\n    background: var(--ec-hero-overlay);\n    z-index: 1;\n    pointer-events: none;\n  }\n\n  &::before {\n    content: \"\";\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    height: 30%;\n    background: var(--ec-hero-bottom-gradient);\n    z-index: 1;\n    pointer-events: none;\n  }\n\n  @media screen and (max-width: 960px) {\n    min-height: auto;\n    flex-direction: column;\n    align-items: center;\n    padding: 48px 0 40px;\n\n    &::after {\n      width: 100%;\n      height: 100%;\n      top: 0;\n      bottom: auto;\n      background: var(--ec-hero-overlay-mobile);\n    }\n  }
 
   @media screen and (max-width: 600px) {
     padding: 36px 0 32px;
@@ -215,8 +165,8 @@ export const HeroContent = styled.div`
 
 export const HeroTag = styled.span`
   display: inline-block;
-  background: #dcfce7;
-  color: #02831c;
+  background: var(--ec-primary-bg);
+  color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
   font-weight: 800;
   font-size: 14px;
@@ -232,11 +182,11 @@ export const HeroTitle = styled.h1`
   font-weight: 700;
   font-size: 48px;
   line-height: 1.1;
-  color: #354138;
+  color: var(--ec-heading);
   margin-bottom: 24px;
 
   span {
-    color: #02831C;
+    color: var(--ec-primary);
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
@@ -258,7 +208,7 @@ export const HeroTitle = styled.h1`
 export const HeroSubtitle = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #555;
+  color: var(--ec-text-secondary);
   line-height: 24px;
   margin-bottom: 35px;
   max-width: 440px;
@@ -305,8 +255,8 @@ export const PriceBadgesRow = styled.div`
 
 export const PriceBadge = styled.div`
   display: inline-block;
-  background: #dcfce7;
-  color: #1a1a1a;
+  background: var(--ec-primary-bg);
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -319,7 +269,7 @@ export const PriceBadge = styled.div`
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 18px;
-    color: #02831C;
+    color: var(--ec-primary);
   }
 `;
 
@@ -378,7 +328,7 @@ export const TrustIconCircle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #02831C;
+  color: var(--ec-primary);
   font-size: 16px;
   flex-shrink: 0;
 `;
@@ -392,11 +342,11 @@ export const TrustTitle = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 export const TrustDesc = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
 `;

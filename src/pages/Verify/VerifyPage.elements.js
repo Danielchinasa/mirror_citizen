@@ -8,14 +8,14 @@ const fadeIn = keyframes`
 /* ─── Page ─── */
 
 export const PageWrapper = styled.div`
-  background: #f9fafb;
+  background: var(--ec-bg-secondary);
   min-height: 100vh;
 `;
 
 /* ─── Navbar ─── */
 
 export const TopNav = styled.nav`
-  background: #fff;
+  background: var(--ec-bg);
   height: 80px;
   padding: 0 50px;
   display: flex;
@@ -51,14 +51,14 @@ export const NavUser = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: var(--ec-text);
 `;
 
 export const NavAvatar = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #02831c;
+  background: var(--ec-primary);
   color: #fff;
   display: flex;
   align-items: center;
@@ -71,9 +71,9 @@ export const NavAvatar = styled.div`
 /* ─── Hero ─── */
 
 export const HeroSection = styled.section`
-  background: #fff;
+  background: var(--ec-bg);
   padding: 32px 50px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--ec-border-light);
 
   @media screen and (max-width: 768px) {
     padding: 24px 16px 0;
@@ -83,13 +83,13 @@ export const HeroSection = styled.section`
 export const Breadcrumb = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #999;
+  color: var(--ec-text-faint);
   margin-bottom: 16px;
 
   span {
-    color: #555;
+    color: var(--ec-text-secondary);
     &:last-child {
-      color: #02831c;
+      color: var(--ec-primary);
       font-weight: 600;
     }
   }
@@ -118,11 +118,11 @@ export const HeroTitle = styled.h1`
   font-weight: 700;
   font-size: 48px;
   line-height: 1.1;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0 0 16px;
 
   span {
-    color: #02831c;
+    color: var(--ec-primary);
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 48px;
@@ -137,7 +137,7 @@ export const HeroTitle = styled.h1`
 export const HeroSubtitle = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 18px;
-  color: #555;
+  color: var(--ec-text-secondary);
   line-height: 24px;
   margin: 0;
   max-width: 440px;
@@ -165,9 +165,9 @@ export const HeroImage = styled.img`
 /* ─── Stepper ─── */
 
 export const StepperWrapper = styled.div`
-  background: #fff;
+  background: var(--ec-bg);
   padding: 0 50px 24px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--ec-border-light);
 
   @media screen and (max-width: 768px) {
     padding: 0 16px 20px;
@@ -204,15 +204,21 @@ export const StepCircle = styled.div`
   transition: all 0.3s;
 
   background: ${(props) =>
-    props.active ? "#02831C" : props.completed ? "#02831C" : "#e5e7eb"};
-  color: ${(props) => (props.active || props.completed ? "#fff" : "#999")};
+    props.active
+      ? "var(--ec-primary)"
+      : props.completed
+        ? "var(--ec-primary)"
+        : "var(--ec-border)"};
+  color: ${(props) =>
+    props.active || props.completed ? "#fff" : "var(--ec-text-faint)"};
 `;
 
 export const StepLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   font-weight: ${(props) => (props.active ? "700" : "400")};
-  color: ${(props) => (props.active ? "#1a1a1a" : "#999")};
+  color: ${(props) =>
+    props.active ? "var(--ec-text)" : "var(--ec-text-faint)"};
   white-space: nowrap;
 
   @media screen and (max-width: 480px) {
@@ -223,7 +229,8 @@ export const StepLabel = styled.span`
 export const StepLine = styled.div`
   flex: 1;
   height: 2px;
-  background: ${(props) => (props.completed ? "#02831C" : "#e5e7eb")};
+  background: ${(props) =>
+    props.completed ? "var(--ec-primary)" : "var(--ec-border)"};
   margin: 0 8px;
   transition: background 0.3s;
 `;
@@ -254,7 +261,7 @@ export const PopupOverlay = styled.div`
 
 export const PopupCard = styled.div`
   width: min(680px, 100%);
-  background: #fff;
+  background: var(--ec-bg);
   border-radius: 20px;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
   overflow: hidden;
@@ -280,8 +287,8 @@ export const PopupIcon = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #ecfdf5;
-  color: #16a34a;
+  background: var(--ec-primary-bg);
+  color: var(--ec-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,13 +301,13 @@ export const PopupTitle = styled.h3`
   font-size: 22px;
   font-weight: 700;
   margin: 0;
-  color: #111827;
+  color: var(--ec-text);
 `;
 
 export const PopupSubtitle = styled.p`
   margin: 8px 0 0;
   font-family: "Nunito", sans-serif;
-  color: #4b5563;
+  color: var(--ec-text-secondary);
   line-height: 1.6;
   font-size: 15px;
 `;
@@ -308,7 +315,7 @@ export const PopupSubtitle = styled.p`
 export const PopupCloseButton = styled.button`
   background: transparent;
   border: none;
-  color: #6b7280;
+  color: var(--ec-text-muted);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
@@ -336,7 +343,7 @@ export const PopupField = styled.div`
 export const PopupFieldLabel = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--ec-text-muted);
   margin-bottom: 6px;
 `;
 
@@ -344,7 +351,7 @@ export const PopupFieldValue = styled.div`
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: #111827;
+  color: var(--ec-text);
 `;
 
 export const PopupActionRow = styled.div`
@@ -356,8 +363,8 @@ export const PopupActionRow = styled.div`
 `;
 
 export const ResultCardPopup = styled.div`
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 18px;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
   overflow: hidden;
@@ -376,11 +383,11 @@ export const ResultPhotoPopup = styled.div`
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: #f3f4f6;
+  background: var(--ec-bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #374151;
+  color: var(--ec-text);
   font-size: 32px;
   flex-shrink: 0;
 `;
@@ -401,14 +408,14 @@ export const ResultFieldPopup = styled.div`
 export const ResultLabelPopup = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #9ca3af;
+  color: var(--ec-text-faint);
 `;
 
 export const ResultValuePopup = styled.span`
   font-family: "Poppins", sans-serif;
   font-size: 18px;
   font-weight: 700;
-  color: #111827;
+  color: var(--ec-text);
 `;
 
 export const VerifiedBadgePopup = styled.div`
@@ -417,8 +424,8 @@ export const VerifiedBadgePopup = styled.div`
   gap: 8px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: #ecfdf5;
-  color: #16a34a;
+  background: var(--ec-primary-bg);
+  color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -429,10 +436,10 @@ export const ResultFooterPopup = styled.div`
   justify-content: space-between;
   gap: 16px;
   padding: 20px 28px 24px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--ec-border-light);
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--ec-text-muted);
 `;
 
 export const ResultDisclaimerPopup = styled.div`
@@ -442,7 +449,7 @@ export const ResultDisclaimerPopup = styled.div`
   margin-bottom: 18px;
   padding: 16px 24px;
   border-radius: 14px;
-  background: #eff6ff;
+  background: var(--ec-bg-secondary);
   color: #1d4ed8;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
@@ -462,8 +469,8 @@ export const SearchGrid = styled.div`
 `;
 
 export const FormCard = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 32px;
 
@@ -476,14 +483,14 @@ export const FormCardTitle = styled.h2`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0 0 4px;
 `;
 
 export const FormCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 24px;
 `;
 
@@ -496,42 +503,43 @@ export const FormLabel = styled.label`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin-bottom: 8px;
 `;
 
 export const FormInput = styled.input`
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 10px;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #333;
+  color: var(--ec-text);
+  background: var(--ec-bg-input);
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.2s;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--ec-input-placeholder);
   }
 
   &:focus {
-    border-color: #02831c;
+    border-color: var(--ec-primary);
   }
 `;
 
 export const FormSelect = styled.select`
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 10px;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #333;
+  color: var(--ec-text);
   outline: none;
   box-sizing: border-box;
-  background: #fff;
+  background: var(--ec-bg-input);
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -539,14 +547,14 @@ export const FormSelect = styled.select`
   background-position: right 14px center;
 
   &:focus {
-    border-color: #02831c;
+    border-color: var(--ec-primary);
   }
 `;
 
 export const CharCounter = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   float: right;
   margin-top: 4px;
 `;
@@ -561,23 +569,23 @@ export const FormActions = styled.div`
 
 export const ClearBtn = styled.button`
   background: transparent;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 10px;
   padding: 12px 28px;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #555;
+  color: var(--ec-text-secondary);
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    border-color: #ccc;
-    background: #f9fafb;
+    border-color: var(--ec-border);
+    background: var(--ec-bg-secondary);
   }
 `;
 
 export const ContinueBtn = styled.button`
-  background: #02831c;
+  background: var(--ec-primary);
   border: none;
   border-radius: 10px;
   padding: 12px 36px;
@@ -592,7 +600,7 @@ export const ContinueBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #09c93a;
+    background: var(--ec-primary);
   }
 
   &:disabled {
@@ -604,8 +612,8 @@ export const ContinueBtn = styled.button`
 /* ─── You Will Get (horizontal row inside card) ─── */
 
 export const YouWillGetCard = styled.div`
-  background: #f0fdf4;
-  border: 1px solid #d1fae5;
+  background: var(--ec-bg-card-alt);
+  border: 1px solid var(--ec-primary);
   border-radius: 10px;
   padding: 18px 20px;
   margin-top: 8px;
@@ -616,7 +624,7 @@ export const YouWillGetTitle = styled.h4`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 15px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0 0 12px;
 `;
 
@@ -632,10 +640,10 @@ export const YouWillGetItem = styled.div`
   gap: 6px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
 
   svg {
-    color: #02831c;
+    color: var(--ec-primary);
     font-size: 14px;
     flex-shrink: 0;
   }
@@ -644,8 +652,8 @@ export const YouWillGetItem = styled.div`
 /* ─── Price Sidebar ─── */
 
 export const SidebarCard = styled.div`
-  background: #f0fdf4;
-  border: 1px solid #d1fae5;
+  background: var(--ec-bg-card-alt);
+  border: 1px solid var(--ec-primary);
   border-radius: 12px;
   padding: 28px 24px;
 `;
@@ -653,7 +661,7 @@ export const SidebarCard = styled.div`
 export const PriceLabel = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin-bottom: 4px;
 `;
 
@@ -661,7 +669,7 @@ export const PriceAmount = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 32px;
-  color: #02831c;
+  color: var(--ec-primary);
   margin-bottom: 20px;
 `;
 
@@ -671,7 +679,7 @@ export const PriceBreakdown = styled.div`
   gap: 10px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #d1fae5;
+  border-bottom: 1px solid var(--ec-primary);
 `;
 
 export const PriceRow = styled.div`
@@ -679,11 +687,11 @@ export const PriceRow = styled.div`
   justify-content: space-between;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
 
   span:last-child {
     font-weight: 600;
-    color: #333;
+    color: var(--ec-text);
   }
 `;
 
@@ -692,17 +700,17 @@ export const PriceTotalRow = styled.div`
   justify-content: space-between;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
   font-weight: 700;
   padding-top: 10px;
-  border-top: 1px solid #d1fae5;
+  border-top: 1px solid var(--ec-primary);
 `;
 
 export const SidebarTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0 0 16px;
 `;
 
@@ -713,10 +721,10 @@ export const SidebarItem = styled.div`
   margin-bottom: 14px;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #333;
+  color: var(--ec-text);
 
   svg {
-    color: #02831c;
+    color: var(--ec-primary);
     font-size: 16px;
     flex-shrink: 0;
   }
@@ -729,16 +737,16 @@ export const SidebarItem = styled.div`
 export const SidebarNote = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin: 16px 0 0;
   padding-top: 12px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--ec-border);
   display: flex;
   align-items: center;
   gap: 6px;
 
   svg {
-    color: #02831c;
+    color: var(--ec-primary);
     font-size: 14px;
   }
 `;
@@ -757,8 +765,8 @@ export const PaymentGrid = styled.div`
 `;
 
 export const PaymentMethodsCard = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 24px;
 `;
@@ -767,14 +775,14 @@ export const PaymentMethodTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0 0 4px;
 `;
 
 export const PaymentMethodSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 16px;
 `;
 
@@ -783,23 +791,25 @@ export const PaymentOption = styled.label`
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border: 2px solid ${(props) => (props.selected ? "#02831C" : "#e5e7eb")};
+  border: 2px solid
+    ${(props) => (props.selected ? "var(--ec-primary)" : "var(--ec-border)")};
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.2s;
-  background: ${(props) => (props.selected ? "#f0fdf4" : "#fff")};
+  background: ${(props) =>
+    props.selected ? "var(--ec-bg-card-alt)" : "var(--ec-bg-card)"};
 
   &:last-child {
     margin-bottom: 0;
   }
 
   &:hover {
-    border-color: #02831c;
+    border-color: var(--ec-primary);
   }
 
   input[type="radio"] {
-    accent-color: #02831c;
+    accent-color: var(--ec-primary);
   }
 `;
 
@@ -813,7 +823,7 @@ export const PaymentOptionLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: var(--ec-text);
   flex: 1;
 `;
 
@@ -821,16 +831,16 @@ export const PaymentOptionBadge = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 10px;
   font-weight: 700;
-  color: #02831c;
-  background: #dcfce7;
+  color: var(--ec-primary);
+  background: var(--ec-primary-bg);
   padding: 2px 8px;
   border-radius: 4px;
   text-transform: uppercase;
 `;
 
 export const SummaryCard = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 28px;
 `;
@@ -839,7 +849,7 @@ export const SummaryTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0;
 `;
 
@@ -847,7 +857,7 @@ export const SummaryAmount = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: #02831c;
+  color: var(--ec-primary);
 `;
 
 export const SummaryHeader = styled.div`
@@ -861,7 +871,7 @@ export const SummaryRow = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--ec-border-light);
 
   &:last-child {
     border-bottom: none;
@@ -871,20 +881,20 @@ export const SummaryRow = styled.div`
 export const SummaryLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: #777;
+  color: var(--ec-text-muted);
 `;
 
 export const SummaryValue = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: var(--ec-text);
 `;
 
 export const PayBtn = styled.button`
   width: 100%;
   padding: 14px;
-  background: #02831c;
+  background: var(--ec-primary);
   border: none;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
@@ -900,7 +910,7 @@ export const PayBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #09c93a;
+    background: var(--ec-primary);
   }
 
   &:disabled {
@@ -917,7 +927,7 @@ export const SecuredBy = styled.div`
   margin-top: 12px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
 
   img {
     height: 16px;
@@ -927,8 +937,8 @@ export const SecuredBy = styled.div`
 /* ─── Sample Result ─── */
 
 export const SampleSection = styled.div`
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 28px;
   margin-top: 30px;
@@ -945,14 +955,14 @@ export const SampleTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0;
 `;
 
 export const SampleViewLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #02831c;
+  color: var(--ec-primary);
   font-weight: 600;
   cursor: pointer;
 
@@ -964,7 +974,7 @@ export const SampleViewLink = styled.span`
 export const SampleSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 16px;
 `;
 
@@ -972,8 +982,8 @@ export const SampleResultCard = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg-secondary);
+  border: 1px solid var(--ec-border);
   border-radius: 10px;
   padding: 16px 20px;
 
@@ -987,7 +997,7 @@ export const SampleAvatar = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #dcfce7;
+  background: var(--ec-primary-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -995,7 +1005,7 @@ export const SampleAvatar = styled.div`
 
   svg {
     font-size: 22px;
-    color: #02831c;
+    color: var(--ec-primary);
   }
 `;
 
@@ -1010,21 +1020,21 @@ export const SampleName = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #354138;
+  color: var(--ec-heading);
 `;
 
 export const SampleId = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #555;
+  color: var(--ec-text-secondary);
 `;
 
 export const VerifiedBadge = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #dcfce7;
-  color: #02831c;
+  background: var(--ec-primary-bg);
+  color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -1046,13 +1056,13 @@ export const SampleTags = styled.div`
 export const SampleTag = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #555;
+  color: var(--ec-text-secondary);
   display: inline-flex;
   align-items: center;
   gap: 4px;
 
   svg {
-    color: #02831c;
+    color: var(--ec-primary);
     font-size: 10px;
   }
 `;
@@ -1060,8 +1070,8 @@ export const SampleTag = styled.span`
 /* ─── Trust Bar ─── */
 
 export const TrustBar = styled.div`
-  background: #fff;
-  border-top: 1px solid #f0f0f0;
+  background: var(--ec-bg);
+  border-top: 1px solid var(--ec-border-light);
   padding: 24px 50px;
   margin-top: 40px;
 
@@ -1094,13 +1104,13 @@ export const TrustIcon = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #dcfce7;
+  background: var(--ec-primary-bg);
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
-    color: #02831c;
+    color: var(--ec-primary);
     font-size: 16px;
   }
 `;
@@ -1111,13 +1121,13 @@ export const TrustTitle = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 15px;
-  color: #354138;
+  color: var(--ec-heading);
 `;
 
 export const TrustDesc = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
 `;
 
 /* ─── Processing / Loading ─── */
@@ -1138,8 +1148,8 @@ const spin = keyframes`
 export const ProcessingSpinner = styled.div`
   width: 56px;
   height: 56px;
-  border: 4px solid #e5e7eb;
-  border-top-color: #02831c;
+  border: 4px solid var(--ec-border);
+  border-top-color: var(--ec-primary);
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
   margin-bottom: 24px;
@@ -1149,23 +1159,23 @@ export const ProcessingText = styled.p`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: #354138;
+  color: var(--ec-heading);
   margin: 0 0 8px;
 `;
 
 export const ProcessingSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin: 0;
 `;
 
 /* ─── Error Alert ─── */
 
 export const ErrorAlert = styled.div`
-  background: #f0fdf4;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: var(--ec-bg-card-alt);
+  border: 1px solid var(--ec-error-border);
+  color: var(--ec-error-text);
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   padding: 10px 14px;
@@ -1180,19 +1190,19 @@ export const IdTypeDisplay = styled.div`
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 10px;
-  background: #f9fafb;
+  background: var(--ec-bg-secondary);
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: var(--ec-text);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
 
   svg {
-    color: #02831c;
+    color: var(--ec-primary);
     font-size: 16px;
   }
 `;

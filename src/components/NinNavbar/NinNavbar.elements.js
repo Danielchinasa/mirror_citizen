@@ -3,7 +3,7 @@ import { Container } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
 export const NinNav = styled.nav`
-  background: #fff;
+  background: var(--ec-bg);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -35,7 +35,7 @@ export const NinNavMenu = styled.ul`
     position: absolute;
     top: 80px;
     left: 0;
-    background: #fff;
+    background: var(--ec-bg);
     padding: 20px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     gap: 0;
@@ -51,7 +51,7 @@ export const NinNavItem = styled.li`
 `;
 
 export const NinNavLink = styled.a`
-  color: #333;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
@@ -60,7 +60,7 @@ export const NinNavLink = styled.a`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 768px) {
@@ -69,7 +69,7 @@ export const NinNavLink = styled.a`
 `;
 
 export const NinNavLinkRouter = styled(Link)`
-  color: #333;
+  color: var(--ec-text);
   text-decoration: none;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
@@ -78,7 +78,7 @@ export const NinNavLinkRouter = styled(Link)`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #02831C;
+    color: var(--ec-primary);
   }
 
   @media screen and (max-width: 768px) {
@@ -87,7 +87,7 @@ export const NinNavLinkRouter = styled(Link)`
 `;
 
 export const NinCtaButton = styled(Link)`
-  background-color: #02831C;
+  background-color: var(--ec-primary);
   color: #fff;
   font-family: Arial, sans-serif;
   font-weight: 900;
@@ -105,7 +105,7 @@ export const NinCtaButton = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #09C93A;
+    background-color: var(--ec-primary);
     color: #fff;
   }
 
