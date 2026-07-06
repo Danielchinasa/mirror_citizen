@@ -659,7 +659,7 @@ export const initiateVerificationRequest =
         `/africa/verification/GH/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": "41.212.86.175" } },
+        { headers: { "X-Forwarded-For": "102.131.16.255" } },
       );
 
       // dispatch({
@@ -733,7 +733,7 @@ export const initiateStakeHoldersRequest =
         `/africa/verification/GH/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": "41.212.86.175" } },
+        { headers: { "X-Forwarded-For": "102.131.16.255" } },
       );
 
       // Return the user data upon successful verification

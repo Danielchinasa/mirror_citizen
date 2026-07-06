@@ -29,10 +29,8 @@ const verificationConfig = {
       {
         name: "idNumber",
         label: "National ID",
-        placeholder: "Enter 11 digits NIN",
+        placeholder: "Enter your National ID number",
         type: "text",
-        maxLength: 11,
-        showCounter: true,
         required: true,
       },
     ],

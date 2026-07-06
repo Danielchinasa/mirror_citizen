@@ -111,6 +111,13 @@ const Home = () => {
   // Get user country from IP to show correct pricing
   useEffect(() => {
     const fetchIpInfo = async () => {
+      // TODO: remove hardcoded GH override before release
+      setIpAddress("102.131.16.255");
+      localStorage.setItem("IpAddress", "102.131.16.255");
+      setIpCountry("GH");
+      localStorage.setItem("currencyCheck", "GHS");
+      return;
+
       try {
         const response = await axios.get("https://ipapi.co/json/");
         setIpAddress(response.data.ip);
@@ -327,13 +334,9 @@ const Home = () => {
     if (!s) return "—";
     const isGhana = ipCountry === "GH";
     if (isGhana) {
-      return s?.price
-        ? `GH₵${Number(s.price).toLocaleString()}`
-        : "GH₵—";
+      return s?.price ? `GH₵${Number(s.price).toLocaleString()}` : "GH₵—";
     } else {
-      return s?.price2
-        ? `$${Number(s.price2).toLocaleString()}`
-        : "$—";
+      return s?.price2 ? `$${Number(s.price2).toLocaleString()}` : "$—";
     }
   };
 
@@ -478,9 +481,7 @@ const Home = () => {
             <ServiceDesc>
               Verify Ghana National Identity Card details in real-time.
             </ServiceDesc>
-            <ServicePrice>
-              {formatPrice("ID Card")}
-            </ServicePrice>
+            <ServicePrice>{formatPrice("ID Card")}</ServicePrice>
             <FeatureList>
               <FeatureItem>
                 <FaCheckCircle /> National ID lookup
@@ -512,9 +513,7 @@ const Home = () => {
             <ServiceDesc>
               Verify vehicle identification number and details.
             </ServiceDesc>
-            <ServicePrice>
-              {formatPrice("VIN")}
-            </ServicePrice>
+            <ServicePrice>{formatPrice("VIN")}</ServicePrice>
             <FeatureList>
               <FeatureItem>
                 <FaCheckCircle /> VIN lookup

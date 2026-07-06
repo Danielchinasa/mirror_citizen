@@ -747,7 +747,17 @@ const VerifyPage = () => {
       let resultRoute = "/main-dashboard";
 
       if (response?.status === "COMPLETED" && response?.result) {
-        result = response.result;
+        result = {
+          ...response.result,
+          provider: response.provider,
+          resultCode: response.resultCode,
+          jobId: response.jobId,
+          pricingSegment: response.pricingSegment,
+          amount: response.amount,
+          currency: response.currency,
+          resultStatus: response.status,
+          resultText: response.resultText,
+        };
         resultTitle = `${config.serviceName} Successful`;
         resultDetail =
           response.resultText || `${config.serviceName} was successful.`;
@@ -1496,7 +1506,40 @@ const VerifyPage = () => {
     const data = verificationResult.data;
     const fields = [];
 
-    // NIN / basic result (API returns lowercase: firstname, middlename, surname)
+    // ── Ghana ID Card / basic result (new API format) ──
+    // Check for new format fields first (fullName, idNumber, etc.)
+    if (data.fullName || data.firstName || data.lastName || data.idNumber) {
+      if (data.idNumber) fields.push({ label: "ID Number", value: data.idNumber });
+
+      if (data.fullName) fields.push({ label: "Full Name", value: data.fullName });
+      if (data.firstName) fields.push({ label: "First Name", value: data.firstName });
+      if (data.lastName) fields.push({ label: "Last Name", value: data.lastName });
+
+      if (data.dateOfBirth)
+        fields.push({
+          label: "Date of Birth",
+          value: data.dateOfBirth,
+        });
+      if (data.gender)
+        fields.push({
+          label: "Gender",
+          value:
+            data.gender === "m"
+              ? "Male"
+              : data.gender === "f"
+                ? "Female"
+                : data.gender.charAt(0).toUpperCase() + data.gender.slice(1),
+        });
+      if (data.country)
+        fields.push({
+          label: "Country",
+          value: data.country === "GH" ? "Ghana" : data.country,
+        });
+
+      return fields;
+    }
+
+    // ── Legacy NIN / basic result ──
     if (data.firstname || data.firstName || data.surname || data.lastname) {
       const fname = data.firstname || data.firstName;
       const mname = data.middlename || data.middleName;
@@ -1529,6 +1572,7 @@ const VerifyPage = () => {
           label: "Address",
           value: data.residenceAddress || data.residence_address,
         });
+      return fields;
     }
 
     // Phone verification
@@ -1536,19 +1580,17 @@ const VerifyPage = () => {
       if (data.name) fields.push({ label: "Owner Name", value: data.name });
       if (data.network) fields.push({ label: "Network", value: data.network });
       if (data.status) fields.push({ label: "Status", value: data.status });
+      return fields;
     }
 
-    // Business (API returns: approvedName, rcNumber, registrationDate, address, email, lga, state, classificationId)
+    // Business
     if (data.approvedName || data.companyName || data.company_name) {
       fields.push({
         label: "Business Name",
         value: data.approvedName || data.companyName || data.company_name,
       });
       if (data.rcNumber || data.rc_number)
-        fields.push({
-          label: "RC Number",
-          value: data.rcNumber || data.rc_number,
-        });
+        fields.push({ label: "RC Number", value: data.rcNumber || data.rc_number });
       if (data.registrationDate)
         fields.push({
           label: "Registration Date",
@@ -1564,43 +1606,39 @@ const VerifyPage = () => {
         fields.push({ label: "Email", value: data.email });
       if (data.companyStatus)
         fields.push({ label: "Status", value: data.companyStatus });
+      return fields;
     }
 
     // Credit bureau
     if (data.advance || data.crc || data.firstCentral || data.creditRegistry) {
       if (data.crc) fields.push({ label: "CRC", value: "Data received" });
-      if (data.firstCentral)
-        fields.push({ label: "First Central", value: "Data received" });
-      if (data.creditRegistry)
-        fields.push({ label: "Credit Registry", value: "Data received" });
+      if (data.firstCentral) fields.push({ label: "First Central", value: "Data received" });
+      if (data.creditRegistry) fields.push({ label: "Credit Registry", value: "Data received" });
+      return fields;
     }
 
-    // Generic fallback — show first few string fields
-    if (fields.length === 0) {
-      Object.entries(data)
-        .slice(0, 5)
-        .forEach(([key, val]) => {
-          if (
-            typeof val === "string" &&
-            val &&
-            val !== "null" &&
-            key !== "status" &&
-            key !== "detail" &&
-            key !== "photo" &&
-            key !== "signature" &&
-            key !== "rawData"
-          ) {
-            fields.push({
-              label: key
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (s) => s.toUpperCase()),
-              value: val,
-            });
-          }
-        });
-    }
+    // Generic fallback
+    Object.entries(data)
+      .slice(0, 8)
+      .forEach(([key, val]) => {
+        if (
+          typeof val === "string" &&
+          val &&
+          val !== "null" &&
+          key !== "status" &&
+          key !== "detail" &&
+          key !== "photo" &&
+          key !== "signature" &&
+          key !== "rawData"
+        ) {
+          fields.push({
+            label: key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()),
+            value: val,
+          });
+        }
+      });
 
-    return fields.slice(0, 8); // Show max 8 fields
+    return fields.slice(0, 12);
   };
 
   const renderConsentStep = () => (
@@ -2080,9 +2118,9 @@ const VerifyPage = () => {
                     {getResultPreviewFields().map((field, idx) => (
                       <ResultFieldPopup key={idx}>
                         <ResultLabelPopup>{field.label}</ResultLabelPopup>
-                        {field.label === "Verification Status" ? (
+                        {field.verified ? (
                           <VerifiedBadgePopup>
-                            VERIFIED <FaCheckCircle />
+                            {field.value} <FaCheckCircle />
                           </VerifiedBadgePopup>
                         ) : (
                           <ResultValuePopup>{field.value}</ResultValuePopup>

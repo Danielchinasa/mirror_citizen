@@ -373,61 +373,61 @@ export const ResultCardPopup = styled.div`
 
 export const ResultTopPopup = styled.div`
   display: flex;
-  gap: 24px;
-  padding: 28px;
+  gap: 16px;
+  padding: 20px;
   align-items: flex-start;
   flex-wrap: wrap;
 `;
 
 export const ResultPhotoPopup = styled.div`
-  width: 90px;
-  height: 90px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: var(--ec-bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--ec-text);
-  font-size: 32px;
+  font-size: 24px;
   flex-shrink: 0;
 `;
 
 export const ResultGridPopup = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(180px, 1fr));
-  gap: 20px 32px;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 12px;
   width: 100%;
 `;
 
 export const ResultFieldPopup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 `;
 
 export const ResultLabelPopup = styled.span`
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   color: var(--ec-text-faint);
 `;
 
 export const ResultValuePopup = styled.span`
   font-family: "Poppins", sans-serif;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--ec-text);
 `;
 
 export const VerifiedBadgePopup = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 4px 10px;
   border-radius: 999px;
   background: var(--ec-primary-bg);
   color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
 `;
 

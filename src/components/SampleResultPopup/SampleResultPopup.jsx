@@ -15,25 +15,26 @@ import phoneSampleAvatar from "../../images/avatar1.jpg";
 
 const sampleData = {
   nin: {
-    subtitle: "See an example of a NIN verification result.",
+    subtitle: "See an example of a Ghana ID Card verification result.",
     image: ninSampleAvatar,
     fields: [
-      ["Full Name", "DANIEL CHINASA OKORO"],
-      ["First Name", "DANIEL"],
-      ["Middle Name", "CHINASA"],
-      ["Surname", "OKORO"],
-      ["NIN", "7348 9021 5**"],
-      ["Phone Number", "0806 *** 4821"],
-      ["Verification Status", "VERIFIED", "verified"],
-      ["Date of Birth", "24-08-1992"],
+      ["Status", "COMPLETED", "verified"],
+      ["Provider", "SMILE_ID"],
+      ["Result Code", "1012"],
+      ["Result Text", "ID Number Validated"],
+      ["Job ID", "a238dc77-c8b6-4457-b6cc-80425b373cad"],
+      ["ID Type", "GHANA_CARD_NO_PHOTO"],
+      ["ID Number", "GHA-000000000-0"],
+      ["Full Name", "JOE DOE"],
+      ["First Name", "JOE"],
+      ["Last Name", "DOE"],
+      ["Date of Birth", "2000-02-20"],
       ["Gender", "Male"],
-      ["Birth Country", "Nigeria"],
-      ["Residence Address", "14 ADETOKUNBO STREET, IKEJA"],
-      ["Next of Kin First Name", "FUNMI"],
-      ["Next of Kin Middle Name", "KEMI"],
-      ["Next of Kin Town", "ABEOKUTA"],
-      ["Next of Kin LGA", "Abeokuta South"],
-      ["Next of Kin Address", "22 UNITY AVENUE, OKE ILEWO"],
+      ["Country", "Ghana"],
+      ["Pricing Segment", "LOCAL"],
+      ["Amount", "GHS 10.00"],
+      ["Verify ID Number", "Verified", "verified"],
+      ["Return Personal Info", "Returned", "verified"],
     ],
   },
   phone: {
@@ -258,8 +259,8 @@ const TitleRow = styled.div`
 const Title = styled.h2`
   margin: 0;
   font-family: "Poppins", sans-serif;
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 700;
   color: var(--ec-heading);
 `;
 
@@ -268,16 +269,16 @@ const Badge = styled.span`
   color: #a15c00;
   border: 1px solid #ffe0a3;
   border-radius: 999px;
-  padding: 5px 10px;
+  padding: 3px 8px;
   font-family: "Nunito", sans-serif;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
 `;
 
 const Subtitle = styled.p`
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   font-family: "Nunito", sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   color: var(--ec-text-muted);
 `;
 
@@ -303,8 +304,8 @@ const CloseButton = styled.button`
 const ResultCard = styled.div`
   background: var(--ec-bg-secondary);
   border: 1px solid var(--ec-border);
-  border-radius: 10px;
-  padding: 18px;
+  border-radius: 8px;
+  padding: 14px;
 `;
 
 const Top = styled.div`
@@ -318,8 +319,8 @@ const Top = styled.div`
 `;
 
 const Avatar = styled.div`
-  width: 86px;
-  height: 86px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: var(--ec-primary-bg);
   color: #FED001;
@@ -336,15 +337,15 @@ const Avatar = styled.div`
   }
 
   svg {
-    font-size: 36px;
+    font-size: 28px;
   }
 `;
 
 const ResultGrid = styled.div`
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 
   @media screen and (max-width: 560px) {
     width: 100%;
@@ -356,23 +357,23 @@ const ResultField = styled.div`
   min-width: 0;
   background: var(--ec-bg);
   border: 1px solid var(--ec-border);
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 6px;
+  padding: 8px;
 `;
 
 const ResultLabel = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   font-family: "Nunito", sans-serif;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: 700;
   color: var(--ec-text-faint);
   text-transform: uppercase;
 `;
 
 const ResultValue = styled.div`
   font-family: "Poppins", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--ec-text);
   overflow-wrap: anywhere;
 `;
@@ -391,10 +392,10 @@ const VerifiedValue = styled(ResultValue)`
 const Disclaimer = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 10px;
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   color: var(--ec-text-muted);
 
   svg {
