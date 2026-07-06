@@ -1382,10 +1382,10 @@ const MainDashboard = () => {
   };
 
   const userBalance = userDetails?.walletBalance || 0;
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToKES = (value) => {
+    return new Intl.NumberFormat("en-KE", {
       style: "currency",
-      currency: "NGN",
+      currency: "KES",
     }).format(value);
   };
   const formatToDollar = (value) => {
@@ -1525,9 +1525,9 @@ const MainDashboard = () => {
                 >
                   <Title level={5}> Wallet Balance:</Title>
                   <Title level={3} style={{ color: PRIMARY_COLOR }}>
-                    {userCurrency.toUpperCase() === "NGN"
-                      ? formatToNaira(userBalance)
-                      : `${formatToDollar(userBalance)}`}
+                    {userCurrency.toUpperCase() === "USD"
+                      ? `${formatToDollar(userBalance)}`
+                      : formatToKES(userBalance)}
                   </Title>
 
                   <Divider style={{ border: "1px solid #D9D9D9" }} />

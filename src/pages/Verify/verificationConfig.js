@@ -22,7 +22,7 @@ const verificationConfig = {
     heroTitleContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Identity", "National ID"],
     idTypeLabel: "National ID",
     fields: [
@@ -67,7 +67,7 @@ const verificationConfig = {
     heroHighlight: "Number",
     heroSubtitle:
       "Enter a phone number, pay securely and get verification results instantly.",
-    heroImage: require("../../images/phone_number_verification.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Identity", "Phone Verification"],
     idTypeLabel: "Phone Number Verification",
     fields: [
@@ -109,7 +109,7 @@ const verificationConfig = {
     heroHighlight: "in seconds",
     heroSubtitle:
       "Enter company details, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/business_verification2.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Business", "Business Verification"],
     idTypeLabel: "Business Registration (RC Number / Business Name)",
     fields: [
@@ -162,7 +162,7 @@ const verificationConfig = {
     heroHighlight: "Name",
     heroSubtitle:
       "Search by business name, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/business_verification.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Business", "Business Name Verification"],
     idTypeLabel: "Business Name Search",
     fields: [
@@ -218,7 +218,7 @@ const verificationConfig = {
     heroHighlight: "BVN in seconds",
     heroSubtitle:
       "Enter your BVN, pay securely and get financial verification results instantly.",
-    heroImage: require("../../images/credit_profile.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Financial", "BVN Verification"],
     idTypeLabel: "Bank Verification Number (BVN)",
     fields: [
@@ -271,12 +271,12 @@ const verificationConfig = {
     heroTitleContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Identity", "Alien Card Verification"],
     idTypeLabel: "Alien Card Number",
     fields: [
       {
-        name: "alien_card",
+        name: "idNumber",
         label: "Alien Card Number",
         placeholder: "Enter Alien Card Number",
         type: "text",
@@ -299,7 +299,7 @@ const verificationConfig = {
     serviceName: "Alien Card Verification",
     serviceCode: "ALIEN_CARD",
     apiServiceName: "Alien Card",
-    serviceFieldKey: "alien_card",
+    serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: true,
     trustBar: [
@@ -315,7 +315,7 @@ const verificationConfig = {
     heroHighlight: "Vehicle History",
     heroSubtitle:
       "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
-    heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
+    heroImage: require("../../images/kenya.png"),
     breadcrumb: ["Verify Vehicle", "Vehicle Verification"],
     idTypeLabel: "Vehicle Identification Number (VIN)",
     fields: [

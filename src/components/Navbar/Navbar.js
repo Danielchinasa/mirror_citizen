@@ -231,10 +231,10 @@ function Navbar() {
   }, [dispatch]);
 
   const userBalance = userDetails?.walletBalance || 0;
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToKES = (value) => {
+    return new Intl.NumberFormat("en-KE", {
       style: "currency",
-      currency: "NGN",
+      currency: "KES",
     }).format(value);
   };
   const formatToDollar = (value) => {
@@ -1034,7 +1034,7 @@ function Navbar() {
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
-                              : formatToNaira(userBalance)}
+                              : formatToKES(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1047,9 +1047,9 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
-                            {userCurrency.toUpperCase() === "NGN"
-                              ? formatToNaira(userBalance)
-                              : `${formatToDollar(userBalance)}`}
+                            {userCurrency.toUpperCase() === "USD"
+                              ? `${formatToDollar(userBalance)}`
+                              : formatToKES(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
@@ -1245,7 +1245,7 @@ function Navbar() {
                             {/* KHs{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
-                              : formatToNaira(userBalance)}
+                              : formatToKES(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1258,9 +1258,9 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
-                            {userCurrency.toUpperCase() === "NGN"
-                              ? formatToNaira(userBalance)
-                              : `${formatToDollar(userBalance)}`}
+                            {userCurrency.toUpperCase() === "USD"
+                              ? `${formatToDollar(userBalance)}`
+                              : formatToKES(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
