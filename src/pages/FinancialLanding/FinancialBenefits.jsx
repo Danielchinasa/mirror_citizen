@@ -48,7 +48,7 @@ const BenefitIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #02831c;
+  color: #FED001;
   font-size: 18px;
   flex-shrink: 0;
 `;

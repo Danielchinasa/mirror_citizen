@@ -48,7 +48,7 @@ const pulseGlow = keyframes`
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
   }
   50% {
-    box-shadow: 0px 8px 24px rgba(2, 131, 28, 0.4);
+    box-shadow: 0px 8px 24px rgba(254, 208, 1, 0.4);
   }
 `;
 
@@ -80,7 +80,7 @@ export const PrimaryBtn = styled(Link)`
     background-color: var(--ec-primary);
     color: #fff;
     animation: none;
-    box-shadow: 0px 8px 24px rgba(2, 131, 28, 0.5);
+    box-shadow: 0px 8px 24px rgba(254, 208, 1, 0.5);
   }
 
   @media screen and (max-width: 480px) {
@@ -172,8 +172,8 @@ export const HeroSectionWrapper = styled.section`
     height: 30%;
     background: linear-gradient(
       180deg,
-      rgba(224, 239, 224, 0) 0%,
-      #e9fbe9 100%
+      rgba(255, 248, 214, 0) 0%,
+      #fff8d6 100%
     );
     z-index: 1;
     pointer-events: none;
@@ -194,7 +194,7 @@ export const HeroSectionWrapper = styled.section`
         180deg,
         #ffffff 0%,
         rgba(255, 255, 255, 0.78) 46%,
-        rgba(224, 239, 224, 0.72) 100%
+        rgba(255, 248, 214, 0.72) 100%
       );
     }
   }
@@ -301,7 +301,7 @@ export const HeroTitle = styled.h1`
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
-    background: linear-gradient(90deg, #02831C 0%, #09C93A 50%, #02831C 100%);
+    background: linear-gradient(90deg, #FED001 0%, #FFE44D 50%, #FED001 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -454,7 +454,7 @@ export const TrustIconCircle = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${(props) => props.bg || "#dcfce7"};
+  background: ${(props) => props.bg || "#FFF9CC"};
   display: flex;
   align-items: center;
   justify-content: center;

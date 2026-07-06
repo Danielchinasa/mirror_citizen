@@ -354,7 +354,7 @@ export const PublicCta = styled(Link)`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 15px;
-  box-shadow: 0 8px 18px rgba(2, 131, 28, 0.22);
+  box-shadow: 0 8px 18px rgba(254, 208, 1, 0.22);
   transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
@@ -432,7 +432,7 @@ export const PublicLanguageToggleGroup = styled.div`
 
 export const PublicLanguageToggle = styled.button`
   border: none;
-  background: ${({ $active }) => ($active ? "#02831C" : "transparent")};
+  background: ${({ $active }) => ($active ? "#FED001" : "transparent")};
   color: ${({ $active }) => ($active ? "#fff" : "#111827")};
   font-family: "Nunito", sans-serif;
   font-size: 13px;

@@ -324,7 +324,7 @@ export const TrustIconCircle = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${(props) => props.bg || "#dcfce7"};
+  background: ${(props) => props.bg || "#FFF9CC"};
   display: flex;
   align-items: center;
   justify-content: center;

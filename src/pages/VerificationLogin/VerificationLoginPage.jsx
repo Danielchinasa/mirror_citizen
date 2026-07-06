@@ -63,6 +63,12 @@ const VerificationLoginPage = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   useEffect(() => {
+    // TODO: remove hardcoded Ghana IP/currency before release
+    setIpAddress("41.212.86.175");
+    localStorage.setItem("IpAddress", "41.212.86.175");
+    localStorage.setItem("userCountry", "GH");
+    localStorage.setItem("currencyCheck", "GHS");
+
     // TODO: remove hardcoded IP before release
     // const fetchIpAddress = async () => { ... }
     // fetchIpAddress();
@@ -338,7 +344,7 @@ const VerificationLoginPage = () => {
               style={{ marginBottom: 20 }}
             />
 
-            <LoginButton type="submit" disabled={!isCaptchaVerified}>
+            <LoginButton type="submit" disabled={isCaptchaVerified}>
               Login
             </LoginButton>
           </form>

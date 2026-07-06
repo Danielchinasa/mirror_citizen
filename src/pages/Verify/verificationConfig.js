@@ -49,7 +49,7 @@ const verificationConfig = {
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
     serviceName: "National ID",
-    serviceCode: "NATIONAL_ID",
+    serviceCode: "ID_CARD",
     apiServiceName: "ID Card",
     serviceFieldKey: "idNumber",
     priceIndex: 0,

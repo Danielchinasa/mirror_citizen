@@ -182,7 +182,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #02831c;
+    border-color: #FED001;
   }
 `;
 
@@ -222,7 +222,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #02831c;
+  color: #FED001;
   text-decoration: none;
   font-weight: 600;
 
@@ -235,7 +235,7 @@ const LoginBtn = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background: ${(props) => (props.disabled ? "#ccc" : "#02831C")};
+  background: ${(props) => (props.disabled ? "#ccc" : "#FED001")};
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -279,7 +279,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid var(--ec-border);
-  border-top-color: #02831c;
+  border-top-color: #FED001;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -298,7 +298,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #02831c;
+    color: #FED001;
     font-weight: 600;
     text-decoration: none;
 
@@ -342,8 +342,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: var(--ec-bg);
-  border: 1px solid #02831c;
-  color: #02831c;
+  border: 1px solid #FED001;
+  color: #FED001;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -437,7 +437,7 @@ const ResultValue = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #02831c;
+  color: #FED001;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;

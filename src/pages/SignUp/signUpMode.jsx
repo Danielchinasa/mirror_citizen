@@ -84,7 +84,7 @@ const SignUpMode = () => {
             border: "2px #000 solid",
             borderRadius: "10px",
             padding: "20px",
-            background: selectedDiv === 2 ? "#DCFCE7" : "white",
+            background: selectedDiv === 2 ? "#FFF9CC" : "white",
             cursor: "pointer",
           }}
           onClick={() => handleDivClick(2)}

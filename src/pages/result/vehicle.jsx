@@ -224,11 +224,11 @@ const Vehicle = () => {
                     style={{
                       textAlign: "right",
                       fontSize: "15px",
-                      color: "#02831C",
+                      color: "#FED001",
                       textDecoration: "none",
                       cursor: "pointer",
                       padding: "6px",
-                      border: "2px solid #02831C",
+                      border: "2px solid #FED001",
                       borderRadius: "5px",
                     }}
                   >
@@ -350,7 +350,7 @@ const Vehicle = () => {
                 style={{
                   textAlign: "right",
                   fontSize: "25px",
-                  color: "#02831C",
+                  color: "#FED001",
                   textDecoration: "none",
                   cursor: "pointer",
                 }}

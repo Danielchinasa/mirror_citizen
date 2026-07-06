@@ -76,7 +76,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(2, 131, 28, 0.08) 0%,
+      rgba(254, 208, 1, 0.08) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -92,7 +92,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(2, 131, 28, 0.06) 0%,
+      rgba(254, 208, 1, 0.06) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -105,11 +105,11 @@ export const LoginCard = styled.div`
   background: var(--ec-login-card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(2, 131, 28, 0.12);
+  border: 1px solid rgba(254, 208, 1, 0.12);
   border-radius: 16px;
   padding: 40px 36px;
   box-shadow:
-    0 8px 32px rgba(2, 131, 28, 0.08),
+    0 8px 32px rgba(254, 208, 1, 0.08),
     0 2px 8px rgba(0, 0, 0, 0.04);
   opacity: 0;
   animation: ${fadeSlideUp} 0.5s ease-out 0.1s forwards;
@@ -276,7 +276,7 @@ export const LoginButton = styled.button`
   display: block;
   width: 100%;
   padding: 12px;
-  background: #02831c;
+  background: #FED001;
   color: #fff;
   border: none;
   border-radius: 8px;

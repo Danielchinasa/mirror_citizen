@@ -80,7 +80,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #02831c;
+  border: 1px solid #FED001;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -366,7 +366,7 @@ export const TrustIconCircle = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${(props) => props.bg || "#dcfce7"};
+  background: ${(props) => props.bg || "#FFF9CC"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -435,7 +435,7 @@ export const StepNumber = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #02831c;
+  background: #FED001;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -601,7 +601,7 @@ export const CheckItem = styled.li`
 /* ─── CTA ─── */
 
 export const CtaSectionWrapper = styled.section`
-  background: #02831c;
+  background: #FED001;
   padding: 60px 50px;
   text-align: center;
 

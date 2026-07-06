@@ -51,12 +51,12 @@ export const HeroStrip = styled.div`
   height: 18px;
   background: linear-gradient(
     90deg,
-    #02831c 0%,
-    #02831c 20%,
+    #FED001 0%,
+    #FED001 20%,
     #ffd000 20%,
     #ffd000 40%,
-    #02831c 40%,
-    #02831c 100%
+    #FED001 40%,
+    #FED001 100%
   );
   position: relative;
   overflow: hidden;
@@ -220,13 +220,15 @@ export const PrimaryBtn = styled(Link)`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(2, 131, 28, 0.24);
+  box-shadow: 0px 4px 12px rgba(254, 208, 1, 0.24);
   transition: all 0.3s ease-out;
   white-space: nowrap;
 
   &:hover {
-    background-color: var(--ec-primary);
+    background-color: var(--ec-primary-hover);
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 24px rgba(254, 208, 1, 0.45);
   }
 
   @media screen and (max-width: 600px) {
@@ -424,7 +426,7 @@ export const StepNumber = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #02831c;
+  background: #FED001;
   margin-right: 8px;
   color: #fff;
   font-family: "Poppins", sans-serif;
@@ -442,14 +444,14 @@ export const StepIconBox = styled.div`
   height: 44px;
   border-radius: 50%;
   background: var(--ec-bg-card-alt);
-  border: 1px solid rgba(2, 131, 28, 0.12);
+  border: 1px solid rgba(254, 208, 1, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--ec-primary);
   font-size: 24px;
   flex-shrink: 0;
-  box-shadow: 0 8px 20px rgba(2, 131, 28, 0.08);
+  box-shadow: 0 8px 20px rgba(254, 208, 1, 0.08);
 `;
 
 export const StepName = styled.h3`
@@ -529,7 +531,7 @@ export const CardsGrid = styled.div`
 `;
 
 export const ServiceCard = styled.div`
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#02831C" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#FED001" : "#e5e7eb")};
   border-radius: 14px;
   padding: 24px 20px;
   text-align: center;
@@ -546,7 +548,7 @@ export const PopularBadge = styled.span`
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #02831c;
+  background: #FED001;
   color: #fff;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
@@ -629,13 +631,13 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#02831C" : "#fff")};
+  background: ${({ $popular }) => ($popular ? "#FED001" : "#fff")};
   color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#02831C" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#FED001" : "#e5e7eb")};
 
   &:hover {
-    background: ${({ $popular }) => ($popular ? "#09C93A" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#02831C")};
+    background: ${({ $popular }) => ($popular ? "#D4A800" : "#f9fafb")};
+    color: ${({ $popular }) => ($popular ? "#fff" : "#FED001")};
     border-color: var(--ec-primary);
   }
 `;
@@ -812,7 +814,7 @@ export const CtaDesc = styled.p`
 `;
 
 export const CtaButton = styled(Link)`
-  background: #02831c;
+  background: #FED001;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;

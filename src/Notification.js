@@ -30,7 +30,7 @@ const Notification = () => {
           icon: "info",
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#FED001",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -46,7 +46,7 @@ const Notification = () => {
           icon: "info",
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#FED001",
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.isConfirmed) {
@@ -66,7 +66,7 @@ const Notification = () => {
   //     icon: "info",
   //     showConfirmButton: true,
   //     confirmButtonText: "OK",
-  //     confirmButtonColor: "#02831C",
+  //     confirmButtonColor: "#FED001",
   //   }).then((result) => {
   //     /* Read more about handling dismissals below */
   //     if (result.isConfirmed) {

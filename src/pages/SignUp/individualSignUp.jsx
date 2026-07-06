@@ -682,7 +682,7 @@ const IndividualSignUp = () => {
                     className={"input-phone-number mb-3"}
                     inputStyle={{
                       width: "100%",
-                      borderColor: isFocused ? "#02831C" : "",
+                      borderColor: isFocused ? "#FED001" : "",
                       borderRadius: "5px",
                       color: text,
                       background: "rgba(53, 65, 56, 0.1)",
@@ -741,7 +741,7 @@ const IndividualSignUp = () => {
                   <Checkbox onChange={onChangeIsAccepted}>
                     I certify that I have read and accepted the{" "}
                     <span
-                      style={{ color: "#02831C", cursor: "pointer" }}
+                      style={{ color: "#FED001", cursor: "pointer" }}
                       onClick={handleClickPrivacyPolicy}
                     >
                       e-citizen™ Privacy Policy

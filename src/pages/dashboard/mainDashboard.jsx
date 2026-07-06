@@ -550,7 +550,7 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: "#02831C",
+                color: "#FED001",
                 fontWeight: "bold",
               }}
             >
@@ -957,7 +957,7 @@ const MainDashboard = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#02831C",
+          confirmButtonColor: "#FED001",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -1011,7 +1011,7 @@ const MainDashboard = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#02831C",
+              confirmButtonColor: "#FED001",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1036,7 +1036,7 @@ const MainDashboard = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#02831C",
+        confirmButtonColor: "#FED001",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -1358,7 +1358,7 @@ const MainDashboard = () => {
     <div className="custom-statistic">
       <div
         className="custom-statistic-title"
-        style={{ textAlign: "center", color: "#02831C" }}
+        style={{ textAlign: "center", color: "#FED001" }}
       >
         {title}
       </div>
@@ -1426,9 +1426,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #02831C solid",
+                      border: "3px #FED001 solid",
                       borderRadius: "12px",
-                      background: "#DCFCE7",
+                      background: "#FFF9CC",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1436,7 +1436,7 @@ const MainDashboard = () => {
                       title="Total verifications "
                       value={totalVerificationCount}
                       valueStyle={{
-                        color: "#02831C",
+                        color: "#FED001",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1455,9 +1455,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #02831C solid",
+                      border: "3px #FED001 solid",
                       borderRadius: "12px",
-                      background: "#DCFCE7",
+                      background: "#FFF9CC",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1465,7 +1465,7 @@ const MainDashboard = () => {
                       title="Successful verifications "
                       value={completedVerificationCount}
                       valueStyle={{
-                        color: "#02831C",
+                        color: "#FED001",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1484,9 +1484,9 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #02831C solid",
+                      border: "3px #FED001 solid",
                       borderRadius: "12px",
-                      background: "#DCFCE7",
+                      background: "#FFF9CC",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
                     }}
                   >
@@ -1494,7 +1494,7 @@ const MainDashboard = () => {
                       title="Unsuccessful verifications "
                       value={failedVerificationCount}
                       valueStyle={{
-                        color: "#02831C",
+                        color: "#FED001",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1522,7 +1522,7 @@ const MainDashboard = () => {
                   width={300}
                 >
                   <Title level={5}> Wallet Balance:</Title>
-                  <Title level={3} style={{ color: "#02831C" }}>
+                  <Title level={3} style={{ color: "#FED001" }}>
                     {userCurrency.toUpperCase() === "NGN"
                       ? formatToNaira(userBalance)
                       : `${formatToDollar(userBalance)}`}

@@ -78,6 +78,12 @@ const LoginForm = (props) => {
   );
 
   useEffect(() => {
+    // TODO: remove hardcoded Ghana IP/currency before release
+    setIpAddress("41.212.86.175");
+    localStorage.setItem("IpAddress", "41.212.86.175");
+    localStorage.setItem("userCountry", "GH");
+    localStorage.setItem("currencyCheck", "GHS");
+
     // TODO: remove hardcoded IP before release
     // const fetchIpAddress = async () => { ... }
     // fetchIpAddress();
@@ -567,14 +573,14 @@ const LoginForm = (props) => {
             >
               Don’t have an account? {/* <BtnLink to="/sign-up"> */}
               <BtnLink to="/individual/sign-up/1">
-                <span style={{ color: "#02831C", cursor: "pointer" }}>
+                <span style={{ color: "#FED001", cursor: "pointer" }}>
                   Register here
                 </span>
               </BtnLink>
             </Subtitle>
             <Subtitle color="light" $token={token}>
               Forgot password?{" "}
-              <span style={{ color: "#02831C" }}>
+              <span style={{ color: "#FED001" }}>
                 <BtnLink to="/forgot-password">Click me!</BtnLink>
               </span>
             </Subtitle>

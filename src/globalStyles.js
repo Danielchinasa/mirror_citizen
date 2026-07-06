@@ -100,7 +100,7 @@ const buttonBaseStyles = createGlobalStyle`
 `;
 
 const colors = {
-  primary: "#02831C",
+  primary: "#FED001",
   warning: "#E10D30",
   disabled: "#F2F2F2",
   success: "#12AC3F",
@@ -109,7 +109,7 @@ const colors = {
 };
 
 const hoverColors = {
-  primary: "#09C93A",
+  primary: "#D4A800",
   warning: "#900B21",
   default: "#0C3875",
   success: "#0B6F29",
@@ -252,7 +252,7 @@ export const Subtitle = styled.p`
   line-height: 24px;
   font-family: Nunito;
   color: ${(props) =>
-    props.color === "primary" ? "#02831C" : props.$token.text};
+    props.color === "primary" ? "#FED001" : props.$token.text};
 `;
 
 export const StyledForm = styled.form`
@@ -276,7 +276,7 @@ export const StyledInput = styled.input`
   color: ${(props) => props.$token.text};
   &:focus {
     outline: none;
-    border-color: #02831c !important;
+    border-color: #FED001 !important;
     background: ${(props) => props.$token.bgContainer};
   }
 `;
@@ -290,7 +290,7 @@ export const StyledInputNoDarkMode = styled.input`
   color: "#000000";
   &:focus {
     outline: none;
-    border-color: #02831c !important;
+    border-color: #FED001 !important;
   }
 `;
 
@@ -303,17 +303,17 @@ export const StyledTextArea = styled.textarea`
   background: rgba(53, 65, 56, 0.1);
   &:focus {
     outline: none;
-    border-color: #02831c !important;
+    border-color: #FED001 !important;
     background: #fff;
   }
 `;
 
 export const BtnLink = styled(Link)`
   text-decoration: none;
-  color: #02831c;
+  color: #FED001;
   &:hover {
     cursor: pointer;
-    color: #02831c;
+    color: #FED001;
   }
 `;
 

@@ -97,6 +97,7 @@ const { useToken } = theme;
 
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
+  const [ipCountry, setIpCountry] = useState(null);
   const [servicePrices, setServicePrices] = useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -107,27 +108,28 @@ const Home = () => {
   const ninVerify = useAuthRedirect("/verify/nin");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
 
+  // Get user country from IP to show correct pricing
   useEffect(() => {
-    const fetchIpAddress = async () => {
+    const fetchIpInfo = async () => {
       try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        const response = await axios.get("https://ipapi.co/json/");
         setIpAddress(response.data.ip);
+        setIpCountry(response.data.country_code || null);
       } catch (error1) {
-        console.error("Error fetching IP address from primary URL:", error1);
+        console.error("Error fetching IP info:", error1);
         try {
-          const response = await axios.get("https://ipapi.co/json/");
+          const response = await axios.get("https://api.ipbase.com/v1/json/");
           setIpAddress(response.data.ip);
+          setIpCountry(null);
         } catch (error2) {
-          console.error(
-            "Error fetching IP address from secondary URL:",
-            error2,
-          );
+          console.error("Error fetching IP from fallback:", error2);
           setIpAddress(null);
+          setIpCountry(null);
         }
       }
     };
 
-    fetchIpAddress();
+    fetchIpInfo();
   }, []);
 
   useEffect(() => {
@@ -318,6 +320,23 @@ const Home = () => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const ctaLink = isAuthenticated ? "/dashboard" : "/login";
 
+  const formatPrice = (serviceName) => {
+    const s = Array.isArray(servicePrices)
+      ? servicePrices.find((x) => x.service === serviceName)
+      : null;
+    if (!s) return "—";
+    const isGhana = ipCountry === "GH";
+    if (isGhana) {
+      return s?.price
+        ? `GH₵${Number(s.price).toLocaleString()}`
+        : "GH₵—";
+    } else {
+      return s?.price2
+        ? `$${Number(s.price2).toLocaleString()}`
+        : "$—";
+    }
+  };
+
   return (
     <>
       {/* ── Hero ── */}
@@ -329,7 +348,7 @@ const Home = () => {
               Verify your identity in{" "}
               <span
                 style={{
-                  color: "#02831C",
+                  color: "#FED001",
                   fontFamily: "inherit",
                   fontSize: "inherit",
                   fontWeight: "inherit",
@@ -460,14 +479,7 @@ const Home = () => {
               Verify Ghana National Identity Card details in real-time.
             </ServiceDesc>
             <ServicePrice>
-              {(() => {
-                const s = Array.isArray(servicePrices)
-                  ? servicePrices.find((x) => x.service === "ID Card")
-                  : null;
-                return s?.price
-                  ? `GH₵${Number(s.price).toLocaleString()}`
-                  : "GH₵—";
-              })()}
+              {formatPrice("ID Card")}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -501,14 +513,7 @@ const Home = () => {
               Verify vehicle identification number and details.
             </ServiceDesc>
             <ServicePrice>
-              {(() => {
-                const s = Array.isArray(servicePrices)
-                  ? servicePrices.find((x) => x.service === "VIN")
-                  : null;
-                return s?.price
-                  ? `GH₵${Number(s.price).toLocaleString()}`
-                  : "GH₵—";
-              })()}
+              {formatPrice("VIN")}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>

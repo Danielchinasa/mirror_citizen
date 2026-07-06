@@ -1127,7 +1127,7 @@ const VerifyPage = () => {
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
-                        ? "#f0fdf4"
+                        ? "#fffbe6"
                         : "#fff",
                       transition: "all 0.15s",
                       fontFamily: "Nunito, sans-serif",
@@ -1156,11 +1156,11 @@ const VerifyPage = () => {
                   style={{
                     marginTop: 8,
                     padding: "8px 12px",
-                    background: "#f0fdf4",
-                    border: "1px solid #d1fae5",
+                    background: "#fffbe6",
+                    border: "1px solid #fff3b0",
                     borderRadius: 6,
                     fontSize: 13,
-                    color: "#16a34a",
+                    color: "#b38b00",
                     fontFamily: "Nunito, sans-serif",
                     fontWeight: 600,
                   }}
@@ -1246,8 +1246,8 @@ const VerifyPage = () => {
                     </PriceRow>
                     {discount > 0 && (
                       <PriceRow>
-                        <span style={{ color: "#16a34a" }}>Discount</span>
-                        <span style={{ color: "#16a34a" }}>
+                        <span style={{ color: "#b38b00" }}>Discount</span>
+                        <span style={{ color: "#b38b00" }}>
                           -{currencySymbol}
                           {discount.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
@@ -1414,10 +1414,10 @@ const VerifyPage = () => {
               </SummaryRow>
               {discount > 0 && (
                 <SummaryRow>
-                  <SummaryLabel style={{ color: "#16a34a" }}>
+                  <SummaryLabel style={{ color: "#b38b00" }}>
                     Discount
                   </SummaryLabel>
-                  <SummaryValue style={{ color: "#16a34a" }}>
+                  <SummaryValue style={{ color: "#b38b00" }}>
                     -{currencySymbol}
                     {discount.toLocaleString()}
                   </SummaryValue>
@@ -2172,8 +2172,8 @@ const VerifyPage = () => {
               <PopupMeta>
                 <PopupIcon
                   style={{
-                    background: "rgba(2, 131, 28, 0.10)",
-                    color: "#02831C",
+                    background: "rgba(254, 208, 1, 0.10)",
+                    color: "#FED001",
                   }}
                 >
                   <FaInfoCircle />
@@ -2190,8 +2190,8 @@ const VerifyPage = () => {
             <PopupBody>
               <div
                 style={{
-                  background: "rgba(2, 131, 28, 0.06)",
-                  border: "1px solid rgba(2, 131, 28, 0.2)",
+                  background: "rgba(254, 208, 1, 0.06)",
+                  border: "1px solid rgba(254, 208, 1, 0.2)",
                   borderRadius: 10,
                   padding: "16px 20px",
                   marginBottom: 20,

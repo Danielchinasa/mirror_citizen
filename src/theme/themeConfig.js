@@ -1,6 +1,6 @@
 export const lightTheme = {
   token: {
-    colorPrimary: "#02831C",
+    colorPrimary: "#FED001",
     colorSuccess: "#52c41a",
     colorWarning: "blue",
     colorError: "blue",
@@ -28,7 +28,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   token: {
-    colorPrimary: "#02831C",
+    colorPrimary: "#FED001",
     colorSuccess: "#52c41a",
     colorWarning: "#faad14",
     colorError: "#ff4d4f",
