@@ -117,11 +117,11 @@ const Home = () => {
   useEffect(() => {
     const fetchIpAndCountry = async () => {
       // TODO: remove hardcoded KE override before release
-      setIpAddress("41.212.86.175");
-      localStorage.setItem("IpAddress", "41.212.86.175");
-      setUserCountry("KE");
-      localStorage.setItem("currencyCheck", "KES");
-      return;
+      // setIpAddress("41.212.86.175");
+      // localStorage.setItem("IpAddress", "41.212.86.175");
+      // setUserCountry("KE");
+      // localStorage.setItem("currencyCheck", "KES");
+      // return;
 
       // Try ipapi.co first — returns IP + country info in one call
       try {
