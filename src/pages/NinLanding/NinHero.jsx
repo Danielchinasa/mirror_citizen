@@ -55,7 +55,8 @@ const NinHero = () => {
               </SecondaryBtn>
             </HeroButtons>
             <PriceBadge>
-              From <span>{getPrice(0) || "₦600"}</span> per verification
+              From <span>{getPrice("National ID NNI") || "FCFA 400"}</span> per
+              verification
             </PriceBadge>
           </HeroContent>
         </HeroContainer>

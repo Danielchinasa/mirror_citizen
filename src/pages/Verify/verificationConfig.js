@@ -50,6 +50,7 @@ const verificationConfig = {
       tags: ["Nom complet", "Photo", "Date de naissance", "Et plus..."],
     },
     serviceName: "Vérification CNI (NNI)",
+    apiServiceName: "National ID NNI",
     serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: false,
@@ -301,6 +302,7 @@ const verificationConfig = {
       tags: ["Marque/Modèle", "Propriété", "Statut", "Et plus..."],
     },
     serviceName: "Vérification VIN",
+    apiServiceName: "VIN",
     serviceFieldKey: "vin",
     priceIndex: 5,
     trustBar: [
@@ -347,6 +349,7 @@ const verificationConfig = {
       tags: ["Nom complet", "Numéro de carte", "Statut", "Et plus..."],
     },
     serviceName: "Vérification Carte de Résident",
+    apiServiceName: "Residents ID",
     serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: false,

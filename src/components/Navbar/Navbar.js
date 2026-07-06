@@ -868,7 +868,7 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <PublicBrand to={isAuthenticated ? "/dashboard" : "/"}>
+            <PublicBrand to="/">
               <span className="brand-red">e</span>
               <span className="brand-dot">-</span>
               citoyen<span className="brand-dot">.africa</span>

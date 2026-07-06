@@ -10,7 +10,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useLocale } from "../../components/LocaleProvider";
 import baseUrl from "../../apiConfig";
-import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import { apiGet, apiPost, apiPostInternalCall } from "../../apiUtils";
 import {
   FaArrowRight,
   FaLock,
@@ -134,19 +134,17 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (!ipAddress) return;
     const fetchServicePrices = async () => {
       try {
-        const data = await apiPost("/transaction/public/service-prices", {
-          ipAddress,
-        });
-        setServicePrices(data);
+        const response = await apiGet("/africa/countries/CI/service-prices");
+        const services = response.data?.data || response.data || response;
+        setServicePrices(Array.isArray(services) ? services : null);
       } catch (error) {
         console.error("Failed to fetch service prices:", error);
       }
     };
     fetchServicePrices();
-  }, [ipAddress]);
+  }, []);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -454,9 +452,14 @@ const Home = () => {
             <ServiceName>{t("home.services.nin.name")}</ServiceName>
             <ServiceDesc>{t("home.services.nin.desc")}</ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[0]?.price
-                ? `USh ${Number(servicePrices.data[0].price).toLocaleString()}`
-                : "USh 100"}
+              {(() => {
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "National ID NNI")
+                  : null;
+                return s?.price
+                  ? `FCFA ${Number(s.price).toLocaleString()}`
+                  : "FCFA —";
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -489,9 +492,14 @@ const Home = () => {
             <ServiceName>{t("home.services.resident.name")}</ServiceName>
             <ServiceDesc>{t("home.services.resident.desc")}</ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[1]?.price
-                ? `USh ${Number(servicePrices.data[1].price).toLocaleString()}`
-                : "USh 500"}
+              {(() => {
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "Residents ID")
+                  : null;
+                return s?.price
+                  ? `FCFA ${Number(s.price).toLocaleString()}`
+                  : "FCFA —";
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -524,9 +532,14 @@ const Home = () => {
             <ServiceName>{t("home.services.vin.name")}</ServiceName>
             <ServiceDesc>{t("home.services.vin.desc")}</ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[5]?.price
-                ? `USh ${Number(servicePrices.data[5].price).toLocaleString()}`
-                : "USh 2,500"}
+              {(() => {
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "VIN")
+                  : null;
+                return s?.price
+                  ? `FCFA ${Number(s.price).toLocaleString()}`
+                  : "FCFA —";
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>

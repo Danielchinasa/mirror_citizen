@@ -5,12 +5,50 @@ import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
 import ReactGA from "react-ga4";
 
-const logPurchase = ({
-  currency,
-  value,
-  transactionId,
-  paymentType,
-}) => {
+export const fetchVerificationServicePrices =
+  (config, token) => async (dispatch) => {
+    try {
+      let serviceData;
+      let rate;
+
+      if (config.serviceCode) {
+        const response = await apiGet(
+          `/africa/countries/CI/service-prices`,
+          token,
+        );
+        const services = response.data?.data || response.data || [];
+        serviceData = Array.isArray(services)
+          ? services.find((s) => s.service === config.apiServiceName)
+          : services[config.apiServiceName];
+        rate = response.data?.rate;
+      } else {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await apiPost(
+          `/transaction/service-prices`,
+          { ipAddress },
+          token,
+        );
+        serviceData = response.data.data[config.priceIndex];
+        rate = response.data.rate;
+      }
+
+      return {
+        price: serviceData.price,
+        serviceFee: serviceData.serviceFee,
+        vat: serviceData.VAT,
+        priceUsd: serviceData.price2,
+        serviceFeeusd: serviceData.serviceFee2,
+        vatUsd: serviceData.VAT2,
+        processingFee: serviceData.processingFee || 0,
+        rate,
+      };
+    } catch (error) {
+      if (error.response) return error.response;
+      return { status: "failed", message: "Could not fetch service prices" };
+    }
+  };
+
+const logPurchase = ({ currency, value, transactionId, paymentType }) => {
   ReactGA.event("purchase", {
     currency: currency,
     value: value,
@@ -23,7 +61,7 @@ export const updatePassword = (credentials) => async (dispatch) => {
   try {
     const response = await apiPost(
       `/form/reset-password/${credentials.email}/password`,
-      { newPassword: credentials.newpassword, token: credentials.token }
+      { newPassword: credentials.newpassword, token: credentials.token },
     );
 
     // Return the user data upon successful login
@@ -168,7 +206,7 @@ export const fetchVerificationData = (token, page = 0, size = 10) => {
       const response = await apiPost(
         `/user/matching-requests`,
         { page, size }, // Payload
-        token
+        token,
       );
 
       dispatch({
@@ -342,7 +380,7 @@ export const sendVerificationRequest =
       const response = await apiPost(
         `/verification/call-external-apis`,
         restructuredData,
-        token
+        token,
       );
 
       const userData = response;
@@ -413,7 +451,7 @@ export const fetchVerificationResult = (requestId, token) => {
       // Make an API call to fetch verification data
       const response = await apiGet(
         `/verification/check-consent/${requestId}`,
-        token
+        token,
       );
 
       // Dispatch the fetched data to the store
@@ -599,7 +637,7 @@ export const initiateVerificationRequest =
       const response = await apiPost(
         `/verification/initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // dispatch({
@@ -661,7 +699,7 @@ export const initiateStakeHoldersRequest =
       const response = await apiPost(
         `/verification/initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // Return the user data upon successful verification
@@ -684,15 +722,11 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-
 const buildItems = (formData) => {
   const items = [];
 
   Object.keys(formData).forEach((field) => {
-    if (
-      typeof formData[field] === "string" &&
-      formData[field].trim() !== ""
-    ) {
+    if (typeof formData[field] === "string" && formData[field].trim() !== "") {
       items.push({
         item_id: field,
         item_name: field,
@@ -789,7 +823,7 @@ export const completeVerificationRequest =
       const response = await apiPost(
         `/verification/complete `,
         restructuredData,
-        token
+        token,
       );
 
       dispatch({
@@ -800,13 +834,11 @@ export const completeVerificationRequest =
       // ✅ GA4 Purchase Tracking
       try {
         const currency = currencyCheck || "NGN";
-        const transactionId =
-          transactionID || randomTransactionId;
+        const transactionId = transactionID || randomTransactionId;
         const payment = paymentType || "INSTANT";
 
         // You can improve this if you have exact total stored
-        const value =
-          parseFloat(localStorage.getItem("totalAmount")) || 0;
+        const value = parseFloat(localStorage.getItem("totalAmount")) || 0;
 
         const items = buildItems(formData);
 
@@ -868,7 +900,7 @@ export const paymentInitializationRequest =
       const response = await apiPost(
         `/payment/flexi-initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // Return the user data upon successful verification
