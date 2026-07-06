@@ -1222,17 +1222,67 @@ function Navbar() {
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
-                      <ThemeToggle style={{ paddingLeft: "49px" }} />
+                      <div
+                        style={{
+                          marginTop: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "12px",
+                        }}
+                      >
+                        <PublicLanguageToggleGroup>
+                          <PublicLanguageToggle
+                            type="button"
+                            $active={mobileLanguage === "EN"}
+                            onClick={() => handleLanguageChange("EN")}
+                            aria-pressed={mobileLanguage === "EN"}
+                          >
+                            EN
+                          </PublicLanguageToggle>
+                          <PublicLanguageToggle
+                            type="button"
+                            $active={mobileLanguage === "SW"}
+                            onClick={() => handleLanguageChange("SW")}
+                            aria-pressed={mobileLanguage === "SW"}
+                          >
+                            SW
+                          </PublicLanguageToggle>
+                        </PublicLanguageToggleGroup>
+                        <ThemeToggle />
+                      </div>
                     </>
                   )
                 : isAuthenticated && (
                     <>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
+                        <PublicLanguageToggleGroup>
+                          <PublicLanguageToggle
+                            type="button"
+                            $active={mobileLanguage === "EN"}
+                            onClick={() => handleLanguageChange("EN")}
+                            aria-pressed={mobileLanguage === "EN"}
+                          >
+                            EN
+                          </PublicLanguageToggle>
+                          <PublicLanguageToggle
+                            type="button"
+                            $active={mobileLanguage === "SW"}
+                            onClick={() => handleLanguageChange("SW")}
+                            aria-pressed={mobileLanguage === "SW"}
+                          >
+                            SW
+                          </PublicLanguageToggle>
+                        </PublicLanguageToggleGroup>
+                        <ThemeToggle />
+                      </div>
                       <div
                         style={{
                           marginTop: "20px",
                           textAlign: "end",
                           paddingLeft: "35px",
                           paddingRight: "15px",
+                          marginLeft: "auto",
                         }}
                       >
                         <Title level={4}>
@@ -1422,7 +1472,7 @@ function Navbar() {
                         </Modal>
                       </div>
                       <UserDropdown />
-                      <div style={{ marginLeft: "20px" }}></div>
+                      <div style={{ marginLeft: "16px" }}></div>
                     </>
                   )}
             </NavMenu>

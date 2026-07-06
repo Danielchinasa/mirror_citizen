@@ -353,7 +353,7 @@ const VerificationLoginPage = () => {
               style={{ marginBottom: 20 }}
             />
 
-            <LoginButton type="submit" disabled={!isCaptchaVerified}>
+            <LoginButton type="submit" disabled={isCaptchaVerified}>
               Login
             </LoginButton>
           </form>

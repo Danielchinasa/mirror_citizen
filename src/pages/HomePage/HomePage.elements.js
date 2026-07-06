@@ -534,9 +534,13 @@ export const ServiceCard = styled.div`
   padding: 24px 20px;
   text-align: center;
   position: relative;
-  transition: box-shadow 0.3s;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.3s ease;
+  cursor: default;
 
   &:hover {
+    border-color: #D80111;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
 `;

@@ -68,7 +68,6 @@ import {
   ServicesSection,
   CardsGrid,
   ServiceCard,
-  PopularBadge,
   ServiceIcon,
   ServiceName,
   ServiceDesc,
@@ -102,6 +101,7 @@ const getLanguage = () => {
 
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
+  const [userCountry, setUserCountry] = useState(null);
   const [servicePrices, setServicePrices] = useState(null);
   const [language, setLanguage] = useState(getLanguage);
   const dispatch = useDispatch();
@@ -115,26 +115,40 @@ const Home = () => {
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
 
   useEffect(() => {
-    const fetchIpAddress = async () => {
+    const fetchIpAndCountry = async () => {
+      // TODO: remove hardcoded KE override before release
+      setIpAddress("41.212.86.175");
+      localStorage.setItem("IpAddress", "41.212.86.175");
+      setUserCountry("KE");
+      localStorage.setItem("currencyCheck", "KES");
+      return;
+
+      // Try ipapi.co first — returns IP + country info in one call
+      try {
+        const response = await axios.get("https://ipapi.co/json/");
+        setIpAddress(response.data.ip);
+        localStorage.setItem("IpAddress", response.data.ip);
+        const country = response.data.country;
+        setUserCountry(country);
+        const currency = country === "KE" ? "KES" : "USD";
+        localStorage.setItem("currencyCheck", currency);
+        return;
+      } catch (error1) {
+        console.error("Error fetching from ipapi.co:", error1);
+      }
+
+      // Fallback to ipbase.com for IP only
       try {
         const response = await axios.get("https://api.ipbase.com/v1/json/");
         setIpAddress(response.data.ip);
-      } catch (error1) {
-        console.error("Error fetching IP address from primary URL:", error1);
-        try {
-          const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
-        } catch (error2) {
-          console.error(
-            "Error fetching IP address from secondary URL:",
-            error2,
-          );
-          setIpAddress(null);
-        }
+        localStorage.setItem("IpAddress", response.data.ip);
+      } catch (error2) {
+        console.error("Error fetching IP from both sources:", error2);
+        setIpAddress(null);
       }
     };
 
-    fetchIpAddress();
+    fetchIpAndCountry();
   }, []);
 
   useEffect(() => {
@@ -332,6 +346,15 @@ const Home = () => {
   //   }
   // };
 
+  // Determine currency: KES if in Kenya, USD otherwise
+  // Priority: IP-detected country > localStorage > Redux user currency
+  const currencyCheck =
+    userCountry === "KE"
+      ? "KES"
+      : localStorage.getItem("currencyCheck") || "KES";
+  const isKES = currencyCheck === "KES";
+  const currencySymbol = isKES ? "KSh" : "$";
+
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const ctaLink = isAuthenticated ? "/dashboard" : "/login";
   const isSw = language === "SW";
@@ -528,10 +551,7 @@ const Home = () => {
 
         <CardsGrid>
           {/* Person Identity */}
-          <ServiceCard $popular>
-            <PopularBadge>
-              {isSw ? "INAYOPENDWA ZAIDI" : "MOST POPULAR"}
-            </PopularBadge>
+          <ServiceCard>
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
@@ -550,9 +570,10 @@ const Home = () => {
                 const s = Array.isArray(servicePrices)
                   ? servicePrices.find((x) => x.service === "National ID")
                   : null;
-                return s?.price
-                  ? `KSh${Number(s.price).toLocaleString()}`
-                  : "KSh—";
+                if (!s) return `${currencySymbol}—`;
+                if (isKES)
+                  return `${currencySymbol}${Number(s.price).toLocaleString()}`;
+                return `${currencySymbol}${Number(s.price2 || s.price_usd || s.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -579,7 +600,7 @@ const Home = () => {
                 {isSw ? "Matokeo ndani ya dakika" : "Results in minutes"}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} $popular>
+            <ServiceBtn to={ninVerify}>
               {isSw ? "Thibitisha Sasa" : "Verify Now"}
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
@@ -606,9 +627,10 @@ const Home = () => {
                 const s = Array.isArray(servicePrices)
                   ? servicePrices.find((x) => x.service === "Alien Card")
                   : null;
-                return s?.price
-                  ? `KSh${Number(s.price).toLocaleString()}`
-                  : "KSh—";
+                if (!s) return `${currencySymbol}—`;
+                if (isKES)
+                  return `${currencySymbol}${Number(s.price).toLocaleString()}`;
+                return `${currencySymbol}${Number(s.price2 || s.price_usd || s.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -657,9 +679,10 @@ const Home = () => {
                 const s = Array.isArray(servicePrices)
                   ? servicePrices.find((x) => x.service === "VIN")
                   : null;
-                return s?.price
-                  ? `KSh${Number(s.price).toLocaleString()}`
-                  : "KSh—";
+                if (!s) return `${currencySymbol}—`;
+                if (isKES)
+                  return `${currencySymbol}${Number(s.price).toLocaleString()}`;
+                return `${currencySymbol}${Number(s.price2 || s.price_usd || s.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
               })()}
             </ServicePrice>
             <FeatureList>

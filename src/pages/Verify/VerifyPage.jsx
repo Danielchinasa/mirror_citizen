@@ -1491,13 +1491,31 @@ const VerifyPage = () => {
     </ProcessingWrapper>
   );
 
+  const formatIdType = (val) => {
+    if (!val) return val;
+    const formatted = val
+      .replace(/_/g, " ")
+      .replace(/-/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+    // Handle special cases
+    const specialCases = {
+      "National Id": "National ID",
+      "Vin": "VIN",
+      "Nin": "NIN",
+      "Bvn": "BVN",
+      "Rc": "RC",
+    };
+    return specialCases[formatted] || formatted;
+  };
+
   const getResultPreviewFields = () => {
     if (!verificationResult?.data) return [];
     const data = verificationResult.data;
     const fields = [];
 
     // New KE complete response format (e.g. Smile ID)
-    if (data.idType) fields.push({ label: "ID Type", value: data.idType });
+    if (data.idType) fields.push({ label: "ID Type", value: formatIdType(data.idType) });
     if (data.idNumber)
       fields.push({ label: "ID Number", value: data.idNumber });
     if (data.vin) fields.push({ label: "VIN", value: data.vin });
