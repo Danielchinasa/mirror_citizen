@@ -830,7 +830,8 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
 
-              <PublicCta to="/login">{t("nav.getStarted")}</PublicCta>
+              <PublicCta href="#services">{t("nav.getStarted")}</PublicCta>
+              <ThemeToggle />
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -864,9 +865,12 @@ function Navbar() {
                 {t("nav.support")}
               </PublicMobileLink>
 
-              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
                 {t("nav.getStarted")}
-              </PublicMobileLink>
+              </PublicMobileAnchor>
+              <div style={{ paddingTop: 8 }}>
+                <ThemeToggle />
+              </div>
             </PublicMobileMenu>
           </PublicMobilePanel>
         </PublicNav>
@@ -1431,6 +1435,7 @@ function Navbar() {
                         </Modal>
                       </div>
                       <UserDropdown />
+                      <ThemeToggle />
                       <div style={{ marginLeft: "20px" }}></div>
                     </>
                   )}

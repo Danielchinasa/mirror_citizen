@@ -27,7 +27,7 @@ const verificationConfig = {
     idTypeLabel: "National Identification Number",
     fields: [
       {
-        name: "nin",
+        name: "idNumber",
         label: "NIN",
         placeholder: "Enter 11 digits NIN",
         type: "text",
@@ -50,7 +50,7 @@ const verificationConfig = {
     },
     serviceName: "National ID Verification",
     serviceCode: "NATIONAL_ID",
-    serviceFieldKey: "nin",
+    serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: true,
     trustBar: [
@@ -260,6 +260,97 @@ const verificationConfig = {
       },
     ],
     allBureausDiscount: { ngn: 800, usd: 0.97 },
+    trustBar: [
+      { title: "Secure & Private", desc: "Your data is protected" },
+      { title: "Instant Results", desc: "Get results in seconds" },
+      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "500,000+ Users", desc: "Trust e-citizen" },
+    ],
+  },
+
+  nin_ug: {
+    heroTitle: "Verify Your",
+    heroHighlight: "National ID (Uganda)",
+    heroSubtitle:
+      "Enter details, pay securely and get accurate results instantly.",
+    heroImage: require("../../images/nin_verification_hero2.png"),
+    breadcrumb: ["Verify Identity", "National ID Verification (UG)"],
+    idTypeLabel: "National Identification Number (Uganda)",
+    countryCode: "UG",
+    serviceCode: "NATIONAL_ID",
+    apiServiceName: "National ID UG",
+    fields: [
+      {
+        name: "idNumber",
+        label: "National ID Number",
+        placeholder: "Enter your Uganda National ID number",
+        type: "text",
+        maxLength: 14,
+        showCounter: true,
+        required: true,
+      },
+    ],
+    youWillGet: [
+      { icon: FaUser, text: "Full personal details" },
+      { icon: FaCamera, text: "Photo" },
+      { icon: FaCheckCircle, text: "Verification status" },
+      { icon: FaBolt, text: "Instant results" },
+    ],
+    sampleResult: {
+      name: "Okello James",
+      identifier: "National ID: CM840000****",
+      tags: ["Full Name", "Date of Birth", "Status", "And more..."],
+    },
+    serviceName: "Uganda National ID Verification",
+    serviceFieldKey: "idNumber",
+    priceIndex: 0,
+    requiresConsent: false,
+    trustBar: [
+      { title: "Secure & Private", desc: "Your data is protected" },
+      { title: "Instant Results", desc: "Get results in seconds" },
+      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "500,000+ Users", desc: "Trust e-citizen" },
+    ],
+  },
+
+  vehicle_ug: {
+    heroTitle: "Check ",
+    heroHighlight: "Vehicle History (Uganda)",
+    heroSubtitle:
+      "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
+    heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
+    breadcrumb: ["Verify Vehicle", "Vehicle Verification (UG)"],
+    idTypeLabel: "Vehicle Identification Number (VIN) — Uganda",
+    countryCode: "UG",
+    serviceCode: "VIN_ID",
+    apiServiceName: "VIN",
+    fields: [
+      {
+        name: "vin",
+        label: "VIN (Vehicle Identification Number)",
+        placeholder: "Enter VIN",
+        type: "text",
+        maxLength: 17,
+        showCounter: true,
+        required: true,
+      },
+    ],
+    youWillGet: [
+      { icon: FaCar, text: "Vehicle details" },
+      { icon: FaHistory, text: "Ownership history" },
+      { icon: FaShieldAlt, text: "Theft / watchlist status" },
+      { icon: FaCheckCircle, text: "Verification status" },
+      { icon: FaBolt, text: "Instant results" },
+    ],
+    sampleResult: {
+      name: "Toyota Land Cruiser 2019",
+      identifier: "VIN: ******5678",
+      tags: ["Make/Model", "Ownership", "Status", "And more..."],
+    },
+    serviceName: "Uganda Vehicle Verification",
+    serviceFieldKey: "vin",
+    priceIndex: 1,
+    requiresConsent: false,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },

@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const FooterWrapper = styled.footer`
-  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-  color: #111827;
+  background: var(--ec-footer-bg);
+  color: var(--ec-footer-text);
   padding: 0 24px 0;
   position: relative;
   overflow: hidden;
@@ -21,7 +21,7 @@ export const PublicBrand = styled(Link)`
   font-size: 30px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #111827;
+  color: var(--ec-footer-text);
   text-decoration: none;
 
   .brand-red {
@@ -29,7 +29,7 @@ export const PublicBrand = styled(Link)`
   }
 
   .brand-dot {
-    color: #111827;
+    color: var(--ec-footer-text);
   }
 `;
 
@@ -110,7 +110,7 @@ export const BrandLogo = styled.img`
 export const BrandDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
-  color: #4b5563;
+  color: var(--ec-footer-muted);
   line-height: 1.6;
   margin: 0;
   max-width: 280px;
@@ -131,7 +131,7 @@ export const SocialRow = styled.div`
 `;
 
 export const SocialIcon = styled.a`
-  color: #6b7280;
+  color: var(--ec-footer-faint);
   font-size: 18px;
   transition: color 0.2s;
 
@@ -146,7 +146,7 @@ export const FooterColTitle = styled.h4`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 18px;
-  color: #111827;
+  color: var(--ec-footer-text);
   margin: 0 0 16px;
   position: relative;
 
@@ -165,7 +165,7 @@ export const FooterLink = styled(Link)`
   display: block;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: #4b5563;
+  color: var(--ec-footer-muted);
   text-decoration: none;
   margin-bottom: 10px;
   transition: color 0.2s;
@@ -179,7 +179,7 @@ export const ExternalLink = styled.a`
   display: block;
   font-family: "Nunito", sans-serif;
   font-size: 15px;
-  color: #4b5563;
+  color: var(--ec-footer-muted);
   text-decoration: none;
   margin-bottom: 10px;
   transition: color 0.2s;
@@ -214,7 +214,7 @@ export const AppBadge = styled.a`
 `;
 
 export const FooterBottom = styled.div`
-  border-top: 1px solid rgba(17, 24, 39, 0.08);
+  border-top: 1px solid var(--ec-border-light);
   padding: 20px 0;
   display: flex;
   justify-content: space-between;
@@ -230,7 +230,7 @@ export const FooterBottom = styled.div`
 export const Copyright = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--ec-footer-faint);
 `;
 
 export const LegalLinks = styled.div`
@@ -245,7 +245,7 @@ export const LegalLinks = styled.div`
 export const LegalLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--ec-footer-faint);
   text-decoration: none;
   cursor: pointer;
 

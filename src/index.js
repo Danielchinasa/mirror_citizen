@@ -7,6 +7,19 @@ import { store, persistor } from "./redux/store";
 import App from "./App";
 import InactivityDetector from "./InactivityDetector";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Swal from "sweetalert2";
+
+// ── Global SweetAlert2 defaults ──
+(function() {
+  const origFire = Swal.fire.bind(Swal);
+  Swal.fire = function(...args) {
+    const opts = args[0];
+    if (typeof opts === "object" && !opts.confirmButtonColor) {
+      opts.confirmButtonColor = "#DD0201";
+    }
+    return origFire(opts, ...args.slice(1));
+  };
+})();
 
 ReactDOM.render(
   <Provider store={store}>

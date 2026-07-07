@@ -34,7 +34,7 @@ const InactivityDetector = () => {
           showCancelButton: true,
           cancelButtonColor: "#DD0201",
           confirmButtonText: "Logout",
-          confirmButtonColor: "#BFBFBF",
+          confirmButtonColor: "#DD0201",
           cancelButtonText: "Stay logged in",
           timer: 10000, // Auto close the dialog after 10 seconds
           timerProgressBar: true,

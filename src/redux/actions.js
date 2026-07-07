@@ -2,7 +2,13 @@
 import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
-import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
+import {
+  apiGet,
+  apiPost,
+  apiPostNoObject,
+  apiPostInternalCall,
+  apiGetInternalCall,
+} from "../apiUtils";
 import ReactGA from "react-ga4";
 
 const logPurchase = ({ currency, value, transactionId, paymentType }) => {
@@ -518,6 +524,49 @@ export const fetchUserProfile = (token) => {
   };
 };
 
+export const fetchVerificationServicePrices =
+  (config, token) => async (dispatch) => {
+    try {
+      let serviceData;
+      let rate;
+
+      if (config.serviceCode) {
+        const response = await apiGetInternalCall(
+          `/africa/countries/UG/service-prices`,
+          token,
+        );
+        const services = response.data?.data || response.data || [];
+        serviceData = Array.isArray(services)
+          ? services.find((s) => s.service === config.apiServiceName)
+          : services[config.apiServiceName];
+        rate = response.data?.rate;
+      } else {
+        const ipAddress = localStorage.getItem("IpAddress");
+        const response = await apiPostInternalCall(
+          `/transaction/service-prices`,
+          { ipAddress },
+          token,
+        );
+        serviceData = response.data.data[config.priceIndex];
+        rate = response.data.rate;
+      }
+
+      return {
+        price: serviceData.price,
+        serviceFee: serviceData.serviceFee,
+        vat: serviceData.VAT,
+        priceUsd: serviceData.price2,
+        serviceFeeusd: serviceData.serviceFee2,
+        vatUsd: serviceData.VAT2,
+        processingFee: serviceData.processingFee || 0,
+        rate,
+      };
+    } catch (error) {
+      if (error.response) return error.response;
+      return { status: "failed", message: "Could not fetch service prices" };
+    }
+  };
+
 export const initiateVerificationRequest =
   (formData, token) => async (dispatch) => {
     try {
@@ -537,16 +586,19 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
 
       const restructuredData = {
-        serviceCode: formData.serviceCode || "",
+        ...(formData.serviceCode && { serviceCode: formData.serviceCode }),
         payment: {
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "UG",
           paymentType: paymentType || "INSTANT",
         },
+        consent: "true",
+        idNumber: formData.idNumber || "",
         "search-extension": {
           "phone-number": formData.phone || "",
         },
         basic: {
           // phoneNumber: formData.phone || "",
+          idNumber: formData.idNumber || "",
           nin: formData.nin || "",
           nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",
@@ -579,23 +631,35 @@ export const initiateVerificationRequest =
         },
       };
 
-      // Remove fields with empty strings from the payload
+      // Remove empty nested fields and empty root strings while preserving booleans/flags
       Object.keys(restructuredData).forEach((section) => {
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
+        const sectionData = restructuredData[section];
+        if (
+          sectionData &&
+          typeof sectionData === "object" &&
+          !Array.isArray(sectionData)
+        ) {
+          Object.keys(sectionData).forEach((field) => {
+            if (sectionData[field] === "") {
+              delete sectionData[field];
+            }
+          });
 
-        // Remove the section if it has no fields
-        if (Object.keys(restructuredData[section]).length === 0) {
+          if (Object.keys(sectionData).length === 0) {
+            delete restructuredData[section];
+          }
+          return;
+        }
+
+        if (sectionData === "") {
           delete restructuredData[section];
         }
       });
       const response = await apiPost(
-        `/verification/initiate`,
+        `/africa/verification/UG/initiate`,
         restructuredData,
         token,
+        { headers: { "X-Forwarded-For": "102.134.151.255" } },
       );
 
       // dispatch({
@@ -623,88 +687,6 @@ export const initiateVerificationRequest =
     }
   };
 
-export const initiateAfricaVerificationRequest =
-  (formData, token) => async (dispatch) => {
-    try {
-      const CLICK_ID = localStorage.getItem("CLICK_ID");
-      const currencyCheck = localStorage.getItem("currencyCheck");
-      const transactionID = localStorage.getItem("transactionID");
-      const paymentType = localStorage.getItem("paymentType");
-      function generateTransactionId() {
-        const length = 16;
-        let transactionId = "EA";
-        for (let i = 0; i < length - 2; i++) {
-          transactionId += Math.floor(Math.random() * 10);
-        }
-        return transactionId;
-      }
-
-      const randomTransactionId = generateTransactionId();
-
-      const restructuredData = {
-        serviceCode: formData.serviceCode || "",
-        payment: {
-          currency: currencyCheck || "NGN",
-          paymentType: paymentType || "INSTANT",
-        },
-        "search-extension": {
-          "phone-number": formData.phone || "",
-        },
-        basic: {
-          nin: formData.nin || "",
-          nin_csv: formData.nin_csv || "",
-          dateOfBirth: formData.dateOfBirth || "",
-          gender: formData.gender || "",
-          firstname: formData.firstname || "",
-          lastname: formData.lastname || "",
-          liveFaceNin: formData.liveFaceNin || "",
-          face: formData.face || "",
-          finger: formData.finger || "",
-        },
-        reach: {
-          CLICK_ID: CLICK_ID || "",
-        },
-      };
-
-      // Remove fields with empty strings from the payload
-      Object.keys(restructuredData).forEach((section) => {
-        if (
-          typeof restructuredData[section] !== "object" ||
-          restructuredData[section] === null
-        )
-          return;
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
-        if (Object.keys(restructuredData[section]).length === 0) {
-          delete restructuredData[section];
-        }
-      });
-      const response = await apiPost(
-        `/africa/verification/UG/initiate`,
-        restructuredData,
-        token,
-      );
-
-      return response;
-    } catch (error) {
-      if (error.response) {
-        return error.response;
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-        return {
-          status: "failed",
-          message: "No response received from the server",
-        };
-      } else {
-        console.error("Error setting up the request:", error.message);
-        return { status: "failed", message: "Error setting up the request" };
-      }
-    }
-  };
-
 export const initiateStakeHoldersRequest =
   (formData, token) => async (dispatch) => {
     try {
@@ -723,23 +705,35 @@ export const initiateStakeHoldersRequest =
         },
       };
 
-      // Remove fields with empty strings from the payload
+      // Remove empty nested fields and empty root strings while preserving booleans/flags
       Object.keys(restructuredData).forEach((section) => {
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
+        const sectionData = restructuredData[section];
+        if (
+          sectionData &&
+          typeof sectionData === "object" &&
+          !Array.isArray(sectionData)
+        ) {
+          Object.keys(sectionData).forEach((field) => {
+            if (sectionData[field] === "") {
+              delete sectionData[field];
+            }
+          });
 
-        // Remove the section if it has no fields
-        if (Object.keys(restructuredData[section]).length === 0) {
+          if (Object.keys(sectionData).length === 0) {
+            delete restructuredData[section];
+          }
+          return;
+        }
+
+        if (sectionData === "") {
           delete restructuredData[section];
         }
       });
       const response = await apiPost(
-        `/verification/initiate`,
+        `/africa/verification/UG/initiate`,
         restructuredData,
         token,
+        { headers: { "X-Forwarded-For": "102.134.151.255" } },
       );
 
       // Return the user data upon successful verification
@@ -803,18 +797,22 @@ export const completeVerificationRequest =
 
       const restructuredData = {
         payment: {
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "UGX",
           transactionID: transactionID || randomTransactionId,
           paymentType: paymentType || "INSTANT",
         },
-        sessionCode: localStorage.getItem("sessionCode") || "",
+        sessionId:
+          formData.sessionId || localStorage.getItem("sessionCode") || "",
         sessionStatus: "COMPLETED",
         paymentType: paymentType || "INSTANT",
+        idNumber: formData.idNumber || "",
+        consent: "true",
         "search-extension": {
           "phone-number": formData.phone || "",
         },
         basic: {
           // phoneNumber: formData.phone || "",
+          idNumber: formData.idNumber || "",
           nin: formData.nin || "",
           nin_csv: formData.nin_csv || "",
           dateOfBirth: formData.dateOfBirth || "",
@@ -847,21 +845,32 @@ export const completeVerificationRequest =
         },
       };
 
-      // Remove fields with empty strings from the payload
+      // Remove empty nested fields and empty root strings while preserving booleans/flags
       Object.keys(restructuredData).forEach((section) => {
-        Object.keys(restructuredData[section]).forEach((field) => {
-          if (restructuredData[section][field] === "") {
-            delete restructuredData[section][field];
-          }
-        });
+        const sectionData = restructuredData[section];
+        if (
+          sectionData &&
+          typeof sectionData === "object" &&
+          !Array.isArray(sectionData)
+        ) {
+          Object.keys(sectionData).forEach((field) => {
+            if (sectionData[field] === "") {
+              delete sectionData[field];
+            }
+          });
 
-        // Remove the section if it has no fields
-        if (Object.keys(restructuredData[section]).length === 0) {
+          if (Object.keys(sectionData).length === 0) {
+            delete restructuredData[section];
+          }
+          return;
+        }
+
+        if (sectionData === "") {
           delete restructuredData[section];
         }
       });
       const response = await apiPost(
-        `/verification/complete `,
+        `/africa/verification/UG/complete`,
         restructuredData,
         token,
       );
@@ -873,7 +882,7 @@ export const completeVerificationRequest =
 
       // ✅ GA4 Purchase Tracking
       try {
-        const currency = currencyCheck || "NGN";
+        const currency = currencyCheck || "UGX";
         const transactionId = transactionID || randomTransactionId;
         const payment = paymentType || "INSTANT";
 
@@ -919,7 +928,7 @@ export const paymentInitializationRequest =
       const currencyCheck = localStorage.getItem("currencyCheck");
       const paymentType = localStorage.getItem("paymentType");
       const restructuredData = {
-        currency: currencyCheck || "NGN",
+        currency: currencyCheck || "GHS",
         sessionCode: localStorage.getItem("sessionCode") || "",
         type: paymentType || "INSTANT",
       };

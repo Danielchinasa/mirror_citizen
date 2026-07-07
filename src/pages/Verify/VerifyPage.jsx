@@ -18,11 +18,11 @@ import {
 import Swal from "sweetalert2";
 import {
   initiateVerificationRequest,
-  initiateAfricaVerificationRequest,
   completeVerificationRequest,
   fetchUserProfile,
+  fetchVerificationServicePrices,
 } from "../../redux/actions";
-import { apiPostInternalCall, apiGet } from "../../apiUtils";
+import { apiGet } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import baseUrl from "../../apiConfig";
 import paystackLogo from "../../images/paystack.png";
@@ -37,7 +37,6 @@ import {
   HeroInner,
   HeroText,
   HeroTitle,
-  HeroTitleContinue,
   HeroSubtitle,
   HeroImage,
   StepperWrapper,
@@ -194,6 +193,7 @@ const VerifyPage = () => {
   const [paystackReference, setPaystackReference] = useState("");
   const [activeGateway, setActiveGateway] = useState(""); // "paystack" or "flutterwave"
   const [showResultPopup, setShowResultPopup] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const pollingRef = useRef(null);
@@ -307,24 +307,11 @@ const VerifyPage = () => {
 
     const fetchPrices = async () => {
       try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await apiPostInternalCall(
-          `/transaction/service-prices`,
-          { ipAddress },
-          userToken,
+        const pricingData = await dispatch(
+          fetchVerificationServicePrices(config, userToken),
         );
         setLoadingPrice(false);
-        const serviceData = response.data.data[config.priceIndex];
-        setPricingData({
-          price: serviceData.price,
-          serviceFee: serviceData.serviceFee,
-          vat: serviceData.VAT,
-          priceUsd: serviceData.price2,
-          serviceFeeusd: serviceData.serviceFee2,
-          vatUsd: serviceData.VAT2,
-          processingFee: serviceData.processingFee || 0,
-          rate: response.data.rate,
-        });
+        setPricingData(pricingData);
       } catch (err) {
         setLoadingPrice(false);
         Swal.fire({
@@ -340,8 +327,14 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
-  const isNGN = currencyCheck.toUpperCase() === "NGN";
+  const currencyCheck = localStorage.getItem("currencyCheck") || "USD";
+  const isLocal = ["XOF", "UGX"].includes(currencyCheck.toUpperCase());
+  const currencySymbol =
+    currencyCheck.toUpperCase() === "XOF"
+      ? "FCFA "
+      : currencyCheck.toUpperCase() === "UGX"
+        ? "USh "
+        : "$";
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -351,13 +344,13 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isNGN
+      ? isLocal
         ? config.allBureausDiscount.ngn
         : config.allBureausDiscount.usd
       : 0;
 
   const totalAmount = pricingData
-    ? isNGN
+    ? isLocal
       ? ((pricingData.serviceFee || 0) +
           (pricingData.processingFee || 0) +
           (pricingData.vat || 0)) *
@@ -368,7 +361,17 @@ const VerifyPage = () => {
         discount
     : 0;
 
-  const currencySymbol = isNGN ? "₦" : "$";
+  // Wallet is always held in local currency (XOF or UGX). This amount is used
+  // for balance checks and wallet charges regardless of display currency.
+  const totalAmountLocal = pricingData
+    ? ((pricingData.serviceFee || 0) +
+        (pricingData.processingFee || 0) +
+        (pricingData.vat || 0)) *
+        bureauMultiplier -
+      (allBureausSelected && config?.allBureausDiscount
+        ? config.allBureausDiscount.ngn || 0
+        : 0)
+    : 0;
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -452,6 +455,11 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    setShowDisclaimer(true);
+  };
+
+  const handleDisclaimerConfirm = () => {
+    setShowDisclaimer(false);
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -466,7 +474,10 @@ const VerifyPage = () => {
 
   const buildApiFormData = () => {
     const apiForm = {
+      serviceCode: config.serviceCode || "",
+      idNumber: "",
       nin: "",
+      alien_card: "",
       phone: "",
       firstname: "",
       lastname: "",
@@ -485,6 +496,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
+      consent: "true",
     };
 
     // Map form fields to API form
@@ -519,23 +531,20 @@ const VerifyPage = () => {
     localStorage.setItem("totalAmount", totalAmount);
 
     const apiFormData = buildApiFormData();
-    apiFormData.serviceCode = config.serviceCode;
 
     try {
       // 1. Initiate verification
-      const initiateAction =
-        type === "nin"
-          ? initiateAfricaVerificationRequest
-          : initiateVerificationRequest;
       const initiateResponse = await dispatch(
-        initiateAction(apiFormData, userToken),
+        initiateVerificationRequest(apiFormData, userToken),
       );
+      const initiatePayload = initiateResponse?.data || initiateResponse || {};
 
-      if (initiateResponse?.sessionStatus === "INITIATED") {
-        localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+      if (initiatePayload?.status === "INITIATED") {
+        localStorage.setItem("sessionCode", initiatePayload?.sessionId);
+        apiFormData.sessionId = initiatePayload?.sessionId;
       } else {
         throw new Error(
-          initiateResponse?.message || "Failed to initiate verification",
+          initiatePayload?.message || "Failed to initiate verification",
         );
       }
 
@@ -561,14 +570,14 @@ const VerifyPage = () => {
   };
 
   const handleWalletPayment = async (transactionId, apiFormData) => {
-    // Check wallet balance
-    if (userBalance < totalAmount) {
+    // Wallet is always in local currency — compare against local total
+    if (userBalance < totalAmountLocal) {
       setLoading(false);
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
         title: "Wallet Balance Low",
-        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
+        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmountLocal.toLocaleString()}).`,
         confirmButtonColor: "#DD0201",
       });
       return;
@@ -582,9 +591,9 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
         userNIN: userDetails?.nin || "",
         transactionID: transactionId,
-        currency: currencyCheck,
+        currency: currencyCheck, // local currency (XOF or UGX)
         paymentType: "WALLET",
-        amount: totalAmount,
+        amount: totalAmountLocal, // always charge in local currency
       };
 
       const response = await fetch(apiUrl, {
@@ -753,7 +762,23 @@ const VerifyPage = () => {
       let resultDetail = "";
       let resultRoute = "/main-dashboard";
 
-      if (
+      if (response?.status === "COMPLETED" && response?.result) {
+        result = {
+          ...response.result,
+          provider: response.provider,
+          resultCode: response.resultCode,
+          jobId: response.jobId,
+          pricingSegment: response.pricingSegment,
+          amount: response.amount,
+          currency: response.currency,
+          resultStatus: response.status,
+          resultText: response.resultText,
+        };
+        resultTitle = `${config.serviceName} Successful`;
+        resultDetail =
+          response.resultText || `${config.serviceName} was successful.`;
+        resultRoute = "/main-dashboard";
+      } else if (
         response.basic &&
         response.basic.status &&
         response.basic.status === true
@@ -761,7 +786,7 @@ const VerifyPage = () => {
         result =
           response.basic?.nin_data || response.basic?.data || response.basic;
         resultDetail =
-          response.basic.detail || "Your NIN verification was successful.";
+          response.basic.detail || "Your National ID was successful.";
         resultRoute = "/main-dashboard";
       } else if (
         response.basic &&
@@ -1128,7 +1153,7 @@ const VerifyPage = () => {
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
-                        ? "#fef2f2"
+                        ? "#fffbe6"
                         : "#fff",
                       transition: "all 0.15s",
                       fontFamily: "Nunito, sans-serif",
@@ -1157,17 +1182,17 @@ const VerifyPage = () => {
                   style={{
                     marginTop: 8,
                     padding: "8px 12px",
-                    background: "#fef2f2",
-                    border: "1px solid #d1fae5",
+                    background: "#fffbe6",
+                    border: "1px solid #fff3b0",
                     borderRadius: 6,
                     fontSize: 13,
-                    color: "#16a34a",
+                    color: "#b38b00",
                     fontFamily: "Nunito, sans-serif",
                     fontWeight: 600,
                   }}
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
-                  {(isNGN
+                  {(isLocal
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -1203,11 +1228,11 @@ const VerifyPage = () => {
           <PriceBreakdown>
             {pricingData &&
               (() => {
-                const processingFees = isNGN
+                const processingFees = isLocal
                   ? (pricingData.serviceFee || 0) +
                     (pricingData.processingFee || 0)
                   : pricingData.serviceFeeusd || 0;
-                const taxCharges = isNGN
+                const taxCharges = isLocal
                   ? pricingData.vat || 0
                   : pricingData.vatUsd || 0;
                 const perBureau = processingFees + taxCharges;
@@ -1247,8 +1272,8 @@ const VerifyPage = () => {
                     </PriceRow>
                     {discount > 0 && (
                       <PriceRow>
-                        <span style={{ color: "#16a34a" }}>Discount</span>
-                        <span style={{ color: "#16a34a" }}>
+                        <span style={{ color: "#b38b00" }}>Discount</span>
+                        <span style={{ color: "#b38b00" }}>
                           -{currencySymbol}
                           {discount.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
@@ -1393,7 +1418,7 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN
+                    (isLocal
                       ? (pricingData.serviceFee || 0) +
                         (pricingData.processingFee || 0)
                       : pricingData.serviceFeeusd || 0) * bureauMultiplier
@@ -1408,17 +1433,17 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
+                    (isLocal ? pricingData.vat : pricingData.vatUsd || 0) *
                     bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               {discount > 0 && (
                 <SummaryRow>
-                  <SummaryLabel style={{ color: "#16a34a" }}>
+                  <SummaryLabel style={{ color: "#b38b00" }}>
                     Discount
                   </SummaryLabel>
-                  <SummaryValue style={{ color: "#16a34a" }}>
+                  <SummaryValue style={{ color: "#b38b00" }}>
                     -{currencySymbol}
                     {discount.toLocaleString()}
                   </SummaryValue>
@@ -1435,7 +1460,7 @@ const VerifyPage = () => {
           </PayBtn>
 
           <SecuredBy>
-            <FaShieldAlt style={{ color: "#DD0201" }} />
+            <FaShieldAlt style={{ color: "#111827" }} />
             Secured and encrypted payment
           </SecuredBy>
 
@@ -1497,7 +1522,44 @@ const VerifyPage = () => {
     const data = verificationResult.data;
     const fields = [];
 
-    // NIN / basic result (API returns lowercase: firstname, middlename, surname)
+    // ── Ghana ID Card / basic result (new API format) ──
+    // Check for new format fields first (fullName, idNumber, etc.)
+    if (data.fullName || data.firstName || data.lastName || data.idNumber) {
+      if (data.idNumber)
+        fields.push({ label: "ID Number", value: data.idNumber });
+
+      if (data.fullName)
+        fields.push({ label: "Full Name", value: data.fullName });
+      if (data.firstName)
+        fields.push({ label: "First Name", value: data.firstName });
+      if (data.lastName)
+        fields.push({ label: "Last Name", value: data.lastName });
+
+      if (data.dateOfBirth)
+        fields.push({
+          label: "Date of Birth",
+          value: data.dateOfBirth,
+        });
+      if (data.gender)
+        fields.push({
+          label: "Gender",
+          value:
+            data.gender === "m"
+              ? "Male"
+              : data.gender === "f"
+                ? "Female"
+                : data.gender.charAt(0).toUpperCase() + data.gender.slice(1),
+        });
+      if (data.country)
+        fields.push({
+          label: "Country",
+          value: data.country === "GH" ? "Ghana" : data.country,
+        });
+
+      return fields;
+    }
+
+    // ── Legacy NIN / basic result ──
     if (data.firstname || data.firstName || data.surname || data.lastname) {
       const fname = data.firstname || data.firstName;
       const mname = data.middlename || data.middleName;
@@ -1530,6 +1592,7 @@ const VerifyPage = () => {
           label: "Address",
           value: data.residenceAddress || data.residence_address,
         });
+      return fields;
     }
 
     // Phone verification
@@ -1537,9 +1600,10 @@ const VerifyPage = () => {
       if (data.name) fields.push({ label: "Owner Name", value: data.name });
       if (data.network) fields.push({ label: "Network", value: data.network });
       if (data.status) fields.push({ label: "Status", value: data.status });
+      return fields;
     }
 
-    // Business (API returns: approvedName, rcNumber, registrationDate, address, email, lga, state, classificationId)
+    // Business
     if (data.approvedName || data.companyName || data.company_name) {
       fields.push({
         label: "Business Name",
@@ -1565,6 +1629,7 @@ const VerifyPage = () => {
         fields.push({ label: "Email", value: data.email });
       if (data.companyStatus)
         fields.push({ label: "Status", value: data.companyStatus });
+      return fields;
     }
 
     // Credit bureau
@@ -1574,34 +1639,33 @@ const VerifyPage = () => {
         fields.push({ label: "First Central", value: "Data received" });
       if (data.creditRegistry)
         fields.push({ label: "Credit Registry", value: "Data received" });
+      return fields;
     }
 
-    // Generic fallback — show first few string fields
-    if (fields.length === 0) {
-      Object.entries(data)
-        .slice(0, 5)
-        .forEach(([key, val]) => {
-          if (
-            typeof val === "string" &&
-            val &&
-            val !== "null" &&
-            key !== "status" &&
-            key !== "detail" &&
-            key !== "photo" &&
-            key !== "signature" &&
-            key !== "rawData"
-          ) {
-            fields.push({
-              label: key
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (s) => s.toUpperCase()),
-              value: val,
-            });
-          }
-        });
-    }
+    // Generic fallback
+    Object.entries(data)
+      .slice(0, 8)
+      .forEach(([key, val]) => {
+        if (
+          typeof val === "string" &&
+          val &&
+          val !== "null" &&
+          key !== "status" &&
+          key !== "detail" &&
+          key !== "photo" &&
+          key !== "signature" &&
+          key !== "rawData"
+        ) {
+          fields.push({
+            label: key
+              .replace(/([A-Z])/g, " $1")
+              .replace(/^./, (s) => s.toUpperCase()),
+            value: val,
+          });
+        }
+      });
 
-    return fields.slice(0, 8); // Show max 8 fields
+    return fields.slice(0, 12);
   };
 
   const renderConsentStep = () => (
@@ -1977,7 +2041,6 @@ const VerifyPage = () => {
           <HeroText>
             <HeroTitle>
               {config.heroTitle} <span>{config.heroHighlight}</span>
-              {config.heroTitleContinue}
             </HeroTitle>
             <HeroSubtitle>{config.heroSubtitle}</HeroSubtitle>
           </HeroText>
@@ -2082,9 +2145,9 @@ const VerifyPage = () => {
                     {getResultPreviewFields().map((field, idx) => (
                       <ResultFieldPopup key={idx}>
                         <ResultLabelPopup>{field.label}</ResultLabelPopup>
-                        {field.label === "Verification Status" ? (
+                        {field.verified ? (
                           <VerifiedBadgePopup>
-                            VERIFIED <FaCheckCircle />
+                            {field.value} <FaCheckCircle />
                           </VerifiedBadgePopup>
                         ) : (
                           <ResultValuePopup>{field.value}</ResultValuePopup>
@@ -2165,6 +2228,157 @@ const VerifyPage = () => {
           ))}
         </TrustBarInner>
       </TrustBar>
+
+      {/* Disclaimer Modal */}
+      {showDisclaimer && (
+        <PopupOverlay>
+          <PopupCard style={{ maxWidth: 560 }}>
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(254, 208, 1, 0.10)",
+                    color: "#FED001",
+                  }}
+                >
+                  <FaInfoCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Disclaimer</PopupTitle>
+                  <PopupSubtitle>Please review before proceeding</PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowDisclaimer(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody>
+              <div
+                style={{
+                  background: "rgba(254, 208, 1, 0.06)",
+                  border: "1px solid rgba(254, 208, 1, 0.2)",
+                  borderRadius: 10,
+                  padding: "16px 20px",
+                  marginBottom: 20,
+                }}
+              >
+                {type === "vehicle" ? (
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                      color: "var(--ec-text)",
+                    }}
+                  >
+                    By clicking, you indicate that:
+                    <ul style={{ margin: "8px 0 0", paddingLeft: 20 }}>
+                      <li style={{ marginBottom: 12 }}>
+                        You confirm that search details are correct, and you
+                        confirm that you will <strong>not be refunded</strong>{" "}
+                        for incorrect information.
+                      </li>
+                      <li style={{ marginBottom: 12 }}>
+                        You understand and accept that vehicle history data is
+                        sourced from third-party providers and{" "}
+                        <strong>may not contain all records</strong> for every
+                        vehicle.
+                      </li>
+                      <li style={{ marginBottom: 0 }}>
+                        You understand that{" "}
+                        <strong>
+                          search results may come back without any data
+                        </strong>
+                        , and you accept that you will not be refunded.
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <ol
+                    style={{
+                      margin: 0,
+                      paddingLeft: 20,
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                      color: "var(--ec-text)",
+                    }}
+                  >
+                    {requiresConsent && (
+                      <li style={{ marginBottom: 12 }}>
+                        You confirm that you understand and accept that{" "}
+                        <strong>consent is required</strong> from the data
+                        subject being verified before you can access their data,
+                        and you accept that you will not be refunded if consent
+                        is withheld.
+                      </li>
+                    )}
+                    <li style={{ marginBottom: 12 }}>
+                      You confirm and accept that the{" "}
+                      <strong>search details are correct</strong>, and you
+                      accept that you will not be refunded for incorrect
+                      information.
+                    </li>
+                    <li style={{ marginBottom: 0 }}>
+                      You understand and accept that{" "}
+                      <strong>
+                        search details may come back without any data
+                      </strong>
+                      , and you accept that you will not be refunded.
+                    </li>
+                  </ol>
+                )}
+              </div>
+              <div
+                style={{
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 13,
+                  color: "var(--ec-text-muted)",
+                  textAlign: "center",
+                  marginBottom: 20,
+                  lineHeight: 1.6,
+                }}
+              >
+                By proceeding, you agree to our{" "}
+                <a
+                  href="/terms_of_service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a
+                  href="/privacy_policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Privacy Policy
+                </a>
+                .
+              </div>
+              <PopupActionRow style={{ justifyContent: "center" }}>
+                <ContinueBtn onClick={handleDisclaimerConfirm}>
+                  I Understand, Continue <FaArrowRight />
+                </ContinueBtn>
+                <ClearBtn onClick={() => setShowDisclaimer(false)}>
+                  Cancel
+                </ClearBtn>
+              </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
 
       {/* Paystack Payment Modal */}
       {paystackModalOpen && (

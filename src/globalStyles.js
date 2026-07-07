@@ -36,6 +36,11 @@ const GlobalStyles = createGlobalStyle`
 a {
   cursor: pointer;
 }
+body {
+  background: var(--ec-bg);
+  color: var(--ec-text);
+  transition: background 0.2s ease, color 0.2s ease;
+}
 `;
 
 export const DynamicCollapse = styled(Collapse)`
@@ -271,7 +276,7 @@ export const StyledInput = styled.input`
   color: ${(props) => props.$token.text};
   &:focus {
     outline: none;
-    border-color: #DD0201 !important;
+    border-color: #dd0201 !important;
     background: ${(props) => props.$token.bgContainer};
   }
 `;
@@ -285,7 +290,7 @@ export const StyledInputNoDarkMode = styled.input`
   color: "#000000";
   &:focus {
     outline: none;
-    border-color: #DD0201 !important;
+    border-color: #dd0201 !important;
   }
 `;
 
@@ -298,17 +303,17 @@ export const StyledTextArea = styled.textarea`
   background: rgba(53, 65, 56, 0.1);
   &:focus {
     outline: none;
-    border-color: #DD0201 !important;
+    border-color: #dd0201 !important;
     background: #fff;
   }
 `;
 
 export const BtnLink = styled(Link)`
   text-decoration: none;
-  color: #DD0201;
+  color: #dd0201;
   &:hover {
     cursor: pointer;
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 

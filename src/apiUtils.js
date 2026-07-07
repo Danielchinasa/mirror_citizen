@@ -32,7 +32,7 @@ export const apiGet = async (endpoint, token = null, options = {}) => {
 export const apiGetInternalCall = async (
   endpoint,
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
     const headers = {
@@ -65,12 +65,13 @@ export const apiPost = async (
   endpoint,
   data = {},
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
+    const { headers: optionHeaders, ...restOptions } = options;
     const headers = {
       "Content-Type": "application/json",
-      ...options.headers,
+      ...optionHeaders,
     };
 
     if (token) {
@@ -79,7 +80,7 @@ export const apiPost = async (
 
     const response = await axios.post(`${baseUrl}${endpoint}`, data, {
       headers,
-      ...options,
+      ...restOptions,
     });
 
     if (response.status < 200 || response.status >= 300) {
@@ -97,12 +98,13 @@ export const apiPostInternalCall = async (
   endpoint,
   data = {},
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
+    const { headers: optionHeaders, ...restOptions } = options;
     const headers = {
       "Content-Type": "application/json",
-      ...options.headers,
+      ...optionHeaders,
     };
 
     if (token) {
@@ -111,7 +113,7 @@ export const apiPostInternalCall = async (
 
     const response = await axios.post(`${baseUrl}${endpoint}`, data, {
       headers,
-      ...options,
+      ...restOptions,
     });
 
     if (response.status < 200 || response.status >= 300) {
@@ -130,7 +132,7 @@ export const apiPut = async (
   endpoint,
   data = {},
   token = null,
-  options = {}
+  options = {},
 ) => {
   try {
     const headers = {

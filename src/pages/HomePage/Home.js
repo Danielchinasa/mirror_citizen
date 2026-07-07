@@ -10,7 +10,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useLocale } from "../../components/LocaleProvider";
 import baseUrl from "../../apiConfig";
-import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import { apiGet, apiPost, apiPostInternalCall } from "../../apiUtils";
 import {
   FaArrowRight,
   FaLock,
@@ -70,7 +70,6 @@ import {
   ServicesSection,
   CardsGrid,
   ServiceCard,
-  PopularBadge,
   ServiceIcon,
   ServiceName,
   ServiceDesc,
@@ -99,6 +98,7 @@ const { useToken } = theme;
 
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
+  const [ipCountry, setIpCountry] = useState(null);
   const [servicePrices, setServicePrices] = useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -112,41 +112,65 @@ const Home = () => {
 
   useEffect(() => {
     const fetchIpAddress = async () => {
+      // TODO: remove hardcoded UG override before release
+      setIpAddress("41.210.160.1");
+      localStorage.setItem("IpAddress", "41.210.160.1");
+      setIpCountry("UG");
+      localStorage.setItem("currencyCheck", "UGX");
+      return;
+
       try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
+        const response = await axios.get("https://ipapi.co/json/");
+        const ip = response.data.ip;
+        const country = response.data.country_code;
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        setIpCountry(country);
+        if (country === "CI") {
+          localStorage.setItem("currencyCheck", "XOF");
+        } else if (country === "UG") {
+          localStorage.setItem("currencyCheck", "UGX");
+        } else {
+          localStorage.setItem("currencyCheck", "USD");
+        }
       } catch (error1) {
-        console.error("Error fetching IP address from primary URL:", error1);
+        console.error("Error fetching IP/country from ipapi.co:", error1);
         try {
-          const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
+          const response = await axios.get("https://api.ipbase.com/v1/json/");
+          const ip = response.data.ip;
+          const country = response.data.country_code;
+          setIpAddress(ip);
+          localStorage.setItem("IpAddress", ip);
+          setIpCountry(country);
+          if (country === "CI") {
+            localStorage.setItem("currencyCheck", "XOF");
+          } else if (country === "UG") {
+            localStorage.setItem("currencyCheck", "UGX");
+          } else {
+            localStorage.setItem("currencyCheck", "USD");
+          }
         } catch (error2) {
-          console.error(
-            "Error fetching IP address from secondary URL:",
-            error2,
-          );
+          console.error("Error fetching IP from fallback:", error2);
           setIpAddress(null);
+          localStorage.setItem("currencyCheck", "USD");
         }
       }
     };
-
     fetchIpAddress();
   }, []);
 
   useEffect(() => {
-    if (!ipAddress) return;
     const fetchServicePrices = async () => {
       try {
-        const data = await apiPost("/transaction/public/service-prices", {
-          ipAddress,
-        });
-        setServicePrices(data);
+        const response = await apiGet("/africa/countries/UG/service-prices");
+        const services = response.data?.data || response.data || response;
+        setServicePrices(Array.isArray(services) ? services : null);
       } catch (error) {
         console.error("Failed to fetch service prices:", error);
       }
     };
     fetchServicePrices();
-  }, [ipAddress]);
+  }, []);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -447,17 +471,25 @@ const Home = () => {
 
         <CardsGrid>
           {/* Person Identity */}
-          <ServiceCard $popular>
-            <PopularBadge>{t("home.services.popular")}</PopularBadge>
+          <ServiceCard>
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
             <ServiceName>{t("home.services.nin.name")}</ServiceName>
             <ServiceDesc>{t("home.services.nin.desc")}</ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[0]?.price
-                ? `USh ${Number(servicePrices.data[0].price).toLocaleString()}`
-                : "USh 100"}
+              {(() => {
+                const isLocal =
+                  localStorage.getItem("currencyCheck") === "UGX" ||
+                  ipCountry === "UG";
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "National ID UG")
+                  : null;
+                if (!s) return isLocal ? "USh —" : "$ —";
+                return isLocal
+                  ? `USh ${Number(s.price).toLocaleString()}`
+                  : `$${Number(s.price2).toFixed(2)}`;
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -473,7 +505,7 @@ const Home = () => {
                 <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} $popular>
+            <ServiceBtn to={ninVerify}>
               {t("home.services.verifyNow")}
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
@@ -490,9 +522,18 @@ const Home = () => {
             <ServiceName>{t("home.services.vin.name")}</ServiceName>
             <ServiceDesc>{t("home.services.vin.desc")}</ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[5]?.price
-                ? `USh ${Number(servicePrices.data[5].price).toLocaleString()}`
-                : "USh 2,500"}
+              {(() => {
+                const isLocal =
+                  localStorage.getItem("currencyCheck") === "UGX" ||
+                  ipCountry === "UG";
+                const s = Array.isArray(servicePrices)
+                  ? servicePrices.find((x) => x.service === "VIN")
+                  : null;
+                if (!s) return isLocal ? "USh —" : "$ —";
+                return isLocal
+                  ? `USh ${Number(s.price).toLocaleString()}`
+                  : `$${Number(s.price2).toFixed(2)}`;
+              })()}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>

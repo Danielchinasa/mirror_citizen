@@ -7,15 +7,15 @@ const fadeSlideUp = keyframes`
 `;
 
 export const PageWrapper = styled.div`
-  background: #fff;
+  background: var(--ec-bg);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 `;
 
 export const LoginNav = styled.nav`
-  background: #fff;
-  border-bottom: 1px solid #f0f0f0;
+  background: var(--ec-bg);
+  border-bottom: 1px solid var(--ec-border-light);
   padding: 16px 50px;
   display: flex;
   align-items: center;
@@ -45,7 +45,7 @@ export const NavBrand = styled(Link)`
   font-size: 30px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #111827;
+  color: var(--ec-text);
   text-decoration: none;
 
   .brand-red {
@@ -53,7 +53,7 @@ export const NavBrand = styled(Link)`
   }
 
   .brand-dot {
-    color: #111827;
+    color: var(--ec-text);
   }
 `;
 
@@ -67,7 +67,7 @@ export const NavLink = styled(Link)`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #555;
+  color: var(--ec-text-secondary);
   text-decoration: none;
   transition: color 0.2s;
 
@@ -82,7 +82,7 @@ export const MainContent = styled.main`
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f9fafb 0%, #fef2f2 50%, #fdecec 100%);
+  background: var(--ec-hero-bg);
   position: relative;
   overflow: hidden;
 
@@ -96,7 +96,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(220, 5, 2, 0.08) 0%,
+      rgba(220, 5, 2, 0.12) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -112,7 +112,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(220, 5, 2, 0.06) 0%,
+      rgba(220, 5, 2, 0.10) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -122,10 +122,10 @@ export const MainContent = styled.main`
 export const LoginCard = styled.div`
   width: 100%;
   max-width: 460px;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--ec-glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(220, 5, 2, 0.12);
+  border: 1px solid var(--ec-glass-border);
   border-radius: 16px;
   padding: 40px 36px;
   box-shadow:
@@ -145,7 +145,7 @@ export const LoginTitle = styled.h1`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 26px;
-  color: #1a1a1a;
+  color: var(--ec-text-heading);
   margin: 0 0 4px;
   text-align: center;
 `;
@@ -153,7 +153,7 @@ export const LoginTitle = styled.h1`
 export const LoginSubtitle = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 28px;
   text-align: center;
 `;
@@ -172,19 +172,19 @@ export const SSOButton = styled.button`
   gap: 10px;
   width: 100%;
   padding: 11px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--ec-card-bg);
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
   cursor: pointer;
   transition:
     background 0.2s,
     box-shadow 0.2s;
 
   &:hover {
-    background: #f9fafb;
+    background: var(--ec-bg-subtle);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
 
@@ -200,14 +200,14 @@ export const Divider = styled.div`
   margin: 20px 0;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #999;
+  color: var(--ec-text-muted);
 
   &::before,
   &::after {
     content: "";
     flex: 1;
     height: 1px;
-    background: #e5e7eb;
+    background: var(--ec-border);
   }
 `;
 
@@ -220,24 +220,25 @@ export const FormLabel = styled.label`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin-bottom: 6px;
 `;
 
 export const FormInput = styled.input`
   width: 100%;
   padding: 11px 14px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-input-border);
   border-radius: 8px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-input-text);
   outline: none;
   box-sizing: border-box;
+  background: var(--ec-input-bg);
   transition: border-color 0.2s;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--ec-input-placeholder);
   }
 
   &:focus {
@@ -256,7 +257,7 @@ export const PasswordToggle = styled.button`
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #999;
+  color: var(--ec-text-muted);
   cursor: pointer;
   font-size: 16px;
   padding: 0;
@@ -275,7 +276,7 @@ export const RememberLabel = styled.label`
   gap: 6px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
   cursor: pointer;
 `;
 
@@ -318,7 +319,7 @@ export const LoginButton = styled.button`
 export const RegisterText = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   text-align: center;
   margin: 16px 0 0;
 
@@ -334,8 +335,8 @@ export const RegisterText = styled.p`
 `;
 
 export const ErrorAlert = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--ec-primary-subtle);
+  border: 1px solid var(--ec-border);
   color: #dc2626;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
@@ -350,7 +351,7 @@ export const SpinnerOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--ec-spinner-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -361,7 +362,7 @@ export const SpinnerOverlay = styled.div`
 export const Spinner = styled.div`
   width: 32px;
   height: 32px;
-  border: 3px solid #e5e7eb;
+  border: 3px solid var(--ec-border);
   border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
