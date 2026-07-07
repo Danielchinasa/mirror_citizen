@@ -318,7 +318,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Error",
           text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
       }
     };
@@ -548,7 +548,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: err.message || "An error occurred. Please try again.",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
     }
   };
@@ -562,7 +562,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Wallet Balance Low",
         text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
       return;
     }
@@ -696,7 +696,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         return;
       }
@@ -716,7 +716,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
       }
     } catch {
@@ -724,7 +724,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: "Could not verify payment status. Please check your dashboard.",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
     }
 
@@ -781,7 +781,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.basic.detail,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -806,7 +806,7 @@ const VerifyPage = () => {
           text:
             response["search-extension"].phoneVerification.detail ||
             "Verification failed",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -834,7 +834,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.business.message,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -849,7 +849,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.financial.message,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -928,7 +928,7 @@ const VerifyPage = () => {
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
                 : "Verification failed. Please try again.",
-            confirmButtonColor: "#DD0201",
+            confirmButtonColor: "#FED001",
           });
           setCurrentStep(1);
           return;
@@ -979,7 +979,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: errorMsg,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
       }
@@ -990,7 +990,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Service Unavailable",
         text: "Service is currently unavailable. A refund has been initiated.",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
     }
   };

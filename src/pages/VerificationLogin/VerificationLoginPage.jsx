@@ -13,7 +13,6 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
 
 import {
   PageWrapper,
@@ -235,9 +234,12 @@ const VerificationLoginPage = () => {
     <PageWrapper>
       <LoginNav>
         <NavLogo to="/">
-          <img src={Logo} alt="eCitizen" />
+          <span className="brand-red">e</span>
+          <span className="brand-dot">-</span>
+          citizen<span className="brand-dot">.africa</span>
         </NavLogo>
         <NavLinks>
+          <NavLink to="/">← Back to Home</NavLink>
           <NavLink to="/individual/sign-up/1">Register</NavLink>
         </NavLinks>
       </LoginNav>

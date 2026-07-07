@@ -341,7 +341,7 @@ export const PublicLogin = styled(Link)`
   }
 `;
 
-export const PublicCta = styled(Link)`
+export const PublicCta = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;

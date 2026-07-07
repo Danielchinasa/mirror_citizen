@@ -241,9 +241,9 @@ const DashboardPage = () => {
   const [financialUsdFee, setFinancialUsdFee] = useState("");
   const [financialUsdVatFee, setFinancialUsdVatFee] = useState("");
   const [financialProcessingFee, setFinancialProcessingFee] = useState("");
-  const [currencyCheck, setCurrencyCheck] = useState("NGN");
-  const [flutterWaveCurrency, setFlutterWaveCurrency] = useState("NGN");
-  const [paystackCurrency, setPaystackCurrency] = useState("NGN");
+  const [currencyCheck, setCurrencyCheck] = useState("GHS");
+  const [flutterWaveCurrency, setFlutterWaveCurrency] = useState("GHS");
+  const [paystackCurrency, setPaystackCurrency] = useState("GHS");
   const [value, setValue] = useState();
   const [stolenCheckFee, setStolenCheckFee] = useState("");
   const [stolenCheckServiceFee, setStolenCheckServiceFee] = useState("");
@@ -287,10 +287,10 @@ const DashboardPage = () => {
     dispatch(fetchUserProfile(userToken));
   }, []);
 
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToCedis = (value) => {
+    return new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     }).format(value);
   };
 
@@ -1196,8 +1196,8 @@ const DashboardPage = () => {
       setOutsideNgWithNiara(false);
     } else if (e.target.value == 1) {
       // setCurrencyCheck("NGN");
-      setFlutterWaveCurrency("NGN");
-      setPaystackCurrency("NGN");
+      setFlutterWaveCurrency("GHS");
+      setPaystackCurrency("GHS");
       setOutsideNgWithNiara(true);
 
       setOutsideNgWithNiaraPrice(totalveriNiara);
@@ -1319,7 +1319,7 @@ const DashboardPage = () => {
         background: bgContainer,
         color: text,
         title: "Currency Not Selected",
-        text: "Please select a payment currency (Naira or USD) before proceeding.",
+        text: "Please select a payment currency (Cedis or USD) before proceeding.",
         icon: "warning",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1370,7 +1370,7 @@ const DashboardPage = () => {
           }
         }
         if (
-          currencyCheck.toUpperCase() === "NGN" &&
+          currencyCheck.toUpperCase() === "GHS" &&
           userCurrency.toUpperCase() === "USD"
         ) {
           setLoading(false);
@@ -1402,17 +1402,17 @@ const DashboardPage = () => {
         //!!-------------------- Check for Wallet balance ------------------//
         if (
           userBalance <
-          (userCurrency.toUpperCase() === "NGN" &&
-          currencyCheck.toUpperCase() === "NGN"
+          (userCurrency.toUpperCase() === "GHS" &&
+          currencyCheck.toUpperCase() === "GHS"
             ? totalServiceCost
             : currencyCheck.toUpperCase() === "USD" &&
-                userCurrency.toUpperCase() === "NGN"
+                userCurrency.toUpperCase() === "GHS"
               ? totalveriNiara
               : currencyCheck.toUpperCase() === "USD" &&
                   userCurrency.toUpperCase() === "USD"
                 ? totalServiceCost
-                : userCurrency.toUpperCase() === "NGN" &&
-                    currencyCheck.toUpperCase() !== "NGN"
+                : userCurrency.toUpperCase() === "GHS" &&
+                    currencyCheck.toUpperCase() !== "GHS"
                   ? outsideNgWithNiaraPrice
                   : totalServiceCost)
         ) {
@@ -1460,20 +1460,20 @@ const DashboardPage = () => {
             sessionCode: walletSessionId,
             userNIN: userNin,
             transactionID: randomTransactionId,
-            currency: localStorage.getItem("currency") || "NGN",
+            currency: localStorage.getItem("currency") || "GHS",
             paymentType: localStorage.getItem("paymentType") || "WALLET",
             amount:
-              userCurrency.toUpperCase() === "NGN" &&
-              currencyCheck.toUpperCase() === "NGN"
+              userCurrency.toUpperCase() === "GHS" &&
+              currencyCheck.toUpperCase() === "GHS"
                 ? totalServiceCost
                 : currencyCheck.toUpperCase() === "USD" &&
-                    userCurrency.toUpperCase() === "NGN"
+                    userCurrency.toUpperCase() === "GHS"
                   ? totalveriNiara
                   : currencyCheck.toUpperCase() === "USD" &&
                       userCurrency.toUpperCase() === "USD"
                     ? totalServiceCost
-                    : userCurrency.toUpperCase() === "NGN" &&
-                        currencyCheck.toUpperCase() !== "NGN"
+                    : userCurrency.toUpperCase() === "GHS" &&
+                        currencyCheck.toUpperCase() !== "GHS"
                       ? outsideNgWithNiaraPrice
                       : totalServiceCost,
           };
@@ -2219,9 +2219,9 @@ const DashboardPage = () => {
 
     // Loop through all form data fields
 
-    const currencyFormatter = new Intl.NumberFormat("en-NG", {
+    const currencyFormatter = new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     });
     const formattedTotalveri = currencyFormatter.format(totalveri);
     setLoadingModal(true);
@@ -2262,9 +2262,9 @@ const DashboardPage = () => {
     // Update totalveri state with the calculated value
     setTotalveri(calculatedTotalveri);
 
-    const currencyFormatter = new Intl.NumberFormat("en-NG", {
+    const currencyFormatter = new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     });
     const formattedTotalveri = currencyFormatter.format(totalveri);
     showModalFace();
@@ -2524,7 +2524,7 @@ const DashboardPage = () => {
           >
             Pay with Flutterwave
           </Radio>
-          {/* {currencyCheck.toUpperCase() !== "NGN" && (
+          {/* {currencyCheck.toUpperCase() !== "GHS" && (
             <Radio
               style={{
                 display: "block",
@@ -5210,7 +5210,7 @@ const DashboardPage = () => {
                                 {" "}
                                 {currencyCheck.toUpperCase() === "USD"
                                   ? "$" + (ninServiceFee + ninProcessingFee)
-                                  : formatToNaira(
+                                  : formatToCedis(
                                       ninServiceFee + ninProcessingFee,
                                     )}
                               </p>
@@ -5240,7 +5240,7 @@ const DashboardPage = () => {
                                 {" "}
                                 {currencyCheck.toUpperCase() === "USD"
                                   ? "$" + (phoneServiceFee + phoneProcessingFee)
-                                  : formatToNaira(
+                                  : formatToCedis(
                                       phoneServiceFee + phoneProcessingFee,
                                     )}
                               </p>
@@ -5271,7 +5271,7 @@ const DashboardPage = () => {
                                 {currencyCheck.toUpperCase() === "USD"
                                   ? "$" +
                                     (businessServiceFee + businessProcessingFee)
-                                  : formatToNaira(
+                                  : formatToCedis(
                                       businessServiceFee +
                                         businessProcessingFee,
                                     )}
@@ -5306,7 +5306,7 @@ const DashboardPage = () => {
                                   ? "$" +
                                     (businessNameServiceFee +
                                       businessNameProcessingFee)
-                                  : formatToNaira(
+                                  : formatToCedis(
                                       businessNameServiceFee +
                                         businessNameProcessingFee,
                                     )}
@@ -5343,7 +5343,7 @@ const DashboardPage = () => {
                                           financialProcessingFee) *
                                         2
                                       ).toFixed(2)
-                                    : formatToNaira(
+                                    : formatToCedis(
                                         (financialServiceFee +
                                           financialProcessingFee) *
                                           2,
@@ -5356,7 +5356,7 @@ const DashboardPage = () => {
                                             financialProcessingFee) *
                                           3
                                         ).toFixed(2)
-                                      : formatToNaira(
+                                      : formatToCedis(
                                           (financialServiceFee +
                                             financialProcessingFee) *
                                             3,
@@ -5365,7 +5365,7 @@ const DashboardPage = () => {
                                       ? "$" +
                                         (financialServiceFee +
                                           financialProcessingFee)
-                                      : formatToNaira(
+                                      : formatToCedis(
                                           financialServiceFee +
                                             financialProcessingFee,
                                         )}{" "}
@@ -5399,7 +5399,7 @@ const DashboardPage = () => {
                                   ? "$" +
                                     (vinVehicleServiceFee +
                                       vinVehicleProcessingFee)
-                                  : formatToNaira(
+                                  : formatToCedis(
                                       vinVehicleServiceFee +
                                         vinVehicleProcessingFee,
                                     )}
@@ -5435,7 +5435,7 @@ const DashboardPage = () => {
                                 {currencyCheck.toUpperCase() === "USD"
                                   ? "$" +
                                     (vehicleServiceFee + vehicleProcessingFee)
-                                  : formatToNaira(
+                                  : formatToCedis(
                                       vehicleServiceFee + vehicleProcessingFee,
                                     )}
                               </p>
@@ -5475,7 +5475,7 @@ const DashboardPage = () => {
                               </p>
                             ) : (
                               <p style={{ color: text }}>
-                                {formatToNaira(totalVAT)}
+                                {formatToCedis(totalVAT)}
                               </p>
                             )}
                           </Col>
@@ -5533,7 +5533,7 @@ const DashboardPage = () => {
                               >{`$${totalServiceCost.toFixed(2)}`}</p>
                             ) : (
                               <p style={{ color: text }}>
-                                {formatToNaira(totalServiceCost)}
+                                {formatToCedis(totalServiceCost)}
                               </p>
                             )}
                           </Col>
@@ -5553,7 +5553,7 @@ const DashboardPage = () => {
                                 >
                                   <Radio value={1}>
                                     {" "}
-                                    {formatToNaira(totalveriNiara)}
+                                    {formatToCedis(totalveriNiara)}
                                   </Radio>
                                   <RadioComponent
                                     profile={profile}
@@ -5565,13 +5565,13 @@ const DashboardPage = () => {
                               <Radio.Group
                                 onChange={currencyOnChange}
                                 value={
-                                  userCurrency?.toUpperCase() === "NGN" ? 1 : 2
+                                  userCurrency?.toUpperCase() === "GHS" ? 1 : 2
                                 }
                               >
-                                {userCurrency?.toUpperCase() === "NGN" ? (
+                                {userCurrency?.toUpperCase() === "GHS" ? (
                                   <Radio value={1}>
                                     {" "}
-                                    {formatToNaira(totalveriNiara)}
+                                    {formatToCedis(totalveriNiara)}
                                   </Radio>
                                 ) : (
                                   // <Radio value={2}>
@@ -5593,9 +5593,9 @@ const DashboardPage = () => {
                             <p style={{ color: text }}>Exchange rate</p>
                             <p style={{ color: text }}>
                               $1 USD =
-                              {new Intl.NumberFormat("en-NG", {
+                              {new Intl.NumberFormat("en-GH", {
                                 style: "currency",
-                                currency: "NGN",
+                                currency: "GHS",
                               }).format(exchangeRate)}{" "}
                               Naira{" "}
                             </p>
@@ -5675,7 +5675,7 @@ const DashboardPage = () => {
                             style={{ float: "right", paddingTop: "10px" }}
                           /> */}
                         </Radio>
-                        {/* {currencyCheck.toUpperCase() !== "NGN" && (
+                        {/* {currencyCheck.toUpperCase() !== "GHS" && (
                         <Radio
                           style={{
                             display: "block",

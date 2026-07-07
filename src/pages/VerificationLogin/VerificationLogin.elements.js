@@ -27,13 +27,22 @@ export const LoginNav = styled.nav`
 `;
 
 export const NavLogo = styled(Link)`
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ec-text);
+  text-decoration: none;
 
-  img {
-    height: 32px;
-    width: auto;
-    object-fit: contain;
+  .brand-red {
+    color: var(--ec-primary);
+  }
+
+  .brand-dot {
+    color: var(--ec-text);
   }
 `;
 

@@ -472,8 +472,7 @@ const Home = () => {
 
         <CardsGrid>
           {/* Person Identity */}
-          <ServiceCard $popular>
-            <PopularBadge>MOST POPULAR</PopularBadge>
+          <ServiceCard>
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
@@ -496,7 +495,7 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} $popular>
+            <ServiceBtn to={ninVerify}>
               Verify Now
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">

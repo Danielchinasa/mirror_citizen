@@ -78,7 +78,7 @@ const BusinessName = () => {
   const [stakeHolderFeeUsd, setStakeHolderFeeUsd] = useState("");
   const [stakeHolderFeeNgn, setStakeHolderFeeNgn] = useState("");
   const userCurrency = user?.currency || "";
-  const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const [currencyCheck, setCurrencyCheck] = useState("GHS");
   const userNin = user?.nin || "";
   const userBalance = user?.walletBalance || 0;
   const [openFlutterwaveModal, setOpenFlutterwaveModal] = useState(false);
@@ -179,7 +179,7 @@ const BusinessName = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount: currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
-    currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "NGN",
+    currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "GHS",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
@@ -301,7 +301,7 @@ const BusinessName = () => {
           type: "STAKEHOLDERS",
           stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeUsd,
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "GHS",
           userEmail: userEmail,
         };
 
@@ -312,7 +312,7 @@ const BusinessName = () => {
           type: "STAKEHOLDERS",
           stakeHolders: "STAKEHOLDERS",
           amount: stakeHolderFeeNgn,
-          currency: currencyCheck || "NGN",
+          currency: currencyCheck || "GHS",
           userEmail: userEmail,
         };
         const handlePayment = async () => {
@@ -401,7 +401,7 @@ const BusinessName = () => {
                   stakeholders: "STAKEHOLDERS",
                   paymentType: paymentType || "INSTANT",
                   payment: {
-                    currency: currencyCheck || "NGN",
+                    currency: currencyCheck || "GHS",
                     transactionID: transactionID || randomTransactionId,
                     paymentType: paymentType || "INSTANT",
                   },
@@ -549,7 +549,7 @@ const BusinessName = () => {
           localStorage.setItem("transactionID", randomTransactionId);
           localStorage.setItem("paymentType", "WALLET");
           if (
-            currencyCheck.toUpperCase() === "NGN" &&
+            currencyCheck.toUpperCase() === "GHS" &&
             userCurrency.toUpperCase() === "USD"
           ) {
             setLoading(false);
@@ -579,7 +579,7 @@ const BusinessName = () => {
           }
           if (
             currencyCheck.toUpperCase() === "USD" &&
-            userCurrency.toUpperCase() === "NGN"
+            userCurrency.toUpperCase() === "GHS"
           ) {
             setLoading(false);
 
@@ -664,12 +664,12 @@ const BusinessName = () => {
                   sessionStatus: "COMPLETED",
                   paymentType: paymentType || "INSTANT",
                   stakeholders: "STAKEHOLDERS",
-                  currency: currencyCheck || "NGN",
+                  currency: currencyCheck || "GHS",
                   userEmail: userEmail,
                   requestId: parseInt(requestId),
                   cacId: parseInt(cacid),
                   payment: {
-                    currency: currencyCheck || "NGN",
+                    currency: currencyCheck || "GHS",
                     transactionID: transactionID || randomTransactionId,
                     paymentType: paymentType || "INSTANT",
                   },
@@ -1030,10 +1030,10 @@ const BusinessName = () => {
     });
   };
 
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToCedis = (value) => {
+    return new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     }).format(value);
   };
 
@@ -1091,13 +1091,13 @@ const BusinessName = () => {
               sessionCode: localStorage.getItem("sessionCode"),
               sessionStatus: "COMPLETED",
               stakeholders: "STAKEHOLDERS",
-              currency: currencyCheck || "NGN",
+              currency: currencyCheck || "GHS",
               userEmail: userEmail,
               paymentType: paymentType || "INSTANT",
               cacId: parseInt(cacId),
               requestId: parseInt(requestId),
               payment: {
-                currency: currencyCheck || "NGN",
+                currency: currencyCheck || "GHS",
                 transactionID: transactionID || randomTransactionId,
                 paymentType: paymentType || "INSTANT",
               },
@@ -1295,13 +1295,13 @@ const BusinessName = () => {
               sessionCode: localStorage.getItem("sessionCode"),
               sessionStatus: "COMPLETED",
               stakeholders: "STAKEHOLDERS",
-              currency: currencyCheck || "NGN",
+              currency: currencyCheck || "GHS",
               userEmail: userEmail,
               paymentType: paymentType || "INSTANT",
               cacId: parseInt(cacId),
               requestId: parseInt(requestId),
               payment: {
-                currency: currencyCheck || "NGN",
+                currency: currencyCheck || "GHS",
                 transactionID: transactionID || randomTransactionId,
                 paymentType: paymentType || "INSTANT",
               },
@@ -1788,7 +1788,7 @@ const BusinessName = () => {
                                   <span style={{ fontWeight: "bold" }}>
                                     {currencyCheck == "USD"
                                       ? "$" + stakeHolderFeeUsd
-                                      : formatToNaira(stakeHolderFeeUsd)}
+                                      : formatToCedis(stakeHolderFeeUsd)}
                                   </span>{" "}
                                   <Tooltip
                                     title={tooltipContentStakeholders}

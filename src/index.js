@@ -7,6 +7,19 @@ import { store, persistor } from "./redux/store";
 import App from "./App";
 import InactivityDetector from "./InactivityDetector";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Swal from "sweetalert2";
+
+// Set global SweetAlert2 default button color to the app's primary color
+;(function setSwalDefaults() {
+  const origFire = Swal.fire.bind(Swal);
+  Swal.fire = function (...args) {
+    const opts = typeof args[0] === "object" ? args[0] : {};
+    if (!opts.confirmButtonColor) {
+      opts.confirmButtonColor = "#FED001";
+    }
+    return origFire(opts, ...args.slice(1));
+  };
+})();
 
 ReactDOM.render(
   <Provider store={store}>

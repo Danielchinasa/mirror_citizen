@@ -95,7 +95,7 @@ const MainDashboard = () => {
   const [vinVehicleFee, setVinVehicleFee] = useState("");
   const [businessFee, setBusinessFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
-  const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const [currencyCheck, setCurrencyCheck] = useState("GHS");
   const [loadingSmall, setLoadingSmall] = useState(false);
 
   const { token } = theme.useToken();
@@ -378,7 +378,7 @@ const MainDashboard = () => {
     public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}TP",
     amount: "1000",
-    currency: userCurrency == "USD" ? "USD" : "NGN",
+    currency: userCurrency == "USD" ? "USD" : "GHS",
     payment_options: "card,ussd, account, banktransfer, barter, nqr",
     customer: {
       email: userEmail,
@@ -909,7 +909,7 @@ const MainDashboard = () => {
           // Track conversion
           trackPurchaseConversion({
             value: parseFloat(transactionAmount) || 1.0,
-            currency: userCurrency || "NGN",
+            currency: userCurrency || "GHS",
             transactionId: transactionRef,
           });
           dispatch(fetchUserProfile(userToken));
@@ -981,20 +981,20 @@ const MainDashboard = () => {
               payment_type: "Paystack",
               transaction_id: paystackReference,
               value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
+              currency: userCurrency || "GHS",
             });
             // Payment successful - fire GA4 purchase event
             trackGA4Event("purchase", {
               transaction_id: paystackReference,
               value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
+              currency: userCurrency || "GHS",
               items: [{ id: paystackReference, name: "Paystack Payment" }],
             });
             // Payment successful - track conversion and refresh profile
             trackPurchaseConversion({
               value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
-              transactionId: paystackReference,
+            currency: userCurrency || "GHS",
+            transactionId: paystackReference,
             });
             dispatch(fetchUserProfile(userToken));
           } else {
@@ -1135,7 +1135,7 @@ const MainDashboard = () => {
   }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOk = async () => {
-    const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
+    const minAmount = userCurrency.toUpperCase() === "GHS" ? 1000 : 10;
 
     // Validate minimum amount
     if (!amount || parseFloat(amount) < minAmount) {
@@ -1144,7 +1144,7 @@ const MainDashboard = () => {
         color: text,
         title: "Error",
         text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "NGN" ? "GH₵1,000" : "$10"
+          userCurrency.toUpperCase() === "GHS" ? "GH₵1,000" : "$10"
         }`,
         icon: "error",
         customClass: {
@@ -1263,7 +1263,7 @@ const MainDashboard = () => {
         // Paystack payment
         const postData = {
           amount: amount,
-          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
+          currency: userCurrency.toUpperCase() === "GHS" ? "GHS" : "USD",
           type: "TOPUP",
           sessionCode: null,
           stakeHolders: null,
@@ -1288,7 +1288,7 @@ const MainDashboard = () => {
                 { id: responseData.data.reference, name: "Paystack Payment" },
               ],
               value: amount,
-              currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
+              currency: userCurrency.toUpperCase() === "GHS" ? "GHS" : "USD",
             });
             setOpenPaystackModal(true);
             setPaystackLoading(false);
@@ -1380,10 +1380,10 @@ const MainDashboard = () => {
   };
 
   const userBalance = userDetails?.walletBalance || 0;
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToCedis = (value) => {
+    return new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     }).format(value);
   };
   const formatToDollar = (value) => {
@@ -1523,8 +1523,8 @@ const MainDashboard = () => {
                 >
                   <Title level={5}> Wallet Balance:</Title>
                   <Title level={3} style={{ color: "#FED001" }}>
-                    {userCurrency.toUpperCase() === "NGN"
-                      ? formatToNaira(userBalance)
+                    {userCurrency.toUpperCase() === "GHS"
+                      ? formatToCedis(userBalance)
                       : `${formatToDollar(userBalance)}`}
                   </Title>
 
@@ -1588,20 +1588,20 @@ const MainDashboard = () => {
                   </Radio.Group>
                   <p>
                     Enter Amount to Fund Wallet (Minimum:{" "}
-                    {userCurrency.toUpperCase() === "NGN" ? "GH₵1,000" : "$10"})
+                    {userCurrency.toUpperCase() === "GHS" ? "GH₵1,000" : "$10"})
                   </p>
                   <Input
                     type="number"
                     placeholder={`Enter amount (min: ${
-                      userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
+                      userCurrency.toUpperCase() === "GHS" ? "1000" : "10"
                     })`}
                     value={amount}
                     onChange={handleChange}
-                    min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
+                    min={userCurrency.toUpperCase() === "GHS" ? 1000 : 10}
                   />
                   {amount &&
                     parseFloat(amount) <
-                      (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
+                      (userCurrency.toUpperCase() === "GHS" ? 1000 : 10) && (
                       <p
                         style={{
                           color: "red",
@@ -1610,7 +1610,7 @@ const MainDashboard = () => {
                         }}
                       >
                         Minimum top-up amount is{" "}
-                        {userCurrency.toUpperCase() === "NGN"
+                        {userCurrency.toUpperCase() === "GHS"
                           ? "GH₵1,000"
                           : "$10"}
                       </p>

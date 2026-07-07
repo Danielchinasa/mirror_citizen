@@ -273,7 +273,7 @@ const verificationConfig = {
     idTypeLabel: "Vehicle Identification Number (VIN)",
     fields: [
       {
-        name: "vin",
+        name: "idNumber",
         label: "VIN (Vehicle Identification Number)",
         placeholder: "Enter VIN",
         type: "text",
@@ -295,9 +295,9 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
-    serviceCode: "VIN_ID",
+    serviceCode: "VIN",
     apiServiceName: "VIN",
-    serviceFieldKey: "vin",
+    serviceFieldKey: "idNumber",
     priceIndex: 5,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },

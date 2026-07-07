@@ -51,7 +51,7 @@ const Business = () => {
   const [stakeHolderFeeUsd, setStakeHolderFeeUsd] = useState("");
   const [stakeHolderFeeNgn, setStakeHolderFeeNgn] = useState("");
   const userCurrency = user?.currency || "";
-  const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const [currencyCheck, setCurrencyCheck] = useState("GHS");
 
   useEffect(() => {
     const fetchServiceFee = async () => {
@@ -123,7 +123,7 @@ const Business = () => {
     // public_key: "FLWPUBK_TEST-006b0a065ec9aff889e81054660b0ee9-X",
     tx_ref: "EA${user.id}${DateTime.now().millisecondsSinceEpoch}",
     amount: currencyCheck === "USD" ? stakeHolderFeeUsd : stakeHolderFeeUsd,
-    currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "NGN",
+    currency: currencyCheck.toUpperCase() === "USD" ? "USD" : "GHS",
     payment_options:
       "card,mobilemoney,ussd, account, banktransfer, barter, nqr",
     customer: {
@@ -215,10 +215,10 @@ const Business = () => {
     });
   };
 
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToCedis = (value) => {
+    return new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     }).format(value);
   };
 

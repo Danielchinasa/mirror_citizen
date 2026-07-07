@@ -228,10 +228,10 @@ function Navbar() {
   }, [dispatch]);
 
   const userBalance = userDetails?.walletBalance || 0;
-  const formatToNaira = (value) => {
-    return new Intl.NumberFormat("en-NG", {
+  const formatToCedis = (value) => {
+    return new Intl.NumberFormat("en-GH", {
       style: "currency",
-      currency: "NGN",
+      currency: "GHS",
     }).format(value);
   };
   const formatToDollar = (value) => {
@@ -277,7 +277,7 @@ function Navbar() {
           // Track conversion
           trackPurchaseConversion({
             value: parseFloat(transactionAmount) || 1.0,
-            currency: userCurrency || "NGN",
+            currency: userCurrency || "GHS",
             transactionId: transactionRef,
           });
           dispatch(fetchUserProfile(userToken2));
@@ -347,7 +347,7 @@ function Navbar() {
             // Payment successful - track conversion and refresh profile
             trackPurchaseConversion({
               value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
+              currency: userCurrency || "GHS",
               transactionId: paystackReference,
             });
             dispatch(fetchUserProfile(userToken2));
@@ -489,7 +489,7 @@ function Navbar() {
   }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOk = async () => {
-    const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
+    const minAmount = userCurrency.toUpperCase() === "GHS" ? 1000 : 10;
 
     // Validate minimum amount
     if (!amount || parseFloat(amount) < minAmount) {
@@ -498,7 +498,7 @@ function Navbar() {
         color: text,
         title: "Error",
         text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "NGN" ? "GH₵1,000" : "$10"
+          userCurrency.toUpperCase() === "GHS" ? "GH₵1,000" : "$10"
         }`,
         icon: "error",
         customClass: {
@@ -649,7 +649,7 @@ function Navbar() {
         // Paystack payment
         const postData = {
           amount: amount,
-          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
+          currency: userCurrency.toUpperCase() === "GHS" ? "GHS" : "USD",
           type: "TOPUP",
           sessionCode: null,
           stakeHolders: null,
@@ -803,7 +803,7 @@ function Navbar() {
               <PublicLanguage>EN</PublicLanguage>
               <ThemeToggle />
               <PublicLogin to="/login">Log in</PublicLogin>
-              <PublicCta to="/login">Get Started</PublicCta>
+              <PublicCta href="#services">Get Started</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -839,9 +839,9 @@ function Navbar() {
               <PublicMobileLink to="/login" onClick={closeMobileMenu}>
                 Log in
               </PublicMobileLink>
-              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
                 Get Started
-              </PublicMobileLink>
+              </PublicMobileAnchor>
             </PublicMobileMenu>
           </PublicMobilePanel>
         </PublicNav>
@@ -1010,7 +1010,7 @@ function Navbar() {
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
-                              : formatToNaira(userBalance)}
+                              : formatToCedis(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1023,8 +1023,8 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#FED001" }}>
-                            {userCurrency.toUpperCase() === "NGN"
-                              ? formatToNaira(userBalance)
+                            {userCurrency.toUpperCase() === "GHS"
+                              ? formatToCedis(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
 
@@ -1051,7 +1051,7 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "NGN" && (
+                            {/* {userCurrency.toUpperCase() !== "GHS" && (
                               <Radio
                                 value={2}
                                 style={{
@@ -1090,7 +1090,7 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
-                            {userCurrency.toUpperCase() === "NGN"
+                            {userCurrency.toUpperCase() === "GHS"
                               ? "GH₵1,000"
                               : "$10"}
                             )
@@ -1098,19 +1098,19 @@ function Navbar() {
                           <Input
                             type="number"
                             placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "NGN"
+                              userCurrency.toUpperCase() === "GHS"
                                 ? "1000"
                                 : "10"
                             })`}
                             value={amount}
                             onChange={handleChange}
                             min={
-                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
+                              userCurrency.toUpperCase() === "GHS" ? 1000 : 10
                             }
                           />
                           {amount &&
                             parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "NGN"
+                              (userCurrency.toUpperCase() === "GHS"
                                 ? 1000
                                 : 10) && (
                               <p
@@ -1121,7 +1121,7 @@ function Navbar() {
                                 }}
                               >
                                 Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "NGN"
+                                {userCurrency.toUpperCase() === "GHS"
                                   ? "GH₵1,000"
                                   : "$10"}
                               </p>
@@ -1221,7 +1221,7 @@ function Navbar() {
                             {/* GH₵{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
-                              : formatToNaira(userBalance)}
+                              : formatToCedis(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1234,8 +1234,8 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#FED001" }}>
-                            {userCurrency.toUpperCase() === "NGN"
-                              ? formatToNaira(userBalance)
+                            {userCurrency.toUpperCase() === "GHS"
+                              ? formatToCedis(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
 
@@ -1262,7 +1262,7 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "NGN" && (
+                            {/* {userCurrency.toUpperCase() !== "GHS" && (
                               <Radio
                                 value={2}
                                 style={{
@@ -1301,7 +1301,7 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
-                            {userCurrency.toUpperCase() === "NGN"
+                            {userCurrency.toUpperCase() === "GHS"
                               ? "GH₵1,000"
                               : "$10"}
                             )
@@ -1309,19 +1309,19 @@ function Navbar() {
                           <Input
                             type="number"
                             placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "NGN"
+                              userCurrency.toUpperCase() === "GHS"
                                 ? "1000"
                                 : "10"
                             })`}
                             value={amount}
                             onChange={handleChange}
                             min={
-                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
+                              userCurrency.toUpperCase() === "GHS" ? 1000 : 10
                             }
                           />
                           {amount &&
                             parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "NGN"
+                              (userCurrency.toUpperCase() === "GHS"
                                 ? 1000
                                 : 10) && (
                               <p
@@ -1332,7 +1332,7 @@ function Navbar() {
                                 }}
                               >
                                 Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "NGN"
+                                {userCurrency.toUpperCase() === "GHS"
                                   ? "GH₵1,000"
                                   : "$10"}
                               </p>
