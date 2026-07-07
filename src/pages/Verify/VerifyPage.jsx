@@ -1444,7 +1444,7 @@ const VerifyPage = () => {
           </PayBtn>
 
           <SecuredBy>
-            <FaShieldAlt style={{ color: "#DD0201" }} />
+            <FaShieldAlt style={{ color: "#111827" }} />
             Secured and encrypted payment
           </SecuredBy>
 
@@ -1509,11 +1509,15 @@ const VerifyPage = () => {
     // ── Ghana ID Card / basic result (new API format) ──
     // Check for new format fields first (fullName, idNumber, etc.)
     if (data.fullName || data.firstName || data.lastName || data.idNumber) {
-      if (data.idNumber) fields.push({ label: "ID Number", value: data.idNumber });
+      if (data.idNumber)
+        fields.push({ label: "ID Number", value: data.idNumber });
 
-      if (data.fullName) fields.push({ label: "Full Name", value: data.fullName });
-      if (data.firstName) fields.push({ label: "First Name", value: data.firstName });
-      if (data.lastName) fields.push({ label: "Last Name", value: data.lastName });
+      if (data.fullName)
+        fields.push({ label: "Full Name", value: data.fullName });
+      if (data.firstName)
+        fields.push({ label: "First Name", value: data.firstName });
+      if (data.lastName)
+        fields.push({ label: "Last Name", value: data.lastName });
 
       if (data.dateOfBirth)
         fields.push({
@@ -1590,7 +1594,10 @@ const VerifyPage = () => {
         value: data.approvedName || data.companyName || data.company_name,
       });
       if (data.rcNumber || data.rc_number)
-        fields.push({ label: "RC Number", value: data.rcNumber || data.rc_number });
+        fields.push({
+          label: "RC Number",
+          value: data.rcNumber || data.rc_number,
+        });
       if (data.registrationDate)
         fields.push({
           label: "Registration Date",
@@ -1612,8 +1619,10 @@ const VerifyPage = () => {
     // Credit bureau
     if (data.advance || data.crc || data.firstCentral || data.creditRegistry) {
       if (data.crc) fields.push({ label: "CRC", value: "Data received" });
-      if (data.firstCentral) fields.push({ label: "First Central", value: "Data received" });
-      if (data.creditRegistry) fields.push({ label: "Credit Registry", value: "Data received" });
+      if (data.firstCentral)
+        fields.push({ label: "First Central", value: "Data received" });
+      if (data.creditRegistry)
+        fields.push({ label: "Credit Registry", value: "Data received" });
       return fields;
     }
 
@@ -1632,7 +1641,9 @@ const VerifyPage = () => {
           key !== "rawData"
         ) {
           fields.push({
-            label: key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()),
+            label: key
+              .replace(/([A-Z])/g, " $1")
+              .replace(/^./, (s) => s.toUpperCase()),
             value: val,
           });
         }
