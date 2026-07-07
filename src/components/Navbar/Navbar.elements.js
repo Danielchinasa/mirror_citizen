@@ -324,6 +324,15 @@ export const PublicHeaderLanguage = styled.div`
   }
 `;
 
+export const PublicDesktopOnly = styled.div`
+  display: inline-flex;
+  align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
 export const PublicLogin = styled(Link)`
   color: var(--ec-text);
   text-decoration: none;
@@ -341,7 +350,7 @@ export const PublicLogin = styled(Link)`
   }
 `;
 
-export const PublicCta = styled(Link)`
+export const PublicCta = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
