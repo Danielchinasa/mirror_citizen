@@ -27,6 +27,8 @@ import {
   PublicLanguageToggle,
   PublicMobileLink,
   PublicMobileAnchor,
+  PublicDesktopOnly,
+  PublicMobileToggle,
 } from "./Navbar.elements";
 import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
@@ -812,8 +814,10 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
 
-              <ThemeToggle />
-              <PublicCta to="/login">{t("nav.getStarted")}</PublicCta>
+              <PublicDesktopOnly>
+                <ThemeToggle />
+              </PublicDesktopOnly>
+              <PublicCta href="#services">{t("nav.getStarted")}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -847,9 +851,13 @@ function Navbar() {
                 {t("nav.support")}
               </PublicMobileLink>
 
-              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
                 {t("nav.getStarted")}
-              </PublicMobileLink>
+              </PublicMobileAnchor>
+
+              <PublicMobileToggle>
+                <ThemeToggle />
+              </PublicMobileToggle>
             </PublicMobileMenu>
           </PublicMobilePanel>
         </PublicNav>
@@ -1211,6 +1219,7 @@ function Navbar() {
                   )
                 : isAuthenticated && (
                     <>
+                      <ThemeToggle style={{ marginRight: "16px" }} />
                       <div
                         style={{
                           marginTop: "20px",
@@ -1406,7 +1415,6 @@ function Navbar() {
                         </Modal>
                       </div>
                       <UserDropdown />
-                      <div style={{ marginLeft: "20px" }}></div>
                     </>
                   )}
             </NavMenu>

@@ -341,7 +341,7 @@ export const PublicLogin = styled(Link)`
   }
 `;
 
-export const PublicCta = styled(Link)`
+export const PublicCta = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -471,5 +471,26 @@ export const PublicMobileAnchor = styled.a`
 
   &:hover {
     color: var(--ec-primary);
+  }
+`;
+
+export const PublicDesktopOnly = styled.div`
+  display: inline-flex;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const PublicMobileToggle = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 4px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
   }
 `;

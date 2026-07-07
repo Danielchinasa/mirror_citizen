@@ -18,12 +18,19 @@ const useServicePrices = () => {
   }, []);
 
   // Accept a service name string, e.g. "National ID NNI", "Residents ID", "VIN"
-  const getPrice = (serviceName) => {
+  // Pass isCI=true for FCFA display, false for USD display
+  const getPrice = (serviceName, isCI = true) => {
     if (!Array.isArray(prices)) return null;
     const found = prices.find(
       (s) => s.service?.toLowerCase() === serviceName?.toLowerCase(),
     );
-    return found?.price ? `FCFA ${Number(found.price).toLocaleString()}` : null;
+    if (!found) return null;
+    if (isCI) {
+      return found.price
+        ? `FCFA ${Number(found.price).toLocaleString()}`
+        : null;
+    }
+    return found.price2 ? `$${Number(found.price2).toFixed(2)}` : null;
   };
 
   return { prices, getPrice };

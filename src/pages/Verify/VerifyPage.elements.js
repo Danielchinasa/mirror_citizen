@@ -413,7 +413,7 @@ export const ResultLabelPopup = styled.span`
 
 export const ResultValuePopup = styled.span`
   font-family: "Poppins", sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--ec-text);
 `;

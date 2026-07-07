@@ -98,6 +98,7 @@ const { useToken } = theme;
 
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
+  const [ipCountry, setIpCountry] = useState(null);
   const [servicePrices, setServicePrices] = useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -112,20 +113,44 @@ const Home = () => {
 
   useEffect(() => {
     const fetchIpAddress = async () => {
+      // TODO: remove hardcoded CI override before release
+      setIpAddress("41.202.219.255");
+      localStorage.setItem("IpAddress", "41.202.219.255");
+      setIpCountry("CI");
+      localStorage.setItem("currencyCheck", "XOF");
+      return;
+
       try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
+        const response = await axios.get("https://ipapi.co/json/");
+        const ip = response.data.ip;
+        const country = response.data.country_code; // e.g. "CI" for Ivory Coast
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        setIpCountry(country);
+        if (country === "CI") {
+          localStorage.setItem("currencyCheck", "XOF");
+        } else {
+          localStorage.setItem("currencyCheck", "USD");
+        }
       } catch (error1) {
-        console.error("Error fetching IP address from primary URL:", error1);
+        console.error("Error fetching IP/country from ipapi.co:", error1);
         try {
-          const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
+          const response = await axios.get("https://api.ipbase.com/v1/json/");
+          const ip = response.data.ip;
+          const country = response.data.country_code;
+          setIpAddress(ip);
+          localStorage.setItem("IpAddress", ip);
+          setIpCountry(country);
+          if (country === "CI") {
+            localStorage.setItem("currencyCheck", "XOF");
+          } else {
+            localStorage.setItem("currencyCheck", "USD");
+          }
         } catch (error2) {
-          console.error(
-            "Error fetching IP address from secondary URL:",
-            error2,
-          );
+          console.error("Error fetching IP from fallback URL:", error2);
           setIpAddress(null);
+          // Default to USD for unknown location
+          localStorage.setItem("currencyCheck", "USD");
         }
       }
     };
@@ -456,9 +481,15 @@ const Home = () => {
                 const s = Array.isArray(servicePrices)
                   ? servicePrices.find((x) => x.service === "National ID NNI")
                   : null;
-                return s?.price
+                const isCI =
+                  (ipCountry ||
+                    localStorage.getItem("currencyCheck") ||
+                    "USD") === "CI" ||
+                  localStorage.getItem("currencyCheck") === "XOF";
+                if (!s) return isCI ? "FCFA —" : "$ —";
+                return isCI
                   ? `FCFA ${Number(s.price).toLocaleString()}`
-                  : "FCFA —";
+                  : `$${Number(s.price2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -496,9 +527,13 @@ const Home = () => {
                 const s = Array.isArray(servicePrices)
                   ? servicePrices.find((x) => x.service === "Residents ID")
                   : null;
-                return s?.price
+                const isCI =
+                  ipCountry === "CI" ||
+                  localStorage.getItem("currencyCheck") === "XOF";
+                if (!s) return isCI ? "FCFA —" : "$ —";
+                return isCI
                   ? `FCFA ${Number(s.price).toLocaleString()}`
-                  : "FCFA —";
+                  : `$${Number(s.price2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -536,9 +571,13 @@ const Home = () => {
                 const s = Array.isArray(servicePrices)
                   ? servicePrices.find((x) => x.service === "VIN")
                   : null;
-                return s?.price
+                const isCI =
+                  ipCountry === "CI" ||
+                  localStorage.getItem("currencyCheck") === "XOF";
+                if (!s) return isCI ? "FCFA —" : "$ —";
+                return isCI
                   ? `FCFA ${Number(s.price).toLocaleString()}`
-                  : "FCFA —";
+                  : `$${Number(s.price2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>

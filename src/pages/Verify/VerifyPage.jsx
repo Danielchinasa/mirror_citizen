@@ -302,18 +302,23 @@ const VerifyPage = () => {
 
   // Fetch service prices
   useEffect(() => {
-    if (!config || !userToken) return;
+    if (!config) return;
 
     const fetchPrices = async () => {
       try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await apiPostInternalCall(
-          `/transaction/service-prices`,
-          { ipAddress },
-          userToken,
-        );
+        const response = await apiGet(`/africa/countries/CI/service-prices`);
+        const services = response.data?.data || response.data || response;
+        const serviceData = Array.isArray(services)
+          ? services.find(
+              (s) =>
+                s.service?.toLowerCase() ===
+                config.apiServiceName?.toLowerCase(),
+            )
+          : null;
+
+        if (!serviceData) throw new Error("Service not found in price list");
+
         setLoadingPrice(false);
-        const serviceData = response.data.data[config.priceIndex];
         setPricingData({
           price: serviceData.price,
           serviceFee: serviceData.serviceFee,
@@ -322,7 +327,7 @@ const VerifyPage = () => {
           serviceFeeusd: serviceData.serviceFee2,
           vatUsd: serviceData.VAT2,
           processingFee: serviceData.processingFee || 0,
-          rate: response.data.rate,
+          rate: response.data?.rate || 1,
         });
       } catch (err) {
         setLoadingPrice(false);
@@ -335,7 +340,7 @@ const VerifyPage = () => {
       }
     };
     fetchPrices();
-  }, [config, userToken]);
+  }, [config]);
 
   if (!config) return null;
 
@@ -381,6 +386,19 @@ const VerifyPage = () => {
 
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
+
+  // The wallet is always held in FCFA (XOF). Compute the FCFA total so wallet
+  // comparisons and charges are always in the correct currency, regardless of
+  // what currency is displayed to the user.
+  const totalAmountFcfa = pricingData
+    ? ((pricingData.serviceFee || 0) +
+        (pricingData.processingFee || 0) +
+        (pricingData.vat || 0)) *
+        bureauMultiplier -
+      (allBureausSelected && config?.allBureausDiscount
+        ? config.allBureausDiscount.ngn || 0
+        : 0)
+    : 0;
 
   /* ── Form handlers ── */
 
@@ -575,14 +593,14 @@ const VerifyPage = () => {
   };
 
   const handleWalletPayment = async (transactionId, apiFormData) => {
-    // Check wallet balance
-    if (userBalance < totalAmount) {
+    // Check wallet balance — wallet is always in FCFA
+    if (userBalance < totalAmountFcfa) {
       setLoading(false);
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
         title: "Wallet Balance Low",
-        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
+        text: `Your wallet balance (FCFA ${userBalance.toLocaleString()}) is insufficient for this transaction (FCFA ${totalAmountFcfa.toLocaleString()}).`,
         confirmButtonColor: "#FD7A00",
       });
       return;
@@ -596,9 +614,9 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
         userNIN: userDetails?.nin || "",
         transactionID: transactionId,
-        currency: currencyCheck,
+        currency: "XOF", // wallet is always FCFA
         paymentType: "WALLET",
-        amount: totalAmount,
+        amount: totalAmountFcfa, // always charge in FCFA
       };
 
       const response = await fetch(apiUrl, {
@@ -938,6 +956,15 @@ const VerifyPage = () => {
           setCurrentStep(1);
           return;
         }
+      }
+
+      // CI / Smile ID completed verification
+      if (!result && response.status === "COMPLETED" && response.result) {
+        result = response.result;
+        resultTitle = "Verification Successful";
+        resultDetail =
+          response.resultText || "Your ID has been verified successfully.";
+        resultRoute = "/main-dashboard";
       }
 
       if (result) {
@@ -1513,6 +1540,31 @@ const VerifyPage = () => {
     if (!verificationResult?.data) return [];
     const data = verificationResult.data;
     const fields = [];
+
+    // CI / Smile ID result (fullName, firstName, lastName, dateOfBirth, address, idNumber, idType, actions)
+    if (data.fullName || (data.firstName && data.lastName && !data.firstname)) {
+      if (data.fullName)
+        fields.push({ label: "Full Name", value: data.fullName });
+      if (data.firstName)
+        fields.push({ label: "First Name", value: data.firstName });
+      if (data.lastName)
+        fields.push({ label: "Last Name", value: data.lastName });
+      if (data.dateOfBirth)
+        fields.push({ label: "Date of Birth", value: data.dateOfBirth });
+      if (data.idNumber)
+        fields.push({ label: "ID Number", value: data.idNumber });
+      if (data.idType)
+        fields.push({
+          label: "ID Type",
+          value: data.idType.replace(/_/g, " "),
+        });
+      if (data.address) fields.push({ label: "Address", value: data.address });
+      if (data.country) fields.push({ label: "Country", value: data.country });
+      const verifyAction = data.actions?.Verify_ID_Number;
+      if (verifyAction)
+        fields.push({ label: "Verification Status", value: verifyAction });
+      return fields.slice(0, 8);
+    }
 
     // NIN / basic result (API returns lowercase: firstname, middlename, surname)
     if (data.firstname || data.firstName || data.surname || data.lastname) {
@@ -2100,7 +2152,8 @@ const VerifyPage = () => {
                         <ResultLabelPopup>{field.label}</ResultLabelPopup>
                         {field.label === "Verification Status" ? (
                           <VerifiedBadgePopup>
-                            VERIFIED <FaCheckCircle />
+                            {String(field.value).toUpperCase()}{" "}
+                            <FaCheckCircle />
                           </VerifiedBadgePopup>
                         ) : (
                           <ResultValuePopup>{field.value}</ResultValuePopup>
@@ -2198,7 +2251,9 @@ const VerifyPage = () => {
                 </PopupIcon>
                 <div>
                   <PopupTitle>Avis de non-responsabilité</PopupTitle>
-                  <PopupSubtitle>Veuillez vérifier avant de continuer</PopupSubtitle>
+                  <PopupSubtitle>
+                    Veuillez vérifier avant de continuer
+                  </PopupSubtitle>
                 </div>
               </PopupMeta>
               <PopupCloseButton onClick={() => setShowPayDisclaimer(false)}>
@@ -2235,8 +2290,10 @@ const VerifyPage = () => {
                       <li style={{ marginBottom: 12 }}>
                         Vous comprenez et acceptez que les données d'historique
                         du véhicule proviennent de fournisseurs tiers et{" "}
-                        <strong>peuvent ne pas contenir tous les
-                        enregistrements</strong> pour chaque véhicule.
+                        <strong>
+                          peuvent ne pas contenir tous les enregistrements
+                        </strong>{" "}
+                        pour chaque véhicule.
                       </li>
                       <li style={{ marginBottom: 0 }}>
                         Vous comprenez que{" "}
@@ -2277,8 +2334,7 @@ const VerifyPage = () => {
                     <li style={{ marginBottom: 0 }}>
                       Vous comprenez et acceptez que{" "}
                       <strong>
-                        les résultats de recherche peuvent revenir sans
-                        données
+                        les résultats de recherche peuvent revenir sans données
                       </strong>
                       , et vous acceptez de ne pas être remboursé.
                     </li>

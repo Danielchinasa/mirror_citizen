@@ -550,7 +550,7 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: "green",
+                color: "#FD7A00",
                 fontWeight: "bold",
               }}
             >
@@ -1358,7 +1358,7 @@ const MainDashboard = () => {
     <div className="custom-statistic">
       <div
         className="custom-statistic-title"
-        style={{ textAlign: "center", color: "#3f8600" }}
+        style={{ textAlign: "center", color: "var(--ec-text-muted)" }}
       >
         {title}
       </div>
@@ -1436,9 +1436,9 @@ const MainDashboard = () => {
                       title="Total verifications "
                       value={totalVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: "#FD7A00",
                         fontSize: "50px",
-                        fontWeight: "600",
+                        fontWeight: "700",
                         fontFamily: "Poppins, sans-serif",
                         textAlign: "center",
                       }}
@@ -1465,9 +1465,9 @@ const MainDashboard = () => {
                       title="Successful verifications "
                       value={completedVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: "#FD7A00",
                         fontSize: "50px",
-                        fontWeight: "600",
+                        fontWeight: "700",
                         fontFamily: "Poppins, sans-serif",
                         textAlign: "center",
                       }}
@@ -1494,9 +1494,9 @@ const MainDashboard = () => {
                       title="Unsuccessful verifications "
                       value={failedVerificationCount}
                       valueStyle={{
-                        color: "#3f8600",
+                        color: "#FD7A00",
                         fontSize: "50px",
-                        fontWeight: "600",
+                        fontWeight: "700",
                         fontFamily: "Poppins, sans-serif",
                         textAlign: "center",
                       }}
