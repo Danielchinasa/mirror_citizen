@@ -654,7 +654,28 @@ const MainDashboard = () => {
         } else if (status.toLowerCase() === "failed") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              Failed verification
+              {record.source === "AFRICA" && record.resultText
+                ? record.resultText
+                : "Failed verification"}
+            </span>
+          );
+        } else if (record.source === "AFRICA") {
+          const isSuccessful = status.toLowerCase() === "successful";
+          const africaStatus =
+            record.resultText ||
+            (isSuccessful
+              ? "Verification completed"
+              : status.toLowerCase() === "pending"
+                ? "Verification processing"
+                : "Awaiting payment and completion");
+          return (
+            <span
+              style={{
+                color: isSuccessful ? "green" : "inherit",
+                fontWeight: "bold",
+              }}
+            >
+              {africaStatus}
             </span>
           );
         } else if (status.toLowerCase() === "initiate") {
