@@ -1339,6 +1339,22 @@ const DashboardPage = () => {
       : totalServiceCost;
   };
 
+  const logPurchase = ({
+    currency,
+    value,
+    transactionId,
+    paymentType,
+    items,
+  }) => {
+    ReactGA.event("purchase", {
+      currency: currency,
+      value: value,
+      transaction_id: transactionId,
+      payment_type: paymentType,
+      items: items,
+    });
+  };
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1791,20 +1807,6 @@ const DashboardPage = () => {
       else if (paymentMethod === 3) {
         //!!PAYPAL PAYMENT START
         localStorage.setItem("paymentType", "INSTANT");
-
-  const logPurchase = ({
-    currency,
-    value,
-    transactionId,
-    paymentType,
-  }) => {
-    ReactGA.event("purchase", {
-      currency: currency,
-      value: value,
-      transaction_id: transactionId,
-      payment_type: paymentType,
-    });
-  };
 
   const handleMakePayment = async () => {
     if (!checkboxCheckedConfirm) {
