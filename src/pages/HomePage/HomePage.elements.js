@@ -482,35 +482,18 @@ export const CardsGrid = styled.div`
 `;
 
 export const ServiceCard = styled.div`
-  border: 1.5px solid
-    ${({ $popular }) => ($popular ? "var(--ec-primary)" : "var(--ec-border)")};
+  border: 1.5px solid var(--ec-border);
   border-radius: 14px;
   padding: 28px 24px;
   text-align: center;
   position: relative;
   background: var(--ec-bg-card);
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, border-color 0.3s;
 
   &:hover {
     box-shadow: 0 4px 20px var(--ec-shadow);
+    border-color: var(--ec-primary);
   }
-`;
-
-export const PopularBadge = styled.span`
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ec-primary);
-  color: #fff;
-  font-family: "Nunito", sans-serif;
-  font-weight: 800;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 4px 14px;
-  border-radius: 12px;
-  white-space: nowrap;
 `;
 
 export const ServiceIcon = styled.div`
@@ -584,16 +567,13 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.2s;
-  background: ${({ $popular }) =>
-    $popular ? "var(--ec-primary)" : "var(--ec-bg-card)"};
-  color: ${({ $popular }) => ($popular ? "#fff" : "var(--ec-text)")};
-  border: 1.5px solid
-    ${({ $popular }) => ($popular ? "var(--ec-primary)" : "var(--ec-border)")};
+  background: var(--ec-bg-card);
+  color: var(--ec-text);
+  border: 1.5px solid var(--ec-border);
 
   &:hover {
-    background: ${({ $popular }) =>
-      $popular ? "var(--ec-primary-hover)" : "var(--ec-bg-secondary)"};
-    color: ${({ $popular }) => ($popular ? "#fff" : "var(--ec-primary)")};
+    background: var(--ec-bg-secondary);
+    color: var(--ec-primary);
     border-color: var(--ec-primary);
   }
 `;

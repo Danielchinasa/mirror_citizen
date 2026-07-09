@@ -185,6 +185,7 @@ const VerifyPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
+  const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
@@ -315,6 +316,7 @@ const VerifyPage = () => {
         );
         setLoadingPrice(false);
         const serviceData = response.data.data[config.priceIndex];
+        setDetectedCurrency(response.data.data[0]?.currency || null);
         setPricingData({
           price: serviceData.price,
           serviceFee: serviceData.serviceFee,
@@ -340,7 +342,8 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
+  const currencyCheck =
+    detectedCurrency || localStorage.getItem("currencyCheck") || "NGN";
   const isNGN = currencyCheck.toUpperCase() === "NGN";
 
   const bureauCount = config?.bureaus
@@ -351,21 +354,15 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isNGN
-        ? config.allBureausDiscount.ngn
-        : config.allBureausDiscount.usd
+      ? config.allBureausDiscount.ngn
       : 0;
 
   const totalAmount = pricingData
-    ? isNGN
-      ? ((pricingData.serviceFee || 0) +
-          (pricingData.processingFee || 0) +
-          (pricingData.vat || 0)) *
-          bureauMultiplier -
-        discount
-      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
-          bureauMultiplier -
-        discount
+    ? ((pricingData.serviceFee || 0) +
+        (pricingData.processingFee || 0) +
+        (pricingData.vat || 0)) *
+        bureauMultiplier -
+      discount
     : 0;
 
   const currencySymbol = isNGN ? "₦" : "$";
@@ -1211,13 +1208,10 @@ const VerifyPage = () => {
           <PriceBreakdown>
             {pricingData &&
               (() => {
-                const processingFees = isNGN
-                  ? (pricingData.serviceFee || 0) +
-                    (pricingData.processingFee || 0)
-                  : pricingData.serviceFeeusd || 0;
-                const taxCharges = isNGN
-                  ? pricingData.vat || 0
-                  : pricingData.vatUsd || 0;
+                const processingFees =
+                  (pricingData.serviceFee || 0) +
+                  (pricingData.processingFee || 0);
+                const taxCharges = pricingData.vat || 0;
                 const perBureau = processingFees + taxCharges;
                 const subtotal = perBureau * bureauMultiplier;
                 const totalToPay = subtotal - discount;
@@ -1401,10 +1395,9 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN
-                      ? (pricingData.serviceFee || 0) +
-                        (pricingData.processingFee || 0)
-                      : pricingData.serviceFeeusd || 0) * bureauMultiplier
+                    ((pricingData.serviceFee || 0) +
+                      (pricingData.processingFee || 0)) *
+                    bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
@@ -1415,10 +1408,7 @@ const VerifyPage = () => {
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(
-                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
-                    bureauMultiplier
-                  ).toLocaleString()}
+                  {((pricingData.vat || 0) * bureauMultiplier).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               {discount > 0 && (
@@ -1985,6 +1975,7 @@ const VerifyPage = () => {
           <HeroText>
             <HeroTitle>
               {config.heroTitle} <span>{config.heroHighlight}</span>
+              {config.heroContinue}
             </HeroTitle>
             <HeroSubtitle>{config.heroSubtitle}</HeroSubtitle>
           </HeroText>

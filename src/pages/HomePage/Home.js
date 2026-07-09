@@ -69,7 +69,6 @@ import {
   ServicesSection,
   CardsGrid,
   ServiceCard,
-  PopularBadge,
   ServiceIcon,
   ServiceName,
   ServiceDesc,
@@ -148,6 +147,10 @@ const Home = () => {
     };
     fetchServicePrices();
   }, [ipAddress]);
+
+  const detectedCurrency = servicePrices?.data?.[0]?.currency || "NGN";
+  const priceCurrencySymbol =
+    detectedCurrency.toUpperCase() === "NGN" ? "₦" : "$";
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -466,8 +469,7 @@ const Home = () => {
 
         <CardsGrid>
           {/* Person Identity */}
-          <ServiceCard $popular>
-            <PopularBadge>MOST POPULAR</PopularBadge>
+          <ServiceCard>
             <ServiceIcon>
               <FaUser />
             </ServiceIcon>
@@ -476,9 +478,9 @@ const Home = () => {
               Verify your personal identity with a government-issued ID.
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[0]?.price
-                ? `₦${Number(servicePrices.data[0].price).toLocaleString()}`
-                : "₦100"}
+              {servicePrices?.data?.[0]?.serviceFee
+                ? `${priceCurrencySymbol}${Number(servicePrices.data[0].serviceFee).toLocaleString()}`
+                : `${priceCurrencySymbol}100`}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -494,9 +496,7 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} $popular>
-              Verify Now
-            </ServiceBtn>
+            <ServiceBtn to={ninVerify}>Verify Now</ServiceBtn>
             <LearnMoreLink to="/nin-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -512,9 +512,9 @@ const Home = () => {
               Verify your business information and registration.
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[2]?.price
-                ? `₦${Number(servicePrices.data[2].price).toLocaleString()}`
-                : "₦100"}
+              {servicePrices?.data?.[2]?.serviceFee
+                ? `${priceCurrencySymbol}${Number(servicePrices.data[2].serviceFee).toLocaleString()}`
+                : `${priceCurrencySymbol}100`}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -546,9 +546,9 @@ const Home = () => {
               Check credit history and financial standing.
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[4]?.price
-                ? `₦${Number(servicePrices.data[4].price).toLocaleString()}`
-                : "₦1,700"}
+              {servicePrices?.data?.[4]?.serviceFee
+                ? `${priceCurrencySymbol}${Number(servicePrices.data[4].serviceFee).toLocaleString()}`
+                : `${priceCurrencySymbol}1,700`}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -578,9 +578,9 @@ const Home = () => {
             <ServiceName>Vehicle History Verification</ServiceName>
             <ServiceDesc>Verify vehicle history and ownership.</ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[5]?.price
-                ? `₦${Number(servicePrices.data[5].price).toLocaleString()}`
-                : "₦2,500"}
+              {servicePrices?.data?.[5]?.serviceFee
+                ? `${priceCurrencySymbol}${Number(servicePrices.data[5].serviceFee).toLocaleString()}`
+                : `${priceCurrencySymbol}2,500`}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -612,9 +612,9 @@ const Home = () => {
               Verify phone number ownership and network details.
             </ServiceDesc>
             <ServicePrice>
-              {servicePrices?.data?.[8]?.price
-                ? `₦${Number(servicePrices.data[8].price).toLocaleString()}`
-                : "₦100"}
+              {servicePrices?.data?.[9]?.serviceFee
+                ? `${priceCurrencySymbol}${Number(servicePrices.data[9].serviceFee).toLocaleString()}`
+                : `${priceCurrencySymbol}100`}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>

@@ -3,6 +3,7 @@ import { apiPost } from "../apiUtils";
 
 const useServicePrices = () => {
   const [prices, setPrices] = useState(null);
+  const [currencySymbol, setCurrencySymbol] = useState("₦");
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -11,7 +12,10 @@ const useServicePrices = () => {
         const data = await apiPost("/transaction/public/service-prices", {
           ipAddress,
         });
-        setPrices(data?.data || null);
+        const priceData = data?.data || null;
+        setPrices(priceData);
+        const currency = priceData?.[0]?.currency || "NGN";
+        setCurrencySymbol(currency.toUpperCase() === "NGN" ? "₦" : "$");
       } catch (error) {
         console.error("Failed to fetch service prices:", error);
       }
@@ -21,10 +25,10 @@ const useServicePrices = () => {
 
   const getPrice = (index) => {
     const price = prices?.[index]?.price;
-    return price ? `₦${Number(price).toLocaleString()}` : null;
+    return price ? `${currencySymbol}${Number(price).toLocaleString()}` : null;
   };
 
-  return { prices, getPrice };
+  return { prices, getPrice, currencySymbol };
 };
 
 export default useServicePrices;

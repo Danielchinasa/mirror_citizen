@@ -699,6 +699,17 @@ function Navbar() {
   const { token } = theme.useToken(); // Get token from useToken
   const { text, bgContainer } = token;
 
+  const handleGetStarted = (e) => {
+    e.preventDefault();
+    closeMobileMenu();
+    if (window.location.pathname === "/") {
+      const el = document.getElementById("verification-services");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "/#verification-services";
+    }
+  };
+
   return (
     <>
       <Spin
@@ -762,35 +773,18 @@ function Navbar() {
               {!isAuthenticated && (
                 <>
                   <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink to="/login">
-                        <OutlineButton
-                          $token={token}
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          GET STARTED
-                        </OutlineButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/login">
-                        <OutlineButton
-                          $token={token}
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          GET STARTED
-                        </OutlineButton>
-                      </NavBtnLink>
-                    )}
+                    <NavBtnLink to="#" onClick={handleGetStarted}>
+                      <OutlineButton
+                        $token={token}
+                        type="primary"
+                        style={{
+                          fontFamily: "Poppins",
+                          fontWeight: "700",
+                        }}
+                      >
+                        GET STARTED
+                      </OutlineButton>
+                    </NavBtnLink>
                   </NavItemBtn>
                   <ThemeToggle />
                 </>

@@ -17,8 +17,9 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your NIN",
-    heroHighlight: "in seconds",
+    heroTitle: "Verify Your ",
+    heroHighlight: "NIN ",
+    heroContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
