@@ -505,6 +505,27 @@ const VerifyPage = () => {
   const handlePay = async () => {
     setLoading(true);
     setError("");
+
+    // For wallet payments by non-Ghanaian users, verify wallet currency matches payment currency
+    const userCurrency = user?.currency || "";
+    if (
+      paymentMethod === "wallet" &&
+      currencyCheck.toUpperCase() !== "GHS" &&
+      userCurrency &&
+      userCurrency.toUpperCase() !== currencyCheck.toUpperCase()
+    ) {
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Currency Mismatch",
+        text: "Wallet currency must match payment currency. Please use the right currency for this transaction.",
+        confirmButtonColor: "#987D0E",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      return;
+    }
+
     setCurrentStep(2); // Processing
 
     const randomTransactionId = generateTransactionId();
@@ -1133,7 +1154,7 @@ const VerifyPage = () => {
                       alignItems: "center",
                       gap: 10,
                       padding: "10px 14px",
-                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DD0201" : "#e5e7eb"}`,
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#FED001" : "#e5e7eb"}`,
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
@@ -1155,7 +1176,7 @@ const VerifyPage = () => {
                         }));
                         setError("");
                       }}
-                      style={{ accentColor: "#DD0201", width: 16, height: 16 }}
+                      style={{ accentColor: "#FED001", width: 16, height: 16 }}
                     />
                     {bureau.label}
                   </label>
@@ -1717,7 +1738,7 @@ const VerifyPage = () => {
               margin: "0 auto 16px",
             }}
           >
-            <FaCheckCircle style={{ fontSize: 28, color: "#DD0201" }} />
+            <FaCheckCircle style={{ fontSize: 28, color: "#FED001" }} />
           </div>
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
@@ -1841,7 +1862,7 @@ const VerifyPage = () => {
               <div
                 style={{
                   fontSize: 14,
-                  color: "#DD0201",
+                  color: "#FED001",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: 700,
                 }}
@@ -1887,7 +1908,7 @@ const VerifyPage = () => {
                   marginBottom: 8,
                 }}
               >
-                <FaCheckCircle style={{ color: "#DD0201", fontSize: 14 }} />
+                <FaCheckCircle style={{ color: "#FED001", fontSize: 14 }} />
                 <span
                   style={{
                     fontSize: 14,

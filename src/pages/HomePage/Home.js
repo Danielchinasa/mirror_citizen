@@ -121,7 +121,11 @@ const Home = () => {
       try {
         const response = await axios.get("https://ipapi.co/json/");
         setIpAddress(response.data.ip);
-        setIpCountry(response.data.country_code || null);
+        localStorage.setItem("IpAddress", response.data.ip);
+        const country = response.data.country_code || null;
+        setIpCountry(country);
+        const currency = country === "GH" ? "GHS" : "USD";
+        localStorage.setItem("currencyCheck", currency);
       } catch (error1) {
         console.error("Error fetching IP info:", error1);
         try {

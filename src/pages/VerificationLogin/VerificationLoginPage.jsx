@@ -58,19 +58,35 @@ const VerificationLoginPage = () => {
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const [ipAddress, setIpAddress] = useState("41.212.86.175");
+  const [ipAddress, setIpAddress] = useState(null);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   useEffect(() => {
-    // TODO: remove hardcoded Ghana IP/currency before release
-    setIpAddress("41.212.86.175");
-    localStorage.setItem("IpAddress", "41.212.86.175");
-    localStorage.setItem("userCountry", "GH");
-    localStorage.setItem("currencyCheck", "GHS");
+    const fetchIpInfo = async () => {
+      try {
+        const response = await axios.get("https://ipapi.co/json/");
+        const ip = response.data.ip;
+        const country = response.data.country_code || null;
+        const currency = country === "GH" ? "GHS" : "USD";
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        localStorage.setItem("userCountry", country || "");
+        localStorage.setItem("currencyCheck", currency);
+      } catch (error1) {
+        console.error("Error fetching IP from ipapi.co:", error1);
+        try {
+          const response = await axios.get("https://api.ipbase.com/v1/json/");
+          const ip = response.data.ip;
+          setIpAddress(ip);
+          localStorage.setItem("IpAddress", ip);
+          // country unknown from fallback — keep existing currencyCheck
+        } catch (error2) {
+          console.error("Error fetching IP from both sources:", error2);
+        }
+      }
+    };
 
-    // TODO: remove hardcoded IP before release
-    // const fetchIpAddress = async () => { ... }
-    // fetchIpAddress();
+    fetchIpInfo();
 
     const rememberedEmail = Cookies.get("rememberedEmail");
     if (rememberedEmail) {
