@@ -790,17 +790,17 @@ function Navbar() {
                   >
                     SE
                   </PublicLanguageToggle> */}
-                  <PublicLanguageToggle
+                  {/* <PublicLanguageToggle
                     type="button"
                     $active={mobileLanguage === "EN"}
                     onClick={() => handleLanguageChange("EN")}
                     aria-pressed={mobileLanguage === "EN"}
                   >
                     EN
-                  </PublicLanguageToggle>
+                  </PublicLanguageToggle> */}
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
-              <PublicLanguage>EN</PublicLanguage>
+              {/* <PublicLanguage>EN</PublicLanguage> */}
               <ThemeToggle />
               <PublicLogin to="/login">Log in</PublicLogin>
               <PublicCta href="#services">Get Started</PublicCta>

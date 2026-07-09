@@ -152,12 +152,12 @@ const PAYMENT_METHODS = [
     icon: null,
     paymentType: "INSTANT",
   },
-  {
-    id: "paystack",
-    label: "Paystack",
-    icon: null,
-    paymentType: "INSTANT",
-  },
+  // {
+  //   id: "paystack",
+  //   label: "Paystack",
+  //   icon: null,
+  //   paymentType: "INSTANT",
+  // },
 ];
 
 function generateTransactionId() {

@@ -111,12 +111,12 @@ const Home = () => {
   // Get user country from IP to show correct pricing
   useEffect(() => {
     const fetchIpInfo = async () => {
-      // TODO: remove hardcoded GH override before release
-      setIpAddress("102.131.16.255");
-      localStorage.setItem("IpAddress", "102.131.16.255");
-      setIpCountry("GH");
-      localStorage.setItem("currencyCheck", "GHS");
-      return;
+      // // TODO: remove hardcoded GH override before release
+      // setIpAddress("102.131.16.255");
+      // localStorage.setItem("IpAddress", "102.131.16.255");
+      // setIpCountry("GH");
+      // localStorage.setItem("currencyCheck", "GHS");
+      // return;
 
       try {
         const response = await axios.get("https://ipapi.co/json/");
@@ -495,9 +495,7 @@ const Home = () => {
                 <FaCheckCircle /> Results in minutes
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify}>
-              Verify Now
-            </ServiceBtn>
+            <ServiceBtn to={ninVerify}>Verify Now</ServiceBtn>
             <LearnMoreLink to="/nin-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>

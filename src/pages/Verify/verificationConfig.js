@@ -22,7 +22,7 @@ const verificationConfig = {
     heroTitleContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/ghana.png"),
     breadcrumb: ["Verify Identity", "National ID"],
     idTypeLabel: "National ID",
     fields: [
