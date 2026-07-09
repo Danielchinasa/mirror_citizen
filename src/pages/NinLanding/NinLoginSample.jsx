@@ -466,7 +466,7 @@ const ResultDisclaimer = styled.div`
 const NinLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const redirectTo = "/verify/nin";
+  const redirectTo = "/main-dashboard";
 
   const [formData, setFormData] = useState({
     email: "",
