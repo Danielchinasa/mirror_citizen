@@ -168,6 +168,10 @@ function generateTransactionId() {
   return transactionId;
 }
 
+const LOCAL_COUNTRY_CODE = "GH";
+const LOCAL_CURRENCY = "GHS";
+const FOREIGN_CURRENCY = "USD";
+
 const VerifyPage = () => {
   const { type } = useParams();
   const history = useHistory();
@@ -182,6 +186,9 @@ const VerifyPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("wallet");
+  const [currencyCheck, setCurrencyCheck] = useState(
+    (localStorage.getItem("currencyCheck") || LOCAL_CURRENCY).toUpperCase(),
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
@@ -301,6 +308,76 @@ const VerifyPage = () => {
     };
   }, []);
 
+  // Keep currency in sync with live IP so pricing reflects current location.
+  useEffect(() => {
+    let isMounted = true;
+
+    const syncCurrencyFromLiveIp = async () => {
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        if (!response.ok) throw new Error("ipapi request failed");
+
+        const data = await response.json();
+        const countryCode = (
+          data?.country_code ||
+          data?.country ||
+          ""
+        ).toUpperCase();
+
+        if (data?.ip) {
+          localStorage.setItem("IpAddress", data.ip);
+        }
+
+        if (countryCode) {
+          const detectedCurrency =
+            countryCode === LOCAL_COUNTRY_CODE
+              ? LOCAL_CURRENCY
+              : FOREIGN_CURRENCY;
+
+          if (isMounted) {
+            setCurrencyCheck(detectedCurrency);
+          }
+
+          localStorage.setItem("currencyCheck", detectedCurrency);
+          return;
+        }
+      } catch (error) {
+        console.error("VerifyPage IP lookup failed:", error);
+      }
+
+      try {
+        const fallback = await fetch("https://api.ipbase.com/v1/json/");
+        if (fallback.ok) {
+          const fallbackData = await fallback.json();
+          if (fallbackData?.ip) {
+            localStorage.setItem("IpAddress", fallbackData.ip);
+          }
+        }
+      } catch (fallbackError) {
+        console.error("VerifyPage fallback IP lookup failed:", fallbackError);
+      }
+
+      const storedCurrency = (
+        localStorage.getItem("currencyCheck") || LOCAL_CURRENCY
+      ).toUpperCase();
+      if (isMounted) {
+        setCurrencyCheck(storedCurrency);
+      }
+    };
+
+    syncCurrencyFromLiveIp();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (currencyCheck) {
+      localStorage.setItem("currencyCheck", currencyCheck);
+    }
+  }, [currencyCheck]);
+
   // Fetch service prices
   useEffect(() => {
     if (!config || !userToken) return;
@@ -327,8 +404,7 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "GHS";
-  const isGHS = currencyCheck.toUpperCase() === "GHS";
+  const isGHS = currencyCheck === LOCAL_CURRENCY;
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -343,17 +419,22 @@ const VerifyPage = () => {
         : config.allBureausDiscount.usd
       : 0;
 
-  const totalAmount = pricingData
-    ? isGHS
-      ? ((pricingData.serviceFee || 0) +
-          (pricingData.processingFee || 0) +
-          (pricingData.vat || 0)) *
-          bureauMultiplier -
-        discount
-      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
-          bureauMultiplier -
-        discount
-    : 0;
+  const serviceFeePerCheck = isGHS
+    ? Number(pricingData?.serviceFee || 0)
+    : Number(pricingData?.serviceFeeusd || 0);
+  const processingFeePerCheck = isGHS
+    ? Number(pricingData?.processingFee || 0)
+    : Number(pricingData?.processingFeeUsd || 0);
+  const vatPerCheck = isGHS
+    ? Number(pricingData?.vat || 0)
+    : Number(pricingData?.vatUsd || 0);
+
+  const serviceFeeTotal = serviceFeePerCheck * bureauMultiplier;
+  const processingFeeTotal = processingFeePerCheck * bureauMultiplier;
+  const vatTotal = vatPerCheck * bureauMultiplier;
+  const subtotalAmount = serviceFeeTotal + processingFeeTotal + vatTotal;
+
+  const totalAmount = pricingData ? Math.max(subtotalAmount - discount, 0) : 0;
 
   const currencySymbol = isGHS ? "GH₵" : "$";
 
@@ -1231,73 +1312,66 @@ const VerifyPage = () => {
               : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
           <PriceBreakdown>
-            {pricingData &&
-              (() => {
-                const processingFees = isGHS
-                  ? (pricingData.serviceFee || 0) +
-                    (pricingData.processingFee || 0)
-                  : pricingData.serviceFeeusd || 0;
-                const taxCharges = isGHS
-                  ? pricingData.vat || 0
-                  : pricingData.vatUsd || 0;
-                const perBureau = processingFees + taxCharges;
-                const subtotal = perBureau * bureauMultiplier;
-                const totalToPay = subtotal - discount;
-                return (
-                  <>
-                    <PriceRow>
-                      <span>
-                        Processing fees
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(processingFees * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    <PriceRow>
-                      <span>
-                        Tax & charges
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(taxCharges * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    {discount > 0 && (
-                      <PriceRow>
-                        <span style={{ color: "#b38b00" }}>Discount</span>
-                        <span style={{ color: "#b38b00" }}>
-                          -{currencySymbol}
-                          {discount.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                          })}
-                        </span>
-                      </PriceRow>
-                    )}
-                    <PriceTotalRow>
-                      <span>Total to be paid</span>
-                      <span>
-                        {currencySymbol}
-                        {totalToPay.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                        })}
-                      </span>
-                    </PriceTotalRow>
-                  </>
-                );
-              })()}
+            {pricingData && (
+              <>
+                <PriceRow>
+                  <span>
+                    Service fee
+                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {serviceFeeTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceRow>
+                <PriceRow>
+                  <span>
+                    Processing fee
+                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {processingFeeTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceRow>
+                <PriceRow>
+                  <span>
+                    Tax & charges
+                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {vatTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceRow>
+                {discount > 0 && (
+                  <PriceRow>
+                    <span style={{ color: "#b38b00" }}>Discount</span>
+                    <span style={{ color: "#b38b00" }}>
+                      -{currencySymbol}
+                      {discount.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                      })}
+                    </span>
+                  </PriceRow>
+                )}
+                <PriceTotalRow>
+                  <span>Total to be paid</span>
+                  <span>
+                    {currencySymbol}
+                    {totalAmount.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceTotalRow>
+              </>
+            )}
           </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
@@ -1417,17 +1491,22 @@ const VerifyPage = () => {
               )}
               <SummaryRow>
                 <SummaryLabel>
+                  Service Fee
+                  {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                </SummaryLabel>
+                <SummaryValue>
+                  {currencySymbol}
+                  {serviceFeeTotal.toLocaleString()}
+                </SummaryValue>
+              </SummaryRow>
+              <SummaryRow>
+                <SummaryLabel>
                   Processing Fee
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(
-                    (isGHS
-                      ? (pricingData.serviceFee || 0) +
-                        (pricingData.processingFee || 0)
-                      : pricingData.serviceFeeusd || 0) * bureauMultiplier
-                  ).toLocaleString()}
+                  {processingFeeTotal.toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               <SummaryRow>
@@ -1437,10 +1516,7 @@ const VerifyPage = () => {
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(
-                    (isGHS ? pricingData.vat : pricingData.vatUsd || 0) *
-                    bureauMultiplier
-                  ).toLocaleString()}
+                  {vatTotal.toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               {discount > 0 && (

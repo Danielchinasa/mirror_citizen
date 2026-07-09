@@ -559,6 +559,11 @@ export const fetchVerificationServicePrices =
         serviceFeeusd: serviceData.serviceFee2,
         vatUsd: serviceData.VAT2,
         processingFee: serviceData.processingFee || 0,
+        processingFeeUsd:
+          serviceData.processingFee2 ||
+          serviceData.processingFeeUsd ||
+          serviceData.processingFee ||
+          0,
         rate,
       };
     } catch (error) {

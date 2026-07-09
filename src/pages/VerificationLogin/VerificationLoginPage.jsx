@@ -54,6 +54,7 @@ const VerificationLoginPage = () => {
     email: "",
     password: "",
     rememberMe: false,
+    ipAddress: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
