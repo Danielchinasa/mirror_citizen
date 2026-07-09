@@ -227,9 +227,10 @@ function Navbar() {
   );
 
   useEffect(() => {
-    // Dispatch fetchUserProfile action when component mounts
-    dispatch(fetchUserProfile(userToken));
-  }, [dispatch]);
+    // Dispatch fetchUserProfile action when component mounts and token is available
+    if (!userToken2) return;
+    dispatch(fetchUserProfile(userToken2));
+  }, [dispatch, userToken2]);
 
   const userBalance = userDetails?.walletBalance || 0;
   const formatToKES = (value) => {
@@ -833,7 +834,9 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="#services">{isSw ? "Anza" : "Get Started"}</PublicCta>
+              <PublicCta href="#services">
+                {isSw ? "Anza" : "Get Started"}
+              </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -1261,7 +1264,13 @@ function Navbar() {
                   )
                 : isAuthenticated && (
                     <>
-                      <div style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
                         <PublicLanguageToggleGroup>
                           <PublicLanguageToggle
                             type="button"

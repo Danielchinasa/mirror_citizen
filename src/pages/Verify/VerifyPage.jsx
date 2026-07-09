@@ -152,12 +152,12 @@ const PAYMENT_METHODS = [
     icon: null,
     paymentType: "INSTANT",
   },
-  {
-    id: "paystack",
-    label: "Paystack",
-    icon: null,
-    paymentType: "INSTANT",
-  },
+  // {
+  //   id: "paystack",
+  //   label: "Paystack",
+  //   icon: null,
+  //   paymentType: "INSTANT",
+  // },
 ];
 
 function generateTransactionId() {
@@ -369,6 +369,7 @@ const VerifyPage = () => {
 
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
+  const userProfileCurrency = userDetails?.currency || "KES";
 
   /* ── Form handlers ── */
 
@@ -505,6 +506,27 @@ const VerifyPage = () => {
   const handlePay = async () => {
     setLoading(true);
     setError("");
+
+    // For wallet payments by non-Kenyan users, verify wallet currency matches payment currency
+    const userCurrency = user?.currency || "";
+    if (
+      paymentMethod === "wallet" &&
+      currencyCheck.toUpperCase() !== "KES" &&
+      userCurrency &&
+      userCurrency.toUpperCase() !== currencyCheck.toUpperCase()
+    ) {
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Currency Mismatch",
+        text: "Wallet currency must match payment currency. Please use the right currency for this transaction.",
+        confirmButtonColor: "#DD0201",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      return;
+    }
+
     setCurrentStep(2); // Processing
 
     const randomTransactionId = generateTransactionId();
@@ -1329,7 +1351,7 @@ const VerifyPage = () => {
                     fontFamily: "Nunito",
                   }}
                 >
-                  {currencySymbol}
+                  {userProfileCurrency.toLocaleString()}{" "}
                   {userBalance.toLocaleString()}
                 </span>
               )}
@@ -1501,10 +1523,10 @@ const VerifyPage = () => {
     // Handle special cases
     const specialCases = {
       "National Id": "National ID",
-      "Vin": "VIN",
-      "Nin": "NIN",
-      "Bvn": "BVN",
-      "Rc": "RC",
+      Vin: "VIN",
+      Nin: "NIN",
+      Bvn: "BVN",
+      Rc: "RC",
     };
     return specialCases[formatted] || formatted;
   };
@@ -1515,7 +1537,8 @@ const VerifyPage = () => {
     const fields = [];
 
     // New KE complete response format (e.g. Smile ID)
-    if (data.idType) fields.push({ label: "ID Type", value: formatIdType(data.idType) });
+    if (data.idType)
+      fields.push({ label: "ID Type", value: formatIdType(data.idType) });
     if (data.idNumber)
       fields.push({ label: "ID Number", value: data.idNumber });
     if (data.vin) fields.push({ label: "VIN", value: data.vin });
