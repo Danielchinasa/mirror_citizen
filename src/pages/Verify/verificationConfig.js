@@ -22,7 +22,7 @@ const verificationConfig = {
     heroHighlight: "National ID ",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/uganda.png"),
     breadcrumb: ["Verify Identity", "National ID Verification"],
     idTypeLabel: "National Identification Number",
     fields: [
@@ -273,7 +273,7 @@ const verificationConfig = {
     heroHighlight: "National ID (Uganda)",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/uganda.png"),
     breadcrumb: ["Verify Identity", "National ID Verification (UG)"],
     idTypeLabel: "National Identification Number (Uganda)",
     countryCode: "UG",
@@ -364,7 +364,7 @@ const verificationConfig = {
     heroHighlight: "Vehicle History",
     heroSubtitle:
       "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
-    heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
+    heroImage: require("../../images/uganda.png"),
     breadcrumb: ["Verify Vehicle", "Vehicle Verification"],
     idTypeLabel: "Vehicle Identification Number (VIN)",
     fields: [

@@ -1,40 +1,227 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Divider, Avatar, Spin, Typography, theme } from "antd";
-import {
-  Container,
-  Heading4,
-  InfoSec,
-  StyledLabel,
-  DynamicCard,
-} from "../../globalStyles";
+import { Spin, Divider, theme } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, logout } from "../../redux/actions";
 import {
   FaRegUser,
   FaCalendarAlt,
-  FaPray,
-  FaHome,
   FaRestroom,
-  FaPhoneAlt,
+  FaIdCard,
   FaGlobe,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaArrowLeft,
+  FaShieldAlt,
 } from "react-icons/fa";
-import {
-  MdOutlineMail,
-  MdOutlineWorkOutline,
-  MdOutlinePinDrop,
-  MdTitle,
-} from "react-icons/md";
 import { AiOutlineFieldNumber } from "react-icons/ai";
-import { GiBigDiamondRing, GiBodyHeight } from "react-icons/gi";
-import { IoSchoolSharp } from "react-icons/io5";
-import { RightOutlined, UserOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
-import { imageBaseUrl } from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
-import "../dashboard/emergency.css";
+import styled from "styled-components";
 
-const { Text } = Typography;
+/* ── Styled components ───────────────────────────────────────────── */
+
+const PageWrapper = styled.div`
+  min-height: 100vh;
+  background: ${({ $bg }) => $bg || "#f9fafb"};
+  padding: 32px 16px 64px;
+`;
+
+const Inner = styled.div`
+  max-width: 760px;
+  margin: 0 auto;
+`;
+
+const BackLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+  text-decoration: none;
+  margin-bottom: 24px;
+  font-family: Nunito, sans-serif;
+  &:hover {
+    color: #b38b00;
+  }
+`;
+
+const ResultCard = styled.div`
+  background: ${({ $bg }) => $bg || "#fff"};
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+`;
+
+const CardHeader = styled.div`
+  background: #f9fafb;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 28px 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+`;
+
+const HeaderIcon = styled.div`
+  width: 52px;
+  height: 52px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #374151;
+  flex-shrink: 0;
+`;
+
+const HeaderText = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+const HeaderTitle = styled.h2`
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  font-family: Poppins, sans-serif;
+`;
+
+const HeaderSub = styled.p`
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #333;
+  font-family: Nunito, sans-serif;
+`;
+
+const StatusBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: ${({ $success }) =>
+    $success ? "rgba(255,255,255,0.92)" : "rgba(220,38,38,0.12)"};
+  color: ${({ $success }) => ($success ? "#15803d" : "#dc2626")};
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: Nunito, sans-serif;
+  flex-shrink: 0;
+`;
+
+const MetaRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+`;
+
+const MetaChip = styled.span`
+  background: #f3f4f6;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 11px;
+  color: #6b7280;
+  font-family: Nunito, sans-serif;
+  font-weight: 600;
+`;
+
+const CardBody = styled.div`
+  padding: 28px 32px;
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 16px;
+  font-family: Poppins, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+`;
+
+const FieldBox = styled.div`
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid #f0f0f0;
+`;
+
+const FieldLabel = styled.p`
+  margin: 0 0 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: Nunito, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+const FieldValue = styled.p`
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  font-family: Poppins, sans-serif;
+  word-break: break-all;
+`;
+
+const ActionsGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+`;
+
+const ActionTag = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-family: Nunito, sans-serif;
+  color: #333;
+`;
+
+const DashboardBtn = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #111827;
+  color: #fff;
+  font-weight: 700;
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-top: 8px;
+  transition: background 0.15s;
+  &:hover {
+    background: #374151;
+    color: #fff;
+  }
+`;
+
+/* ── Component ───────────────────────────────────────────────────── */
 
 const PremblyNinResult = () => {
   const dispatch = useDispatch();
@@ -43,56 +230,15 @@ const PremblyNinResult = () => {
   const history = useHistory();
   const tokenExpire = user?.expirationDate || "";
 
-  const [loading, setLoading] = useState(false);
-
-  // profile fields
-  const [firstName, setFirstName] = useState("-");
-  const [middleName, setMiddleName] = useState("-");
-  const [lastName, setLastName] = useState("-");
-  const [nin, setNin] = useState("-");
-  const [dob, setDob] = useState("-");
-  const [gender, setGender] = useState("-");
-  const [residenceAddress, setResidenceAddress] = useState("-");
-  const [phone, setPhone] = useState("-");
-  const [signature, setSignature] = useState("-");
-  const [maritalStatus, setMaritalStatus] = useState("-");
-  const [religion, setReligion] = useState("-");
-  const [educationLevel, setEducationLevel] = useState("-");
-  const [profession, setProfession] = useState("-");
-  const [email, setEmail] = useState("-");
-  const [birthCountry, setBirthCountry] = useState("-");
-  const [birthState, setBirthState] = useState("-");
-  const [birthLGA, setBirthLGA] = useState("-");
-  const [originState, setOriginState] = useState("-");
-  const [originPlace, setOriginPlace] = useState("-");
-  const [employmentStatus, setEmploymentStatus] = useState("-");
-  const [originLGA, setOriginLGA] = useState("-");
-  const [photo, setPhoto] = useState("-");
-  const [residenceLGA, setResidenceLGA] = useState("-");
-  const [residenceState, setResidenceState] = useState("-");
-  const [height, setHeight] = useState("-");
-  const [title, setTitle] = useState("-");
-
-  // New state variables for next of kin details
-  const [nokFirstName, setNokFirstName] = useState("-");
-  const [nokMiddleName, setNokMiddleName] = useState("-");
-  const [nokSurname, setNokSurname] = useState("-");
-  const [nokAddress1, setNokAddress1] = useState("-");
-  const [nokAddress2, setNokAddress2] = useState("-");
-  const [nokTown, setNokTown] = useState("-");
-  const [nokState, setNokState] = useState("-");
-  const [nokLga, setNokLga] = useState("-");
-
-  const requestId = localStorage.getItem("verificationRequestId");
-
-  // theme tokens
   const { token } = theme.useToken();
-  const { bgContainer, text } = token;
+
+  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState(null);
+  const [meta, setMeta] = useState(null);
 
   useEffect(() => {
     const expireDate = new Date(tokenExpire);
-    const currentDate = new Date();
-    if (currentDate >= expireDate) {
+    if (new Date() >= expireDate) {
       dispatch(logout());
       history.push("/");
     }
@@ -108,292 +254,170 @@ const PremblyNinResult = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
-        if (response.data.consent === "pending") {
+        const payload = response.data || response;
+
+        if (payload.consent === "pending") {
           setLoading(true);
-        } else {
-          setLoading(false);
+          Swal.fire({
+            title: "Awaiting Consent",
+            text: "The data subject has not yet granted consent.",
+            icon: "info",
+            didOpen: () => Swal.showLoading(),
+          });
+          return;
         }
 
-        const data = response.data.data;
+        Swal.close();
+        setLoading(false);
 
-        setFirstName(data.firstname || "-");
-        setMiddleName(data.middlename || "-");
-        setLastName(data.surname || "-");
-        setNin(data.nin || "-");
-        setDob(data.birthDate || "-");
-        setGender(data.gender || "-");
-        setResidenceAddress(data.residenceAddress || "-");
-        setPhone(data.telephoneno || "-");
-        setMaritalStatus(data.maritalstatus || "-");
-        setReligion(data.religion || "-");
-        setEducationLevel(data.educationallevel || "-");
-        setProfession(data.profession || "-");
-        setEmail(data.email || "-");
-        setBirthCountry(data.birthCountry || "-");
-        setBirthState(data.birthstate || "-");
-        setBirthLGA(data.birthlga || "-");
-        setResidenceState(data.residenceState || "-");
-        setResidenceLGA(data.residenceLga || "-");
-        setEmploymentStatus(data.employmentstatus || "-");
-        setHeight(data.heigth || "-");
-        setOriginState(data.selfOriginState || "-");
-        setOriginLGA(data.selfOriginLga || "-");
-        setOriginPlace(data.selfOriginPlace || "-");
-        setTitle(data.title || "-");
-        setPhoto(data.photo || "-");
-        setSignature(data.signature || "-");
+        // Support new Africa/Ghana response shape
+        const data =
+          payload.data ||
+          payload.basic?.nin_data ||
+          payload.basic?.data ||
+          payload.basic ||
+          {};
 
-        // Update state with Next of Kin data
-        setNokFirstName(data.nokFirstname || "-");
-        setNokMiddleName(data.nokMiddlename || "-");
-        setNokSurname(data.nokSurname || "-");
-        setNokAddress1(data.nokAddress1 || "-");
-        setNokAddress2(data.nokAddress2 || "-");
-        setNokTown(data.nokTown || "-");
-        setNokState(data.nokState || "-");
-        setNokLga(data.nokLga || "-");
+        setResult(data);
+        setMeta({
+          status: payload.status,
+          resultText: payload.resultText,
+          resultCode: payload.resultCode,
+          provider: payload.provider,
+          countryCode: payload.countryCode,
+          serviceCode: payload.serviceCode,
+          sessionId: payload.sessionId,
+          consent: payload.consent,
+          success: payload.success,
+        });
       } catch (error) {
-        console.error("Error checking consent:", error);
+        console.error("Error fetching result:", error);
+        setLoading(false);
+        Swal.fire({
+          title: "Error",
+          text: "Could not load verification result.",
+          icon: "error",
+          confirmButtonColor: "#111827",
+        });
       }
     };
 
     fetchData();
   }, [dispatch, userToken]);
 
-  // SweetAlert effect
-  useEffect(() => {
-    if (loading) {
-      Swal.fire({
-        background: bgContainer,
-        color: text,
-        title: "Hmmm...",
-        text: "Awaiting Consent",
-        icon: "info",
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-    } else {
-      Swal.close();
-    }
-  }, [loading, bgContainer, text]);
+  const isVerified = meta?.success === true || meta?.status === "COMPLETED";
 
-  const renderDetail = (icon, label, value) => (
-    <>
-      <StyledLabel $token={token}>
-        {icon}&nbsp; {label}
-      </StyledLabel>
-      <StyledLabel $token={token}>
-        <strong>
-          {value != null && value !== "null" && value !== "" ? value : "-"}
-        </strong>
-      </StyledLabel>
-    </>
+  const field = (icon, label, value, highlight = false) => (
+    <FieldBox $alt={highlight}>
+      <FieldLabel>
+        {icon} {label}
+      </FieldLabel>
+      <FieldValue>
+        {value && value !== "-" && value !== "null" ? value : "—"}
+      </FieldValue>
+    </FieldBox>
   );
 
   return (
-    <div style={{ backgroundColor: bgContainer }}>
-      <Container $token={token}>
-        <InfoSec>
-          <Link to="/main-dashboard" style={{ color: text }}>
-            <p style={{ color: text, cursor: "pointer" }}>Go back</p>
-          </Link>
-          <Card
-            style={{
-              width: "100%",
-              backgroundColor: bgContainer,
-              borderColor: text,
-            }}
-          >
-            <Heading4 $token={token}>Verification Result</Heading4>
-          </Card>
-          <Spin spinning={loading} tip="Awaiting Consent...">
-            <DynamicCard
-              style={{ width: "100%", marginTop: "20px" }}
-              $token={token}
-            >
-              <div>
-                <Text>Person Identity Profile </Text>
-                <RightOutlined />
-                <Text>National Identification Number (NIN)</Text>
-              </div>
-              <Divider />
-              <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
+    <PageWrapper $bg={token.bgContainer}>
+      <Inner>
+        <BackLink to="/main-dashboard">
+          <FaArrowLeft /> Back to Dashboard
+        </BackLink>
+
+        <Spin spinning={loading} tip="Loading result...">
+          <ResultCard>
+            {/* ── Header ── */}
+            <CardHeader>
+              <HeaderIcon>
+                <FaIdCard />
+              </HeaderIcon>
+              <HeaderText>
+                <HeaderSub>
+                  {meta?.resultText || "Identity Verification Result"}
+                </HeaderSub>
+                <MetaRow>
+                  {meta?.countryCode && (
+                    <MetaChip>Country: {meta.countryCode}</MetaChip>
+                  )}
+                </MetaRow>
+              </HeaderText>
+              <StatusBadge $success={isVerified}>
+                {isVerified ? (
+                  <>
+                    <FaCheckCircle /> Verified
+                  </>
+                ) : (
+                  <>
+                    <FaTimesCircle /> Not Verified
+                  </>
+                )}
+              </StatusBadge>
+            </CardHeader>
+
+            {/* ── Body ── */}
+            <CardBody>
+              {/* Personal Details */}
+              <SectionTitle>
+                <FaRegUser />
                 Personal Details
-              </StyledLabel>
-              <br />
-              <Row gutter={16}>
-                <Row style={{ marginBottom: "20px", textAlign: "center" }}>
-                  <Col span={12} style={{}}>
-                    {photo && photo !== "-" ? (
-                      <Avatar
-                        size={124}
-                        src={`data:image/png;base64,${photo}`}
-                        alt="Photo"
-                      />
-                    ) : (
-                      <Avatar size={124} icon={<UserOutlined />} />
-                    )}
-                    <div style={{ marginTop: "8px" }}>
-                      <Text strong>Photo</Text>
-                    </div>
-                  </Col>
+              </SectionTitle>
+              <Grid>
+                {field(<FaRegUser />, "Full Name", result?.fullName, true)}
+                {field(<FaRegUser />, "First Name", result?.firstName)}
+                {field(<FaRegUser />, "Last Name", result?.lastName)}
+                {field(<FaRestroom />, "Gender", result?.gender)}
+                {field(<FaCalendarAlt />, "Date of Birth", result?.dateOfBirth)}
+                {field(<AiOutlineFieldNumber />, "ID Number", result?.idNumber)}
+                {field(<FaIdCard />, "ID Type", result?.idType)}
+                {field(<FaGlobe />, "Country", result?.country)}
+              </Grid>
 
-                  {/* <Col span={12}>
-                    {signature && signature !== "-" ? (
-                      <Avatar
-                        size={124}
-                        src={`data:image/png;base64,${signature}`}
-                        alt="Signature"
-                      />
-                    ) : (
-                      <Avatar size={124} icon={<UserOutlined />} />
-                    )}
-                    <div style={{ marginTop: "8px" }}>
-                      <Text strong>Signature</Text>
-                    </div>
-                  </Col> */}
-                </Row>
-                <Divider />
+              <Divider style={{ margin: "4px 0 24px" }} />
 
-                <Col span={6}>
-                  {renderDetail(<FaRegUser />, "First Name", firstName)}
-                  <Divider />
-                  {renderDetail(<AiOutlineFieldNumber />, "NIN", nin)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaRegUser />, "Middle Name", middleName)}
-                  <Divider />
-                  {renderDetail(<FaCalendarAlt />, "Birth Date", dob)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaRegUser />, "Surname", lastName)}
-                  <Divider />
-                  {renderDetail(<FaRestroom />, "Gender", gender)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaPhoneAlt />, "Phone Number", phone)}
-                  <Divider />
-                  {renderDetail(<MdOutlineMail />, "Email", email)}
-                </Col>
-                <Divider />
-                <Col span={6}>
-                  {renderDetail(<FaGlobe />, "Country of Birth", birthCountry)}
-                  <Divider />
-                  {renderDetail(
-                    <FaHome />,
-                    "Residence Address",
-                    residenceAddress
-                  )}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(
-                    <MdOutlinePinDrop />,
-                    "State of Birth",
-                    birthState
-                  )}
-                  <Divider />
-                  {renderDetail(
-                    <MdOutlinePinDrop />,
-                    "Residence State",
-                    residenceState
-                  )}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<MdOutlinePinDrop />, "LGA of Birth", birthLGA)}
-                  <Divider />
-                  {renderDetail(
-                    <MdOutlinePinDrop />,
-                    "Residence LGA",
-                    residenceLGA
-                  )}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<IoSchoolSharp />, "Profession", profession)}
-                  <Divider />
-                  {renderDetail(
-                    <IoSchoolSharp />,
-                    "Education Level",
-                    educationLevel
-                  )}
-                </Col>
-                <Divider />
-                <Col span={6}>
-                  {renderDetail(
-                    <MdOutlinePinDrop />,
-                    "Origin State",
-                    originState
-                  )}
-                  <Divider />
-                  {renderDetail(<GiBodyHeight />, "Height", height)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<MdOutlinePinDrop />, "Origin LGA", originLGA)}
-                  <Divider />
-                  {renderDetail(
-                    <GiBigDiamondRing />,
-                    "Marital Status",
-                    maritalStatus
-                  )}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(
-                    <MdOutlinePinDrop />,
-                    "Origin Place",
-                    originPlace
-                  )}
-                  <Divider />
-                  {renderDetail(<MdTitle />, "Title", title)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(
-                    <MdOutlineWorkOutline />,
-                    "Employment Status",
-                    employmentStatus
-                  )}
-                  <Divider />
-                  {renderDetail(<FaPray />, "Religion", religion)}
-                </Col>
-              </Row>
-              <Divider />
-              <StyledLabel style={{ marginBottom: "10px" }} $token={token}>
-                Next of Kin Details
-              </StyledLabel>
-              <br />
-              <Row gutter={16}>
-                <Col span={6}>
-                  {renderDetail(<FaRegUser />, "First Name", nokFirstName)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaRegUser />, "Middle Name", nokMiddleName)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaRegUser />, "Surname", nokSurname)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaHome />, "Address 1", nokAddress1)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaHome />, "Address 2", nokAddress2)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<MdOutlinePinDrop />, "Town", nokTown)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<MdOutlinePinDrop />, "State", nokState)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<MdOutlinePinDrop />, "LGA", nokLga)}
-                </Col>
-              </Row>
-            </DynamicCard>
-          </Spin>
-        </InfoSec>
-      </Container>
-    </div>
+              {/* Verification Actions */}
+              {result?.actions && Object.keys(result.actions).length > 0 && (
+                <>
+                  <SectionTitle>
+                    <FaShieldAlt />
+                    Verification Actions
+                  </SectionTitle>
+                  <ActionsGrid>
+                    {Object.entries(result.actions).map(([key, val]) => (
+                      <ActionTag key={key}>
+                        <FaCheckCircle style={{ color: "#6b7280" }} />
+                        <span style={{ color: "#6b7280" }}>
+                          {key.replace(/_/g, " ")}:
+                        </span>
+                        <strong>{val}</strong>
+                      </ActionTag>
+                    ))}
+                  </ActionsGrid>
+                  <Divider style={{ margin: "4px 0 24px" }} />
+                </>
+              )}
+
+              {/* Session info */}
+              {meta?.sessionId && (
+                <>
+                  <SectionTitle>Session Info</SectionTitle>
+                  <Grid>
+                    {field(null, "Session ID", meta.sessionId)}
+                    {field(null, "Consent Status", meta.consent)}
+                  </Grid>
+                  <Divider style={{ margin: "4px 0 24px" }} />
+                </>
+              )}
+
+              <DashboardBtn to="/main-dashboard">Go to Dashboard</DashboardBtn>
+            </CardBody>
+          </ResultCard>
+        </Spin>
+      </Inner>
+    </PageWrapper>
   );
 };
 
