@@ -151,12 +151,6 @@ const PAYMENT_METHODS = [
     icon: null,
     paymentType: "INSTANT",
   },
-  {
-    id: "paystack",
-    label: "Paystack",
-    icon: null,
-    paymentType: "INSTANT",
-  },
 ];
 
 function generateTransactionId() {
@@ -386,6 +380,7 @@ const VerifyPage = () => {
 
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
+  const userWalletCurrency = userDetails?.currency || user?.currency || "";
 
   // The wallet is always held in FCFA (XOF). Compute the FCFA total so wallet
   // comparisons and charges are always in the correct currency, regardless of
@@ -524,12 +519,44 @@ const VerifyPage = () => {
   /* ── Payment flow ── */
 
   const handlePay = async () => {
-    setLoading(true);
     setError("");
-    setCurrentStep(2); // Processing
 
     const randomTransactionId = generateTransactionId();
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
+
+    const normalizeCurrency = (value = "") => {
+      const normalized = String(value).trim().toUpperCase();
+      if (normalized === "FCFA") return "XOF";
+      return normalized;
+    };
+
+    const paymentCurrency = normalizeCurrency(currencyCheck);
+    const walletCurrency = normalizeCurrency(userWalletCurrency);
+    const isKenyaUser =
+      normalizeCurrency(config?.countryCode) === "KE" ||
+      paymentCurrency === "KES";
+
+    // For non-Kenya users, wallet payment currency must match selected payment currency.
+    if (
+      paymentMethod === "wallet" &&
+      !isKenyaUser &&
+      walletCurrency &&
+      walletCurrency !== paymentCurrency
+    ) {
+      const mismatchMessage =
+        "Wallet currency must be same as payment currency.";
+      setError(mismatchMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Currency Mismatch",
+        text: mismatchMessage,
+        confirmButtonColor: "#FD7A00",
+      });
+      return;
+    }
+
+    setLoading(true);
+    setCurrentStep(2); // Processing
 
     localStorage.setItem("transactionID", randomTransactionId);
     localStorage.setItem("paymentType", selectedMethod.paymentType);
@@ -550,6 +577,12 @@ const VerifyPage = () => {
           `/africa/verification/${config.countryCode}/initiate`,
           payload,
           userToken,
+          {
+            headers: {
+              "X-Forwarded-For":
+                localStorage.getItem("ipAddress") || "41.207.206.172",
+            },
+          },
         );
         initiateResponse = initiateResponse?.data || initiateResponse;
       } else {
