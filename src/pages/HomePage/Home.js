@@ -25,7 +25,7 @@ import {
 } from "react-icons/fa";
 import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import heroImg from "../../images/Côte_d’Ivoire.png";
+import heroImg from "../../images/cote_divoire.png";
 import ndprImg from "../../images/ndpr.png";
 import gdprImg from "../../images/gdpr.jpg";
 import nimcImg from "../../images/nidologo.png";
