@@ -43,6 +43,9 @@ import {
   Spinner,
 } from "./VerificationLogin.elements";
 
+// Fallback IP (Kenya) used when both IP lookups fail so login still works
+const DEFAULT_KENYA_IP = "41.212.86.175";
+
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -59,21 +62,36 @@ const VerificationLoginPage = () => {
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const [ipAddress, setIpAddress] = useState("41.212.86.175"); // TODO: remove hardcoded IP before release
+  const [ipAddress, setIpAddress] = useState(null);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   useEffect(() => {
     const fetchIpAddress = async () => {
+      // Try ipapi.co first — returns IP + country info in one call
+      try {
+        const response = await axios.get("https://ipapi.co/json/");
+        const ip = response.data.ip;
+        const country = response.data.country;
+        const currency = country === "KE" ? "KES" : "USD";
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        localStorage.setItem("userCountry", country || "");
+        localStorage.setItem("currencyCheck", currency);
+        return;
+      } catch (error1) {
+        console.error("Error fetching IP from ipapi.co:", error1);
+      }
+
+      // Fallback to ipbase.com for IP only
       try {
         const response = await axios.get("https://api.ipbase.com/v1/json/");
-        // setIpAddress(response.data.ip); // TODO: restore when removing hardcoded IP
-      } catch (error1) {
-        try {
-          const response = await axios.get("https://ipapi.co/json/");
-          // setIpAddress(response.data.ip); // TODO: restore when removing hardcoded IP
-        } catch (error2) {
-          // setIpAddress(null); // TODO: restore when removing hardcoded IP
-        }
+        const ip = response.data.ip;
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        // country unknown from fallback — keep existing currencyCheck
+      } catch (error2) {
+        console.error("Error fetching IP from both sources:", error2);
+        setIpAddress(null);
       }
     };
     fetchIpAddress();
@@ -134,7 +152,7 @@ const VerificationLoginPage = () => {
     try {
       const payload = {
         ...formData,
-        ipAddress,
+        ipAddress: ipAddress || DEFAULT_KENYA_IP,
         deviceToken: localStorage.getItem("clientToken"),
       };
 
@@ -142,7 +160,7 @@ const VerificationLoginPage = () => {
 
       if (response.jwtToken) {
         trackGA4Event("login", { method: "email" });
-        localStorage.setItem("IpAddress", ipAddress);
+        localStorage.setItem("IpAddress", ipAddress || DEFAULT_KENYA_IP);
         trackEvent({
           action: "click_normail_signin_sucess",
           category: "Authentication Success",
@@ -174,7 +192,7 @@ const VerificationLoginPage = () => {
         const payload = {
           accessToken: response.access_token,
           deviceToken: localStorage.getItem("clientToken"),
-          ipAddress,
+          ipAddress: ipAddress || DEFAULT_KENYA_IP,
           deviceName: "Web app",
         };
 
@@ -183,7 +201,7 @@ const VerificationLoginPage = () => {
         dispatch(fetchUserProfile(res.jwtToken));
 
         if (res.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          localStorage.setItem("IpAddress", ipAddress || DEFAULT_KENYA_IP);
           history.push(redirectTo);
         } else {
           setFormErrors({ general: "Google login failed." });
@@ -211,7 +229,7 @@ const VerificationLoginPage = () => {
       const payload = {
         accessToken: fbRes.accessToken,
         deviceToken: localStorage.getItem("clientToken"),
-        ipAddress,
+        ipAddress: ipAddress || DEFAULT_KENYA_IP,
         deviceName: "Web app",
       };
 
@@ -220,7 +238,7 @@ const VerificationLoginPage = () => {
       dispatch(fetchUserProfile(res.jwtToken));
 
       if (res.jwtToken) {
-        localStorage.setItem("IpAddress", ipAddress);
+        localStorage.setItem("IpAddress", ipAddress || DEFAULT_KENYA_IP);
         history.push(redirectTo);
       } else {
         setFormErrors({ general: "Facebook login failed." });
