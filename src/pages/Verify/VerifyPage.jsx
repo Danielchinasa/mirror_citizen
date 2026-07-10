@@ -168,11 +168,18 @@ function generateTransactionId() {
   return transactionId;
 }
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
+};
+
 const VerifyPage = () => {
   const { type } = useParams();
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
 
   const config = verificationConfig[type];
   const user = useSelector((state) => state.user);
@@ -203,8 +210,12 @@ const VerifyPage = () => {
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
   const STEPS = requiresConsent
-    ? ["Search", "Payment", "Processing", "Consent", "Result"]
-    : ["Search", "Payment", "Processing", "Result"];
+    ? isSw
+      ? ["Tafuta", "Malipo", "Inachakata", "Idhini", "Matokeo"]
+      : ["Search", "Payment", "Processing", "Consent", "Result"]
+    : isSw
+      ? ["Tafuta", "Malipo", "Inachakata", "Matokeo"]
+      : ["Search", "Payment", "Processing", "Result"];
   const RESULT_STEP = requiresConsent ? 4 : 3;
   const CONSENT_STEP = 3;
 
@@ -301,6 +312,17 @@ const VerifyPage = () => {
     };
   }, []);
 
+  // Keep language in sync with the site-wide toggle
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   // Fetch service prices
   useEffect(() => {
     if (!config || !userToken) return;
@@ -316,8 +338,10 @@ const VerifyPage = () => {
         setLoadingPrice(false);
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "Could not fetch service prices. Please try again.",
+          title: isSw ? "Hitilafu" : "Error",
+          text: isSw
+            ? "Imeshindwa kupata bei za huduma. Tafadhali jaribu tena."
+            : "Could not fetch service prices. Please try again.",
           confirmButtonColor: "#DD0201",
         });
       }
@@ -432,10 +456,16 @@ const VerifyPage = () => {
         config.bureaus && !Object.values(selectedBureaus).some(Boolean);
       setError(
         noBureauSelected
-          ? "Please select at least one credit bureau."
+          ? isSw
+            ? "Tafadhali chagua angalau ofisi moja ya mikopo."
+            : "Please select at least one credit bureau."
           : hasEitherOr
-            ? "Please fill in at least one of the fields."
-            : "Please fill in all required fields.",
+            ? isSw
+              ? "Tafadhali jaza angalau sehemu moja."
+              : "Please fill in at least one of the fields."
+            : isSw
+              ? "Tafadhali jaza sehemu zote zinazohitajika."
+              : "Please fill in all required fields.",
       );
       return;
     }
@@ -518,8 +548,10 @@ const VerifyPage = () => {
       setLoading(false);
       Swal.fire({
         icon: "error",
-        title: "Currency Mismatch",
-        text: "Wallet currency must match payment currency. Please use the right currency for this transaction.",
+        title: isSw ? "Sarafu Hailingani" : "Currency Mismatch",
+        text: isSw
+          ? "Sarafu ya pochi lazima ilingane na sarafu ya malipo. Tafadhali tumia sarafu sahihi kwa muamala huu."
+          : "Wallet currency must match payment currency. Please use the right currency for this transaction.",
         confirmButtonColor: "#DD0201",
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -565,11 +597,20 @@ const VerifyPage = () => {
     } catch (err) {
       setLoading(false);
       setCurrentStep(1);
-      setError(err.message || "An error occurred. Please try again.");
+      setError(
+        err.message ||
+          (isSw
+            ? "Hitilafu imetokea. Tafadhali jaribu tena."
+            : "An error occurred. Please try again."),
+      );
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: err.message || "An error occurred. Please try again.",
+        title: isSw ? "Hitilafu" : "Error",
+        text:
+          err.message ||
+          (isSw
+            ? "Hitilafu imetokea. Tafadhali jaribu tena."
+            : "An error occurred. Please try again."),
         confirmButtonColor: "#DD0201",
       });
     }
@@ -582,8 +623,10 @@ const VerifyPage = () => {
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
-        title: "Wallet Balance Low",
-        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
+        title: isSw ? "Salio la Pochi Halitoshi" : "Wallet Balance Low",
+        text: isSw
+          ? `Salio lako la pochi (${currencySymbol}${userBalance.toLocaleString()}) halitoshi kwa muamala huu (${currencySymbol}${totalAmount.toLocaleString()}).`
+          : `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
         confirmButtonColor: "#DD0201",
       });
       return;
@@ -716,8 +759,10 @@ const VerifyPage = () => {
       if (!res.ok) {
         Swal.fire({
           icon: "error",
-          title: "Payment Cancelled",
-          text: "Your payment was cancelled or declined.",
+          title: isSw ? "Malipo Yameghairiwa" : "Payment Cancelled",
+          text: isSw
+            ? "Malipo yako yameghairiwa au yamekataliwa."
+            : "Your payment was cancelled or declined.",
           confirmButtonColor: "#DD0201",
         });
         return;
@@ -736,16 +781,20 @@ const VerifyPage = () => {
       } else {
         Swal.fire({
           icon: "error",
-          title: "Payment Failed",
-          text: "Your payment could not be completed. Please try again.",
+          title: isSw ? "Malipo Yameshindwa" : "Payment Failed",
+          text: isSw
+            ? "Malipo yako hayakukamilika. Tafadhali jaribu tena."
+            : "Your payment could not be completed. Please try again.",
           confirmButtonColor: "#DD0201",
         });
       }
     } catch {
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "Could not verify payment status. Please check your dashboard.",
+        title: isSw ? "Hitilafu" : "Error",
+        text: isSw
+          ? "Imeshindwa kuthibitisha hali ya malipo. Tafadhali angalia dashibodi yako."
+          : "Could not verify payment status. Please check your dashboard.",
         confirmButtonColor: "#DD0201",
       });
     }
@@ -764,15 +813,22 @@ const VerifyPage = () => {
 
       // Determine result and result page route
       let result = null;
-      let resultTitle = "Verification Successful";
+      let resultTitle = isSw
+        ? "Uthibitishaji Umefanikiwa"
+        : "Verification Successful";
       let resultDetail = "";
       let resultRoute = "/main-dashboard";
 
       if (response?.status === "COMPLETED" && response?.result) {
         result = response.result;
-        resultTitle = `${config.serviceName} Successful`;
+        resultTitle = isSw
+          ? `${config.serviceName} Imefanikiwa`
+          : `${config.serviceName} Successful`;
         resultDetail =
-          response.resultText || `${config.serviceName} was successful.`;
+          response.resultText ||
+          (isSw
+            ? `${config.serviceName} imefanikiwa.`
+            : `${config.serviceName} was successful.`);
         resultRoute = "/main-dashboard";
       } else if (
         response.basic &&
@@ -782,7 +838,10 @@ const VerifyPage = () => {
         result =
           response.basic?.nin_data || response.basic?.data || response.basic;
         resultDetail =
-          response.basic.detail || "Your National ID was successful.";
+          response.basic.detail ||
+          (isSw
+            ? "Kitambulisho chako cha Taifa kimefanikiwa."
+            : "Your National ID was successful.");
         resultRoute = "/main-dashboard";
       } else if (
         response.basic &&
@@ -791,7 +850,7 @@ const VerifyPage = () => {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
           text: response.basic.detail,
           confirmButtonColor: "#DD0201",
         });
@@ -805,7 +864,9 @@ const VerifyPage = () => {
         result = response["search-extension"].phoneVerification;
         resultDetail =
           response["search-extension"].phoneVerification.detail ||
-          "Phone verification was successful.";
+          (isSw
+            ? "Uthibitishaji wa simu umefanikiwa."
+            : "Phone verification was successful.");
         resultRoute = "/main-dashboard";
       } else if (
         response["search-extension"] &&
@@ -814,10 +875,10 @@ const VerifyPage = () => {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
           text:
             response["search-extension"].phoneVerification.detail ||
-            "Verification failed",
+            (isSw ? "Uthibitishaji umeshindwa" : "Verification failed"),
           confirmButtonColor: "#DD0201",
         });
         setCurrentStep(1);
@@ -830,21 +891,28 @@ const VerifyPage = () => {
         result = response["search-extension"].bvnVerification;
         resultDetail =
           response["search-extension"].bvnVerification.detail ||
-          "BVN verification was successful.";
+          (isSw
+            ? "Uthibitishaji wa BVN umefanikiwa."
+            : "BVN verification was successful.");
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === true) {
         const bizData = Array.isArray(response.business.data)
           ? response.business.data[0]?.data
           : response.business.data;
         result = bizData || response.business;
-        resultTitle = "Business Verification Successful";
+        resultTitle = isSw
+          ? "Uthibitishaji wa Biashara Umefanikiwa"
+          : "Business Verification Successful";
         resultDetail =
-          bizData?.approvedName || "Business has been verified successfully.";
+          bizData?.approvedName ||
+          (isSw
+            ? "Biashara imethibitishwa kwa mafanikio."
+            : "Business has been verified successfully.");
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === false) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
           text: response.business.message,
           confirmButtonColor: "#DD0201",
         });
@@ -854,12 +922,14 @@ const VerifyPage = () => {
         result = response.financial;
         resultDetail =
           response.financial.message ||
-          "Financial verification was successful.";
+          (isSw
+            ? "Uthibitishaji wa kifedha umefanikiwa."
+            : "Financial verification was successful.");
         resultRoute = "/main-dashboard";
       } else if (response.financial && response.financial.success === false) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
           text: response.financial.message,
           confirmButtonColor: "#DD0201",
         });
@@ -928,18 +998,26 @@ const VerifyPage = () => {
           };
           resultTitle =
             bureauErrors.length > 0
-              ? "Partial Results Available"
-              : "Credit Profile Results";
-          resultDetail = `Data received from: ${bureauResults.join(", ")}.`;
+              ? isSw
+                ? "Matokeo ya Sehemu Yanapatikana"
+                : "Partial Results Available"
+              : isSw
+                ? "Matokeo ya Wasifu wa Mikopo"
+                : "Credit Profile Results";
+          resultDetail = isSw
+            ? `Data imepokelewa kutoka: ${bureauResults.join(", ")}.`
+            : `Data received from: ${bureauResults.join(", ")}.`;
           resultRoute = "/financial-profile-result";
         } else {
           Swal.fire({
             icon: "error",
-            title: "Verification Failed",
+            title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
             text:
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
-                : "Verification failed. Please try again.",
+                : isSw
+                  ? "Uthibitishaji umeshindwa. Tafadhali jaribu tena."
+                  : "Verification failed. Please try again.",
             confirmButtonColor: "#DD0201",
           });
           setCurrentStep(1);
@@ -986,10 +1064,12 @@ const VerifyPage = () => {
           response?.["search-extension"]?.bvnVerification?.detail ||
           response?.business?.message ||
           response?.financial?.message ||
-          "Verification could not be completed. A refund has been initiated.";
+          (isSw
+            ? "Uthibitishaji haukukamilika. Marejesho yameanzishwa."
+            : "Verification could not be completed. A refund has been initiated.");
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
           text: errorMsg,
           confirmButtonColor: "#DD0201",
         });
@@ -1000,8 +1080,10 @@ const VerifyPage = () => {
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
-        title: "Service Unavailable",
-        text: "Service is currently unavailable. A refund has been initiated.",
+        title: isSw ? "Huduma Haipatikani" : "Service Unavailable",
+        text: isSw
+          ? "Huduma haipatikani kwa sasa. Marejesho yameanzishwa."
+          : "Service is currently unavailable. A refund has been initiated.",
         confirmButtonColor: "#DD0201",
       });
     }
@@ -1036,9 +1118,13 @@ const VerifyPage = () => {
 
   const renderSearchStep = () => (
     <FormCard>
-      <FormCardTitle>Enter search details</FormCardTitle>
+      <FormCardTitle>
+        {isSw ? "Weka maelezo ya utafutaji" : "Enter search details"}
+      </FormCardTitle>
       <FormCardSub>
-        Provide the details of the individual you want to verify.
+        {isSw
+          ? "Toa maelezo ya mtu unayetaka kumthibitisha."
+          : "Provide the details of the individual you want to verify."}
       </FormCardSub>
 
       {error && <ErrorAlert>{error}</ErrorAlert>}
@@ -1046,7 +1132,7 @@ const VerifyPage = () => {
       <SearchGrid>
         <div>
           <FormGroup>
-            <FormLabel>ID Type</FormLabel>
+            <FormLabel>{isSw ? "Aina ya Kitambulisho" : "ID Type"}</FormLabel>
             <IdTypeDisplay>
               <FaIdCard />
               {config.idTypeLabel}
@@ -1077,7 +1163,7 @@ const VerifyPage = () => {
                         fontFamily: "Nunito, sans-serif",
                       }}
                     >
-                      OR
+                      {isSw ? "AU" : "OR"}
                     </span>
                     <div
                       style={{ flex: 1, height: 1, background: "#e5e7eb" }}
@@ -1126,7 +1212,7 @@ const VerifyPage = () => {
           {config.bureaus && (
             <FormGroup>
               <FormLabel>
-                Select Credit Bureau(s){" "}
+                {isSw ? "Chagua Ofisi ya Mikopo" : "Select Credit Bureau(s)"}{" "}
                 <span style={{ color: "#dc2626" }}> *</span>
               </FormLabel>
               <div
@@ -1187,7 +1273,11 @@ const VerifyPage = () => {
                     fontWeight: 600,
                   }}
                 >
-                  🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
+                  🎉{" "}
+                  {isSw
+                    ? "Punguzo la Ofisi Zote 3 Limetumika: -"
+                    : "All 3 Bureaus Discount Applied: -"}
+                  {currencySymbol}
                   {(isKES
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
@@ -1198,7 +1288,9 @@ const VerifyPage = () => {
           )}
 
           <YouWillGetCard>
-            <YouWillGetTitle>You will get</YouWillGetTitle>
+            <YouWillGetTitle>
+              {isSw ? "Utapata" : "You will get"}
+            </YouWillGetTitle>
             <YouWillGetRow>
               {config.youWillGet.map((item, i) => (
                 <YouWillGetItem key={i}>
@@ -1210,15 +1302,20 @@ const VerifyPage = () => {
           </YouWillGetCard>
 
           <SidebarNote>
-            <FaShieldAlt /> Your data is secure and used only for verification.
+            <FaShieldAlt />{" "}
+            {isSw
+              ? "Data yako ni salama na inatumika kwa uthibitishaji pekee."
+              : "Your data is secure and used only for verification."}
           </SidebarNote>
         </div>
 
         <SidebarCard>
-          <PriceLabel>Amount</PriceLabel>
+          <PriceLabel>{isSw ? "Kiasi" : "Amount"}</PriceLabel>
           <PriceAmount>
             {loadingPrice
-              ? "Loading..."
+              ? isSw
+                ? "Inapakia..."
+                : "Loading..."
               : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
           <PriceBreakdown>
@@ -1238,7 +1335,7 @@ const VerifyPage = () => {
                   <>
                     <PriceRow>
                       <span>
-                        Processing fees
+                        {isSw ? "Ada za uchakataji" : "Processing fees"}
                         {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                       </span>
                       <span>
@@ -1253,7 +1350,7 @@ const VerifyPage = () => {
                     </PriceRow>
                     <PriceRow>
                       <span>
-                        Tax & charges
+                        {isSw ? "Kodi na ada" : "Tax & charges"}
                         {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                       </span>
                       <span>
@@ -1268,7 +1365,9 @@ const VerifyPage = () => {
                     </PriceRow>
                     {discount > 0 && (
                       <PriceRow>
-                        <span style={{ color: "#16a34a" }}>Discount</span>
+                        <span style={{ color: "#16a34a" }}>
+                          {isSw ? "Punguzo" : "Discount"}
+                        </span>
                         <span style={{ color: "#16a34a" }}>
                           -{currencySymbol}
                           {discount.toLocaleString(undefined, {
@@ -1278,7 +1377,9 @@ const VerifyPage = () => {
                       </PriceRow>
                     )}
                     <PriceTotalRow>
-                      <span>Total to be paid</span>
+                      <span>
+                        {isSw ? "Jumla ya kulipa" : "Total to be paid"}
+                      </span>
                       <span>
                         {currencySymbol}
                         {totalToPay.toLocaleString(undefined, {
@@ -1295,13 +1396,14 @@ const VerifyPage = () => {
             disabled={!isFormValid()}
             style={{ width: "100%", justifyContent: "center" }}
           >
-            Continue to Payment <FaArrowRight />
+            {isSw ? "Endelea kwa Malipo" : "Continue to Payment"}{" "}
+            <FaArrowRight />
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
 
       <FormActions>
-        <ClearBtn onClick={handleClear}>Clear</ClearBtn>
+        <ClearBtn onClick={handleClear}>{isSw ? "Futa" : "Clear"}</ClearBtn>
       </FormActions>
     </FormCard>
   );
@@ -1310,8 +1412,14 @@ const VerifyPage = () => {
     <>
       <PaymentGrid>
         <PaymentMethodsCard>
-          <PaymentMethodTitle>Payment Method</PaymentMethodTitle>
-          <PaymentMethodSub>Choose how you'd like to pay</PaymentMethodSub>
+          <PaymentMethodTitle>
+            {isSw ? "Njia ya Malipo" : "Payment Method"}
+          </PaymentMethodTitle>
+          <PaymentMethodSub>
+            {isSw
+              ? "Chagua jinsi unavyotaka kulipa"
+              : "Choose how you'd like to pay"}
+          </PaymentMethodSub>
 
           {PAYMENT_METHODS.map((method) => (
             <PaymentOption
@@ -1361,7 +1469,9 @@ const VerifyPage = () => {
 
         <SummaryCard>
           <SummaryHeader>
-            <SummaryTitle>Verification Summary</SummaryTitle>
+            <SummaryTitle>
+              {isSw ? "Muhtasari wa Uthibitishaji" : "Verification Summary"}
+            </SummaryTitle>
             <SummaryAmount>
               {loadingPrice
                 ? "..."
@@ -1370,15 +1480,15 @@ const VerifyPage = () => {
           </SummaryHeader>
 
           <SummaryRow>
-            <SummaryLabel>Service</SummaryLabel>
+            <SummaryLabel>{isSw ? "Huduma" : "Service"}</SummaryLabel>
             <SummaryValue>{config.serviceName}</SummaryValue>
           </SummaryRow>
           <SummaryRow>
-            <SummaryLabel>Type</SummaryLabel>
+            <SummaryLabel>{isSw ? "Aina" : "Type"}</SummaryLabel>
             <SummaryValue>{config.idTypeLabel}</SummaryValue>
           </SummaryRow>
           <SummaryRow>
-            <SummaryLabel>Value</SummaryLabel>
+            <SummaryLabel>{isSw ? "Thamani" : "Value"}</SummaryLabel>
             <SummaryValue>
               {formData[config.serviceFieldKey] ||
                 config.fields
@@ -1388,7 +1498,7 @@ const VerifyPage = () => {
             </SummaryValue>
           </SummaryRow>
           <SummaryRow>
-            <SummaryLabel>Email</SummaryLabel>
+            <SummaryLabel>{isSw ? "Barua pepe" : "Email"}</SummaryLabel>
             <SummaryValue>{userEmail || "—"}</SummaryValue>
           </SummaryRow>
 
@@ -1402,13 +1512,19 @@ const VerifyPage = () => {
               />
               {config.bureaus && bureauCount > 0 && (
                 <SummaryRow>
-                  <SummaryLabel>Bureaus</SummaryLabel>
-                  <SummaryValue>{bureauCount} selected</SummaryValue>
+                  <SummaryLabel>
+                    {isSw ? "Ofisi za Mikopo" : "Bureaus"}
+                  </SummaryLabel>
+                  <SummaryValue>
+                    {isSw
+                      ? `${bureauCount} zimechaguliwa`
+                      : `${bureauCount} selected`}
+                  </SummaryValue>
                 </SummaryRow>
               )}
               <SummaryRow>
                 <SummaryLabel>
-                  Processing Fee
+                  {isSw ? "Ada ya Uchakataji" : "Processing Fee"}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
@@ -1423,7 +1539,7 @@ const VerifyPage = () => {
               </SummaryRow>
               <SummaryRow>
                 <SummaryLabel>
-                  Tax & charges
+                  {isSw ? "Kodi na ada" : "Tax & charges"}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
@@ -1437,7 +1553,7 @@ const VerifyPage = () => {
               {discount > 0 && (
                 <SummaryRow>
                   <SummaryLabel style={{ color: "#16a34a" }}>
-                    Discount
+                    {isSw ? "Punguzo" : "Discount"}
                   </SummaryLabel>
                   <SummaryValue style={{ color: "#16a34a" }}>
                     -{currencySymbol}
@@ -1451,19 +1567,23 @@ const VerifyPage = () => {
           <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
             <FaLock />
             {loading
-              ? "Processing..."
-              : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
+              ? isSw
+                ? "Inachakata..."
+                : "Processing..."
+              : `${isSw ? "Lipa" : "Pay"} ${currencySymbol}${totalAmount.toLocaleString()}`}
           </PayBtn>
 
           <SecuredBy>
             <FaShieldAlt style={{ color: "#DD0201" }} />
-            Secured and encrypted payment
+            {isSw
+              ? "Malipo yaliyolindwa na kusimbwa"
+              : "Secured and encrypted payment"}
           </SecuredBy>
 
           <div style={{ marginTop: 16 }}>
             <ClearBtn onClick={handleBackToSearch} style={{ width: "100%" }}>
               <FaArrowLeft style={{ marginRight: 8 }} />
-              Back
+              {isSw ? "Rudi" : "Back"}
             </ClearBtn>
           </div>
         </SummaryCard>
@@ -1472,10 +1592,14 @@ const VerifyPage = () => {
       {/* Sample Result */}
       <SampleSection>
         <SampleHeader>
-          <SampleTitle>Sample Result</SampleTitle>
+          <SampleTitle>
+            {isSw ? "Mfano wa Matokeo" : "Sample Result"}
+          </SampleTitle>
         </SampleHeader>
         <SampleSub>
-          Here's an example of what your verification result will look like.
+          {isSw
+            ? "Huu ni mfano wa jinsi matokeo yako ya uthibitishaji yatakavyoonekana."
+            : "Here's an example of what your verification result will look like."}
         </SampleSub>
         <SampleResultCard>
           <SampleAvatar>
@@ -1485,7 +1609,7 @@ const VerifyPage = () => {
             <SampleName>
               {config.sampleResult.name}
               <VerifiedBadge>
-                <FaCheckCircle /> Verified
+                <FaCheckCircle /> {isSw ? "Imethibitishwa" : "Verified"}
               </VerifiedBadge>
             </SampleName>
             <SampleId>{config.sampleResult.identifier}</SampleId>
@@ -1505,10 +1629,15 @@ const VerifyPage = () => {
   const renderProcessingStep = () => (
     <ProcessingWrapper>
       <ProcessingSpinner />
-      <ProcessingText>Processing Your Verification</ProcessingText>
+      <ProcessingText>
+        {isSw
+          ? "Inachakata Uthibitishaji Wako"
+          : "Processing Your Verification"}
+      </ProcessingText>
       <ProcessingSub>
-        Please wait while we verify your information. This usually takes less
-        than a minute.
+        {isSw
+          ? "Tafadhali subiri tunapothibitisha taarifa zako. Hii kwa kawaida huchukua chini ya dakika moja."
+          : "Please wait while we verify your information. This usually takes less than a minute."}
       </ProcessingSub>
     </ProcessingWrapper>
   );
@@ -1673,14 +1802,14 @@ const VerifyPage = () => {
       <div style={{ textAlign: "center", padding: "40px 20px" }}>
         <ProcessingSpinner />
         <ProcessingText style={{ marginTop: 24 }}>
-          Awaiting Consent
+          {isSw ? "Inasubiri Idhini" : "Awaiting Consent"}
         </ProcessingText>
         <ProcessingSub
           style={{ maxWidth: 520, margin: "12px auto 0", lineHeight: 1.7 }}
         >
-          We have sent a consent request to the data subject and are currently
-          awaiting their response. An email will be sent to you regarding the
-          status of your request.
+          {isSw
+            ? "Tumetuma ombi la idhini kwa mhusika wa data na kwa sasa tunasubiri jibu lao. Barua pepe itatumwa kwako kuhusu hali ya ombi lako."
+            : "We have sent a consent request to the data subject and are currently awaiting their response. An email will be sent to you regarding the status of your request."}
         </ProcessingSub>
         <ProcessingSub
           style={{
@@ -1690,9 +1819,9 @@ const VerifyPage = () => {
             color: "#999",
           }}
         >
-          The data subject's information will be retained for 24 hours from the
-          moment they grant consent. This page will automatically update when
-          consent is granted.
+          {isSw
+            ? "Taarifa za mhusika wa data zitahifadhiwa kwa saa 24 kuanzia wanapotoa idhini. Ukurasa huu utajisasisha kiotomatiki idhini inapotolewa."
+            : "The data subject's information will be retained for 24 hours from the moment they grant consent. This page will automatically update when consent is granted."}
         </ProcessingSub>
         <div
           style={{
@@ -1703,7 +1832,7 @@ const VerifyPage = () => {
           }}
         >
           <ClearBtn onClick={() => history.push("/main-dashboard")}>
-            Return to Dashboard
+            {isSw ? "Rudi kwenye Dashibodi" : "Return to Dashboard"}
           </ClearBtn>
         </div>
       </div>
@@ -1713,7 +1842,9 @@ const VerifyPage = () => {
   const renderResultStep = () => {
     const previewFields = getResultPreviewFields();
     const resultRoute = verificationResult?.route || "/main-dashboard";
-    const resultTitle = verificationResult?.title || "Verification Complete!";
+    const resultTitle =
+      verificationResult?.title ||
+      (isSw ? "Uthibitishaji Umekamilika!" : "Verification Complete!");
     const resultDetail = verificationResult?.detail || "";
     const bureauResults = verificationResult?.data?.bureauResults || [];
     const bureauErrors = verificationResult?.data?.bureauErrors || [];
@@ -1738,7 +1869,9 @@ const VerifyPage = () => {
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
             {resultDetail ||
-              "Your verification has been completed successfully."}
+              (isSw
+                ? "Uthibitishaji wako umekamilika kwa mafanikio."
+                : "Your verification has been completed successfully.")}
           </ProcessingSub>
         </div>
 
@@ -1761,7 +1894,7 @@ const VerifyPage = () => {
               margin: "0 0 16px",
             }}
           >
-            Verification Summary
+            {isSw ? "Muhtasari wa Uthibitishaji" : "Verification Summary"}
           </h4>
           <div
             style={{
@@ -1779,7 +1912,7 @@ const VerifyPage = () => {
                   marginBottom: 2,
                 }}
               >
-                Service
+                {isSw ? "Huduma" : "Service"}
               </div>
               <div
                 style={{
@@ -1801,7 +1934,7 @@ const VerifyPage = () => {
                   marginBottom: 2,
                 }}
               >
-                Amount Paid
+                {isSw ? "Kiasi Kilicholipwa" : "Amount Paid"}
               </div>
               <div
                 style={{
@@ -1852,7 +1985,7 @@ const VerifyPage = () => {
                   marginBottom: 2,
                 }}
               >
-                Status
+                {isSw ? "Hali" : "Status"}
               </div>
               <div
                 style={{
@@ -1865,7 +1998,7 @@ const VerifyPage = () => {
                 <FaCheckCircle
                   style={{ marginRight: 4, verticalAlign: "middle" }}
                 />
-                Successful
+                {isSw ? "Imefanikiwa" : "Successful"}
               </div>
             </div>
           </div>
@@ -1891,7 +2024,7 @@ const VerifyPage = () => {
                 margin: "0 0 12px",
               }}
             >
-              Bureau Results
+              {isSw ? "Matokeo ya Ofisi za Mikopo" : "Bureau Results"}
             </h4>
             {bureauResults.map((bureau, i) => (
               <div
@@ -1911,7 +2044,7 @@ const VerifyPage = () => {
                     color: "#333",
                   }}
                 >
-                  {bureau} — Data received
+                  {bureau} — {isSw ? "Data imepokelewa" : "Data received"}
                 </span>
               </div>
             ))}
@@ -1960,7 +2093,7 @@ const VerifyPage = () => {
                 margin: "0 0 16px",
               }}
             >
-              Result Preview
+              {isSw ? "Onyesho la Matokeo" : "Result Preview"}
             </h4>
             <div
               style={{
@@ -2002,10 +2135,11 @@ const VerifyPage = () => {
             onClick={() => history.push(resultRoute)}
             style={{ justifyContent: "center" }}
           >
-            View Full Results <FaArrowRight />
+            {isSw ? "Tazama Matokeo Kamili" : "View Full Results"}{" "}
+            <FaArrowRight />
           </ContinueBtn>
           <ClearBtn onClick={() => history.push("/main-dashboard")}>
-            Go to Dashboard
+            {isSw ? "Nenda kwenye Dashibodi" : "Go to Dashboard"}
           </ClearBtn>
         </div>
       </FormCard>
@@ -2034,7 +2168,8 @@ const VerifyPage = () => {
       {/* Hero */}
       <HeroSection>
         <Breadcrumb>
-          <span>Home</span> / <span>{config.breadcrumb[0]}</span> /{" "}
+          <span>{isSw ? "Nyumbani" : "Home"}</span> /{" "}
+          <span>{config.breadcrumb[0]}</span> /{" "}
           <span>{config.breadcrumb[1]}</span>
         </Breadcrumb>
         <HeroInner>
@@ -2148,7 +2283,8 @@ const VerifyPage = () => {
                         <ResultLabelPopup>{field.label}</ResultLabelPopup>
                         {field.label === "Verification Status" ? (
                           <VerifiedBadgePopup>
-                            VERIFIED <FaCheckCircle />
+                            {isSw ? "IMETHIBITISHWA" : "VERIFIED"}{" "}
+                            <FaCheckCircle />
                           </VerifiedBadgePopup>
                         ) : (
                           <ResultValuePopup>{field.value}</ResultValuePopup>
@@ -2159,7 +2295,7 @@ const VerifyPage = () => {
                 </ResultTopPopup>
                 <ResultFooterPopup>
                   <span>
-                    Verified on{" "}
+                    {isSw ? "Imethibitishwa" : "Verified on"}{" "}
                     {new Date().toLocaleDateString("en-US", {
                       day: "numeric",
                       month: "short",
@@ -2167,13 +2303,16 @@ const VerifyPage = () => {
                     })}
                   </span>
                   <span>
-                    Ref: {localStorage.getItem("transactionID") || "N/A"}
+                    {isSw ? "Kumb:" : "Ref:"}{" "}
+                    {localStorage.getItem("transactionID") || "N/A"}
                   </span>
                 </ResultFooterPopup>
               </ResultCardPopup>
               <ResultDisclaimerPopup>
                 <FaInfoCircle />
-                Results are based on data available at the time of verification.
+                {isSw
+                  ? "Matokeo yanategemea data iliyopatikana wakati wa uthibitishaji."
+                  : "Results are based on data available at the time of verification."}
               </ResultDisclaimerPopup>
               <PopupActionRow>
                 <ContinueBtn
@@ -2182,7 +2321,8 @@ const VerifyPage = () => {
                     history.push("/main-dashboard");
                   }}
                 >
-                  View full result <FaArrowRight />
+                  {isSw ? "Tazama matokeo kamili" : "View full result"}{" "}
+                  <FaArrowRight />
                 </ContinueBtn>
                 <ClearBtn
                   onClick={() => {
@@ -2190,7 +2330,7 @@ const VerifyPage = () => {
                     setCurrentStep(RESULT_STEP);
                   }}
                 >
-                  Close
+                  {isSw ? "Funga" : "Close"}
                 </ClearBtn>
               </PopupActionRow>
             </PopupBody>
@@ -2245,8 +2385,12 @@ const VerifyPage = () => {
                   <FaInfoCircle />
                 </PopupIcon>
                 <div>
-                  <PopupTitle>Disclaimer</PopupTitle>
-                  <PopupSubtitle>Please review before proceeding</PopupSubtitle>
+                  <PopupTitle>{isSw ? "Kanusho" : "Disclaimer"}</PopupTitle>
+                  <PopupSubtitle>
+                    {isSw
+                      ? "Tafadhali kagua kabla ya kuendelea"
+                      : "Please review before proceeding"}
+                  </PopupSubtitle>
                 </div>
               </PopupMeta>
               <PopupCloseButton onClick={() => setShowDisclaimer(false)}>
@@ -2272,25 +2416,63 @@ const VerifyPage = () => {
                       color: "var(--ec-text)",
                     }}
                   >
-                    By clicking, you indicate that:
+                    {isSw
+                      ? "Kwa kubofya, unaonyesha kwamba:"
+                      : "By clicking, you indicate that:"}
                     <ul style={{ margin: "8px 0 0", paddingLeft: 20 }}>
                       <li style={{ marginBottom: 12 }}>
-                        You confirm that search details are correct, and you
-                        confirm that you will <strong>not be refunded</strong>{" "}
-                        for incorrect information.
+                        {isSw ? (
+                          <>
+                            Unathibitisha kwamba maelezo ya utafutaji ni sahihi,
+                            na unathibitisha kwamba{" "}
+                            <strong>hutarejeshewa fedha</strong> kwa taarifa
+                            zisizo sahihi.
+                          </>
+                        ) : (
+                          <>
+                            You confirm that search details are correct, and you
+                            confirm that you will{" "}
+                            <strong>not be refunded</strong> for incorrect
+                            information.
+                          </>
+                        )}
                       </li>
                       <li style={{ marginBottom: 12 }}>
-                        You understand and accept that vehicle history data is
-                        sourced from third-party providers and{" "}
-                        <strong>may not contain all records</strong> for every
-                        vehicle.
+                        {isSw ? (
+                          <>
+                            Unaelewa na kukubali kwamba data ya historia ya gari
+                            inatoka kwa watoa huduma wa nje na{" "}
+                            <strong>huenda isiwe na rekodi zote</strong> kwa
+                            kila gari.
+                          </>
+                        ) : (
+                          <>
+                            You understand and accept that vehicle history data
+                            is sourced from third-party providers and{" "}
+                            <strong>may not contain all records</strong> for
+                            every vehicle.
+                          </>
+                        )}
                       </li>
                       <li style={{ marginBottom: 0 }}>
-                        You understand that{" "}
-                        <strong>
-                          search results may come back without any data
-                        </strong>
-                        , and you accept that you will not be refunded.
+                        {isSw ? (
+                          <>
+                            Unaelewa kwamba{" "}
+                            <strong>
+                              matokeo ya utafutaji yanaweza kurudi bila data
+                              yoyote
+                            </strong>
+                            , na unakubali kwamba hutarejeshewa fedha.
+                          </>
+                        ) : (
+                          <>
+                            You understand that{" "}
+                            <strong>
+                              search results may come back without any data
+                            </strong>
+                            , and you accept that you will not be refunded.
+                          </>
+                        )}
                       </li>
                     </ul>
                   </div>
@@ -2307,25 +2489,61 @@ const VerifyPage = () => {
                   >
                     {requiresConsent && (
                       <li style={{ marginBottom: 12 }}>
-                        You confirm that you understand and accept that{" "}
-                        <strong>consent is required</strong> from the data
-                        subject being verified before you can access their data,
-                        and you accept that you will not be refunded if consent
-                        is withheld.
+                        {isSw ? (
+                          <>
+                            Unathibitisha kwamba unaelewa na kukubali kwamba{" "}
+                            <strong>idhini inahitajika</strong> kutoka kwa
+                            mhusika wa data anayethibitishwa kabla ya kufikia
+                            data yao, na unakubali kwamba hutarejeshewa fedha
+                            iwapo idhini itazuiliwa.
+                          </>
+                        ) : (
+                          <>
+                            You confirm that you understand and accept that{" "}
+                            <strong>consent is required</strong> from the data
+                            subject being verified before you can access their
+                            data, and you accept that you will not be refunded
+                            if consent is withheld.
+                          </>
+                        )}
                       </li>
                     )}
                     <li style={{ marginBottom: 12 }}>
-                      You confirm and accept that the{" "}
-                      <strong>search details are correct</strong>, and you
-                      accept that you will not be refunded for incorrect
-                      information.
+                      {isSw ? (
+                        <>
+                          Unathibitisha na kukubali kwamba{" "}
+                          <strong>maelezo ya utafutaji ni sahihi</strong>, na
+                          unakubali kwamba hutarejeshewa fedha kwa taarifa
+                          zisizo sahihi.
+                        </>
+                      ) : (
+                        <>
+                          You confirm and accept that the{" "}
+                          <strong>search details are correct</strong>, and you
+                          accept that you will not be refunded for incorrect
+                          information.
+                        </>
+                      )}
                     </li>
                     <li style={{ marginBottom: 0 }}>
-                      You understand and accept that{" "}
-                      <strong>
-                        search details may come back without any data
-                      </strong>
-                      , and you accept that you will not be refunded.
+                      {isSw ? (
+                        <>
+                          Unaelewa na kukubali kwamba{" "}
+                          <strong>
+                            maelezo ya utafutaji yanaweza kurudi bila data
+                            yoyote
+                          </strong>
+                          , na unakubali kwamba hutarejeshewa fedha.
+                        </>
+                      ) : (
+                        <>
+                          You understand and accept that{" "}
+                          <strong>
+                            search details may come back without any data
+                          </strong>
+                          , and you accept that you will not be refunded.
+                        </>
+                      )}
                     </li>
                   </ol>
                 )}
@@ -2341,39 +2559,74 @@ const VerifyPage = () => {
                 }}
               >
                 By proceeding, you agree to our{" "}
-                <a
-                  href="/terms_of_service"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href="/privacy_policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Privacy Policy
-                </a>
-                .
+                {isSw ? (
+                  <>
+                    Kwa kuendelea, unakubali{" "}
+                    <a
+                      href="/terms_of_service"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "var(--ec-primary)",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Masharti ya Huduma
+                    </a>{" "}
+                    na{" "}
+                    <a
+                      href="/privacy_policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "var(--ec-primary)",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Sera ya Faragha
+                    </a>
+                    .
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href="/terms_of_service"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "var(--ec-primary)",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="/privacy_policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "var(--ec-primary)",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Privacy Policy
+                    </a>
+                    .
+                  </>
+                )}
               </div>
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
-                  I Understand, Continue <FaArrowRight />
+                  {isSw ? "Nimeelewa, Endelea" : "I Understand, Continue"}{" "}
+                  <FaArrowRight />
                 </ContinueBtn>
                 <ClearBtn onClick={() => setShowDisclaimer(false)}>
-                  Cancel
+                  {isSw ? "Ghairi" : "Cancel"}
                 </ClearBtn>
               </PopupActionRow>
             </PopupBody>
@@ -2428,7 +2681,7 @@ const VerifyPage = () => {
                   color: "#354138",
                 }}
               >
-                Complete Payment —{" "}
+                {isSw ? "Kamilisha Malipo" : "Complete Payment"} —{" "}
                 {activeGateway === "flutterwave" ? "Flutterwave" : "Paystack"}
               </h3>
               <button
