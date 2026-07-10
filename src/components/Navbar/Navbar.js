@@ -214,12 +214,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
+        <Link to="#services" style={{ textDecoration: "none" }}>
           {isSw ? "Kitambulisho cha Taifa" : "National ID"}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
+        <Link to="#services" style={{ textDecoration: "none" }}>
           {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
         </Link>
       </Menu.Item>
@@ -231,6 +231,68 @@ function Navbar() {
     if (!userToken2) return;
     dispatch(fetchUserProfile(userToken2));
   }, [dispatch, userToken2]);
+
+  const countryMenu = (
+    <Menu>
+      <Menu.Item key="country-ghana">
+        <a
+          href="https://e-citizen.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Ghana flag" style={{ marginRight: 10 }}>
+            🇬🇭
+          </span>
+          Ghana
+        </a>
+      </Menu.Item>
+
+      <Menu.Item key="country-uganda">
+        <a
+          href="https://e-raia.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Uganda flag" style={{ marginRight: 10 }}>
+            🇺🇬
+          </span>
+          Uganda
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-civ">
+        <a
+          href="https://citoyen.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span
+            role="img"
+            aria-label="Côte d'Ivoire flag"
+            style={{ marginRight: 10 }}
+          >
+            🇨🇮
+          </span>
+          Côte d'Ivoire
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-kenya">
+        <a
+          href="https://e-raia.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Kenya flag" style={{ marginRight: 10 }}>
+            🇰🇪
+          </span>
+          Kenya
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
 
   const userBalance = userDetails?.walletBalance || 0;
   const formatToKES = (value) => {
@@ -784,13 +846,15 @@ function Navbar() {
             </PublicCenter>
 
             <PublicActions>
-              <CountryPill type="button" aria-label="Select country">
-                <span className="flag" role="img" aria-label="Kenya flag">
-                  🇰🇪
-                </span>
-                Kenya
-                <DownOutlined className="chev" />
-              </CountryPill>
+              <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
+                <CountryPill type="button" aria-label="Select country">
+                  <span className="flag" role="img" aria-label="Ghana flag">
+                    🇰🇪
+                  </span>
+                  Kenya
+                  <DownOutlined className="chev" />
+                </CountryPill>
+              </Dropdown>
               <PublicHeaderLanguage>
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
@@ -845,7 +909,7 @@ function Navbar() {
 
           <PublicMobilePanel $open={click}>
             <PublicMobileMenu>
-              <PublicMobileLink
+              {/* <PublicMobileLink
                 to="/nin-verification"
                 onClick={closeMobileMenu}
               >
@@ -856,7 +920,7 @@ function Navbar() {
                 onClick={closeMobileMenu}
               >
                 {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
-              </PublicMobileLink>
+              </PublicMobileLink> */}
               <PublicMobileAnchor
                 href="#how-it-works"
                 onClick={closeMobileMenu}
