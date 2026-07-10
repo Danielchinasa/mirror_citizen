@@ -18,7 +18,7 @@ import {
   PublicLanguage,
   PublicActions,
   PublicHeaderLanguage,
-  PublicLogin,
+  PublicDesktopOnly,
   PublicCta,
   PublicHamburger,
   PublicMobilePanel,
@@ -210,14 +210,75 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
+        <Link to="#services" style={{ textDecoration: "none" }}>
           National ID
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
+        <Link to="#services" style={{ textDecoration: "none" }}>
           VIN Verification
         </Link>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const countryMenu = (
+    <Menu>
+      <Menu.Item key="country-ghana">
+        <a
+          href="https://e-citizen.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Ghana flag" style={{ marginRight: 10 }}>
+            🇬🇭
+          </span>
+          Ghana
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-kenya">
+        <a
+          href="https://e-raia.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Kenya flag" style={{ marginRight: 10 }}>
+            🇰🇪
+          </span>
+          Kenya
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-uganda">
+        <a
+          href="https://e-raia.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Uganda flag" style={{ marginRight: 10 }}>
+            🇺🇬
+          </span>
+          Uganda
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-civ">
+        <a
+          href="https://citoyen.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span
+            role="img"
+            aria-label="Côte d'Ivoire flag"
+            style={{ marginRight: 10 }}
+          >
+            🇨🇮
+          </span>
+          Côte d'Ivoire
+        </a>
       </Menu.Item>
     </Menu>
   );
@@ -759,14 +820,6 @@ function Navbar() {
             </PublicBrand>
 
             <PublicCenter>
-              <CountryPill type="button" aria-label="Select country">
-                <span className="flag" role="img" aria-label="Ghana flag">
-                  🇬🇭
-                </span>
-                Ghana
-                <DownOutlined className="chev" />
-              </CountryPill>
-
               <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
                   Services <DownOutlined className="chev" />
@@ -801,8 +854,18 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
               {/* <PublicLanguage>EN</PublicLanguage> */}
-              <ThemeToggle />
-              <PublicLogin to="/login">Log in</PublicLogin>
+              <PublicDesktopOnly>
+                <ThemeToggle />
+              </PublicDesktopOnly>
+              <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
+                <CountryPill type="button" aria-label="Select country">
+                  <span className="flag" role="img" aria-label="Ghana flag">
+                    🇬🇭
+                  </span>
+                  Ghana
+                  <DownOutlined className="chev" />
+                </CountryPill>
+              </Dropdown>
               <PublicCta href="#services">Get Started</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
@@ -812,18 +875,16 @@ function Navbar() {
 
           <PublicMobilePanel $open={click}>
             <PublicMobileMenu>
-              <PublicMobileLink
-                to="/nin-verification"
-                onClick={closeMobileMenu}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "6px 0",
+                }}
               >
-                National ID
-              </PublicMobileLink>
-              <PublicMobileLink
-                to="/vehicle-verification"
-                onClick={closeMobileMenu}
-              >
-                VIN Verification
-              </PublicMobileLink>
+                <ThemeToggle />
+              </div>
+
               <PublicMobileAnchor
                 href="#how-it-works"
                 onClick={closeMobileMenu}
@@ -835,9 +896,6 @@ function Navbar() {
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 Support
-              </PublicMobileLink>
-              <PublicMobileLink to="/login" onClick={closeMobileMenu}>
-                Log in
               </PublicMobileLink>
               <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
                 Get Started

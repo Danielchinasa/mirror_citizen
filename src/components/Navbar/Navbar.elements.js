@@ -368,6 +368,15 @@ export const PublicCta = styled.a`
   }
 `;
 
+export const PublicDesktopOnly = styled.div`
+  display: inline-flex;
+  align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
 export const PublicHamburger = styled.button`
   display: none;
   border: none;
