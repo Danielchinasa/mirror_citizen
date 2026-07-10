@@ -95,6 +95,9 @@ import {
 } from "./HomePage.elements";
 const { useToken } = theme;
 
+// Fallback IP (Ghana) used when both IP lookups fail so login still works
+const DEFAULT_GHANA_IP = "102.131.16.255";
+
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
   const [ipCountry, setIpCountry] = useState(null);
@@ -162,7 +165,7 @@ const Home = () => {
         const payload = {
           accessToken: response.access_token,
           deviceToken: localStorage.getItem("clientToken"),
-          ipAddress: ipAddress,
+          ipAddress: ipAddress || DEFAULT_GHANA_IP,
           deviceName: "Web app",
         };
 
@@ -187,7 +190,7 @@ const Home = () => {
         dispatch(fetchUserProfile(userData.jwtToken));
 
         if (userData.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          localStorage.setItem("IpAddress", ipAddress || DEFAULT_GHANA_IP);
           history.push("/main-dashboard");
         } else {
           Swal.fire({

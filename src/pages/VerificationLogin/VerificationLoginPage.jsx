@@ -42,6 +42,9 @@ import {
   Spinner,
 } from "./VerificationLogin.elements";
 
+// Fallback IP (Ghana) used when both IP lookups fail so login still works
+const DEFAULT_GHANA_IP = "102.131.16.255";
+
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -145,7 +148,7 @@ const VerificationLoginPage = () => {
     try {
       const payload = {
         ...formData,
-        ipAddress,
+        ipAddress: ipAddress || DEFAULT_GHANA_IP,
         deviceToken: localStorage.getItem("clientToken"),
       };
 
@@ -153,7 +156,7 @@ const VerificationLoginPage = () => {
 
       if (response.jwtToken) {
         trackGA4Event("login", { method: "email" });
-        localStorage.setItem("IpAddress", ipAddress);
+        localStorage.setItem("IpAddress", ipAddress || DEFAULT_GHANA_IP);
         trackEvent({
           action: "click_normail_signin_sucess",
           category: "Authentication Success",
@@ -185,7 +188,7 @@ const VerificationLoginPage = () => {
         const payload = {
           accessToken: response.access_token,
           deviceToken: localStorage.getItem("clientToken"),
-          ipAddress,
+          ipAddress: ipAddress || DEFAULT_GHANA_IP,
           deviceName: "Web app",
         };
 
@@ -194,7 +197,7 @@ const VerificationLoginPage = () => {
         dispatch(fetchUserProfile(res.jwtToken));
 
         if (res.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          localStorage.setItem("IpAddress", ipAddress || DEFAULT_GHANA_IP);
           history.push(redirectTo);
         } else {
           setFormErrors({ general: "Google login failed." });
@@ -222,7 +225,7 @@ const VerificationLoginPage = () => {
       const payload = {
         accessToken: fbRes.accessToken,
         deviceToken: localStorage.getItem("clientToken"),
-        ipAddress,
+        ipAddress: ipAddress || DEFAULT_GHANA_IP,
         deviceName: "Web app",
       };
 
@@ -231,7 +234,7 @@ const VerificationLoginPage = () => {
       dispatch(fetchUserProfile(res.jwtToken));
 
       if (res.jwtToken) {
-        localStorage.setItem("IpAddress", ipAddress);
+        localStorage.setItem("IpAddress", ipAddress || DEFAULT_GHANA_IP);
         history.push(redirectTo);
       } else {
         setFormErrors({ general: "Facebook login failed." });
