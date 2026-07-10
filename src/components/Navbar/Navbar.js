@@ -203,12 +203,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
+        <Link to="#services" style={{ textDecoration: "none" }}>
           {t("nav.nationalId")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
+        <Link to="#services" style={{ textDecoration: "none" }}>
           {t("nav.vinVerification")}
         </Link>
       </Menu.Item>
@@ -217,15 +217,61 @@ function Navbar() {
 
   const countriesMenu = (
     <Menu>
-      <Menu.Item key="country-kenya">
-        <Link to="/kenya" style={{ textDecoration: "none" }}>
-          🇰🇪 Kenya
-        </Link>
-      </Menu.Item>
       <Menu.Item key="country-ghana">
-        <Link to="/ghana" style={{ textDecoration: "none" }}>
-          🇬🇭 Ghana
-        </Link>
+        <a
+          href="https://e-citizen.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Ghana flag" style={{ marginRight: 10 }}>
+            🇬🇭
+          </span>
+          Ghana
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-kenya">
+        <a
+          href="https://e-raia.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Kenya flag" style={{ marginRight: 10 }}>
+            🇰🇪
+          </span>
+          Kenya
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-uganda">
+        <a
+          href="https://e-raia.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Uganda flag" style={{ marginRight: 10 }}>
+            🇺🇬
+          </span>
+          Uganda
+        </a>
+      </Menu.Item>
+      <Menu.Item key="country-civ">
+        <a
+          href="https://citoyen.africa"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span
+            role="img"
+            aria-label="Côte d'Ivoire flag"
+            style={{ marginRight: 10 }}
+          >
+            🇨🇮
+          </span>
+          Côte d'Ivoire
+        </a>
       </Menu.Item>
     </Menu>
   );
@@ -826,7 +872,7 @@ function Navbar() {
 
           <PublicMobilePanel $open={click}>
             <PublicMobileMenu>
-              <PublicMobileLink
+              {/* <PublicMobileLink
                 to="/nin-verification"
                 onClick={closeMobileMenu}
               >
@@ -837,7 +883,7 @@ function Navbar() {
                 onClick={closeMobileMenu}
               >
                 {t("nav.vinVerification")}
-              </PublicMobileLink>
+              </PublicMobileLink> */}
               <PublicMobileAnchor
                 href="#how-it-works"
                 onClick={closeMobileMenu}
