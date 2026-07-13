@@ -625,22 +625,31 @@ export const FeatureItem = styled.li`
 export const ServiceBtn = styled(Link)`
   display: block;
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px 10px;
+  border-radius: 10px;
   font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 15px;
   text-decoration: none;
   text-align: center;
-  transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#D80111" : "#fff")};
-  color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#D80111" : "#e5e7eb")};
+  transition: all 0.25s ease;
+  background: #D80111;
+  color: #fff;
+  border: 1.5px solid #D80111;
+  box-shadow: 0 4px 12px rgba(216, 1, 17, 0.2);
+  letter-spacing: 0.3px;
 
   &:hover {
-    background: ${({ $popular }) => ($popular ? "#ee1020" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#D80111")};
-    border-color: #d80111;
+    background: #ee1020;
+    color: #fff;
+    border-color: #ee1020;
+    box-shadow: 0 6px 20px rgba(216, 1, 17, 0.35);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(216, 1, 17, 0.2);
   }
 `;
 

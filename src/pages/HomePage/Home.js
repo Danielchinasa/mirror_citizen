@@ -390,7 +390,7 @@ const Home = () => {
                 : "Official identity verification for individuals and businesses across Kenya and the diaspora."}
             </HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn
+              <SecondaryBtn
                 to="#"
                 onClick={(e) => {
                   e.preventDefault();
@@ -402,7 +402,7 @@ const Home = () => {
                   ? "Thibitisha Kitambulisho cha Taifa"
                   : "Verify National ID"}{" "}
                 <FaArrowRight />
-              </PrimaryBtn>
+              </SecondaryBtn>
             </HeroButtons>
             <HeroButtons>
               <SecondaryBtn href="#how-it-works">
