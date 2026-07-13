@@ -45,7 +45,7 @@ function Footer() {
               <PublicBrand to="/">
                 <span className="brand-red">e</span>
                 <span className="brand-dot">-</span>
-                raia<span className="brand-dot">.com</span>
+                citizen<span className="brand-dot">.africa</span>
               </PublicBrand>
               <BrandDesc>
                 Your trusted partner for digital identity verification and
@@ -85,13 +85,9 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>Services</FooterColTitle>
-              <FooterLink to="/nin-verification">
-                National ID Verification
-              </FooterLink>
+              <FooterLink to="/">National ID Verification</FooterLink>
 
-              <FooterLink to="/vehicle-verification">
-                VIN Verification
-              </FooterLink>
+              <FooterLink to="/">VIN Verification</FooterLink>
               <FooterLink to="/api-docs">API for Business</FooterLink>
             </FooterCol>
 

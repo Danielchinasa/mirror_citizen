@@ -373,10 +373,10 @@ const Home = () => {
               businesses across Ghana and the diaspora.
             </HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn to={ctaLink}>
+              <SecondaryBtn href="#services">
                 Verify Ghana ID
                 <FaArrowRight />
-              </PrimaryBtn>
+              </SecondaryBtn>
               <SecondaryBtn href="#how-it-works">
                 Check VIN <FaArrowRight />
               </SecondaryBtn>
