@@ -18,9 +18,9 @@ const enContent = {
   generalItems: [
     {
       key: "1",
-      title: "Does e-raia.com comply with privacy standards?",
+      title: "Does e-raia.africa comply with privacy standards?",
       content:
-        "Yes. e-raia.com is designed as a consent-driven platform. For this market, the service should be operated in line with applicable local data protection rules, e-raia.com privacy policies, and GDPR where it applies to cross-border or diaspora users.",
+        "Yes. e-raia.africa is designed as a consent-driven platform. For this market, the service should be operated in line with applicable local data protection rules, e-raia.africa privacy policies, and GDPR where it applies to cross-border or diaspora users.",
     },
     {
       key: "2",
@@ -54,7 +54,7 @@ const enContent = {
     },
     {
       key: "7",
-      title: "Is my verification result saved on e-raia.com?",
+      title: "Is my verification result saved on e-raia.africa?",
       content:
         "Verification results may be temporarily stored in your account so you can view your search history. Results should be deleted or anonymised after the applicable retention period stated in the privacy policy.",
     },

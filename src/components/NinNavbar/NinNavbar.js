@@ -43,7 +43,7 @@ function NinNavbar() {
           <NinBrand to="/nin-verification">
             <span className="brand-red">e</span>
             <span className="brand-dot">-</span>
-            raia<span className="brand-dot">.com</span>
+            raia<span className="brand-dot">.africa</span>
           </NinBrand>
 
           <NinHamburgerIcon onClick={handleClick}>

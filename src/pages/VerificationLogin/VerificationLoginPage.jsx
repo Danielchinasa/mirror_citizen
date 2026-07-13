@@ -250,7 +250,7 @@ const VerificationLoginPage = () => {
         <NavBrand to="/">
           <span className="brand-red">e</span>
           <span className="brand-dot">-</span>
-          raia<span className="brand-dot">.com</span>
+          raia<span className="brand-dot">.africa</span>
         </NavBrand>
         <NavLinks>
           <NavLink to="/individual/sign-up/1">Register</NavLink>

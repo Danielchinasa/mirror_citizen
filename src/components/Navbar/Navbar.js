@@ -810,7 +810,7 @@ function Navbar() {
             <PublicBrand to="/">
               <span className="brand-red">e</span>
               <span className="brand-dot">-</span>
-              raia<span className="brand-dot">.com</span>
+              raia<span className="brand-dot">.africa</span>
             </PublicBrand>
 
             <PublicCenter>
@@ -947,7 +947,7 @@ function Navbar() {
             <PublicBrand to="/">
               <span className="brand-red">e</span>
               <span className="brand-dot">-</span>
-              raia<span className="brand-dot">.com</span>
+              raia<span className="brand-dot">.africa</span>
             </PublicBrand>
             <HamburgerIcon onClick={handleClick}>
               {click ? (

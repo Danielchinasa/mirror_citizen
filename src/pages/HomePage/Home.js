@@ -370,10 +370,10 @@ const Home = () => {
             </HeroTitle>
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn to={ctaLink}>
+              <SecondaryBtn href="#services">
                 {t("home.hero.verifyNationalId")} <FaArrowRight />
-              </PrimaryBtn>
-              <SecondaryBtn href="#how-it-works">
+              </SecondaryBtn>
+              <SecondaryBtn href="#services">
                 {t("home.hero.checkVin")} <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>
