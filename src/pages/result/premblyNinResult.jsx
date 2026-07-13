@@ -378,28 +378,6 @@ const PremblyNinResult = () => {
 
               <Divider style={{ margin: "4px 0 24px" }} />
 
-              {/* Verification Actions */}
-              {result?.actions && Object.keys(result.actions).length > 0 && (
-                <>
-                  <SectionTitle>
-                    <FaShieldAlt />
-                    Verification Actions
-                  </SectionTitle>
-                  <ActionsGrid>
-                    {Object.entries(result.actions).map(([key, val]) => (
-                      <ActionTag key={key}>
-                        <FaCheckCircle style={{ color: "#6b7280" }} />
-                        <span style={{ color: "#6b7280" }}>
-                          {key.replace(/_/g, " ")}:
-                        </span>
-                        <strong>{val}</strong>
-                      </ActionTag>
-                    ))}
-                  </ActionsGrid>
-                  <Divider style={{ margin: "4px 0 24px" }} />
-                </>
-              )}
-
               {/* Session info */}
               {meta?.sessionId && (
                 <>

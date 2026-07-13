@@ -17,9 +17,9 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your ",
-    heroHighlight: "National ID",
-    heroTitleContinue: "in seconds",
+    heroTitle: "Verify Your National ID ",
+    heroHighlight: "in seconds",
+    heroTitleContinue: "",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/kenya.png"),
