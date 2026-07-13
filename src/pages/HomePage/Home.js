@@ -47,6 +47,7 @@ import {
   HeroButtons,
   PrimaryBtn,
   SecondaryBtn,
+
   TrustIndicators,
   TrustItem,
   TrustIcon,
@@ -369,9 +370,9 @@ const Home = () => {
             </HeroTitle>
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn to={ctaLink}>
+              <SecondaryBtn to={ctaLink}>
                 {t("home.hero.verifyNationalId")} <FaArrowRight />
-              </PrimaryBtn>
+              </SecondaryBtn>
               <SecondaryBtn href="#how-it-works">
                 {t("home.hero.checkVin")} <FaArrowRight />
               </SecondaryBtn>
@@ -486,9 +487,9 @@ const Home = () => {
                     localStorage.getItem("currencyCheck") ||
                     "USD") === "CI" ||
                   localStorage.getItem("currencyCheck") === "XOF";
-                if (!s) return isCI ? "FCFA —" : "$ —";
+                if (!s) return isCI ? "CFA —" : "$ —";
                 return isCI
-                  ? `FCFA ${Number(s.price).toLocaleString()}`
+                  ? `CFA ${Number(s.price).toLocaleString()}`
                   : `$${Number(s.price2).toFixed(2)}`;
               })()}
             </ServicePrice>
@@ -530,9 +531,9 @@ const Home = () => {
                 const isCI =
                   ipCountry === "CI" ||
                   localStorage.getItem("currencyCheck") === "XOF";
-                if (!s) return isCI ? "FCFA —" : "$ —";
+                if (!s) return isCI ? "CFA —" : "$ —";
                 return isCI
-                  ? `FCFA ${Number(s.price).toLocaleString()}`
+                  ? `CFA ${Number(s.price).toLocaleString()}`
                   : `$${Number(s.price2).toFixed(2)}`;
               })()}
             </ServicePrice>
@@ -574,9 +575,9 @@ const Home = () => {
                 const isCI =
                   ipCountry === "CI" ||
                   localStorage.getItem("currencyCheck") === "XOF";
-                if (!s) return isCI ? "FCFA —" : "$ —";
+                if (!s) return isCI ? "CFA —" : "$ —";
                 return isCI
-                  ? `FCFA ${Number(s.price).toLocaleString()}`
+                  ? `CFA ${Number(s.price).toLocaleString()}`
                   : `$${Number(s.price2).toFixed(2)}`;
               })()}
             </ServicePrice>

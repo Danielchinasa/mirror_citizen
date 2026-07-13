@@ -58,7 +58,7 @@ const VehicleHero = () => {
             </HeroButtons>
             <PriceBadgesRow>
               <PriceBadge>
-                VIN checks from <span>{getPrice("VIN") || "FCFA 400"}</span>
+                VIN checks from <span>{getPrice("VIN") || "CFA 400"}</span>
               </PriceBadge>
             </PriceBadgesRow>
           </HeroContent>

@@ -271,6 +271,7 @@ export const SecondaryBtn = styled.a`
   }
 `;
 
+
 export const TrustIndicators = styled.div`
   display: flex;
   gap: 32px;
@@ -624,19 +625,25 @@ export const ServiceBtn = styled(Link)`
   padding: 10px;
   border-radius: 8px;
   font-family: "Poppins", sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   text-decoration: none;
   text-align: center;
-  transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#FD7A00" : "#fff")};
-  color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#FD7A00" : "#e5e7eb")};
+  transition: all 0.3s ease-out;
+  background: ${({ $popular }) => ($popular ? "#ff4d4f" : "#FD7A00")};
+  color: #fff;
+  border: none;
+  position: relative;
+  box-shadow: ${({ $popular }) =>
+    $popular
+      ? "0 4px 16px rgba(253, 122, 0, 0.4)"
+      : "0 3px 12px rgba(253, 122, 0, 0.25)"};
 
   &:hover {
-    background: ${({ $popular }) => ($popular ? "#FF8C1A" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#FD7A00")};
-    border-color: var(--ec-primary);
+    background: ${({ $popular }) => ($popular ? "#e03638" : "#ff8c1a")};
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(253, 122, 0, 0.45);
+    transform: translateY(-1px);
   }
 `;
 

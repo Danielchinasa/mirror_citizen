@@ -366,7 +366,7 @@ const VerifyPage = () => {
         discount
     : 0;
 
-  const currencySymbol = isLocal ? "FCFA " : "$";
+  const currencySymbol = isLocal ? "CFA " : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -382,7 +382,7 @@ const VerifyPage = () => {
   const userBalance = userDetails?.walletBalance || 0;
   const userWalletCurrency = userDetails?.currency || user?.currency || "";
 
-  // The wallet is always held in FCFA (XOF). Compute the FCFA total so wallet
+  // The wallet is always held in CFA (XOF). Compute the CFA total so wallet
   // comparisons and charges are always in the correct currency, regardless of
   // what currency is displayed to the user.
   const totalAmountFcfa = pricingData
@@ -526,7 +526,7 @@ const VerifyPage = () => {
 
     const normalizeCurrency = (value = "") => {
       const normalized = String(value).trim().toUpperCase();
-      if (normalized === "FCFA") return "XOF";
+      if (normalized === "FCFA" || normalized === "CFA") return "XOF";
       return normalized;
     };
 
@@ -626,14 +626,14 @@ const VerifyPage = () => {
   };
 
   const handleWalletPayment = async (transactionId, apiFormData) => {
-    // Check wallet balance — wallet is always in FCFA
+    // Check wallet balance — wallet is always in CFA
     if (userBalance < totalAmountFcfa) {
       setLoading(false);
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
         title: "Wallet Balance Low",
-        text: `Your wallet balance (FCFA ${userBalance.toLocaleString()}) is insufficient for this transaction (FCFA ${totalAmountFcfa.toLocaleString()}).`,
+        text: `Your wallet balance (CFA ${userBalance.toLocaleString()}) is insufficient for this transaction (CFA ${totalAmountFcfa.toLocaleString()}).`,
         confirmButtonColor: "#FD7A00",
       });
       return;
@@ -647,9 +647,9 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
         userNIN: userDetails?.nin || "",
         transactionID: transactionId,
-        currency: "XOF", // wallet is always FCFA
+        currency: "XOF", // wallet is always CFA
         paymentType: "WALLET",
-        amount: totalAmountFcfa, // always charge in FCFA
+        amount: totalAmountFcfa, // always charge in CFA
       };
 
       const response = await fetch(apiUrl, {

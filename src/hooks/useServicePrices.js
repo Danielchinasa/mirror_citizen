@@ -27,7 +27,7 @@ const useServicePrices = () => {
     if (!found) return null;
     if (isCI) {
       return found.price
-        ? `FCFA ${Number(found.price).toLocaleString()}`
+        ? `CFA ${Number(found.price).toLocaleString()}`
         : null;
     }
     return found.price2 ? `$${Number(found.price2).toFixed(2)}` : null;

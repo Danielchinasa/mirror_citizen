@@ -240,9 +240,10 @@ const VerificationLoginPage = () => {
     <PageWrapper>
       <LoginNav>
         <PublicBrand to="/">
-          <span className="brand-red">e</span>
-          <span className="brand-dot">-</span>
-          citoyen<span className="brand-dot">.africa</span>
+          {/* <span className="brand-red">e</span>
+                        <span className="brand-dot">-</span> */}
+          citoyen
+          <span className="brand-red">.africa</span>
         </PublicBrand>
         <NavLinks>
           <NavLink to="/nin-verification">CNI</NavLink>

@@ -807,9 +807,10 @@ function Navbar() {
         <PublicNav>
           <PublicNavInner>
             <PublicBrand to="/">
-              <span className="brand-red">e</span>
-              <span className="brand-dot">-</span>
-              citoyen<span className="brand-dot">.africa</span>
+              {/* <span className="brand-red">e</span>
+              <span className="brand-dot">-</span> */}
+              citoyen
+              <span className="brand-red">.africa</span>
             </PublicBrand>
 
             <PublicCenter>
@@ -923,9 +924,10 @@ function Navbar() {
         <Nav $token={token}>
           <NavbarContainer>
             <PublicBrand to="/">
-              <span className="brand-red">e</span>
-              <span className="brand-dot">-</span>
-              citoyen<span className="brand-dot">.africa</span>
+              {/* <span className="brand-red">e</span>
+              <span className="brand-dot">-</span> */}
+              citoyen
+              <span className="brand-red">.africa</span>
             </PublicBrand>
             <HamburgerIcon onClick={handleClick}>
               {click ? (
