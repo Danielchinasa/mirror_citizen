@@ -120,27 +120,25 @@ const Home = () => {
       // When uncommented, bypasses all IP detection APIs
       // Comment out this entire section for normal operation
       // ============================================================
-      const testIp = "102.131.16.255"; // Ghana IP
-      const testCountry = "GH"; // Ghana
-      const testCurrency = "GHS"; // Ghanaian Cedi
-      // For testing USD pricing, use:
-      // const testIp = "8.8.8.8";           // US IP
-      // const testCountry = "US";           // United States
-      // const testCurrency = "USD";         // US Dollar
-      setIpAddress(testIp);
-      setIpCountry(testCountry);
-      localStorage.setItem("IpAddress", testIp);
-      localStorage.setItem("userCountry", testCountry);
-      localStorage.setItem("currencyCheck", testCurrency);
-      console.log(
-        "🧪 Using test IP/Country:",
-        testIp,
-        testCountry,
-        testCurrency,
-      );
-      return;
-      // ============================================================
-      return;
+      // const testIp = "102.131.16.255"; // Ghana IP
+      // const testCountry = "GH"; // Ghana
+      // const testCurrency = "GHS"; // Ghanaian Cedi
+      // // For testing USD pricing, use:
+      // // const testIp = "8.8.8.8";           // US IP
+      // // const testCountry = "US";           // United States
+      // // const testCurrency = "USD";         // US Dollar
+      // setIpAddress(testIp);
+      // setIpCountry(testCountry);
+      // localStorage.setItem("IpAddress", testIp);
+      // localStorage.setItem("userCountry", testCountry);
+      // localStorage.setItem("currencyCheck", testCurrency);
+      // console.log(
+      //   "🧪 Using test IP/Country:",
+      //   testIp,
+      //   testCountry,
+      //   testCurrency,
+      // );
+      // return;
       // ============================================================
 
       // Try ipapi.co first — returns IP + country info in one call
