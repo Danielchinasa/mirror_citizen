@@ -61,30 +61,70 @@ const VerificationLoginPage = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   useEffect(() => {
-    const fetchIpAddress = async () => {
-      try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
-      } catch (error1) {
-        console.error("Error fetching IP from primary URL:", error1);
+    // Use stored IP address and country from main landing page
+    const storedIp = localStorage.getItem("IpAddress");
+    const storedCountry = localStorage.getItem("userCountry");
+    const storedCurrency = localStorage.getItem("currencyCheck");
+
+    if (storedIp && storedCountry && storedCurrency) {
+      // Already have IP/Country from main landing page
+      setIpAddress(storedIp);
+      console.log(
+        "✅ VerificationLogin using stored IP/Country:",
+        storedIp,
+        storedCountry,
+        storedCurrency,
+      );
+    } else {
+      // Fallback: fetch IP only if not already stored (shouldn't happen if user came from home page)
+      const fetchIpAddress = async () => {
         try {
           const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
-        } catch (error2) {
-          console.error("Error fetching IP from secondary URL:", error2);
+          const ip = response.data.ip;
+          const country = (
+            response.data.country_code ||
+            response.data.country ||
+            ""
+          ).toUpperCase();
+
+          if (ip) localStorage.setItem("IpAddress", ip);
+          if (country) {
+            localStorage.setItem("userCountry", country);
+            const currency = country === "UG" ? "UGX" : "USD";
+            localStorage.setItem("currencyCheck", currency);
+          }
+          setIpAddress(ip);
+        } catch (error1) {
+          console.error("Error fetching IP from ipapi.co:", error1);
           try {
-            const response = await axios.get(
-              "https://api.ipify.org?format=json",
-            );
-            setIpAddress(response.data.ip);
-          } catch (error3) {
-            console.error("Error fetching IP from tertiary URL:", error3);
-            setIpAddress(null);
+            const response = await axios.get("https://api.ipbase.com/v1/json/");
+            const ip = response.data.ip;
+            const country = (
+              response.data.country_code ||
+              response.data.countryCode ||
+              ""
+            ).toUpperCase();
+
+            if (ip) localStorage.setItem("IpAddress", ip);
+            if (country) {
+              localStorage.setItem("userCountry", country);
+              const currency = country === "UG" ? "UGX" : "USD";
+              localStorage.setItem("currencyCheck", currency);
+            }
+            setIpAddress(ip);
+          } catch (error2) {
+            console.error("Error fetching IP from fallback:", error2);
+            // Use default Uganda values
+            const defaultIp = "41.210.160.1";
+            localStorage.setItem("IpAddress", defaultIp);
+            localStorage.setItem("userCountry", "UG");
+            localStorage.setItem("currencyCheck", "UGX");
+            setIpAddress(defaultIp);
           }
         }
-      }
-    };
-    fetchIpAddress();
+      };
+      fetchIpAddress();
+    }
 
     const rememberedEmail = Cookies.get("rememberedEmail");
     if (rememberedEmail) {

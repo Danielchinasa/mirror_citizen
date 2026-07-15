@@ -112,49 +112,101 @@ const Home = () => {
 
   useEffect(() => {
     const fetchIpAddress = async () => {
-      // TODO: remove hardcoded UG override before release
-      setIpAddress("41.210.160.1");
-      localStorage.setItem("IpAddress", "41.210.160.1");
-      setIpCountry("UG");
-      localStorage.setItem("currencyCheck", "UGX");
-      return;
+      // ═══════════════════════════════════════════════════════════════════
+      // 🧪 TESTING SECTION - Uncomment to manually set IP/Country/Currency
+      // ═══════════════════════════════════════════════════════════════════
+      // const testIp = "41.210.160.1";       // Uganda IP
+      // const testCountry = "UG";             // Uganda country code
+      // const testCurrency = "UGX";           // Uganda Shilling
+      //
+      // setIpAddress(testIp);
+      // localStorage.setItem("IpAddress", testIp);
+      // setIpCountry(testCountry);
+      // localStorage.setItem("userCountry", testCountry);
+      // localStorage.setItem("currencyCheck", testCurrency);
+      // console.log("🧪 TEST MODE: Using manual IP/Country:", testIp, testCountry);
+      // return;
+      // ═══════════════════════════════════════════════════════════════════
 
+      // Try ipapi.co first (gets IP and country)
       try {
         const response = await axios.get("https://ipapi.co/json/");
         const ip = response.data.ip;
-        const country = response.data.country_code;
-        setIpAddress(ip);
-        localStorage.setItem("IpAddress", ip);
-        setIpCountry(country);
-        if (country === "CI") {
-          localStorage.setItem("currencyCheck", "XOF");
-        } else if (country === "UG") {
-          localStorage.setItem("currencyCheck", "UGX");
-        } else {
-          localStorage.setItem("currencyCheck", "USD");
+        const country = (
+          response.data.country_code ||
+          response.data.country ||
+          ""
+        ).toUpperCase();
+
+        if (ip) {
+          localStorage.setItem("IpAddress", ip);
+          setIpAddress(ip);
+        }
+
+        if (country) {
+          localStorage.setItem("userCountry", country);
+          setIpCountry(country);
+          const currency = country === "UG" ? "UGX" : "USD";
+          localStorage.setItem("currencyCheck", currency);
+          console.log(
+            "✅ IP/Country detected from ipapi.co:",
+            ip,
+            country,
+            currency,
+          );
+          return;
         }
       } catch (error1) {
-        console.error("Error fetching IP/country from ipapi.co:", error1);
-        try {
-          const response = await axios.get("https://api.ipbase.com/v1/json/");
-          const ip = response.data.ip;
-          const country = response.data.country_code;
-          setIpAddress(ip);
-          localStorage.setItem("IpAddress", ip);
-          setIpCountry(country);
-          if (country === "CI") {
-            localStorage.setItem("currencyCheck", "XOF");
-          } else if (country === "UG") {
-            localStorage.setItem("currencyCheck", "UGX");
-          } else {
-            localStorage.setItem("currencyCheck", "USD");
-          }
-        } catch (error2) {
-          console.error("Error fetching IP from fallback:", error2);
-          setIpAddress(null);
-          localStorage.setItem("currencyCheck", "USD");
-        }
+        console.error("❌ ipapi.co failed:", error1);
       }
+
+      // Fallback to ipbase.com (also gets IP and country)
+      try {
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        const ip = response.data.ip;
+        const country = (
+          response.data.country_code ||
+          response.data.countryCode ||
+          ""
+        ).toUpperCase();
+
+        if (ip) {
+          localStorage.setItem("IpAddress", ip);
+          setIpAddress(ip);
+        }
+
+        if (country) {
+          localStorage.setItem("userCountry", country);
+          setIpCountry(country);
+          const currency = country === "UG" ? "UGX" : "USD";
+          localStorage.setItem("currencyCheck", currency);
+          console.log(
+            "✅ IP/Country detected from ipbase.com:",
+            ip,
+            country,
+            currency,
+          );
+          return;
+        }
+      } catch (error2) {
+        console.error("❌ ipbase.com failed:", error2);
+      }
+
+      // Both APIs failed - use default Uganda values
+      const defaultIp = "41.210.160.1";
+      const defaultCountry = "UG";
+      const defaultCurrency = "UGX";
+      localStorage.setItem("IpAddress", defaultIp);
+      localStorage.setItem("userCountry", defaultCountry);
+      localStorage.setItem("currencyCheck", defaultCurrency);
+      setIpAddress(defaultIp);
+      setIpCountry(defaultCountry);
+      console.log(
+        "⚠️ Both APIs failed - using default Uganda values:",
+        defaultIp,
+        defaultCountry,
+        defaultCurrency,
+      );
     };
     fetchIpAddress();
   }, []);

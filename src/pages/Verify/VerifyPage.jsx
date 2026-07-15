@@ -301,6 +301,91 @@ const VerifyPage = () => {
     };
   }, []);
 
+  // Ensure IP/Country is stored (use from main landing page if available)
+  useEffect(() => {
+    const ensureIpAndCurrency = async () => {
+      // Check if IP and country are already stored from main landing page
+      const storedIp = localStorage.getItem("IpAddress");
+      const storedCountry = localStorage.getItem("userCountry");
+      const storedCurrency = localStorage.getItem("currencyCheck");
+
+      // If we have all stored values, use them (main landing page already fetched)
+      if (storedIp && storedCountry && storedCurrency) {
+        console.log(
+          "✅ VerifyPage using stored IP/Country:",
+          storedIp,
+          storedCountry,
+          storedCurrency,
+        );
+        return; // Don't fetch again
+      }
+
+      // Otherwise, fetch IP and country (fallback for direct page access)
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        if (!response.ok) throw new Error("ipapi request failed");
+
+        const data = await response.json();
+        const ip = data?.ip;
+        const country = (
+          data?.country_code ||
+          data?.country ||
+          ""
+        ).toUpperCase();
+
+        if (ip) {
+          localStorage.setItem("IpAddress", ip);
+        }
+
+        if (country) {
+          localStorage.setItem("userCountry", country);
+          const currency = country === "UG" ? "UGX" : "USD";
+          localStorage.setItem("currencyCheck", currency);
+          return;
+        }
+      } catch (error) {
+        console.error("VerifyPage IP lookup failed:", error);
+      }
+
+      // Fallback to ipbase.com for IP and country
+      try {
+        const fallback = await fetch("https://api.ipbase.com/v1/json/");
+        if (fallback.ok) {
+          const fallbackData = await fallback.json();
+          const ip = fallbackData?.ip;
+          const country = (
+            fallbackData?.country_code ||
+            fallbackData?.countryCode ||
+            ""
+          ).toUpperCase();
+
+          if (ip) {
+            localStorage.setItem("IpAddress", ip);
+          }
+
+          if (country) {
+            localStorage.setItem("userCountry", country);
+            const currency = country === "UG" ? "UGX" : "USD";
+            localStorage.setItem("currencyCheck", currency);
+            return;
+          }
+        }
+      } catch (fallbackError) {
+        console.error("VerifyPage fallback IP lookup failed:", fallbackError);
+      }
+
+      // Both APIs failed - use default Uganda values
+      const defaultIp = "41.210.160.1";
+      const defaultCountry = "UG";
+      const defaultCurrency = "UGX";
+      localStorage.setItem("IpAddress", defaultIp);
+      localStorage.setItem("userCountry", defaultCountry);
+      localStorage.setItem("currencyCheck", defaultCurrency);
+    };
+
+    ensureIpAndCurrency();
+  }, []);
+
   // Fetch service prices
   useEffect(() => {
     if (!config || !userToken) return;
