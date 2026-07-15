@@ -37,9 +37,7 @@ export const fetchVerificationServicePrices =
           : services[config.apiServiceName];
         rate = response.data?.rate;
       } else {
-        // TODO: remove hardcoded IP before release
-        // const ipAddress = localStorage.getItem("IpAddress");
-        const ipAddress = "41.212.86.175";
+        const ipAddress = localStorage.getItem("IpAddress") || "41.212.86.175";
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
@@ -670,11 +668,12 @@ export const initiateVerificationRequest =
           delete restructuredData[section];
         }
       });
+      const ipAddress = localStorage.getItem("IpAddress") || "41.212.86.175";
       const response = await apiPost(
         `/africa/verification/KE/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": "41.212.86.175" } }, // TODO: remove hardcoded IP before release
+        { headers: { "X-Forwarded-For": ipAddress } },
       );
 
       // dispatch({
@@ -745,11 +744,12 @@ export const initiateStakeHoldersRequest =
           delete restructuredData[section];
         }
       });
+      const ipAddress = localStorage.getItem("IpAddress") || "41.212.86.175";
       const response = await apiPost(
         `/africa/verification/KE/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": "41.212.86.175" } }, // TODO: remove hardcoded IP before release
+        { headers: { "X-Forwarded-For": ipAddress } },
       );
 
       // Return the user data upon successful verification

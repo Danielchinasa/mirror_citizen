@@ -116,12 +116,32 @@ const Home = () => {
 
   useEffect(() => {
     const fetchIpAndCountry = async () => {
-      // // TODO: remove hardcoded KE override before release
-      // setIpAddress("41.212.86.175");
-      // localStorage.setItem("IpAddress", "41.212.86.175");
-      // setUserCountry("KE");
-      // localStorage.setItem("currencyCheck", "KES");
+      // ============================================================
+      //  🧪 TODO: TESTING OVERRIDE - Uncomment to use static IP/Country
+      // ============================================================
+      // When uncommented, bypasses all IP detection APIs
+      // Comment out this entire section for normal operation
+      // ============================================================
+      // const testIp = "41.212.86.175"; // Kenya IP
+      // const testCountry = "KE"; // Kenya
+      // const testCurrency = "KES"; // Kenyan Shilling
+      // // For testing USD pricing, use:
+      // // const testIp = "8.8.8.8";           // US IP
+      // // const testCountry = "US";           // United States
+      // // const testCurrency = "USD";         // US Dollar
+      // setIpAddress(testIp);
+      // setUserCountry(testCountry);
+      // localStorage.setItem("IpAddress", testIp);
+      // localStorage.setItem("userCountry", testCountry);
+      // localStorage.setItem("currencyCheck", testCurrency);
+      // console.log(
+      //   "🧪 Using test IP/Country:",
+      //   testIp,
+      //   testCountry,
+      //   testCurrency,
+      // );
       // return;
+      // ============================================================
 
       // Try ipapi.co first — returns IP + country info in one call
       try {
@@ -130,6 +150,7 @@ const Home = () => {
         localStorage.setItem("IpAddress", response.data.ip);
         const country = response.data.country;
         setUserCountry(country);
+        localStorage.setItem("userCountry", country); // Store country in localStorage for other pages
         const currency = country === "KE" ? "KES" : "USD";
         localStorage.setItem("currencyCheck", currency);
         return;
@@ -137,14 +158,31 @@ const Home = () => {
         console.error("Error fetching from ipapi.co:", error1);
       }
 
-      // Fallback to ipbase.com for IP only
+      // Fallback to ipbase.com for IP and country
       try {
         const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
-        localStorage.setItem("IpAddress", response.data.ip);
+        const ip = response.data.ip;
+        const country = response.data.country_code || response.data.countryCode;
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        if (country) {
+          setUserCountry(country);
+          localStorage.setItem("userCountry", country);
+          const currency = country === "KE" ? "KES" : "USD";
+          localStorage.setItem("currencyCheck", currency);
+        }
+        return;
       } catch (error2) {
         console.error("Error fetching IP from both sources:", error2);
-        setIpAddress(null);
+        // Both APIs failed - use default Kenya IP and country
+        const defaultIp = "41.212.86.175";
+        const defaultCountry = "KE";
+        const defaultCurrency = "KES";
+        setIpAddress(defaultIp);
+        setUserCountry(defaultCountry);
+        localStorage.setItem("IpAddress", defaultIp);
+        localStorage.setItem("userCountry", defaultCountry);
+        localStorage.setItem("currencyCheck", defaultCurrency);
       }
     };
 
