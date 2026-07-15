@@ -256,23 +256,6 @@ function Navbar() {
           Uganda
         </a>
       </Menu.Item>
-      <Menu.Item key="country-civ">
-        <a
-          href="https://citoyen.africa"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <span
-            role="img"
-            aria-label="Côte d'Ivoire flag"
-            style={{ marginRight: 10 }}
-          >
-            🇨🇮
-          </span>
-          Côte d'Ivoire
-        </a>
-      </Menu.Item>
     </Menu>
   );
 

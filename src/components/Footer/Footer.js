@@ -86,10 +86,10 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>Services</FooterColTitle>
-              <FooterLink to="/">National ID Verification</FooterLink>
+              {/* <FooterLink to="/">National ID Verification</FooterLink>
               <FooterLink to="/">Alien Card Verification</FooterLink>
 
-              <FooterLink to="/">VIN Verification</FooterLink>
+              <FooterLink to="/">VIN Verification</FooterLink> */}
               <FooterLink to="/api-docs">API for Business</FooterLink>
             </FooterCol>
 
@@ -129,7 +129,7 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © e-citizen {new Date().getFullYear()}. All Rights Reserved.
+              © citoyen.africa {new Date().getFullYear()}. All Rights Reserved.
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
