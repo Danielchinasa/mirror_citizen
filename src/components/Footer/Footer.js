@@ -21,6 +21,11 @@ import {
   PublicBrand,
 } from "./Footer.elements";
 
+import Logo from "../../images/civ_logo.png";
+import LogoWhite from "../../images/civ_logo.png";
+import { useTheme } from "../../components/ThemeProvider";
+import { Link } from "react-router-dom";
+
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import { Modal } from "antd";
@@ -34,6 +39,7 @@ import { FaTiktok } from "react-icons/fa6";
 function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const { isDark } = useTheme();
 
   return (
     <>
@@ -42,12 +48,19 @@ function Footer() {
         <FooterInner>
           <FooterTop>
             <BrandCol>
-              <PublicBrand to="/">
-                {/* <span className="brand-red">e</span>
-                             <span className="brand-dot">-</span> */}
+              {/* <PublicBrand to="/">
+               
                 citoyen
                 <span className="brand-red">.africa</span>
-              </PublicBrand>
+              </PublicBrand> */}
+              <Link to="/">
+                <img
+                  src={isDark ? LogoWhite : Logo}
+                  alt="Logo"
+                  width={120}
+                  style={{ marginTop: "10px", cursor: "pointer" }}
+                />
+              </Link>
               <BrandDesc>
                 Your trusted partner for digital identity verification and
                 background checks.

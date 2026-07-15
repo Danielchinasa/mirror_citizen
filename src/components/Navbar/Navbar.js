@@ -35,6 +35,8 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
+import Logo from "../../images/civ_logo.png";
+import LogoWhite from "../../images/civ_logo.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
@@ -128,7 +130,8 @@ function Navbar() {
     //   ),
     // },
     {
-      key: "2",          label: (
+      key: "2",
+      label: (
         <a href="/profile" style={{ textDecoration: "none" }}>
           {t("nav.myProfile")}
         </a>
@@ -789,12 +792,18 @@ function Navbar() {
       <>
         <PublicNav>
           <PublicNavInner>
-            <PublicBrand to="/">
-              {/* <span className="brand-red">e</span>
-              <span className="brand-dot">-</span> */}
+            {/* <PublicBrand to="/">
               {language === "FR" ? "citoyen" : "citizen"}
               <span className="brand-red">.africa</span>
-            </PublicBrand>
+            </PublicBrand> */}
+            <Link to="/">
+              <img
+                src={isDark ? LogoWhite : Logo}
+                alt="Logo"
+                width={120}
+                style={{ marginTop: "10px", cursor: "pointer" }}
+              />
+            </Link>
 
             <PublicCenter>
               <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
@@ -1052,17 +1061,23 @@ function Navbar() {
                       </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
-                          <MainButton type="primary">{t("nav.myProfile")}</MainButton>
+                          <MainButton type="primary">
+                            {t("nav.myProfile")}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/contact">
-                          <MainButton type="primary">{t("nav.contactUs")}</MainButton>
+                          <MainButton type="primary">
+                            {t("nav.contactUs")}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/faq-uganda">
-                          <MainButton type="primary">{t("nav.faqs")}</MainButton>
+                          <MainButton type="primary">
+                            {t("nav.faqs")}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <div
@@ -1103,7 +1118,9 @@ function Navbar() {
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
                           <Title level={5}>{t("nav.fundWallet")}</Title>
-                          <Title level={5}>{t("nav.selectPaymentMethod")}</Title>
+                          <Title level={5}>
+                            {t("nav.selectPaymentMethod")}
+                          </Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1266,7 +1283,9 @@ function Navbar() {
                             type="primary"
                             onClick={handleLogout}
                             $token={token}
-                          >                              {t("nav.logout")}
+                          >
+                            {" "}
+                            {t("nav.logout")}
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
@@ -1314,7 +1333,9 @@ function Navbar() {
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
                           <Title level={5}>{t("nav.fundWallet")}</Title>
-                          <Title level={5}>{t("nav.selectPaymentMethod")}</Title>
+                          <Title level={5}>
+                            {t("nav.selectPaymentMethod")}
+                          </Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
