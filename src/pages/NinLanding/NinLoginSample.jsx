@@ -559,7 +559,7 @@ const NinLoginSample = () => {
           label: "Normal Signin Success",
           value: 1,
         });
-        history.push(redirectTo);
+        history.push("/main-dashboard");
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: "Incorrect email or password" });
         Swal.fire({

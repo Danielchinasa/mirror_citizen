@@ -259,7 +259,7 @@ const verificationConfig = {
         fieldName: "creditRegistry",
       },
     ],
-    allBureausDiscount: { ngn: 800, usd: 0.97 },
+    allBureausDiscount: { xof: 800, usd: 0.97 },
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },

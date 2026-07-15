@@ -24,7 +24,14 @@ export const apiGet = async (endpoint, token = null, options = {}) => {
 
     return response.data;
   } catch (error) {
-    console.error(`GET request failed for ${endpoint}:`, error);
+    const apiMessage = error.response?.data?.message || error.message;
+    const apiStatus = error.response?.data?.status;
+    console.error(`GET request failed for ${endpoint}:`);
+    console.error("API Response:", {
+      message: apiMessage,
+      status: apiStatus,
+      fullResponse: error.response?.data,
+    });
     throw error;
   }
 };
@@ -55,7 +62,14 @@ export const apiGetInternalCall = async (
 
     return response;
   } catch (error) {
-    console.error(`GET request failed for ${endpoint}:`, error);
+    const apiMessage = error.response?.data?.message || error.message;
+    const apiStatus = error.response?.data?.status;
+    console.error(`GET request failed for ${endpoint}:`);
+    console.error("API Response:", {
+      message: apiMessage,
+      status: apiStatus,
+      fullResponse: error.response?.data,
+    });
     throw error;
   }
 };
@@ -88,7 +102,14 @@ export const apiPost = async (
 
     return response.data;
   } catch (error) {
-    console.error(`POST request failed for ${endpoint}:`, error);
+    const apiMessage = error.response?.data?.message || error.message;
+    const apiStatus = error.response?.data?.status;
+    console.error(`POST request failed for ${endpoint}:`);
+    console.error("API Response:", {
+      message: apiMessage,
+      status: apiStatus,
+      fullResponse: error.response?.data,
+    });
     throw error;
   }
 };
@@ -120,7 +141,14 @@ export const apiPostInternalCall = async (
 
     return response;
   } catch (error) {
-    console.error(`POST request failed for ${endpoint}:`, error);
+    const apiMessage = error.response?.data?.message || error.message;
+    const apiStatus = error.response?.data?.status;
+    console.error(`POST request failed for ${endpoint}:`);
+    console.error("API Response:", {
+      message: apiMessage,
+      status: apiStatus,
+      fullResponse: error.response?.data,
+    });
     throw error;
   }
 };
@@ -153,7 +181,14 @@ export const apiPut = async (
 
     return response.data;
   } catch (error) {
-    console.error(`PUT request failed for ${endpoint}:`, error);
+    const apiMessage = error.response?.data?.message || error.message;
+    const apiStatus = error.response?.data?.status;
+    console.error(`PUT request failed for ${endpoint}:`);
+    console.error("API Response:", {
+      message: apiMessage,
+      status: apiStatus,
+      fullResponse: error.response?.data,
+    });
     throw error;
   }
 };

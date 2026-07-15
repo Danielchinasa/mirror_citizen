@@ -4,8 +4,8 @@ import baseUrl from "../apiConfig";
 /**
  * Initiate Paystack Payment
  * @param {Object} paymentData - Payment request data
- * @param {string} paymentData.amount - Amount in Naira (will be converted to kobo)
- * @param {string} paymentData.currency - Currency code (e.g., "NGN")
+ * @param {string} paymentData.amount - Amount in smallest currency unit (kobo for NGN, centimes for XOF)
+ * @param {string} paymentData.currency - Currency code (e.g., "XOF", "USD")
  * @param {string} paymentData.type - Payment type: TOPUP, VERIFICATION, STAKEHOLDERS
  * @param {string} paymentData.sessionCode - Required for VERIFICATION payments
  * @param {string} paymentData.stakeHolders - Required for STAKEHOLDERS payments

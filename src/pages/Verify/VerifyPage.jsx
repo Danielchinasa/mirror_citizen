@@ -294,6 +294,88 @@ const VerifyPage = () => {
     };
   }, []);
 
+  // Use stored IP/country from main landing page, only fetch if missing
+  useEffect(() => {
+    const ensureIpAndCurrency = async () => {
+      // First check if IP and country are already stored from main landing page
+      const storedIp = localStorage.getItem("IpAddress");
+      const storedCountry = localStorage.getItem("userCountry");
+      const storedCurrency = localStorage.getItem("currencyCheck");
+
+      // If we have all stored values, use them (main landing page already fetched)
+      if (storedIp && storedCountry && storedCurrency) {
+        console.log(
+          "✅ VerifyPage using stored IP/Country:",
+          storedIp,
+          storedCountry,
+          storedCurrency,
+        );
+        return; // Don't fetch again
+      }
+
+      // Otherwise, fetch IP and country (fallback for direct page access)
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        if (!response.ok) throw new Error("ipapi request failed");
+
+        const data = await response.json();
+        const ip = data?.ip;
+        const country = (
+          data?.country_code ||
+          data?.country ||
+          ""
+        ).toUpperCase();
+
+        if (ip) {
+          localStorage.setItem("IpAddress", ip);
+        }
+
+        if (country) {
+          localStorage.setItem("userCountry", country);
+          const currency = country === "CI" ? "XOF" : "USD";
+          localStorage.setItem("currencyCheck", currency);
+          return;
+        }
+      } catch (error) {
+        console.error("VerifyPage IP lookup failed:", error);
+      }
+
+      // Fallback to ipbase.com for IP and country
+      try {
+        const fallback = await fetch("https://api.ipbase.com/v1/json/");
+        if (fallback.ok) {
+          const fallbackData = await fallback.json();
+          const ip = fallbackData?.ip;
+          const country =
+            fallbackData?.country_code || fallbackData?.countryCode;
+
+          if (ip) {
+            localStorage.setItem("IpAddress", ip);
+          }
+
+          if (country) {
+            localStorage.setItem("userCountry", country);
+            const currency = country.toUpperCase() === "CI" ? "XOF" : "USD";
+            localStorage.setItem("currencyCheck", currency);
+            return;
+          }
+        }
+      } catch (fallbackError) {
+        console.error("VerifyPage fallback IP lookup failed:", fallbackError);
+      }
+
+      // Both APIs failed - use default Cote d'Ivoire values
+      const defaultIp = "41.202.219.255";
+      const defaultCountry = "CI";
+      const defaultCurrency = "XOF";
+      localStorage.setItem("IpAddress", defaultIp);
+      localStorage.setItem("userCountry", defaultCountry);
+      localStorage.setItem("currencyCheck", defaultCurrency);
+    };
+
+    ensureIpAndCurrency();
+  }, []);
+
   // Fetch service prices
   useEffect(() => {
     if (!config) return;
@@ -350,7 +432,7 @@ const VerifyPage = () => {
   const discount =
     allBureausSelected && config?.allBureausDiscount
       ? isLocal
-        ? config.allBureausDiscount.ngn
+        ? config.allBureausDiscount.xof
         : config.allBureausDiscount.usd
       : 0;
 
@@ -391,7 +473,7 @@ const VerifyPage = () => {
         (pricingData.vat || 0)) *
         bureauMultiplier -
       (allBureausSelected && config?.allBureausDiscount
-        ? config.allBureausDiscount.ngn || 0
+        ? config.allBureausDiscount.xof || 0
         : 0)
     : 0;
 
@@ -527,6 +609,8 @@ const VerifyPage = () => {
     const normalizeCurrency = (value = "") => {
       const normalized = String(value).trim().toUpperCase();
       if (normalized === "FCFA" || normalized === "CFA") return "XOF";
+      // Map old NGN to XOF for Cote d'Ivoire (wallet migration)
+      if (normalized === "NGN") return "XOF";
       return normalized;
     };
 
@@ -536,12 +620,17 @@ const VerifyPage = () => {
       normalizeCurrency(config?.countryCode) === "KE" ||
       paymentCurrency === "KES";
 
+    // For Cote d'Ivoire, wallet is always in XOF regardless of stored value
+    const isCoteIvoireUser =
+      config?.countryCode === "CI" || paymentCurrency === "XOF";
+    const effectiveWalletCurrency = isCoteIvoireUser ? "XOF" : walletCurrency;
+
     // For non-Kenya users, wallet payment currency must match selected payment currency.
     if (
       paymentMethod === "wallet" &&
       !isKenyaUser &&
-      walletCurrency &&
-      walletCurrency !== paymentCurrency
+      effectiveWalletCurrency &&
+      effectiveWalletCurrency !== paymentCurrency
     ) {
       const mismatchMessage =
         "Wallet currency must be same as payment currency.";
@@ -615,11 +704,19 @@ const VerifyPage = () => {
     } catch (err) {
       setLoading(false);
       setCurrentStep(1);
-      setError(err.message || "An error occurred. Please try again.");
+
+      // Extract actual API error message from response
+      const apiErrorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        "An error occurred. Please try again.";
+      const apiErrorStatus = err.response?.data?.status;
+
+      setError(apiErrorMessage);
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: err.message || "An error occurred. Please try again.",
+        title: apiErrorStatus === "failed" ? "Service Error" : "Error",
+        text: apiErrorMessage,
         confirmButtonColor: "#FD7A00",
       });
     }
@@ -1242,7 +1339,7 @@ const VerifyPage = () => {
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
                   {(isLocal
-                    ? config.allBureausDiscount.ngn
+                    ? config.allBureausDiscount.xof
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>

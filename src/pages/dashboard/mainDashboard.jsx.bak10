@@ -1135,7 +1135,7 @@ const MainDashboard = () => {
   }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOk = async () => {
-    const minAmount = userCurrency.toUpperCase() === "XOF" ? 1000 : 10;
+    const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
 
     // Validate minimum amount
     if (!amount || parseFloat(amount) < minAmount) {
@@ -1144,7 +1144,7 @@ const MainDashboard = () => {
         color: text,
         title: "Error",
         text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "XOF" ? "CFA 1,000" : "$10"
+          userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"
         }`,
         icon: "error",
         customClass: {
@@ -1263,7 +1263,7 @@ const MainDashboard = () => {
         // Paystack payment
         const postData = {
           amount: amount,
-          currency: userCurrency.toUpperCase() === "XOF" ? "NGN" : "USD",
+          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
           type: "TOPUP",
           sessionCode: null,
           stakeHolders: null,
@@ -1288,7 +1288,7 @@ const MainDashboard = () => {
                 { id: responseData.data.reference, name: "Paystack Payment" },
               ],
               value: amount,
-              currency: userCurrency.toUpperCase() === "XOF" ? "NGN" : "USD",
+              currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
             });
             setOpenPaystackModal(true);
             setPaystackLoading(false);
@@ -1523,7 +1523,7 @@ const MainDashboard = () => {
                 >
                   <Title level={5}> Wallet Balance:</Title>
                   <Title level={3} style={{ color: "#FD7A00" }}>
-                    {userCurrency.toUpperCase() === "XOF"
+                    {userCurrency.toUpperCase() === "NGN"
                       ? formatToCFA(userBalance)
                       : `${formatToDollar(userBalance)}`}
                   </Title>
@@ -1549,7 +1549,7 @@ const MainDashboard = () => {
                     >
                       FlutterWave
                     </Radio>
-                    {/* {userCurrency.toUpperCase() !== "XOF" && (
+                    {/* {userCurrency.toUpperCase() !== "NGN" && (
                     <Radio
                       value={2}
                       style={{
@@ -1588,21 +1588,20 @@ const MainDashboard = () => {
                   </Radio.Group>
                   <p>
                     Enter Amount to Fund Wallet (Minimum:{" "}
-                    {userCurrency.toUpperCase() === "XOF" ? "CFA 1,000" : "$10"}
-                    )
+                    {userCurrency.toUpperCase() === "NGN" ? "₦1,000" : "$10"})
                   </p>
                   <Input
                     type="number"
                     placeholder={`Enter amount (min: ${
-                      userCurrency.toUpperCase() === "XOF" ? "1000" : "10"
+                      userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
                     })`}
                     value={amount}
                     onChange={handleChange}
-                    min={userCurrency.toUpperCase() === "XOF" ? 1000 : 10}
+                    min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
                   />
                   {amount &&
                     parseFloat(amount) <
-                      (userCurrency.toUpperCase() === "XOF" ? 1000 : 10) && (
+                      (userCurrency.toUpperCase() === "NGN" ? 1000 : 10) && (
                       <p
                         style={{
                           color: "red",
@@ -1611,8 +1610,8 @@ const MainDashboard = () => {
                         }}
                       >
                         Minimum top-up amount is{" "}
-                        {userCurrency.toUpperCase() === "XOF"
-                          ? "CFA 1,000"
+                        {userCurrency.toUpperCase() === "NGN"
+                          ? "₦1,000"
                           : "$10"}
                       </p>
                     )}

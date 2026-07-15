@@ -3556,8 +3556,8 @@ const DashboardPage = () => {
         );
         setTotalveriNiara(
           currencyCheck.toUpperCase() === "USD"
-            ? (prevTotalveriXof) => prevTotalveriXof + financialUsdFee
-            : (prevTotalveriXof) => prevTotalveriXof + 0, // No change for XOF users as totalServiceCost already handles it
+            ? (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee
+            : (prevTotalveriNiara) => prevTotalveriNiara + 0, // No change for NGN users as totalServiceCost already handles it
         );
       }
     } else if (
@@ -3577,8 +3577,8 @@ const DashboardPage = () => {
       );
       setTotalveriNiara(
         currencyCheck.toUpperCase() === "USD"
-          ? (prevTotalveriXof) => prevTotalveriXof - financialUsdFee
-          : (prevTotalveriXof) => prevTotalveriXof - 0, // No change for XOF users as totalServiceCost already handles it
+          ? (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee
+          : (prevTotalveriNiara) => prevTotalveriNiara - 0, // No change for NGN users as totalServiceCost already handles it
       );
     }
 
@@ -3599,8 +3599,8 @@ const DashboardPage = () => {
       );
       setTotalveriNiara(
         currencyCheck.toUpperCase() === "USD"
-          ? (prevTotalveriXof) => prevTotalveriXof + financialUsdFee - 800 // Add third bureau XOF equivalent then apply discount
-          : (prevTotalveriXof) => prevTotalveriXof + 0, // No change for XOF users as totalServiceCost already handles it
+          ? (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee - 800 // Add third bureau NGN equivalent then apply discount
+          : (prevTotalveriNiara) => prevTotalveriNiara + 0, // No change for NGN users as totalServiceCost already handles it
       );
     } else if (
       prevNumberOfCheckedCheckboxes === 3 &&
@@ -3619,8 +3619,8 @@ const DashboardPage = () => {
       );
       setTotalveriNiara(
         currencyCheck.toUpperCase() === "USD"
-          ? (prevTotalveriXof) => prevTotalveriXof - financialUsdFee + 800 // Remove third bureau XOF equivalent and remove discount
-          : (prevTotalveriXof) => prevTotalveriXof - 0, // No change for XOF users as totalServiceCost already handles it
+          ? (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee + 800 // Remove third bureau NGN equivalent and remove discount
+          : (prevTotalveriNiara) => prevTotalveriNiara - 0, // No change for NGN users as totalServiceCost already handles it
       );
     }
 
@@ -3675,12 +3675,16 @@ const DashboardPage = () => {
         setNinFilled(true);
         setTotalVAT((prevTotalVAT) => prevTotalVAT + ninVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + ninFee);
-        setTotalveriNiara((prevTotalFeesXof) => prevTotalFeesXof + ninUsdFee);
+        setTotalveriNiara(
+          (prevTotalFeesXof) => prevTotalFeesXof + ninUsdFee,
+        );
       } else if (hadPreviousValue && value.trim() === "") {
         setNinFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - ninVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - ninFee);
-        setTotalveriNiara((prevTotalFeesXof) => prevTotalFeesXof - ninUsdFee);
+        setTotalveriNiara(
+          (prevTotalFeesXof) => prevTotalFeesXof - ninUsdFee,
+        );
       }
     }
     if (name === "phone") {
@@ -3688,12 +3692,16 @@ const DashboardPage = () => {
         setPhoneFilled(true);
         setTotalVAT((prevTotalVAT) => prevTotalVAT + phoneVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees + phoneFee);
-        setTotalveriNiara((prevTotalFeesXof) => prevTotalFeesXof + phoneUsdFee);
+        setTotalveriNiara(
+          (prevTotalFeesXof) => prevTotalFeesXof + phoneUsdFee,
+        );
       } else if (hadPreviousValue && value.trim() === "") {
         setPhoneFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - phoneVatFee);
         setTotalServiceCost((prevTotalFees) => prevTotalFees - phoneFee);
-        setTotalveriNiara((prevTotalFeesXof) => prevTotalFeesXof - phoneUsdFee);
+        setTotalveriNiara(
+          (prevTotalFeesXof) => prevTotalFeesXof - phoneUsdFee,
+        );
       }
     }
 
@@ -3705,12 +3713,16 @@ const DashboardPage = () => {
       } else if (hadPreviousValue && value.trim() === "") {
         setFaceFilled(false);
         setTotalVAT((prevTotalVAT) => prevTotalVAT - faceFee);
-        setTotalveriNiara((prevTotalFeesXof) => prevTotalFeesXof + faceUsdFee);
+        setTotalveriNiara(
+          (prevTotalFeesXof) => prevTotalFeesXof + faceUsdFee,
+        );
         setTotalServiceCost(
           (prevTotalFees) =>
             prevTotalFees - (faceServiceFee + faceProcessingFee),
         );
-        setTotalveriNiara((prevTotalFeesXof) => prevTotalFeesXof - faceUsdFee);
+        setTotalveriNiara(
+          (prevTotalFeesXof) => prevTotalFeesXof - faceUsdFee,
+        );
       }
     }
     if (name === "rc") {
@@ -3757,7 +3769,7 @@ const DashboardPage = () => {
           (prevTotalServiceCost) => prevTotalServiceCost + financialFee,
         );
         setTotalveriNiara(
-          (prevTotalveriXof) => prevTotalveriXof + financialUsdFee,
+          (prevTotalveriNiara) => prevTotalveriNiara + financialUsdFee,
         );
       } else if (hadPreviousValue && value.trim() === "") {
         setBvnFilled(false);
@@ -3766,7 +3778,7 @@ const DashboardPage = () => {
         );
         setTotalVAT((prevTotalVAT) => prevTotalVAT - financialVatFee);
         setTotalveriNiara(
-          (prevTotalveriXof) => prevTotalveriXof - financialUsdFee,
+          (prevTotalveriNiara) => prevTotalveriNiara - financialUsdFee,
         );
       }
     }
