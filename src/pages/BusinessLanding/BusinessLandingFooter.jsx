@@ -279,7 +279,7 @@ const BusinessLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            © e-citizen {new Date().getFullYear()}. All Rights Reserved.
+            © e-raia.com {new Date().getFullYear()}. All Rights Reserved.
           </Copyright>
           <LegalLinks>
             <LegalLink to="/privacy-policy">Privacy Policy</LegalLink>

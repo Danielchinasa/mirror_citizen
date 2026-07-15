@@ -169,8 +169,8 @@ function generateTransactionId() {
 }
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "EN";
-  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
 };
 
 const VerifyPage = () => {

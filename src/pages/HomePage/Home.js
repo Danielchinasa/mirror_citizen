@@ -95,8 +95,8 @@ import {
 const { useToken } = theme;
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "EN";
-  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
 };
 
 const Home = () => {
@@ -394,7 +394,9 @@ const Home = () => {
   const currencySymbol = isKES ? "KSh" : "$";
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const ctaLink = isAuthenticated ? "/dashboard" : "/login";
+  const ctaLink = isAuthenticated
+    ? "/dashboard"
+    : "/verification-login?redirect=/verify/nin";
   const isSw = language === "SW";
 
   return (
@@ -443,7 +445,7 @@ const Home = () => {
               </SecondaryBtn>
             </HeroButtons>
             <HeroButtons>
-              <SecondaryBtn href="#how-it-works">
+              <SecondaryBtn href="#services">
                 {isSw ? "Thibitisha Alien Card" : "Verify Alien Card"}{" "}
                 <FaArrowRight />
               </SecondaryBtn>

@@ -140,8 +140,8 @@ function Navbar() {
   ];
   const [visible, setVisible] = useState(false);
   const [mobileLanguage, setMobileLanguage] = useState(() => {
-    if (typeof window === "undefined") return "EN";
-    return window.localStorage.getItem("siteLanguage") || "EN";
+    if (typeof window === "undefined") return "SW";
+    return window.localStorage.getItem("siteLanguage") || "SW";
   });
 
   const handleVisibleChange = (flag) => {
