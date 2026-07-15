@@ -286,7 +286,7 @@ const VehicleLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            © e-citizen {new Date().getFullYear()}. All Rights Reserved.
+            © e-citizen.africa {new Date().getFullYear()}. All Rights Reserved.
           </Copyright>
           <LegalLinks>
             <LegalLink to="/privacy-policy">Privacy Policy</LegalLink>

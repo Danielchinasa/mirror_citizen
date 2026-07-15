@@ -127,7 +127,8 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © e-citizen {new Date().getFullYear()}. All Rights Reserved.
+              © e-citizen.africa {new Date().getFullYear()}. All Rights
+              Reserved.
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>

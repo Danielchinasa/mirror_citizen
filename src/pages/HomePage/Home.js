@@ -377,7 +377,7 @@ const Home = () => {
                 Verify Ghana ID
                 <FaArrowRight />
               </SecondaryBtn>
-              <SecondaryBtn href="#how-it-works">
+              <SecondaryBtn href="#services">
                 Check VIN <FaArrowRight />
               </SecondaryBtn>
             </HeroButtons>
