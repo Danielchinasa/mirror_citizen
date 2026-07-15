@@ -308,11 +308,31 @@ const VerifyPage = () => {
     };
   }, []);
 
-  // Keep currency in sync with live IP so pricing reflects current location.
+  // Use stored IP/country from main landing page, only fetch if missing
   useEffect(() => {
     let isMounted = true;
 
     const syncCurrencyFromLiveIp = async () => {
+      // First check if IP and country are already stored from main landing page
+      const storedIp = localStorage.getItem("IpAddress");
+      const storedCountry = localStorage.getItem("userCountry");
+      const storedCurrency = localStorage.getItem("currencyCheck");
+
+      // If we have all stored values, use them (main landing page already fetched)
+      if (storedIp && storedCountry && storedCurrency) {
+        if (isMounted) {
+          setCurrencyCheck(storedCurrency.toUpperCase());
+        }
+        console.log(
+          "✅ VerifyPage using stored IP/Country:",
+          storedIp,
+          storedCountry,
+          storedCurrency,
+        );
+        return; // Don't fetch again
+      }
+
+      // Otherwise, fetch IP and country (fallback for direct page access)
       try {
         const response = await fetch("https://ipapi.co/json/");
         if (!response.ok) throw new Error("ipapi request failed");
@@ -329,6 +349,7 @@ const VerifyPage = () => {
         }
 
         if (countryCode) {
+          localStorage.setItem("userCountry", countryCode);
           const detectedCurrency =
             countryCode === LOCAL_COUNTRY_CODE
               ? LOCAL_CURRENCY
@@ -345,23 +366,47 @@ const VerifyPage = () => {
         console.error("VerifyPage IP lookup failed:", error);
       }
 
+      // Fallback to ipbase.com for IP and country
       try {
         const fallback = await fetch("https://api.ipbase.com/v1/json/");
         if (fallback.ok) {
           const fallbackData = await fallback.json();
-          if (fallbackData?.ip) {
-            localStorage.setItem("IpAddress", fallbackData.ip);
+          const ip = fallbackData?.ip;
+          const country =
+            fallbackData?.country_code || fallbackData?.countryCode;
+
+          if (ip) {
+            localStorage.setItem("IpAddress", ip);
+          }
+
+          if (country) {
+            localStorage.setItem("userCountry", country);
+            const detectedCurrency =
+              country.toUpperCase() === LOCAL_COUNTRY_CODE
+                ? LOCAL_CURRENCY
+                : FOREIGN_CURRENCY;
+
+            if (isMounted) {
+              setCurrencyCheck(detectedCurrency);
+            }
+            localStorage.setItem("currencyCheck", detectedCurrency);
+            return;
           }
         }
       } catch (fallbackError) {
         console.error("VerifyPage fallback IP lookup failed:", fallbackError);
       }
 
-      const storedCurrency = (
-        localStorage.getItem("currencyCheck") || LOCAL_CURRENCY
-      ).toUpperCase();
+      // Both APIs failed - use default Ghana values
+      const defaultIp = "102.131.16.255";
+      const defaultCountry = "GH";
+      const defaultCurrency = "GHS";
+      localStorage.setItem("IpAddress", defaultIp);
+      localStorage.setItem("userCountry", defaultCountry);
+      localStorage.setItem("currencyCheck", defaultCurrency);
+
       if (isMounted) {
-        setCurrencyCheck(storedCurrency);
+        setCurrencyCheck(defaultCurrency);
       }
     };
 

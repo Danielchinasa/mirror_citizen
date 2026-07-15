@@ -114,32 +114,76 @@ const Home = () => {
   // Get user country from IP to show correct pricing
   useEffect(() => {
     const fetchIpInfo = async () => {
-      // // TODO: remove hardcoded GH override before release
-      // setIpAddress("102.131.16.255");
-      // localStorage.setItem("IpAddress", "102.131.16.255");
-      // setIpCountry("GH");
-      // localStorage.setItem("currencyCheck", "GHS");
-      // return;
+      // ============================================================
+      // 🧪 TESTING OVERRIDE - Uncomment to use static IP/Country
+      // ============================================================
+      // When uncommented, bypasses all IP detection APIs
+      // Comment out this entire section for normal operation
+      // ============================================================
+      const testIp = "102.131.16.255"; // Ghana IP
+      const testCountry = "GH"; // Ghana
+      const testCurrency = "GHS"; // Ghanaian Cedi
+      // For testing USD pricing, use:
+      // const testIp = "8.8.8.8";           // US IP
+      // const testCountry = "US";           // United States
+      // const testCurrency = "USD";         // US Dollar
+      setIpAddress(testIp);
+      setIpCountry(testCountry);
+      localStorage.setItem("IpAddress", testIp);
+      localStorage.setItem("userCountry", testCountry);
+      localStorage.setItem("currencyCheck", testCurrency);
+      console.log(
+        "🧪 Using test IP/Country:",
+        testIp,
+        testCountry,
+        testCurrency,
+      );
+      return;
+      // ============================================================
+      return;
+      // ============================================================
 
+      // Try ipapi.co first — returns IP + country info in one call
       try {
         const response = await axios.get("https://ipapi.co/json/");
         setIpAddress(response.data.ip);
         localStorage.setItem("IpAddress", response.data.ip);
-        const country = response.data.country_code || null;
+        const country =
+          response.data.country_code || response.data.country || null;
         setIpCountry(country);
+        localStorage.setItem("userCountry", country || ""); // Store country in localStorage for other pages
         const currency = country === "GH" ? "GHS" : "USD";
         localStorage.setItem("currencyCheck", currency);
+        return;
       } catch (error1) {
-        console.error("Error fetching IP info:", error1);
-        try {
-          const response = await axios.get("https://api.ipbase.com/v1/json/");
-          setIpAddress(response.data.ip);
-          setIpCountry(null);
-        } catch (error2) {
-          console.error("Error fetching IP from fallback:", error2);
-          setIpAddress(null);
-          setIpCountry(null);
+        console.error("Error fetching IP info from ipapi.co:", error1);
+      }
+
+      // Fallback to ipbase.com for IP and country
+      try {
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        const ip = response.data.ip;
+        const country = response.data.country_code || response.data.countryCode;
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        if (country) {
+          setIpCountry(country);
+          localStorage.setItem("userCountry", country);
+          const currency = country === "GH" ? "GHS" : "USD";
+          localStorage.setItem("currencyCheck", currency);
         }
+        return;
+      } catch (error2) {
+        console.error("Error fetching IP from both sources:", error2);
+        // Both APIs failed - use default Ghana IP and country
+        const defaultIp = "102.131.16.255";
+        const defaultCountry = "GH";
+        const defaultCurrency = "GHS";
+        setIpAddress(defaultIp);
+        setIpCountry(defaultCountry);
+        localStorage.setItem("IpAddress", defaultIp);
+        localStorage.setItem("userCountry", defaultCountry);
+        localStorage.setItem("currencyCheck", defaultCurrency);
       }
     };
 

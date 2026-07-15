@@ -67,26 +67,83 @@ const VerificationLoginPage = () => {
 
   useEffect(() => {
     const fetchIpInfo = async () => {
+      // ============================================================
+      // 🧪 TESTING OVERRIDE - Uncomment to use static IP/Country
+      // ============================================================
+      // When uncommented, bypasses stored values and API detection
+      // Comment out this entire section for normal operation
+      // ============================================================
+      const testIp = "102.131.16.255"; // Ghana IP
+      const testCountry = "GH"; // Ghana
+      const testCurrency = "GHS"; // Ghanaian Cedi
+      // For testing USD pricing, use:
+      // const testIp = "8.8.8.8";           // US IP
+      // const testCountry = "US";           // United States
+      // const testCurrency = "USD";         // US Dollar
+      setIpAddress(testIp);
+      localStorage.setItem("IpAddress", testIp);
+      localStorage.setItem("userCountry", testCountry);
+      localStorage.setItem("currencyCheck", testCurrency);
+      console.log(
+        "🧪 Using test IP/Country:",
+        testIp,
+        testCountry,
+        testCurrency,
+      );
+      return;
+      // ============================================================
+
+      // First check if IP and country are already stored from main landing page
+      const storedIp = localStorage.getItem("IpAddress");
+      const storedCountry = localStorage.getItem("userCountry");
+      const storedCurrency = localStorage.getItem("currencyCheck");
+
+      // If we have all stored values, use them (main landing page already fetched)
+      if (storedIp && storedCountry && storedCurrency) {
+        setIpAddress(storedIp);
+        return; // Don't fetch again
+      }
+
+      // Otherwise, fetch IP and country (fallback for direct login page access)
+      // Try ipapi.co first — returns IP + country info in one call
       try {
         const response = await axios.get("https://ipapi.co/json/");
         const ip = response.data.ip;
-        const country = response.data.country_code || null;
+        const country =
+          response.data.country_code || response.data.country || null;
         const currency = country === "GH" ? "GHS" : "USD";
         setIpAddress(ip);
         localStorage.setItem("IpAddress", ip);
         localStorage.setItem("userCountry", country || "");
         localStorage.setItem("currencyCheck", currency);
+        return;
       } catch (error1) {
         console.error("Error fetching IP from ipapi.co:", error1);
-        try {
-          const response = await axios.get("https://api.ipbase.com/v1/json/");
-          const ip = response.data.ip;
-          setIpAddress(ip);
-          localStorage.setItem("IpAddress", ip);
-          // country unknown from fallback — keep existing currencyCheck
-        } catch (error2) {
-          console.error("Error fetching IP from both sources:", error2);
+      }
+
+      // Fallback to ipbase.com for IP and country
+      try {
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        const ip = response.data.ip;
+        const country = response.data.country_code || response.data.countryCode;
+        const currency = country === "GH" ? "GHS" : "USD";
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        if (country) {
+          localStorage.setItem("userCountry", country);
+          localStorage.setItem("currencyCheck", currency);
         }
+        return;
+      } catch (error2) {
+        console.error("Error fetching IP from both sources:", error2);
+        // Both APIs failed - use default Ghana IP and country
+        const defaultIp = "102.131.16.255";
+        const defaultCountry = "GH";
+        const defaultCurrency = "GHS";
+        setIpAddress(defaultIp);
+        localStorage.setItem("IpAddress", defaultIp);
+        localStorage.setItem("userCountry", defaultCountry);
+        localStorage.setItem("currencyCheck", defaultCurrency);
       }
     };
 
