@@ -33,8 +33,8 @@ import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
-import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
+import Logo from "../../images/kenya_logo.png";
+import LogoWhite from "../../images/kenya_logo.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
@@ -819,11 +819,14 @@ function Navbar() {
       <>
         <PublicNav>
           <PublicNavInner>
-            <PublicBrand to="/">
-              <span className="brand-red">e</span>
-              <span className="brand-dot">-</span>
-              raia<span className="brand-dot">.com</span>
-            </PublicBrand>
+            <Link to="/">
+              <img
+                src={isDark ? LogoWhite : Logo}
+                alt="Logo"
+                width={120}
+                style={{ marginTop: "10px", cursor: "pointer" }}
+              />
+            </Link>
 
             <PublicCenter>
               <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
