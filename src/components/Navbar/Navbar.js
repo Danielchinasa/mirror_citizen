@@ -1285,6 +1285,26 @@ function Navbar() {
                         </NavBtnLink>
                       </NavItemBtn>
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
+                      <NavItemBtn>
+                        <PublicLanguageToggleGroup>
+                          <PublicLanguageToggle
+                            type="button"
+                            $active={language === "SW"}
+                            onClick={() => handleLanguageChange("SW")}
+                            aria-pressed={language === "SW"}
+                          >
+                            SW
+                          </PublicLanguageToggle>
+                          <PublicLanguageToggle
+                            type="button"
+                            $active={language === "EN"}
+                            onClick={() => handleLanguageChange("EN")}
+                            aria-pressed={language === "EN"}
+                          >
+                            EN
+                          </PublicLanguageToggle>
+                        </PublicLanguageToggleGroup>
+                      </NavItemBtn>
                     </>
                   )
                 : isAuthenticated && (
@@ -1485,6 +1505,24 @@ function Navbar() {
                       </div>
                       <UserDropdown />
                       <ThemeToggle />
+                      <PublicLanguageToggleGroup>
+                        <PublicLanguageToggle
+                          type="button"
+                          $active={language === "SW"}
+                          onClick={() => handleLanguageChange("SW")}
+                          aria-pressed={language === "SW"}
+                        >
+                          SW
+                        </PublicLanguageToggle>
+                        <PublicLanguageToggle
+                          type="button"
+                          $active={language === "EN"}
+                          onClick={() => handleLanguageChange("EN")}
+                          aria-pressed={language === "EN"}
+                        >
+                          EN
+                        </PublicLanguageToggle>
+                      </PublicLanguageToggleGroup>
                       <div style={{ marginLeft: "20px" }}></div>
                     </>
                   )}
