@@ -71,14 +71,7 @@ const VehicleResult = () => {
     );
   }
 
-  const {
-    result,
-    status,
-    resultText,
-    provider,
-    amount,
-    currency,
-  } = resultData;
+  const { result, status, resultText, provider, amount, currency } = resultData;
 
   const {
     vin,
@@ -136,7 +129,11 @@ const VehicleResult = () => {
                 <MetaLabel>
                   <FaCalendarAlt /> Year
                 </MetaLabel>
-                <MetaValue>{spec.year || vehicle.vehicle_specification?.find(s => s.year)?.year || "-"}</MetaValue>
+                <MetaValue>
+                  {spec.year ||
+                    vehicle.vehicle_specification?.find((s) => s.year)?.year ||
+                    "-"}
+                </MetaValue>
               </MetaItem>
               <MetaItem>
                 <MetaLabel>
@@ -148,18 +145,23 @@ const VehicleResult = () => {
                 <MetaLabel>
                   <FaTachometerAlt /> Age
                 </MetaLabel>
-                <MetaValue>{vehicleAge ? `${vehicleAge} years` : "-"}</MetaValue>
+                <MetaValue>
+                  {vehicleAge ? `${vehicleAge} years` : "-"}
+                </MetaValue>
               </MetaItem>
               <MetaItem>
                 <MetaLabel>
                   <FaGasPump /> Fuel
                 </MetaLabel>
-                <MetaValue>{spec.fuel_type || fuelDetails.Fuel_Type || "-"}</MetaValue>
+                <MetaValue>
+                  {spec.fuel_type || fuelDetails.Fuel_Type || "-"}
+                </MetaValue>
               </MetaItem>
             </MetaGrid>
             {dsvi && dsvi.risk_label && (
               <RiskBadge $color={getRiskColor(dsvi.risk_label)}>
-                <FaShieldAlt /> Risk Level: {dsvi.risk_label.toUpperCase()} (Score: {dsvi.score || "N/A"})
+                <FaShieldAlt /> Risk Level: {dsvi.risk_label.toUpperCase()}{" "}
+                (Score: {dsvi.score || "N/A"})
               </RiskBadge>
             )}
           </HeroContent>
@@ -207,21 +209,30 @@ const VehicleResult = () => {
             </SpecItem>
             <SpecItem>
               <SpecLabel>City Mileage</SpecLabel>
-              <SpecValue>{spec.city_mileage || fuelDetails.City_Mileage || "-"}</SpecValue>
+              <SpecValue>
+                {spec.city_mileage || fuelDetails.City_Mileage || "-"}
+              </SpecValue>
             </SpecItem>
             <SpecItem>
               <SpecLabel>Highway Mileage</SpecLabel>
-              <SpecValue>{spec.highway_mileage || fuelDetails.Highway_Mileage || "-"}</SpecValue>
+              <SpecValue>
+                {spec.highway_mileage || fuelDetails.Highway_Mileage || "-"}
+              </SpecValue>
             </SpecItem>
             <SpecItem>
               <SpecLabel>Fuel Capacity</SpecLabel>
-              <SpecValue>{spec.fuel_capacity || fuelDetails.Fuel_Capacity || "-"}</SpecValue>
+              <SpecValue>
+                {spec.fuel_capacity || fuelDetails.Fuel_Capacity || "-"}
+              </SpecValue>
             </SpecItem>
           </SpecGrid>
         </SectionCard>
 
         {/* Dimensions & Weight */}
-        {(spec.curb_weight || spec.overall_length || spec.overall_width || spec.overall_height) && (
+        {(spec.curb_weight ||
+          spec.overall_length ||
+          spec.overall_width ||
+          spec.overall_height) && (
           <SectionCard>
             <SectionTitle>Dimensions & Weight</SectionTitle>
             <SpecGrid>
@@ -291,7 +302,9 @@ const VehicleResult = () => {
                 <WarrantyCard key={idx}>
                   <WarrantyType>{w.type}</WarrantyType>
                   <WarrantyDetail>{w.warranty}</WarrantyDetail>
-                  <WarrantyStatus $expired={w.estimated_remainings === "Expired"}>
+                  <WarrantyStatus
+                    $expired={w.estimated_remainings === "Expired"}
+                  >
                     {w.estimated_remainings}
                   </WarrantyStatus>
                 </WarrantyCard>
@@ -336,7 +349,8 @@ const VehicleResult = () => {
         </SectionCard>
 
         <Disclaimer>
-          <FaInfoCircle /> Results are based on data available at the time of verification.
+          <FaInfoCircle /> Results are based on data available at the time of
+          verification.
         </Disclaimer>
       </Container>
     </PageWrapper>

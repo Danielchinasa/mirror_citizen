@@ -319,7 +319,10 @@ function AppContent() {
             path="/comprehensive-search-result"
             component={SearchExtensionResult}
           />
-          <ProtectedRoute path="/vehicle-profile-result" component={VehicleResult} />
+          <ProtectedRoute
+            path="/vehicle-profile-result"
+            component={VehicleResult}
+          />
           <ProtectedRoute
             path="/vehicle-registration-result"
             component={Vehicle2}

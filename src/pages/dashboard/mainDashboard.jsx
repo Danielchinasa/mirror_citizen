@@ -351,14 +351,16 @@ const MainDashboard = () => {
   const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
     localStorage.setItem("verificationRequestId", record.id);
-    
+
     // Check if it's a VIN verification by looking at searchParameter or other identifiers
-    const isVinVerification = 
-      searchParameter === "VIN" || 
+    const isVinVerification =
+      searchParameter === "VIN" ||
       searchParameter === "Vehicle Identification Number" ||
-      (record.type === "Vehicle Profile" && record.searchParameter && 
-       (record.searchParameter.includes("VIN") || record.searchParameter.includes("Chassis")));
-    
+      (record.type === "Vehicle Profile" &&
+        record.searchParameter &&
+        (record.searchParameter.includes("VIN") ||
+          record.searchParameter.includes("Chassis")));
+
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle-registration-result");
     } else if (isVinVerification) {
