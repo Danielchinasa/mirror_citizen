@@ -334,7 +334,7 @@ function Navbar() {
           // Track conversion
           trackPurchaseConversion({
             value: parseFloat(transactionAmount) || 1.0,
-            currency: userCurrency || "UGX",
+            currency: userCurrency || "NGN",
             transactionId: transactionRef,
           });
           dispatch(fetchUserProfile(userToken2));
@@ -404,7 +404,7 @@ function Navbar() {
             // Payment successful - track conversion and refresh profile
             trackPurchaseConversion({
               value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "UGX",
+              currency: userCurrency || "NGN",
               transactionId: paystackReference,
             });
             dispatch(fetchUserProfile(userToken2));
@@ -706,7 +706,7 @@ function Navbar() {
         // Paystack payment
         const postData = {
           amount: amount,
-          currency: userCurrency.toUpperCase() === "UGX" ? "UGX" : "USD",
+          currency: userCurrency.toUpperCase() === "NGN" ? "NGN" : "USD",
           type: "TOPUP",
           sessionCode: null,
           stakeHolders: null,
@@ -1109,7 +1109,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
-                            {userCurrency.toUpperCase() === "UGX"
+                            {userCurrency.toUpperCase() === "NGN"
                               ? formatToUGX(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
@@ -1137,7 +1137,7 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "UGX" && (
+                            {/* {userCurrency.toUpperCase() !== "NGN" && (
                               <Radio
                                 value={2}
                                 style={{
@@ -1176,27 +1176,27 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
-                            {userCurrency.toUpperCase() === "UGX"
-                              ? "USh 10,000"
+                            {userCurrency.toUpperCase() === "NGN"
+                              ? "₦1,000"
                               : "$10"}
                             )
                           </p>
                           <Input
                             type="number"
                             placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "UGX"
-                                ? "10000"
+                              userCurrency.toUpperCase() === "NGN"
+                                ? "1000"
                                 : "10"
                             })`}
                             value={amount}
                             onChange={handleChange}
                             min={
-                              userCurrency.toUpperCase() === "UGX" ? 1000 : 10
+                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
                             }
                           />
                           {amount &&
                             parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "UGX"
+                              (userCurrency.toUpperCase() === "NGN"
                                 ? 1000
                                 : 10) && (
                               <p
@@ -1207,8 +1207,8 @@ function Navbar() {
                                 }}
                               >
                                 Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "UGX"
-                                  ? "USh 10,000"
+                                {userCurrency.toUpperCase() === "NGN"
+                                  ? "₦1,000"
                                   : "$10"}
                               </p>
                             )}
@@ -1320,7 +1320,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
-                            {userCurrency.toUpperCase() === "UGX"
+                            {userCurrency.toUpperCase() === "NGN"
                               ? formatToUGX(userBalance)
                               : `${formatToDollar(userBalance)}`}
                           </Title>
@@ -1348,7 +1348,7 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "UGX" && (
+                            {/* {userCurrency.toUpperCase() !== "NGN" && (
                               <Radio
                                 value={2}
                                 style={{
@@ -1387,27 +1387,27 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
-                            {userCurrency.toUpperCase() === "UGX"
-                              ? "USh 10,000"
+                            {userCurrency.toUpperCase() === "NGN"
+                              ? "₦1,000"
                               : "$10"}
                             )
                           </p>
                           <Input
                             type="number"
                             placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "UGX"
-                                ? "10000"
+                              userCurrency.toUpperCase() === "NGN"
+                                ? "1000"
                                 : "10"
                             })`}
                             value={amount}
                             onChange={handleChange}
                             min={
-                              userCurrency.toUpperCase() === "UGX" ? 1000 : 10
+                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
                             }
                           />
                           {amount &&
                             parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "UGX"
+                              (userCurrency.toUpperCase() === "NGN"
                                 ? 1000
                                 : 10) && (
                               <p
@@ -1418,8 +1418,8 @@ function Navbar() {
                                 }}
                               >
                                 Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "UGX"
-                                  ? "USh 10,000"
+                                {userCurrency.toUpperCase() === "NGN"
+                                  ? "₦1,000"
                                   : "$10"}
                               </p>
                             )}

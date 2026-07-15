@@ -85,7 +85,7 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>Services</FooterColTitle>
-              <FooterLink to="/nin-verification">
+              {/* <FooterLink to="/nin-verification">
                 National ID Verification
               </FooterLink>
               <FooterLink to="/nin-verification">
@@ -94,7 +94,7 @@ function Footer() {
 
               <FooterLink to="/vehicle-verification">
                 VIN Verification
-              </FooterLink>
+              </FooterLink> */}
               <FooterLink to="/api-docs">API for Business</FooterLink>
             </FooterCol>
 
@@ -134,7 +134,7 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © e-citizen {new Date().getFullYear()}. All Rights Reserved.
+              © e-raia.africa {new Date().getFullYear()}. All Rights Reserved.
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>

@@ -95,7 +95,7 @@ const MainDashboard = () => {
   const [vinVehicleFee, setVinVehicleFee] = useState("");
   const [businessFee, setBusinessFee] = useState("");
   const [financialFee, setFinancialFee] = useState("");
-  const [currencyCheck, setCurrencyCheck] = useState("NGN");
+  const [currencyCheck, setCurrencyCheck] = useState("UGX");
   const [loadingSmall, setLoadingSmall] = useState(false);
 
   const { token } = theme.useToken();

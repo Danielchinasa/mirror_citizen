@@ -299,21 +299,13 @@ const Financial = () => {
   let summaryData = firstCentralDataStats;
   let crcsummaryData = crcDataStats;
   let creditRegistrySummaryData = creditRegistryDataStats;
-  const formatAmountToNaira = (amount) => {
-    // Convert number to string and split into array of characters
-    let amountStr = String(amount);
-    let amountArr = amountStr.split("");
-
-    // Insert comma separators every three characters from the end
-    for (let i = amountArr.length - 3; i > 0; i -= 3) {
-      amountArr.splice(i, 0, ",");
-    }
-
-    // Add Naira symbol to the beginning
-    amountArr.unshift("₦");
-
-    // Join the array back into a string
-    return amountArr.join("");
+  const formatAmountToUGX = (amount) => {
+    return new Intl.NumberFormat("en-UG", {
+      style: "currency",
+      currency: "UGX",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
   };
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
@@ -582,7 +574,7 @@ const Financial = () => {
                         <h6>
                           {" "}
                           {summaryData && summaryData.highestLoanAmount !== null
-                            ? formatAmountToNaira(summaryData.highestLoanAmount)
+                            ? formatAmountToUGX(summaryData.highestLoanAmount)
                             : "-"}
                         </h6>
                       </DynamicCard>
@@ -631,7 +623,7 @@ const Financial = () => {
                         <h6>
                           {" "}
                           {summaryData && summaryData.totalOverdue !== null
-                            ? formatAmountToNaira(summaryData.totalOverdue)
+                            ? formatAmountToUGX(summaryData.totalOverdue)
                             : "-"}
                         </h6>
                       </DynamicCard>
@@ -653,7 +645,7 @@ const Financial = () => {
                         <h6>
                           {" "}
                           {summaryData && summaryData.totalBorrowed !== null
-                            ? formatAmountToNaira(summaryData.totalBorrowed)
+                            ? formatAmountToUGX(summaryData.totalBorrowed)
                             : "-"}
                         </h6>
                       </DynamicCard>
@@ -677,7 +669,7 @@ const Financial = () => {
                         <h6>
                           {" "}
                           {summaryData && summaryData.totalOutstanding !== null
-                            ? formatAmountToNaira(summaryData.totalOutstanding)
+                            ? formatAmountToUGX(summaryData.totalOutstanding)
                             : "-"}
                         </h6>
                       </DynamicCard>
@@ -875,7 +867,7 @@ const Financial = () => {
                           {" "}
                           {crcsummaryData &&
                           crcsummaryData.highestLoanAmount !== null
-                            ? formatAmountToNaira(
+                            ? formatAmountToUGX(
                                 crcsummaryData.highestLoanAmount,
                               )
                             : "-"}
@@ -927,7 +919,7 @@ const Financial = () => {
                           {" "}
                           {crcsummaryData &&
                           crcsummaryData.totalOverdue !== null
-                            ? formatAmountToNaira(crcsummaryData.totalOverdue)
+                            ? formatAmountToUGX(crcsummaryData.totalOverdue)
                             : "-"}
                         </h6>
                       </DynamicCard>
@@ -950,7 +942,7 @@ const Financial = () => {
                           {" "}
                           {crcsummaryData &&
                           crcsummaryData.totalBorrowed !== null
-                            ? formatAmountToNaira(crcsummaryData.totalBorrowed)
+                            ? formatAmountToUGX(crcsummaryData.totalBorrowed)
                             : "-"}
                         </h6>
                       </DynamicCard>
@@ -975,7 +967,7 @@ const Financial = () => {
                           {" "}
                           {crcsummaryData &&
                           crcsummaryData.totalOutstanding !== null
-                            ? formatAmountToNaira(
+                            ? formatAmountToUGX(
                                 crcsummaryData.totalOutstanding,
                               )
                             : "-"}
@@ -1178,7 +1170,7 @@ const Financial = () => {
                           {" "}
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.highestLoanAmount !== null
-                            ? formatAmountToNaira(
+                            ? formatAmountToUGX(
                                 creditRegistrySummaryData.highestLoanAmount,
                               )
                             : "-"}
@@ -1231,7 +1223,7 @@ const Financial = () => {
                           {" "}
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.totalOverdue !== null
-                            ? formatAmountToNaira(
+                            ? formatAmountToUGX(
                                 creditRegistrySummaryData.totalOverdue,
                               )
                             : "-"}
@@ -1256,7 +1248,7 @@ const Financial = () => {
                           {" "}
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.totalBorrowed !== null
-                            ? formatAmountToNaira(
+                            ? formatAmountToUGX(
                                 creditRegistrySummaryData.totalBorrowed,
                               )
                             : "-"}
@@ -1283,7 +1275,7 @@ const Financial = () => {
                           {" "}
                           {creditRegistrySummaryData &&
                           creditRegistrySummaryData.totalOutstanding !== null
-                            ? formatAmountToNaira(
+                            ? formatAmountToUGX(
                                 creditRegistrySummaryData.totalOutstanding,
                               )
                             : "-"}

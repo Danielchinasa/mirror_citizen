@@ -345,7 +345,7 @@ const VerifyPage = () => {
   const discount =
     allBureausSelected && config?.allBureausDiscount
       ? isLocal
-        ? config.allBureausDiscount.ngn
+        ? config.allBureausDiscount.ugx
         : config.allBureausDiscount.usd
       : 0;
 
@@ -369,7 +369,7 @@ const VerifyPage = () => {
         (pricingData.vat || 0)) *
         bureauMultiplier -
       (allBureausSelected && config?.allBureausDiscount
-        ? config.allBureausDiscount.ngn || 0
+        ? config.allBureausDiscount.ugx || 0
         : 0)
     : 0;
 
@@ -1193,7 +1193,7 @@ const VerifyPage = () => {
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
                   {(isLocal
-                    ? config.allBureausDiscount.ngn
+                    ? config.allBureausDiscount.ugx
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>

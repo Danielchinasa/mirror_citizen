@@ -1185,7 +1185,7 @@ function Navbar() {
                             type="number"
                             placeholder={`Enter amount (min: ${
                               userCurrency.toUpperCase() === "UGX"
-                                ? "10000"
+                                ? "1000"
                                 : "10"
                             })`}
                             value={amount}
@@ -1396,7 +1396,7 @@ function Navbar() {
                             type="number"
                             placeholder={`Enter amount (min: ${
                               userCurrency.toUpperCase() === "UGX"
-                                ? "10000"
+                                ? "1000"
                                 : "10"
                             })`}
                             value={amount}
