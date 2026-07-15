@@ -266,9 +266,9 @@ const verificationConfig = {
   },
 
   alien: {
-    heroTitle: "Verify Your ",
-    heroHighlight: "Alien Card",
-    heroTitleContinue: "in seconds",
+    heroTitle: "Verify Your Alien Card",
+    heroHighlight: "in seconds",
+    heroTitleContinue: "",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/kenya.png"),
