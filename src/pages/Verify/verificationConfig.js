@@ -320,7 +320,7 @@ const verificationConfig = {
     idTypeLabel: "Vehicle Identification Number (VIN)",
     fields: [
       {
-        name: "vin",
+        name: "idNumber",
         label: "VIN (Vehicle Identification Number)",
         placeholder: "Enter VIN",
         type: "text",
@@ -337,14 +337,32 @@ const verificationConfig = {
       { icon: FaBolt, text: "Instant results" },
     ],
     sampleResult: {
-      name: "Toyota Corolla 2018",
-      identifier: "VIN: ******5678",
-      tags: ["Make/Model", "Ownership", "Status", "And more..."],
+      vehicleData: {
+        vehicleName: "2013 Toyota Sienna",
+        vinMasked: "5TDYK3DC8D*****35",
+        verificationStatus: "VERIFIED",
+        year: "2013",
+        category: "Minivan",
+        fuelType: "Gasoline",
+        engine: "3.5L V6",
+        transmission: "6-Speed Automatic",
+        riskLabel: "Low",
+        vehicleImage:
+          "http://imgset.info/a/5TDZK3DC7DS404746_20190630_8_1.jpeg?size=medium",
+        specs: [
+          { label: "Make", value: "Toyota" },
+          { label: "Model", value: "Sienna" },
+          { label: "Trim", value: "XLE" },
+          { label: "Drivetrain", value: "Front-Wheel Drive" },
+          { label: "Doors", value: "4-Door" },
+          { label: "City Mileage", value: "18 miles/gallon" },
+        ],
+      },
     },
     serviceName: "Vehicle Verification",
     serviceCode: "VIN",
     apiServiceName: "VIN",
-    serviceFieldKey: "vin",
+    serviceFieldKey: "idNumber",
     priceIndex: 5,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },

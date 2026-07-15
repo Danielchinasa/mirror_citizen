@@ -592,7 +592,7 @@ export const ContinueBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
   }
 
   &:disabled {
@@ -900,7 +900,7 @@ export const PayBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
   }
 
   &:disabled {
@@ -983,6 +983,27 @@ export const SampleResultCard = styled.div`
   }
 `;
 
+export const SampleVehicleImage = styled.div`
+  width: 180px;
+  height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ec-border);
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 560px) {
+    width: 100%;
+    max-width: 340px;
+    height: 180px;
+  }
+`;
+
 export const SampleAvatar = styled.div`
   width: 50px;
   height: 50px;
@@ -1017,6 +1038,24 @@ export const SampleId = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   color: var(--ec-text-secondary);
+`;
+
+export const SampleMetaRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+`;
+
+export const SampleMetaItem = styled.span`
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ec-heading);
+  background: #fff7e6;
+  border: 1px solid #ffe0a3;
+  border-radius: 999px;
+  padding: 4px 10px;
 `;
 
 export const VerifiedBadge = styled.span`
@@ -1054,6 +1093,32 @@ export const SampleTag = styled.span`
   svg {
     color: var(--ec-primary);
     font-size: 10px;
+  }
+`;
+
+export const SampleSpecsGrid = styled.div`
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+
+  @media screen and (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const SampleSpecChip = styled.div`
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  color: var(--ec-text-secondary);
+  border: 1px solid var(--ec-border);
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+
+  strong {
+    color: var(--ec-heading);
+    font-weight: 700;
   }
 `;
 

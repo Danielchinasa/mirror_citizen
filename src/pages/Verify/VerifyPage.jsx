@@ -97,6 +97,11 @@ import {
   SampleName,
   SampleId,
   VerifiedBadge,
+  SampleMetaRow,
+  SampleMetaItem,
+  SampleVehicleImage,
+  SampleSpecsGrid,
+  SampleSpecChip,
   SampleTags,
   SampleTag,
   TrustBar,
@@ -580,6 +585,8 @@ const VerifyPage = () => {
       if (initiatePayload?.status === "INITIATED") {
         localStorage.setItem("sessionCode", initiatePayload?.sessionId);
         apiFormData.sessionId = initiatePayload?.sessionId;
+        apiFormData.idNumber =
+          apiFormData.idNumber || formData.idNumber || formData.nin || "";
       } else {
         throw new Error(
           initiatePayload?.message || "Failed to initiate verification",
@@ -1602,25 +1609,88 @@ const VerifyPage = () => {
             : "Here's an example of what your verification result will look like."}
         </SampleSub>
         <SampleResultCard>
-          <SampleAvatar>
-            <FaUserCircle />
-          </SampleAvatar>
-          <SampleInfo>
-            <SampleName>
-              {config.sampleResult.name}
-              <VerifiedBadge>
-                <FaCheckCircle /> {isSw ? "Imethibitishwa" : "Verified"}
-              </VerifiedBadge>
-            </SampleName>
-            <SampleId>{config.sampleResult.identifier}</SampleId>
-            <SampleTags>
-              {config.sampleResult.tags.map((tag, i) => (
-                <SampleTag key={i}>
-                  <FaCheckCircle /> {tag}
-                </SampleTag>
-              ))}
-            </SampleTags>
-          </SampleInfo>
+          {type === "vehicle" && config.sampleResult.vehicleData ? (
+            <>
+              <SampleVehicleImage>
+                <img
+                  src={config.sampleResult.vehicleData.vehicleImage}
+                  alt={config.sampleResult.vehicleData.vehicleName}
+                />
+              </SampleVehicleImage>
+              <SampleInfo>
+                <SampleName>
+                  {config.sampleResult.vehicleData.vehicleName}
+                  <VerifiedBadge>
+                    <FaCheckCircle /> {isSw ? "Imethibitishwa" : "Verified"}
+                  </VerifiedBadge>
+                </SampleName>
+                <SampleId>
+                  VIN: {config.sampleResult.vehicleData.vinMasked}
+                </SampleId>
+                <SampleMetaRow>
+                  <SampleMetaItem>
+                    {isSw ? "Mwaka" : "Year"}:{" "}
+                    {config.sampleResult.vehicleData.year}
+                  </SampleMetaItem>
+                  <SampleMetaItem>
+                    {isSw ? "Aina" : "Category"}:{" "}
+                    {config.sampleResult.vehicleData.category}
+                  </SampleMetaItem>
+                  <SampleMetaItem>
+                    {isSw ? "Mafuta" : "Fuel"}:{" "}
+                    {config.sampleResult.vehicleData.fuelType}
+                  </SampleMetaItem>
+                </SampleMetaRow>
+                <SampleTags>
+                  <SampleTag>
+                    <FaCheckCircle /> {isSw ? "Hali" : "Status"}:{" "}
+                    {config.sampleResult.vehicleData.verificationStatus}
+                  </SampleTag>
+                  <SampleTag>
+                    <FaCheckCircle /> {isSw ? "Injini" : "Engine"}:{" "}
+                    {config.sampleResult.vehicleData.engine}
+                  </SampleTag>
+                  <SampleTag>
+                    <FaCheckCircle /> {isSw ? "Transmission" : "Transmission"}:{" "}
+                    {config.sampleResult.vehicleData.transmission}
+                  </SampleTag>
+                  <SampleTag>
+                    <FaCheckCircle /> {isSw ? "Hatari" : "Risk"}:{" "}
+                    {config.sampleResult.vehicleData.riskLabel}
+                  </SampleTag>
+                </SampleTags>
+                <SampleSpecsGrid>
+                  {config.sampleResult.vehicleData.specs.map((spec) => (
+                    <SampleSpecChip key={spec.label}>
+                      <strong>{spec.label}:</strong> {spec.value}
+                    </SampleSpecChip>
+                  ))}
+                </SampleSpecsGrid>
+              </SampleInfo>
+            </>
+          ) : (
+            <>
+              <SampleAvatar>
+                <FaUserCircle />
+              </SampleAvatar>
+              <SampleInfo>
+                <SampleName>
+                  {config.sampleResult.name}
+                  <VerifiedBadge>
+                    <FaCheckCircle /> {isSw ? "Imethibitishwa" : "Verified"}
+                  </VerifiedBadge>
+                </SampleName>
+                <SampleId>{config.sampleResult.identifier}</SampleId>
+                <SampleTags>
+                  {config.sampleResult.tags.map((tag, i) => (
+                    <SampleTag key={i}>
+                      <FaCheckCircle /> {tag}
+                    </SampleTag>
+                  ))}
+                </SampleTags>
+              </SampleInfo>
+            </>
+          )}
         </SampleResultCard>
       </SampleSection>
     </>

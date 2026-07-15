@@ -73,24 +73,24 @@ const VerificationLoginPage = () => {
       // When uncommented, bypasses stored values and API detection
       // Comment out this entire section for normal operation
       // ============================================================
-      // const testIp = "41.212.86.175"; // Kenya IP
-      // const testCountry = "KE"; // Kenya
-      // const testCurrency = "KES"; // Kenyan Shilling
-      // // For testing USD pricing, use:
-      // // const testIp = "8.8.8.8";           // US IP
-      // // const testCountry = "US";           // United States
-      // // const testCurrency = "USD";         // US Dollar
-      // setIpAddress(testIp);
-      // localStorage.setItem("IpAddress", testIp);
-      // localStorage.setItem("userCountry", testCountry);
-      // localStorage.setItem("currencyCheck", testCurrency);
-      // console.log(
-      //   "🧪 Using test IP/Country:",
-      //   testIp,
-      //   testCountry,
-      //   testCurrency,
-      // );
-      // return;
+      const testIp = "41.212.86.175"; // Kenya IP
+      const testCountry = "KE"; // Kenya
+      const testCurrency = "KES"; // Kenyan Shilling
+      // For testing USD pricing, use:
+      // const testIp = "8.8.8.8";           // US IP
+      // const testCountry = "US";           // United States
+      // const testCurrency = "USD";         // US Dollar
+      setIpAddress(testIp);
+      localStorage.setItem("IpAddress", testIp);
+      localStorage.setItem("userCountry", testCountry);
+      localStorage.setItem("currencyCheck", testCurrency);
+      console.log(
+        "🧪 Using test IP/Country:",
+        testIp,
+        testCountry,
+        testCurrency,
+      );
+      return;
       // ============================================================
 
       // First check if IP and country are already stored from main landing page
