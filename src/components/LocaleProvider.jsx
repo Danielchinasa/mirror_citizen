@@ -10,7 +10,7 @@ import translations from "../locales/translations";
 const STORAGE_KEY = "siteLanguage";
 const LocaleContext = createContext(null);
 
-const SUPPORTED_LANGUAGES = ["FR"];
+const SUPPORTED_LANGUAGES = ["FR", "EN"];
 
 const getInitialLanguage = () => {
   if (typeof window === "undefined") return "FR";
@@ -24,11 +24,11 @@ export function LocaleProvider({ children }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(STORAGE_KEY, language);
-    document.documentElement.lang = "fr";
+    document.documentElement.lang = language === "FR" ? "fr" : "en";
   }, [language]);
 
   const value = useMemo(() => {
-    const current = translations[language] || translations.EN;
+    const current = translations[language] || translations.FR;
     return {
       language,
       setLanguage,

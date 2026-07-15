@@ -17,7 +17,6 @@ import {
   PublicAnchor,
   PublicLanguage,
   PublicActions,
-  PublicHeaderLanguage,
   PublicLogin,
   PublicCta,
   PublicHamburger,
@@ -27,6 +26,8 @@ import {
   PublicLanguageToggle,
   PublicMobileLink,
   PublicMobileAnchor,
+  PublicMobileLanguage,
+  PublicMobileLanguageLabel,
   PublicDesktopOnly,
   PublicMobileToggle,
 } from "./Navbar.elements";
@@ -127,16 +128,15 @@ function Navbar() {
     //   ),
     // },
     {
-      key: "2",
-      label: (
+      key: "2",          label: (
         <a href="/profile" style={{ textDecoration: "none" }}>
-          My Profile
+          {t("nav.myProfile")}
         </a>
       ),
     },
     {
       key: "3",
-      label: <span onClick={handleLogout}>Logout</span>,
+      label: <span onClick={handleLogout}>{t("nav.logout")}</span>,
     },
   ];
   const [visible, setVisible] = useState(false);
@@ -792,7 +792,7 @@ function Navbar() {
             <PublicBrand to="/">
               {/* <span className="brand-red">e</span>
               <span className="brand-dot">-</span> */}
-              citoyen
+              {language === "FR" ? "citoyen" : "citizen"}
               <span className="brand-red">.africa</span>
             </PublicBrand>
 
@@ -819,18 +819,6 @@ function Navbar() {
                   {t("nav.country")} <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
-              <PublicHeaderLanguage>
-                <PublicLanguageToggleGroup>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={language === "FR"}
-                    onClick={() => handleLanguageChange("FR")}
-                    aria-pressed={language === "FR"}
-                  >
-                    FR
-                  </PublicLanguageToggle>
-                </PublicLanguageToggleGroup>
-              </PublicHeaderLanguage>
               <PublicLanguage>
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
@@ -840,6 +828,14 @@ function Navbar() {
                     aria-pressed={language === "FR"}
                   >
                     FR
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={language === "EN"}
+                  >
+                    EN
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
@@ -885,6 +881,36 @@ function Navbar() {
                 {t("nav.getStarted")}
               </PublicMobileAnchor>
 
+              <PublicMobileLanguage>
+                <PublicMobileLanguageLabel>
+                  {t("nav.language")}
+                </PublicMobileLanguageLabel>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "FR"}
+                    onClick={() => {
+                      handleLanguageChange("FR");
+                      closeMobileMenu();
+                    }}
+                    aria-pressed={language === "FR"}
+                  >
+                    FR
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "EN"}
+                    onClick={() => {
+                      handleLanguageChange("EN");
+                      closeMobileMenu();
+                    }}
+                    aria-pressed={language === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
+              </PublicMobileLanguage>
+
               <PublicMobileToggle>
                 <ThemeToggle />
               </PublicMobileToggle>
@@ -909,7 +935,7 @@ function Navbar() {
             <PublicBrand to="/">
               {/* <span className="brand-red">e</span>
               <span className="brand-dot">-</span> */}
-              citoyen
+              {language === "FR" ? "citoyen" : "citizen"}
               <span className="brand-red">.africa</span>
             </PublicBrand>
             <HamburgerIcon onClick={handleClick}>
@@ -933,7 +959,7 @@ function Navbar() {
                         }}
                         $token={token}
                       >
-                        View Dashboard
+                        {t("nav.viewDashboard")}
                       </OutlineButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -946,7 +972,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        Verify Now
+                        {t("nav.verifyNow")}
                       </MainButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -965,7 +991,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          GET STARTED
+                          {t("nav.getStartedCaps")}
                         </OutlineButton>
                       </NavBtnLink>
                     ) : (
@@ -980,7 +1006,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          GET STARTED
+                          {t("nav.getStartedCaps")}
                         </OutlineButton>
                       </NavBtnLink>
                     )}
@@ -1026,17 +1052,17 @@ function Navbar() {
                       </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
-                          <MainButton type="primary">My Profile</MainButton>
+                          <MainButton type="primary">{t("nav.myProfile")}</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/contact">
-                          <MainButton type="primary">Contact Us</MainButton>
+                          <MainButton type="primary">{t("nav.contactUs")}</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/faq-uganda">
-                          <MainButton type="primary">FAQs</MainButton>
+                          <MainButton type="primary">{t("nav.faqs")}</MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <div
@@ -1052,7 +1078,7 @@ function Navbar() {
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
-                          Wallet Balance:
+                          {t("nav.walletBalance")}:
                           <span style={{ color: "#FD7A00" }}>
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
@@ -1061,14 +1087,14 @@ function Navbar() {
                           </span>
                         </p>
                         <Modal
-                          title="User Wallet"
+                          title={t("nav.userWallet")}
                           open={isModalVisible}
                           onOk={handleOk}
-                          okText="Proceed to Payment"
+                          okText={t("nav.proceedToPayment")}
                           onCancel={handleCancel}
                           width={300}
                         >
-                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={5}>{t("nav.walletBalance")}:</Title>
                           <Title level={3} style={{ color: "#FD7A00" }}>
                             {userCurrency.toUpperCase() === "XOF"
                               ? formatToCFA(userBalance)
@@ -1076,8 +1102,8 @@ function Navbar() {
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
-                          <Title level={5}>Fund Wallet</Title>
-                          <Title level={5}>Select Payment Method</Title>
+                          <Title level={5}>{t("nav.fundWallet")}</Title>
+                          <Title level={5}>{t("nav.selectPaymentMethod")}</Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1136,7 +1162,7 @@ function Navbar() {
                             </Radio>
                           </Radio.Group>
                           <p>
-                            Enter Amount to Fund Wallet (Minimum:{" "}
+                            {t("nav.fundWalletDescription")}{" "}
                             {userCurrency.toUpperCase() === "XOF"
                               ? "CFA 1,000"
                               : "$10"}
@@ -1190,7 +1216,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handleModalOk}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1220,7 +1246,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handlePaystackModalClose}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1240,8 +1266,7 @@ function Navbar() {
                             type="primary"
                             onClick={handleLogout}
                             $token={token}
-                          >
-                            Logout
+                          >                              {t("nav.logout")}
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
@@ -1263,7 +1288,7 @@ function Navbar() {
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
-                          Wallet Balance:
+                          {t("nav.walletBalance")}:
                           <span style={{ color: "#FD7A00" }}>
                             {" "}
                             {/* ₦{userBalance.toLocaleString()} */}
@@ -1273,14 +1298,14 @@ function Navbar() {
                           </span>
                         </p>
                         <Modal
-                          title="User Wallet"
+                          title={t("nav.userWallet")}
                           open={isModalVisible}
                           onOk={handleOk}
-                          okText="Proceed to Payment"
+                          okText={t("nav.proceedToPayment")}
                           onCancel={handleCancel}
                           width={300}
                         >
-                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={5}>{t("nav.walletBalance")}:</Title>
                           <Title level={3} style={{ color: "#FD7A00" }}>
                             {userCurrency.toUpperCase() === "XOF"
                               ? formatToCFA(userBalance)
@@ -1288,8 +1313,8 @@ function Navbar() {
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
-                          <Title level={5}>Fund Wallet</Title>
-                          <Title level={5}>Select Payment Method</Title>
+                          <Title level={5}>{t("nav.fundWallet")}</Title>
+                          <Title level={5}>{t("nav.selectPaymentMethod")}</Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1348,7 +1373,7 @@ function Navbar() {
                             </Radio>
                           </Radio.Group>
                           <p>
-                            Enter Amount to Fund Wallet (Minimum:{" "}
+                            {t("nav.fundWalletDescription")}{" "}
                             {userCurrency.toUpperCase() === "XOF"
                               ? "CFA 1,000"
                               : "$10"}
@@ -1402,7 +1427,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handleModalOk}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1432,7 +1457,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handlePaystackModalClose}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
