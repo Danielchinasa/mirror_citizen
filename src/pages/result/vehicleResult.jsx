@@ -38,6 +38,7 @@ const VehicleResult = () => {
           userToken,
         );
 
+        // API returns response.data which contains the actual result
         setResultData(response.data || response);
         setLoading(false);
       } catch (error) {
@@ -59,7 +60,7 @@ const VehicleResult = () => {
     );
   }
 
-  if (!resultData || !resultData.result) {
+  if (!resultData || !resultData.data) {
     return (
       <PageWrapper>
         <Container>
@@ -71,7 +72,7 @@ const VehicleResult = () => {
     );
   }
 
-  const { result, status, resultText, provider, amount, currency } = resultData;
+  const { data, status, resultText, provider } = resultData;
 
   const {
     vin,
@@ -83,7 +84,8 @@ const VehicleResult = () => {
     verificationStatus,
     verificationReference,
     dsvi = {},
-  } = result;
+    billingInfo = {},
+  } = data;
 
   const spec = vehicleSpecification;
   const equipments = vehicle.vehicle_equipments || [];
@@ -312,41 +314,6 @@ const VehicleResult = () => {
             </WarrantyGrid>
           </SectionCard>
         )}
-
-        {/* Verification Details */}
-        <SectionCard>
-          <SectionTitle>Verification Details</SectionTitle>
-          <DetailList>
-            <DetailRow>
-              <DetailLabel>Status</DetailLabel>
-              <DetailValue>{status || "-"}</DetailValue>
-            </DetailRow>
-            <DetailRow>
-              <DetailLabel>Provider</DetailLabel>
-              <DetailValue>{provider || "-"}</DetailValue>
-            </DetailRow>
-            {verificationReference && (
-              <DetailRow>
-                <DetailLabel>Reference</DetailLabel>
-                <DetailValue>{verificationReference}</DetailValue>
-              </DetailRow>
-            )}
-            {amount && (
-              <DetailRow>
-                <DetailLabel>Amount</DetailLabel>
-                <DetailValue>
-                  {currency} {amount}
-                </DetailValue>
-              </DetailRow>
-            )}
-            {resultText && (
-              <DetailRow>
-                <DetailLabel>Result</DetailLabel>
-                <DetailValue>{resultText}</DetailValue>
-              </DetailRow>
-            )}
-          </DetailList>
-        </SectionCard>
 
         <Disclaimer>
           <FaInfoCircle /> Results are based on data available at the time of
