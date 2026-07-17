@@ -878,6 +878,18 @@ const VehicleLoginSample = () => {
                     CLEAR <FaCheckCircle />
                   </ClearBadge>
                 </ResultField>
+                <ResultField>
+                  <ResultLabel>Engine</ResultLabel>
+                  <ResultValue>1.8L 4-Cylinder</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Transmission</ResultLabel>
+                  <ResultValue>Automatic</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Fuel Type</ResultLabel>
+                  <ResultValue>Petrol</ResultValue>
+                </ResultField>
               </ResultGrid>
             </ResultTop>
           </ResultCard>
