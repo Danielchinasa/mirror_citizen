@@ -30,10 +30,15 @@ import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa6";
+import Logo from "../../images/kenya_logo.png";
+import LogoWhite from "../../images/kenya_dark.png";
+import { Link } from "react-router-dom";
+import { useTheme } from "../../components/ThemeProvider";
 
 function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const { isDark } = useTheme();
 
   return (
     <>
@@ -42,11 +47,14 @@ function Footer() {
         <FooterInner>
           <FooterTop>
             <BrandCol>
-              <PublicBrand to="/">
-                <span className="brand-red">e</span>
-                <span className="brand-dot">-</span>
-                raia<span className="brand-dot">.com</span>
-              </PublicBrand>
+              <Link to="/">
+                <img
+                  src={isDark ? LogoWhite : Logo}
+                  alt="Logo"
+                  width={120}
+                  style={{ marginTop: "10px", cursor: "pointer" }}
+                />
+              </Link>
               <BrandDesc>
                 Your trusted partner for digital identity verification and
                 background checks.

@@ -34,7 +34,7 @@ import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
 import Logo from "../../images/kenya_logo.png";
-import LogoWhite from "../../images/kenya_logo.png";
+import LogoWhite from "../../images/kenya_dark.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
@@ -960,11 +960,19 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <PublicBrand to="/">
+            {/* <PublicBrand to="/">
               <span className="brand-red">e</span>
               <span className="brand-dot">-</span>
               raia<span className="brand-dot">.com</span>
-            </PublicBrand>
+            </PublicBrand> */}
+            <Link to="/">
+              <img
+                src={isDark ? LogoWhite : Logo}
+                alt="Logo"
+                width={100}
+                style={{ marginTop: "25px", cursor: "pointer" }}
+              />
+            </Link>
             <HamburgerIcon onClick={handleClick}>
               {click ? (
                 <FaTimes />

@@ -14,6 +14,9 @@ import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
 import { PublicBrand } from "../../components/Navbar/Navbar.elements";
+import Logo from "../../images/kenya_logo.png";
+import LogoWhite from "../../images/kenya_dark.png";
+import { useTheme } from "../../components/ThemeProvider";
 
 import {
   PageWrapper,
@@ -304,15 +307,24 @@ const VerificationLoginPage = () => {
       setLoading(false);
     }
   };
+  const { isDark } = useTheme();
 
   return (
     <PageWrapper>
       <LoginNav>
-        <PublicBrand to="/">
+        {/* <PublicBrand to="/">
           <span className="brand-red">e</span>
           <span className="brand-dot">-</span>
           raia<span className="brand-dot">.com</span>
-        </PublicBrand>
+        </PublicBrand> */}
+        <Link to="/">
+          <img
+            src={isDark ? LogoWhite : Logo}
+            alt="Logo"
+            width={120}
+            style={{ marginTop: "10px", cursor: "pointer" }}
+          />
+        </Link>
         <NavLinks>
           <NavLink to="/faq-kenya">FAQ</NavLink>
           <NavLink to="/contact">Support</NavLink>
