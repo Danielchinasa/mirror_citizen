@@ -535,7 +535,7 @@ const Home = () => {
                   localStorage.getItem("currencyCheck") === "UGX" ||
                   ipCountry === "UG";
                 const s = Array.isArray(servicePrices)
-                  ? servicePrices.find((x) => x.service === "National ID UG")
+                  ? servicePrices.find((x) => x.service === "National ID")
                   : null;
                 if (!s) return isLocal ? "USh —" : "$ —";
                 return isLocal
