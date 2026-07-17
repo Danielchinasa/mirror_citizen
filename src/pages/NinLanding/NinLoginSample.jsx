@@ -464,6 +464,24 @@ const ResultDisclaimer = styled.div`
 `;
 
 const NinLoginSample = () => {
+  const [language, setLanguage] = useState(() => {
+    if (typeof window === "undefined") return "SW";
+    return window.localStorage.getItem("siteLanguage") || "SW";
+  });
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const lang =
+        window.localStorage.getItem("siteLanguage") || "SW";
+      setLanguage(lang);
+    };
+    window.addEventListener("siteLanguageChanged", handleLanguageChange);
+    return () =>
+      window.removeEventListener("siteLanguageChanged", handleLanguageChange);
+  }, []);
+
+  const isSw = language === "SW";
+
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/nin";
@@ -733,9 +751,9 @@ const NinLoginSample = () => {
               <Spinner />
             </SpinnerOverlay>
           )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          <LoginCardTitle>{isSw ? "Ingia / Endelea" : "Login / Continue"}</LoginCardTitle>
           <LoginCardSub>
-            Sign in or continue to start your verification.
+            {isSw ? "Ingia au endelea kuanza uthibitishaji wako." : "Sign in or continue to start your verification."}
           </LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
@@ -753,7 +771,7 @@ const NinLoginSample = () => {
                     googleLogin();
                   }}
                 >
-                  <FcGoogle /> Continue with Google
+                  <FcGoogle /> {isSw ? "Endelea na Google" : "Continue with Google"}
                 </SSOButton>
                 <FacebookLogin
                   appId="541710452150170"
@@ -763,21 +781,21 @@ const NinLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                      <FaFacebook color="#1877F2" /> {isSw ? "Endelea na Facebook" : "Continue with Facebook"}
                     </SSOButton>
                   )}
                 />
               </SSOCol>
-              <Divider>OR</Divider>
+              <Divider>{isSw ? "AU" : "OR"}</Divider>
               <FormCol>
                 {formErrors.general && (
                   <ErrorAlert>{formErrors.general}</ErrorAlert>
                 )}
                 <div>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>{isSw ? "Barua pepe" : "Email address"}</FormLabel>
                   <FormInput
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={isSw ? "Weka barua pepe yako" : "Enter your email"}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -787,11 +805,11 @@ const NinLoginSample = () => {
                   )}
                 </div>
                 <div>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{isSw ? "Nywila" : "Password"}</FormLabel>
                   <PasswordWrapper>
                     <FormInput
                       type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder={isSw ? "Weka nywila yako" : "Enter your password"}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -815,10 +833,10 @@ const NinLoginSample = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />{" "}
-                    Remember me
+                    {isSw ? "Nikumbuke" : "Remember me"}
                   </RememberLabel>
                   <ForgotLink to="/forgot-password">
-                    Forgot password?
+                    {isSw ? "Umesahau nywila?" : "Forgot password?"}
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
@@ -827,11 +845,11 @@ const NinLoginSample = () => {
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
+                  {isSw ? "Ingia" : "Login"}
                 </LoginBtn>
                 <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
+                  {isSw ? "Huna akaunti?" : "Don't have an account?"}{" "}
+                  <Link to="/individual/sign-up/1">{isSw ? "Jisajili hapa" : "Register here"}</Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -841,10 +859,10 @@ const NinLoginSample = () => {
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
-            <SampleCardTitle>Sample result</SampleCardTitle>
-            <SampleBadge>This is a sample only</SampleBadge>
+            <SampleCardTitle>{isSw ? "Mfano wa matokeo" : "Sample result"}</SampleCardTitle>
+            <SampleBadge>{isSw ? "Huu ni mfano tu" : "This is a sample only"}</SampleBadge>
           </SampleHeader>
-          <SampleCardSub>See an example of a National ID result.</SampleCardSub>
+          <SampleCardSub>{isSw ? "Tazama mfano wa matokeo ya Kitambulisho cha Taifa." : "See an example of a National ID result."}</SampleCardSub>
           <ResultCard>
             <ResultTop>
               <ResultPhoto>
@@ -852,37 +870,37 @@ const NinLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Full Name</ResultLabel>
+                  <ResultLabel>{isSw ? "Jina Kamili" : "Full Name"}</ResultLabel>
                   <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Phone Number</ResultLabel>
+                  <ResultLabel>{isSw ? "Nambari ya Simu" : "Phone Number"}</ResultLabel>
                   <ResultValue>0803 *** 5678</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>National ID</ResultLabel>
+                  <ResultLabel>{isSw ? "Kitambulisho cha Taifa" : "National ID"}</ResultLabel>
                   <ResultValue>UG-NID-4582-7819-2043</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Verification Status</ResultLabel>
+                  <ResultLabel>{isSw ? "Hali ya Uthibitishaji" : "Verification Status"}</ResultLabel>
                   <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
+                    {isSw ? "IMETHIBITISHWA" : "VERIFIED"} <FaCheckCircle />
                   </VerifiedBadge>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Date of Birth</ResultLabel>
+                  <ResultLabel>{isSw ? "Tarehe ya Kuzaliwa" : "Date of Birth"}</ResultLabel>
                   <ResultValue>14 Mar 1990</ResultValue>
                 </ResultField>
               </ResultGrid>
             </ResultTop>
             <ResultFooter>
-              <span>Verified on 15 May, 2025, 12:45 PM</span>
+              <span>{isSw ? "Imethibitishwa tarehe 15 Mei, 2025, 12:45 PM" : "Verified on 15 May, 2025, 12:45 PM"}</span>
               <span>Ref: ECNIN2505151245ABCD</span>
             </ResultFooter>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
-            Results are based on data available at the time of verification.
+            {isSw ? "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji." : "Results are based on data available at the time of verification."}
           </ResultDisclaimer>
         </SampleCard>
       </TwoColGrid>
