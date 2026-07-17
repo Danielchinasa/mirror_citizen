@@ -261,19 +261,6 @@ function Navbar() {
           Côte d'Ivoire
         </a>
       </Menu.Item>
-      <Menu.Item key="country-uganda">
-        <a
-          href="https://e-raia.africa"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <span role="img" aria-label="Uganda flag" style={{ marginRight: 10 }}>
-            🇺🇬
-          </span>
-          Uganda
-        </a>
-      </Menu.Item>
     </Menu>
   );
 
