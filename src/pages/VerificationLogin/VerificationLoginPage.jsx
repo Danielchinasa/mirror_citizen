@@ -40,6 +40,9 @@ import {
   SpinnerOverlay,
   Spinner,
 } from "./VerificationLogin.elements";
+import Logo from "../../images/uganda_logo.png";
+import LogoWhite from "../../images/uganda_dark.png";
+import { useTheme } from "../../components/ThemeProvider";
 
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
@@ -283,16 +286,21 @@ const VerificationLoginPage = () => {
       setLoading(false);
     }
   };
+  const { isDark } = useTheme();
 
   return (
     <PageWrapper>
       <LoginNav>
-        <NavBrand to="/">
-          <span className="brand-red">e</span>
-          <span className="brand-dot">-</span>
-          raia<span className="brand-dot">.africa</span>
-        </NavBrand>
+        <Link to="/">
+          <img
+            src={isDark ? LogoWhite : Logo}
+            alt="Logo"
+            width={130}
+            style={{ marginTop: "10px", cursor: "pointer" }}
+          />
+        </Link>
         <NavLinks>
+          <NavLink to="/">← Back to Home</NavLink>
           <NavLink to="/individual/sign-up/1">Register</NavLink>
         </NavLinks>
       </LoginNav>
@@ -399,7 +407,7 @@ const VerificationLoginPage = () => {
               style={{ marginBottom: 20 }}
             />
 
-            <LoginButton type="submit" disabled={!isCaptchaVerified}>
+            <LoginButton type="submit" disabled={isCaptchaVerified}>
               Login
             </LoginButton>
           </form>

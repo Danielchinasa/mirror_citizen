@@ -152,12 +152,12 @@ const PAYMENT_METHODS = [
     icon: null,
     paymentType: "INSTANT",
   },
-  {
-    id: "paystack",
-    label: "Paystack",
-    icon: null,
-    paymentType: "INSTANT",
-  },
+  // {
+  //   id: "paystack",
+  //   label: "Paystack",
+  //   icon: null,
+  //   paymentType: "INSTANT",
+  // },
 ];
 
 function generateTransactionId() {
@@ -167,6 +167,10 @@ function generateTransactionId() {
   }
   return transactionId;
 }
+
+const LOCAL_COUNTRY_CODE = "UG";
+const LOCAL_CURRENCY = "UGX";
+const FOREIGN_CURRENCY = "USD";
 
 const VerifyPage = () => {
   const { type } = useParams();
@@ -182,6 +186,9 @@ const VerifyPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("wallet");
+  const [currencyCheck, setCurrencyCheck] = useState(
+    (localStorage.getItem("currencyCheck") || LOCAL_CURRENCY).toUpperCase(),
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
@@ -301,16 +308,21 @@ const VerifyPage = () => {
     };
   }, []);
 
-  // Ensure IP/Country is stored (use from main landing page if available)
+  // Use stored IP/country from main landing page, only fetch if missing
   useEffect(() => {
-    const ensureIpAndCurrency = async () => {
-      // Check if IP and country are already stored from main landing page
+    let isMounted = true;
+
+    const syncCurrencyFromLiveIp = async () => {
+      // First check if IP and country are already stored from main landing page
       const storedIp = localStorage.getItem("IpAddress");
       const storedCountry = localStorage.getItem("userCountry");
       const storedCurrency = localStorage.getItem("currencyCheck");
 
       // If we have all stored values, use them (main landing page already fetched)
       if (storedIp && storedCountry && storedCurrency) {
+        if (isMounted) {
+          setCurrencyCheck(storedCurrency.toUpperCase());
+        }
         console.log(
           "✅ VerifyPage using stored IP/Country:",
           storedIp,
@@ -326,21 +338,28 @@ const VerifyPage = () => {
         if (!response.ok) throw new Error("ipapi request failed");
 
         const data = await response.json();
-        const ip = data?.ip;
-        const country = (
+        const countryCode = (
           data?.country_code ||
           data?.country ||
           ""
         ).toUpperCase();
 
-        if (ip) {
-          localStorage.setItem("IpAddress", ip);
+        if (data?.ip) {
+          localStorage.setItem("IpAddress", data.ip);
         }
 
-        if (country) {
-          localStorage.setItem("userCountry", country);
-          const currency = country === "UG" ? "UGX" : "USD";
-          localStorage.setItem("currencyCheck", currency);
+        if (countryCode) {
+          localStorage.setItem("userCountry", countryCode);
+          const detectedCurrency =
+            countryCode === LOCAL_COUNTRY_CODE
+              ? LOCAL_CURRENCY
+              : FOREIGN_CURRENCY;
+
+          if (isMounted) {
+            setCurrencyCheck(detectedCurrency);
+          }
+
+          localStorage.setItem("currencyCheck", detectedCurrency);
           return;
         }
       } catch (error) {
@@ -353,11 +372,8 @@ const VerifyPage = () => {
         if (fallback.ok) {
           const fallbackData = await fallback.json();
           const ip = fallbackData?.ip;
-          const country = (
-            fallbackData?.country_code ||
-            fallbackData?.countryCode ||
-            ""
-          ).toUpperCase();
+          const country =
+            fallbackData?.country_code || fallbackData?.countryCode;
 
           if (ip) {
             localStorage.setItem("IpAddress", ip);
@@ -365,8 +381,15 @@ const VerifyPage = () => {
 
           if (country) {
             localStorage.setItem("userCountry", country);
-            const currency = country === "UG" ? "UGX" : "USD";
-            localStorage.setItem("currencyCheck", currency);
+            const detectedCurrency =
+              country.toUpperCase() === LOCAL_COUNTRY_CODE
+                ? LOCAL_CURRENCY
+                : FOREIGN_CURRENCY;
+
+            if (isMounted) {
+              setCurrencyCheck(detectedCurrency);
+            }
+            localStorage.setItem("currencyCheck", detectedCurrency);
             return;
           }
         }
@@ -374,17 +397,31 @@ const VerifyPage = () => {
         console.error("VerifyPage fallback IP lookup failed:", fallbackError);
       }
 
-      // Both APIs failed - use default Uganda values
-      const defaultIp = "41.210.160.1";
+      // Both APIs failed - use default Ghana values
+      const defaultIp = "102.131.16.255";
       const defaultCountry = "UG";
       const defaultCurrency = "UGX";
       localStorage.setItem("IpAddress", defaultIp);
       localStorage.setItem("userCountry", defaultCountry);
       localStorage.setItem("currencyCheck", defaultCurrency);
+
+      if (isMounted) {
+        setCurrencyCheck(defaultCurrency);
+      }
     };
 
-    ensureIpAndCurrency();
+    syncCurrencyFromLiveIp();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
+  useEffect(() => {
+    if (currencyCheck) {
+      localStorage.setItem("currencyCheck", currencyCheck);
+    }
+  }, [currencyCheck]);
 
   // Fetch service prices
   useEffect(() => {
@@ -403,7 +440,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Error",
           text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
       }
     };
@@ -412,14 +449,7 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "USD";
-  const isLocal = ["XOF", "UGX"].includes(currencyCheck.toUpperCase());
-  const currencySymbol =
-    currencyCheck.toUpperCase() === "XOF"
-      ? "FCFA "
-      : currencyCheck.toUpperCase() === "UGX"
-        ? "USh "
-        : "$";
+  const isGHS = currencyCheck === LOCAL_CURRENCY;
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -429,34 +459,29 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isLocal
-        ? config.allBureausDiscount.ugx
+      ? isGHS
+        ? config.allBureausDiscount.ngn
         : config.allBureausDiscount.usd
       : 0;
 
-  const totalAmount = pricingData
-    ? isLocal
-      ? ((pricingData.serviceFee || 0) +
-          (pricingData.processingFee || 0) +
-          (pricingData.vat || 0)) *
-          bureauMultiplier -
-        discount
-      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
-          bureauMultiplier -
-        discount
-    : 0;
+  const serviceFeePerCheck = isGHS
+    ? Number(pricingData?.serviceFee || 0)
+    : Number(pricingData?.serviceFeeusd || 0);
+  const processingFeePerCheck = isGHS
+    ? Number(pricingData?.processingFee || 0)
+    : Number(pricingData?.processingFeeUsd || 0);
+  const vatPerCheck = isGHS
+    ? Number(pricingData?.vat || 0)
+    : Number(pricingData?.vatUsd || 0);
 
-  // Wallet is always held in local currency (XOF or UGX). This amount is used
-  // for balance checks and wallet charges regardless of display currency.
-  const totalAmountLocal = pricingData
-    ? ((pricingData.serviceFee || 0) +
-        (pricingData.processingFee || 0) +
-        (pricingData.vat || 0)) *
-        bureauMultiplier -
-      (allBureausSelected && config?.allBureausDiscount
-        ? config.allBureausDiscount.ugx || 0
-        : 0)
-    : 0;
+  const serviceFeeTotal = serviceFeePerCheck * bureauMultiplier;
+  const processingFeeTotal = processingFeePerCheck * bureauMultiplier;
+  const vatTotal = vatPerCheck * bureauMultiplier;
+  const subtotalAmount = serviceFeeTotal + processingFeeTotal + vatTotal;
+
+  const totalAmount = pricingData ? Math.max(subtotalAmount - discount, 0) : 0;
+
+  const currencySymbol = isGHS ? "GH₵" : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -606,6 +631,27 @@ const VerifyPage = () => {
   const handlePay = async () => {
     setLoading(true);
     setError("");
+
+    // For wallet payments by non-Ghanaian users, verify wallet currency matches payment currency
+    const userCurrency = user?.currency || "";
+    if (
+      paymentMethod === "wallet" &&
+      currencyCheck.toUpperCase() !== "GHS" &&
+      userCurrency &&
+      userCurrency.toUpperCase() !== currencyCheck.toUpperCase()
+    ) {
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Currency Mismatch",
+        text: "Wallet currency must match payment currency. Please use the right currency for this transaction.",
+        confirmButtonColor: "#987D0E",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      return;
+    }
+
     setCurrentStep(2); // Processing
 
     const randomTransactionId = generateTransactionId();
@@ -627,6 +673,8 @@ const VerifyPage = () => {
       if (initiatePayload?.status === "INITIATED") {
         localStorage.setItem("sessionCode", initiatePayload?.sessionId);
         apiFormData.sessionId = initiatePayload?.sessionId;
+        apiFormData.idNumber =
+          apiFormData.idNumber || formData.idNumber || formData.nin || "";
       } else {
         throw new Error(
           initiatePayload?.message || "Failed to initiate verification",
@@ -649,21 +697,21 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: err.message || "An error occurred. Please try again.",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
     }
   };
 
   const handleWalletPayment = async (transactionId, apiFormData) => {
-    // Wallet is always in local currency — compare against local total
-    if (userBalance < totalAmountLocal) {
+    // Check wallet balance
+    if (userBalance < totalAmount) {
       setLoading(false);
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
         title: "Wallet Balance Low",
-        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmountLocal.toLocaleString()}).`,
-        confirmButtonColor: "#DD0201",
+        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
+        confirmButtonColor: "#FED001",
       });
       return;
     }
@@ -676,9 +724,9 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
         userNIN: userDetails?.nin || "",
         transactionID: transactionId,
-        currency: currencyCheck, // local currency (XOF or UGX)
+        currency: currencyCheck,
         paymentType: "WALLET",
-        amount: totalAmountLocal, // always charge in local currency
+        amount: totalAmount,
       };
 
       const response = await fetch(apiUrl, {
@@ -797,7 +845,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         return;
       }
@@ -817,7 +865,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
       }
     } catch {
@@ -825,7 +873,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: "Could not verify payment status. Please check your dashboard.",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
     }
 
@@ -862,7 +910,13 @@ const VerifyPage = () => {
         resultTitle = `${config.serviceName} Successful`;
         resultDetail =
           response.resultText || `${config.serviceName} was successful.`;
-        resultRoute = "/main-dashboard";
+
+        // Check if it's a vehicle verification
+        if (result.vehicleName || result.vehicleSpecification || result.vin) {
+          resultRoute = "/vehicle-profile-result";
+        } else {
+          resultRoute = "/main-dashboard";
+        }
       } else if (
         response.basic &&
         response.basic.status &&
@@ -882,7 +936,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.basic.detail,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -907,7 +961,7 @@ const VerifyPage = () => {
           text:
             response["search-extension"].phoneVerification.detail ||
             "Verification failed",
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -935,7 +989,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.business.message,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -950,7 +1004,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.financial.message,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
         return;
@@ -1029,7 +1083,7 @@ const VerifyPage = () => {
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
                 : "Verification failed. Please try again.",
-            confirmButtonColor: "#DD0201",
+            confirmButtonColor: "#FED001",
           });
           setCurrentStep(1);
           return;
@@ -1080,7 +1134,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: errorMsg,
-          confirmButtonColor: "#DD0201",
+          confirmButtonColor: "#FED001",
         });
         setCurrentStep(1);
       }
@@ -1091,7 +1145,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Service Unavailable",
         text: "Service is currently unavailable. A refund has been initiated.",
-        confirmButtonColor: "#DD0201",
+        confirmButtonColor: "#FED001",
       });
     }
   };
@@ -1234,7 +1288,7 @@ const VerifyPage = () => {
                       alignItems: "center",
                       gap: 10,
                       padding: "10px 14px",
-                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DD0201" : "#e5e7eb"}`,
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#FED001" : "#e5e7eb"}`,
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
@@ -1256,7 +1310,7 @@ const VerifyPage = () => {
                         }));
                         setError("");
                       }}
-                      style={{ accentColor: "#DD0201", width: 16, height: 16 }}
+                      style={{ accentColor: "#FED001", width: 16, height: 16 }}
                     />
                     {bureau.label}
                   </label>
@@ -1277,8 +1331,8 @@ const VerifyPage = () => {
                   }}
                 >
                   🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
-                  {(isLocal
-                    ? config.allBureausDiscount.ugx
+                  {(isGHS
+                    ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>
@@ -1311,73 +1365,66 @@ const VerifyPage = () => {
               : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
           <PriceBreakdown>
-            {pricingData &&
-              (() => {
-                const processingFees = isLocal
-                  ? (pricingData.serviceFee || 0) +
-                    (pricingData.processingFee || 0)
-                  : pricingData.serviceFeeusd || 0;
-                const taxCharges = isLocal
-                  ? pricingData.vat || 0
-                  : pricingData.vatUsd || 0;
-                const perBureau = processingFees + taxCharges;
-                const subtotal = perBureau * bureauMultiplier;
-                const totalToPay = subtotal - discount;
-                return (
-                  <>
-                    <PriceRow>
-                      <span>
-                        Processing fees
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(processingFees * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    <PriceRow>
-                      <span>
-                        Tax & charges
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(taxCharges * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    {discount > 0 && (
-                      <PriceRow>
-                        <span style={{ color: "#b38b00" }}>Discount</span>
-                        <span style={{ color: "#b38b00" }}>
-                          -{currencySymbol}
-                          {discount.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                          })}
-                        </span>
-                      </PriceRow>
-                    )}
-                    <PriceTotalRow>
-                      <span>Total to be paid</span>
-                      <span>
-                        {currencySymbol}
-                        {totalToPay.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                        })}
-                      </span>
-                    </PriceTotalRow>
-                  </>
-                );
-              })()}
+            {pricingData && (
+              <>
+                <PriceRow>
+                  <span>
+                    Service fee
+                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {serviceFeeTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceRow>
+                <PriceRow>
+                  <span>
+                    Processing fee
+                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {processingFeeTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceRow>
+                <PriceRow>
+                  <span>
+                    Tax & charges
+                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {vatTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceRow>
+                {discount > 0 && (
+                  <PriceRow>
+                    <span style={{ color: "#b38b00" }}>Discount</span>
+                    <span style={{ color: "#b38b00" }}>
+                      -{currencySymbol}
+                      {discount.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                      })}
+                    </span>
+                  </PriceRow>
+                )}
+                <PriceTotalRow>
+                  <span>Total to be paid</span>
+                  <span>
+                    {currencySymbol}
+                    {totalAmount.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </PriceTotalRow>
+              </>
+            )}
           </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
@@ -1497,17 +1544,22 @@ const VerifyPage = () => {
               )}
               <SummaryRow>
                 <SummaryLabel>
+                  Service Fee
+                  {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                </SummaryLabel>
+                <SummaryValue>
+                  {currencySymbol}
+                  {serviceFeeTotal.toLocaleString()}
+                </SummaryValue>
+              </SummaryRow>
+              <SummaryRow>
+                <SummaryLabel>
                   Processing Fee
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(
-                    (isLocal
-                      ? (pricingData.serviceFee || 0) +
-                        (pricingData.processingFee || 0)
-                      : pricingData.serviceFeeusd || 0) * bureauMultiplier
-                  ).toLocaleString()}
+                  {processingFeeTotal.toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               <SummaryRow>
@@ -1517,10 +1569,7 @@ const VerifyPage = () => {
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(
-                    (isLocal ? pricingData.vat : pricingData.vatUsd || 0) *
-                    bureauMultiplier
-                  ).toLocaleString()}
+                  {vatTotal.toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               {discount > 0 && (
@@ -1607,6 +1656,34 @@ const VerifyPage = () => {
     const data = verificationResult.data;
     const fields = [];
 
+    // ── Vehicle verification ──
+    if (data.vehicleName || data.vin || data.vehicleSpecification) {
+      if (data.vehicleName)
+        fields.push({ label: "Vehicle", value: data.vehicleName });
+      if (data.vin) fields.push({ label: "VIN", value: data.vin });
+
+      const spec = data.vehicleSpecification || {};
+      if (spec.year) fields.push({ label: "Year", value: spec.year });
+      if (spec.category)
+        fields.push({ label: "Category", value: spec.category });
+      if (spec.make) fields.push({ label: "Make", value: spec.make });
+      if (spec.model) fields.push({ label: "Model", value: spec.model });
+      if (spec.trim) fields.push({ label: "Trim", value: spec.trim });
+      if (spec.engine) fields.push({ label: "Engine", value: spec.engine });
+      if (spec.transmission)
+        fields.push({ label: "Transmission", value: spec.transmission });
+      if (spec.drive_type)
+        fields.push({ label: "Drive Type", value: spec.drive_type });
+
+      if (data.verificationStatus)
+        fields.push({
+          label: "Verification Status",
+          value: data.verificationStatus,
+        });
+
+      return fields.slice(0, 8);
+    }
+
     // ── Ghana ID Card / basic result (new API format) ──
     // Check for new format fields first (fullName, idNumber, etc.)
     if (data.fullName || data.firstName || data.lastName || data.idNumber) {
@@ -1638,7 +1715,7 @@ const VerifyPage = () => {
       if (data.country)
         fields.push({
           label: "Country",
-          value: data.country === "GH" ? "Ghana" : data.country,
+          value: data.country === "UG" ? "Uganda" : data.country,
         });
 
       return fields;
@@ -1818,7 +1895,7 @@ const VerifyPage = () => {
               margin: "0 auto 16px",
             }}
           >
-            <FaCheckCircle style={{ fontSize: 28, color: "#DD0201" }} />
+            <FaCheckCircle style={{ fontSize: 28, color: "#FED001" }} />
           </div>
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
@@ -1942,7 +2019,7 @@ const VerifyPage = () => {
               <div
                 style={{
                   fontSize: 14,
-                  color: "#DD0201",
+                  color: "#FED001",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: 700,
                 }}
@@ -1988,7 +2065,7 @@ const VerifyPage = () => {
                   marginBottom: 8,
                 }}
               >
-                <FaCheckCircle style={{ color: "#DD0201", fontSize: 14 }} />
+                <FaCheckCircle style={{ color: "#FED001", fontSize: 14 }} />
                 <span
                   style={{
                     fontSize: 14,
@@ -2170,13 +2247,46 @@ const VerifyPage = () => {
             <PopupBody>
               <ResultCardPopup>
                 <ResultTopPopup>
-                  <ResultPhotoPopup>
-                    {(() => {
-                      const data = verificationResult?.data;
-                      if (!data) return <FaUserCircle />;
+                  {(() => {
+                    const data = verificationResult?.data;
+                    const isVehicle =
+                      data?.vehicleName || data?.vehicleSpecification;
 
-                      // Try multiple possible keys for image data
-                      let photoSrc =
+                    if (isVehicle && data.vehicleImage) {
+                      // Vehicle verification - show vehicle image
+                      return (
+                        <div
+                          style={{
+                            width: "180px",
+                            height: "120px",
+                            borderRadius: "12px",
+                            background: "var(--ec-bg-secondary)",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                            border: "1px solid var(--ec-border)",
+                          }}
+                        >
+                          <img
+                            src={data.vehicleImage}
+                            alt="Vehicle"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              e.target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ec-text-faint);font-size:48px;"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M499.99 176h-59.87l-16.64-41.6C406.38 91.63 365.57 64 319.5 64h-127c-46.06 0-86.88 27.63-103.99 70.4L71.87 176H12.01C4.2 176-1.53 183.34.37 190.91l6 24C7.7 220.25 12.5 224 18.01 224h20.07C24.65 235.73 16 252.78 16 272v48c0 16.12 6.16 30.67 16 41.93V416c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-32h256v32c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-54.07c9.84-11.25 16-25.8 16-41.93v-48c0-19.22-8.65-36.27-22.07-48H494c5.51 0 10.31-3.75 11.64-9.09l6-24c1.89-7.57-3.84-14.91-11.65-14.91zm-352.06-17.83c7.29-18.22 24.94-30.17 44.57-30.17h127c19.63 0 37.28 11.95 44.57 30.17L384 208H128l19.93-49.83zM96 319.8c-19.2 0-32-12.76-32-31.9S76.8 256 96 256s48 28.71 48 47.85-28.8 15.95-48 15.95zm320 0c-19.2 0-48 3.19-48-15.95S396.8 256 416 256s32 12.76 32 31.9-12.8 31.9-32 31.9z"></path></svg></div>`;
+                            }}
+                          />
+                        </div>
+                      );
+                    }
+
+                    // Profile photo for non-vehicle verification types
+                    let photoSrc = null;
+                    if (data) {
+                      photoSrc =
                         data.photo ||
                         data.signature ||
                         data.image ||
@@ -2188,51 +2298,58 @@ const VerifyPage = () => {
                         data.faceImage ||
                         data.photoUrl ||
                         data.imageUrl;
+                    }
 
-                      if (photoSrc) {
-                        // Add data URI prefix if it's raw base64
-                        if (!photoSrc.startsWith("data:")) {
-                          // Detect image type from base64 signature
-                          if (
-                            photoSrc.startsWith("/9j/") ||
-                            photoSrc.startsWith("iVBORw0KGgo")
-                          ) {
-                            const mimeType = photoSrc.startsWith("/9j/")
-                              ? "image/jpeg"
-                              : "image/png";
-                            photoSrc = `data:${mimeType};base64,${photoSrc}`;
-                          }
-                        }
+                    return (
+                      <ResultPhotoPopup>
+                        {photoSrc ? (
+                          (() => {
+                            // Add data URI prefix if it's raw base64
+                            if (!photoSrc.startsWith("data:")) {
+                              // Detect image type from base64 signature
+                              if (
+                                photoSrc.startsWith("/9j/") ||
+                                photoSrc.startsWith("iVBORw0KGgo")
+                              ) {
+                                const mimeType = photoSrc.startsWith("/9j/")
+                                  ? "image/jpeg"
+                                  : "image/png";
+                                photoSrc = `data:${mimeType};base64,${photoSrc}`;
+                              }
+                            }
 
-                        return (
-                          <img
-                            src={photoSrc}
-                            alt="Verification photo"
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              borderRadius: "50%",
-                              objectFit: "cover",
-                            }}
-                            onError={(e) => {
-                              console.warn(
-                                "Image failed to load, falling back to icon",
-                              );
-                              e.target.style.display = "none";
-                            }}
-                          />
-                        );
-                      }
-                      return <FaUserCircle />;
-                    })()}
-                  </ResultPhotoPopup>
+                            return (
+                              <img
+                                src={photoSrc}
+                                alt="Verification photo"
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  borderRadius: "50%",
+                                  objectFit: "cover",
+                                }}
+                                onError={(e) => {
+                                  console.warn(
+                                    "Image failed to load, falling back to icon",
+                                  );
+                                  e.target.style.display = "none";
+                                }}
+                              />
+                            );
+                          })()
+                        ) : (
+                          <FaUserCircle />
+                        )}
+                      </ResultPhotoPopup>
+                    );
+                  })()}
                   <ResultGridPopup>
                     {getResultPreviewFields().map((field, idx) => (
                       <ResultFieldPopup key={idx}>
                         <ResultLabelPopup>{field.label}</ResultLabelPopup>
-                        {field.verified ? (
+                        {field.label === "Verification Status" ? (
                           <VerifiedBadgePopup>
-                            {field.value} <FaCheckCircle />
+                            VERIFIED <FaCheckCircle />
                           </VerifiedBadgePopup>
                         ) : (
                           <ResultValuePopup>{field.value}</ResultValuePopup>
@@ -2263,7 +2380,9 @@ const VerifyPage = () => {
                 <ContinueBtn
                   onClick={() => {
                     setShowResultPopup(false);
-                    history.push("/main-dashboard");
+                    history.push(
+                      verificationResult?.route || "/main-dashboard",
+                    );
                   }}
                 >
                   View full result <FaArrowRight />

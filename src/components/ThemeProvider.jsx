@@ -16,7 +16,7 @@ const lightVars = {
   "--ec-text-faint": "#777777",
   "--ec-text-faintest": "#999999",
   "--ec-heading": "#1a1a1a",
-  "--ec-heading-alt": "#354138",
+  "--ec-heading-alt": "#1a1a1a",
   "--ec-primary": "#DD0201",
   "--ec-primary-hover": "#ff4d4f",
   "--ec-primary-dark": "#b91c1c",

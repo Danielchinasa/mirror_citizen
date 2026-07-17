@@ -278,7 +278,7 @@ const verificationConfig = {
     idTypeLabel: "National Identification Number (Uganda)",
     countryCode: "UG",
     serviceCode: "NATIONAL_ID",
-    apiServiceName: "National ID UG",
+    apiServiceName: "National ID",
     fields: [
       {
         name: "idNumber",

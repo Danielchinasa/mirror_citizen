@@ -813,7 +813,7 @@ function Navbar() {
               <img
                 src={isDark ? LogoWhite : Logo}
                 alt="Logo"
-                width={230}
+                width={130}
                 style={{ marginTop: "10px", cursor: "pointer" }}
               />
             </Link>
@@ -945,8 +945,8 @@ function Navbar() {
               <img
                 src={isDark ? LogoWhite : Logo}
                 alt="Logo"
-                width={230}
-                style={{ marginTop: "10px", cursor: "pointer" }}
+                width={130}
+                style={{ marginTop: "20px", cursor: "pointer" }}
               />
             </Link>
             {/* <PublicBrand to="/">

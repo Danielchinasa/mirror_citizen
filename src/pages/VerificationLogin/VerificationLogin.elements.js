@@ -112,7 +112,7 @@ export const MainContent = styled.main`
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(220, 5, 2, 0.10) 0%,
+      rgba(220, 5, 2, 0.1) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -227,14 +227,14 @@ export const FormLabel = styled.label`
 export const FormInput = styled.input`
   width: 100%;
   padding: 11px 14px;
-  border: 1px solid var(--ec-input-border);
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: var(--ec-input-text);
+  color: var(--ec-text);
+  background: var(--ec-bg-input);
   outline: none;
   box-sizing: border-box;
-  background: var(--ec-input-bg);
   transition: border-color 0.2s;
 
   &::placeholder {
@@ -242,7 +242,7 @@ export const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #dd0201;
+    border-color: var(--ec-primary);
   }
 `;
 

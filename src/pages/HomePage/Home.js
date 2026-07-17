@@ -422,12 +422,26 @@ const Home = () => {
             </HeroTitle>
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
-              <SecondaryBtn href="#services">
+              <PrimaryBtn
+                to="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("services");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
                 {t("home.hero.verifyNationalId")} <FaArrowRight />
-              </SecondaryBtn>
-              <SecondaryBtn href="#services">
+              </PrimaryBtn>
+              <PrimaryBtn
+                to="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("services");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
                 {t("home.hero.checkVin")} <FaArrowRight />
-              </SecondaryBtn>
+              </PrimaryBtn>
             </HeroButtons>
             <TrustIndicators>
               <TrustItem>
