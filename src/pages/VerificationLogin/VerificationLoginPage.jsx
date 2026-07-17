@@ -13,6 +13,10 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import Logo from "../../images/uganda_logo.png";
+import LogoWhite from "../../images/uganda_dark.png";
+import { useTheme } from "../../components/ThemeProvider";
+
 import {
   PageWrapper,
   LoginNav,
@@ -40,9 +44,9 @@ import {
   SpinnerOverlay,
   Spinner,
 } from "./VerificationLogin.elements";
-import Logo from "../../images/uganda_logo.png";
-import LogoWhite from "../../images/uganda_dark.png";
-import { useTheme } from "../../components/ThemeProvider";
+
+// Fallback IP (Uganda) used when both IP lookups fail so login still works
+const DEFAULT_UGANDA_IP = "41.210.160.1";
 
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
@@ -56,6 +60,7 @@ const VerificationLoginPage = () => {
     email: "",
     password: "",
     rememberMe: false,
+    ipAddress: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -64,70 +69,88 @@ const VerificationLoginPage = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   useEffect(() => {
-    // Use stored IP address and country from main landing page
-    const storedIp = localStorage.getItem("IpAddress");
-    const storedCountry = localStorage.getItem("userCountry");
-    const storedCurrency = localStorage.getItem("currencyCheck");
-
-    if (storedIp && storedCountry && storedCurrency) {
-      // Already have IP/Country from main landing page
-      setIpAddress(storedIp);
+    const fetchIpInfo = async () => {
+      // ============================================================
+      // 🧪 TESTING OVERRIDE - Uncomment to use static IP/Country
+      // ============================================================
+      // When uncommented, bypasses stored values and API detection
+      // Comment out this entire section for normal operation
+      // ============================================================
+      const testIp = "41.210.160.1"; // Uganda IP
+      const testCountry = "UG"; // Uganda
+      const testCurrency = "UGX"; // Ugandan Shilling
+      // For testing USD pricing, use:
+      // const testIp = "8.8.8.8";           // US IP
+      // const testCountry = "US";           // United States
+      // const testCurrency = "USD";         // US Dollar
+      setIpAddress(testIp);
+      localStorage.setItem("IpAddress", testIp);
+      localStorage.setItem("userCountry", testCountry);
+      localStorage.setItem("currencyCheck", testCurrency);
       console.log(
-        "✅ VerificationLogin using stored IP/Country:",
-        storedIp,
-        storedCountry,
-        storedCurrency,
+        "🧪 Using test IP/Country:",
+        testIp,
+        testCountry,
+        testCurrency,
       );
-    } else {
-      // Fallback: fetch IP only if not already stored (shouldn't happen if user came from home page)
-      const fetchIpAddress = async () => {
-        try {
-          const response = await axios.get("https://ipapi.co/json/");
-          const ip = response.data.ip;
-          const country = (
-            response.data.country_code ||
-            response.data.country ||
-            ""
-          ).toUpperCase();
+      return;
+      // ============================================================
 
-          if (ip) localStorage.setItem("IpAddress", ip);
-          if (country) {
-            localStorage.setItem("userCountry", country);
-            const currency = country === "UG" ? "UGX" : "USD";
-            localStorage.setItem("currencyCheck", currency);
-          }
-          setIpAddress(ip);
-        } catch (error1) {
-          console.error("Error fetching IP from ipapi.co:", error1);
-          try {
-            const response = await axios.get("https://api.ipbase.com/v1/json/");
-            const ip = response.data.ip;
-            const country = (
-              response.data.country_code ||
-              response.data.countryCode ||
-              ""
-            ).toUpperCase();
+      // First check if IP and country are already stored from main landing page
+      const storedIp = localStorage.getItem("IpAddress");
+      const storedCountry = localStorage.getItem("userCountry");
+      const storedCurrency = localStorage.getItem("currencyCheck");
 
-            if (ip) localStorage.setItem("IpAddress", ip);
-            if (country) {
-              localStorage.setItem("userCountry", country);
-              const currency = country === "UG" ? "UGX" : "USD";
-              localStorage.setItem("currencyCheck", currency);
-            }
-            setIpAddress(ip);
-          } catch (error2) {
-            console.error("Error fetching IP from fallback:", error2);
-            // Use default Uganda values
-            const defaultIp = "41.210.160.1";
-            localStorage.setItem("IpAddress", defaultIp);
-            localStorage.setItem("userCountry", "UG");
-            localStorage.setItem("currencyCheck", "UGX");
-            setIpAddress(defaultIp);
-          }
+      // If we have all stored values, use them (main landing page already fetched)
+      if (storedIp && storedCountry && storedCurrency) {
+        setIpAddress(storedIp);
+        return; // Don't fetch again
+      }
+
+      // Otherwise, fetch IP and country (fallback for direct login page access)
+      // Try ipapi.co first — returns IP + country info in one call
+      try {
+        const response = await axios.get("https://ipapi.co/json/");
+        const ip = response.data.ip;
+        const country =
+          response.data.country_code || response.data.country || null;
+        const currency = country === "UG" ? "UGX" : "USD";
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        localStorage.setItem("userCountry", country || "");
+        localStorage.setItem("currencyCheck", currency);
+        return;
+      } catch (error1) {
+        console.error("Error fetching IP from ipapi.co:", error1);
+      }
+
+      // Fallback to ipbase.com for IP and country
+      try {
+        const response = await axios.get("https://api.ipbase.com/v1/json/");
+        const ip = response.data.ip;
+        const country = response.data.country_code || response.data.countryCode;
+        const currency = country === "UG" ? "UGX" : "USD";
+        setIpAddress(ip);
+        localStorage.setItem("IpAddress", ip);
+        if (country) {
+          localStorage.setItem("userCountry", country);
+          localStorage.setItem("currencyCheck", currency);
         }
-      };
-      fetchIpAddress();
-    }
+        return;
+      } catch (error2) {
+        console.error("Error fetching IP from both sources:", error2);
+        // Both APIs failed - use default Uganda IP and country
+        const defaultIp = "41.210.160.1";
+        const defaultCountry = "UG";
+        const defaultCurrency = "UGX";
+        setIpAddress(defaultIp);
+        localStorage.setItem("IpAddress", defaultIp);
+        localStorage.setItem("userCountry", defaultCountry);
+        localStorage.setItem("currencyCheck", defaultCurrency);
+      }
+    };
+
+    fetchIpInfo();
 
     const rememberedEmail = Cookies.get("rememberedEmail");
     if (rememberedEmail) {
@@ -185,7 +208,7 @@ const VerificationLoginPage = () => {
     try {
       const payload = {
         ...formData,
-        ipAddress,
+        ipAddress: ipAddress || DEFAULT_UGANDA_IP,
         deviceToken: localStorage.getItem("clientToken"),
       };
 
@@ -193,7 +216,7 @@ const VerificationLoginPage = () => {
 
       if (response.jwtToken) {
         trackGA4Event("login", { method: "email" });
-        localStorage.setItem("IpAddress", ipAddress);
+        localStorage.setItem("IpAddress", ipAddress || DEFAULT_UGANDA_IP);
         trackEvent({
           action: "click_normail_signin_sucess",
           category: "Authentication Success",
@@ -225,7 +248,7 @@ const VerificationLoginPage = () => {
         const payload = {
           accessToken: response.access_token,
           deviceToken: localStorage.getItem("clientToken"),
-          ipAddress,
+          ipAddress: ipAddress || DEFAULT_UGANDA_IP,
           deviceName: "Web app",
         };
 
@@ -234,7 +257,7 @@ const VerificationLoginPage = () => {
         dispatch(fetchUserProfile(res.jwtToken));
 
         if (res.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          localStorage.setItem("IpAddress", ipAddress || DEFAULT_UGANDA_IP);
           history.push(redirectTo);
         } else {
           setFormErrors({ general: "Google login failed." });
@@ -262,7 +285,7 @@ const VerificationLoginPage = () => {
       const payload = {
         accessToken: fbRes.accessToken,
         deviceToken: localStorage.getItem("clientToken"),
-        ipAddress,
+        ipAddress: ipAddress || DEFAULT_UGANDA_IP,
         deviceName: "Web app",
       };
 
@@ -271,7 +294,7 @@ const VerificationLoginPage = () => {
       dispatch(fetchUserProfile(res.jwtToken));
 
       if (res.jwtToken) {
-        localStorage.setItem("IpAddress", ipAddress);
+        localStorage.setItem("IpAddress", ipAddress || DEFAULT_UGANDA_IP);
         history.push(redirectTo);
       } else {
         setFormErrors({ general: "Facebook login failed." });

@@ -348,9 +348,19 @@ const MainDashboard = () => {
 
   const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
+    const isVinVerification =
+      searchParameter === "VIN" ||
+      searchParameter === "Vehicle Identification Number" ||
+      (record.type === "Vehicle Profile" &&
+        record.searchParameter &&
+        (record.searchParameter.includes("VIN") ||
+          record.searchParameter.includes("Chassis")));
     localStorage.setItem("verificationRequestId", record.id);
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle-registration-result");
+    } else if (isVinVerification) {
+      // Route VIN verifications to the redesigned vehicle result page
+      history.push("/vehicle-profile-result");
     } else if (record.type === "Vehicle Profile") {
       history.push("/vehicle-profile-result");
     } else if (record.type === "Business Profile") {

@@ -115,17 +115,21 @@ const Home = () => {
       // ═══════════════════════════════════════════════════════════════════
       // 🧪 TESTING SECTION - Uncomment to manually set IP/Country/Currency
       // ═══════════════════════════════════════════════════════════════════
-      // const testIp = "41.210.160.1";       // Uganda IP
-      // const testCountry = "UG";             // Uganda country code
-      // const testCurrency = "UGX";           // Uganda Shilling
-      //
-      // setIpAddress(testIp);
-      // localStorage.setItem("IpAddress", testIp);
-      // setIpCountry(testCountry);
-      // localStorage.setItem("userCountry", testCountry);
-      // localStorage.setItem("currencyCheck", testCurrency);
-      // console.log("🧪 TEST MODE: Using manual IP/Country:", testIp, testCountry);
-      // return;
+      const testIp = "41.210.160.1"; // Uganda IP
+      const testCountry = "UG"; // Uganda country code
+      const testCurrency = "UGX"; // Uganda Shilling
+
+      setIpAddress(testIp);
+      localStorage.setItem("IpAddress", testIp);
+      setIpCountry(testCountry);
+      localStorage.setItem("userCountry", testCountry);
+      localStorage.setItem("currencyCheck", testCurrency);
+      console.log(
+        "🧪 TEST MODE: Using manual IP/Country:",
+        testIp,
+        testCountry,
+      );
+      return;
       // ═══════════════════════════════════════════════════════════════════
 
       // Try ipapi.co first (gets IP and country)

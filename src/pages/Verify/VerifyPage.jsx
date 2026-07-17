@@ -440,7 +440,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Error",
           text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
       }
     };
@@ -460,7 +460,7 @@ const VerifyPage = () => {
   const discount =
     allBureausSelected && config?.allBureausDiscount
       ? isGHS
-        ? config.allBureausDiscount.ngn
+        ? config.allBureausDiscount.ugx
         : config.allBureausDiscount.usd
       : 0;
 
@@ -481,7 +481,7 @@ const VerifyPage = () => {
 
   const totalAmount = pricingData ? Math.max(subtotalAmount - discount, 0) : 0;
 
-  const currencySymbol = isGHS ? "GH₵" : "$";
+  const currencySymbol = isGHS ? "USh" : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -636,7 +636,7 @@ const VerifyPage = () => {
     const userCurrency = user?.currency || "";
     if (
       paymentMethod === "wallet" &&
-      currencyCheck.toUpperCase() !== "GHS" &&
+      currencyCheck.toUpperCase() !== "UGX" &&
       userCurrency &&
       userCurrency.toUpperCase() !== currencyCheck.toUpperCase()
     ) {
@@ -645,7 +645,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Currency Mismatch",
         text: "Wallet currency must match payment currency. Please use the right currency for this transaction.",
-        confirmButtonColor: "#987D0E",
+        confirmButtonColor: "#DD0402",
         allowOutsideClick: false,
         allowEscapeKey: false,
       });
@@ -697,7 +697,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: err.message || "An error occurred. Please try again.",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#DC0502",
       });
     }
   };
@@ -711,7 +711,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Wallet Balance Low",
         text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#DC0502",
       });
       return;
     }
@@ -845,7 +845,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
         return;
       }
@@ -865,7 +865,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
       }
     } catch {
@@ -873,7 +873,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Error",
         text: "Could not verify payment status. Please check your dashboard.",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#DC0502",
       });
     }
 
@@ -936,7 +936,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.basic.detail,
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
         setCurrentStep(1);
         return;
@@ -961,7 +961,7 @@ const VerifyPage = () => {
           text:
             response["search-extension"].phoneVerification.detail ||
             "Verification failed",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
         setCurrentStep(1);
         return;
@@ -989,7 +989,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.business.message,
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
         setCurrentStep(1);
         return;
@@ -1004,7 +1004,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: response.financial.message,
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
         setCurrentStep(1);
         return;
@@ -1083,7 +1083,7 @@ const VerifyPage = () => {
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
                 : "Verification failed. Please try again.",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#DC0502",
           });
           setCurrentStep(1);
           return;
@@ -1134,7 +1134,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Verification Failed",
           text: errorMsg,
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#DC0502",
         });
         setCurrentStep(1);
       }
@@ -1145,7 +1145,7 @@ const VerifyPage = () => {
         icon: "error",
         title: "Service Unavailable",
         text: "Service is currently unavailable. A refund has been initiated.",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#DC0502",
       });
     }
   };
@@ -1288,7 +1288,7 @@ const VerifyPage = () => {
                       alignItems: "center",
                       gap: 10,
                       padding: "10px 14px",
-                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#FED001" : "#e5e7eb"}`,
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DC0502" : "#e5e7eb"}`,
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
@@ -1310,7 +1310,7 @@ const VerifyPage = () => {
                         }));
                         setError("");
                       }}
-                      style={{ accentColor: "#FED001", width: 16, height: 16 }}
+                      style={{ accentColor: "#DC0502", width: 16, height: 16 }}
                     />
                     {bureau.label}
                   </label>
@@ -1895,7 +1895,7 @@ const VerifyPage = () => {
               margin: "0 auto 16px",
             }}
           >
-            <FaCheckCircle style={{ fontSize: 28, color: "#FED001" }} />
+            <FaCheckCircle style={{ fontSize: 28, color: "#DC0502" }} />
           </div>
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
@@ -2019,7 +2019,7 @@ const VerifyPage = () => {
               <div
                 style={{
                   fontSize: 14,
-                  color: "#FED001",
+                  color: "#DC0502",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: 700,
                 }}
@@ -2065,7 +2065,7 @@ const VerifyPage = () => {
                   marginBottom: 8,
                 }}
               >
-                <FaCheckCircle style={{ color: "#FED001", fontSize: 14 }} />
+                <FaCheckCircle style={{ color: "#DC0502", fontSize: 14 }} />
                 <span
                   style={{
                     fontSize: 14,
@@ -2442,7 +2442,7 @@ const VerifyPage = () => {
                 <PopupIcon
                   style={{
                     background: "rgba(254, 208, 1, 0.10)",
-                    color: "#FED001",
+                    color: "#DC0502",
                   }}
                 >
                   <FaInfoCircle />

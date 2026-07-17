@@ -660,11 +660,12 @@ export const initiateVerificationRequest =
           delete restructuredData[section];
         }
       });
+      const ipAddress = localStorage.getItem("IpAddress") || "102.203.11.255";
       const response = await apiPost(
         `/africa/verification/UG/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": "102.134.151.255" } },
+        { headers: { "X-Forwarded-For": ipAddress } },
       );
 
       // dispatch({
@@ -734,11 +735,12 @@ export const initiateStakeHoldersRequest =
           delete restructuredData[section];
         }
       });
+      const ipAddress = localStorage.getItem("IpAddress") || "102.203.11.255";
       const response = await apiPost(
         `/africa/verification/UG/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": "102.134.151.255" } },
+        { headers: { "X-Forwarded-For": ipAddress } },
       );
 
       // Return the user data upon successful verification
@@ -844,8 +846,9 @@ export const completeVerificationRequest =
           CLICK_ID: CLICK_ID || "",
         },
         vehicle: {
-          vin: formData.vin || "",
-          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+          ...(formData.idNumber && {
+            stolencheck: formData.stolencheck || false,
+          }),
           license_number: formData.license_number || "",
         },
       };

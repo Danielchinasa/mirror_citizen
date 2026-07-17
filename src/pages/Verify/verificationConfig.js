@@ -31,7 +31,7 @@ const verificationConfig = {
         label: "NIN",
         placeholder: "Enter 11 digits NIN",
         type: "text",
-        maxLength: 11,
+        maxLength: 20,
         showCounter: true,
         required: true,
       },
@@ -50,6 +50,7 @@ const verificationConfig = {
     },
     serviceName: "National ID Verification",
     serviceCode: "NATIONAL_ID",
+    apiServiceName: "National ID",
     serviceFieldKey: "idNumber",
     priceIndex: 0,
     requiresConsent: true,
@@ -94,6 +95,7 @@ const verificationConfig = {
     },
     serviceName: "Phone Verification",
     serviceCode: "PHONE",
+    apiServiceName: "Phone",
     serviceFieldKey: "phone",
     priceIndex: 9,
     trustBar: [
@@ -148,6 +150,7 @@ const verificationConfig = {
     },
     serviceName: "Business Verification",
     serviceCode: "BUSINESS",
+    apiServiceName: "Business",
     serviceFieldKey: "rc",
     priceIndex: 2,
     trustBar: [
@@ -205,6 +208,7 @@ const verificationConfig = {
     },
     serviceName: "Business Name Verification",
     serviceCode: "BUSINESS_NAME",
+    apiServiceName: "Business Name",
     serviceFieldKey: "business_name",
     priceIndex: 3,
     trustBar: [
@@ -247,6 +251,7 @@ const verificationConfig = {
     },
     serviceName: "BVN Verification",
     serviceCode: "BVN",
+    apiServiceName: "BVN",
     serviceFieldKey: "bvn",
     priceIndex: 4,
     requiresConsent: true,
@@ -322,11 +327,11 @@ const verificationConfig = {
     breadcrumb: ["Verify Vehicle", "Vehicle Verification (UG)"],
     idTypeLabel: "Vehicle Identification Number (VIN) — Uganda",
     countryCode: "UG",
-    serviceCode: "VIN_ID",
+    serviceCode: "VIN",
     apiServiceName: "VIN",
     fields: [
       {
-        name: "vin",
+        name: "idNumber",
         label: "VIN (Vehicle Identification Number)",
         placeholder: "Enter VIN",
         type: "text",
@@ -348,7 +353,7 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Uganda Vehicle Verification",
-    serviceFieldKey: "vin",
+    serviceFieldKey: "idNumber",
     priceIndex: 1,
     requiresConsent: false,
     trustBar: [
@@ -369,8 +374,8 @@ const verificationConfig = {
     idTypeLabel: "Vehicle Identification Number (VIN)",
     fields: [
       {
-        name: "vin",
-        label: "VIN (Vehicle Identification Number)",
+        name: "idNumber",
+        label: "Vehicle Identification Number (VIN)",
         placeholder: "Enter VIN",
         type: "text",
         maxLength: 17,
@@ -391,8 +396,9 @@ const verificationConfig = {
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
-    serviceCode: "VIN_ID",
-    serviceFieldKey: "vin",
+    serviceCode: "VIN",
+    apiServiceName: "VIN",
+    serviceFieldKey: "idNumber",
     priceIndex: 5,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
