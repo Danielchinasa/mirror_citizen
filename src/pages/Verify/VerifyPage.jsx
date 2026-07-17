@@ -29,6 +29,7 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
+import { useLocale } from "../../components/LocaleProvider";
 
 import {
   PageWrapper,
@@ -173,6 +174,7 @@ const LOCAL_CURRENCY = "UGX";
 const FOREIGN_CURRENCY = "USD";
 
 const VerifyPage = () => {
+  const { t } = useLocale();
   const { type } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -210,8 +212,8 @@ const VerifyPage = () => {
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
   const STEPS = requiresConsent
-    ? ["Search", "Payment", "Processing", "Consent", "Result"]
-    : ["Search", "Payment", "Processing", "Result"];
+    ? [t("verify.step.search"), t("verify.step.payment"), t("verify.step.processing"), t("verify.step.consent"), t("verify.step.result")]
+    : [t("verify.step.search"), t("verify.step.payment"), t("verify.step.processing"), t("verify.step.result")];
   const RESULT_STEP = requiresConsent ? 4 : 3;
   const CONSENT_STEP = 3;
 
@@ -557,10 +559,10 @@ const VerifyPage = () => {
         config.bureaus && !Object.values(selectedBureaus).some(Boolean);
       setError(
         noBureauSelected
-          ? "Please select at least one credit bureau."
+          ? t("verify.error.selectBureau")
           : hasEitherOr
-            ? "Please fill in at least one of the fields."
-            : "Please fill in all required fields.",
+            ? t("verify.error.fillField")
+            : t("verify.error.fillRequired"),
       );
       return;
     }
@@ -1179,9 +1181,9 @@ const VerifyPage = () => {
 
   const renderSearchStep = () => (
     <FormCard>
-      <FormCardTitle>Enter search details</FormCardTitle>
+      <FormCardTitle>{t("verify.search.title")}</FormCardTitle>
       <FormCardSub>
-        Provide the details of the individual you want to verify.
+        {t("verify.search.subtitle")}
       </FormCardSub>
 
       {error && <ErrorAlert>{error}</ErrorAlert>}
@@ -1189,7 +1191,7 @@ const VerifyPage = () => {
       <SearchGrid>
         <div>
           <FormGroup>
-            <FormLabel>ID Type</FormLabel>
+            <FormLabel>{t("verify.search.idType")}</FormLabel>
             <IdTypeDisplay>
               <FaIdCard />
               {config.idTypeLabel}
@@ -1220,7 +1222,7 @@ const VerifyPage = () => {
                         fontFamily: "Nunito, sans-serif",
                       }}
                     >
-                      OR
+                      {t("ninLogin.or")}
                     </span>
                     <div
                       style={{ flex: 1, height: 1, background: "#e5e7eb" }}
@@ -1269,7 +1271,7 @@ const VerifyPage = () => {
           {config.bureaus && (
             <FormGroup>
               <FormLabel>
-                Select Credit Bureau(s){" "}
+                {t("verify.search.selectBureaus")}{" "}
                 <span style={{ color: "#dc2626" }}> *</span>
               </FormLabel>
               <div
@@ -1330,7 +1332,7 @@ const VerifyPage = () => {
                     fontWeight: 600,
                   }}
                 >
-                  🎉 All 3 Bureaus Discount Applied: -{currencySymbol}
+                  {t("verify.search.discountApplied")}{currencySymbol}
                   {(isGHS
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
@@ -1341,7 +1343,7 @@ const VerifyPage = () => {
           )}
 
           <YouWillGetCard>
-            <YouWillGetTitle>You will get</YouWillGetTitle>
+            <YouWillGetTitle>{t("verify.search.youWillGet")}</YouWillGetTitle>
             <YouWillGetRow>
               {config.youWillGet.map((item, i) => (
                 <YouWillGetItem key={i}>
@@ -1353,15 +1355,15 @@ const VerifyPage = () => {
           </YouWillGetCard>
 
           <SidebarNote>
-            <FaShieldAlt /> Your data is secure and used only for verification.
+            <FaShieldAlt /> {t("verify.search.dataSecure")}
           </SidebarNote>
         </div>
 
         <SidebarCard>
-          <PriceLabel>Amount</PriceLabel>
+          <PriceLabel>{t("verify.search.amount")}</PriceLabel>
           <PriceAmount>
             {loadingPrice
-              ? "Loading..."
+              ? t("verify.search.loading")
               : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
           <PriceBreakdown>
@@ -1369,7 +1371,7 @@ const VerifyPage = () => {
               <>
                 <PriceRow>
                   <span>
-                    Service fee
+                    {t("verify.search.serviceFee")}
                     {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                   </span>
                   <span>
@@ -1381,7 +1383,7 @@ const VerifyPage = () => {
                 </PriceRow>
                 <PriceRow>
                   <span>
-                    Processing fee
+                    {t("verify.search.processingFee")}
                     {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                   </span>
                   <span>
@@ -1393,7 +1395,7 @@ const VerifyPage = () => {
                 </PriceRow>
                 <PriceRow>
                   <span>
-                    Tax & charges
+                    {t("verify.search.taxCharges")}
                     {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                   </span>
                   <span>
@@ -1405,7 +1407,7 @@ const VerifyPage = () => {
                 </PriceRow>
                 {discount > 0 && (
                   <PriceRow>
-                    <span style={{ color: "#b38b00" }}>Discount</span>
+                    <span style={{ color: "#b38b00" }}>{t("verify.search.discount")}</span>
                     <span style={{ color: "#b38b00" }}>
                       -{currencySymbol}
                       {discount.toLocaleString(undefined, {
@@ -1415,7 +1417,7 @@ const VerifyPage = () => {
                   </PriceRow>
                 )}
                 <PriceTotalRow>
-                  <span>Total to be paid</span>
+                  <span>{t("verify.search.totalToBePaid")}</span>
                   <span>
                     {currencySymbol}
                     {totalAmount.toLocaleString(undefined, {
@@ -1431,13 +1433,13 @@ const VerifyPage = () => {
             disabled={!isFormValid()}
             style={{ width: "100%", justifyContent: "center" }}
           >
-            Continue to Payment <FaArrowRight />
+            {t("verify.search.continueToPayment")} <FaArrowRight />
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
 
       <FormActions>
-        <ClearBtn onClick={handleClear}>Clear</ClearBtn>
+        <ClearBtn onClick={handleClear}>{t("verify.search.clear")}</ClearBtn>
       </FormActions>
     </FormCard>
   );
@@ -1446,8 +1448,8 @@ const VerifyPage = () => {
     <>
       <PaymentGrid>
         <PaymentMethodsCard>
-          <PaymentMethodTitle>Payment Method</PaymentMethodTitle>
-          <PaymentMethodSub>Choose how you'd like to pay</PaymentMethodSub>
+          <PaymentMethodTitle>{t("verify.payment.title")}</PaymentMethodTitle>
+          <PaymentMethodSub>{t("verify.payment.subtitle")}</PaymentMethodSub>
 
           {PAYMENT_METHODS.map((method) => (
             <PaymentOption
@@ -1478,7 +1480,7 @@ const VerifyPage = () => {
                   style={{ height: 16, objectFit: "contain" }}
                 />
               )}
-              <PaymentOptionLabel>{method.label}</PaymentOptionLabel>
+              <PaymentOptionLabel>{method.id === "wallet" ? t("verify.payment.wallet") : method.label}</PaymentOptionLabel>
               {method.id === "wallet" && (
                 <span
                   style={{
@@ -1497,7 +1499,7 @@ const VerifyPage = () => {
 
         <SummaryCard>
           <SummaryHeader>
-            <SummaryTitle>Verification Summary</SummaryTitle>
+            <SummaryTitle>{t("verify.payment.summary")}</SummaryTitle>
             <SummaryAmount>
               {loadingPrice
                 ? "..."
@@ -1506,15 +1508,15 @@ const VerifyPage = () => {
           </SummaryHeader>
 
           <SummaryRow>
-            <SummaryLabel>Service</SummaryLabel>
+            <SummaryLabel>{t("verify.payment.service")}</SummaryLabel>
             <SummaryValue>{config.serviceName}</SummaryValue>
           </SummaryRow>
           <SummaryRow>
-            <SummaryLabel>Type</SummaryLabel>
+            <SummaryLabel>{t("verify.payment.type")}</SummaryLabel>
             <SummaryValue>{config.idTypeLabel}</SummaryValue>
           </SummaryRow>
           <SummaryRow>
-            <SummaryLabel>Value</SummaryLabel>
+            <SummaryLabel>{t("verify.payment.value")}</SummaryLabel>
             <SummaryValue>
               {formData[config.serviceFieldKey] ||
                 config.fields
@@ -1524,7 +1526,7 @@ const VerifyPage = () => {
             </SummaryValue>
           </SummaryRow>
           <SummaryRow>
-            <SummaryLabel>Email</SummaryLabel>
+            <SummaryLabel>{t("verify.payment.email")}</SummaryLabel>
             <SummaryValue>{userEmail || "—"}</SummaryValue>
           </SummaryRow>
 
@@ -1538,13 +1540,13 @@ const VerifyPage = () => {
               />
               {config.bureaus && bureauCount > 0 && (
                 <SummaryRow>
-                  <SummaryLabel>Bureaus</SummaryLabel>
+                  <SummaryLabel>{t("verify.payment.bureaus")}</SummaryLabel>
                   <SummaryValue>{bureauCount} selected</SummaryValue>
                 </SummaryRow>
               )}
               <SummaryRow>
                 <SummaryLabel>
-                  Service Fee
+                  {t("verify.payment.serviceFee")}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
@@ -1554,7 +1556,7 @@ const VerifyPage = () => {
               </SummaryRow>
               <SummaryRow>
                 <SummaryLabel>
-                  Processing Fee
+                  {t("verify.payment.processingFee")}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
@@ -1564,7 +1566,7 @@ const VerifyPage = () => {
               </SummaryRow>
               <SummaryRow>
                 <SummaryLabel>
-                  Tax & charges
+                  {t("verify.payment.taxCharges")}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
@@ -1575,7 +1577,7 @@ const VerifyPage = () => {
               {discount > 0 && (
                 <SummaryRow>
                   <SummaryLabel style={{ color: "#b38b00" }}>
-                    Discount
+                    {t("verify.payment.discount")}
                   </SummaryLabel>
                   <SummaryValue style={{ color: "#b38b00" }}>
                     -{currencySymbol}
@@ -1589,19 +1591,19 @@ const VerifyPage = () => {
           <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
             <FaLock />
             {loading
-              ? "Processing..."
-              : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
+              ? t("verify.payment.processing")
+              : `${t("verify.payment.pay")} ${currencySymbol}${totalAmount.toLocaleString()}`}
           </PayBtn>
 
           <SecuredBy>
             <FaShieldAlt style={{ color: "#111827" }} />
-            Secured and encrypted payment
+            {t("verify.payment.securedPayment")}
           </SecuredBy>
 
           <div style={{ marginTop: 16 }}>
             <ClearBtn onClick={handleBackToSearch} style={{ width: "100%" }}>
               <FaArrowLeft style={{ marginRight: 8 }} />
-              Back
+              {t("verify.payment.back")}
             </ClearBtn>
           </div>
         </SummaryCard>
@@ -1610,10 +1612,10 @@ const VerifyPage = () => {
       {/* Sample Result */}
       <SampleSection>
         <SampleHeader>
-          <SampleTitle>Sample Result</SampleTitle>
+          <SampleTitle>{t("verify.payment.sampleResult")}</SampleTitle>
         </SampleHeader>
         <SampleSub>
-          Here's an example of what your verification result will look like.
+          {t("verify.payment.sampleSub")}
         </SampleSub>
         <SampleResultCard>
           <SampleAvatar>
@@ -1623,7 +1625,7 @@ const VerifyPage = () => {
             <SampleName>
               {config.sampleResult.name}
               <VerifiedBadge>
-                <FaCheckCircle /> Verified
+                <FaCheckCircle /> {t("verify.payment.verified")}
               </VerifiedBadge>
             </SampleName>
             <SampleId>{config.sampleResult.identifier}</SampleId>
@@ -1643,10 +1645,9 @@ const VerifyPage = () => {
   const renderProcessingStep = () => (
     <ProcessingWrapper>
       <ProcessingSpinner />
-      <ProcessingText>Processing Your Verification</ProcessingText>
+      <ProcessingText>{t("verify.processing.title")}</ProcessingText>
       <ProcessingSub>
-        Please wait while we verify your information. This usually takes less
-        than a minute.
+        {t("verify.processing.subtitle")}
       </ProcessingSub>
     </ProcessingWrapper>
   );
@@ -1835,14 +1836,12 @@ const VerifyPage = () => {
       <div style={{ textAlign: "center", padding: "40px 20px" }}>
         <ProcessingSpinner />
         <ProcessingText style={{ marginTop: 24 }}>
-          Awaiting Consent
+          {t("verify.consent.title")}
         </ProcessingText>
         <ProcessingSub
           style={{ maxWidth: 520, margin: "12px auto 0", lineHeight: 1.7 }}
         >
-          We have sent a consent request to the data subject and are currently
-          awaiting their response. An email will be sent to you regarding the
-          status of your request.
+          {t("verify.consent.description")}
         </ProcessingSub>
         <ProcessingSub
           style={{
@@ -1852,9 +1851,7 @@ const VerifyPage = () => {
             color: "#999",
           }}
         >
-          The data subject's information will be retained for 24 hours from the
-          moment they grant consent. This page will automatically update when
-          consent is granted.
+          {t("verify.consent.retention")}
         </ProcessingSub>
         <div
           style={{
@@ -1865,7 +1862,7 @@ const VerifyPage = () => {
           }}
         >
           <ClearBtn onClick={() => history.push("/main-dashboard")}>
-            Return to Dashboard
+            {t("verify.consent.returnDashboard")}
           </ClearBtn>
         </div>
       </div>
@@ -1875,7 +1872,7 @@ const VerifyPage = () => {
   const renderResultStep = () => {
     const previewFields = getResultPreviewFields();
     const resultRoute = verificationResult?.route || "/main-dashboard";
-    const resultTitle = verificationResult?.title || "Verification Complete!";
+    const resultTitle = verificationResult?.title || t("verify.result.title");
     const resultDetail = verificationResult?.detail || "";
     const bureauResults = verificationResult?.data?.bureauResults || [];
     const bureauErrors = verificationResult?.data?.bureauErrors || [];
@@ -1900,7 +1897,7 @@ const VerifyPage = () => {
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
             {resultDetail ||
-              "Your verification has been completed successfully."}
+              t("verify.result.success")}
           </ProcessingSub>
         </div>
 
@@ -1923,7 +1920,7 @@ const VerifyPage = () => {
               margin: "0 0 16px",
             }}
           >
-            Verification Summary
+            {t("verify.result.summary")}
           </h4>
           <div
             style={{
@@ -1941,7 +1938,7 @@ const VerifyPage = () => {
                   marginBottom: 2,
                 }}
               >
-                Service
+                {t("verify.result.service")}
               </div>
               <div
                 style={{
@@ -1963,7 +1960,7 @@ const VerifyPage = () => {
                   marginBottom: 2,
                 }}
               >
-                Amount Paid
+                {t("verify.result.amountPaid")}
               </div>
               <div
                 style={{
@@ -2014,7 +2011,7 @@ const VerifyPage = () => {
                   marginBottom: 2,
                 }}
               >
-                Status
+                {t("verify.result.status")}
               </div>
               <div
                 style={{
@@ -2027,7 +2024,7 @@ const VerifyPage = () => {
                 <FaCheckCircle
                   style={{ marginRight: 4, verticalAlign: "middle" }}
                 />
-                Successful
+                {t("verify.result.successful")}
               </div>
             </div>
           </div>
@@ -2053,7 +2050,7 @@ const VerifyPage = () => {
                 margin: "0 0 12px",
               }}
             >
-              Bureau Results
+              {t("verify.result.bureauResults")}
             </h4>
             {bureauResults.map((bureau, i) => (
               <div
@@ -2073,7 +2070,7 @@ const VerifyPage = () => {
                     color: "#333",
                   }}
                 >
-                  {bureau} — Data received
+                  {bureau} — {t("verify.result.dataReceived")}
                 </span>
               </div>
             ))}
@@ -2122,7 +2119,7 @@ const VerifyPage = () => {
                 margin: "0 0 16px",
               }}
             >
-              Result Preview
+              {t("verify.result.preview")}
             </h4>
             <div
               style={{
@@ -2164,10 +2161,10 @@ const VerifyPage = () => {
             onClick={() => history.push(resultRoute)}
             style={{ justifyContent: "center" }}
           >
-            View Full Results <FaArrowRight />
+            {t("verify.result.viewFull")} <FaArrowRight />
           </ContinueBtn>
           <ClearBtn onClick={() => history.push("/main-dashboard")}>
-            Go to Dashboard
+            {t("verify.result.goDashboard")}
           </ClearBtn>
         </div>
       </FormCard>
@@ -2196,7 +2193,7 @@ const VerifyPage = () => {
       {/* Hero */}
       <HeroSection>
         <Breadcrumb>
-          <span>Home</span> / <span>{config.breadcrumb[0]}</span> /{" "}
+          <span>{t("verify.hero.home")}</span> / <span>{config.breadcrumb[0]}</span> /{" "}
           <span>{config.breadcrumb[1]}</span>
         </Breadcrumb>
         <HeroInner>
@@ -2374,7 +2371,7 @@ const VerifyPage = () => {
               </ResultCardPopup>
               <ResultDisclaimerPopup>
                 <FaInfoCircle />
-                Results are based on data available at the time of verification.
+                {t("verify.disclaimer.resultDisclaimer")}
               </ResultDisclaimerPopup>
               <PopupActionRow>
                 <ContinueBtn
@@ -2448,8 +2445,8 @@ const VerifyPage = () => {
                   <FaInfoCircle />
                 </PopupIcon>
                 <div>
-                  <PopupTitle>Disclaimer</PopupTitle>
-                  <PopupSubtitle>Please review before proceeding</PopupSubtitle>
+                  <PopupTitle>{t("verify.disclaimer.title")}</PopupTitle>
+                  <PopupSubtitle>{t("verify.disclaimer.subtitle")}</PopupSubtitle>
                 </div>
               </PopupMeta>
               <PopupCloseButton onClick={() => setShowDisclaimer(false)}>
@@ -2543,7 +2540,7 @@ const VerifyPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                By proceeding, you agree to our{" "}
+                {t("verify.disclaimer.agreeTo")}{" "}
                 <a
                   href="/terms_of_service"
                   target="_blank"
@@ -2554,7 +2551,7 @@ const VerifyPage = () => {
                     textDecoration: "none",
                   }}
                 >
-                  Terms of Service
+                  {t("verify.disclaimer.termsOfService")}
                 </a>{" "}
                 and{" "}
                 <a
@@ -2567,16 +2564,16 @@ const VerifyPage = () => {
                     textDecoration: "none",
                   }}
                 >
-                  Privacy Policy
+                  {t("verify.disclaimer.privacyPolicy")}
                 </a>
                 .
               </div>
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
-                  I Understand, Continue <FaArrowRight />
+                  {t("verify.disclaimer.confirm")} <FaArrowRight />
                 </ContinueBtn>
                 <ClearBtn onClick={() => setShowDisclaimer(false)}>
-                  Cancel
+                  {t("verify.disclaimer.cancel")}
                 </ClearBtn>
               </PopupActionRow>
             </PopupBody>

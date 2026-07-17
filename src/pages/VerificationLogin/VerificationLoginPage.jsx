@@ -13,6 +13,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import { useLocale } from "../../components/LocaleProvider";
 import Logo from "../../images/uganda_logo.png";
 import LogoWhite from "../../images/uganda_dark.png";
 import { useTheme } from "../../components/ThemeProvider";
@@ -309,6 +310,7 @@ const VerificationLoginPage = () => {
       setLoading(false);
     }
   };
+  const { t } = useLocale();
   const { isDark } = useTheme();
 
   return (
@@ -323,8 +325,8 @@ const VerificationLoginPage = () => {
           />
         </Link>
         <NavLinks>
-          <NavLink to="/">← Back to Home</NavLink>
-          <NavLink to="/individual/sign-up/1">Register</NavLink>
+          <NavLink to="/">{t("verifyLogin.backToHome")}</NavLink>
+          <NavLink to="/individual/sign-up/1">{t("verifyLogin.register")}</NavLink>
         </NavLinks>
       </LoginNav>
 
@@ -336,8 +338,8 @@ const VerificationLoginPage = () => {
             </SpinnerOverlay>
           )}
 
-          <LoginTitle>Welcome back</LoginTitle>
-          <LoginSubtitle>Sign in to continue your verification</LoginSubtitle>
+          <LoginTitle>{t("verifyLogin.welcomeBack")}</LoginTitle>
+          <LoginSubtitle>{t("verifyLogin.signInToContinue")}</LoginSubtitle>
 
           <SSOGroup>
             <SSOButton
@@ -353,7 +355,7 @@ const VerificationLoginPage = () => {
                 googleLogin();
               }}
             >
-              <FcGoogle /> Continue with Google
+              <FcGoogle /> {t("ninLogin.continueWithGoogle")}
             </SSOButton>
 
             <FacebookLogin
@@ -364,13 +366,13 @@ const VerificationLoginPage = () => {
               callback={handleFacebook}
               render={(renderProps) => (
                 <SSOButton type="button" onClick={renderProps.onClick}>
-                  <FaFacebook color="#1877F2" /> Continue with Facebook
+                  <FaFacebook color="#1877F2" /> {t("ninLogin.continueWithFacebook")}
                 </SSOButton>
               )}
             />
           </SSOGroup>
 
-          <Divider>OR</Divider>
+          <Divider>{t("ninLogin.or")}</Divider>
 
           <form onSubmit={handleSignIn}>
             {formErrors.general && (
@@ -378,10 +380,10 @@ const VerificationLoginPage = () => {
             )}
 
             <FormGroup>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>{t("ninLogin.emailLabel")}</FormLabel>
               <FormInput
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("ninLogin.emailPlaceholder")}
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
@@ -390,11 +392,11 @@ const VerificationLoginPage = () => {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{t("ninLogin.passwordLabel")}</FormLabel>
               <PasswordWrapper>
                 <FormInput
                   type={showPass ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={t("ninLogin.passwordPlaceholder")}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
@@ -419,9 +421,9 @@ const VerificationLoginPage = () => {
                   checked={formData.rememberMe}
                   onChange={handleInputChange}
                 />{" "}
-                Remember me
+                {t("ninLogin.rememberMe")}
               </RememberLabel>
-              <ForgotLink to="/forgot-password">Forgot password?</ForgotLink>
+              <ForgotLink to="/forgot-password">{t("ninLogin.forgotPassword")}</ForgotLink>
             </FormRow>
 
             <ReCAPTCHA
@@ -431,13 +433,13 @@ const VerificationLoginPage = () => {
             />
 
             <LoginButton type="submit" disabled={isCaptchaVerified}>
-              Login
+              {t("ninLogin.loginButton")}
             </LoginButton>
           </form>
 
           <RegisterText>
-            Don't have an account?{" "}
-            <Link to="/individual/sign-up/1">Register here</Link>
+            {t("ninLogin.noAccount")}{" "}
+            <Link to="/individual/sign-up/1">{t("ninLogin.registerHere")}</Link>
           </RegisterText>
         </LoginCard>
       </MainContent>
