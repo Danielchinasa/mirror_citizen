@@ -16,6 +16,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import { useLocale } from "../../components/LocaleProvider";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -464,6 +465,7 @@ const ResultDisclaimer = styled.div`
 `;
 
 const NinLoginSample = () => {
+  const { t } = useLocale();
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/nin";
@@ -733,9 +735,9 @@ const NinLoginSample = () => {
               <Spinner />
             </SpinnerOverlay>
           )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          <LoginCardTitle>{t("ninLogin.title")}</LoginCardTitle>
           <LoginCardSub>
-            Sign in or continue to start your verification.
+            {t("ninLogin.subtitle")}
           </LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
@@ -753,7 +755,7 @@ const NinLoginSample = () => {
                     googleLogin();
                   }}
                 >
-                  <FcGoogle /> Continue with Google
+                  <FcGoogle /> {t("ninLogin.continueWithGoogle")}
                 </SSOButton>
                 <FacebookLogin
                   appId="541710452150170"
@@ -763,21 +765,21 @@ const NinLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                      <FaFacebook color="#1877F2" /> {t("ninLogin.continueWithFacebook")}
                     </SSOButton>
                   )}
                 />
               </SSOCol>
-              <Divider>OR</Divider>
+              <Divider>{t("ninLogin.or")}</Divider>
               <FormCol>
                 {formErrors.general && (
                   <ErrorAlert>{formErrors.general}</ErrorAlert>
                 )}
                 <div>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>{t("ninLogin.emailLabel")}</FormLabel>
                   <FormInput
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t("ninLogin.emailPlaceholder")}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -787,11 +789,11 @@ const NinLoginSample = () => {
                   )}
                 </div>
                 <div>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("ninLogin.passwordLabel")}</FormLabel>
                   <PasswordWrapper>
                     <FormInput
                       type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder={t("ninLogin.passwordPlaceholder")}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -815,10 +817,10 @@ const NinLoginSample = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />{" "}
-                    Remember me
+                    {t("ninLogin.rememberMe")}
                   </RememberLabel>
                   <ForgotLink to="/forgot-password">
-                    Forgot password?
+                    {t("ninLogin.forgotPassword")}
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
@@ -827,11 +829,11 @@ const NinLoginSample = () => {
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
+                  {t("ninLogin.loginButton")}
                 </LoginBtn>
                 <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
+                  {t("ninLogin.noAccount")}{" "}
+                  <Link to="/individual/sign-up/1">{t("ninLogin.registerHere")}</Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -841,11 +843,11 @@ const NinLoginSample = () => {
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
-            <SampleCardTitle>Sample result</SampleCardTitle>
-            <SampleBadge>This is a sample only</SampleBadge>
+            <SampleCardTitle>{t("landing.sampleResult")}</SampleCardTitle>
+            <SampleBadge>{t("ninLogin.sampleBadge")}</SampleBadge>
           </SampleHeader>
           <SampleCardSub>
-            See an example of a NIN verification result.
+            {t("ninLogin.sampleSubtitle")}
           </SampleCardSub>
           <ResultCard>
             <ResultTop>
@@ -854,37 +856,37 @@ const NinLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Full Name</ResultLabel>
+                  <ResultLabel>{t("ninLogin.fieldFullName")}</ResultLabel>
                   <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Phone Number</ResultLabel>
+                  <ResultLabel>{t("ninLogin.fieldPhoneNumber")}</ResultLabel>
                   <ResultValue>0803 *** 5678</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>National ID</ResultLabel>
+                  <ResultLabel>{t("ninLogin.fieldNationalId")}</ResultLabel>
                   <ResultValue>UG-NID-4582-7819-2043</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Verification Status</ResultLabel>
+                  <ResultLabel>{t("ninLogin.fieldVerificationStatus")}</ResultLabel>
                   <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
+                    {t("ninLogin.verified")} <FaCheckCircle />
                   </VerifiedBadge>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Date of Birth</ResultLabel>
+                  <ResultLabel>{t("ninLogin.fieldDateOfBirth")}</ResultLabel>
                   <ResultValue>14 Mar 1990</ResultValue>
                 </ResultField>
               </ResultGrid>
             </ResultTop>
             <ResultFooter>
-              <span>Verified on 15 May, 2025, 12:45 PM</span>
+              <span>{t("ninLogin.verifiedOn")}</span>
               <span>Ref: ECNIN2505151245ABCD</span>
             </ResultFooter>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
-            Results are based on data available at the time of verification.
+            {t("ninLogin.resultDisclaimer")}
           </ResultDisclaimer>
         </SampleCard>
       </TwoColGrid>
