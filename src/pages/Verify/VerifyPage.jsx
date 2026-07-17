@@ -1666,33 +1666,72 @@ const VerifyPage = () => {
     </ProcessingWrapper>
   );
 
+  const formatPopupValue = (value) => {
+    if (value === null || value === undefined) return "";
+    if (typeof value === "boolean") return value ? "Yes" : "No";
+    if (Array.isArray(value)) return value.filter(Boolean).join(", ");
+    if (typeof value === "number") return String(value);
+    const normalized = String(value).trim();
+    return normalized === "" || normalized === "null" ? "" : normalized;
+  };
+
+  const addPopupField = (fields, label, value) => {
+    const formatted = formatPopupValue(value);
+    if (formatted) {
+      fields.push({ label, value: formatted });
+    }
+  };
+
   const getResultPreviewFields = () => {
     if (!verificationResult?.data) return [];
     const data = verificationResult.data;
     const fields = [];
 
+    // Vehicle verification gets a richer mini-summary because the popup is
+    // the first place users see the completed result.
+    if (type === "vehicle") {
+      addPopupField(fields, "Vehicle Name", data.vehicleName || data.name);
+      addPopupField(fields, "VIN", data.vin || data.chasisNumber || data.chassisNumber);
+      addPopupField(fields, "Year", data.year);
+      addPopupField(fields, "Make", data.make);
+      addPopupField(fields, "Model", data.model);
+      addPopupField(fields, "Trim", data.trim);
+      addPopupField(fields, "Engine", data.engine);
+      addPopupField(fields, "Fuel Type", data.fuelType);
+      addPopupField(fields, "Transmission", data.transmission);
+      addPopupField(fields, "Vehicle Age", data.vehicleAge);
+      addPopupField(fields, "Stolen", data.stolen);
+      addPopupField(
+        fields,
+        "Stolen Reports",
+        data.report || data.stolenReports || data.stolen_report,
+      );
+      addPopupField(
+        fields,
+        "Verification Status",
+        data.verificationStatus || data.status,
+      );
+      addPopupField(
+        fields,
+        "Verification Reference",
+        data.verificationReference || data.reference,
+      );
+
+      return fields.slice(0, 10);
+    }
+
     // CI / Smile ID result (fullName, firstName, lastName, dateOfBirth, address, idNumber, idType, actions)
     if (data.fullName || (data.firstName && data.lastName && !data.firstname)) {
-      if (data.fullName)
-        fields.push({ label: "Full Name", value: data.fullName });
-      if (data.firstName)
-        fields.push({ label: "First Name", value: data.firstName });
-      if (data.lastName)
-        fields.push({ label: "Last Name", value: data.lastName });
-      if (data.dateOfBirth)
-        fields.push({ label: "Date of Birth", value: data.dateOfBirth });
-      if (data.idNumber)
-        fields.push({ label: "ID Number", value: data.idNumber });
-      if (data.idType)
-        fields.push({
-          label: "ID Type",
-          value: data.idType.replace(/_/g, " "),
-        });
-      if (data.address) fields.push({ label: "Address", value: data.address });
-      if (data.country) fields.push({ label: "Country", value: data.country });
+      addPopupField(fields, "Full Name", data.fullName);
+      addPopupField(fields, "First Name", data.firstName);
+      addPopupField(fields, "Last Name", data.lastName);
+      addPopupField(fields, "Date of Birth", data.dateOfBirth);
+      addPopupField(fields, "ID Number", data.idNumber);
+      addPopupField(fields, "ID Type", data.idType?.replace(/_/g, " "));
+      addPopupField(fields, "Address", data.address);
+      addPopupField(fields, "Country", data.country);
       const verifyAction = data.actions?.Verify_ID_Number;
-      if (verifyAction)
-        fields.push({ label: "Verification Status", value: verifyAction });
+      addPopupField(fields, "Verification Status", verifyAction);
       return fields.slice(0, 8);
     }
 
@@ -1701,78 +1740,77 @@ const VerifyPage = () => {
       const fname = data.firstname || data.firstName;
       const mname = data.middlename || data.middleName;
       const lname = data.surname || data.lastname;
-      if (fname) fields.push({ label: "First Name", value: fname });
-      if (mname) fields.push({ label: "Middle Name", value: mname });
-      if (lname) fields.push({ label: "Last Name", value: lname });
-      if (data.gender)
-        fields.push({
-          label: "Gender",
-          value:
-            data.gender === "m"
-              ? "Male"
-              : data.gender === "f"
-                ? "Female"
-                : data.gender,
-        });
-      if (data.birthDate || data.dateOfBirth || data.birthdate)
-        fields.push({
-          label: "Date of Birth",
-          value: data.birthDate || data.dateOfBirth || data.birthdate,
-        });
-      if (data.telephoneno || data.telephoneNo || data.phone)
-        fields.push({
-          label: "Phone",
-          value: data.telephoneno || data.telephoneNo || data.phone,
-        });
-      if (data.residenceAddress || data.residence_address)
-        fields.push({
-          label: "Address",
-          value: data.residenceAddress || data.residence_address,
-        });
+      addPopupField(fields, "First Name", fname);
+      addPopupField(fields, "Middle Name", mname);
+      addPopupField(fields, "Last Name", lname);
+      addPopupField(
+        fields,
+        "Gender",
+        data.gender === "m"
+          ? "Male"
+          : data.gender === "f"
+            ? "Female"
+            : data.gender,
+      );
+      addPopupField(
+        fields,
+        "Date of Birth",
+        data.birthDate || data.dateOfBirth || data.birthdate,
+      );
+      addPopupField(
+        fields,
+        "Phone",
+        data.telephoneno || data.telephoneNo || data.phone,
+      );
+      addPopupField(
+        fields,
+        "Address",
+        data.residenceAddress || data.residence_address,
+      );
     }
 
     // Phone verification
     if (data.network) {
-      if (data.name) fields.push({ label: "Owner Name", value: data.name });
-      if (data.network) fields.push({ label: "Network", value: data.network });
-      if (data.status) fields.push({ label: "Status", value: data.status });
+      addPopupField(fields, "Owner Name", data.name);
+      addPopupField(fields, "Network", data.network);
+      addPopupField(fields, "Status", data.status);
     }
 
     // Business (API returns: approvedName, rcNumber, registrationDate, address, email, lga, state, classificationId)
     if (data.approvedName || data.companyName || data.company_name) {
-      fields.push({
-        label: "Business Name",
-        value: data.approvedName || data.companyName || data.company_name,
-      });
-      if (data.rcNumber || data.rc_number)
-        fields.push({
-          label: "RC Number",
-          value: data.rcNumber || data.rc_number,
-        });
-      if (data.registrationDate)
-        fields.push({
-          label: "Registration Date",
-          value: new Date(data.registrationDate).toLocaleDateString(),
-        });
-      if (data.address && data.address !== "null")
-        fields.push({ label: "Address", value: data.address });
-      if (data.state && data.state !== "null")
-        fields.push({ label: "State", value: data.state });
-      if (data.lga && data.lga !== "null")
-        fields.push({ label: "LGA", value: data.lga });
-      if (data.email && data.email !== "null")
-        fields.push({ label: "Email", value: data.email });
-      if (data.companyStatus)
-        fields.push({ label: "Status", value: data.companyStatus });
+      addPopupField(
+        fields,
+        "Business Name",
+        data.approvedName || data.companyName || data.company_name,
+      );
+      addPopupField(fields, "RC Number", data.rcNumber || data.rc_number);
+      addPopupField(
+        fields,
+        "Registration Date",
+        data.registrationDate
+          ? new Date(data.registrationDate).toLocaleDateString()
+          : "",
+      );
+      addPopupField(fields, "Address", data.address);
+      addPopupField(fields, "State", data.state);
+      addPopupField(fields, "LGA", data.lga);
+      addPopupField(fields, "Email", data.email);
+      addPopupField(fields, "Status", data.companyStatus);
     }
 
     // Credit bureau
     if (data.advance || data.crc || data.firstCentral || data.creditRegistry) {
-      if (data.crc) fields.push({ label: "CRC", value: "Data received" });
-      if (data.firstCentral)
-        fields.push({ label: "First Central", value: "Data received" });
-      if (data.creditRegistry)
-        fields.push({ label: "Credit Registry", value: "Data received" });
+      addPopupField(fields, "CRC", data.crc ? "Data received" : "");
+      addPopupField(
+        fields,
+        "First Central",
+        data.firstCentral ? "Data received" : "",
+      );
+      addPopupField(
+        fields,
+        "Credit Registry",
+        data.creditRegistry ? "Data received" : "",
+      );
     }
 
     // Generic fallback — show first few string fields
@@ -1782,8 +1820,7 @@ const VerifyPage = () => {
         .forEach(([key, val]) => {
           if (
             typeof val === "string" &&
-            val &&
-            val !== "null" &&
+            formatPopupValue(val) &&
             key !== "status" &&
             key !== "detail" &&
             key !== "photo" &&
@@ -2292,20 +2329,26 @@ const VerifyPage = () => {
                     ))}
                   </ResultGridPopup>
                 </ResultTopPopup>
-                <ResultFooterPopup>
-                  <span>
-                    Verified on{" "}
-                    {new Date().toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <span>
-                    Ref: {localStorage.getItem("transactionID") || "N/A"}
-                  </span>
-                </ResultFooterPopup>
-              </ResultCardPopup>
+                  <ResultFooterPopup>
+                    <span>
+                      Verified on{" "}
+                      {new Date().toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>
+                      Ref:{" "}
+                      {type === "vehicle"
+                        ? verificationResult?.data?.verificationReference ||
+                          verificationResult?.data?.reference ||
+                          localStorage.getItem("transactionID") ||
+                          "N/A"
+                        : localStorage.getItem("transactionID") || "N/A"}
+                    </span>
+                  </ResultFooterPopup>
+                </ResultCardPopup>
               <ResultDisclaimerPopup>
                 <FaInfoCircle />
                 Results are based on data available at the time of verification.

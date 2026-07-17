@@ -22,7 +22,7 @@ import {
 } from "./Footer.elements";
 
 import Logo from "../../images/civ_logo.png";
-import LogoWhite from "../../images/civ_logo.png";
+import LogoWhite from "../../images/civ_dark.png";
 import { useTheme } from "../../components/ThemeProvider";
 import { Link } from "react-router-dom";
 

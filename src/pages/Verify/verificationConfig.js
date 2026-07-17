@@ -280,7 +280,7 @@ const verificationConfig = {
     serviceCode: "VIN",
     fields: [
       {
-        name: "vin",
+        name: "idNumber",
         label: "VIN (Numéro d'Identification du Véhicule)",
         placeholder: "Entrez le VIN",
         type: "text",
@@ -303,7 +303,7 @@ const verificationConfig = {
     },
     serviceName: "Vérification VIN",
     apiServiceName: "VIN",
-    serviceFieldKey: "vin",
+    serviceFieldKey: "idNumber",
     priceIndex: 5,
     trustBar: [
       { title: "Sécurisé & Privé", desc: "Vos données sont protégées" },

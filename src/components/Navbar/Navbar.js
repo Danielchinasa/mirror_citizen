@@ -36,7 +36,7 @@ import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
 import Logo from "../../images/civ_logo.png";
-import LogoWhite from "../../images/civ_logo.png";
+import LogoWhite from "../../images/civ_dark.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
@@ -941,12 +941,18 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <PublicBrand to="/">
-              {/* <span className="brand-red">e</span>
-              <span className="brand-dot">-</span> */}
+            {/* <PublicBrand to="/">
               {language === "FR" ? "citoyen" : "citizen"}
               <span className="brand-red">.africa</span>
-            </PublicBrand>
+            </PublicBrand> */}
+            <Link to="/">
+              <img
+                src={isDark ? LogoWhite : Logo}
+                alt="Logo"
+                width={120}
+                style={{ marginTop: "10px", cursor: "pointer" }}
+              />
+            </Link>
             <HamburgerIcon onClick={handleClick}>
               {click ? (
                 <FaTimes />
