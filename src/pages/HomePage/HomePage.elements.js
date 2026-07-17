@@ -51,12 +51,12 @@ export const HeroStrip = styled.div`
   height: 18px;
   background: linear-gradient(
     90deg,
-    #FED001 0%,
-    #FED001 20%,
+    #fbcb19 0%,
+    #fbcb19 20%,
     #ffd000 20%,
     #ffd000 40%,
-    #FED001 40%,
-    #FED001 100%
+    #fbcb19 40%,
+    #fbcb19 100%
   );
   position: relative;
   overflow: hidden;
@@ -426,7 +426,7 @@ export const StepNumber = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #FED001;
+  background: #fbcb19;
   margin-right: 8px;
   color: #fff;
   font-family: "Poppins", sans-serif;
@@ -531,7 +531,7 @@ export const CardsGrid = styled.div`
 `;
 
 export const ServiceCard = styled.div`
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#FED001" : "#e5e7eb")};
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#FBCB19" : "#e5e7eb")};
   border-radius: 14px;
   padding: 24px 20px;
   text-align: center;
@@ -548,7 +548,7 @@ export const PopularBadge = styled.span`
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #FED001;
+  background: #fbcb19;
   color: #fff;
   font-family: "Nunito", sans-serif;
   font-weight: 800;
@@ -631,13 +631,13 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.2s;
-  background: ${({ $popular }) => ($popular ? "#FED001" : "#fff")};
-  color: ${({ $popular }) => ($popular ? "#fff" : "#333")};
-  border: 1.5px solid ${({ $popular }) => ($popular ? "#FED001" : "#e5e7eb")};
+  background: #fbcb19;
+  color: #fff;
+  border: 1.5px solid ${({ $popular }) => ($popular ? "#FBCB19" : "#e5e7eb")};
 
   &:hover {
     background: ${({ $popular }) => ($popular ? "#D4A800" : "#f9fafb")};
-    color: ${({ $popular }) => ($popular ? "#fff" : "#FED001")};
+    color: ${({ $popular }) => ($popular ? "#fff" : "#FBCB19")};
     border-color: var(--ec-primary);
   }
 `;
@@ -814,7 +814,7 @@ export const CtaDesc = styled.p`
 `;
 
 export const CtaButton = styled(Link)`
-  background: #FED001;
+  background: #fbcb19;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;

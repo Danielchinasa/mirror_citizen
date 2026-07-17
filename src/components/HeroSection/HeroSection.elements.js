@@ -117,8 +117,8 @@ export const Subtitle = styled.p`
   line-height: 24px;
   color: ${(props) =>
     props.color === "primary"
-      ? "#FED001"
+      ? "#FBCB19"
       : props.color === "light"
-      ? "#a9b3c1"
-      : "#1c2237"};
+        ? "#a9b3c1"
+        : "#1c2237"};
 `;

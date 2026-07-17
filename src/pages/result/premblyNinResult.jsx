@@ -300,7 +300,7 @@ const PremblyNinResult = () => {
           title: "Error",
           text: "Could not load verification result.",
           icon: "error",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#FBCB19",
         });
       }
     };

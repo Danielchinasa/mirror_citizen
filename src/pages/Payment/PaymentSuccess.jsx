@@ -94,8 +94,8 @@ const PaymentSuccess = () => {
             key="dashboard"
             onClick={handleGoToDashboard}
             style={{
-              backgroundColor: "#FED001",
-              borderColor: "#FED001",
+              backgroundColor: "#FBCB19",
+              borderColor: "#FBCB19",
             }}
           >
             Go to Dashboard

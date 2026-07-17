@@ -1,12 +1,12 @@
 .clickable-row {
-    cursor: pointer !important;
-  }
-  .custom-swal-button {
-    background-color: #FED001 !important; /* Example color */
-    color: white; /* Text color */
-  }
-  .swal-wide{
-    width:auto !important;
+  cursor: pointer !important;
+}
+.custom-swal-button {
+  background-color: #fbcb19 !important; /* Example color */
+  color: white; /* Text color */
+}
+.swal-wide {
+  width: auto !important;
 }
 
 .dark-mode {
@@ -15,7 +15,7 @@
 }
 
 /* Dark mode */
-.custom-input{
+.custom-input {
   background-color: var(--ec-bg-input) !important; /* Dark gray */
-  color: var(--ec-text) !important; /* White */}
-
+  color: var(--ec-text) !important; /* White */
+}

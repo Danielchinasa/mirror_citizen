@@ -355,7 +355,9 @@ export const PublicCta = styled.a`
   font-weight: 700;
   font-size: 15px;
   box-shadow: 0 8px 18px rgba(254, 208, 1, 0.22);
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     background: var(--ec-primary);
@@ -441,7 +443,7 @@ export const PublicLanguageToggleGroup = styled.div`
 
 export const PublicLanguageToggle = styled.button`
   border: none;
-  background: ${({ $active }) => ($active ? "#FED001" : "transparent")};
+  background: ${({ $active }) => ($active ? "#FBCB19" : "transparent")};
   color: ${({ $active }) => ($active ? "#fff" : "#111827")};
   font-family: "Nunito", sans-serif;
   font-size: 13px;
@@ -450,7 +452,10 @@ export const PublicLanguageToggle = styled.button`
   padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);

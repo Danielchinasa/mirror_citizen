@@ -176,7 +176,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #FED001;
+    border-color: #fbcb19;
   }
 `;
 
@@ -216,7 +216,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #FED001;
+  color: #fbcb19;
   text-decoration: none;
   font-weight: 600;
 
@@ -229,7 +229,7 @@ const LoginBtn = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background: ${(props) => (props.disabled ? "#ccc" : "#FED001")};
+  background: ${(props) => (props.disabled ? "#ccc" : "#FBCB19")};
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -273,7 +273,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid var(--ec-border);
-  border-top-color: #FED001;
+  border-top-color: #fbcb19;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -292,7 +292,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #FED001;
+    color: #fbcb19;
     font-weight: 600;
     text-decoration: none;
 
@@ -336,8 +336,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: var(--ec-bg);
-  border: 1px solid #FED001;
-  color: #FED001;
+  border: 1px solid #fbcb19;
+  color: #fbcb19;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -464,7 +464,7 @@ const CreditScoreNumber = styled.div`
 const CreditScoreBadge = styled.span`
   display: inline-block;
   background: var(--ec-primary-bg);
-  color: #FED001;
+  color: #fbcb19;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -494,7 +494,7 @@ const CreditMetaValue = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 13px;
-  color: #FED001;
+  color: #fbcb19;
 `;
 
 const CreditMetaValueNeutral = styled.span`
@@ -507,7 +507,7 @@ const CreditMetaValueNeutral = styled.span`
   gap: 4px;
 
   svg {
-    color: #FED001;
+    color: #fbcb19;
     font-size: 12px;
   }
 `;
@@ -551,7 +551,7 @@ const StatValueGreen = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #FED001;
+  color: #fbcb19;
   display: inline-flex;
   align-items: center;
   gap: 4px;

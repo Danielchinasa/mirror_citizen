@@ -573,14 +573,14 @@ const LoginForm = (props) => {
             >
               Don’t have an account? {/* <BtnLink to="/sign-up"> */}
               <BtnLink to="/individual/sign-up/1">
-                <span style={{ color: "#FED001", cursor: "pointer" }}>
+                <span style={{ color: "#FBCB19", cursor: "pointer" }}>
                   Register here
                 </span>
               </BtnLink>
             </Subtitle>
             <Subtitle color="light" $token={token}>
               Forgot password?{" "}
-              <span style={{ color: "#FED001" }}>
+              <span style={{ color: "#FBCB19" }}>
                 <BtnLink to="/forgot-password">Click me!</BtnLink>
               </span>
             </Subtitle>

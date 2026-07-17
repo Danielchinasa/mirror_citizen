@@ -80,7 +80,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #FED001;
+  border: 1px solid #fbcb19;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -435,7 +435,7 @@ export const StepNumber = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #FED001;
+  background: #fbcb19;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -601,7 +601,7 @@ export const CheckItem = styled.li`
 /* ─── CTA ─── */
 
 export const CtaSectionWrapper = styled.section`
-  background: #FED001;
+  background: #fbcb19;
   padding: 60px 50px;
   text-align: center;
 

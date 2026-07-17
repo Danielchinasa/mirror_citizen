@@ -285,7 +285,7 @@ export const LoginButton = styled.button`
   display: block;
   width: 100%;
   padding: 12px;
-  background: #FED001;
+  background: #fbcb19;
   color: #fff;
   border: none;
   border-radius: 8px;

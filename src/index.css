@@ -1,28 +1,27 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 a {
   cursor: pointer;
 }
 
-.input-phone-number input{
+.input-phone-number input {
   height: 45px !important;
 }
-.input-phone-number input:focus{
+.input-phone-number input:focus {
   outline: none !important;
-  border:none !important;
+  border: none !important;
   box-shadow: none !important;
- 
 }
 
 .horizontal-pagination .ant-pagination-prev,
@@ -61,9 +60,9 @@ a {
   border-color: red !important; 
 } */
 
- /* For unchecked radio button */
- .ant-radio .ant-radio-inner {
-  border-color: #787C99 !important; /* Unchecked border color */
+/* For unchecked radio button */
+.ant-radio .ant-radio-inner {
+  border-color: #787c99 !important; /* Unchecked border color */
 }
 
 .ant-radio .ant-radio-inner::after {
@@ -72,5 +71,5 @@ a {
 
 /* For hover state */
 .ant-radio:hover .ant-radio-inner {
-  border-color: #FED001 !important; /* Hover border color */
+  border-color: #fbcb19 !important; /* Hover border color */
 }

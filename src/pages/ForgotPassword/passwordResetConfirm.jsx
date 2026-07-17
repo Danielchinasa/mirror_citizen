@@ -64,7 +64,7 @@ const PasswordResetConfirm = () => {
           <CenterText>
             <InfoSec>
               <CheckCircleOutlined
-                style={{ fontSize: "92px", color: "#FED001" }}
+                style={{ fontSize: "92px", color: "#FBCB19" }}
               />
               <Heading $token={token}>Password reset</Heading>
               <Subtitle color="light" $token={token}>

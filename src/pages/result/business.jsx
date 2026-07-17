@@ -228,7 +228,7 @@ const Business = () => {
     <Container $token={token}>
       <InfoSec>
         <Link to="/main-dashboard">
-          <p style={{ color: "#FED001", cursor: "pointer" }}>Go back</p>
+          <p style={{ color: "#FBCB19", cursor: "pointer" }}>Go back</p>
         </Link>
         <Card style={{ width: "100%" }}>
           <Heading4>Business Verification Result</Heading4>
@@ -245,7 +245,7 @@ const Business = () => {
                 <RightOutlined />
                 <Text>Business Name</Text>
                 <RightOutlined />
-                <Text style={{ color: "#FED001", fontWeight: "bold" }}>
+                <Text style={{ color: "#FBCB19", fontWeight: "bold" }}>
                   {business.data.approvedName}
                 </Text>
               </div>
@@ -355,13 +355,13 @@ const Business = () => {
                         <Divider
                           style={{
                             color: "red",
-                            backgroundColor: "#FED001",
-                            border: "1px #FED001 solid",
+                            backgroundColor: "#FBCB19",
+                            border: "1px #FBCB19 solid",
                           }}
                         />
                         <Text
                           style={{
-                            color: "#FED001",
+                            color: "#FBCB19",
                             fontWeight: "bold",
                             fontSize: "20px",
                           }}
@@ -609,8 +609,8 @@ const Business = () => {
                         {/* <Divider
                           style={{
                             color: "red",
-                            backgroundColor: "#FED001",
-                            border: "2px #FED001 solid",
+                            backgroundColor: "#FBCB19",
+                            border: "2px #FBCB19 solid",
                           }}
                         /> */}
                       </div>

@@ -846,8 +846,9 @@ export const completeVerificationRequest =
           CLICK_ID: CLICK_ID || "",
         },
         vehicle: {
-          vin: formData.vin || "",
-          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+          ...(formData.idNumber && {
+            stolencheck: formData.stolencheck || false,
+          }),
           license_number: formData.license_number || "",
         },
       };

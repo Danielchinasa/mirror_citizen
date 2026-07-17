@@ -62,7 +62,7 @@ export default RecommendedOffers;
 
 const Wrapper = styled.div`
   border: 1.5px solid
-    ${({ $variant }) => ($variant === "blue" ? "#3b82f6" : "#FED001")};
+    ${({ $variant }) => ($variant === "blue" ? "#3b82f6" : "#FBCB19")};
   border-radius: 14px;
   padding: 28px 28px 20px;
   margin-top: 32px;
@@ -163,7 +163,7 @@ const OfferLink = styled.a`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #FED001;
+  color: #fbcb19;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -171,7 +171,7 @@ const OfferLink = styled.a`
   margin-top: 4px;
 
   &:hover {
-    color: #FED001;
+    color: #fbcb19;
     text-decoration: none;
   }
 `;

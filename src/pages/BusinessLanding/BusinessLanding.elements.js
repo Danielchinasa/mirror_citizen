@@ -308,7 +308,7 @@ export const HeroTitle = styled.h1`
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
-    background: linear-gradient(90deg, #FED001 0%, #FFE44D 50%, #FED001 100%);
+    background: linear-gradient(90deg, #fbcb19 0%, #ffe44d 50%, #fbcb19 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

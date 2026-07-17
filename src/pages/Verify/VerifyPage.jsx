@@ -673,6 +673,8 @@ const VerifyPage = () => {
       if (initiatePayload?.status === "INITIATED") {
         localStorage.setItem("sessionCode", initiatePayload?.sessionId);
         apiFormData.sessionId = initiatePayload?.sessionId;
+        apiFormData.idNumber =
+          apiFormData.idNumber || formData.idNumber || formData.nin || "";
       } else {
         throw new Error(
           initiatePayload?.message || "Failed to initiate verification",
@@ -908,7 +910,13 @@ const VerifyPage = () => {
         resultTitle = `${config.serviceName} Successful`;
         resultDetail =
           response.resultText || `${config.serviceName} was successful.`;
-        resultRoute = "/main-dashboard";
+
+        // Check if it's a vehicle verification
+        if (result.vehicleName || result.vehicleSpecification || result.vin) {
+          resultRoute = "/vehicle-profile-result";
+        } else {
+          resultRoute = "/main-dashboard";
+        }
       } else if (
         response.basic &&
         response.basic.status &&
@@ -1648,6 +1656,34 @@ const VerifyPage = () => {
     const data = verificationResult.data;
     const fields = [];
 
+    // ── Vehicle verification ──
+    if (data.vehicleName || data.vin || data.vehicleSpecification) {
+      if (data.vehicleName)
+        fields.push({ label: "Vehicle", value: data.vehicleName });
+      if (data.vin) fields.push({ label: "VIN", value: data.vin });
+
+      const spec = data.vehicleSpecification || {};
+      if (spec.year) fields.push({ label: "Year", value: spec.year });
+      if (spec.category)
+        fields.push({ label: "Category", value: spec.category });
+      if (spec.make) fields.push({ label: "Make", value: spec.make });
+      if (spec.model) fields.push({ label: "Model", value: spec.model });
+      if (spec.trim) fields.push({ label: "Trim", value: spec.trim });
+      if (spec.engine) fields.push({ label: "Engine", value: spec.engine });
+      if (spec.transmission)
+        fields.push({ label: "Transmission", value: spec.transmission });
+      if (spec.drive_type)
+        fields.push({ label: "Drive Type", value: spec.drive_type });
+
+      if (data.verificationStatus)
+        fields.push({
+          label: "Verification Status",
+          value: data.verificationStatus,
+        });
+
+      return fields.slice(0, 8);
+    }
+
     // ── Ghana ID Card / basic result (new API format) ──
     // Check for new format fields first (fullName, idNumber, etc.)
     if (data.fullName || data.firstName || data.lastName || data.idNumber) {
@@ -2211,13 +2247,46 @@ const VerifyPage = () => {
             <PopupBody>
               <ResultCardPopup>
                 <ResultTopPopup>
-                  <ResultPhotoPopup>
-                    {(() => {
-                      const data = verificationResult?.data;
-                      if (!data) return <FaUserCircle />;
+                  {(() => {
+                    const data = verificationResult?.data;
+                    const isVehicle =
+                      data?.vehicleName || data?.vehicleSpecification;
 
-                      // Try multiple possible keys for image data
-                      let photoSrc =
+                    if (isVehicle && data.vehicleImage) {
+                      // Vehicle verification - show vehicle image
+                      return (
+                        <div
+                          style={{
+                            width: "180px",
+                            height: "120px",
+                            borderRadius: "12px",
+                            background: "var(--ec-bg-secondary)",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                            border: "1px solid var(--ec-border)",
+                          }}
+                        >
+                          <img
+                            src={data.vehicleImage}
+                            alt="Vehicle"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              e.target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ec-text-faint);font-size:48px;"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M499.99 176h-59.87l-16.64-41.6C406.38 91.63 365.57 64 319.5 64h-127c-46.06 0-86.88 27.63-103.99 70.4L71.87 176H12.01C4.2 176-1.53 183.34.37 190.91l6 24C7.7 220.25 12.5 224 18.01 224h20.07C24.65 235.73 16 252.78 16 272v48c0 16.12 6.16 30.67 16 41.93V416c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-32h256v32c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-54.07c9.84-11.25 16-25.8 16-41.93v-48c0-19.22-8.65-36.27-22.07-48H494c5.51 0 10.31-3.75 11.64-9.09l6-24c1.89-7.57-3.84-14.91-11.65-14.91zm-352.06-17.83c7.29-18.22 24.94-30.17 44.57-30.17h127c19.63 0 37.28 11.95 44.57 30.17L384 208H128l19.93-49.83zM96 319.8c-19.2 0-32-12.76-32-31.9S76.8 256 96 256s48 28.71 48 47.85-28.8 15.95-48 15.95zm320 0c-19.2 0-48 3.19-48-15.95S396.8 256 416 256s32 12.76 32 31.9-12.8 31.9-32 31.9z"></path></svg></div>`;
+                            }}
+                          />
+                        </div>
+                      );
+                    }
+
+                    // Profile photo for non-vehicle verification types
+                    let photoSrc = null;
+                    if (data) {
+                      photoSrc =
                         data.photo ||
                         data.signature ||
                         data.image ||
@@ -2229,51 +2298,58 @@ const VerifyPage = () => {
                         data.faceImage ||
                         data.photoUrl ||
                         data.imageUrl;
+                    }
 
-                      if (photoSrc) {
-                        // Add data URI prefix if it's raw base64
-                        if (!photoSrc.startsWith("data:")) {
-                          // Detect image type from base64 signature
-                          if (
-                            photoSrc.startsWith("/9j/") ||
-                            photoSrc.startsWith("iVBORw0KGgo")
-                          ) {
-                            const mimeType = photoSrc.startsWith("/9j/")
-                              ? "image/jpeg"
-                              : "image/png";
-                            photoSrc = `data:${mimeType};base64,${photoSrc}`;
-                          }
-                        }
+                    return (
+                      <ResultPhotoPopup>
+                        {photoSrc ? (
+                          (() => {
+                            // Add data URI prefix if it's raw base64
+                            if (!photoSrc.startsWith("data:")) {
+                              // Detect image type from base64 signature
+                              if (
+                                photoSrc.startsWith("/9j/") ||
+                                photoSrc.startsWith("iVBORw0KGgo")
+                              ) {
+                                const mimeType = photoSrc.startsWith("/9j/")
+                                  ? "image/jpeg"
+                                  : "image/png";
+                                photoSrc = `data:${mimeType};base64,${photoSrc}`;
+                              }
+                            }
 
-                        return (
-                          <img
-                            src={photoSrc}
-                            alt="Verification photo"
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              borderRadius: "50%",
-                              objectFit: "cover",
-                            }}
-                            onError={(e) => {
-                              console.warn(
-                                "Image failed to load, falling back to icon",
-                              );
-                              e.target.style.display = "none";
-                            }}
-                          />
-                        );
-                      }
-                      return <FaUserCircle />;
-                    })()}
-                  </ResultPhotoPopup>
+                            return (
+                              <img
+                                src={photoSrc}
+                                alt="Verification photo"
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  borderRadius: "50%",
+                                  objectFit: "cover",
+                                }}
+                                onError={(e) => {
+                                  console.warn(
+                                    "Image failed to load, falling back to icon",
+                                  );
+                                  e.target.style.display = "none";
+                                }}
+                              />
+                            );
+                          })()
+                        ) : (
+                          <FaUserCircle />
+                        )}
+                      </ResultPhotoPopup>
+                    );
+                  })()}
                   <ResultGridPopup>
                     {getResultPreviewFields().map((field, idx) => (
                       <ResultFieldPopup key={idx}>
                         <ResultLabelPopup>{field.label}</ResultLabelPopup>
-                        {field.verified ? (
+                        {field.label === "Verification Status" ? (
                           <VerifiedBadgePopup>
-                            {field.value} <FaCheckCircle />
+                            VERIFIED <FaCheckCircle />
                           </VerifiedBadgePopup>
                         ) : (
                           <ResultValuePopup>{field.value}</ResultValuePopup>
@@ -2304,7 +2380,9 @@ const VerifyPage = () => {
                 <ContinueBtn
                   onClick={() => {
                     setShowResultPopup(false);
-                    history.push("/main-dashboard");
+                    history.push(
+                      verificationResult?.route || "/main-dashboard",
+                    );
                   }}
                 >
                   View full result <FaArrowRight />

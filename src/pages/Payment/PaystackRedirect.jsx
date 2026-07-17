@@ -72,7 +72,7 @@ const PaystackRedirect = () => {
             text: "Your payment has been processed successfully.",
             icon: "success",
             confirmButtonText: "Go to Dashboard",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#FBCB19",
             allowOutsideClick: false,
             allowEscapeKey: false,
           }).then((result) => {
@@ -152,8 +152,8 @@ const PaystackRedirect = () => {
               key="dashboard"
               onClick={handleGoToDashboard}
               style={{
-                backgroundColor: "#FED001",
-                borderColor: "#FED001",
+                backgroundColor: "#FBCB19",
+                borderColor: "#FBCB19",
               }}
             >
               Go to Dashboard
@@ -199,8 +199,8 @@ const PaystackRedirect = () => {
               key="dashboard"
               onClick={handleTryAgain}
               style={{
-                backgroundColor: "#FED001",
-                borderColor: "#FED001",
+                backgroundColor: "#FBCB19",
+                borderColor: "#FBCB19",
               }}
             >
               Return to Dashboard
@@ -245,8 +245,8 @@ const PaystackRedirect = () => {
             key="retry"
             onClick={handleTryAgain}
             style={{
-              backgroundColor: "#FED001",
-              borderColor: "#FED001",
+              backgroundColor: "#FBCB19",
+              borderColor: "#FBCB19",
             }}
           >
             Try Again

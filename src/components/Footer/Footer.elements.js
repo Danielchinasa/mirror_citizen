@@ -38,12 +38,12 @@ export const FooterStrip = styled.div`
   height: 18px;
   background: linear-gradient(
     90deg,
-    #FED001 0%,
-    #FED001 20%,
+    #fbcb19 0%,
+    #fbcb19 20%,
     #ffd000 20%,
     #ffd000 40%,
-    #FED001 40%,
-    #FED001 100%
+    #fbcb19 40%,
+    #fbcb19 100%
   );
   position: relative;
   overflow: hidden;
@@ -156,7 +156,7 @@ export const FooterColTitle = styled.h4`
     width: 42px;
     height: 3px;
     border-radius: 999px;
-    background: #FED001;
+    background: #fbcb19;
     margin-top: 8px;
   }
 `;

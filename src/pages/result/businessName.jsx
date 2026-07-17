@@ -267,7 +267,7 @@ const BusinessName = () => {
       },
       showCancelButton: true,
       confirmButtonText: "Confirm",
-      confirmButtonColor: "#FED001",
+      confirmButtonColor: "#FBCB19",
       inputValidator: (value) => {
         if (!value) {
           return "You must select a payment method";
@@ -332,7 +332,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -354,7 +354,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -443,7 +443,7 @@ const BusinessName = () => {
                       allowEscapeKey: false,
                       showConfirmButton: true,
                       confirmButtonText: "OK",
-                      confirmButtonColor: "#FED001",
+                      confirmButtonColor: "#FBCB19",
                     }).then((result) => {
                       if (result.isConfirmed) {
                         window.location.reload();
@@ -465,7 +465,7 @@ const BusinessName = () => {
                     allowEscapeKey: false,
                     showConfirmButton: true,
                     confirmButtonText: "OK",
-                    confirmButtonColor: "#FED001",
+                    confirmButtonColor: "#FBCB19",
                   }).then((result) => {
                     if (result.isConfirmed) {
                       window.location.reload();
@@ -488,7 +488,7 @@ const BusinessName = () => {
                   allowEscapeKey: false,
                   showConfirmButton: true,
                   confirmButtonText: "OK",
-                  confirmButtonColor: "#FED001",
+                  confirmButtonColor: "#FBCB19",
                 }).then((result) => {
                   if (result.isConfirmed) {
                     window.location.reload();
@@ -511,7 +511,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -534,7 +534,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -562,7 +562,7 @@ const BusinessName = () => {
               text: "Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?",
               showCancelButton: true,
               confirmButtonText: "Continue",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
               customClass: {
                 confirmButton: "custom-swal-button",
               },
@@ -591,7 +591,7 @@ const BusinessName = () => {
               text: "Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?",
               showCancelButton: true,
               confirmButtonText: "Continue",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
               customClass: {
                 confirmButton: "custom-swal-button",
               },
@@ -621,7 +621,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -713,7 +713,7 @@ const BusinessName = () => {
                       allowEscapeKey: false,
                       showConfirmButton: true,
                       confirmButtonText: "OK",
-                      confirmButtonColor: "#FED001",
+                      confirmButtonColor: "#FBCB19",
                     }).then((result) => {
                       if (result.isConfirmed) {
                         window.location.reload();
@@ -735,7 +735,7 @@ const BusinessName = () => {
                     allowEscapeKey: false,
                     showConfirmButton: true,
                     confirmButtonText: "OK",
-                    confirmButtonColor: "#FED001",
+                    confirmButtonColor: "#FBCB19",
                   }).then((result) => {
                     if (result.isConfirmed) {
                       window.location.reload();
@@ -761,7 +761,7 @@ const BusinessName = () => {
                   allowEscapeKey: false,
                   showConfirmButton: true,
                   confirmButtonText: "OK",
-                  confirmButtonColor: "#FED001",
+                  confirmButtonColor: "#FBCB19",
                 }).then((result) => {
                   if (result.isConfirmed) {
                     window.location.reload();
@@ -784,7 +784,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -807,7 +807,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -879,7 +879,7 @@ const BusinessName = () => {
                     allowEscapeKey: false,
                     showConfirmButton: true,
                     confirmButtonText: "OK",
-                    confirmButtonColor: "#FED001",
+                    confirmButtonColor: "#FBCB19",
                   }).then((result) => {
                     if (result.isConfirmed) {
                       window.location.reload();
@@ -902,7 +902,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -926,7 +926,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -989,7 +989,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1014,7 +1014,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1065,7 +1065,7 @@ const BusinessName = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#FBCB19",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -1130,7 +1130,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1160,7 +1160,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1182,7 +1182,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1206,7 +1206,7 @@ const BusinessName = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#FBCB19",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1230,7 +1230,7 @@ const BusinessName = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -1269,7 +1269,7 @@ const BusinessName = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#FBCB19",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -1334,7 +1334,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1364,7 +1364,7 @@ const BusinessName = () => {
                 allowEscapeKey: false,
                 showConfirmButton: true,
                 confirmButtonText: "OK",
-                confirmButtonColor: "#FED001",
+                confirmButtonColor: "#FBCB19",
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.reload();
@@ -1386,7 +1386,7 @@ const BusinessName = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1410,7 +1410,7 @@ const BusinessName = () => {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#FBCB19",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -1434,7 +1434,7 @@ const BusinessName = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -1597,7 +1597,7 @@ const BusinessName = () => {
                           <Text>Business Name</Text>
                           <RightOutlined /> */}
                           <Text
-                            style={{ color: "#FED001", fontWeight: "bold" }}
+                            style={{ color: "#FBCB19", fontWeight: "bold" }}
                           >
                             {business.data.approvedName}
                           </Text>
@@ -1812,7 +1812,7 @@ const BusinessName = () => {
                                   header={
                                     <div
                                       style={{
-                                        color: "#FED001",
+                                        color: "#FBCB19",
                                         fontSize: "16px",
                                         fontWeight: "bold",
                                       }}
@@ -1872,11 +1872,11 @@ const BusinessName = () => {
                                                 </div>
                                                 <div
                                                   style={{
-                                                    color: "#FED001",
+                                                    color: "#FBCB19",
                                                     fontSize: "14px",
                                                     fontWeight: "bold",
                                                     padding: "2px",
-                                                    border: "1px solid #FED001",
+                                                    border: "1px solid #FBCB19",
                                                   }}
                                                 >
                                                   {shareholder.stake}
@@ -2245,7 +2245,7 @@ const BusinessName = () => {
                                   header={
                                     <div
                                       style={{
-                                        color: "#FED001",
+                                        color: "#FBCB19",
                                         fontSize: "16px",
                                         fontWeight: "bold",
                                       }}
@@ -2302,7 +2302,7 @@ const BusinessName = () => {
                                                 </div>
                                                 <div
                                                   style={{
-                                                    color: "#FED001",
+                                                    color: "#FBCB19",
                                                     fontSize: "14px",
                                                     fontWeight: "bold",
                                                   }}

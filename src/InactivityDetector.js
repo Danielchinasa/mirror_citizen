@@ -23,44 +23,47 @@ const InactivityDetector = () => {
 
     if (isLoggedIn) {
       // Reset the timer
-      inactivityTimer = setTimeout(() => {
-        // Show SweetAlert dialog before logout only if the user is still logged in
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "You have been inactive for 10 minutes",
-          text: "We will log you out in 10 seconds if no response",
-          icon: "warning",
-          showCancelButton: true,
-          cancelButtonColor: "#FED001",
-          confirmButtonText: "Logout",
-          confirmButtonColor: "#FED001",
-          cancelButtonText: "Stay logged in",
-          timer: 10000, // Auto close the dialog after 10 seconds
-          timerProgressBar: true,
-          onBeforeOpen: () => {
-            Swal.showLoading();
-          },
-          onClose: () => {
-            // Trigger logout action when the dialog is closed without interaction
-            dispatch(logout());
+      inactivityTimer = setTimeout(
+        () => {
+          // Show SweetAlert dialog before logout only if the user is still logged in
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "You have been inactive for 10 minutes",
+            text: "We will log you out in 10 seconds if no response",
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonColor: "#FBCB19",
+            confirmButtonText: "Logout",
+            confirmButtonColor: "#FBCB19",
+            cancelButtonText: "Stay logged in",
+            timer: 10000, // Auto close the dialog after 10 seconds
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+            onClose: () => {
+              // Trigger logout action when the dialog is closed without interaction
+              dispatch(logout());
 
-            // Redirect to login page
-            // history.push("/login");
-          },
-        }).then((result) => {
-          if (result.dismiss === Swal.DismissReason.timer) {
-            // If the timer is the reason for closing the dialog, logout the user
-            dispatch(logout());
+              // Redirect to login page
+              // history.push("/login");
+            },
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              // If the timer is the reason for closing the dialog, logout the user
+              dispatch(logout());
 
-            // Redirect to login page
-            // history.push("/login");
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // If the user clicks "Stay logged in", reset the timer
-            handleUserActivity();
-          }
-        });
-      }, 10 * 60 * 1000); // Show the dialog 9 seconds before logout
+              // Redirect to login page
+              // history.push("/login");
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              // If the user clicks "Stay logged in", reset the timer
+              handleUserActivity();
+            }
+          });
+        },
+        10 * 60 * 1000,
+      ); // Show the dialog 9 seconds before logout
     }
   };
 

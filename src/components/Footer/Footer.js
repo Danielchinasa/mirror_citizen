@@ -23,7 +23,7 @@ import {
   PublicBrand,
 } from "./Footer.elements";
 import Logo from "../../images/ghana_logo.png";
-import LogoWhite from "../../images/ghana_logo.png";
+import LogoWhite from "../../images/ghana_dark.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import { Modal } from "antd";

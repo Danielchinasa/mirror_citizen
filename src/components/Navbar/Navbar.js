@@ -33,7 +33,7 @@ import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
 import Logo from "../../images/ghana_logo.png";
-import LogoWhite from "../../images/ghana_logo.png";
+import LogoWhite from "../../images/ghana_dark.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
 import { Link } from "react-router-dom";
@@ -386,7 +386,7 @@ function Navbar() {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#FBCB19",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -426,7 +426,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -451,7 +451,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -569,7 +569,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
       });
       return;
     }
@@ -627,7 +627,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -649,7 +649,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#FBCB19",
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -703,7 +703,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#FBCB19",
           });
         }
       } else if (walletPaymentMethod === 3) {
@@ -747,7 +747,7 @@ function Navbar() {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             });
           }
         } catch (error) {
@@ -766,7 +766,7 @@ function Navbar() {
             allowEscapeKey: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
-            confirmButtonColor: "#FED001",
+            confirmButtonColor: "#FBCB19",
           });
         }
       }
@@ -787,7 +787,7 @@ function Navbar() {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -926,11 +926,14 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <PublicBrand to="/">
-              <span className="brand-red">e</span>
-              <span className="brand-dot">-</span>
-              citizen<span className="brand-dot">.africa</span>
-            </PublicBrand>
+            <Link to="/">
+              <img
+                src={isDark ? LogoWhite : Logo}
+                alt="Logo"
+                width={120}
+                style={{ marginTop: "30px", cursor: "pointer" }}
+              />
+            </Link>
             <HamburgerIcon onClick={handleClick}>
               {click ? (
                 <FaTimes />
@@ -1072,7 +1075,7 @@ function Navbar() {
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
-                          <span style={{ color: "#FED001" }}>
+                          <span style={{ color: "#FBCB19" }}>
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
@@ -1088,7 +1091,7 @@ function Navbar() {
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
-                          <Title level={3} style={{ color: "#FED001" }}>
+                          <Title level={3} style={{ color: "#FBCB19" }}>
                             {userCurrency.toUpperCase() === "GHS"
                               ? formatToCedis(userBalance)
                               : `${formatToDollar(userBalance)}`}
@@ -1282,7 +1285,7 @@ function Navbar() {
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
                           Wallet Balance:
-                          <span style={{ color: "#FED001" }}>
+                          <span style={{ color: "#FBCB19" }}>
                             {" "}
                             {/* GH₵{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
@@ -1299,7 +1302,7 @@ function Navbar() {
                           width={300}
                         >
                           <Title level={5}> Wallet Balance:</Title>
-                          <Title level={3} style={{ color: "#FED001" }}>
+                          <Title level={3} style={{ color: "#FBCB19" }}>
                             {userCurrency.toUpperCase() === "GHS"
                               ? formatToCedis(userBalance)
                               : `${formatToDollar(userBalance)}`}

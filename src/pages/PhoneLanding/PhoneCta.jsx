@@ -39,7 +39,7 @@ const CtaShield = styled.div`
 
   svg {
     font-size: 30px;
-    color: #FED001;
+    color: #fbcb19;
   }
 `;
 
@@ -81,14 +81,14 @@ const CtaRight = styled.div`
 `;
 
 const CtaButton = styled(Link)`
-  background: #FED001;
+  background: #fbcb19;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border-radius: 10px;
-  border: 2px solid #FED001;
+  border: 2px solid #fbcb19;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -113,7 +113,7 @@ const CtaPrice = styled.span`
   color: var(--ec-text-secondary);
 
   svg {
-    color: #FED001;
+    color: #fbcb19;
     font-size: 14px;
   }
 

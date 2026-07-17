@@ -10,12 +10,12 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Swal from "sweetalert2";
 
 // Set global SweetAlert2 default button color to the app's primary color
-;(function setSwalDefaults() {
+(function setSwalDefaults() {
   const origFire = Swal.fire.bind(Swal);
   Swal.fire = function (...args) {
     const opts = typeof args[0] === "object" ? args[0] : {};
     if (!opts.confirmButtonColor) {
-      opts.confirmButtonColor = "#FED001";
+      opts.confirmButtonColor = "#FBCB19";
     }
     return origFire(opts, ...args.slice(1));
   };
@@ -32,5 +32,5 @@ ReactDOM.render(
       </Router>
     </PersistGate>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );

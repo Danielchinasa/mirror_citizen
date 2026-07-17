@@ -42,7 +42,7 @@ const CodeBlock = ({ children }) => {
 
 const MethodBadge = ({ method }) => {
   const colorMap = {
-    POST: "#FED001",
+    POST: "#FBCB19",
     GET: "#1890ff",
     PUT: "#faad14",
     DELETE: "#f5222d",
@@ -154,7 +154,7 @@ const EndpointCard = ({
       >
         <Panel
           header={
-            <Text strong style={{ color: isDark ? "#8fd49e" : "#FED001" }}>
+            <Text strong style={{ color: isDark ? "#8fd49e" : "#FBCB19" }}>
               Request Body
             </Text>
           }
@@ -165,7 +165,7 @@ const EndpointCard = ({
         {responses.map((resp, index) => (
           <Panel
             header={
-              <Text strong style={{ color: isDark ? "#8fd49e" : "#FED001" }}>
+              <Text strong style={{ color: isDark ? "#8fd49e" : "#FBCB19" }}>
                 {resp.label}
               </Text>
             }
@@ -181,7 +181,7 @@ const EndpointCard = ({
 
 const ApiDocsPage = () => {
   const { isDark } = useTheme();
-  const iconStyle = { fontSize: "20px", color: "#FED001" };
+  const iconStyle = { fontSize: "20px", color: "#FBCB19" };
 
   return (
     <InfoSec>
@@ -196,7 +196,7 @@ const ApiDocsPage = () => {
               marginBottom: "16px",
             }}
           >
-            <ApiOutlined style={{ fontSize: "36px", color: "#FED001" }} />
+            <ApiOutlined style={{ fontSize: "36px", color: "#FBCB19" }} />
             <Title
               style={{
                 margin: 0,
@@ -246,7 +246,7 @@ const ApiDocsPage = () => {
             <CodeOutlined
               style={{
                 fontSize: "28px",
-                color: "#FED001",
+                color: "#FBCB19",
                 marginBottom: "12px",
               }}
             />
@@ -297,7 +297,7 @@ const ApiDocsPage = () => {
             <SafetyCertificateOutlined
               style={{
                 fontSize: "28px",
-                color: "#FED001",
+                color: "#FBCB19",
                 marginBottom: "12px",
               }}
             />
@@ -356,7 +356,7 @@ const ApiDocsPage = () => {
             <WalletOutlined
               style={{
                 fontSize: "28px",
-                color: "#FED001",
+                color: "#FBCB19",
                 marginBottom: "12px",
               }}
             />

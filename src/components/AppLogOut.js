@@ -38,7 +38,7 @@ const AppLogout = ({ children }) => {
         timerProgressBar: true,
         showCancelButton: false,
         showConfirmButton: true,
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
         confirmButtonText: "Stay logged in",
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -72,12 +72,15 @@ const AppLogout = ({ children }) => {
 
     // Function to handle logout timer
     const handleLogoutTimer = () => {
-      timer = setTimeout(() => {
-        if (isAuthenticated === true) {
-          showLogoutAlert();
-        }
-        // console.log("Start counting");
-      }, 9 * 60 * 1000); // 10000ms = 10secs. You can change the time.
+      timer = setTimeout(
+        () => {
+          if (isAuthenticated === true) {
+            showLogoutAlert();
+          }
+          // console.log("Start counting");
+        },
+        9 * 60 * 1000,
+      ); // 10000ms = 10secs. You can change the time.
     };
 
     // Function to logout user

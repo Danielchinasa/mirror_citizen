@@ -171,7 +171,7 @@ const Vehicle2 = () => {
       <Container $token={token}>
         <InfoSec>
           <Link to="/main-dashboard">
-            <p style={{ color: "#FED001", cursor: "pointer" }}>Go back</p>
+            <p style={{ color: "#FBCB19", cursor: "pointer" }}>Go back</p>
           </Link>
           <Card
             style={{

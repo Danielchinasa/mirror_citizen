@@ -349,8 +349,19 @@ const MainDashboard = () => {
   const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
     localStorage.setItem("verificationRequestId", record.id);
+
+    const isVinVerification =
+      searchParameter === "VIN" ||
+      searchParameter === "Vehicle Identification Number" ||
+      (record.type === "Vehicle Profile" &&
+        record.searchParameter &&
+        (record.searchParameter.includes("VIN") ||
+          record.searchParameter.includes("Chassis")));
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle-registration-result");
+    } else if (isVinVerification) {
+      // Route VIN verifications to the redesigned vehicle result page
+      history.push("/vehicle-profile-result");
     } else if (record.type === "Vehicle Profile") {
       history.push("/vehicle-profile-result");
     } else if (record.type === "Business Profile") {
@@ -550,7 +561,7 @@ const MainDashboard = () => {
             <b>{record.searchParameter}</b> (
             <span
               style={{
-                color: "#FED001",
+                color: "#FBCB19",
                 fontWeight: "bold",
               }}
             >
@@ -957,7 +968,7 @@ const MainDashboard = () => {
           allowEscapeKey: false,
           showConfirmButton: true,
           confirmButtonText: "OK",
-          confirmButtonColor: "#FED001",
+          confirmButtonColor: "#FBCB19",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.reload();
@@ -993,8 +1004,8 @@ const MainDashboard = () => {
             // Payment successful - track conversion and refresh profile
             trackPurchaseConversion({
               value: parseFloat(transactionAmount) || 1.0,
-            currency: userCurrency || "GHS",
-            transactionId: paystackReference,
+              currency: userCurrency || "GHS",
+              transactionId: paystackReference,
             });
             dispatch(fetchUserProfile(userToken));
           } else {
@@ -1011,7 +1022,7 @@ const MainDashboard = () => {
               allowEscapeKey: false,
               showConfirmButton: true,
               confirmButtonText: "OK",
-              confirmButtonColor: "#FED001",
+              confirmButtonColor: "#FBCB19",
             }).then((result) => {
               if (result.isConfirmed) {
                 window.location.reload();
@@ -1036,7 +1047,7 @@ const MainDashboard = () => {
         allowEscapeKey: false,
         showConfirmButton: true,
         confirmButtonText: "OK",
-        confirmButtonColor: "#FED001",
+        confirmButtonColor: "#FBCB19",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -1358,7 +1369,7 @@ const MainDashboard = () => {
     <div className="custom-statistic">
       <div
         className="custom-statistic-title"
-        style={{ textAlign: "center", color: "#FED001" }}
+        style={{ textAlign: "center", color: "#FBCB19" }}
       >
         {title}
       </div>
@@ -1426,7 +1437,7 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #FED001 solid",
+                      border: "3px #FBCB19 solid",
                       borderRadius: "12px",
                       background: "#FFF9CC",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
@@ -1436,7 +1447,7 @@ const MainDashboard = () => {
                       title="Total verifications "
                       value={totalVerificationCount}
                       valueStyle={{
-                        color: "#FED001",
+                        color: "#FBCB19",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1455,7 +1466,7 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #FED001 solid",
+                      border: "3px #FBCB19 solid",
                       borderRadius: "12px",
                       background: "#FFF9CC",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
@@ -1465,7 +1476,7 @@ const MainDashboard = () => {
                       title="Successful verifications "
                       value={completedVerificationCount}
                       valueStyle={{
-                        color: "#FED001",
+                        color: "#FBCB19",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1484,7 +1495,7 @@ const MainDashboard = () => {
                   <Card
                     style={{
                       marginTop: "10px",
-                      border: "3px #FED001 solid",
+                      border: "3px #FBCB19 solid",
                       borderRadius: "12px",
                       background: "#FFF9CC",
                       boxShadow: "0px 8px 12px rgba(0, 0, 0, 0.3)", // Increased intensity of shadow
@@ -1494,7 +1505,7 @@ const MainDashboard = () => {
                       title="Unsuccessful verifications "
                       value={failedVerificationCount}
                       valueStyle={{
-                        color: "#FED001",
+                        color: "#FBCB19",
                         fontSize: "50px",
                         fontWeight: "600",
                         fontFamily: "Poppins, sans-serif",
@@ -1522,7 +1533,7 @@ const MainDashboard = () => {
                   width={300}
                 >
                   <Title level={5}> Wallet Balance:</Title>
-                  <Title level={3} style={{ color: "#FED001" }}>
+                  <Title level={3} style={{ color: "#FBCB19" }}>
                     {userCurrency.toUpperCase() === "GHS"
                       ? formatToCedis(userBalance)
                       : `${formatToDollar(userBalance)}`}

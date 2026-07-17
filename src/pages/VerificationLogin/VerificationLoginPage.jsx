@@ -13,6 +13,9 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import Logo from "../../images/ghana_logo.png";
+import LogoWhite from "../../images/ghana_dark.png";
+import { useTheme } from "../../components/ThemeProvider";
 
 import {
   PageWrapper,
@@ -73,24 +76,24 @@ const VerificationLoginPage = () => {
       // When uncommented, bypasses stored values and API detection
       // Comment out this entire section for normal operation
       // ============================================================
-      // const testIp = "102.131.16.255"; // Ghana IP
-      // const testCountry = "GH"; // Ghana
-      // const testCurrency = "GHS"; // Ghanaian Cedi
-      // // For testing USD pricing, use:
-      // // const testIp = "8.8.8.8";           // US IP
-      // // const testCountry = "US";           // United States
-      // // const testCurrency = "USD";         // US Dollar
-      // setIpAddress(testIp);
-      // localStorage.setItem("IpAddress", testIp);
-      // localStorage.setItem("userCountry", testCountry);
-      // localStorage.setItem("currencyCheck", testCurrency);
-      // console.log(
-      //   "🧪 Using test IP/Country:",
-      //   testIp,
-      //   testCountry,
-      //   testCurrency,
-      // );
-      // return;
+      const testIp = "102.131.16.255"; // Ghana IP
+      const testCountry = "GH"; // Ghana
+      const testCurrency = "GHS"; // Ghanaian Cedi
+      // For testing USD pricing, use:
+      // const testIp = "8.8.8.8";           // US IP
+      // const testCountry = "US";           // United States
+      // const testCurrency = "USD";         // US Dollar
+      setIpAddress(testIp);
+      localStorage.setItem("IpAddress", testIp);
+      localStorage.setItem("userCountry", testCountry);
+      localStorage.setItem("currencyCheck", testCurrency);
+      console.log(
+        "🧪 Using test IP/Country:",
+        testIp,
+        testCountry,
+        testCurrency,
+      );
+      return;
       // ============================================================
 
       // First check if IP and country are already stored from main landing page
@@ -306,15 +309,19 @@ const VerificationLoginPage = () => {
       setLoading(false);
     }
   };
+  const { isDark } = useTheme();
 
   return (
     <PageWrapper>
       <LoginNav>
-        <NavLogo to="/">
-          <span className="brand-red">e</span>
-          <span className="brand-dot">-</span>
-          citizen<span className="brand-dot">.africa</span>
-        </NavLogo>
+        <Link to="/">
+          <img
+            src={isDark ? LogoWhite : Logo}
+            alt="Logo"
+            width={120}
+            style={{ marginTop: "10px", cursor: "pointer" }}
+          />
+        </Link>
         <NavLinks>
           <NavLink to="/">← Back to Home</NavLink>
           <NavLink to="/individual/sign-up/1">Register</NavLink>
