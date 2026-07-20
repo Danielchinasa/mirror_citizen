@@ -173,11 +173,32 @@ export const PublicBrand = styled(Link)`
   text-decoration: none;
 
   .brand-red {
-    color: #DD0201;
+    color: #dd0201;
   }
 
   .brand-dot {
     color: var(--ec-text);
+  }
+`;
+
+export const PublicDesktopOnly = styled.div`
+  display: inline-flex;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const PublicMobileToggle = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 4px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
   }
 `;
 
@@ -241,7 +262,7 @@ export const PublicTrigger = styled.button`
   padding: 0;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 
   .chev {
@@ -259,7 +280,7 @@ export const PublicNavLink = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -272,7 +293,7 @@ export const PublicAnchor = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -285,7 +306,7 @@ export const PublicTextLink = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -333,7 +354,7 @@ export const PublicLogin = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 
   @media screen and (max-width: 1024px) {
@@ -348,17 +369,19 @@ export const PublicCta = styled.a`
   min-height: 46px;
   padding: 0 28px;
   border-radius: 10px;
-  background: #DD0201;
+  background: #dd0201;
   color: #fff;
   text-decoration: none;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 15px;
   box-shadow: 0 8px 18px rgba(221, 2, 1, 0.22);
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
     color: #fff;
     transform: translateY(-1px);
   }
@@ -441,7 +464,10 @@ export const PublicLanguageToggle = styled.button`
   padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);
@@ -457,7 +483,7 @@ export const PublicMobileLink = styled(Link)`
   padding: 6px 0;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -470,6 +496,6 @@ export const PublicMobileAnchor = styled.a`
   padding: 6px 0;
 
   &:hover {
-    color: #DD0201;
+    color: #dd0201;
   }
 `;

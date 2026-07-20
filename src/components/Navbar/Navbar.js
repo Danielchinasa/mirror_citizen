@@ -17,7 +17,6 @@ import {
   PublicAnchor,
   PublicLanguage,
   PublicActions,
-  PublicHeaderLanguage,
   PublicLogin,
   PublicCta,
   PublicHamburger,
@@ -27,6 +26,10 @@ import {
   PublicLanguageToggle,
   PublicMobileLink,
   PublicMobileAnchor,
+  PublicMobileLanguage,
+  PublicMobileLanguageLabel,
+  PublicDesktopOnly,
+  PublicMobileToggle,
 } from "./Navbar.elements";
 import { FaTimes, FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
@@ -117,28 +120,6 @@ function Navbar() {
     history.push("/");
   };
 
-  const items = [
-    // {
-    //   key: "1",
-    //   label: (
-    //     <a href="/main-dashboard" style={{ textDecoration: "none" }}>
-    //       Dashboard
-    //     </a>
-    //   ),
-    // },
-    {
-      key: "2",
-      label: (
-        <a href="/profile" style={{ textDecoration: "none" }}>
-          My Profile
-        </a>
-      ),
-    },
-    {
-      key: "3",
-      label: <span onClick={handleLogout}>Logout</span>,
-    },
-  ];
   const [visible, setVisible] = useState(false);
   const handleVisibleChange = (flag) => {
     setVisible(flag);
@@ -150,11 +131,113 @@ function Navbar() {
 
   const menu = (
     <Menu>
-      {items.map((item) => (
-        <Menu.Item key={item.key} onClick={closeMobileMenu}>
-          {item.label}
+      <Menu.Item key="profile" onClick={closeMobileMenu}>
+        <a href="/profile" style={{ textDecoration: "none" }}>
+          {t("nav.myProfile")}
+        </a>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      <Menu.SubMenu key="language" title={t("nav.language")}>
+        <Menu.Item
+          key="sw"
+          onClick={() => {
+            handleLanguageChange("SW");
+            closeMobileMenu();
+          }}
+        >
+          SW
         </Menu.Item>
-      ))}
+        <Menu.Item
+          key="en"
+          onClick={() => {
+            handleLanguageChange("EN");
+            closeMobileMenu();
+          }}
+        >
+          EN
+        </Menu.Item>
+      </Menu.SubMenu>
+
+      <Menu.SubMenu key="country" title={t("nav.country")}>
+        <Menu.Item key="country-ug" onClick={closeMobileMenu}>
+          <span style={{ marginRight: 8 }}>🇺🇬</span>
+          Uganda
+        </Menu.Item>
+        <Menu.Item key="country-ghana">
+          <a
+            href="https://e-citizen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Ghana flag"
+              style={{ marginRight: 10 }}
+            >
+              🇬🇭
+            </span>
+            Ghana
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-kenya">
+          <a
+            href="https://e-raia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Kenya flag"
+              style={{ marginRight: 10 }}
+            >
+              🇰🇪
+            </span>
+            Kenya
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-civ">
+          <a
+            href="https://citoyen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Côte d'Ivoire flag"
+              style={{ marginRight: 10 }}
+            >
+              🇨🇮
+            </span>
+            Côte d'Ivoire
+          </a>
+        </Menu.Item>
+      </Menu.SubMenu>
+
+      <Menu.Divider />
+
+      <Menu.Item key="theme">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <ThemeToggle />
+        </div>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      <Menu.Item key="logout" onClick={closeMobileMenu}>
+        <span onClick={handleLogout}>{t("nav.logout")}</span>
+      </Menu.Item>
     </Menu>
   );
 
@@ -203,19 +286,19 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/#services" style={{ textDecoration: "none" }}>
           {t("nav.nationalId")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/#services" style={{ textDecoration: "none" }}>
           {t("nav.vinVerification")}
         </Link>
       </Menu.Item>
     </Menu>
   );
 
-  const countryMenu = (
+  const countriesMenu = (
     <Menu>
       <Menu.Item key="country-ghana">
         <a
@@ -243,7 +326,6 @@ function Navbar() {
           Kenya
         </a>
       </Menu.Item>
-
       <Menu.Item key="country-civ">
         <a
           href="https://citoyen.africa"
@@ -811,16 +893,16 @@ function Navbar() {
                   {t("nav.services")} <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
-              <PublicAnchor href="#how-it-works">
+              <PublicAnchor href="/#how-it-works">
                 {t("nav.howItWorks")}
               </PublicAnchor>
-              <PublicAnchor href="#services">{t("nav.pricing")}</PublicAnchor>
+              <PublicAnchor href="/#services">{t("nav.pricing")}</PublicAnchor>
               <PublicNavLink to="/faq-uganda">{t("nav.faq")}</PublicNavLink>
               <PublicNavLink to="/contact">{t("nav.support")}</PublicNavLink>
             </PublicCenter>
 
             <PublicActions>
-              <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
+              <Dropdown overlay={countriesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
                   <span className="flag" role="img" aria-label="Uganda flag">
                     🇺🇬
@@ -828,49 +910,31 @@ function Navbar() {
                   {t("nav.country")} <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
-              <PublicHeaderLanguage>
-                <PublicLanguageToggleGroup>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={language === "SW"}
-                    onClick={() => handleLanguageChange("SW")}
-                    aria-pressed={language === "SW"}
-                  >
-                    SW
-                  </PublicLanguageToggle>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={language === "EN"}
-                    onClick={() => handleLanguageChange("EN")}
-                    aria-pressed={language === "EN"}
-                  >
-                    EN
-                  </PublicLanguageToggle>
-                </PublicLanguageToggleGroup>
-              </PublicHeaderLanguage>
               <PublicLanguage>
                 <PublicLanguageToggleGroup>
                   <PublicLanguageToggle
                     type="button"
-                    $active={language === "EN"}
-                    onClick={() => handleLanguageChange("EN")}
-                    aria-pressed={language === "EN"}
-                  >
-                    EN
-                  </PublicLanguageToggle>
-                  <PublicLanguageToggle
-                    type="button"
                     $active={language === "SW"}
                     onClick={() => handleLanguageChange("SW")}
                     aria-pressed={language === "SW"}
                   >
                     SW
                   </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={language === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
 
-              <PublicCta href="#services">{t("nav.getStarted")}</PublicCta>
-              <ThemeToggle />
+              <PublicDesktopOnly>
+                <ThemeToggle />
+              </PublicDesktopOnly>
+              <PublicCta href="/#services">{t("nav.getStarted")}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -892,7 +956,7 @@ function Navbar() {
                 {t("nav.vinVerification")}
               </PublicMobileLink> */}
               <PublicMobileAnchor
-                href="#how-it-works"
+                href="/#how-it-works"
                 onClick={closeMobileMenu}
               >
                 {t("nav.howItWorks")}
@@ -904,12 +968,43 @@ function Navbar() {
                 {t("nav.support")}
               </PublicMobileLink>
 
-              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
                 {t("nav.getStarted")}
               </PublicMobileAnchor>
-              <div style={{ paddingTop: 8 }}>
+
+              <PublicMobileLanguage>
+                <PublicMobileLanguageLabel>
+                  {t("nav.language")}
+                </PublicMobileLanguageLabel>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "SW"}
+                    onClick={() => {
+                      handleLanguageChange("SW");
+                      closeMobileMenu();
+                    }}
+                    aria-pressed={language === "SW"}
+                  >
+                    SW
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={language === "EN"}
+                    onClick={() => {
+                      handleLanguageChange("EN");
+                      closeMobileMenu();
+                    }}
+                    aria-pressed={language === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
+              </PublicMobileLanguage>
+
+              <PublicMobileToggle>
                 <ThemeToggle />
-              </div>
+              </PublicMobileToggle>
             </PublicMobileMenu>
           </PublicMobilePanel>
         </PublicNav>
@@ -936,11 +1031,6 @@ function Navbar() {
                 style={{ marginTop: "20px", cursor: "pointer" }}
               />
             </Link>
-            {/* <PublicBrand to="/">
-              <span className="brand-red">e</span>
-              <span className="brand-dot">-</span>
-              raia<span className="brand-dot">.africa</span>
-            </PublicBrand> */}
             <HamburgerIcon onClick={handleClick}>
               {click ? (
                 <FaTimes />
@@ -962,7 +1052,7 @@ function Navbar() {
                         }}
                         $token={token}
                       >
-                        View Dashboard
+                        {t("nav.viewDashboard")}
                       </OutlineButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -975,7 +1065,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        Verify Now
+                        {t("nav.verifyNow")}
                       </MainButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -994,7 +1084,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          GET STARTED
+                          {t("nav.getStartedCaps")}
                         </OutlineButton>
                       </NavBtnLink>
                     ) : (
@@ -1009,38 +1099,11 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          GET STARTED
+                          {t("nav.getStartedCaps")}
                         </OutlineButton>
                       </NavBtnLink>
                     )}
                   </NavItemBtn>
-                  {/* <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink
-                        to="/sign-up"
-                        style={{
-                          fontFamily: "Poppins",
-                          fontWeight: "700",
-                        }}
-                      >
-                        <MainButton type="primary">SIGN UP</MainButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/sign-up">
-                        <MainButton
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          SIGN UP
-                        </MainButton>
-                      </NavBtnLink>
-                    )}
-                  </NavItemBtn> */}
                 </>
               )}
 
@@ -1048,24 +1111,25 @@ function Navbar() {
               {window.innerWidth <= 960
                 ? isAuthenticated && (
                     <>
-                      {/* <NavItemBtn>
-                        <NavBtnLink to="/main-dashboard">
-                          <MainButton type="primary">Dashboard</MainButton>
-                        </NavBtnLink>
-                      </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
-                          <MainButton type="primary">My Profile</MainButton>
+                          <MainButton type="primary">
+                            {t("nav.myProfile")}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/contact">
-                          <MainButton type="primary">Contact Us</MainButton>
+                          <MainButton type="primary">
+                            {t("nav.contactUs")}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/faq-uganda">
-                          <MainButton type="primary">FAQs</MainButton>
+                          <MainButton type="primary">
+                            {t("nav.faqs")}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <div
@@ -1080,8 +1144,8 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal} style={{ color: text }}>
-                          Wallet Balance:
+                        <p onClick={showModal} style={{ color: "#FFFFFF" }}>
+                          {t("nav.walletBalance")}:
                           <span style={{ color: "#DD0201" }}>
                             {" "}
                             {userCurrency === "USD" || userCurrency === "usd"
@@ -1090,14 +1154,14 @@ function Navbar() {
                           </span>
                         </p>
                         <Modal
-                          title="User Wallet"
+                          title={t("nav.userWallet")}
                           open={isModalVisible}
                           onOk={handleOk}
-                          okText="Proceed to Payment"
+                          okText={t("nav.proceedToPayment")}
                           onCancel={handleCancel}
                           width={300}
                         >
-                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={5}>{t("nav.walletBalance")}:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
                             {userCurrency.toUpperCase() === "UGX"
                               ? formatToUGX(userBalance)
@@ -1105,8 +1169,10 @@ function Navbar() {
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
-                          <Title level={5}>Fund Wallet</Title>
-                          <Title level={5}>Select Payment Method</Title>
+                          <Title level={5}>{t("nav.fundWallet")}</Title>
+                          <Title level={5}>
+                            {t("nav.selectPaymentMethod")}
+                          </Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1127,27 +1193,6 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "UGX" && (
-                              <Radio
-                                value={2}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  marginBottom: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PayPal
-                                <img
-                                  src={paypal}
-                                  alt="paypal"
-                                  width={60}
-                                  style={{ float: "right", marginTop: "5px" }}
-                                />
-                              </Radio>
-                            )} */}
                             <Radio
                               value={3}
                               disabled={userCurrency.toUpperCase() === "USD"}
@@ -1165,7 +1210,7 @@ function Navbar() {
                             </Radio>
                           </Radio.Group>
                           <p>
-                            Enter Amount to Fund Wallet (Minimum:{" "}
+                            {t("nav.fundWalletDescription")}{" "}
                             {userCurrency.toUpperCase() === "UGX"
                               ? "USh 10,000"
                               : "$10"}
@@ -1204,7 +1249,6 @@ function Navbar() {
                             )}
                         </Modal>
                         <Modal
-                          // title="Complete Wallet TopUp"
                           style={{
                             top: 20,
                           }}
@@ -1219,7 +1263,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handleModalOk}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1229,10 +1273,7 @@ function Navbar() {
                             width="100%"
                             height="600"
                             src={paymentUrl}
-                            // ref={iframeRef}
-                            // onLoad={handleIframeLoad}
                           ></iframe>
-                          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
                         </Modal>
                         <Modal
                           style={{
@@ -1249,7 +1290,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handlePaystackModalClose}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1270,31 +1311,43 @@ function Navbar() {
                             onClick={handleLogout}
                             $token={token}
                           >
-                            Logout
+                            {t("nav.logout")}
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
+                      <div
+                        style={{
+                          paddingLeft: "49px",
+                          paddingRight: "15px",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Dropdown
+                          overlay={countriesMenu}
+                          trigger={["click"]}
+                          arrow
+                        >
+                          <CountryPill
+                            type="button"
+                            aria-label="Select country"
+                            style={{ color: "#FFFFFF" }}
+                          >
+                            <span
+                              className="flag"
+                              role="img"
+                              aria-label="Ghana flag"
+                            >
+                              🇬🇭
+                            </span>
+                            Ghana
+                            <DownOutlined
+                              className="chev"
+                              style={{ color: "#FFFFFF" }}
+                            />
+                          </CountryPill>
+                        </Dropdown>
+                      </div>
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
-                      <NavItemBtn>
-                        <PublicLanguageToggleGroup>
-                          <PublicLanguageToggle
-                            type="button"
-                            $active={language === "SW"}
-                            onClick={() => handleLanguageChange("SW")}
-                            aria-pressed={language === "SW"}
-                          >
-                            SW
-                          </PublicLanguageToggle>
-                          <PublicLanguageToggle
-                            type="button"
-                            $active={language === "EN"}
-                            onClick={() => handleLanguageChange("EN")}
-                            aria-pressed={language === "EN"}
-                          >
-                            EN
-                          </PublicLanguageToggle>
-                        </PublicLanguageToggleGroup>
-                      </NavItemBtn>
                     </>
                   )
                 : isAuthenticated && (
@@ -1311,24 +1364,23 @@ function Navbar() {
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
-                          Wallet Balance:
+                          {t("nav.walletBalance")}:
                           <span style={{ color: "#DD0201" }}>
                             {" "}
-                            {/* ₦{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
                               : formatToUGX(userBalance)}
                           </span>
                         </p>
                         <Modal
-                          title="User Wallet"
+                          title={t("nav.userWallet")}
                           open={isModalVisible}
                           onOk={handleOk}
-                          okText="Proceed to Payment"
+                          okText={t("nav.proceedToPayment")}
                           onCancel={handleCancel}
                           width={300}
                         >
-                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={5}>{t("nav.walletBalance")}:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
                             {userCurrency.toUpperCase() === "UGX"
                               ? formatToUGX(userBalance)
@@ -1336,8 +1388,10 @@ function Navbar() {
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
-                          <Title level={5}>Fund Wallet</Title>
-                          <Title level={5}>Select Payment Method</Title>
+                          <Title level={5}>{t("nav.fundWallet")}</Title>
+                          <Title level={5}>
+                            {t("nav.selectPaymentMethod")}
+                          </Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1358,27 +1412,6 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "UGX" && (
-                              <Radio
-                                value={2}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  marginBottom: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PayPal
-                                <img
-                                  src={paypal}
-                                  alt="paypal"
-                                  width={60}
-                                  style={{ float: "right", marginTop: "5px" }}
-                                />
-                              </Radio>
-                            )} */}
                             <Radio
                               value={3}
                               disabled={userCurrency.toUpperCase() === "USD"}
@@ -1396,7 +1429,7 @@ function Navbar() {
                             </Radio>
                           </Radio.Group>
                           <p>
-                            Enter Amount to Fund Wallet (Minimum:{" "}
+                            {t("nav.fundWalletDescription")}{" "}
                             {userCurrency.toUpperCase() === "UGX"
                               ? "USh 10,000"
                               : "$10"}
@@ -1435,7 +1468,6 @@ function Navbar() {
                             )}
                         </Modal>
                         <Modal
-                          // title="Complete Wallet TopUp"
                           style={{
                             top: 20,
                           }}
@@ -1450,7 +1482,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handleModalOk}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1460,10 +1492,7 @@ function Navbar() {
                             width="100%"
                             height="600"
                             src={paymentUrl}
-                            // ref={iframeRef}
-                            // onLoad={handleIframeLoad}
                           ></iframe>
-                          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
                         </Modal>
                         <Modal
                           style={{
@@ -1480,7 +1509,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handlePaystackModalClose}
                             >
-                              Close
+                              {t("nav.close")}
                             </Button>,
                           ]}
                         >
@@ -1494,26 +1523,6 @@ function Navbar() {
                         </Modal>
                       </div>
                       <UserDropdown />
-                      <ThemeToggle />
-                      <PublicLanguageToggleGroup>
-                        <PublicLanguageToggle
-                          type="button"
-                          $active={language === "SW"}
-                          onClick={() => handleLanguageChange("SW")}
-                          aria-pressed={language === "SW"}
-                        >
-                          SW
-                        </PublicLanguageToggle>
-                        <PublicLanguageToggle
-                          type="button"
-                          $active={language === "EN"}
-                          onClick={() => handleLanguageChange("EN")}
-                          aria-pressed={language === "EN"}
-                        >
-                          EN
-                        </PublicLanguageToggle>
-                      </PublicLanguageToggleGroup>
-                      <div style={{ marginLeft: "20px" }}></div>
                     </>
                   )}
             </NavMenu>
