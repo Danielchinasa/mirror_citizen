@@ -1,5 +1,5 @@
 import React from "react";
-import { FaIdCard, FaUpload, FaShieldAlt, FaArrowRight } from "react-icons/fa";
+import { FaSearch, FaCreditCard, FaFileAlt, FaArrowRight } from "react-icons/fa";
 import styled from "styled-components";
 
 const HowWrapper = styled.section`
@@ -120,9 +120,9 @@ const StepName = styled.h3`
 
 const StepDesc = styled.p`
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--ec-text-muted);
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
 `;
 
@@ -158,18 +158,18 @@ const VehicleHowItWorks = () => {
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How to verify a vehicle</HowTitle>
+        <HowTitle>How it works</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
         <StepItem>
           <StepNumberCircle>1</StepNumberCircle>
           <StepIconBox>
-            <FaIdCard />
+            <FaSearch />
           </StepIconBox>
           <StepText>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>Enter VIN</StepName>
+            <StepDesc>Enter the 17-character VIN from the vehicle.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -178,11 +178,11 @@ const VehicleHowItWorks = () => {
         <StepItem>
           <StepNumberCircle>2</StepNumberCircle>
           <StepIconBox>
-            <FaUpload />
+            <FaCreditCard />
           </StepIconBox>
           <StepText>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>Submit &amp; Pay</StepName>
+            <StepDesc>We securely process your request and verify the vehicle.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -191,11 +191,11 @@ const VehicleHowItWorks = () => {
         <StepItem>
           <StepNumberCircle>3</StepNumberCircle>
           <StepIconBox>
-            <FaShieldAlt />
+            <FaFileAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get results</StepName>
-            <StepDesc>Receive instant verification results.</StepDesc>
+            <StepName>Get Instant Results</StepName>
+            <StepDesc>Receive an official report with verified vehicle details.</StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>

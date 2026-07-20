@@ -110,13 +110,12 @@ const sampleData = {
     subtitle: "See an example of a vehicle verification report.",
     icon: FaCar,
     fields: [
-      ["Plate Number", "ABC-123XY"],
-      ["VIN", "******5678"],
       ["Make / Model", "Toyota Corolla"],
+      ["Chassis No.", "JT2BF22K4W0123456"],
+      ["VIN", "JT2BF22K4W0123456"],
       ["Year", "2018"],
-      ["Ownership Status", "VERIFIED", "verified"],
-      ["Accident History", "No major records found"],
-      ["Theft / Watchlist Status", "CLEAR", "verified"],
+      ["Engine No.", "2AZFE1234567"],
+      ["Status", "VERIFIED", "verified"],
     ],
   },
 };

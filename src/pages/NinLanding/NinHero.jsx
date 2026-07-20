@@ -1,65 +1,167 @@
-import React, { useState } from "react";
-import { FaArrowRight, FaEye } from "react-icons/fa";
-import useAuthRedirect from "../../hooks/useAuthRedirect";
-import useServicePrices from "../../hooks/useServicePrices";
-import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
-import ninHeroImg from "../../images/nin_verification_hero2.png";
+import React, { useState, useEffect } from "react";
 import {
-  HeroSectionWrapper,
+  FaArrowRight,
+  FaEye,
+  FaLock,
+  FaBolt,
+  FaShieldAlt,
+} from "react-icons/fa";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
+import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
+import ninHeroImg from "../../images/kenya_vehicle.png";
+import avatar1 from "../../images/avatar1.jpg";
+import avatar2 from "../../images/avatar2.jpg";
+import avatar3 from "../../images/avatar3.jpg";
+import avatar4 from "../../images/avatar4.jpg";
+
+import {
+  HeroWrapper,
+  HeroStrip,
   HeroBgImage,
   HeroContainer,
   HeroContent,
-  HeroTag,
   HeroTitle,
   HeroSubtitle,
   HeroButtons,
   PrimaryBtn,
   SecondaryBtn,
-  PriceBadge,
-} from "./NinLanding.elements";
+  TrustIndicators,
+  TrustItem,
+  TrustIcon,
+  TrustLabel,
+  TrustTitle,
+  TrustDesc,
+  SocialProof,
+  AvatarStack,
+} from "../HomePage/HomePage.elements";
+
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
 
 const NinHero = () => {
   const [showSampleResult, setShowSampleResult] = useState(false);
+  const [language, setLanguage] = useState(getLanguage);
   const verifyLink = useAuthRedirect("/verify/nin");
-  const { getPrice } = useServicePrices();
+
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
 
   const openSampleResult = (event) => {
     event.preventDefault();
     setShowSampleResult(true);
   };
 
+  const redHighlight = {
+    color: "#D80111",
+    fontFamily: "inherit",
+    fontSize: "inherit",
+    fontWeight: "inherit",
+  };
+
   return (
     <>
-      <HeroSectionWrapper>
-        <HeroBgImage src={ninHeroImg} alt="National ID on eCitizen" />
+      <HeroWrapper>
+        <HeroBgImage src={ninHeroImg} alt="National ID verification" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>National ID</HeroTag>
             <HeroTitle>
-              Verify your
-              <br />
-              <span>NIN online</span>
-              <br />
-              in seconds
+              {isSw
+                ? "Thibitisha NIN yako kwa haraka, salama na ya kuaminika."
+                : "Verify your NIN "}
+              {!isSw && (
+                <>
+                  <span style={redHighlight}>Fast</span>
+                  {", "}
+                  <span style={redHighlight}>secure</span>
+                  {" and "}
+                  <span style={redHighlight}>trusted</span>.
+                </>
+              )}
             </HeroTitle>
             <HeroSubtitle>
-              Instant, secure and reliable National Identification Number (NIN)
-              verification for individuals and&nbsp;businesses.
+              {isSw
+                ? "Huduma rasmi ya uthibitishaji wa Nambari ya Utambulisho wa Taifa (NIN) kwa watu binafsi na biashara."
+                : "Instant, secure and reliable National Identification Number (NIN) verification for individuals and businesses."}
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                Verify NIN Now <FaArrowRight />
+                {isSw ? "Thibitisha NIN Sasa" : "Verify NIN Now"}{" "}
+                <FaArrowRight />
               </PrimaryBtn>
-              <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
-                See Sample Result <FaEye />
+              <SecondaryBtn href="#" onClick={openSampleResult}>
+                <FaEye /> {isSw ? "Ona Mfano wa Matokeo" : "See Sample Result"}
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadge>
-              From <span>{getPrice(0) || "KHs600"}</span> per verification
-            </PriceBadge>
+            <TrustIndicators>
+              <TrustItem>
+                <TrustIcon>
+                  <FaLock />
+                </TrustIcon>
+                <TrustLabel>
+                  <TrustTitle>
+                    {isSw ? "Salama kwa 100%" : "100% Secure"}
+                  </TrustTitle>
+                  <TrustDesc>
+                    {isSw ? "Data yako inalindwa" : "Your data is protected"}
+                  </TrustDesc>
+                </TrustLabel>
+              </TrustItem>
+              <TrustItem>
+                <TrustIcon>
+                  <FaBolt />
+                </TrustIcon>
+                <TrustLabel>
+                  <TrustTitle>
+                    {isSw ? "Matokeo ya Haraka" : "Instant Results"}
+                  </TrustTitle>
+                  <TrustDesc>
+                    {isSw ? "Matokeo ndani ya sekunde" : "Results in seconds"}
+                  </TrustDesc>
+                </TrustLabel>
+              </TrustItem>
+              <TrustItem>
+                <TrustIcon>
+                  <FaShieldAlt />
+                </TrustIcon>
+                <TrustLabel>
+                  <TrustTitle>
+                    {isSw ? "Inazingatia Serikali" : "Government Compliant"}
+                  </TrustTitle>
+                  <TrustDesc>
+                    {isSw
+                      ? "Rekodi rasmi za kuaminika"
+                      : "Official reliable records"}
+                  </TrustDesc>
+                </TrustLabel>
+              </TrustItem>
+            </TrustIndicators>
+            <SocialProof>
+              <AvatarStack>
+                <img src={avatar1} alt="user" />
+                <img src={avatar2} alt="user" />
+                <img src={avatar3} alt="user" />
+                <img src={avatar4} alt="user" />
+              </AvatarStack>
+              {isSw
+                ? "Jiunge na Wakenya zaidi ya 500,000 wanaoamini e-raia"
+                : "Join 500,000+ Kenyans who trust e-raia"}
+            </SocialProof>
           </HeroContent>
         </HeroContainer>
-      </HeroSectionWrapper>
+      </HeroWrapper>
+      <HeroStrip aria-hidden="true" />
+
       <SampleResultPopup
         isOpen={showSampleResult}
         onClose={() => setShowSampleResult(false)}

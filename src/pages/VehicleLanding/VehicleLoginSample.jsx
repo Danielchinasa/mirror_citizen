@@ -435,16 +435,6 @@ const VerifiedBadge = styled.span`
   gap: 4px;
 `;
 
-const ClearBadge = styled.span`
-  color: var(--ec-primary);
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-`;
-
 const ResultDisclaimer = styled.div`
   display: flex;
   align-items: center;
@@ -845,38 +835,30 @@ const VehicleLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Plate Number</ResultLabel>
-                  <ResultValue>ABC-123XY</ResultValue>
+                  <ResultLabel>Make / Model</ResultLabel>
+                  <ResultValue>Toyota Corolla</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Chassis No.</ResultLabel>
+                  <ResultValue>JT2BF22K4W0123456</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>VIN</ResultLabel>
-                  <ResultValue>******5678</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>Make / Model</ResultLabel>
-                  <ResultValue>Toyota Corolla</ResultValue>
+                  <ResultValue>JT2BF22K4W0123456</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Year</ResultLabel>
                   <ResultValue>2018</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Ownership Status</ResultLabel>
+                  <ResultLabel>Engine No.</ResultLabel>
+                  <ResultValue>2AZFE1234567</ResultValue>
+                </ResultField>
+                <ResultField>
+                  <ResultLabel>Status</ResultLabel>
                   <VerifiedBadge>
                     VERIFIED <FaCheckCircle />
                   </VerifiedBadge>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>Accident History</ResultLabel>
-                  <ResultValue style={{ color: "#777", fontSize: 13 }}>
-                    No major records found
-                  </ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>Theft / Watchlist Status</ResultLabel>
-                  <ClearBadge>
-                    CLEAR <FaCheckCircle />
-                  </ClearBadge>
                 </ResultField>
               </ResultGrid>
             </ResultTop>

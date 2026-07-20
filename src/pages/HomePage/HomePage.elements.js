@@ -540,7 +540,7 @@ export const ServiceCard = styled.div`
   cursor: default;
 
   &:hover {
-    border-color: #D80111;
+    border-color: #d80111;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
 `;
@@ -633,9 +633,9 @@ export const ServiceBtn = styled(Link)`
   text-decoration: none;
   text-align: center;
   transition: all 0.25s ease;
-  background: #D80111;
+  background: #d80111;
   color: #fff;
-  border: 1.5px solid #D80111;
+  border: 1.5px solid #d80111;
   box-shadow: 0 4px 12px rgba(216, 1, 17, 0.2);
   letter-spacing: 0.3px;
 

@@ -410,34 +410,30 @@ const Home = () => {
     <>
       {/* ── Hero ── */}
       <HeroWrapper>
-        <HeroBgImage src={heroImg} alt="e-citizen verification platform" />
+        <HeroBgImage src={heroImg} alt="e-raia verification platform" />
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
               {isSw
                 ? "Thibitisha utambulisho wako nchini Kenya. "
                 : "Verify your identity in Kenya. "}
-              {isSw
-                ? (
-                  <>
-                    <span style={redHighlight}>Haraka</span>
-                    {", "}
-                    <span style={redHighlight}>salama</span>
-                    {" na "}
-                    <span style={redHighlight}>ya kuaminika</span>
-                    .
-                  </>
-                )
-                : (
-                  <>
-                    <span style={redHighlight}>Fast</span>
-                    {", "}
-                    <span style={redHighlight}>secure</span>
-                    {" and "}
-                    <span style={redHighlight}>trusted</span>
-                    .
-                  </>
-                )}
+              {isSw ? (
+                <>
+                  <span style={redHighlight}>Haraka</span>
+                  {", "}
+                  <span style={redHighlight}>salama</span>
+                  {" na "}
+                  <span style={redHighlight}>ya kuaminika</span>.
+                </>
+              ) : (
+                <>
+                  <span style={redHighlight}>Fast</span>
+                  {", "}
+                  <span style={redHighlight}>secure</span>
+                  {" and "}
+                  <span style={redHighlight}>trusted</span>.
+                </>
+              )}
             </HeroTitle>
             <HeroSubtitle>
               {isSw

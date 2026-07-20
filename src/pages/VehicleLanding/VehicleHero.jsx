@@ -1,69 +1,104 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import useServicePrices from "../../hooks/useServicePrices";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
-import vehicleHeroImg from "../../images/VIN_verification_platform_in_nigeria.png";
+import vehicleHeroImg from "../../images/kenya_vehicle.png";
+import avatar1 from "../../images/avatar1.jpg";
+import avatar2 from "../../images/avatar2.jpg";
+import avatar3 from "../../images/avatar3.jpg";
+import avatar4 from "../../images/avatar4.jpg";
+
 import {
-  HeroSectionWrapper,
+  HeroWrapper,
+  HeroStrip,
   HeroBgImage,
   HeroContainer,
   HeroContent,
-  HeroTag,
   HeroTitle,
   HeroSubtitle,
   HeroButtons,
   PrimaryBtn,
   SecondaryBtn,
-  PriceBadgesRow,
-  PriceBadge,
-} from "./VehicleLanding.elements";
+  SocialProof,
+  AvatarStack,
+} from "../HomePage/HomePage.elements";
+
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
 
 const VehicleHero = () => {
   const [showSampleResult, setShowSampleResult] = useState(false);
+  const [language, setLanguage] = useState(getLanguage);
   const verifyLink = useAuthRedirect("/verify/vehicle");
-  const { getPrice } = useServicePrices();
+
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
 
   const openSampleResult = (event) => {
     event.preventDefault();
     setShowSampleResult(true);
   };
 
+  const redHighlight = {
+    color: "#D80111",
+    fontFamily: "inherit",
+    fontSize: "inherit",
+    fontWeight: "inherit",
+  };
+
   return (
     <>
-      <HeroSectionWrapper>
-        <HeroBgImage
-          src={vehicleHeroImg}
-          alt="Vehicle Verification on eCitizen"
-        />
+      <HeroWrapper>
+        <HeroBgImage src={vehicleHeroImg} alt="Vehicle Verification" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>VEHICLE VERIFICATION</HeroTag>
             <HeroTitle>
-              Check <span>vehicle history</span> before
-              <br />
-              you buy
+              {isSw ? "Kagua VIN ya gari " : "Check a vehicle VIN in "}
+              <span style={redHighlight}>{isSw ? "Kenya" : "Kenya"}</span>
+              {isSw ? " kabla ya kununua." : " before you buy."}
             </HeroTitle>
             <HeroSubtitle>
-              Verify a vehicle by plate number or VIN to reduce fraud and make
-              safer purchase decisions.
+              {isSw
+                ? "Thibitisha utambulisho wa gari papo hapo, hakiki maelezo, na epuka makosa ya gharama kubwa."
+                : "Instantly verify a vehicle's identity, confirm details, and avoid costly mistakes."}
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                Verify Vehicle Now <FaArrowRight />
+                {isSw ? "Kagua Gari Sasa" : "Check Vehicle Now"}{" "}
+                <FaArrowRight />
               </PrimaryBtn>
-              <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
-                See Sample Result <FaEye />
+              <SecondaryBtn href="#" onClick={openSampleResult}>
+                <FaEye /> {isSw ? "Ona Mfano wa Matokeo" : "See Sample Result"}
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadgesRow>
-              <PriceBadge>
-                VIN checks from <span>{getPrice(5) || "KHs6,000"}</span>
-              </PriceBadge>
-            </PriceBadgesRow>
+
+            <SocialProof>
+              <AvatarStack>
+                <img src={avatar1} alt="user" />
+                <img src={avatar2} alt="user" />
+                <img src={avatar3} alt="user" />
+                <img src={avatar4} alt="user" />
+              </AvatarStack>
+              {isSw
+                ? "Jiunge na Wakenya zaidi ya 500,000 wanaoamini e-raia"
+                : "Join 500,000+ Kenyans who trust e-raia"}
+            </SocialProof>
           </HeroContent>
         </HeroContainer>
-      </HeroSectionWrapper>
+      </HeroWrapper>
+      <HeroStrip aria-hidden="true" />
+
       <SampleResultPopup
         isOpen={showSampleResult}
         onClose={() => setShowSampleResult(false)}
