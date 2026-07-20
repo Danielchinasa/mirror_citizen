@@ -172,7 +172,11 @@ function Navbar() {
             rel="noopener noreferrer"
             style={{ textDecoration: "none" }}
           >
-            <span role="img" aria-label="Ghana flag" style={{ marginRight: 10 }}>
+            <span
+              role="img"
+              aria-label="Ghana flag"
+              style={{ marginRight: 10 }}
+            >
               🇬🇭
             </span>
             Ghana
@@ -185,7 +189,11 @@ function Navbar() {
             rel="noopener noreferrer"
             style={{ textDecoration: "none" }}
           >
-            <span role="img" aria-label="Kenya flag" style={{ marginRight: 10 }}>
+            <span
+              role="img"
+              aria-label="Kenya flag"
+              style={{ marginRight: 10 }}
+            >
               🇰🇪
             </span>
             Kenya
@@ -198,13 +206,32 @@ function Navbar() {
             rel="noopener noreferrer"
             style={{ textDecoration: "none" }}
           >
-            <span role="img" aria-label="Uganda flag" style={{ marginRight: 10 }}>
+            <span
+              role="img"
+              aria-label="Uganda flag"
+              style={{ marginRight: 10 }}
+            >
               🇺🇬
             </span>
             Uganda
           </a>
         </Menu.Item>
       </Menu.SubMenu>
+
+      <Menu.Divider />
+
+      <Menu.Item key="theme">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <ThemeToggle />
+        </div>
+      </Menu.Item>
 
       <Menu.Divider />
 
@@ -1003,7 +1030,7 @@ function Navbar() {
                 src={isDark ? LogoWhite : Logo}
                 alt="Logo"
                 width={120}
-                style={{ marginTop: "10px", cursor: "pointer" }}
+                style={{ marginTop: "20px", cursor: "pointer" }}
               />
             </Link>
             <HamburgerIcon onClick={handleClick}>
@@ -1385,7 +1412,7 @@ function Navbar() {
                   )
                 : isAuthenticated && (
                     <>
-                      <ThemeToggle style={{ marginRight: "16px" }} />
+                      {/* <ThemeToggle style={{ marginRight: "16px" }} /> */}
                       <div
                         style={{
                           marginTop: "20px",

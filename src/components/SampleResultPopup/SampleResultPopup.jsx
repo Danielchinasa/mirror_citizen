@@ -23,7 +23,7 @@ const sampleData = {
       ["Middle Name", "CHINASA"],
       ["Surname", "OKORO"],
       ["NIN", "7348 9021 5**"],
-      ["Phone Number", "0806 *** 4821"],
+      ["Phone Number", "0806 748 4821"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "24-08-1992"],
       ["Gender", "Male"],

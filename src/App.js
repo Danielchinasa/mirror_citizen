@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./globalStyles";
 import { Navbar, Footer } from "./components";
 import Home from "./pages/HomePage/Home";
@@ -59,6 +55,7 @@ import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 import NinVerificationPage from "./pages/NinLanding/NinVerificationPage";
+import CardVerificationPage from "./pages/CardLanding/CardVerificationPage";
 import PhoneVerificationPage from "./pages/PhoneLanding/PhoneVerificationPage";
 import BusinessVerificationPage from "./pages/BusinessLanding/BusinessVerificationPage";
 import VerificationLoginPage from "./pages/VerificationLogin/VerificationLoginPage";
@@ -230,6 +227,11 @@ function AppContent() {
 
       <Switch>
         <Route path="/nin-verification" exact component={NinVerificationPage} />
+        <Route
+          path="/card-verification"
+          exact
+          component={CardVerificationPage}
+        />
         <Route
           path="/phone-number-verification"
           exact

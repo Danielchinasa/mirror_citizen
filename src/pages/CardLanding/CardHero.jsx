@@ -40,7 +40,7 @@ import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { useLocale } from "../../components/LocaleProvider";
 
-const NinHero = () => {
+const CardHero = () => {
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/nin");
   const { getPrice } = useServicePrices();
@@ -138,4 +138,4 @@ const NinHero = () => {
   );
 };
 
-export default NinHero;
+export default CardHero;

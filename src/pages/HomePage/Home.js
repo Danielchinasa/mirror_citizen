@@ -598,7 +598,7 @@ const Home = () => {
             <ServiceBtn to={residentVerify}>
               {t("home.services.verifyNow")}
             </ServiceBtn>
-            <LearnMoreLink to="/nin-verification">
+            <LearnMoreLink to="/card-verification">
               {t("home.services.learnMore")}{" "}
               <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>

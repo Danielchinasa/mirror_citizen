@@ -154,7 +154,7 @@ const DottedConnector = styled.div`
   }
 `;
 
-const NinHowItWorks = () => {
+const CardHowItWorks = () => {
   const { t } = useLocale();
 
   return (
@@ -206,4 +206,4 @@ const NinHowItWorks = () => {
   );
 };
 
-export default NinHowItWorks;
+export default CardHowItWorks;

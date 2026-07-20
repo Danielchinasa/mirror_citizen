@@ -123,7 +123,7 @@ const CtaPrice = styled.span`
   }
 `;
 
-const NinCta = () => {
+const CardCta = () => {
   const verifyLink = useAuthRedirect("/verify/nin");
 
   return (
@@ -153,4 +153,4 @@ const NinCta = () => {
   );
 };
 
-export default NinCta;
+export default CardCta;
