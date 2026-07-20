@@ -45,7 +45,7 @@ const sampleData = {
       ["Middle Name", "CHIOMA"],
       ["Surname", "NWOSU"],
       ["NIN", "5923 4107 8**"],
-      ["Phone Number", "0803 *** 5678"],
+      ["Phone Number", "08035678456"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "08-03-1994"],
       ["Gender", "Female"],

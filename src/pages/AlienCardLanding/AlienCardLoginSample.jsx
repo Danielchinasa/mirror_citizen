@@ -463,7 +463,7 @@ const ResultDisclaimer = styled.div`
   }
 `;
 
-const NinLoginSample = () => {
+const AlienCardLoginSample = () => {
   const [language, setLanguage] = useState(() => {
     if (typeof window === "undefined") return "SW";
     return window.localStorage.getItem("siteLanguage") || "SW";
@@ -898,13 +898,13 @@ const NinLoginSample = () => {
                   <ResultLabel>
                     {isSw ? "Nambari ya Simu" : "Phone Number"}
                   </ResultLabel>
-                  <ResultValue>08035678456</ResultValue>
+                  <ResultValue>080389485678</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>
                     {isSw ? "Kitambulisho cha Taifa" : "National ID"}
                   </ResultLabel>
-                  <ResultValue>94859309587</ResultValue>
+                  <ResultValue>UG-NID-4582-7819-2043</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>
@@ -943,4 +943,4 @@ const NinLoginSample = () => {
   );
 };
 
-export default NinLoginSample;
+export default AlienCardLoginSample;

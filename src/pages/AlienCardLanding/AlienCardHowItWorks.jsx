@@ -1,5 +1,10 @@
 import React from "react";
-import { FaIdCard, FaPaperPlane, FaFileAlt, FaArrowRight } from "react-icons/fa";
+import {
+  FaIdCard,
+  FaPaperPlane,
+  FaFileAlt,
+  FaArrowRight,
+} from "react-icons/fa";
 import styled from "styled-components";
 
 const HowWrapper = styled.section`
@@ -153,7 +158,7 @@ const DottedConnector = styled.div`
   }
 `;
 
-const NinHowItWorks = () => {
+const AlienCardHowItWorks = () => {
   return (
     <HowWrapper id="how-it-works">
       <HowHeader>
@@ -168,8 +173,10 @@ const NinHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Enter ID Number</StepName>
-            <StepDesc>Provide the National ID number you want to verify.</StepDesc>
+            <StepName>Enter details</StepName>
+            <StepDesc>
+              Provide the Alien Card number and personal details.
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -182,7 +189,9 @@ const NinHowItWorks = () => {
           </StepIconBox>
           <StepText>
             <StepName>Submit</StepName>
-            <StepDesc>We securely check the details with official government records.</StepDesc>
+            <StepDesc>
+              We securely check your details against official records.
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -194,8 +203,10 @@ const NinHowItWorks = () => {
             <FaFileAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get Results</StepName>
-            <StepDesc>Receive instant verification results and ID details.</StepDesc>
+            <StepName>Get results</StepName>
+            <StepDesc>
+              Receive your verification result in minutes.
+            </StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>
@@ -203,4 +214,4 @@ const NinHowItWorks = () => {
   );
 };
 
-export default NinHowItWorks;
+export default AlienCardHowItWorks;

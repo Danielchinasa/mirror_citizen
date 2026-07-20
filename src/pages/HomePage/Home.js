@@ -720,7 +720,7 @@ const Home = () => {
             <ServiceBtn to={alienCardVerify}>
               {isSw ? "Thibitisha Sasa" : "Verify Now"}
             </ServiceBtn>
-            <LearnMoreLink to="/nin-verification">
+            <LearnMoreLink to="/alien-card-verification">
               {isSw ? "Jifunze zaidi" : "Learn more"}{" "}
               <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>

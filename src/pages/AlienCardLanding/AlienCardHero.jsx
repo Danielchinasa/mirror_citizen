@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaArrowRight,
-  FaEye,
-} from "react-icons/fa";
+import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
-import ninHeroImg from "../../images/kenya.png";
+import AlienCardHeroImg from "../../images/kenya_alien_card.png";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -31,10 +28,10 @@ const getLanguage = () => {
   return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
 };
 
-const NinHero = () => {
+const AlienCardHero = () => {
   const [showSampleResult, setShowSampleResult] = useState(false);
   const [language, setLanguage] = useState(getLanguage);
-  const verifyLink = useAuthRedirect("/verify/nin");
+  const verifyLink = useAuthRedirect("/verify/alien");
 
   const isSw = language === "SW";
 
@@ -63,26 +60,24 @@ const NinHero = () => {
   return (
     <>
       <HeroWrapper>
-        <HeroBgImage src={ninHeroImg} alt="National ID verification" />
+        <HeroBgImage src={AlienCardHeroImg} alt="National ID verification" />
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              {isSw ? "Thibitisha " : "Verify your "}
-              <span style={redHighlight}>
-                {isSw
-                  ? "Kitambulisho cha Taifa cha Kenya"
-                  : "Kenyan National ID"}
-              </span>
-              {isSw ? " mtandaoni." : " online."}
+              {isSw
+                ? "Thibitisha Alien Card nchini "
+                : "Verify an Alien Card in "}
+              <span style={redHighlight}>Kenya</span>
+              {isSw ? " haraka na kwa usalama." : " quickly and securely."}
             </HeroTitle>
             <HeroSubtitle>
               {isSw
-                ? "Thibitisha nambari na maelezo ya Kitambulisho cha Taifa papo hapo kwa kutumia data rasmi kutoka kwa Serikali ya Kenya."
-                : "Instantly verify National ID numbers and details with official data from the Government of Kenya."}
+                ? "Uthibitishaji rasmi kwa wageni nchini Kenya. Matokeo ya haraka, yanaoaminika na maelfu."
+                : "Official verification for foreigners in Kenya. Fast results, trusted by thousands."}
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                {isSw ? "Thibitisha NIN Sasa" : "Verify NIN Now"}{" "}
+                {isSw ? "Thibitisha Alien Card Sasa" : "Verify Alien Card Now"}{" "}
                 <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#" onClick={openSampleResult}>
@@ -114,4 +109,4 @@ const NinHero = () => {
   );
 };
 
-export default NinHero;
+export default AlienCardHero;

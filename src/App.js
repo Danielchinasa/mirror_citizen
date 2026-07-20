@@ -60,6 +60,7 @@ import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
 import PaystackRedirect from "./pages/Payment/PaystackRedirect";
 import NinVerificationPage from "./pages/NinLanding/NinVerificationPage";
+import AlienCardVerificationPage from "./pages/AlienCardLanding/AlienCardVerificationPage";
 import PhoneVerificationPage from "./pages/PhoneLanding/PhoneVerificationPage";
 import BusinessVerificationPage from "./pages/BusinessLanding/BusinessVerificationPage";
 import VerificationLoginPage from "./pages/VerificationLogin/VerificationLoginPage";
@@ -227,9 +228,7 @@ function AppContent() {
   const isBusinessLanding = location.pathname === "/business-verification";
   const isFinancialLanding = location.pathname === "/credit-profile";
   const isLandingPage =
-    isPhoneLanding ||
-    isBusinessLanding ||
-    isFinancialLanding;
+    isPhoneLanding || isBusinessLanding || isFinancialLanding;
 
   return (
     <>
@@ -237,6 +236,11 @@ function AppContent() {
 
       <Switch>
         <Route path="/nin-verification" exact component={NinVerificationPage} />
+        <Route
+          path="/alien-card-verification"
+          exact
+          component={AlienCardVerificationPage}
+        />
         <Route
           path="/phone-number-verification"
           exact
