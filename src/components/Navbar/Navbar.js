@@ -210,12 +210,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           National ID
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           VIN Verification
         </Link>
       </Menu.Item>
@@ -834,8 +834,8 @@ function Navbar() {
                 </PublicTrigger>
               </Dropdown>
 
-              <PublicAnchor href="#how-it-works">How it works</PublicAnchor>
-              <PublicAnchor href="#services">Pricing</PublicAnchor>
+              <PublicAnchor href="/#how-it-works">How it works</PublicAnchor>
+              <PublicAnchor href="/#services">Pricing</PublicAnchor>
               <PublicNavLink to="/faq-ghana">FAQ</PublicNavLink>
               <PublicNavLink to="/contact">Support</PublicNavLink>
             </PublicCenter>
@@ -862,9 +862,6 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
               </PublicHeaderLanguage>
               {/* <PublicLanguage>EN</PublicLanguage> */}
-              <PublicDesktopOnly>
-                <ThemeToggle />
-              </PublicDesktopOnly>
               <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
                 <CountryPill type="button" aria-label="Select country">
                   <span className="flag" role="img" aria-label="Ghana flag">
@@ -874,6 +871,9 @@ function Navbar() {
                   <DownOutlined className="chev" />
                 </CountryPill>
               </Dropdown>
+              <PublicDesktopOnly>
+                <ThemeToggle />
+              </PublicDesktopOnly>
               <PublicCta href="#services">Get Started</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
@@ -894,18 +894,19 @@ function Navbar() {
               </div>
 
               <PublicMobileAnchor
-                href="#how-it-works"
+                href="/#how-it-works"
                 onClick={closeMobileMenu}
               >
                 How it works
               </PublicMobileAnchor>
+
               <PublicMobileLink to="/faq-ghana" onClick={closeMobileMenu}>
                 FAQ
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 Support
               </PublicMobileLink>
-              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
                 Get Started
               </PublicMobileAnchor>
             </PublicMobileMenu>

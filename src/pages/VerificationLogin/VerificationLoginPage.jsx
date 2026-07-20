@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -13,16 +13,9 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
-import Logo from "../../images/ghana_logo.png";
-import LogoWhite from "../../images/ghana_dark.png";
-import { useTheme } from "../../components/ThemeProvider";
 
 import {
   PageWrapper,
-  LoginNav,
-  NavLogo,
-  NavLinks,
-  NavLink,
   MainContent,
   LoginCard,
   LoginTitle,
@@ -309,25 +302,9 @@ const VerificationLoginPage = () => {
       setLoading(false);
     }
   };
-  const { isDark } = useTheme();
 
   return (
     <PageWrapper>
-      <LoginNav>
-        <Link to="/">
-          <img
-            src={isDark ? LogoWhite : Logo}
-            alt="Logo"
-            width={120}
-            style={{ marginTop: "10px", cursor: "pointer" }}
-          />
-        </Link>
-        <NavLinks>
-          <NavLink to="/">← Back to Home</NavLink>
-          <NavLink to="/individual/sign-up/1">Register</NavLink>
-        </NavLinks>
-      </LoginNav>
-
       <MainContent>
         <LoginCard style={{ position: "relative" }}>
           {loading && (
