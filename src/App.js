@@ -223,17 +223,13 @@ function App() {
 
 function AppContent() {
   const location = useLocation();
-  const isNinLanding = location.pathname === "/nin-verification";
   const isPhoneLanding = location.pathname === "/phone-number-verification";
   const isBusinessLanding = location.pathname === "/business-verification";
   const isFinancialLanding = location.pathname === "/credit-profile";
-  const isVehicleLanding = location.pathname === "/vehicle-verification";
   const isLandingPage =
-    isNinLanding ||
     isPhoneLanding ||
     isBusinessLanding ||
-    isFinancialLanding ||
-    isVehicleLanding;
+    isFinancialLanding;
 
   return (
     <>
