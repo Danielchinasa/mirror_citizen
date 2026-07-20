@@ -398,7 +398,6 @@ const VerifyPage = () => {
 
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
-  const userProfileCurrency = userDetails?.currency || "KES";
 
   /* ── Form handlers ── */
 
@@ -1472,8 +1471,7 @@ const VerifyPage = () => {
                     fontFamily: "Nunito",
                   }}
                 >
-                  {userProfileCurrency.toLocaleString()}{" "}
-                  {userBalance.toLocaleString()}
+                  {currencySymbol}{userBalance.toLocaleString()}
                 </span>
               )}
             </PaymentOption>

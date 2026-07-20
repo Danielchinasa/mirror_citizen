@@ -361,7 +361,7 @@ function AppContent() {
         </AppLogout>
       </Switch>
 
-      {!isLandingPage && <Footer />}
+      <Footer />
     </>
   );
 }

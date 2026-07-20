@@ -7,7 +7,6 @@ import VehicleHowItWorks from "./VehicleHowItWorks";
 import VehicleLoginSample from "./VehicleLoginSample";
 import VehicleCompliance from "./VehicleCompliance";
 import VehicleCta from "./VehicleCta";
-import Footer from "../../components/Footer/Footer";
 import { PageWrapper } from "./VehicleLanding.elements";
 
 const VehicleVerificationPage = () => {
@@ -21,7 +20,6 @@ const VehicleVerificationPage = () => {
       <VehicleLoginSample />
       <VehicleCompliance />
       <VehicleCta />
-      <Footer />
     </PageWrapper>
   );
 };

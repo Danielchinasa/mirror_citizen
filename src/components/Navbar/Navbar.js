@@ -161,6 +161,89 @@ function Navbar() {
 
   const menu = (
     <Menu>
+      <Menu.SubMenu
+        key="country"
+        title={
+          <span
+            style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+          >
+            <span role="img" aria-label="flag">
+              🇰🇪
+            </span>
+            Kenya
+          </span>
+        }
+      >
+        <Menu.Item key="country-ghana">
+          <a
+            href="https://e-citizen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Ghana flag"
+              style={{ marginRight: 10 }}
+            >
+              🇬🇭
+            </span>
+            Ghana
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-uganda">
+          <a
+            href="https://e-raia.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Uganda flag"
+              style={{ marginRight: 10 }}
+            >
+              🇺🇬
+            </span>
+            Uganda
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-civ">
+          <a
+            href="https://citoyen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Côte d'Ivoire flag"
+              style={{ marginRight: 10 }}
+            >
+              🇨🇮
+            </span>
+            Côte d'Ivoire
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-kenya">
+          <a
+            href="https://e-raia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Kenya flag"
+              style={{ marginRight: 10 }}
+            >
+              🇰🇪
+            </span>
+            Kenya
+          </a>
+        </Menu.Item>
+      </Menu.SubMenu>
+      <Menu.Divider />
       {items.map((item) => (
         <Menu.Item key={item.key} onClick={closeMobileMenu}>
           {item.label}
@@ -940,6 +1023,34 @@ function Navbar() {
                 {isSw ? "Anza" : "Get Started"}
               </PublicMobileAnchor>
               <div style={{ padding: "6px 0" }}>
+                <Dropdown overlay={countryMenu} trigger={["click"]}>
+                  <button
+                    type="button"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      border: "1px solid rgba(255,255,255,0.3)",
+                      borderRadius: "6px",
+                      padding: "6px 12px",
+                      background: "transparent",
+                      cursor: "pointer",
+                      fontSize: 14,
+                      color: "#fff",
+                      fontFamily: "Poppins",
+                      width: "100%",
+                      marginBottom: 8,
+                    }}
+                  >
+                    <span role="img" aria-label="flag">
+                      🇰🇪
+                    </span>
+                    Kenya
+                  </button>
+                </Dropdown>
+              </div>
+              <div style={{ padding: "6px 0" }}>
                 <ThemeToggle />
               </div>
             </PublicMobileMenu>
@@ -1112,7 +1223,7 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal} style={{ color: text }}>
+                        <p onClick={showModal} style={{ color: "rgba(255,255,255,0.85)" }}>
                           Wallet Balance:
                           <span style={{ color: "#DD0201" }}>
                             {" "}
@@ -1295,6 +1406,89 @@ function Navbar() {
                         </Modal>
                       </div>
 
+                      <div
+                        style={{
+                          marginTop: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "12px",
+                        }}
+                      >
+                        <Dropdown overlay={countryMenu} trigger={["click"]}>
+                          <button
+                            type="button"
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                              border: "1px solid rgba(255,255,255,0.3)",
+                              borderRadius: "6px",
+                              padding: "4px 10px",
+                              background: "transparent",
+                              cursor: "pointer",
+                              fontSize: 13,
+                              color: "rgba(255,255,255,0.85)",
+                              fontFamily: "Poppins",
+                            }}
+                          >
+                            <span role="img" aria-label="flag">
+                              🇰🇪
+                            </span>
+                          </button>
+                        </Dropdown>
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 8,
+                            padding: 4,
+                            borderRadius: 999,
+                            background: "rgba(255,255,255,0.1)",
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => handleLanguageChange("EN")}
+                            style={{
+                              border: "none",
+                              background: mobileLanguage === "EN" ? "#DD0201" : "transparent",
+                              color: mobileLanguage === "EN" ? "#fff" : "rgba(255,255,255,0.7)",
+                              fontFamily: "Nunito, sans-serif",
+                              fontSize: 13,
+                              fontWeight: 700,
+                              letterSpacing: "0.04em",
+                              padding: "8px 14px",
+                              borderRadius: 999,
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            EN
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleLanguageChange("SW")}
+                            style={{
+                              border: "none",
+                              background: mobileLanguage === "SW" ? "#DD0201" : "transparent",
+                              color: mobileLanguage === "SW" ? "#fff" : "rgba(255,255,255,0.7)",
+                              fontFamily: "Nunito, sans-serif",
+                              fontSize: 13,
+                              fontWeight: 700,
+                              letterSpacing: "0.04em",
+                              padding: "8px 14px",
+                              borderRadius: 999,
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            SW
+                          </button>
+                        </div>
+                        <ThemeToggle />
+                      </div>
                       <NavItemBtn>
                         <NavBtnLink>
                           <OutlineButton
@@ -1306,35 +1500,6 @@ function Navbar() {
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
-                      <div
-                        style={{
-                          marginTop: "10px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "12px",
-                        }}
-                      >
-                        <PublicLanguageToggleGroup>
-                          <PublicLanguageToggle
-                            type="button"
-                            $active={mobileLanguage === "EN"}
-                            onClick={() => handleLanguageChange("EN")}
-                            aria-pressed={mobileLanguage === "EN"}
-                          >
-                            EN
-                          </PublicLanguageToggle>
-                          <PublicLanguageToggle
-                            type="button"
-                            $active={mobileLanguage === "SW"}
-                            onClick={() => handleLanguageChange("SW")}
-                            aria-pressed={mobileLanguage === "SW"}
-                          >
-                            SW
-                          </PublicLanguageToggle>
-                        </PublicLanguageToggleGroup>
-                        <ThemeToggle />
-                      </div>
                     </>
                   )
                 : isAuthenticated && (

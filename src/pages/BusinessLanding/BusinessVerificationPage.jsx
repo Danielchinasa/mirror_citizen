@@ -7,7 +7,6 @@ import BusinessHowItWorks from "./BusinessHowItWorks";
 import BusinessLoginSample from "./BusinessLoginSample";
 import BusinessCompliance from "./BusinessCompliance";
 import BusinessCta from "./BusinessCta";
-import Footer from "../../components/Footer/Footer";
 import { PageWrapper } from "./BusinessLanding.elements";
 
 const BusinessVerificationPage = () => {
@@ -21,7 +20,6 @@ const BusinessVerificationPage = () => {
       <BusinessLoginSample />
       <BusinessCompliance />
       <BusinessCta />
-      <Footer />
     </PageWrapper>
   );
 };
