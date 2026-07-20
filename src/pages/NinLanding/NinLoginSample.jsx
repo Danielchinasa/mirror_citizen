@@ -859,7 +859,7 @@ const NinLoginSample = () => {
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>
-                  <ResultValue>0803 *** 5678</ResultValue>
+                  <ResultValue>08038765678</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>National ID</ResultLabel>

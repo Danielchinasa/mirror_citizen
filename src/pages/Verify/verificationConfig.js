@@ -88,7 +88,7 @@ const verificationConfig = {
     ],
     sampleResult: {
       name: "Adebayo John O.",
-      identifier: "Phone: 0803 *** 5678",
+      identifier: "Phone: 0803 789 5678",
       tags: ["Owner Name", "Network", "Status", "And more..."],
     },
     serviceName: "Phone Verification",

@@ -158,7 +158,7 @@ const VehicleHowItWorks = () => {
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How to verify a vehicle</HowTitle>
+        <HowTitle>How VIN Verification works</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -168,8 +168,8 @@ const VehicleHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName> Enter VIN</StepName>
+            <StepDesc>Enter the 17-digit VIN of the vehicle.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -181,8 +181,8 @@ const VehicleHowItWorks = () => {
             <FaUpload />
           </StepIconBox>
           <StepText>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>Submit & Pay</StepName>
+            <StepDesc>Secure payment via your preferred method.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -194,8 +194,8 @@ const VehicleHowItWorks = () => {
             <FaShieldAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get results</StepName>
-            <StepDesc>Receive instant verification results.</StepDesc>
+            <StepName>Get Results</StepName>
+            <StepDesc>Receive instant verification from DVLA Ghana.</StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>

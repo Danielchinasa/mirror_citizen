@@ -133,7 +133,7 @@ const NinCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your NIN?</CtaTitle>
+          <CtaTitle>Ready to verify your Ghana ID?</CtaTitle>
           <CtaDesc>
             Join thousands of individuals and businesses that rely on e-citizen
             for fast, accurate and secure identity verification.
@@ -141,12 +141,12 @@ const NinCta = () => {
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify NIN Now <FaArrowRight />
+            Verify Ghana ID Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
+          {/* <CtaPrice>
             <FaCheckCircle /> Starting from <strong>N</strong>600 per
             verification
-          </CtaPrice>
+          </CtaPrice> */}
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

@@ -12,7 +12,6 @@ const NinVerificationPage = () => {
   return (
     <PageWrapper>
       <NinHero />
-      <NinTrustBar />
       <NinBenefits />
       <NinHowItWorks />
       <NinLoginSample />

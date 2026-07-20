@@ -162,6 +162,90 @@ function Navbar() {
           {item.label}
         </Menu.Item>
       ))}
+      <Menu.Divider />
+      <Menu.SubMenu
+        key="country-selector"
+        title={
+          <span>
+            <span role="img" aria-label="Ghana flag" style={{ marginRight: 8 }}>
+              🇬🇭
+            </span>
+            Switch Country
+          </span>
+        }
+      >
+        <Menu.Item key="country-ghana">
+          <a
+            href="https://e-citizen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Ghana flag"
+              style={{ marginRight: 10 }}
+            >
+              🇬🇭
+            </span>
+            Ghana
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-kenya">
+          <a
+            href="https://e-raia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Kenya flag"
+              style={{ marginRight: 10 }}
+            >
+              🇰🇪
+            </span>
+            Kenya
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-uganda">
+          <a
+            href="https://e-raia.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Uganda flag"
+              style={{ marginRight: 10 }}
+            >
+              🇺🇬
+            </span>
+            Uganda
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-civ">
+          <a
+            href="https://citoyen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Côte d'Ivoire flag"
+              style={{ marginRight: 10 }}
+            >
+              🇨🇮
+            </span>
+            Côte d'Ivoire
+          </a>
+        </Menu.Item>
+      </Menu.SubMenu>
+      <Menu.Item key="theme-toggle" onClick={closeMobileMenu}>
+        <ThemeToggle />
+      </Menu.Item>
     </Menu>
   );
 
@@ -874,7 +958,7 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="#services">Get Started</PublicCta>
+              <PublicCta href="/#services">Get Started</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -906,7 +990,10 @@ function Navbar() {
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 Support
               </PublicMobileLink>
-              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor
+                href="/#how-it-works"
+                onClick={closeMobileMenu}
+              >
                 Get Started
               </PublicMobileAnchor>
             </PublicMobileMenu>
@@ -1074,7 +1161,7 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal} style={{ color: text }}>
+                        <p onClick={showModal} style={{ color: "#FFFFFF" }}>
                           Wallet Balance:
                           <span style={{ color: "#FBCB19" }}>
                             {" "}
@@ -1268,6 +1355,37 @@ function Navbar() {
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
+                      <div
+                        style={{
+                          paddingLeft: "49px",
+                          paddingRight: "15px",
+                        }}
+                      >
+                        <Dropdown
+                          overlay={countryMenu}
+                          trigger={["click"]}
+                          arrow
+                        >
+                          <CountryPill
+                            type="button"
+                            aria-label="Select country"
+                            style={{ color: "#FFFFFF" }}
+                          >
+                            <span
+                              className="flag"
+                              role="img"
+                              aria-label="Ghana flag"
+                            >
+                              🇬🇭
+                            </span>
+                            Ghana
+                            <DownOutlined
+                              className="chev"
+                              style={{ color: "#FFFFFF" }}
+                            />
+                          </CountryPill>
+                        </Dropdown>
+                      </div>
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
                     </>
                   )

@@ -120,7 +120,7 @@ const StepName = styled.h3`
 
 const StepDesc = styled.p`
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--ec-text-muted);
   line-height: 1.5;
   margin: 0;
@@ -158,7 +158,7 @@ const NinHowItWorks = () => {
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How to verify your NIN</HowTitle>
+        <HowTitle>How it works</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -168,8 +168,8 @@ const NinHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>Enter details</StepName>
+            <StepDesc>Enter your Ghana ID number and details.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -181,8 +181,10 @@ const NinHowItWorks = () => {
             <FaUpload />
           </StepIconBox>
           <StepText>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>Submit</StepName>
+            <StepDesc>
+              We securely check your information in real time.
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>

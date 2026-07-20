@@ -399,7 +399,7 @@ const Home = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              Verify your identity in{" "}
+              Verify your identity in Ghana.{" "}
               <span
                 style={{
                   color: "#FBCB19",
@@ -408,9 +408,31 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                Ghana.{" "}
+                Fast
               </span>
-              Fast, secure and trusted.
+              ,{" "}
+              <span
+                style={{
+                  color: "#FBCB19",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                secure
+              </span>
+              {" and "}
+              <span
+                style={{
+                  color: "#FBCB19",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                trusted
+              </span>
+              .
             </HeroTitle>
             <HeroSubtitle>
               Official identity verification services for individuals and
