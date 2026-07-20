@@ -120,28 +120,6 @@ function Navbar() {
     history.push("/");
   };
 
-  const items = [
-    // {
-    //   key: "1",
-    //   label: (
-    //     <a href="/main-dashboard" style={{ textDecoration: "none" }}>
-    //       Dashboard
-    //     </a>
-    //   ),
-    // },
-    {
-      key: "2",
-      label: (
-        <a href="/profile" style={{ textDecoration: "none" }}>
-          {t("nav.myProfile")}
-        </a>
-      ),
-    },
-    {
-      key: "3",
-      label: <span onClick={handleLogout}>{t("nav.logout")}</span>,
-    },
-  ];
   const [visible, setVisible] = useState(false);
   const handleVisibleChange = (flag) => {
     setVisible(flag);
@@ -153,11 +131,86 @@ function Navbar() {
 
   const menu = (
     <Menu>
-      {items.map((item) => (
-        <Menu.Item key={item.key} onClick={closeMobileMenu}>
-          {item.label}
+      <Menu.Item key="profile" onClick={closeMobileMenu}>
+        <a href="/profile" style={{ textDecoration: "none" }}>
+          {t("nav.myProfile")}
+        </a>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      <Menu.SubMenu key="language" title={t("nav.language")}>
+        <Menu.Item
+          key="fr"
+          onClick={() => {
+            handleLanguageChange("FR");
+            closeMobileMenu();
+          }}
+        >
+          FR
         </Menu.Item>
-      ))}
+        <Menu.Item
+          key="en"
+          onClick={() => {
+            handleLanguageChange("EN");
+            closeMobileMenu();
+          }}
+        >
+          EN
+        </Menu.Item>
+      </Menu.SubMenu>
+
+      <Menu.SubMenu key="country" title={t("nav.country")}>
+        <Menu.Item key="country-ci" onClick={closeMobileMenu}>
+          <span style={{ marginRight: 8 }}>🇨🇮</span>
+          Côte d'Ivoire
+        </Menu.Item>
+        <Menu.Item key="country-ghana">
+          <a
+            href="https://e-citizen.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span role="img" aria-label="Ghana flag" style={{ marginRight: 10 }}>
+              🇬🇭
+            </span>
+            Ghana
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-kenya">
+          <a
+            href="https://e-raia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span role="img" aria-label="Kenya flag" style={{ marginRight: 10 }}>
+              🇰🇪
+            </span>
+            Kenya
+          </a>
+        </Menu.Item>
+        <Menu.Item key="country-uganda">
+          <a
+            href="https://e-raia.africa"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span role="img" aria-label="Uganda flag" style={{ marginRight: 10 }}>
+              🇺🇬
+            </span>
+            Uganda
+          </a>
+        </Menu.Item>
+      </Menu.SubMenu>
+
+      <Menu.Divider />
+
+      <Menu.Item key="logout" onClick={closeMobileMenu}>
+        <span onClick={handleLogout}>{t("nav.logout")}</span>
+      </Menu.Item>
     </Menu>
   );
 
@@ -206,12 +259,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/#services" style={{ textDecoration: "none" }}>
           {t("nav.nationalId")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/#services" style={{ textDecoration: "none" }}>
           {t("nav.vinVerification")}
         </Link>
       </Menu.Item>
@@ -811,10 +864,10 @@ function Navbar() {
                   {t("nav.services")} <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
-              <PublicAnchor href="#how-it-works">
+              <PublicAnchor href="/#how-it-works">
                 {t("nav.howItWorks")}
               </PublicAnchor>
-              <PublicAnchor href="#services">{t("nav.pricing")}</PublicAnchor>
+              <PublicAnchor href="/#services">{t("nav.pricing")}</PublicAnchor>
               <PublicNavLink to="/faq-uganda">{t("nav.faq")}</PublicNavLink>
               <PublicNavLink to="/contact">{t("nav.support")}</PublicNavLink>
             </PublicCenter>
@@ -874,7 +927,7 @@ function Navbar() {
                 {t("nav.vinVerification")}
               </PublicMobileLink> */}
               <PublicMobileAnchor
-                href="#how-it-works"
+                href="/#how-it-works"
                 onClick={closeMobileMenu}
               >
                 {t("nav.howItWorks")}
@@ -886,7 +939,7 @@ function Navbar() {
                 {t("nav.support")}
               </PublicMobileLink>
 
-              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
                 {t("nav.getStarted")}
               </PublicMobileAnchor>
 
@@ -1098,7 +1151,7 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal} style={{ color: text }}>
+                        <p onClick={showModal} style={{ color: "#FFFFFF" }}>
                           {t("nav.walletBalance")}:
                           <span style={{ color: "#FD7A00" }}>
                             {" "}
@@ -1295,6 +1348,38 @@ function Navbar() {
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
+                      <div
+                        style={{
+                          paddingLeft: "49px",
+                          paddingRight: "15px",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Dropdown
+                          overlay={countriesMenu}
+                          trigger={["click"]}
+                          arrow
+                        >
+                          <CountryPill
+                            type="button"
+                            aria-label="Select country"
+                            style={{ color: "#FFFFFF" }}
+                          >
+                            <span
+                              className="flag"
+                              role="img"
+                              aria-label="Ghana flag"
+                            >
+                              🇬🇭
+                            </span>
+                            Ghana
+                            <DownOutlined
+                              className="chev"
+                              style={{ color: "#FFFFFF" }}
+                            />
+                          </CountryPill>
+                        </Dropdown>
+                      </div>
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
                     </>
                   )

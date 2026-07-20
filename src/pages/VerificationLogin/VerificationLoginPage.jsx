@@ -13,14 +13,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
-import { PublicBrand } from "../../components/Navbar/Navbar.elements";
-
 import {
   PageWrapper,
-  LoginNav,
-  NavLogo,
-  NavLinks,
-  NavLink,
   MainContent,
   LoginCard,
   LoginTitle,
@@ -42,9 +36,6 @@ import {
   SpinnerOverlay,
   Spinner,
 } from "./VerificationLogin.elements";
-import Logo from "../../images/civ_logo.png";
-import LogoWhite from "../../images/civ_dark.png";
-import { useTheme } from "../../components/ThemeProvider";
 
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
@@ -305,28 +296,9 @@ const VerificationLoginPage = () => {
       setLoading(false);
     }
   };
-  const { isDark } = useTheme();
 
   return (
     <PageWrapper>
-      <LoginNav>
-        <Link to="/">
-          <img
-            src={isDark ? LogoWhite : Logo}
-            alt="Logo"
-            width={120}
-            style={{ marginTop: "10px", cursor: "pointer" }}
-          />
-        </Link>
-        <NavLinks>
-          <NavLink to="/nin-verification">CNI</NavLink>
-          <NavLink to="/vehicle-verification">VIN</NavLink>
-          <NavLink to="/faq">FAQ</NavLink>
-          <NavLink to="/contact">Support</NavLink>
-          <NavLink to="/individual/sign-up/1">S'inscrire</NavLink>
-        </NavLinks>
-      </LoginNav>
-
       <MainContent>
         <LoginCard style={{ position: "relative" }}>
           {loading && (
