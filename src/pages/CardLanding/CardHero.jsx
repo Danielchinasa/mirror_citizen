@@ -32,7 +32,7 @@ import {
   SocialProof,
   AvatarStack,
 } from "../HomePage/HomePage.elements";
-import heroImg from "../../images/cote_divoire.png";
+import heroImg from "../../images/cote_card.png";
 
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";

@@ -932,7 +932,7 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="#services">{t("nav.getStarted")}</PublicCta>
+              <PublicCta href="/#services">{t("nav.getStarted")}</PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>

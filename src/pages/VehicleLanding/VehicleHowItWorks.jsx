@@ -1,6 +1,7 @@
 import React from "react";
 import { FaIdCard, FaUpload, FaShieldAlt, FaArrowRight } from "react-icons/fa";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 
 const HowWrapper = styled.section`
   padding: 40px 50px;
@@ -154,11 +155,13 @@ const DottedConnector = styled.div`
 `;
 
 const VehicleHowItWorks = () => {
+  const { t } = useLocale();
+
   return (
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How to verify a vehicle</HowTitle>
+        <HowTitle>{t("nin.how.title")}</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -168,8 +171,8 @@ const VehicleHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>{t("nin.how.step1Name")}</StepName>
+            <StepDesc>{t("nin.how.step1Desc")}</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -181,8 +184,8 @@ const VehicleHowItWorks = () => {
             <FaUpload />
           </StepIconBox>
           <StepText>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>{t("nin.how.step2Name")}</StepName>
+            <StepDesc>{t("nin.how.step2Desc")}</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -194,8 +197,8 @@ const VehicleHowItWorks = () => {
             <FaShieldAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get results</StepName>
-            <StepDesc>Receive instant verification results.</StepDesc>
+            <StepName>{t("nin.how.step3Name")}</StepName>
+            <StepDesc>{t("nin.how.step3Desc")}</StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>
