@@ -53,7 +53,7 @@ const VehicleHero = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              Check a vehicle VIN in
+              Check a
               <span
                 style={{
                   color: "#FBCB19",
@@ -63,9 +63,9 @@ const VehicleHero = () => {
                 }}
               >
                 {" "}
-                Ghana
+                vehicle VIN
               </span>{" "}
-              before you buy.
+              in Ghana before you buy.
             </HeroTitle>
             <HeroSubtitle>
               Get official VIN verification to confirm a vehicle's history,
