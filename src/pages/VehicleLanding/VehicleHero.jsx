@@ -64,9 +64,11 @@ const VehicleHero = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              {isSw ? "Kagua VIN ya gari " : "Check a vehicle VIN in "}
-              <span style={redHighlight}>{isSw ? "Kenya" : "Kenya"}</span>
-              {isSw ? " kabla ya kununua." : " before you buy."}
+              {isSw ? "Ya gari " : "Check a "}
+              <span style={redHighlight}>
+                {isSw ? "Kagua VIN" : "vehicle VIN"}
+              </span>
+              {isSw ? " kabla ya kununua." : " in Kenya before you buy."}
             </HeroTitle>
             <HeroSubtitle>
               {isSw
