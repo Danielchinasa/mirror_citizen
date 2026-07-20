@@ -228,14 +228,12 @@ function AppContent() {
   const isBusinessLanding = location.pathname === "/business-verification";
   const isFinancialLanding = location.pathname === "/credit-profile";
   const isVehicleLanding = location.pathname === "/vehicle-verification";
-  const isVerificationLogin = location.pathname === "/verification-login";
   const isLandingPage =
     isNinLanding ||
     isPhoneLanding ||
     isBusinessLanding ||
     isFinancialLanding ||
-    isVehicleLanding ||
-    isVerificationLogin;
+    isVehicleLanding;
 
   return (
     <>

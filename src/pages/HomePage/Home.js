@@ -399,6 +399,13 @@ const Home = () => {
     : "/verification-login?redirect=/verify/nin";
   const isSw = language === "SW";
 
+  const redHighlight = {
+    color: "#D80111",
+    fontFamily: "inherit",
+    fontSize: "inherit",
+    fontWeight: "inherit",
+  };
+
   return (
     <>
       {/* ── Hero ── */}
@@ -408,21 +415,29 @@ const Home = () => {
           <HeroContent>
             <HeroTitle>
               {isSw
-                ? "Thibitisha utambulisho wako nchini"
-                : "Verify your identity in"}{" "}
-              <span
-                style={{
-                  color: "#D80111",
-                  fontFamily: "inherit",
-                  fontSize: "inherit",
-                  fontWeight: "inherit",
-                }}
-              >
-                Kenya.{" "}
-              </span>
+                ? "Thibitisha utambulisho wako nchini Kenya. "
+                : "Verify your identity in Kenya. "}
               {isSw
-                ? "Haraka, salama na ya kuaminika."
-                : "Fast, secure and trusted."}
+                ? (
+                  <>
+                    <span style={redHighlight}>Haraka</span>
+                    {", "}
+                    <span style={redHighlight}>salama</span>
+                    {" na "}
+                    <span style={redHighlight}>ya kuaminika</span>
+                    .
+                  </>
+                )
+                : (
+                  <>
+                    <span style={redHighlight}>Fast</span>
+                    {", "}
+                    <span style={redHighlight}>secure</span>
+                    {" and "}
+                    <span style={redHighlight}>trusted</span>
+                    .
+                  </>
+                )}
             </HeroTitle>
             <HeroSubtitle>
               {isSw

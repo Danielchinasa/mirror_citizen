@@ -214,12 +214,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/#services" style={{ textDecoration: "none" }}>
           {isSw ? "Kitambulisho cha Taifa" : "National ID"}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="#services" style={{ textDecoration: "none" }}>
+        <Link to="/#services" style={{ textDecoration: "none" }}>
           {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
         </Link>
       </Menu.Item>
@@ -836,10 +836,10 @@ function Navbar() {
                 </PublicTrigger>
               </Dropdown>
 
-              <PublicAnchor href="#how-it-works">
+              <PublicAnchor href="/#how-it-works">
                 {isSw ? "Inavyofanya kazi" : "How it works"}
               </PublicAnchor>
-              <PublicAnchor href="#services">
+              <PublicAnchor href="/#services">
                 {isSw ? "Bei" : "Pricing"}
               </PublicAnchor>
               <PublicNavLink to="/faq-kenya">FAQ</PublicNavLink>
@@ -901,7 +901,7 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="#services">
+              <PublicCta href="/#services">
                 {isSw ? "Anza" : "Get Started"}
               </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
@@ -925,7 +925,7 @@ function Navbar() {
                 {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
               </PublicMobileLink> */}
               <PublicMobileAnchor
-                href="#how-it-works"
+                href="/#how-it-works"
                 onClick={closeMobileMenu}
               >
                 {isSw ? "Inavyofanya kazi" : "How it works"}
@@ -936,7 +936,7 @@ function Navbar() {
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 {isSw ? "Msaada" : "Support"}
               </PublicMobileLink>
-              <PublicMobileAnchor href="#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
                 {isSw ? "Anza" : "Get Started"}
               </PublicMobileAnchor>
               <div style={{ padding: "6px 0" }}>
