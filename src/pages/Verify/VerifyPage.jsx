@@ -915,7 +915,7 @@ const VerifyPage = () => {
 
         // Check if it's a vehicle verification
         if (result.vehicleName || result.vehicleSpecification || result.vin) {
-          resultRoute = "/vehicle-profile-result";
+          resultRoute = "/main-dashboard";
         } else {
           resultRoute = "/main-dashboard";
         }
