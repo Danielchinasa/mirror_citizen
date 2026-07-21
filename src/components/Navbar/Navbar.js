@@ -244,6 +244,7 @@ function Navbar() {
   const UserDropdown = () => {
     return (
       <Dropdown
+        key={language}
         overlay={menu}
         trigger={["click"]}
         visible={visible}
