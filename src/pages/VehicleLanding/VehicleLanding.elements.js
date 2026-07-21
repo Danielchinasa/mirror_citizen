@@ -8,7 +8,7 @@ export const PageWrapper = styled.div`
 `;
 
 export const PrimaryBtn = styled(Link)`
-  background-color: #DD0201;
+  background-color: #dd0201;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -30,7 +30,7 @@ export const PrimaryBtn = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background-color: #FF4D4F;
+    background-color: #ff4d4f;
     color: #fff;
   }
 
@@ -46,7 +46,7 @@ export const PrimaryBtn = styled(Link)`
 
 export const SecondaryBtn = styled.a`
   background-color: transparent;
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -57,7 +57,7 @@ export const SecondaryBtn = styled.a`
     font-size: 16px;
     padding: 10px 28px;
   }
-  border: 1px solid #DD0201;
+  border: 1px solid #dd0201;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -68,8 +68,8 @@ export const SecondaryBtn = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: #FF4D4F;
-    border-color: #FF4D4F;
+    color: #ff4d4f;
+    border-color: #ff4d4f;
   }
 
   @media screen and (max-width: 600px) {
@@ -236,8 +236,7 @@ export const HeroTitle = styled.h1`
   margin-bottom: 24px;
 
   span {
-    color: #DD0201;
-    font-family: inherit;
+    color: #dd0201;
     font-weight: inherit;
     font-size: inherit;
   }
@@ -319,7 +318,7 @@ export const PriceBadge = styled.div`
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 18px;
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -378,7 +377,7 @@ export const TrustIconCircle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #dd0201;
   font-size: 16px;
   flex-shrink: 0;
 `;

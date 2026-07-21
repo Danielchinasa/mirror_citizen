@@ -411,7 +411,7 @@ const Home = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              {t("home.hero.titlePrefix")}{" "}
+              {t("home.hero.titlePrefix")} {t("home.hero.titleCountry")}{" "}
               <span
                 style={{
                   color: "#DD0201",
@@ -420,9 +420,8 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                {t("home.hero.titleCountry")}{" "}
+                {t("home.hero.titleSuffix")}
               </span>
-              {t("home.hero.titleSuffix")}
             </HeroTitle>
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>

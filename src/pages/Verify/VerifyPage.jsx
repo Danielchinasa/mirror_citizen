@@ -480,6 +480,7 @@ const VerifyPage = () => {
   const processingFeeTotal = processingFeePerCheck * bureauMultiplier;
   const vatTotal = vatPerCheck * bureauMultiplier;
   const subtotalAmount = serviceFeeTotal + processingFeeTotal + vatTotal;
+  const taxChargesTotal = vatTotal + processingFeeTotal;
 
   const totalAmount = pricingData ? Math.max(subtotalAmount - discount, 0) : 0;
 
@@ -1371,7 +1372,7 @@ const VerifyPage = () => {
               <>
                 <PriceRow>
                   <span>
-                    {t("verify.search.serviceFee")}
+                    {t("verify.search.processingFee")}
                     {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                   </span>
                   <span>
@@ -1383,24 +1384,12 @@ const VerifyPage = () => {
                 </PriceRow>
                 <PriceRow>
                   <span>
-                    {t("verify.search.processingFee")}
-                    {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                  </span>
-                  <span>
-                    {currencySymbol}
-                    {processingFeeTotal.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                    })}
-                  </span>
-                </PriceRow>
-                <PriceRow>
-                  <span>
                     {t("verify.search.taxCharges")}
                     {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                   </span>
                   <span>
                     {currencySymbol}
-                    {vatTotal.toLocaleString(undefined, {
+                    {taxChargesTotal.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </span>
@@ -1546,7 +1535,7 @@ const VerifyPage = () => {
               )}
               <SummaryRow>
                 <SummaryLabel>
-                  {t("verify.payment.serviceFee")}
+                  {t("verify.payment.processingFee")}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
@@ -1556,22 +1545,12 @@ const VerifyPage = () => {
               </SummaryRow>
               <SummaryRow>
                 <SummaryLabel>
-                  {t("verify.payment.processingFee")}
-                  {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                </SummaryLabel>
-                <SummaryValue>
-                  {currencySymbol}
-                  {processingFeeTotal.toLocaleString()}
-                </SummaryValue>
-              </SummaryRow>
-              <SummaryRow>
-                <SummaryLabel>
                   {t("verify.payment.taxCharges")}
                   {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {vatTotal.toLocaleString()}
+                  {taxChargesTotal.toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               {discount > 0 && (

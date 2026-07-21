@@ -141,12 +141,8 @@ const NinCta = () => {
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify NIN Now <FaArrowRight />
+            Verify National ID Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
-            <FaCheckCircle /> Starting from <strong>N</strong>600 per
-            verification
-          </CtaPrice>
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

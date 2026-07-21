@@ -168,8 +168,10 @@ const NinHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>Enter National ID</StepName>
+            <StepDesc>
+              Provide the National ID number you want to verify
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -182,7 +184,7 @@ const NinHowItWorks = () => {
           </StepIconBox>
           <StepText>
             <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepDesc>Enter required information and submit securely.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>

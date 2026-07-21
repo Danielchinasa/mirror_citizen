@@ -1,5 +1,4 @@
 import React from "react";
-import PhoneNavbar from "../../components/PhoneNavbar/PhoneNavbar";
 import PhoneHero from "./PhoneHero";
 import PhoneTrustBar from "./PhoneTrustBar";
 import PhoneBenefits from "./PhoneBenefits";
@@ -13,7 +12,6 @@ import { PageWrapper } from "./PhoneLanding.elements";
 const PhoneVerificationPage = () => {
   return (
     <PageWrapper>
-      <PhoneNavbar />
       <PhoneHero />
       <PhoneTrustBar />
       <PhoneBenefits />

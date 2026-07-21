@@ -242,7 +242,7 @@ function AppContent() {
 
   return (
     <>
-      {!isLandingPage && <Navbar />}
+      <Navbar />
 
       <Switch>
         <Route path="/nin-verification" exact component={NinVerificationPage} />

@@ -1,5 +1,4 @@
 import React from "react";
-import BusinessNavbar from "../../components/BusinessNavbar/BusinessNavbar";
 import BusinessHero from "./BusinessHero";
 import BusinessTrustBar from "./BusinessTrustBar";
 import BusinessBenefits from "./BusinessBenefits";
@@ -13,7 +12,6 @@ import { PageWrapper } from "./BusinessLanding.elements";
 const BusinessVerificationPage = () => {
   return (
     <PageWrapper>
-      <BusinessNavbar />
       <BusinessHero />
       <BusinessTrustBar />
       <BusinessBenefits />

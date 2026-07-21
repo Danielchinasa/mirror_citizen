@@ -23,7 +23,7 @@ const HowHeader = styled.div`
 const HowLine = styled.div`
   width: 60px;
   height: 2px;
-  background: #DD0201;
+  background: #dd0201;
 
   @media screen and (max-width: 600px) {
     width: 30px;
@@ -76,7 +76,7 @@ const StepNumberCircle = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #dd0201;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -97,7 +97,7 @@ const StepIconBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #DD0201;
+  color: #dd0201;
   font-size: 24px;
   flex-shrink: 0;
   box-shadow: 0 8px 20px rgba(220, 5, 2, 0.08);
@@ -133,7 +133,7 @@ const DottedConnector = styled.div`
   gap: 8px;
   min-width: 96px;
   margin-top: 34px;
-  color: #DD0201;
+  color: #dd0201;
   font-size: 18px;
 
   &::before,
@@ -158,7 +158,7 @@ const VehicleHowItWorks = () => {
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How to verify a vehicle</HowTitle>
+        <HowTitle>How it works</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -168,8 +168,8 @@ const VehicleHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Choose a service</StepName>
-            <StepDesc>Select National ID or VIN Verification.</StepDesc>
+            <StepName>Enter VIN</StepName>
+            <StepDesc>Enter the 17-digit VIN number of the vehicle..</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -181,8 +181,10 @@ const VehicleHowItWorks = () => {
             <FaUpload />
           </StepIconBox>
           <StepText>
-            <StepName>Submit details</StepName>
-            <StepDesc>Enter required information securely.</StepDesc>
+            <StepName>Submit & Pay</StepName>
+            <StepDesc>
+              Review your details and complete payment securely.
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -194,8 +196,8 @@ const VehicleHowItWorks = () => {
             <FaShieldAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get results</StepName>
-            <StepDesc>Receive instant verification results.</StepDesc>
+            <StepName>Get Results</StepName>
+            <StepDesc>Receive your verification report instantly.</StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>

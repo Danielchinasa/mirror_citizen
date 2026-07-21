@@ -22,6 +22,9 @@ const translations = {
     "nav.fundWallet": "Fund Wallet",
     "nav.selectPaymentMethod": "Select Payment Method",
     "nav.close": "Close",
+    "nav.language": "Language",
+    "nav.logout": "Logout",
+    "nav.fundWalletDescription": "Minimum top-up amount is ",
     "landing.sampleResult": "Sample result",
     "landing.login": "Login",
     "landing.verifyNinNow": "Verify NIN Now",
@@ -31,7 +34,7 @@ const translations = {
     "landing.verifyVehicleNow": "Verify Vehicle Now",
     "home.hero.titlePrefix": "Verify your identity in",
     "home.hero.titleCountry": "Uganda.",
-    "home.hero.titleSuffix": "Fast, secure and trusted.",
+    "home.hero.titleSuffix": "Fast, Secure and Trusted.",
     "home.hero.subtitle":
       "Official identity verification services for individuals and businesses across Uganda and the diaspora.",
     "home.hero.verifyNationalId": "Verify National ID",
@@ -99,7 +102,8 @@ const translations = {
     "ninLogin.fieldDateOfBirth": "Date of Birth",
     "ninLogin.verified": "VERIFIED",
     "ninLogin.verifiedOn": "Verified on 15 May, 2025, 12:45 PM",
-    "ninLogin.resultDisclaimer": "Results are based on data available at the time of verification.",
+    "ninLogin.resultDisclaimer":
+      "Results are based on data available at the time of verification.",
     "verifyLogin.backToHome": "← Back to Home",
     "verifyLogin.register": "Register",
     "verifyLogin.welcomeBack": "Welcome back",
@@ -110,12 +114,14 @@ const translations = {
     "verify.step.consent": "Consent",
     "verify.step.result": "Result",
     "verify.search.title": "Enter search details",
-    "verify.search.subtitle": "Provide the details of the individual you want to verify.",
+    "verify.search.subtitle":
+      "Provide the details of the individual you want to verify.",
     "verify.search.idType": "ID Type",
     "verify.search.selectBureaus": "Select Credit Bureau(s)",
     "verify.search.discountApplied": "🎉 All 3 Bureaus Discount Applied: -",
     "verify.search.youWillGet": "You will get",
-    "verify.search.dataSecure": "Your data is secure and used only for verification.",
+    "verify.search.dataSecure":
+      "Your data is secure and used only for verification.",
     "verify.search.amount": "Amount",
     "verify.search.loading": "Loading...",
     "verify.search.serviceFee": "Service fee",
@@ -146,16 +152,21 @@ const translations = {
     "verify.payment.securedPayment": "Secured and encrypted payment",
     "verify.payment.back": "Back",
     "verify.payment.sampleResult": "Sample Result",
-    "verify.payment.sampleSub": "Here's an example of what your verification result will look like.",
+    "verify.payment.sampleSub":
+      "Here's an example of what your verification result will look like.",
     "verify.payment.verified": "Verified",
     "verify.processing.title": "Processing Your Verification",
-    "verify.processing.subtitle": "Please wait while we verify your information. This usually takes less than a minute.",
+    "verify.processing.subtitle":
+      "Please wait while we verify your information. This usually takes less than a minute.",
     "verify.consent.title": "Awaiting Consent",
-    "verify.consent.description": "We have sent a consent request to the data subject and are currently awaiting their response. An email will be sent to you regarding the status of your request.",
-    "verify.consent.retention": "The data subject's information will be retained for 24 hours from the moment they grant consent. This page will automatically update when consent is granted.",
+    "verify.consent.description":
+      "We have sent a consent request to the data subject and are currently awaiting their response. An email will be sent to you regarding the status of your request.",
+    "verify.consent.retention":
+      "The data subject's information will be retained for 24 hours from the moment they grant consent. This page will automatically update when consent is granted.",
     "verify.consent.returnDashboard": "Return to Dashboard",
     "verify.result.title": "Verification Complete!",
-    "verify.result.success": "Your verification has been completed successfully.",
+    "verify.result.success":
+      "Your verification has been completed successfully.",
     "verify.result.summary": "Verification Summary",
     "verify.result.service": "Service",
     "verify.result.amountPaid": "Amount Paid",
@@ -173,7 +184,8 @@ const translations = {
     "verify.disclaimer.privacyPolicy": "Privacy Policy",
     "verify.disclaimer.subtitle": "Please review before proceeding",
     "verify.disclaimer.confirm": "I Understand, Continue",
-    "verify.disclaimer.resultDisclaimer": "Results are based on data available at the time of verification.",
+    "verify.disclaimer.resultDisclaimer":
+      "Results are based on data available at the time of verification.",
     "verify.disclaimer.cancel": "Cancel",
   },
   SW: {
@@ -199,6 +211,9 @@ const translations = {
     "nav.fundWallet": "Weka Fedha kwenye Mkoba",
     "nav.selectPaymentMethod": "Chagua Njia ya Malipo",
     "nav.close": "Funga",
+    "nav.language": "Lugha",
+    "nav.logout": "Toka",
+    "nav.fundWalletDescription": "Kiwango cha chini cha kuweka ni ",
     "landing.sampleResult": "Mfano wa Matokeo",
     "landing.login": "Ingia",
     "landing.verifyNinNow": "Thibitisha NIN Sasa",
@@ -270,7 +285,8 @@ const translations = {
     "ninLogin.noAccount": "Huna akaunti?",
     "ninLogin.registerHere": "Jisajili hapa",
     "ninLogin.sampleBadge": "Huu ni mfano tu",
-    "ninLogin.sampleSubtitle": "Tazama mfano wa matokeo ya uthibitishaji wa NIN.",
+    "ninLogin.sampleSubtitle":
+      "Tazama mfano wa matokeo ya uthibitishaji wa NIN.",
     "ninLogin.fieldFullName": "Jina Kamili",
     "ninLogin.fieldPhoneNumber": "Nambari ya Simu",
     "ninLogin.fieldNationalId": "Kitambulisho cha Taifa",
@@ -278,7 +294,8 @@ const translations = {
     "ninLogin.fieldDateOfBirth": "Tarehe ya Kuzaliwa",
     "ninLogin.verified": "IMETHIBITISHWA",
     "ninLogin.verifiedOn": "Imethibitishwa tarehe 15 Mei, 2025, 12:45 PM",
-    "ninLogin.resultDisclaimer": "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
+    "ninLogin.resultDisclaimer":
+      "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
     "verifyLogin.backToHome": "← Rudi Nyumbani",
     "verifyLogin.register": "Jisajili",
     "verifyLogin.welcomeBack": "Karibu tena",
@@ -294,7 +311,8 @@ const translations = {
     "verify.search.selectBureaus": "Chagua Ofisi za Mikopo",
     "verify.search.discountApplied": "🎉 Punguzo la Ofisi Zote 3 Limetumika: -",
     "verify.search.youWillGet": "Utapata",
-    "verify.search.dataSecure": "Taarifa zako ziko salama na zinatumika kwa uthibitishaji pekee.",
+    "verify.search.dataSecure":
+      "Taarifa zako ziko salama na zinatumika kwa uthibitishaji pekee.",
     "verify.search.amount": "Kiasi",
     "verify.search.loading": "Inapakia...",
     "verify.search.serviceFee": "Ada ya huduma",
@@ -304,7 +322,8 @@ const translations = {
     "verify.search.totalToBePaid": "Jumla ya kulipwa",
     "verify.search.continueToPayment": "Endelea kwa Malipo",
     "verify.search.clear": "Futa",
-    "verify.error.selectBureau": "Tafadhali chagua angalau ofisi moja ya mikopo.",
+    "verify.error.selectBureau":
+      "Tafadhali chagua angalau ofisi moja ya mikopo.",
     "verify.error.fillField": "Tafadhali jaza angalau sehemu moja.",
     "verify.error.fillRequired": "Tafadhali jaza sehemu zote zinazohitajika.",
     "verify.payment.title": "Njia ya Malipo",
@@ -325,13 +344,17 @@ const translations = {
     "verify.payment.securedPayment": "Malipo salama na yaliyosimbwa",
     "verify.payment.back": "Nyuma",
     "verify.payment.sampleResult": "Mfano wa Matokeo",
-    "verify.payment.sampleSub": "Huu ni mfano wa jinsi matokeo yako ya uthibitishaji yatakavyokuwa.",
+    "verify.payment.sampleSub":
+      "Huu ni mfano wa jinsi matokeo yako ya uthibitishaji yatakavyokuwa.",
     "verify.payment.verified": "Imethibitishwa",
     "verify.processing.title": "Inachakata Uthibitishaji Wako",
-    "verify.processing.subtitle": "Tafadhali subiri huku tukithibitisha taarifa zako. Kwa kawaida huchukua chini ya dakika moja.",
+    "verify.processing.subtitle":
+      "Tafadhali subiri huku tukithibitisha taarifa zako. Kwa kawaida huchukua chini ya dakika moja.",
     "verify.consent.title": "Inasubiri Idhini",
-    "verify.consent.description": "Tumetuma ombi la idhini kwa mhusika na kwa sasa tunasubiri majibu yao. Barua pepe itatumwa kwako kuhusu hali ya ombi lako.",
-    "verify.consent.retention": "Taarifa za mhusika zitahifadhiwa kwa saa 24 kuanzia wakati wanapotoa idhini. Ukurasa huu utasasishwa kiotomatiki idhini inapotolewa.",
+    "verify.consent.description":
+      "Tumetuma ombi la idhini kwa mhusika na kwa sasa tunasubiri majibu yao. Barua pepe itatumwa kwako kuhusu hali ya ombi lako.",
+    "verify.consent.retention":
+      "Taarifa za mhusika zitahifadhiwa kwa saa 24 kuanzia wakati wanapotoa idhini. Ukurasa huu utasasishwa kiotomatiki idhini inapotolewa.",
     "verify.consent.returnDashboard": "Rudi kwenye Dashibodi",
     "verify.result.title": "Uthibitishaji Umekamilika!",
     "verify.result.success": "Uthibitishaji wako umekamilika kwa mafanikio.",
@@ -352,7 +375,8 @@ const translations = {
     "verify.disclaimer.privacyPolicy": "Sera ya Faragha",
     "verify.disclaimer.subtitle": "Tafadhali kagua kabla ya kuendelea",
     "verify.disclaimer.confirm": "Naelewa, Endelea",
-    "verify.disclaimer.resultDisclaimer": "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
+    "verify.disclaimer.resultDisclaimer":
+      "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
     "verify.disclaimer.cancel": "Ghairi",
   },
 };

@@ -67,7 +67,7 @@ export const HeroStrip = styled.div`
 export const HeroBgImage = styled.img`
   position: absolute;
   right: 0;
-  top: 60%;
+  top: 65%;
   transform: translateY(-50%);
   height: 100%;
   max-height: 530px;
@@ -145,6 +145,9 @@ export const HeroTitle = styled.h1`
   margin-bottom: 24px;
   span {
     color: var(--ec-primary);
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
   }
   @media screen and (max-width: 960px) {
     font-size: 40px;

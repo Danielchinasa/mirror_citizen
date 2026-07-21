@@ -1,5 +1,4 @@
 import React from "react";
-import NinNavbar from "../../components/NinNavbar/NinNavbar";
 import NinHero from "./NinHero";
 import NinTrustBar from "./NinTrustBar";
 import NinBenefits from "./NinBenefits";
@@ -13,9 +12,8 @@ import { PageWrapper } from "./NinLanding.elements";
 const NinVerificationPage = () => {
   return (
     <PageWrapper>
-      <NinNavbar />
       <NinHero />
-      <NinTrustBar />
+      {/* <NinTrustBar /> */}
       <NinBenefits />
       <NinHowItWorks />
       <NinLoginSample />

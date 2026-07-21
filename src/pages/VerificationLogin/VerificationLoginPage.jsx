@@ -14,16 +14,9 @@ import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
 import { useLocale } from "../../components/LocaleProvider";
-import Logo from "../../images/uganda_logo.png";
-import LogoWhite from "../../images/uganda_dark.png";
-import { useTheme } from "../../components/ThemeProvider";
 
 import {
   PageWrapper,
-  LoginNav,
-  NavBrand,
-  NavLinks,
-  NavLink,
   MainContent,
   LoginCard,
   LoginTitle,
@@ -311,25 +304,9 @@ const VerificationLoginPage = () => {
     }
   };
   const { t } = useLocale();
-  const { isDark } = useTheme();
 
   return (
     <PageWrapper>
-      <LoginNav>
-        <Link to="/">
-          <img
-            src={isDark ? LogoWhite : Logo}
-            alt="Logo"
-            width={130}
-            style={{ marginTop: "10px", cursor: "pointer" }}
-          />
-        </Link>
-        <NavLinks>
-          <NavLink to="/">{t("verifyLogin.backToHome")}</NavLink>
-          <NavLink to="/individual/sign-up/1">{t("verifyLogin.register")}</NavLink>
-        </NavLinks>
-      </LoginNav>
-
       <MainContent>
         <LoginCard style={{ position: "relative" }}>
           {loading && (
