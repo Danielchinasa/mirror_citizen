@@ -14,6 +14,7 @@ import {
   FaWallet,
   FaIdCard,
   FaInfoCircle,
+  FaCarAlt,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
@@ -2257,13 +2258,15 @@ const VerifyPage = () => {
             <PopupBody>
               <ResultCardPopup>
                 <ResultTopPopup>
-                  <ResultPhotoPopup>
+                  <ResultPhotoPopup $isVehicle={type === "vehicle"}>
                     {(() => {
                       const data = verificationResult?.data;
                       if (!data) return <FaUserCircle />;
 
                       // Try multiple possible keys for image data
                       let photoSrc =
+                        data.vehicleImage ||
+                        data.previewImageURL ||
                         data.photo ||
                         data.signature ||
                         data.image ||
@@ -2278,7 +2281,7 @@ const VerifyPage = () => {
 
                       if (photoSrc) {
                         // Add data URI prefix if it's raw base64
-                        if (!photoSrc.startsWith("data:")) {
+                        if (!photoSrc.startsWith("data:") && !photoSrc.startsWith("http")) {
                           // Detect image type from base64 signature
                           if (
                             photoSrc.startsWith("/9j/") ||
@@ -2294,12 +2297,12 @@ const VerifyPage = () => {
                         return (
                           <img
                             src={photoSrc}
-                            alt="Verification photo"
+                            alt={type === "vehicle" ? "Vehicle image" : "Verification photo"}
                             style={{
                               width: "100%",
                               height: "100%",
-                              borderRadius: "50%",
-                              objectFit: "cover",
+                              borderRadius: type === "vehicle" ? "8px" : "50%",
+                              objectFit: type === "vehicle" ? "contain" : "cover",
                             }}
                             onError={(e) => {
                               console.warn(
@@ -2310,7 +2313,7 @@ const VerifyPage = () => {
                           />
                         );
                       }
-                      return <FaUserCircle />;
+                      return type === "vehicle" ? <FaCarAlt /> : <FaUserCircle />;
                     })()}
                   </ResultPhotoPopup>
                   <ResultGridPopup>

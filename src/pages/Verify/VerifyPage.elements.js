@@ -380,9 +380,9 @@ export const ResultTopPopup = styled.div`
 `;
 
 export const ResultPhotoPopup = styled.div`
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
+  width: ${(props) => (props.$isVehicle ? "160px" : "90px")};
+  height: ${(props) => (props.$isVehicle ? "120px" : "90px")};
+  border-radius: ${(props) => (props.$isVehicle ? "10px" : "50%")};
   background: var(--ec-bg-secondary);
   display: flex;
   align-items: center;
@@ -390,6 +390,7 @@ export const ResultPhotoPopup = styled.div`
   color: var(--ec-text);
   font-size: 32px;
   flex-shrink: 0;
+  overflow: hidden;
 `;
 
 export const ResultGridPopup = styled.div`
