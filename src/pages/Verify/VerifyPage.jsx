@@ -212,8 +212,19 @@ const VerifyPage = () => {
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
   const STEPS = requiresConsent
-    ? [t("verify.step.search"), t("verify.step.payment"), t("verify.step.processing"), t("verify.step.consent"), t("verify.step.result")]
-    : [t("verify.step.search"), t("verify.step.payment"), t("verify.step.processing"), t("verify.step.result")];
+    ? [
+        t("verify.step.search"),
+        t("verify.step.payment"),
+        t("verify.step.processing"),
+        t("verify.step.consent"),
+        t("verify.step.result"),
+      ]
+    : [
+        t("verify.step.search"),
+        t("verify.step.payment"),
+        t("verify.step.processing"),
+        t("verify.step.result"),
+      ];
   const RESULT_STEP = requiresConsent ? 4 : 3;
   const CONSENT_STEP = 3;
 
@@ -916,7 +927,7 @@ const VerifyPage = () => {
 
         // Check if it's a vehicle verification
         if (result.vehicleName || result.vehicleSpecification || result.vin) {
-          resultRoute = "/vehicle-profile-result";
+          resultRoute = "/main-dashboard";
         } else {
           resultRoute = "/main-dashboard";
         }
@@ -1183,9 +1194,7 @@ const VerifyPage = () => {
   const renderSearchStep = () => (
     <FormCard>
       <FormCardTitle>{t("verify.search.title")}</FormCardTitle>
-      <FormCardSub>
-        {t("verify.search.subtitle")}
-      </FormCardSub>
+      <FormCardSub>{t("verify.search.subtitle")}</FormCardSub>
 
       {error && <ErrorAlert>{error}</ErrorAlert>}
 
@@ -1333,7 +1342,8 @@ const VerifyPage = () => {
                     fontWeight: 600,
                   }}
                 >
-                  {t("verify.search.discountApplied")}{currencySymbol}
+                  {t("verify.search.discountApplied")}
+                  {currencySymbol}
                   {(isGHS
                     ? config.allBureausDiscount.ngn
                     : config.allBureausDiscount.usd
@@ -1396,7 +1406,9 @@ const VerifyPage = () => {
                 </PriceRow>
                 {discount > 0 && (
                   <PriceRow>
-                    <span style={{ color: "#b38b00" }}>{t("verify.search.discount")}</span>
+                    <span style={{ color: "#b38b00" }}>
+                      {t("verify.search.discount")}
+                    </span>
                     <span style={{ color: "#b38b00" }}>
                       -{currencySymbol}
                       {discount.toLocaleString(undefined, {
@@ -1469,7 +1481,11 @@ const VerifyPage = () => {
                   style={{ height: 16, objectFit: "contain" }}
                 />
               )}
-              <PaymentOptionLabel>{method.id === "wallet" ? t("verify.payment.wallet") : method.label}</PaymentOptionLabel>
+              <PaymentOptionLabel>
+                {method.id === "wallet"
+                  ? t("verify.payment.wallet")
+                  : method.label}
+              </PaymentOptionLabel>
               {method.id === "wallet" && (
                 <span
                   style={{
@@ -1593,9 +1609,7 @@ const VerifyPage = () => {
         <SampleHeader>
           <SampleTitle>{t("verify.payment.sampleResult")}</SampleTitle>
         </SampleHeader>
-        <SampleSub>
-          {t("verify.payment.sampleSub")}
-        </SampleSub>
+        <SampleSub>{t("verify.payment.sampleSub")}</SampleSub>
         <SampleResultCard>
           <SampleAvatar>
             <FaUserCircle />
@@ -1625,9 +1639,7 @@ const VerifyPage = () => {
     <ProcessingWrapper>
       <ProcessingSpinner />
       <ProcessingText>{t("verify.processing.title")}</ProcessingText>
-      <ProcessingSub>
-        {t("verify.processing.subtitle")}
-      </ProcessingSub>
+      <ProcessingSub>{t("verify.processing.subtitle")}</ProcessingSub>
     </ProcessingWrapper>
   );
 
@@ -1875,8 +1887,7 @@ const VerifyPage = () => {
           </div>
           <ProcessingText>{resultTitle}</ProcessingText>
           <ProcessingSub>
-            {resultDetail ||
-              t("verify.result.success")}
+            {resultDetail || t("verify.result.success")}
           </ProcessingSub>
         </div>
 
@@ -2172,7 +2183,8 @@ const VerifyPage = () => {
       {/* Hero */}
       <HeroSection>
         <Breadcrumb>
-          <span>{t("verify.hero.home")}</span> / <span>{config.breadcrumb[0]}</span> /{" "}
+          <span>{t("verify.hero.home")}</span> /{" "}
+          <span>{config.breadcrumb[0]}</span> /{" "}
           <span>{config.breadcrumb[1]}</span>
         </Breadcrumb>
         <HeroInner>
@@ -2425,7 +2437,9 @@ const VerifyPage = () => {
                 </PopupIcon>
                 <div>
                   <PopupTitle>{t("verify.disclaimer.title")}</PopupTitle>
-                  <PopupSubtitle>{t("verify.disclaimer.subtitle")}</PopupSubtitle>
+                  <PopupSubtitle>
+                    {t("verify.disclaimer.subtitle")}
+                  </PopupSubtitle>
                 </div>
               </PopupMeta>
               <PopupCloseButton onClick={() => setShowDisclaimer(false)}>
