@@ -94,7 +94,7 @@ const translations = {
     "ninLogin.noAccount": "Don't have an account?",
     "ninLogin.registerHere": "Register here",
     "ninLogin.sampleBadge": "This is a sample only",
-    "ninLogin.sampleSubtitle": "See an example of a NIN verification result.",
+    "ninLogin.sampleSubtitle": "See an example of a verification result.",
     "ninLogin.fieldFullName": "Full Name",
     "ninLogin.fieldPhoneNumber": "Phone Number",
     "ninLogin.fieldNationalId": "National ID",
@@ -285,8 +285,7 @@ const translations = {
     "ninLogin.noAccount": "Huna akaunti?",
     "ninLogin.registerHere": "Jisajili hapa",
     "ninLogin.sampleBadge": "Huu ni mfano tu",
-    "ninLogin.sampleSubtitle":
-      "Tazama mfano wa matokeo ya uthibitishaji wa NIN.",
+    "ninLogin.sampleSubtitle": "Tazama mfano wa matokeo ya uthibitishaji.",
     "ninLogin.fieldFullName": "Jina Kamili",
     "ninLogin.fieldPhoneNumber": "Nambari ya Simu",
     "ninLogin.fieldNationalId": "Kitambulisho cha Taifa",

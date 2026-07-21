@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
-import ninHeroImg from "../../images/nin_verification_hero2.png";
+import ninHeroImg from "../../images/uganda.png";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -51,8 +51,8 @@ const NinHero = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              Verify your Ugandan <span>National ID</span> online. Fast,
-              secure and trusted.
+              Verify your Ugandan <span>National ID</span> online. Fast, secure
+              and trusted.
             </HeroTitle>
             <HeroSubtitle>
               Instantly verify official National ID details from the National
