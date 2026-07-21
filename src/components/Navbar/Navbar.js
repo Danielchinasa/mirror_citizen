@@ -162,6 +162,29 @@ function Navbar() {
   const menu = (
     <Menu>
       <Menu.SubMenu
+        key="language"
+        title={mobileLanguage === "SW" ? "Language" : "Language"}
+      >
+        <Menu.Item
+          key="lang-en"
+          onClick={() => {
+            handleLanguageChange("EN");
+            closeMobileMenu();
+          }}
+        >
+          EN
+        </Menu.Item>
+        <Menu.Item
+          key="lang-sw"
+          onClick={() => {
+            handleLanguageChange("SW");
+            closeMobileMenu();
+          }}
+        >
+          SW
+        </Menu.Item>
+      </Menu.SubMenu>
+      <Menu.SubMenu
         key="country"
         title={
           <span
@@ -244,6 +267,19 @@ function Navbar() {
         </Menu.Item>
       </Menu.SubMenu>
       <Menu.Divider />
+      <Menu.Item key="theme">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <ThemeToggle />
+        </div>
+      </Menu.Item>
+      <Menu.Divider />
       {items.map((item) => (
         <Menu.Item key={item.key} onClick={closeMobileMenu}>
           {item.label}
@@ -255,6 +291,7 @@ function Navbar() {
   const UserDropdown = () => {
     return (
       <Dropdown
+        key={mobileLanguage}
         overlay={menu}
         trigger={["click"]}
         visible={visible}
@@ -1223,7 +1260,10 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal} style={{ color: "rgba(255,255,255,0.85)" }}>
+                        <p
+                          onClick={showModal}
+                          style={{ color: "rgba(255,255,255,0.85)" }}
+                        >
                           Wallet Balance:
                           <span style={{ color: "#DD0201" }}>
                             {" "}
@@ -1453,8 +1493,14 @@ function Navbar() {
                             onClick={() => handleLanguageChange("EN")}
                             style={{
                               border: "none",
-                              background: mobileLanguage === "EN" ? "#DD0201" : "transparent",
-                              color: mobileLanguage === "EN" ? "#fff" : "rgba(255,255,255,0.7)",
+                              background:
+                                mobileLanguage === "EN"
+                                  ? "#DD0201"
+                                  : "transparent",
+                              color:
+                                mobileLanguage === "EN"
+                                  ? "#fff"
+                                  : "rgba(255,255,255,0.7)",
                               fontFamily: "Nunito, sans-serif",
                               fontSize: 13,
                               fontWeight: 700,
@@ -1472,8 +1518,14 @@ function Navbar() {
                             onClick={() => handleLanguageChange("SW")}
                             style={{
                               border: "none",
-                              background: mobileLanguage === "SW" ? "#DD0201" : "transparent",
-                              color: mobileLanguage === "SW" ? "#fff" : "rgba(255,255,255,0.7)",
+                              background:
+                                mobileLanguage === "SW"
+                                  ? "#DD0201"
+                                  : "transparent",
+                              color:
+                                mobileLanguage === "SW"
+                                  ? "#fff"
+                                  : "rgba(255,255,255,0.7)",
                               fontFamily: "Nunito, sans-serif",
                               fontSize: 13,
                               fontWeight: 700,
@@ -1504,7 +1556,7 @@ function Navbar() {
                   )
                 : isAuthenticated && (
                     <>
-                      <div
+                      {/* <div
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
@@ -1530,7 +1582,7 @@ function Navbar() {
                           </PublicLanguageToggle>
                         </PublicLanguageToggleGroup>
                         <ThemeToggle />
-                      </div>
+                      </div> */}
                       <div
                         style={{
                           marginTop: "20px",
