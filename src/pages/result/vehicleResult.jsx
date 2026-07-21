@@ -39,7 +39,12 @@ const VehicleResult = () => {
         );
 
         // API returns response.data which contains the actual result
-        setResultData(response.data || response);
+        // Handle both old format (data directly) and new failover format (vehicle.data wrapper)
+        const rawData = response.data || response;
+        const normalizedData = rawData.vehicle?.data
+          ? { data: rawData.vehicle.data, status: rawData.vehicle.success }
+          : rawData;
+        setResultData(normalizedData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching vehicle data:", error);
@@ -72,25 +77,77 @@ const VehicleResult = () => {
     );
   }
 
-  const { data, status, resultText, provider } = resultData;
+  const { data: vehicleFields, status } = resultData;
 
+  // Direct fields from API (available in both old and new provider formats)
   const {
     vin,
     vehicleName,
     vehicleAge,
     vehicleImage,
-    vehicleSpecification = {},
-    vehicle = {},
     verificationStatus,
     verificationReference,
-    dsvi = {},
-    billingInfo = {},
-  } = data;
+    year: directYear,
+    make: directMake,
+    model: directModel,
+    trim: directTrim,
+    engine: directEngine,
+    transmission: directTransmission,
+    fuelType: directFuelType,
+    madeIn: directMadeIn,
+  } = vehicleFields || {};
 
-  const spec = vehicleSpecification;
-  const equipments = vehicle.vehicle_equipments || [];
-  const warranty = vehicle.vehicle_warranty || [];
-  const fuelDetails = vehicle.fuel_details || {};
+  // Parse rawResponse for the rich vehicle data from the old provider
+  let rawParsed = {};
+  try {
+    rawParsed =
+      typeof vehicleFields?.rawResponse === "string"
+        ? JSON.parse(vehicleFields.rawResponse)
+        : vehicleFields?.rawResponse || {};
+  } catch {
+    rawParsed = {};
+  }
+
+  // rawResponse has: { data: { vehicle_specification, ... }, dsvi: {...}, billing_info: {...} }
+  const rawParsedData = rawParsed.data || rawParsed;
+
+  // Convert spec array [{year: "2013"}, {make: "Toyota"}, ...] to a flat object
+  const specArray = Array.isArray(rawParsedData.vehicle_specification)
+    ? rawParsedData.vehicle_specification
+    : [];
+  const spec = {};
+  specArray.forEach((item) => {
+    const entries = Object.entries(item);
+    if (entries.length > 0) {
+      const [key, value] = entries[0];
+      spec[key] = value;
+    }
+  });
+
+  // Helper: get a value from spec first, then from direct data fields
+  const getVal = (specKey, directVal) => {
+    return spec[specKey] || directVal || "";
+  };
+
+  // Rich data from rawResponse (some at root, some inside data)
+  const equipments = rawParsedData.vehicle_equipments || [];
+  const warranty = rawParsedData.vehicle_warranty || [];
+  const fuelDetails = rawParsedData.fuel_details || {};
+  const dsvi = rawParsed.dsvi || rawParsedData.dsvi || {};
+  const billingInfo = rawParsed.billing_info || {};
+
+  // Resolved display values using both spec + direct fallback
+  const displayYear = getVal("year", directYear);
+  const displayMake = getVal("make", directMake);
+  const displayModel = getVal("model", directModel);
+  const displayTrim = getVal("trim", directTrim);
+  const displayEngine = getVal("engine", directEngine);
+  const displayTransmission = getVal("transmission", directTransmission);
+  const displayFuelType = getVal("fuel_type", directFuelType);
+  const displayMadeIn = getVal("made_in", directMadeIn);
+
+  // Image: use vehicleImage from data or image from rawResponse
+  const displayImage = vehicleImage || rawParsedData.vehicle_image || "";
 
   const getRiskColor = (label) => {
     const l = (label || "").toLowerCase();
@@ -110,8 +167,8 @@ const VehicleResult = () => {
         {/* Hero Section */}
         <HeroCard>
           <HeroImageSection>
-            {vehicleImage ? (
-              <VehicleImage src={vehicleImage} alt={vehicleName} />
+            {displayImage ? (
+              <VehicleImage src={displayImage} alt={vehicleName} />
             ) : (
               <VehiclePlaceholder>
                 <FaCar />
@@ -127,38 +184,38 @@ const VehicleResult = () => {
               </StatusBadge>
             )}
             <MetaGrid>
-              <MetaItem>
-                <MetaLabel>
-                  <FaCalendarAlt /> Year
-                </MetaLabel>
-                <MetaValue>
-                  {spec.year ||
-                    vehicle.vehicle_specification?.find((s) => s.year)?.year ||
-                    "-"}
-                </MetaValue>
-              </MetaItem>
-              <MetaItem>
-                <MetaLabel>
-                  <FaCar /> Category
-                </MetaLabel>
-                <MetaValue>{spec.category || "-"}</MetaValue>
-              </MetaItem>
-              <MetaItem>
-                <MetaLabel>
-                  <FaTachometerAlt /> Age
-                </MetaLabel>
-                <MetaValue>
-                  {vehicleAge ? `${vehicleAge} years` : "-"}
-                </MetaValue>
-              </MetaItem>
-              <MetaItem>
-                <MetaLabel>
-                  <FaGasPump /> Fuel
-                </MetaLabel>
-                <MetaValue>
-                  {spec.fuel_type || fuelDetails.Fuel_Type || "-"}
-                </MetaValue>
-              </MetaItem>
+              {displayYear && (
+                <MetaItem>
+                  <MetaLabel>
+                    <FaCalendarAlt /> Year
+                  </MetaLabel>
+                  <MetaValue>{displayYear}</MetaValue>
+                </MetaItem>
+              )}
+              {spec.category && (
+                <MetaItem>
+                  <MetaLabel>
+                    <FaCar /> Category
+                  </MetaLabel>
+                  <MetaValue>{spec.category}</MetaValue>
+                </MetaItem>
+              )}
+              {vehicleAge && (
+                <MetaItem>
+                  <MetaLabel>
+                    <FaTachometerAlt /> Age
+                  </MetaLabel>
+                  <MetaValue>{vehicleAge} years</MetaValue>
+                </MetaItem>
+              )}
+              {displayFuelType && (
+                <MetaItem>
+                  <MetaLabel>
+                    <FaGasPump /> Fuel
+                  </MetaLabel>
+                  <MetaValue>{displayFuelType}</MetaValue>
+                </MetaItem>
+              )}
             </MetaGrid>
             {dsvi && dsvi.risk_label && (
               <RiskBadge $color={getRiskColor(dsvi.risk_label)}>
@@ -169,72 +226,103 @@ const VehicleResult = () => {
           </HeroContent>
         </HeroCard>
 
-        {/* Quick Specs */}
-        <SectionCard>
-          <SectionTitle>Key Specifications</SectionTitle>
-          <SpecGrid>
-            <SpecItem>
-              <SpecLabel>Make</SpecLabel>
-              <SpecValue>{spec.make || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Model</SpecLabel>
-              <SpecValue>{spec.model || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Trim</SpecLabel>
-              <SpecValue>{spec.trim || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Engine</SpecLabel>
-              <SpecValue>{spec.engine || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Transmission</SpecLabel>
-              <SpecValue>{spec.transmission || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Drivetrain</SpecLabel>
-              <SpecValue>{spec.drivetrain || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Doors</SpecLabel>
-              <SpecValue>{spec.doors || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Seating</SpecLabel>
-              <SpecValue>{spec.standard_seating || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Made In</SpecLabel>
-              <SpecValue>{spec.made_in || "-"}</SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>City Mileage</SpecLabel>
-              <SpecValue>
-                {spec.city_mileage || fuelDetails.City_Mileage || "-"}
-              </SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Highway Mileage</SpecLabel>
-              <SpecValue>
-                {spec.highway_mileage || fuelDetails.Highway_Mileage || "-"}
-              </SpecValue>
-            </SpecItem>
-            <SpecItem>
-              <SpecLabel>Fuel Capacity</SpecLabel>
-              <SpecValue>
-                {spec.fuel_capacity || fuelDetails.Fuel_Capacity || "-"}
-              </SpecValue>
-            </SpecItem>
-          </SpecGrid>
-        </SectionCard>
+        {/* Quick Specs - only show items that have data */}
+        {(displayMake || displayModel || displayTrim || displayEngine ||
+          displayTransmission || spec.drivetrain || spec.doors ||
+          spec.standard_seating || displayMadeIn || spec.city_mileage ||
+          fuelDetails.City_Mileage || spec.fuel_capacity ||
+          fuelDetails.Fuel_Capacity) && (
+          <SectionCard>
+            <SectionTitle>Key Specifications</SectionTitle>
+            <SpecGrid>
+              {displayMake && (
+                <SpecItem>
+                  <SpecLabel>Make</SpecLabel>
+                  <SpecValue>{displayMake}</SpecValue>
+                </SpecItem>
+              )}
+              {displayModel && (
+                <SpecItem>
+                  <SpecLabel>Model</SpecLabel>
+                  <SpecValue>{displayModel}</SpecValue>
+                </SpecItem>
+              )}
+              {displayTrim && (
+                <SpecItem>
+                  <SpecLabel>Trim</SpecLabel>
+                  <SpecValue>{displayTrim}</SpecValue>
+                </SpecItem>
+              )}
+              {displayEngine && (
+                <SpecItem>
+                  <SpecLabel>Engine</SpecLabel>
+                  <SpecValue>{displayEngine}</SpecValue>
+                </SpecItem>
+              )}
+              {displayTransmission && (
+                <SpecItem>
+                  <SpecLabel>Transmission</SpecLabel>
+                  <SpecValue>{displayTransmission}</SpecValue>
+                </SpecItem>
+              )}
+              {spec.drivetrain && (
+                <SpecItem>
+                  <SpecLabel>Drivetrain</SpecLabel>
+                  <SpecValue>{spec.drivetrain}</SpecValue>
+                </SpecItem>
+              )}
+              {spec.doors && (
+                <SpecItem>
+                  <SpecLabel>Doors</SpecLabel>
+                  <SpecValue>{spec.doors}</SpecValue>
+                </SpecItem>
+              )}
+              {spec.standard_seating && (
+                <SpecItem>
+                  <SpecLabel>Seating</SpecLabel>
+                  <SpecValue>{spec.standard_seating}</SpecValue>
+                </SpecItem>
+              )}
+              {displayMadeIn && (
+                <SpecItem>
+                  <SpecLabel>Made In</SpecLabel>
+                  <SpecValue>{displayMadeIn}</SpecValue>
+                </SpecItem>
+              )}
+              {(spec.city_mileage || fuelDetails.City_Mileage) && (
+                <SpecItem>
+                  <SpecLabel>City Mileage</SpecLabel>
+                  <SpecValue>
+                    {spec.city_mileage || fuelDetails.City_Mileage}
+                  </SpecValue>
+                </SpecItem>
+              )}
+              {(spec.highway_mileage || fuelDetails.Highway_Mileage) && (
+                <SpecItem>
+                  <SpecLabel>Highway Mileage</SpecLabel>
+                  <SpecValue>
+                    {spec.highway_mileage || fuelDetails.Highway_Mileage}
+                  </SpecValue>
+                </SpecItem>
+              )}
+              {(spec.fuel_capacity || fuelDetails.Fuel_Capacity) && (
+                <SpecItem>
+                  <SpecLabel>Fuel Capacity</SpecLabel>
+                  <SpecValue>
+                    {spec.fuel_capacity || fuelDetails.Fuel_Capacity}
+                  </SpecValue>
+                </SpecItem>
+              )}
+            </SpecGrid>
+          </SectionCard>
+        )}
 
         {/* Dimensions & Weight */}
         {(spec.curb_weight ||
           spec.overall_length ||
           spec.overall_width ||
-          spec.overall_height) && (
+          spec.overall_height ||
+          spec.wheelbase_length) && (
           <SectionCard>
             <SectionTitle>Dimensions & Weight</SectionTitle>
             <SpecGrid>

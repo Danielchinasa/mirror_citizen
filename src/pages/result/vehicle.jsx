@@ -97,15 +97,19 @@ const Vehicle = () => {
 
         // Handle the response from the post request as needed
 
-        const vehicleData = postResponse.data.data;
+        // Handle both response formats:
+        // - Old provider: postResponse.data.data = { vehicleName, vin, ... }
+        // - New failover: postResponse.data = { vehicle: { data: { vehicleName, vin, ... }, success: true } }
+        const rawData = postResponse.data;
+        const vehicleData = rawData.vehicle?.data || rawData.data || rawData;
 
         setLoading(false);
         // Map API fields to local state (avoid duplicates)
         const vinSpec = vehicleData.vin || "-";
-        const vName = vehicleData.vehicleName || "-";
+        const vName = vehicleData.vehicleName || vehicleData.name || "-";
         const vAge = vehicleData.vehicleAge || "-";
         const vImage =
-          vehicleData.vehicleImage || vehicleData.previewImageURL || "-";
+          vehicleData.vehicleImage || vehicleData.previewImageURL || vehicleData.image || "-";
         const fuel = vehicleData.fuelType || "-";
         const trans = vehicleData.transmission || "-";
         const yr = vehicleData.year || "-";
@@ -119,7 +123,7 @@ const Vehicle = () => {
         const pdfUri = vehicleData.pdfUri || "-";
         const stolenFlag = vehicleData.stolen;
         const vStatus = vehicleData.verificationStatus || "-";
-        const vRef = vehicleData.verificationReference || "-";
+        const vRef = vehicleData.verificationReference || vehicleData.reference || "-";
 
         setVehicleName(vName);
         setVehicleAge(vAge);

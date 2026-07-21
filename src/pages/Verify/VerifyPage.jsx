@@ -849,6 +849,13 @@ const VerifyPage = () => {
         });
         setCurrentStep(1);
         return;
+      } else if (response.vehicle && response.vehicle.success === true) {
+        const vehicleData = response.vehicle.data || response.vehicle;
+        result = vehicleData;
+        resultTitle = "Vehicle Verification Successful";
+        resultDetail =
+          vehicleData.vehicleName || "VIN verification was successful.";
+        resultRoute = "/vehicle-profile-result";
       } else if (
         response?.advance ||
         response?.firstCentral ||
@@ -1537,6 +1544,32 @@ const VerifyPage = () => {
       if (data.status) fields.push({ label: "Status", value: data.status });
     }
 
+    // Vehicle verification
+    if (data.vin || data.vehicleName) {
+      if (data.vehicleName || data.name)
+        fields.push({ label: "Vehicle Name", value: data.vehicleName || data.name });
+      if (data.vin)
+        fields.push({ label: "VIN", value: data.vin });
+      if (data.year)
+        fields.push({ label: "Year", value: data.year });
+      if (data.make)
+        fields.push({ label: "Make", value: data.make });
+      if (data.model)
+        fields.push({ label: "Model", value: data.model });
+      if (data.trim)
+        fields.push({ label: "Trim", value: data.trim });
+      if (data.engine)
+        fields.push({ label: "Engine", value: data.engine });
+      if (data.fuelType)
+        fields.push({ label: "Fuel Type", value: data.fuelType });
+      if (data.transmission)
+        fields.push({ label: "Transmission", value: data.transmission });
+      if (data.verificationStatus)
+        fields.push({ label: "Verification Status", value: data.verificationStatus });
+      if (data.reference)
+        fields.push({ label: "Reference", value: data.reference });
+    }
+
     // Business (API returns: approvedName, rcNumber, registrationDate, address, email, lga, state, classificationId)
     if (data.approvedName || data.companyName || data.company_name) {
       fields.push({
@@ -2170,6 +2203,8 @@ const VerifyPage = () => {
                         const data = verificationResult?.data;
                         if (!data) return <FaUserCircle />;
                         let photoSrc =
+                          data.vehicleImage ||
+                          data.previewImageURL ||
                           data.photo ||
                           data.signature ||
                           data.image ||
@@ -2182,7 +2217,7 @@ const VerifyPage = () => {
                           data.photoUrl ||
                           data.imageUrl;
                         if (photoSrc) {
-                          if (!photoSrc.startsWith("data:")) {
+                          if (!photoSrc.startsWith("data:") && !photoSrc.startsWith("http")) {
                             if (
                               photoSrc.startsWith("/9j/") ||
                               photoSrc.startsWith("iVBORw0KGgo")
