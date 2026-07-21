@@ -51,13 +51,6 @@ const VehicleHero = () => {
   };
   const { t } = useLocale();
 
-  const highlightStyle = {
-    color: "#FD7A00",
-    fontFamily: "inherit",
-    fontSize: "inherit",
-    fontWeight: "inherit",
-  };
-
   return (
     <>
       <HeroWrapper>
@@ -65,14 +58,20 @@ const VehicleHero = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              {t("nin.hero.titlePrefix")}
-              <br />
-              <span style={highlightStyle}>{t("nin.hero.word1")}</span>,{" "}
-              <span style={highlightStyle}>{t("nin.hero.word2")}</span>{" "}
-              {t("nin.hero.and")}{" "}
-              <span style={highlightStyle}>{t("nin.hero.word3")}</span>.
+              {t("vehicle.hero.titlePrefix")}
+              <span
+                style={{
+                  color: "#FD7A00",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                {t("vehicle.hero.titleHighlight")}
+              </span>
+              {t("vehicle.hero.titleSuffix")}
             </HeroTitle>
-            <HeroSubtitle>{t("nin.hero.subtitle")}</HeroSubtitle>
+            <HeroSubtitle>{t("vehicle.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn
                 to="#"
@@ -82,7 +81,7 @@ const VehicleHero = () => {
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                {t("home.hero.verifyNationalId")} <FaArrowRight />
+                {t("vehicle.hero.verifyButton")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
                 See Sample Result <FaEye />

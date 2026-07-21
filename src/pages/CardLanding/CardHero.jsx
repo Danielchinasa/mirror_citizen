@@ -51,13 +51,6 @@ const CardHero = () => {
   };
   const { t } = useLocale();
 
-  const highlightStyle = {
-    color: "#FD7A00",
-    fontFamily: "inherit",
-    fontSize: "inherit",
-    fontWeight: "inherit",
-  };
-
   return (
     <>
       <HeroWrapper>
@@ -65,14 +58,20 @@ const CardHero = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              {t("nin.hero.titlePrefix")}
-              <br />
-              <span style={highlightStyle}>{t("nin.hero.word1")}</span>,{" "}
-              <span style={highlightStyle}>{t("nin.hero.word2")}</span>{" "}
-              {t("nin.hero.and")}{" "}
-              <span style={highlightStyle}>{t("nin.hero.word3")}</span>.
+              {t("card.hero.titlePrefix")}
+              <span
+                style={{
+                  color: "#FD7A00",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                {t("card.hero.titleHighlight")}
+              </span>
+              {t("card.hero.titleSuffix")}
             </HeroTitle>
-            <HeroSubtitle>{t("nin.hero.subtitle")}</HeroSubtitle>
+            <HeroSubtitle>{t("card.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn
                 to="#"
@@ -82,7 +81,7 @@ const CardHero = () => {
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                {t("home.hero.verifyNationalId")} <FaArrowRight />
+                {t("card.hero.verifyButton")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
                 See Sample Result <FaEye />
@@ -132,7 +131,7 @@ const CardHero = () => {
       <SampleResultPopup
         isOpen={showSampleResult}
         onClose={() => setShowSampleResult(false)}
-        type="nin"
+        type="card"
       />
     </>
   );

@@ -845,7 +845,7 @@ const CardLoginSample = () => {
             <SampleBadge>This is a sample only</SampleBadge>
           </SampleHeader>
           <SampleCardSub>
-            See an example of a NIN verification result.
+            See an example of a Card ID verification result.
           </SampleCardSub>
           <ResultCard>
             <ResultTop>

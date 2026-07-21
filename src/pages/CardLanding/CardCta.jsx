@@ -133,7 +133,7 @@ const CardCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your NNI?</CtaTitle>
+          <CtaTitle>Ready to verify your Card ID?</CtaTitle>
           <CtaDesc>
             Join thousands of individuals and businesses that rely on e-citizen
             for fast, accurate and secure identity verification.
@@ -141,7 +141,7 @@ const CardCta = () => {
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify NNI Now <FaArrowRight />
+            Verify Card ID Now <FaArrowRight />
           </CtaButton>
           {/* <CtaPrice>
             <FaCheckCircle /> Starting from <strong>N</strong>600 per

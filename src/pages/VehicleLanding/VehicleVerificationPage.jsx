@@ -12,7 +12,7 @@ const VehicleVerificationPage = () => {
   return (
     <PageWrapper>
       <VehicleHero />
-      <VehicleTrustBar />
+      {/* <VehicleTrustBar /> */}
       <VehicleBenefits />
       <VehicleHowItWorks />
       <VehicleLoginSample />

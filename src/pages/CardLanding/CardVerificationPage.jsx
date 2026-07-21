@@ -12,7 +12,7 @@ const CardVerificationPage = () => {
   return (
     <PageWrapper>
       <CardHero />
-      <CardTrustBar />
+      {/* <CardTrustBar /> */}
       <CardBenefits />
       <CardHowItWorks />
       <CardLoginSample />

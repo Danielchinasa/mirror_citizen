@@ -385,7 +385,7 @@ const Home = () => {
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
-              {t("home.hero.titlePrefix")}{" "}
+              {t("home.hero.titleStart")}{" "}
               <span
                 style={{
                   color: "#FD7A00",
@@ -394,9 +394,30 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                {t("home.hero.titleCountry")}{" "}
+                {t("home.hero.word1")}
               </span>
-              {t("home.hero.titleSuffix")}
+              ,{" "}
+              <span
+                style={{
+                  color: "#FD7A00",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                {t("home.hero.word2")}
+              </span>{" "}
+              {t("home.hero.and")}{" "}
+              <span
+                style={{
+                  color: "#FD7A00",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                }}
+              >
+                {t("home.hero.word3")}
+              </span>
             </HeroTitle>
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
