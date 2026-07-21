@@ -33,6 +33,15 @@ const verificationConfig = {
         type: "text",
         required: true,
       },
+      {
+        name: "subjectPhone",
+        label: "Subject Contact Number (for consent)",
+        placeholder: "Enter subject's phone number",
+        type: "text",
+        maxLength: 15,
+        showCounter: true,
+        required: true,
+      },
     ],
     youWillGet: [
       { icon: FaUser, text: "Full personal details" },
