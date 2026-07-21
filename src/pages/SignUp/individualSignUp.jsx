@@ -3,9 +3,7 @@ import { useDispatch } from "react-redux";
 import { trackEvent } from "../../hooks/analytics";
 
 import {
-  Image,
   Typography,
-  Button,
   Alert,
   notification,
   Space,
@@ -13,12 +11,9 @@ import {
   Row,
   Checkbox,
   Spin,
-  message,
   Divider,
 } from "antd";
 import { useHistory } from "react-router-dom";
-
-import reg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import {
   BtnLink,
   StyledForm,
@@ -506,10 +501,7 @@ const IndividualSignUp = () => {
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Row>
-        <Col span={8} sm={0} xs={0} md={8} lg={8}>
-          <Image src={reg} preview={false} />
-        </Col>
-        <Col span={13} sm={24} xs={24} md={13} lg={13}>
+        <Col span={24} sm={24} xs={24} md={24} lg={24} style={{ maxWidth: 640, margin: "0 auto" }}>
           <div className="p-5">
             <BtnLink to="/sign-up">
               <ArrowLeftOutlined
@@ -670,11 +662,11 @@ const IndividualSignUp = () => {
                     <Alert message={formErrors.email} type="error" showIcon />
                   )}
                   <StyledLabel $token={token}>
-                    Phone number (E.g: +234 81X XXX XXX X)
+                    Phone number (E.g: +233 XX XXX XXXX)
                   </StyledLabel>
                   <PhoneInput
                     $token={token}
-                    country={"ng"}
+                    country={"gh"}
                     value={formData.phoneNumber}
                     onChange={handlePhoneChange}
                     enableSearch
