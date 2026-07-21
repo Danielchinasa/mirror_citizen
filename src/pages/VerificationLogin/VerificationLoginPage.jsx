@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaBars, FaTimes } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -21,6 +21,8 @@ import {
   NavLogo,
   NavLinks,
   NavLink,
+  HamburgerBtn,
+  MobileMenu,
   MainContent,
   LoginCard,
   LoginTitle,
@@ -61,6 +63,7 @@ const VerificationLoginPage = () => {
   const [showPass, setShowPass] = useState(false);
   const [ipAddress, setIpAddress] = useState(null);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -243,9 +246,46 @@ const VerificationLoginPage = () => {
           <img src={Logo} alt="eCitizen" />
         </NavLogo>
         <NavLinks>
+          <NavLink to="/nin-verification">NIN Verification</NavLink>
+          <NavLink to="/credit-profile">Credit Profile</NavLink>
+          <NavLink to="/business-verification">Business</NavLink>
+          <NavLink to="/vehicle-verification">Vehicle</NavLink>
+          <NavLink to="/faq">FAQs</NavLink>
           <NavLink to="/individual/sign-up/1">Register</NavLink>
         </NavLinks>
+        <HamburgerBtn onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+        </HamburgerBtn>
       </LoginNav>
+      <MobileMenu open={mobileMenuOpen}>
+        <Link to="/nin-verification" onClick={() => setMobileMenuOpen(false)}>
+          NIN Verification
+        </Link>
+        <Link to="/credit-profile" onClick={() => setMobileMenuOpen(false)}>
+          Credit Profile
+        </Link>
+        <Link
+          to="/business-verification"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          Business
+        </Link>
+        <Link
+          to="/vehicle-verification"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          Vehicle
+        </Link>
+        <Link to="/faq" onClick={() => setMobileMenuOpen(false)}>
+          FAQs
+        </Link>
+        <Link
+          to="/individual/sign-up/1"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          Register
+        </Link>
+      </MobileMenu>
 
       <MainContent>
         <LoginCard style={{ position: "relative" }}>

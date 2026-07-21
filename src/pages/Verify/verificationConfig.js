@@ -17,8 +17,9 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your NIN",
-    heroHighlight: "in seconds",
+    heroTitle: "Verify Your ",
+    heroHighlight: "NIN ",
+    heroContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
@@ -111,21 +112,21 @@ const verificationConfig = {
     idTypeLabel: "Business Registration (RC Number / Business Name)",
     fields: [
       {
-        name: "rc",
-        label: "RC Number",
-        placeholder: "Enter RC Number",
-        type: "text",
-        maxLength: 10,
-        showCounter: false,
-        required: false,
-        eitherOr: "business",
-      },
-      {
         name: "business_name",
         label: "Business Name",
         placeholder: "Enter Business Name",
         type: "text",
         maxLength: 100,
+        showCounter: false,
+        required: false,
+        eitherOr: "business",
+      },
+      {
+        name: "rc",
+        label: "RC Number",
+        placeholder: "Enter RC Number",
+        type: "text",
+        maxLength: 10,
         showCounter: false,
         required: false,
         eitherOr: "business",

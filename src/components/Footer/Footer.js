@@ -26,8 +26,9 @@ import appStore from "../../images/appStore.png";
 import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
-import { FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { FaInstagram, FaFacebook } from "react-icons/fa";
+import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 
 function Footer() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,9 @@ function Footer() {
       <FooterInner>
         <FooterTop>
           <BrandCol>
-            <BrandLogo src={logo} alt="eCitizen" />
+            <Link to="/">
+              <BrandLogo src={logo} alt="eCitizen" />
+            </Link>
             <BrandDesc>
               Your trusted partner for digital identity verification and
               background checks.
@@ -57,6 +60,20 @@ function Footer() {
                 rel="noopener noreferrer"
               >
                 <FaXTwitter />
+              </SocialIcon>
+              <SocialIcon
+                href="https://www.facebook.com/ecitizenng"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebook />
+              </SocialIcon>
+              <SocialIcon
+                href="https://www.tiktok.com/@ecitizenng"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaTiktok />
               </SocialIcon>
             </SocialRow>
           </BrandCol>

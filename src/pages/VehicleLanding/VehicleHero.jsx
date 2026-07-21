@@ -56,11 +56,11 @@ const VehicleHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadgesRow>
+            {/* <PriceBadgesRow>
               <PriceBadge>
                 VIN checks from <span>{getPrice(5) || "₦6,000"}</span>
               </PriceBadge>
-            </PriceBadgesRow>
+            </PriceBadgesRow> */}
           </HeroContent>
         </HeroContainer>
       </HeroSectionWrapper>

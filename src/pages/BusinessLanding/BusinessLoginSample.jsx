@@ -45,7 +45,7 @@ const TwoColGrid = styled.div`
 /* ─── Login Card ─── */
 
 const LoginCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 32px;
 
@@ -62,14 +62,14 @@ const LoginCardTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 const LoginCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 24px;
 `;
 
@@ -91,19 +91,19 @@ const SSOButton = styled.button`
   justify-content: center;
   gap: 10px;
   padding: 10px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--ec-bg);
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.2s;
   width: 100%;
 
   &:hover {
-    background: #f9fafb;
+    background: var(--ec-step-card-bg);
   }
 
   svg {
@@ -120,14 +120,14 @@ const Divider = styled.div`
   padding: 0;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #999;
+  color: var(--ec-text-faint);
 
   &::before,
   &::after {
     content: "";
     flex: 1;
     height: 1px;
-    background: #e5e7eb;
+    background: var(--ec-divider-color);
   }
 `;
 
@@ -141,27 +141,27 @@ const FormLabel = styled.label`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin-bottom: 2px;
 `;
 
 const FormInput = styled.input`
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-text);
   outline: none;
   box-sizing: border-box;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--ec-input-placeholder);
   }
 
   &:focus {
-    border-color: #09c93a;
+    border-color: var(--ec-primary);
   }
 `;
 
@@ -176,7 +176,7 @@ const PasswordToggle = styled.button`
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #999;
+  color: var(--ec-text-faint);
   cursor: pointer;
   font-size: 16px;
   padding: 0;
@@ -194,14 +194,14 @@ const RememberLabel = styled.label`
   gap: 6px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
   cursor: pointer;
 `;
 
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #09c93a;
+  color: var(--ec-primary);
   text-decoration: none;
   font-weight: 600;
 
@@ -233,9 +233,9 @@ const LoginBtn = styled.button`
 `;
 
 const ErrorAlert = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: var(--ec-error-bg);
+  border: 1px solid var(--ec-error-border);
+  color: var(--ec-error-text);
   padding: 8px 12px;
   border-radius: 6px;
   font-family: "Nunito", sans-serif;
@@ -246,7 +246,7 @@ const ErrorAlert = styled.div`
 const SpinnerOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--ec-spinner-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,8 +257,8 @@ const SpinnerOverlay = styled.div`
 const Spinner = styled.div`
   width: 36px;
   height: 36px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #09c93a;
+  border: 3px solid var(--ec-border);
+  border-top-color: var(--ec-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -272,12 +272,12 @@ const Spinner = styled.div`
 const RegisterText = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   text-align: center;
   margin: 12px 0 0;
 
   a {
-    color: #09c93a;
+    color: var(--ec-primary);
     font-weight: 600;
     text-decoration: none;
 
@@ -290,7 +290,7 @@ const RegisterText = styled.p`
 /* ─── Sample Result Card ─── */
 
 const SampleCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 32px;
 
@@ -314,15 +314,15 @@ const SampleCardTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0;
 `;
 
 const SampleBadge = styled.span`
   display: inline-block;
-  background: #fff;
-  border: 1px solid #09c93a;
-  color: #09c93a;
+  background: var(--ec-bg);
+  border: 1px solid var(--ec-primary);
+  color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -334,13 +334,13 @@ const SampleBadge = styled.span`
 const SampleCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 20px;
 `;
 
 const ResultCard = styled.div`
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-step-card-bg);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 24px;
 
@@ -367,15 +367,15 @@ const CompanyIcon = styled.div`
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
-  border: 2px solid #e5e7eb;
-  background: #e6f9ed;
+  border: 2px solid var(--ec-border);
+  background: var(--ec-primary-bg);
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
     font-size: 28px;
-    color: #09c93a;
+    color: var(--ec-primary);
   }
 `;
 
@@ -390,24 +390,24 @@ const CompanyName = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 const CompanyRc = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
 `;
 
 const VerifiedBadge = styled.span`
-  color: #09c93a;
+  color: var(--ec-primary);
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 13px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #e6f9ed;
+  background: var(--ec-primary-bg);
   padding: 3px 10px;
   border-radius: 16px;
   width: fit-content;
@@ -423,7 +423,7 @@ const ScoreSection = styled.div`
 const ScoreLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
   margin-bottom: 4px;
 `;
 
@@ -431,7 +431,7 @@ const ScoreCircle = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #09c93a;
+  background: var(--ec-primary);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -442,7 +442,7 @@ const ScoreCircle = styled.div`
 `;
 
 const ResultDivider = styled.div`
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--ec-border);
   margin: 16px 0;
 `;
 
@@ -469,26 +469,26 @@ const ResultField = styled.div`
 const ResultLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
 `;
 
 const ResultValue = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 13px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 const ResultFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--ec-border);
   padding-top: 12px;
   margin-top: 16px;
   font-family: "Nunito", sans-serif;
   font-size: 12px;
-  color: #999;
+  color: var(--ec-text-faint);
 
   @media screen and (max-width: 600px) {
     flex-direction: column;
@@ -498,7 +498,7 @@ const ResultFooter = styled.div`
 
 const StakeholderSection = styled.div`
   margin-top: 16px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--ec-border);
   padding-top: 14px;
 `;
 
@@ -506,14 +506,14 @@ const StakeholderSectionTitle = styled.div`
   font-family: "Poppins", sans-serif;
   font-size: 12px;
   font-weight: 700;
-  color: #354138;
+  color: var(--ec-heading);
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 `;
 
 const StakeholderTable = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   overflow: hidden;
 `;
@@ -521,8 +521,9 @@ const StakeholderTable = styled.div`
 const StakeholderRow = styled.div`
   display: grid;
   grid-template-columns: 2fr 1.5fr 1fr;
-  background: ${(props) => (props.$header ? "#f9fafb" : "#fff")};
-  border-bottom: 1px solid #e5e7eb;
+  background: ${(props) =>
+    props.$header ? "var(--ec-bg-secondary)" : "var(--ec-bg-card)"};
+  border-bottom: 1px solid var(--ec-border);
 
   &:last-child {
     border-bottom: none;
@@ -538,7 +539,8 @@ const StakeholderCell = styled.div`
   font-family: "Nunito", sans-serif;
   font-size: 12px;
   font-weight: ${(props) => (props.$header ? "700" : "600")};
-  color: ${(props) => (props.$header ? "#999" : "#1a1a1a")};
+  color: ${(props) =>
+    props.$header ? "var(--ec-text-faint)" : "var(--ec-text)"};
   text-transform: ${(props) => (props.$header ? "uppercase" : "none")};
   overflow-wrap: anywhere;
 

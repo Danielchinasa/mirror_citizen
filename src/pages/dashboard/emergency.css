@@ -1,21 +1,21 @@
 .clickable-row {
-    cursor: pointer !important;
-  }
-  .custom-swal-button {
-    background-color: #0DC939 !important; /* Example color */
-    color: white; /* Text color */
-  }
-  .swal-wide{
-    width:auto !important;
+  cursor: pointer !important;
+}
+.custom-swal-button {
+  background-color: #0dc939 !important; /* Example color */
+  color: white; /* Text color */
+}
+.swal-wide {
+  width: auto !important;
 }
 
 .dark-mode {
-  background-color: #354138 !important;
-  color: white !important;
+  background-color: var(--ec-bg) !important;
+  color: var(--ec-text) !important;
 }
 
 /* Dark mode */
-.custom-input{
-  background-color: #fff !important; /* Dark gray */
-  color: #000 !important; /* White */}
-
+.custom-input {
+  background-color: var(--ec-bg-input) !important;
+  color: var(--ec-text) !important;
+}

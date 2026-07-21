@@ -41,7 +41,7 @@ const TwoColGrid = styled.div`
 /* ─── Login Card ─── */
 
 const LoginCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 32px;
 
@@ -58,14 +58,14 @@ const LoginCardTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 const LoginCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 24px;
 `;
 
@@ -92,18 +92,18 @@ const SSOButton = styled.button`
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--ec-sso-btn-bg);
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-sso-btn-text);
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.2s;
 
   &:hover {
-    background: #f9fafb;
+    background: var(--ec-bg-secondary);
   }
 
   svg {
@@ -120,7 +120,7 @@ const Divider = styled.div`
   padding: 0 12px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #999;
+  color: var(--ec-text-faint);
   align-self: stretch;
 
   &::before,
@@ -128,7 +128,7 @@ const Divider = styled.div`
     content: "";
     flex: 1;
     width: 1px;
-    background: #e5e7eb;
+    background: var(--ec-divider-color);
   }
 
   @media screen and (max-width: 600px) {
@@ -156,27 +156,28 @@ const FormLabel = styled.label`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #555;
+  color: var(--ec-text-secondary);
   margin-bottom: 2px;
 `;
 
 const FormInput = styled.input`
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 8px;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #333;
+  color: var(--ec-input-text);
+  background: var(--ec-bg-input);
   outline: none;
   box-sizing: border-box;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--ec-input-placeholder);
   }
 
   &:focus {
-    border-color: #09c93a;
+    border-color: var(--ec-primary);
   }
 `;
 
@@ -209,14 +210,14 @@ const RememberLabel = styled.label`
   gap: 6px;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #555;
+  color: var(--ec-text-secondary);
   cursor: pointer;
 `;
 
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #09c93a;
+  color: var(--ec-primary);
   text-decoration: none;
   font-weight: 600;
 
@@ -229,7 +230,7 @@ const LoginBtn = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background: ${(props) => (props.disabled ? "#ccc" : "#09c93a")};
+  background: ${(props) => (props.disabled ? "#ccc" : "var(--ec-primary)")};
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -242,15 +243,16 @@ const LoginBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: ${(props) => (props.disabled ? "#ccc" : "#16ef4d")};
+    background: ${(props) =>
+      props.disabled ? "#ccc" : "var(--ec-primary-hover)"};
     color: #fff;
   }
 `;
 
 const ErrorAlert = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: var(--ec-error-bg);
+  border: 1px solid var(--ec-error-border);
+  color: var(--ec-error-text);
   padding: 8px 12px;
   border-radius: 6px;
   font-family: "Nunito", sans-serif;
@@ -261,7 +263,7 @@ const ErrorAlert = styled.div`
 const SpinnerOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--ec-spinner-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,8 +274,8 @@ const SpinnerOverlay = styled.div`
 const Spinner = styled.div`
   width: 36px;
   height: 36px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #09c93a;
+  border: 3px solid var(--ec-border);
+  border-top-color: var(--ec-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -287,12 +289,12 @@ const Spinner = styled.div`
 const RegisterText = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   text-align: center;
   margin: 12px 0 0;
 
   a {
-    color: #09c93a;
+    color: var(--ec-primary);
     font-weight: 600;
     text-decoration: none;
 
@@ -305,7 +307,7 @@ const RegisterText = styled.p`
 /* ─── Sample Result Card ─── */
 
 const SampleCard = styled.div`
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 36px 32px;
 
@@ -329,15 +331,15 @@ const SampleCardTitle = styled.h3`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0;
 `;
 
 const SampleBadge = styled.span`
   display: inline-block;
-  background: #fff;
-  border: 1px solid #09c93a;
-  color: #09c93a;
+  background: var(--ec-bg-card);
+  border: 1px solid var(--ec-primary);
+  color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -349,13 +351,13 @@ const SampleBadge = styled.span`
 const SampleCardSub = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
-  color: #777;
+  color: var(--ec-text-muted);
   margin: 0 0 20px;
 `;
 
 const ResultCard = styled.div`
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--ec-bg-secondary);
+  border: 1px solid var(--ec-border);
   border-radius: 12px;
   padding: 24px;
 
@@ -382,7 +384,7 @@ const ResultPhoto = styled.div`
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--ec-border);
 
   img {
     width: 100%;
@@ -411,18 +413,18 @@ const ResultField = styled.div`
 const ResultLabel = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 11px;
-  color: #999;
+  color: var(--ec-text-faint);
 `;
 
 const ResultValue = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--ec-text);
 `;
 
 const VerifiedBadge = styled.span`
-  color: #09c93a;
+  color: var(--ec-primary);
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -435,12 +437,12 @@ const ResultFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--ec-border);
   padding-top: 12px;
   margin-top: 16px;
   font-family: "Nunito", sans-serif;
   font-size: 12px;
-  color: #999;
+  color: var(--ec-text-faint);
 
   @media screen and (max-width: 600px) {
     flex-direction: column;
@@ -855,15 +857,15 @@ const NinLoginSample = () => {
               <ResultGrid>
                 <ResultField>
                   <ResultLabel>Full Name</ResultLabel>
-                  <ResultValue>DANIEL CHINASA OKORO</ResultValue>
+                  <ResultValue>KUNLE BASHR CHINASA</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>
-                  <ResultValue>0803 *** 5678</ResultValue>
+                  <ResultValue>08032222222</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>NIN</ResultLabel>
-                  <ResultValue>1234 5678 90**</ResultValue>
+                  <ResultValue>12345678910</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Verification Status</ResultLabel>

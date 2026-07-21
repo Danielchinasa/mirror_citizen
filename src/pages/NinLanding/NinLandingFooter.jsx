@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaInstagram, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
+import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 import styled from "styled-components";
 import Logo from "../../images/e-citizen_logo_ecitizen_white.png";
 import playstoreImg from "../../images/playstore.png";
 import appStoreImg from "../../images/appStore.png";
 
 const FooterWrapper = styled.footer`
-  background: #354138;
+  background: var(--ec-footer-bg);
   color: #fff;
   padding: 60px 50px 0;
 
@@ -226,7 +226,9 @@ const NinLandingFooter = () => {
       <FooterInner>
         <FooterTop>
           <BrandCol>
-            <BrandLogo src={Logo} alt="eCitizen" />
+            <Link to="/">
+              <BrandLogo src={Logo} alt="eCitizen" />
+            </Link>
             <BrandDesc>
               Your trusted partner for digital identity verification and
               background checks.
@@ -252,6 +254,20 @@ const NinLandingFooter = () => {
                 rel="noopener noreferrer"
               >
                 <FaLinkedin />
+              </SocialIcon>
+              <SocialIcon
+                href="https://www.facebook.com/ecitizenng"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebook />
+              </SocialIcon>
+              <SocialIcon
+                href="https://www.tiktok.com/@ecitizenng"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaTiktok />
               </SocialIcon>
             </SocialRow>
           </BrandCol>

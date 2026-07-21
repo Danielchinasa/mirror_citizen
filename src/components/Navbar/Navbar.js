@@ -699,6 +699,17 @@ function Navbar() {
   const { token } = theme.useToken(); // Get token from useToken
   const { text, bgContainer } = token;
 
+  const handleGetStarted = (e) => {
+    e.preventDefault();
+    closeMobileMenu();
+    if (window.location.pathname === "/") {
+      const el = document.getElementById("verification-services");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "/#verification-services";
+    }
+  };
+
   return (
     <>
       <Spin
@@ -710,7 +721,7 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <Link to={isAuthenticated ? "/dashboard" : "/"}>
+            <Link to="/">
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
                 src={isDark ? LogoWhite : Logo}
@@ -762,63 +773,19 @@ function Navbar() {
               {!isAuthenticated && (
                 <>
                   <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink to="/login">
-                        <OutlineButton
-                          $token={token}
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          GET STARTED
-                        </OutlineButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/login">
-                        <OutlineButton
-                          $token={token}
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          GET STARTED
-                        </OutlineButton>
-                      </NavBtnLink>
-                    )}
-                  </NavItemBtn>
-                  {/* <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink
-                        to="/sign-up"
+                    <NavBtnLink to="#" onClick={handleGetStarted}>
+                      <OutlineButton
+                        $token={token}
+                        type="primary"
                         style={{
                           fontFamily: "Poppins",
                           fontWeight: "700",
                         }}
                       >
-                        <MainButton type="primary">SIGN UP</MainButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/sign-up">
-                        <MainButton
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          SIGN UP
-                        </MainButton>
-                      </NavBtnLink>
-                    )}
-                  </NavItemBtn> */}
+                        GET STARTED
+                      </OutlineButton>
+                    </NavBtnLink>
+                  </NavItemBtn>
                   <ThemeToggle />
                 </>
               )}

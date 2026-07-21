@@ -32,7 +32,7 @@ const BenefitsGrid = styled.div`
 `;
 
 const BenefitCard = styled.div`
-  background: #f0fdf4;
+  background: var(--ec-bg-card-alt);
   border-radius: 12px;
   padding: 28px 22px;
   display: flex;
@@ -41,7 +41,7 @@ const BenefitCard = styled.div`
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px var(--ec-shadow);
   }
 `;
 
@@ -49,11 +49,11 @@ const BenefitIcon = styled.div`
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #e6f9ed;
+  background: var(--ec-primary-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #09c93a;
+  color: var(--ec-primary);
   font-size: 18px;
   flex-shrink: 0;
 `;
@@ -67,14 +67,14 @@ const BenefitTitle = styled.h4`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 15px;
-  color: #1a1a1a;
+  color: var(--ec-text);
   margin: 0 0 4px;
 `;
 
 const BenefitDesc = styled.p`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #777;
+  color: var(--ec-text-muted);
   line-height: 1.5;
   margin: 0;
 `;

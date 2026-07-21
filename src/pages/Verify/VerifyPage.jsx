@@ -14,6 +14,7 @@ import {
   FaWallet,
   FaIdCard,
   FaInfoCircle,
+  FaBuilding,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
@@ -184,6 +185,7 @@ const VerifyPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
+  const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
@@ -194,6 +196,7 @@ const VerifyPage = () => {
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
@@ -313,6 +316,7 @@ const VerifyPage = () => {
         );
         setLoadingPrice(false);
         const serviceData = response.data.data[config.priceIndex];
+        setDetectedCurrency(response.data.data[0]?.currency || null);
         setPricingData({
           price: serviceData.price,
           serviceFee: serviceData.serviceFee,
@@ -338,7 +342,8 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const currencyCheck = localStorage.getItem("currencyCheck") || "NGN";
+  const currencyCheck =
+    detectedCurrency || localStorage.getItem("currencyCheck") || "NGN";
   const isNGN = currencyCheck.toUpperCase() === "NGN";
 
   const bureauCount = config?.bureaus
@@ -349,21 +354,15 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isNGN
-        ? config.allBureausDiscount.ngn
-        : config.allBureausDiscount.usd
+      ? config.allBureausDiscount.ngn
       : 0;
 
   const totalAmount = pricingData
-    ? isNGN
-      ? ((pricingData.serviceFee || 0) +
-          (pricingData.processingFee || 0) +
-          (pricingData.vat || 0)) *
-          bureauMultiplier -
-        discount
-      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
-          bureauMultiplier -
-        discount
+    ? ((pricingData.serviceFee || 0) +
+        (pricingData.processingFee || 0) +
+        (pricingData.vat || 0)) *
+        bureauMultiplier -
+      discount
     : 0;
 
   const currencySymbol = isNGN ? "₦" : "$";
@@ -450,6 +449,11 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    setShowDisclaimer(true);
+  };
+
+  const handleDisclaimerConfirm = () => {
+    setShowDisclaimer(false);
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -805,13 +809,21 @@ const VerifyPage = () => {
           "BVN verification was successful.";
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === true) {
-        const bizData = Array.isArray(response.business.data)
-          ? response.business.data[0]?.data
-          : response.business.data;
-        result = bizData || response.business;
+        const bizArray = Array.isArray(response.business.data)
+          ? response.business.data.map((item) => item.data || item)
+          : [response.business.data];
+        const firstBiz = bizArray[0];
+        result = {
+          _isBusinessList: true,
+          businesses: bizArray,
+          ...(firstBiz || {}),
+        };
         resultTitle = "Business Verification Successful";
         resultDetail =
-          bizData?.approvedName || "Business has been verified successfully.";
+          bizArray.length > 1
+            ? `${bizArray.length} companies found matching your search.`
+            : firstBiz?.approvedName ||
+              "Business has been verified successfully.";
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === false) {
         Swal.fire({
@@ -1196,13 +1208,10 @@ const VerifyPage = () => {
           <PriceBreakdown>
             {pricingData &&
               (() => {
-                const processingFees = isNGN
-                  ? (pricingData.serviceFee || 0) +
-                    (pricingData.processingFee || 0)
-                  : pricingData.serviceFeeusd || 0;
-                const taxCharges = isNGN
-                  ? pricingData.vat || 0
-                  : pricingData.vatUsd || 0;
+                const processingFees =
+                  (pricingData.serviceFee || 0) +
+                  (pricingData.processingFee || 0);
+                const taxCharges = pricingData.vat || 0;
                 const perBureau = processingFees + taxCharges;
                 const subtotal = perBureau * bureauMultiplier;
                 const totalToPay = subtotal - discount;
@@ -1386,10 +1395,9 @@ const VerifyPage = () => {
                 <SummaryValue>
                   {currencySymbol}
                   {(
-                    (isNGN
-                      ? (pricingData.serviceFee || 0) +
-                        (pricingData.processingFee || 0)
-                      : pricingData.serviceFeeusd || 0) * bureauMultiplier
+                    ((pricingData.serviceFee || 0) +
+                      (pricingData.processingFee || 0)) *
+                    bureauMultiplier
                   ).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
@@ -1400,10 +1408,7 @@ const VerifyPage = () => {
                 </SummaryLabel>
                 <SummaryValue>
                   {currencySymbol}
-                  {(
-                    (isNGN ? pricingData.vat : pricingData.vatUsd || 0) *
-                    bureauMultiplier
-                  ).toLocaleString()}
+                  {((pricingData.vat || 0) * bureauMultiplier).toLocaleString()}
                 </SummaryValue>
               </SummaryRow>
               {discount > 0 && (
@@ -1970,6 +1975,7 @@ const VerifyPage = () => {
           <HeroText>
             <HeroTitle>
               {config.heroTitle} <span>{config.heroHighlight}</span>
+              {config.heroContinue}
             </HeroTitle>
             <HeroSubtitle>{config.heroSubtitle}</HeroSubtitle>
           </HeroText>
@@ -2012,93 +2018,230 @@ const VerifyPage = () => {
               </PopupCloseButton>
             </PopupHeader>
             <PopupBody>
-              <ResultCardPopup>
-                <ResultTopPopup>
-                  <ResultPhotoPopup>
-                    {(() => {
-                      const data = verificationResult?.data;
-                      if (!data) return <FaUserCircle />;
-
-                      // Try multiple possible keys for image data
-                      let photoSrc =
-                        data.photo ||
-                        data.signature ||
-                        data.image ||
-                        data.profilePhoto ||
-                        data.profilePic ||
-                        data.picture ||
-                        data.biometricPhoto ||
-                        data.facialImage ||
-                        data.faceImage ||
-                        data.photoUrl ||
-                        data.imageUrl;
-
-                      if (photoSrc) {
-                        // Add data URI prefix if it's raw base64
-                        if (!photoSrc.startsWith("data:")) {
-                          // Detect image type from base64 signature
-                          if (
-                            photoSrc.startsWith("/9j/") ||
-                            photoSrc.startsWith("iVBORw0KGgo")
-                          ) {
-                            const mimeType = photoSrc.startsWith("/9j/")
-                              ? "image/jpeg"
-                              : "image/png";
-                            photoSrc = `data:${mimeType};base64,${photoSrc}`;
-                          }
-                        }
-
-                        return (
-                          <img
-                            src={photoSrc}
-                            alt="Verification photo"
+              {/* Business list result */}
+              {verificationResult.data?._isBusinessList ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 16,
+                      padding: "10px 16px",
+                      background: "var(--ec-primary-bg)",
+                      borderRadius: 10,
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      color: "var(--ec-primary)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    <FaBuilding />
+                    {verificationResult.data.businesses.length}{" "}
+                    {verificationResult.data.businesses.length === 1
+                      ? "company"
+                      : "companies"}{" "}
+                    found
+                  </div>
+                  <div
+                    style={{
+                      maxHeight: 380,
+                      overflowY: "auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                      marginBottom: 16,
+                      paddingRight: 4,
+                    }}
+                  >
+                    {verificationResult.data.businesses.map((biz, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          border: "1px solid var(--ec-border)",
+                          borderRadius: 12,
+                          padding: "16px 20px",
+                          background: "var(--ec-bg-card)",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: 14,
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 42,
+                            height: 42,
+                            borderRadius: "50%",
+                            background: "var(--ec-primary-bg)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                            color: "var(--ec-primary)",
+                            fontSize: 18,
+                          }}
+                        >
+                          <FaBuilding />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div
                             style={{
-                              width: "100%",
-                              height: "100%",
-                              borderRadius: "50%",
-                              objectFit: "cover",
+                              fontFamily: "Poppins, sans-serif",
+                              fontWeight: 700,
+                              fontSize: 15,
+                              color: "var(--ec-text)",
+                              marginBottom: 4,
+                              wordBreak: "break-word",
                             }}
-                            onError={(e) => {
-                              console.warn(
-                                "Image failed to load, falling back to icon",
-                              );
-                              e.target.style.display = "none";
+                          >
+                            {biz.approvedName || biz.companyName || "N/A"}
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: "4px 16px",
+                              fontFamily: "Nunito, sans-serif",
+                              fontSize: 13,
                             }}
-                          />
-                        );
-                      }
-                      return <FaUserCircle />;
-                    })()}
-                  </ResultPhotoPopup>
-                  <ResultGridPopup>
-                    {getResultPreviewFields().map((field, idx) => (
-                      <ResultFieldPopup key={idx}>
-                        <ResultLabelPopup>{field.label}</ResultLabelPopup>
-                        {field.label === "Verification Status" ? (
-                          <VerifiedBadgePopup>
-                            VERIFIED <FaCheckCircle />
-                          </VerifiedBadgePopup>
-                        ) : (
-                          <ResultValuePopup>{field.value}</ResultValuePopup>
-                        )}
-                      </ResultFieldPopup>
+                          >
+                            {(biz.rcNumber || biz.rc_number) && (
+                              <span style={{ color: "var(--ec-text-muted)" }}>
+                                RC:{" "}
+                                <strong style={{ color: "var(--ec-text)" }}>
+                                  {biz.rcNumber || biz.rc_number}
+                                </strong>
+                              </span>
+                            )}
+                            {biz.registrationDate && (
+                              <span style={{ color: "var(--ec-text-muted)" }}>
+                                Reg:{" "}
+                                <strong style={{ color: "var(--ec-text)" }}>
+                                  {new Date(
+                                    biz.registrationDate,
+                                  ).toLocaleDateString()}
+                                </strong>
+                              </span>
+                            )}
+                            {biz.classificationId && (
+                              <span style={{ color: "var(--ec-text-muted)" }}>
+                                Type:{" "}
+                                <strong style={{ color: "var(--ec-text)" }}>
+                                  {biz.classificationId === "1"
+                                    ? "Business Name"
+                                    : biz.classificationId === "2"
+                                      ? "Limited Company"
+                                      : biz.classificationId}
+                                </strong>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <VerifiedBadgePopup
+                          style={{ flexShrink: 0, alignSelf: "center" }}
+                        >
+                          <FaCheckCircle /> Verified
+                        </VerifiedBadgePopup>
+                      </div>
                     ))}
-                  </ResultGridPopup>
-                </ResultTopPopup>
-                <ResultFooterPopup>
-                  <span>
-                    Verified on{" "}
-                    {new Date().toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <span>
-                    Ref: {localStorage.getItem("transactionID") || "N/A"}
-                  </span>
-                </ResultFooterPopup>
-              </ResultCardPopup>
+                  </div>
+                  <ResultFooterPopup
+                    style={{ borderTop: "none", padding: "0 0 12px" }}
+                  >
+                    <span>
+                      Verified on{" "}
+                      {new Date().toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>
+                      Ref: {localStorage.getItem("transactionID") || "N/A"}
+                    </span>
+                  </ResultFooterPopup>
+                </>
+              ) : (
+                /* Non-business single result */
+                <ResultCardPopup>
+                  <ResultTopPopup>
+                    <ResultPhotoPopup>
+                      {(() => {
+                        const data = verificationResult?.data;
+                        if (!data) return <FaUserCircle />;
+                        let photoSrc =
+                          data.photo ||
+                          data.signature ||
+                          data.image ||
+                          data.profilePhoto ||
+                          data.profilePic ||
+                          data.picture ||
+                          data.biometricPhoto ||
+                          data.facialImage ||
+                          data.faceImage ||
+                          data.photoUrl ||
+                          data.imageUrl;
+                        if (photoSrc) {
+                          if (!photoSrc.startsWith("data:")) {
+                            if (
+                              photoSrc.startsWith("/9j/") ||
+                              photoSrc.startsWith("iVBORw0KGgo")
+                            ) {
+                              const mimeType = photoSrc.startsWith("/9j/")
+                                ? "image/jpeg"
+                                : "image/png";
+                              photoSrc = `data:${mimeType};base64,${photoSrc}`;
+                            }
+                          }
+                          return (
+                            <img
+                              src={photoSrc}
+                              alt="Verification photo"
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                              }}
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                              }}
+                            />
+                          );
+                        }
+                        return <FaUserCircle />;
+                      })()}
+                    </ResultPhotoPopup>
+                    <ResultGridPopup>
+                      {getResultPreviewFields().map((field, idx) => (
+                        <ResultFieldPopup key={idx}>
+                          <ResultLabelPopup>{field.label}</ResultLabelPopup>
+                          {field.label === "Verification Status" ? (
+                            <VerifiedBadgePopup>
+                              VERIFIED <FaCheckCircle />
+                            </VerifiedBadgePopup>
+                          ) : (
+                            <ResultValuePopup>{field.value}</ResultValuePopup>
+                          )}
+                        </ResultFieldPopup>
+                      ))}
+                    </ResultGridPopup>
+                  </ResultTopPopup>
+                  <ResultFooterPopup>
+                    <span>
+                      Verified on{" "}
+                      {new Date().toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>
+                      Ref: {localStorage.getItem("transactionID") || "N/A"}
+                    </span>
+                  </ResultFooterPopup>
+                </ResultCardPopup>
+              )}
               <ResultDisclaimerPopup>
                 <FaInfoCircle />
                 Results are based on data available at the time of verification.
@@ -2157,6 +2300,159 @@ const VerifyPage = () => {
           ))}
         </TrustBarInner>
       </TrustBar>
+
+      {/* Disclaimer Modal */}
+      {showDisclaimer && (
+        <PopupOverlay>
+          <PopupCard style={{ maxWidth: 560 }}>
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(235, 3, 24, 0.10)",
+                    color: "#EB0318",
+                  }}
+                >
+                  <FaInfoCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Disclaimer</PopupTitle>
+                  <PopupSubtitle>Please review before proceeding</PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowDisclaimer(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody>
+              <div
+                style={{
+                  background: "rgba(235, 3, 24, 0.06)",
+                  border: "1px solid rgba(235, 3, 24, 0.2)",
+                  borderRadius: 10,
+                  padding: "16px 20px",
+                  marginBottom: 20,
+                }}
+              >
+                {type === "vehicle" ? (
+                  /* ── Vehicle (VIN / ClearVin) disclaimer ── */
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                      color: "var(--ec-text)",
+                    }}
+                  >
+                    By clicking, you indicate that:
+                    <ul style={{ margin: "8px 0 0", paddingLeft: 20 }}>
+                      <li style={{ marginBottom: 12 }}>
+                        You confirm that search details are correct, and you
+                        confirm that you will <strong>not be refunded</strong>{" "}
+                        for incorrect information.
+                      </li>
+                      <li style={{ marginBottom: 12 }}>
+                        You understand and accept that vehicle history data is
+                        sourced from third-party providers and{" "}
+                        <strong>may not contain all records</strong> for every
+                        vehicle.
+                      </li>
+                      <li style={{ marginBottom: 0 }}>
+                        You understand that{" "}
+                        <strong>
+                          search results may come back without any data
+                        </strong>
+                        , and you accept that you will not be refunded.
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  /* ── NIN / Phone / Business / BVN disclaimer ── */
+                  <ol
+                    style={{
+                      margin: 0,
+                      paddingLeft: 20,
+                      fontFamily: "Nunito, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                      color: "var(--ec-text)",
+                    }}
+                  >
+                    {(type === "nin" || type === "phone" || type === "bvn") && (
+                      <li style={{ marginBottom: 12 }}>
+                        You confirm that you understand and accept that{" "}
+                        <strong>consent is required</strong> from the data
+                        subject being verified before you can access their data,
+                        and you accept that you will not be refunded if consent
+                        is withheld.
+                      </li>
+                    )}
+                    <li style={{ marginBottom: 12 }}>
+                      You confirm and accept that the{" "}
+                      <strong>search details are correct</strong>, and you
+                      accept that you will not be refunded for incorrect
+                      information.
+                    </li>
+                    <li style={{ marginBottom: 0 }}>
+                      You understand and accept that{" "}
+                      <strong>
+                        search details may come back without any data
+                      </strong>
+                      , and you accept that you will not be refunded.
+                    </li>
+                  </ol>
+                )}
+              </div>
+              <div
+                style={{
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 13,
+                  color: "var(--ec-text-muted)",
+                  textAlign: "center",
+                  marginBottom: 20,
+                  lineHeight: 1.6,
+                }}
+              >
+                By proceeding, you agree to our{" "}
+                <a
+                  href="/terms_of_service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a
+                  href="/privacy_policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Privacy Policy
+                </a>
+                .
+              </div>
+              <PopupActionRow style={{ justifyContent: "center" }}>
+                <ContinueBtn onClick={handleDisclaimerConfirm}>
+                  I Understand, Continue <FaArrowRight />
+                </ContinueBtn>
+                <ClearBtn onClick={() => setShowDisclaimer(false)}>
+                  Cancel
+                </ClearBtn>
+              </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
 
       {/* Paystack Payment Modal */}
       {paystackModalOpen && (

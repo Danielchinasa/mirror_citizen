@@ -36,6 +36,7 @@ import UpdateProfilePage from "./pages/profile/updateProfilePage";
 import FaqPage from "./pages/faq/faqPage";
 import Vehicle from "./pages/result/vehicle";
 import Vehicle2 from "./pages/result/vehicle2";
+import VehicleResult from "./pages/result/vehicleResult";
 import Business from "./pages/result/business";
 import NotFoundPage from "./components/404/notFoundPage";
 import LegitCar from "./pages/result/legitCar";
@@ -321,7 +322,10 @@ function AppContent() {
             path="/comprehensive-search-result"
             component={SearchExtensionResult}
           />
-          <ProtectedRoute path="/vehicle-profile-result" component={Vehicle} />
+          <ProtectedRoute
+            path="/vehicle-profile-result"
+            component={VehicleResult}
+          />
           <ProtectedRoute
             path="/vehicle-registration-result"
             component={Vehicle2}
