@@ -1107,6 +1107,60 @@ const VerifyPage = () => {
           setCurrentStep(1);
           return;
         }
+      } else if (
+        response?.status === "PENDING_CONSENT" &&
+        response?.result?.subjectConsent
+      ) {
+        // Backend returned PENDING_CONSENT — subject consent is required
+        const consent = response.result.subjectConsent;
+        const channels = consent.channels || {};
+        const channelList = [];
+        if (channels.email) channelList.push("📧 Email");
+        if (channels.whatsapp) channelList.push("💬 WhatsApp");
+
+        Swal.fire({
+          icon: "info",
+          title: "Consent Pending",
+          html: `
+            <div style="text-align: left; font-family: 'Nunito', sans-serif;">
+              <p style="margin-bottom: 12px; font-size: 14px; color: #333;">
+                ${
+                  consent.message ||
+                  response.resultText ||
+                  "Consent request sent to the subject."
+                }
+              </p>
+              <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.8;">
+                <strong>Status:</strong> ${consent.status}<br/>
+                <strong>Required:</strong> ${
+                  consent.required ? "Yes" : "No"
+                }
+                ${
+                  channelList.length > 0
+                    ? `<br/><strong>Channels:</strong> ${channelList.join(", ")}`
+                    : ""
+                }
+              </div>
+              <p style="font-size: 13px; color: #666; margin: 0;">
+                Results will be available after the subject accepts the consent request.
+              </p>
+            </div>
+          `,
+          confirmButtonColor: "#FED001",
+          confirmButtonText: "OK",
+        });
+
+        // Set up consent polling using jobId from the response
+        const requestId = response.jobId || "";
+        if (requestId) {
+          setConsentRequestId(requestId);
+          localStorage.setItem("verificationRequestId", requestId);
+          setConsentPending(true);
+          setCurrentStep(CONSENT_STEP);
+        } else {
+          setCurrentStep(1);
+        }
+        return;
       }
 
       if (result) {
