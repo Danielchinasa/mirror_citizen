@@ -559,7 +559,15 @@ const VerifyPage = () => {
       ? Object.values(selectedBureaus).some(Boolean)
       : true;
 
-    return requiredValid && eitherOrValid && bureauValid;
+    // Check consent contact (at least one required when config has these fields)
+    const hasConsentContactFields = config.fields.some(
+      (f) => f.name === "subjectPhone" || f.name === "subjectEmail",
+    );
+    const consentContactValid = hasConsentContactFields
+      ? formData.subjectPhone?.trim() || formData.subjectEmail?.trim()
+      : true;
+
+    return requiredValid && eitherOrValid && bureauValid && consentContactValid;
   };
 
   /* ── Step navigation ── */
@@ -569,12 +577,22 @@ const VerifyPage = () => {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
         config.bureaus && !Object.values(selectedBureaus).some(Boolean);
+      const hasConsentContactFields = config.fields.some(
+        (f) => f.name === "subjectPhone" || f.name === "subjectEmail",
+      );
+      const noConsentContact =
+        hasConsentContactFields &&
+        !formData.subjectPhone?.trim() &&
+        !formData.subjectEmail?.trim();
       setError(
         noBureauSelected
           ? t("verify.error.selectBureau")
-          : hasEitherOr
-            ? t("verify.error.fillField")
-            : t("verify.error.fillRequired"),
+          : noConsentContact
+            ? t("verify.error.consentContact") ||
+              "Please provide the subject's phone number or email for consent."
+            : hasEitherOr
+              ? t("verify.error.fillField")
+              : t("verify.error.fillRequired"),
       );
       return;
     }
@@ -1210,9 +1228,74 @@ const VerifyPage = () => {
 
           {config.fields.map((field, idx) => (
             <React.Fragment key={field.name}>
+              {field.name.startsWith("subject") &&
+                idx > 0 &&
+                !config.fields[idx - 1].name.startsWith("subject") && (
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        margin: "24px 0 12px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          flex: 1,
+                          height: 1,
+                          background: "#e5e7eb",
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 700,
+                        color: "#666",
+                        fontFamily: "Nunito, sans-serif",
+                        marginBottom: 4,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                      }}
+                    >
+                      {t("verify.consent.contactDetails") ||
+                        "Consent Contact Details"}
+                    </div>
+                  </>
+                )}
               {field.eitherOr &&
                 idx > 0 &&
                 config.fields[idx - 1]?.eitherOr === field.eitherOr && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      margin: "4px 0 12px",
+                    }}
+                  >
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#999",
+                        fontFamily: "Nunito, sans-serif",
+                      }}
+                    >
+                      {t("ninLogin.or")}
+                    </span>
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                  </div>
+                )}
+              {field.name === "subjectEmail" &&
+                idx > 0 &&
+                config.fields[idx - 1].name === "subjectPhone" && (
                   <div
                     style={{
                       display: "flex",
