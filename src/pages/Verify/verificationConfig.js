@@ -40,7 +40,16 @@ const verificationConfig = {
         type: "text",
         maxLength: 15,
         showCounter: true,
-        required: true,
+        required: false,
+      },
+      {
+        name: "subjectEmail",
+        label: "Subject Email (for consent)",
+        placeholder: "Enter subject's email address",
+        type: "email",
+        maxLength: 100,
+        showCounter: false,
+        required: false,
       },
     ],
     youWillGet: [
@@ -277,7 +286,7 @@ const verificationConfig = {
     heroHighlight: "Vehicle History",
     heroSubtitle:
       "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
-    heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
+    heroImage: require("../../images/ghana_vehicle.png"),
     breadcrumb: ["Verify Vehicle", "Vehicle Verification"],
     idTypeLabel: "Vehicle Identification Number (VIN)",
     fields: [

@@ -547,7 +547,15 @@ const VerifyPage = () => {
       ? Object.values(selectedBureaus).some(Boolean)
       : true;
 
-    return requiredValid && eitherOrValid && bureauValid;
+    // Check consent contact (at least one required when config has these fields)
+    const hasConsentContactFields = config.fields.some(
+      (f) => f.name === "subjectPhone" || f.name === "subjectEmail",
+    );
+    const consentContactValid = hasConsentContactFields
+      ? formData.subjectPhone?.trim() || formData.subjectEmail?.trim()
+      : true;
+
+    return requiredValid && eitherOrValid && bureauValid && consentContactValid;
   };
 
   /* ── Step navigation ── */
@@ -557,12 +565,21 @@ const VerifyPage = () => {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
         config.bureaus && !Object.values(selectedBureaus).some(Boolean);
+      const hasConsentContactFields = config.fields.some(
+        (f) => f.name === "subjectPhone" || f.name === "subjectEmail",
+      );
+      const noConsentContact =
+        hasConsentContactFields &&
+        !formData.subjectPhone?.trim() &&
+        !formData.subjectEmail?.trim();
       setError(
-        noBureauSelected
-          ? "Please select at least one credit bureau."
-          : hasEitherOr
-            ? "Please fill in at least one of the fields."
-            : "Please fill in all required fields.",
+        noConsentContact
+          ? "Please provide the subject's phone number or email for consent."
+          : noBureauSelected
+            ? "Please select at least one credit bureau."
+            : hasEitherOr
+              ? "Please fill in at least one of the fields."
+              : "Please fill in all required fields.",
       );
       return;
     }
@@ -1200,6 +1217,55 @@ const VerifyPage = () => {
 
           {config.fields.map((field, idx) => (
             <React.Fragment key={field.name}>
+              {/* Consent Contact Details section divider */}
+              {field.name.startsWith("subject") &&
+                idx > 0 &&
+                !config.fields[idx - 1].name.startsWith("subject") && (
+                  <div
+                    style={{
+                      margin: "24px 0 16px",
+                      borderTop: "1px solid #e5e7eb",
+                      paddingTop: 24,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "#555",
+                      fontFamily: "Nunito, sans-serif",
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    Consent Contact Details
+                  </div>
+                )}
+              {/* Custom OR divider between subjectPhone and subjectEmail */}
+              {field.name === "subjectEmail" &&
+                idx > 0 &&
+                config.fields[idx - 1].name === "subjectPhone" && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      margin: "4px 0 12px",
+                    }}
+                  >
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#999",
+                        fontFamily: "Nunito, sans-serif",
+                      }}
+                    >
+                      OR
+                    </span>
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                  </div>
+                )}
               {field.eitherOr &&
                 idx > 0 &&
                 config.fields[idx - 1]?.eitherOr === field.eitherOr && (
