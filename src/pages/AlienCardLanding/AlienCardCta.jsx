@@ -133,20 +133,16 @@ const AlienCardCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your NIN?</CtaTitle>
+          <CtaTitle>Ready to verify your Alien Card?</CtaTitle>
           <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-citizen
-            for fast, accurate and secure identity verification.
+            Join thousands of individuals and businesses that rely on e-raia for
+            fast, accurate and secure identity verification.
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify NIN Now <FaArrowRight />
+            Verify Alien Card Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
-            <FaCheckCircle /> Starting from <strong>N</strong>600 per
-            verification
-          </CtaPrice>
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

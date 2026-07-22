@@ -65,10 +65,15 @@ const AlienCardHero = () => {
           <HeroContent>
             <HeroTitle>
               {isSw
-                ? "Thibitisha Alien Card nchini "
-                : "Verify an Alien Card in "}
-              <span style={redHighlight}>Kenya</span>
-              {isSw ? " haraka na kwa usalama." : " quickly and securely."}
+                ? "Thibitisha Alien Card nchini Kenya "
+                : "Verify an Alien Card in Kenya "}
+              <span style={redHighlight}>
+                {isSw ? "haraka" : "quickly"}
+              </span>
+              {isSw ? " na kwa " : " and "}
+              <span style={redHighlight}>
+                {isSw ? "usalama." : "securely."}
+              </span>
             </HeroTitle>
             <HeroSubtitle>
               {isSw
