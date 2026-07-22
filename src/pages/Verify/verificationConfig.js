@@ -21,7 +21,7 @@ const verificationConfig = {
     heroHighlight: "Carte Nationale d'Identité",
     heroSubtitle:
       "Entrez les détails, payez en toute sécurité et obtenez des résultats précis instantanément.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/cote_divoire.png"),
     breadcrumb: ["Vérifier Identité", "Vérification CNI"],
     idTypeLabel: "Numéro National d'Identité (NNI)",
     countryCode: "CI",
@@ -43,7 +43,16 @@ const verificationConfig = {
         type: "text",
         maxLength: 15,
         showCounter: true,
-        required: true,
+        required: false,
+      },
+      {
+        name: "subjectEmail",
+        label: "Email du sujet (pour consentement)",
+        placeholder: "Entrez l'adresse email du sujet",
+        type: "email",
+        maxLength: 100,
+        showCounter: false,
+        required: false,
       },
     ],
     youWillGet: [
@@ -62,7 +71,7 @@ const verificationConfig = {
     apiServiceName: "National ID NNI",
     serviceFieldKey: "idNumber",
     priceIndex: 0,
-    requiresConsent: false,
+    requiresConsent: true,
     trustBar: [
       { title: "Sécurisé & Privé", desc: "Vos données sont protégées" },
       { title: "Résultats Instantanés", desc: "Résultats en secondes" },
@@ -79,7 +88,7 @@ const verificationConfig = {
     heroHighlight: "Number",
     heroSubtitle:
       "Enter a phone number, pay securely and get verification results instantly.",
-    heroImage: require("../../images/phone_number_verification.png"),
+    heroImage: require("../../images/cote_divoire.png"),
     breadcrumb: ["Verify Identity", "Phone Verification"],
     idTypeLabel: "Phone Number Verification",
     fields: [
@@ -282,7 +291,7 @@ const verificationConfig = {
     heroHighlight: "l'Historique du Véhicule",
     heroSubtitle:
       "Vérifiez un véhicule par VIN pour réduire la fraude et prendre des décisions d'achat plus sûres.",
-    heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
+    heroImage: require("../../images/cote_vehicle.png"),
     breadcrumb: ["Vérifier Véhicule", "Vérification VIN"],
     idTypeLabel: "Numéro d'Identification du Véhicule (VIN)",
     countryCode: "CI",
@@ -330,7 +339,7 @@ const verificationConfig = {
     heroHighlight: "Carte de Résident",
     heroSubtitle:
       "Entrez les détails de la carte de résident, payez en toute sécurité et obtenez des résultats instantanément.",
-    heroImage: require("../../images/nin_verification_hero2.png"),
+    heroImage: require("../../images/cote_divoire.png"),
     breadcrumb: ["Vérifier Identité", "Carte de Résident"],
     idTypeLabel: "Carte de Résident",
     countryCode: "CI",
@@ -347,12 +356,21 @@ const verificationConfig = {
       },
       {
         name: "subjectPhone",
-        label: "Subject Contact Number (for consent)",
-        placeholder: "Enter subject's phone number",
+        label: "Contact du sujet (pour consentement)",
+        placeholder: "Entrez le numéro de téléphone du sujet",
         type: "text",
         maxLength: 15,
         showCounter: true,
-        required: true,
+        required: false,
+      },
+      {
+        name: "subjectEmail",
+        label: "Email du sujet (pour consentement)",
+        placeholder: "Entrez l'adresse email du sujet",
+        type: "email",
+        maxLength: 100,
+        showCounter: false,
+        required: false,
       },
     ],
     youWillGet: [
@@ -370,7 +388,7 @@ const verificationConfig = {
     apiServiceName: "Residents ID",
     serviceFieldKey: "idNumber",
     priceIndex: 0,
-    requiresConsent: false,
+    requiresConsent: true,
     trustBar: [
       { title: "Sécurisé & Privé", desc: "Vos données sont protégées" },
       { title: "Résultats Instantanés", desc: "Résultats en secondes" },
