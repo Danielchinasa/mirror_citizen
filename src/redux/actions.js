@@ -605,6 +605,8 @@ export const initiateVerificationRequest =
           paymentType: paymentType || "INSTANT",
         },
         consent: "true",
+        subjectPhone: formData.subjectPhone || "",
+        subjectEmail: formData.subjectEmail || "",
         "search-extension": {
           "phone-number": formData.phone || "",
         },
@@ -824,6 +826,8 @@ export const completeVerificationRequest =
         paymentType: paymentType || "INSTANT",
         idNumber: formData.idNumber || "",
         consent: "true",
+        subjectPhone: formData.subjectPhone || "",
+        subjectEmail: formData.subjectEmail || "",
         "search-extension": {
           "phone-number": formData.phone || "",
         },

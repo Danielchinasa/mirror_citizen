@@ -448,7 +448,15 @@ const VerifyPage = () => {
       ? Object.values(selectedBureaus).some(Boolean)
       : true;
 
-    return requiredValid && eitherOrValid && bureauValid;
+    // Check consent contact (at least one required when config has these fields)
+    const hasConsentContactFields = config.fields.some(
+      (f) => f.name === "subjectPhone" || f.name === "subjectEmail",
+    );
+    const consentContactValid = hasConsentContactFields
+      ? formData.subjectPhone?.trim() || formData.subjectEmail?.trim()
+      : true;
+
+    return requiredValid && eitherOrValid && bureauValid && consentContactValid;
   };
 
   /* ── Step navigation ── */
@@ -458,18 +466,29 @@ const VerifyPage = () => {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
         config.bureaus && !Object.values(selectedBureaus).some(Boolean);
+      const hasConsentContactFields = config.fields.some(
+        (f) => f.name === "subjectPhone" || f.name === "subjectEmail",
+      );
+      const noConsentContact =
+        hasConsentContactFields &&
+        !formData.subjectPhone?.trim() &&
+        !formData.subjectEmail?.trim();
       setError(
         noBureauSelected
           ? isSw
             ? "Tafadhali chagua angalau ofisi moja ya mikopo."
             : "Please select at least one credit bureau."
-          : hasEitherOr
+          : noConsentContact
             ? isSw
-              ? "Tafadhali jaza angalau sehemu moja."
-              : "Please fill in at least one of the fields."
-            : isSw
-              ? "Tafadhali jaza sehemu zote zinazohitajika."
-              : "Please fill in all required fields.",
+              ? "Tafadhali toa nambari ya simu au barua pepe ya mhusika kwa ajili ya idhini."
+              : "Please provide the subject's phone number or email for consent."
+            : hasEitherOr
+              ? isSw
+                ? "Tafadhali jaza angalau sehemu moja."
+                : "Please fill in at least one of the fields."
+              : isSw
+                ? "Tafadhali jaza sehemu zote zinazohitajika."
+                : "Please fill in all required fields.",
       );
       return;
     }
@@ -1193,6 +1212,35 @@ const VerifyPage = () => {
               {field.eitherOr &&
                 idx > 0 &&
                 config.fields[idx - 1]?.eitherOr === field.eitherOr && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      margin: "4px 0 12px",
+                    }}
+                  >
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#999",
+                        fontFamily: "Nunito, sans-serif",
+                      }}
+                    >
+                      {isSw ? "AU" : "OR"}
+                    </span>
+                    <div
+                      style={{ flex: 1, height: 1, background: "#e5e7eb" }}
+                    />
+                  </div>
+                )}
+              {field.name === "subjectEmail" &&
+                idx > 0 &&
+                config.fields[idx - 1].name === "subjectPhone" && (
                   <div
                     style={{
                       display: "flex",

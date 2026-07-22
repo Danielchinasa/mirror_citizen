@@ -43,7 +43,6 @@ const verificationConfig = {
         maxLength: 15,
         showCounter: true,
         required: false,
-        eitherOr: "consentContact",
       },
       {
         name: "subjectEmail",
@@ -53,7 +52,6 @@ const verificationConfig = {
         maxLength: 100,
         showCounter: false,
         required: false,
-        eitherOr: "consentContact",
       },
     ],
     youWillGet: [
@@ -312,7 +310,6 @@ const verificationConfig = {
         maxLength: 15,
         showCounter: true,
         required: false,
-        eitherOr: "consentContact",
       },
       {
         name: "subjectEmail",
@@ -322,7 +319,6 @@ const verificationConfig = {
         maxLength: 100,
         showCounter: false,
         required: false,
-        eitherOr: "consentContact",
       },
     ],
     youWillGet: [
