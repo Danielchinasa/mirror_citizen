@@ -1153,6 +1153,43 @@ const VerifyPage = () => {
 
           {config.fields.map((field, idx) => (
             <React.Fragment key={field.name}>
+              {field.name.startsWith("subject") &&
+                idx > 0 &&
+                !config.fields[idx - 1].name.startsWith("subject") && (
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        margin: "24px 0 12px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          flex: 1,
+                          height: 1,
+                          background: "#e5e7eb",
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 700,
+                        color: "#666",
+                        fontFamily: "Nunito, sans-serif",
+                        marginBottom: 4,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                      }}
+                    >
+                      {isSw
+                        ? "Maelezo ya Mawasiliano kwa Idhini"
+                        : "Consent Contact Details"}
+                    </div>
+                  </>
+                )}
               {field.eitherOr &&
                 idx > 0 &&
                 config.fields[idx - 1]?.eitherOr === field.eitherOr && (
