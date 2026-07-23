@@ -8,6 +8,7 @@ import App from "./App";
 import InactivityDetector from "./InactivityDetector";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Swal from "sweetalert2";
+import { basename } from "./routing";
 
 // Set global SweetAlert2 default button color to the app's primary color
 (function setSwalDefaults() {
@@ -24,7 +25,7 @@ import Swal from "sweetalert2";
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <Router>
+      <Router basename={basename}>
         <GoogleOAuthProvider clientId="652852723588-1j7ps2j4n3ub2dt8a9pm6f1vhp6di4lr.apps.googleusercontent.com">
           {/* <InactivityDetector /> */}
           <App />

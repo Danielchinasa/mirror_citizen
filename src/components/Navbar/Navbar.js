@@ -55,6 +55,7 @@ import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
+import { absoluteAppUrl, withBasePath } from "../../routing";
 
 const { useToken } = theme;
 
@@ -127,9 +128,9 @@ function Navbar() {
     {
       key: "2",
       label: (
-        <a href="/profile" style={{ textDecoration: "none" }}>
+        <Link to="/profile" style={{ textDecoration: "none" }}>
           My Profile
-        </a>
+        </Link>
       ),
     },
     {
@@ -750,8 +751,8 @@ function Navbar() {
           email: userDetails?.email || "",
           type: "TOPUP",
           stakeHolders: "NON-STAKEHOLDER",
-          return_url: window.location.origin + "/payment/success",
-          cancel_url: window.location.origin + "/payment/failure",
+          return_url: absoluteAppUrl("/payment/success"),
+          cancel_url: absoluteAppUrl("/payment/failure"),
         };
         setAmount("");
 
@@ -918,8 +919,12 @@ function Navbar() {
                 </PublicTrigger>
               </Dropdown>
 
-              <PublicAnchor href="/#how-it-works">How it works</PublicAnchor>
-              <PublicAnchor href="/#services">Pricing</PublicAnchor>
+              <PublicAnchor href={withBasePath("/#how-it-works")}>
+                How it works
+              </PublicAnchor>
+              <PublicAnchor href={withBasePath("/#services")}>
+                Pricing
+              </PublicAnchor>
               <PublicNavLink to="/faq-ghana">FAQ</PublicNavLink>
               <PublicNavLink to="/contact">Support</PublicNavLink>
             </PublicCenter>
@@ -958,7 +963,9 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="/#services">Get Started</PublicCta>
+              <PublicCta href={withBasePath("/#services")}>
+                Get Started
+              </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -978,7 +985,7 @@ function Navbar() {
               </div>
 
               <PublicMobileAnchor
-                href="/#how-it-works"
+                href={withBasePath("/#how-it-works")}
                 onClick={closeMobileMenu}
               >
                 How it works
@@ -991,7 +998,7 @@ function Navbar() {
                 Support
               </PublicMobileLink>
               <PublicMobileAnchor
-                href="/#how-it-works"
+                href={withBasePath("/#how-it-works")}
                 onClick={closeMobileMenu}
               >
                 Get Started
