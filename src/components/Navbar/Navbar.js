@@ -59,6 +59,7 @@ import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
+import { absoluteAppUrl, withBasePath } from "../../routing";
 
 const { useToken } = theme;
 
@@ -132,9 +133,9 @@ function Navbar() {
   const menu = (
     <Menu>
       <Menu.Item key="profile" onClick={closeMobileMenu}>
-        <a href="/profile" style={{ textDecoration: "none" }}>
+        <Link to="/profile" style={{ textDecoration: "none" }}>
           {t("nav.myProfile")}
-        </a>
+        </Link>
       </Menu.Item>
 
       <Menu.Divider />
@@ -731,8 +732,8 @@ function Navbar() {
           email: userDetails?.email || "",
           type: "TOPUP",
           stakeHolders: "NON-STAKEHOLDER",
-          return_url: window.location.origin + "/payment/success",
-          cancel_url: window.location.origin + "/payment/failure",
+          return_url: absoluteAppUrl("/payment/success"),
+          cancel_url: absoluteAppUrl("/payment/failure"),
         };
         setAmount("");
 
@@ -893,10 +894,12 @@ function Navbar() {
                   {t("nav.services")} <DownOutlined className="chev" />
                 </PublicTrigger>
               </Dropdown>
-              <PublicAnchor href="/#how-it-works">
+              <PublicAnchor href={withBasePath("/#how-it-works")}>
                 {t("nav.howItWorks")}
               </PublicAnchor>
-              <PublicAnchor href="/#services">{t("nav.pricing")}</PublicAnchor>
+              <PublicAnchor href={withBasePath("/#services")}>
+                {t("nav.pricing")}
+              </PublicAnchor>
               <PublicNavLink to="/faq-uganda">{t("nav.faq")}</PublicNavLink>
               <PublicNavLink to="/contact">{t("nav.support")}</PublicNavLink>
             </PublicCenter>
@@ -934,7 +937,9 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="/#services">{t("nav.getStarted")}</PublicCta>
+              <PublicCta href={withBasePath("/#services")}>
+                {t("nav.getStarted")}
+              </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
@@ -956,7 +961,7 @@ function Navbar() {
                 {t("nav.vinVerification")}
               </PublicMobileLink> */}
               <PublicMobileAnchor
-                href="/#how-it-works"
+                href={withBasePath("/#how-it-works")}
                 onClick={closeMobileMenu}
               >
                 {t("nav.howItWorks")}
@@ -968,7 +973,10 @@ function Navbar() {
                 {t("nav.support")}
               </PublicMobileLink>
 
-              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor
+                href={withBasePath("/#services")}
+                onClick={closeMobileMenu}
+              >
                 {t("nav.getStarted")}
               </PublicMobileAnchor>
 
