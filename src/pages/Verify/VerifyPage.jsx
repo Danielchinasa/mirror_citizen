@@ -29,6 +29,7 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
+import { withBasePath } from "../../routing";
 
 import {
   PageWrapper,
@@ -2664,7 +2665,7 @@ const VerifyPage = () => {
               >
                 En continuant, vous acceptez nos{" "}
                 <a
-                  href="/terms_of_service"
+                  href={withBasePath("/terms_of_service")}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -2677,7 +2678,7 @@ const VerifyPage = () => {
                 </a>{" "}
                 et notre{" "}
                 <a
-                  href="/privacy_policy"
+                  href={withBasePath("/privacy_policy")}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{

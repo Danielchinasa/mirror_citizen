@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/actions";
 import { theme } from "antd";
 import { useTheme } from "../components/ThemeProvider";
+import { withBasePath } from "../routing";
 const { useToken } = theme;
 
 const events = [
@@ -84,7 +85,7 @@ const AppLogout = ({ children }) => {
     const logoutAction = () => {
       dispatch(logout());
       localStorage.clear();
-      window.location.pathname = "/login";
+      window.location.assign(withBasePath("/login"));
     };
 
     // Event listener setup
