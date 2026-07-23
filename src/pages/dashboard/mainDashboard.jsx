@@ -44,6 +44,7 @@ import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
+import { absoluteAppUrl } from "../../routing";
 const { Title } = Typography;
 
 const data = [
@@ -1225,8 +1226,8 @@ const MainDashboard = () => {
           email: userEmail,
           type: "TOPUP",
           stakeHolders: "NON-STAKEHOLDER",
-          return_url: window.location.origin + "/payment/success",
-          cancel_url: window.location.origin + "/payment/failure",
+          return_url: absoluteAppUrl("/payment/success"),
+          cancel_url: absoluteAppUrl("/payment/failure"),
         };
         setAmount("");
 

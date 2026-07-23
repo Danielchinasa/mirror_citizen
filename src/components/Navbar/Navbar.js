@@ -56,6 +56,7 @@ import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
+import { absoluteAppUrl, withBasePath } from "../../routing";
 
 const { useToken } = theme;
 
@@ -128,9 +129,9 @@ function Navbar() {
     {
       key: "2",
       label: (
-        <a href="/profile" style={{ textDecoration: "none" }}>
+        <Link to="/profile" style={{ textDecoration: "none" }}>
           My Profile
-        </a>
+        </Link>
       ),
     },
     {
@@ -792,8 +793,8 @@ function Navbar() {
           email: userDetails?.email || "",
           type: "TOPUP",
           stakeHolders: "NON-STAKEHOLDER",
-          return_url: window.location.origin + "/payment/success",
-          cancel_url: window.location.origin + "/payment/failure",
+          return_url: absoluteAppUrl("/payment/success"),
+          cancel_url: absoluteAppUrl("/payment/failure"),
         };
         setAmount("");
 
@@ -956,10 +957,10 @@ function Navbar() {
                 </PublicTrigger>
               </Dropdown>
 
-              <PublicAnchor href="/#how-it-works">
+              <PublicAnchor href={withBasePath("/#how-it-works")}>
                 {isSw ? "Inavyofanya kazi" : "How it works"}
               </PublicAnchor>
-              <PublicAnchor href="/#services">
+              <PublicAnchor href={withBasePath("/#services")}>
                 {isSw ? "Bei" : "Pricing"}
               </PublicAnchor>
               <PublicNavLink to="/faq-kenya">FAQ</PublicNavLink>
@@ -1021,7 +1022,7 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="/#services">
+              <PublicCta href={withBasePath("/#services")}>
                 {isSw ? "Anza" : "Get Started"}
               </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
@@ -1045,7 +1046,7 @@ function Navbar() {
                 {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
               </PublicMobileLink> */}
               <PublicMobileAnchor
-                href="/#how-it-works"
+                href={withBasePath("/#how-it-works")}
                 onClick={closeMobileMenu}
               >
                 {isSw ? "Inavyofanya kazi" : "How it works"}
@@ -1056,7 +1057,10 @@ function Navbar() {
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 {isSw ? "Msaada" : "Support"}
               </PublicMobileLink>
-              <PublicMobileAnchor href="/#services" onClick={closeMobileMenu}>
+              <PublicMobileAnchor
+                href={withBasePath("/#services")}
+                onClick={closeMobileMenu}
+              >
                 {isSw ? "Anza" : "Get Started"}
               </PublicMobileAnchor>
               <div style={{ padding: "6px 0" }}>

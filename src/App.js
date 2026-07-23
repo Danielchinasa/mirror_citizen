@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import GlobalStyles from "./globalStyles";
 import { Navbar, Footer } from "./components";
 import Home from "./pages/HomePage/Home";
@@ -68,6 +63,7 @@ import FinancialVerificationPage from "./pages/FinancialLanding/FinancialVerific
 import VehicleVerificationPage from "./pages/VehicleLanding/VehicleVerificationPage";
 import VerifyPage from "./pages/Verify/VerifyPage";
 import ApiDocsPage from "./pages/apiDocs/apiDocsPage";
+import { withBasePath } from "./routing";
 
 //theming
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -187,7 +183,9 @@ function App() {
                 {
                   title: "More information",
                   description:
-                    'Please feel free to <a href="/contact">contact us</a> for any inquiries regarding our cookie policy and your options.',
+                    `Please feel free to <a href="${withBasePath(
+                      "/contact",
+                    )}">contact us</a> for any inquiries regarding our cookie policy and your options.`,
                 },
               ],
             },
@@ -198,7 +196,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <>
       {/* <ConfigProvider
         theme={{
           token: {
@@ -218,7 +216,7 @@ function App() {
 
         {/* </ConfigProvider> */}
       </ThemeProvider>
-    </Router>
+    </>
   );
 }
 

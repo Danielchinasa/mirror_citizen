@@ -69,6 +69,7 @@ import { trackGA4Event } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { absoluteAppUrl } from "../../routing";
 
 /* global Reach */
 
@@ -1770,8 +1771,8 @@ const DashboardPage = () => {
             type: "VERIFICATION",
             stakeHolders: "NON-STAKEHOLDER",
             sessionCode: paypalSessionId,
-            return_url: window.location.origin + "/payment/success",
-            cancel_url: window.location.origin + "/payment/failure",
+            return_url: absoluteAppUrl("/payment/success"),
+            cancel_url: absoluteAppUrl("/payment/failure"),
           };
           const response = await fetch(`${baseUrl}/payment/paypal/create`, {
             method: "POST",
