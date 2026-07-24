@@ -357,7 +357,7 @@ function Navbar() {
     <Menu>
       <Menu.Item key="country-ghana">
         <a
-          href="https://e-citizen.africa"
+          href="https://e-citizen.africa/gh"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
@@ -371,7 +371,7 @@ function Navbar() {
 
       <Menu.Item key="country-uganda">
         <a
-          href="https://e-raia.africa"
+          href="https://e-raia.africa/ug"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
@@ -384,7 +384,7 @@ function Navbar() {
       </Menu.Item>
       <Menu.Item key="country-civ">
         <a
-          href="https://citoyen.africa"
+          href="https://citoyen.africa/ci"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
@@ -401,7 +401,7 @@ function Navbar() {
       </Menu.Item>
       <Menu.Item key="country-kenya">
         <a
-          href="https://e-raia.com"
+          href="https://e-raia.com/ke"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
