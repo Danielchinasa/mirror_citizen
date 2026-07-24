@@ -142,7 +142,7 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © e-raia.africa {new Date().getFullYear()}. All Rights Reserved.
+              © e-raia.com {new Date().getFullYear()}. All Rights Reserved.
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
