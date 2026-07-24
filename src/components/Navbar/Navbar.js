@@ -371,7 +371,7 @@ function Navbar() {
 
       <Menu.Item key="country-uganda">
         <a
-          href="https://e-raia.africa/ug"
+          href="https://e-raia.com/ug"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
