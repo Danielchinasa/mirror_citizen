@@ -27,7 +27,8 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/kenya.png";
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
-import osiaImg from "../../images/osia.png";
+import mosipImg from "../../images/mosip.jpg";
+import gdprImg from "../../images/gdpr.jpg";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -799,10 +800,10 @@ const Home = () => {
               <img src={ndprImg} alt="NDPC" />
             </ComplianceBadge>
             <ComplianceBadge>
-              <img src={nimcImg} alt="NCMC" style={{ maxHeight: 48 }} />
+              <img src={gdprImg} alt="NCMC" style={{ maxHeight: 48 }} />
             </ComplianceBadge>
             <ComplianceBadge>
-              <img src={osiaImg} alt="OSIA" style={{ maxHeight: 48 }} />
+              <img src={mosipImg} alt="OSIA" style={{ maxHeight: 48 }} />
             </ComplianceBadge>
           </ComplianceLogos>
         </ComplianceInner>

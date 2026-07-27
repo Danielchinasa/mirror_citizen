@@ -339,6 +339,11 @@ function Navbar() {
           {isSw ? "Kitambulisho cha Taifa" : "National ID"}
         </Link>
       </Menu.Item>
+      <Menu.Item key="services-alien-card">
+        <Link to="/#services" style={{ textDecoration: "none" }}>
+          {isSw ? "Uthibitishaji wa Alien Card" : "Alien Card Verification"}
+        </Link>
+      </Menu.Item>
       <Menu.Item key="services-vin">
         <Link to="/#services" style={{ textDecoration: "none" }}>
           {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}

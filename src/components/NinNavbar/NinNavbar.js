@@ -75,7 +75,7 @@ function NinNavbar() {
             </NinNavItem>
             <NinNavItem>
               <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
-                Verify NIN Now <FaArrowRight />
+                Verify National ID Now <FaArrowRight />
               </NinCtaButton>
             </NinNavItem>
           </NinNavMenu>

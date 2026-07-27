@@ -98,8 +98,8 @@ const CtaButton = styled(Link)`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background: #FF4D4F;
-    border-color: #FF4D4F;
+    background: #ff4d4f;
+    border-color: #ff4d4f;
     color: #fff;
   }
 `;
@@ -133,19 +133,18 @@ const NinCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your NIN?</CtaTitle>
+          <CtaTitle>Ready to verify your National ID?</CtaTitle>
           <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-citizen
-            for fast, accurate and secure identity verification.
+            Join thousands of individuals and businesses that rely on e-raia for
+            fast, accurate and secure identity verification.
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify NIN Now <FaArrowRight />
+            Verify National ID Now <FaArrowRight />
           </CtaButton>
           <CtaPrice>
-            <FaCheckCircle /> Starting from <strong>N</strong>600 per
-            verification
+            <FaCheckCircle /> Starting from Ksh 600 per verification
           </CtaPrice>
         </CtaRight>
       </CtaInner>

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaArrowRight,
-  FaEye,
-} from "react-icons/fa";
+import { FaArrowRight, FaEye } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
 import ninHeroImg from "../../images/kenya.png";
@@ -82,7 +79,9 @@ const NinHero = () => {
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                {isSw ? "Thibitisha NIN Sasa" : "Verify NIN Now"}{" "}
+                {isSw
+                  ? "Thibitisha National ID Sasa"
+                  : "Verify National ID Now"}{" "}
                 <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#" onClick={openSampleResult}>
