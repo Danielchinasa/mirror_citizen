@@ -54,7 +54,7 @@ const ContactPage = () => {
             </h1>
             <p>
               {isSw ? "Barua pepe yetu:" : "Our Email Address:"}{" "}
-              <a href="mailto:info@e-citizen.ng">info@e-citizen.ng</a>
+              <a href="mailto:ke-info@e-raia.com">ke-info@e-raia.com</a>
             </p>
             <p>
               {isSw
