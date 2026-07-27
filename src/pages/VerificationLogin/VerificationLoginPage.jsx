@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { FaEye, FaEyeSlash, FaBars, FaTimes } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaBars, FaTimes, FaArrowLeft } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -18,6 +18,7 @@ import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import {
   PageWrapper,
   LoginNav,
+  BackButton,
   NavLogo,
   NavLinks,
   NavLink,
@@ -52,6 +53,14 @@ const VerificationLoginPage = () => {
 
   const redirectTo =
     new URLSearchParams(location.search).get("redirect") || "/dashboard";
+
+  const handleGoBack = () => {
+    if (window.history.length > 1) {
+      history.goBack();
+    } else {
+      history.push("/");
+    }
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -242,9 +251,14 @@ const VerificationLoginPage = () => {
   return (
     <PageWrapper>
       <LoginNav>
-        <NavLogo to="/">
-          <img src={Logo} alt="eCitizen" />
-        </NavLogo>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <BackButton onClick={handleGoBack} title="Go back">
+            <FaArrowLeft />
+          </BackButton>
+          <NavLogo to="/">
+            <img src={Logo} alt="eCitizen" />
+          </NavLogo>
+        </div>
         <NavLinks>
           <NavLink to="/nin-verification">NIN Verification</NavLink>
           <NavLink to="/credit-profile">Credit Profile</NavLink>

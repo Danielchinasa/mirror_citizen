@@ -17,9 +17,9 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your ",
-    heroHighlight: "NIN ",
-    heroContinue: "in seconds",
+    heroTitle: "Verify Your NIN",
+    heroHighlight: "in seconds ",
+    heroContinue: "",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
@@ -81,9 +81,8 @@ const verificationConfig = {
     ],
     youWillGet: [
       { icon: FaUser, text: "Owner information" },
-      { icon: FaPhoneAlt, text: "Network details" },
-      { icon: FaCheckCircle, text: "Verification status" },
-      { icon: FaMapMarkerAlt, text: "Region details" },
+      { icon: FaPhoneAlt, text: "Address details" },
+      { icon: FaCheckCircle, text: "Date of Birth" },
       { icon: FaBolt, text: "Instant results" },
     ],
     sampleResult: {

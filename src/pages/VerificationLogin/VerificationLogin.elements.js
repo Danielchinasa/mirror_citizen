@@ -26,6 +26,43 @@ export const LoginNav = styled.nav`
   }
 `;
 
+export const BackButton = styled.button.attrs({ type: "button" })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--ec-border-light);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--ec-text-secondary);
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 6px;
+  white-space: nowrap;
+
+  svg {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: var(--ec-bg-secondary);
+    color: var(--ec-primary);
+    border-color: var(--ec-primary);
+
+    svg {
+      transform: translateX(-3px);
+    }
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+`;
+
 export const NavLogo = styled(Link)`
   display: flex;
   align-items: center;
