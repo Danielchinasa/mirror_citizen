@@ -455,6 +455,23 @@ const VehicleLoginSample = () => {
   const history = useHistory();
   const redirectTo = "/verify/vehicle";
 
+  const [language, setLanguage] = useState(() => {
+    if (typeof window === "undefined") return "SW";
+    return window.localStorage.getItem("siteLanguage") || "SW";
+  });
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const lang = window.localStorage.getItem("siteLanguage") || "SW";
+      setLanguage(lang);
+    };
+    window.addEventListener("siteLanguageChanged", handleLanguageChange);
+    return () =>
+      window.removeEventListener("siteLanguageChanged", handleLanguageChange);
+  }, []);
+
+  const isSw = language === "SW";
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -714,9 +731,13 @@ const VehicleLoginSample = () => {
               <Spinner />
             </SpinnerOverlay>
           )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          <LoginCardTitle>
+            {isSw ? "Ingia / Endelea" : "Login / Continue"}
+          </LoginCardTitle>
           <LoginCardSub>
-            Sign in or continue to start your verification.
+            {isSw
+              ? "Ingia au endelea kuanza uthibitishaji wako."
+              : "Sign in or continue to start your verification."}
           </LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
@@ -734,7 +755,8 @@ const VehicleLoginSample = () => {
                     googleLogin();
                   }}
                 >
-                  <FcGoogle /> Continue with Google
+                  <FcGoogle />{" "}
+                  {isSw ? "Endelea na Google" : "Continue with Google"}
                 </SSOButton>
                 <FacebookLogin
                   appId="541710452150170"
@@ -744,21 +766,22 @@ const VehicleLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                      <FaFacebook color="#1877F2" />{" "}
+                      {isSw ? "Endelea na Facebook" : "Continue with Facebook"}
                     </SSOButton>
                   )}
                 />
               </SSOCol>
-              <Divider>OR</Divider>
+              <Divider>{isSw ? "AU" : "OR"}</Divider>
               <FormCol>
                 {formErrors.general && (
                   <ErrorAlert>{formErrors.general}</ErrorAlert>
                 )}
                 <div>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>{isSw ? "Barua pepe" : "Email address"}</FormLabel>
                   <FormInput
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={isSw ? "Weka barua pepe yako" : "Enter your email"}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -768,11 +791,11 @@ const VehicleLoginSample = () => {
                   )}
                 </div>
                 <div>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{isSw ? "Nywila" : "Password"}</FormLabel>
                   <PasswordWrapper>
                     <FormInput
                       type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder={isSw ? "Weka nywila yako" : "Enter your password"}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -796,10 +819,10 @@ const VehicleLoginSample = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />{" "}
-                    Remember me
+                    {isSw ? "Nikumbuke" : "Remember me"}
                   </RememberLabel>
                   <ForgotLink to="/forgot-password">
-                    Forgot password?
+                    {isSw ? "Umesahau nywila?" : "Forgot password?"}
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
@@ -808,11 +831,13 @@ const VehicleLoginSample = () => {
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
+                  {isSw ? "Ingia" : "Login"}
                 </LoginBtn>
                 <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
+                  {isSw ? "Huna akaunti?" : "Don't have an account?"}{" "}
+                  <Link to="/individual/sign-up/1">
+                    {isSw ? "Jisajili hapa" : "Register here"}
+                  </Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -822,11 +847,17 @@ const VehicleLoginSample = () => {
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
-            <SampleCardTitle>Sample result</SampleCardTitle>
-            <SampleBadge>This is a sample only</SampleBadge>
+            <SampleCardTitle>
+              {isSw ? "Mfano wa matokeo" : "Sample result"}
+            </SampleCardTitle>
+            <SampleBadge>
+              {isSw ? "Huu ni mfano tu" : "This is a sample only"}
+            </SampleBadge>
           </SampleHeader>
           <SampleCardSub>
-            See an example of a vehicle verification report.
+            {isSw
+              ? "Ona mfano wa ripoti ya uthibitishaji wa gari."
+              : "See an example of a vehicle verification report."}
           </SampleCardSub>
           <ResultCard>
             <ResultTop>
@@ -835,11 +866,15 @@ const VehicleLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Make / Model</ResultLabel>
+                  <ResultLabel>
+                    {isSw ? "Chapa / Model" : "Make / Model"}
+                  </ResultLabel>
                   <ResultValue>Toyota Corolla</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Chassis No.</ResultLabel>
+                  <ResultLabel>
+                    {isSw ? "Nambari ya Chasi" : "Chassis No."}
+                  </ResultLabel>
                   <ResultValue>JT2BF22K4W0123456</ResultValue>
                 </ResultField>
                 <ResultField>
@@ -847,17 +882,23 @@ const VehicleLoginSample = () => {
                   <ResultValue>JT2BF22K4W0123456</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Year</ResultLabel>
+                  <ResultLabel>
+                    {isSw ? "Mwaka" : "Year"}
+                  </ResultLabel>
                   <ResultValue>2018</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Engine No.</ResultLabel>
+                  <ResultLabel>
+                    {isSw ? "Nambari ya Injini" : "Engine No."}
+                  </ResultLabel>
                   <ResultValue>2AZFE1234567</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Status</ResultLabel>
+                  <ResultLabel>
+                    {isSw ? "Hali" : "Status"}
+                  </ResultLabel>
                   <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
+                    {isSw ? "IMETHIBITISHWA" : "VERIFIED"} <FaCheckCircle />
                   </VerifiedBadge>
                 </ResultField>
               </ResultGrid>
@@ -865,7 +906,9 @@ const VehicleLoginSample = () => {
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
-            Results are based on data available at the time of verification.
+            {isSw
+              ? "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji."
+              : "Results are based on data available at the time of verification."}
           </ResultDisclaimer>
         </SampleCard>
       </TwoColGrid>

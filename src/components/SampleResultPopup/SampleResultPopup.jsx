@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   FaBuilding,
@@ -12,6 +12,80 @@ import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
+const t = (label, isSw) => {
+  const translations = {
+    "Sample result": isSw ? "Mfano wa matokeo" : "Sample result",
+    "This is a sample only": isSw ? "Huu ni mfano tu" : "This is a sample only",
+    "See an example of a National ID result.": isSw
+      ? "Ona mfano wa matokeo ya Kitambulisho cha Taifa."
+      : "See an example of a National ID result.",
+    "See an example of a phone number verification result.": isSw
+      ? "Ona mfano wa matokeo ya uthibitishaji wa namba ya simu."
+      : "See an example of a phone number verification result.",
+    "See an example of a company verification result.": isSw
+      ? "Ona mfano wa matokeo ya uthibitishaji wa kampuni."
+      : "See an example of a company verification result.",
+    "See an example of a Credit Profile result.": isSw
+      ? "Ona mfano wa matokeo ya Profaili ya Mikopo."
+      : "See an example of a Credit Profile result.",
+    "See an example of a vehicle verification report.": isSw
+      ? "Ona mfano wa ripoti ya uthibitishaji wa gari."
+      : "See an example of a vehicle verification report.",
+    "Full Name": isSw ? "Jina Kamili" : "Full Name",
+    "First Name": isSw ? "Jina la Kwanza" : "First Name",
+    "Middle Name": isSw ? "Jina la Kati" : "Middle Name",
+    Surname: isSw ? "Jina la Mwisho" : "Surname",
+    NIN: "NIN",
+    "Phone Number": isSw ? "Nambari ya Simu" : "Phone Number",
+    "Verification Status": isSw ? "Hali ya Uthibitishaji" : "Verification Status",
+    "Date of Birth": isSw ? "Tarehe ya Kuzaliwa" : "Date of Birth",
+    Gender: isSw ? "Jinsia" : "Gender",
+    "Birth Country": isSw ? "Nchi ya Kuzaliwa" : "Birth Country",
+    "Residence Address": isSw ? "Anwani ya Makazi" : "Residence Address",
+    "Next of Kin First Name": isSw ? "Jina la Kwanza la Jirani" : "Next of Kin First Name",
+    "Next of Kin Middle Name": isSw ? "Jina la Kati la Jirani" : "Next of Kin Middle Name",
+    "Next of Kin Town": isSw ? "Mji wa Jirani" : "Next of Kin Town",
+    "Next of Kin LGA": isSw ? "LGA ya Jirani" : "Next of Kin LGA",
+    "Next of Kin Address": isSw ? "Anwani ya Jirani" : "Next of Kin Address",
+    "Company Name": isSw ? "Jina la Kampuni" : "Company Name",
+    "RC Number": isSw ? "Namba ya RC" : "RC Number",
+    "CAC ID": isSw ? "Kitambulisho cha CAC" : "CAC ID",
+    Classification: isSw ? "Uainishaji" : "Classification",
+    "Registration Date": isSw ? "Tarehe ya Usajili" : "Registration Date",
+    "Verification Date": isSw ? "Tarehe ya Uthibitishaji" : "Verification Date",
+    "Customer Name": isSw ? "Jina la Mteja" : "Customer Name",
+    BVN: "BVN",
+    Address: isSw ? "Anwani" : "Address",
+    "Report Date": isSw ? "Tarehe ya Ripoti" : "Report Date",
+    "Credit Score": isSw ? "Alama ya Mikopo" : "Credit Score",
+    Rating: isSw ? "Ukadiriaji" : "Rating",
+    CRC: "CRC",
+    "First Central": "First Central",
+    "Credit Registry": isSw ? "Sajili ya Mikopo" : "Credit Registry",
+    "Bureaus Checked": isSw ? "Ofisi Zilizokaguliwa" : "Bureaus Checked",
+    "Make / Model": isSw ? "Chapa / Model" : "Make / Model",
+    "Chassis No.": isSw ? "Nambari ya Chasi" : "Chassis No.",
+    VIN: "VIN",
+    Year: isSw ? "Mwaka" : "Year",
+    "Engine No.": isSw ? "Nambari ya Injini" : "Engine No.",
+    Status: isSw ? "Hali" : "Status",
+    VERIFIED: isSw ? "IMETHIBITISHWA" : "VERIFIED",
+    Stakeholders: isSw ? "Wadau" : "Stakeholders",
+    Name: isSw ? "Jina" : "Name",
+    Role: isSw ? "Wajibu" : "Role",
+    Nationality: isSw ? "Utaifa" : "Nationality",
+    "Results are based on data available at the time of verification.": isSw
+      ? "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji."
+      : "Results are based on data available at the time of verification.",
+  };
+  return translations[label] || label;
+};
 
 const sampleData = {
   nin: {
@@ -121,8 +195,18 @@ const sampleData = {
 };
 
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
-  const sample = sampleData[type] || sampleData.nin;
-  const Icon = sample.icon;
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -144,6 +228,9 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
 
   if (!isOpen) return null;
 
+  const sample = sampleData[type] || sampleData.nin;
+  const Icon = sample.icon;
+
   return (
     <Overlay onClick={onClose} role="presentation">
       <Dialog
@@ -155,10 +242,12 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         <Header>
           <div>
             <TitleRow>
-              <Title id="sample-result-title">Sample result</Title>
-              <Badge>This is a sample only</Badge>
+              <Title id="sample-result-title">
+                {t("Sample result", isSw)}
+              </Title>
+              <Badge>{t("This is a sample only", isSw)}</Badge>
             </TitleRow>
-            <Subtitle>{sample.subtitle}</Subtitle>
+            <Subtitle>{t(sample.subtitle, isSw)}</Subtitle>
           </div>
           <CloseButton type="button" onClick={onClose} aria-label="Close">
             <FaTimes />
@@ -177,10 +266,11 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
             <ResultGrid>
               {sample.fields.map(([label, value, status]) => (
                 <ResultField key={label}>
-                  <ResultLabel>{label}</ResultLabel>
+                  <ResultLabel>{t(label, isSw)}</ResultLabel>
                   {status === "verified" ? (
                     <VerifiedValue>
-                      {value} <FaCheckCircle />
+                      {t(value, isSw)}{" "}
+                      <FaCheckCircle />
                     </VerifiedValue>
                   ) : (
                     <ResultValue>{value}</ResultValue>
@@ -191,12 +281,20 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </Top>
           {sample.stakeholders && (
             <StakeholderSection>
-              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+              <StakeholderSectionTitle>
+                {t("Stakeholders", isSw)}
+              </StakeholderSectionTitle>
               <StakeholderTable>
                 <StakeholderRow $header>
-                  <StakeholderCell $header>Name</StakeholderCell>
-                  <StakeholderCell $header>Role</StakeholderCell>
-                  <StakeholderCell $header>Nationality</StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("Name", isSw)}
+                  </StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("Role", isSw)}
+                  </StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("Nationality", isSw)}
+                  </StakeholderCell>
                 </StakeholderRow>
                 {sample.stakeholders.map((s, i) => (
                   <StakeholderRow key={i}>
@@ -212,7 +310,10 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
 
         <Disclaimer>
           <FaInfoCircle />
-          Results are based on data available at the time of verification.
+          {t(
+            "Results are based on data available at the time of verification.",
+            isSw,
+          )}
         </Disclaimer>
       </Dialog>
     </Overlay>

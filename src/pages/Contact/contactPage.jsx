@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Space } from "antd";
 import { MailOutlined, PhoneFilled } from "@ant-design/icons";
 import {
@@ -17,85 +17,31 @@ import contact from "../../images/contact.png";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const ContactPage = () => {
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Container>
         <InfoSec>
-          {/* <Row>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-           
-            <img src={contact} />
-            <Row>
-              <Col>
-                <Space direction="horizontal" size={10}>
-                  <MailOutlined
-                    style={{
-                      fontSize: "22px",
-                      color: "#DD0201",
-                    }}
-                  />
-                  <h5> info@e-citizen.ng</h5>
-                </Space>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Space direction="horizontal" size={10}></Space>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Space direction="horizontal" size={10}></Space>
-              </Col>
-            </Row>
-          </Col>
-          <Col
-            span={12}
-            xs={{ span: 24 }}
-            sm={{ span: 24 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-          >
-            <StyledForm>
-              <StyledLabel>
-                <Space direction="horizontal" size={5}>
-                  <span style={{ color: "red" }}>*</span>Your name
-                </Space>
-              </StyledLabel>
-              <StyledInput placeholder="Full name" />
-              <StyledLabel>
-                <Space direction="horizontal" size={5}>
-                  <span style={{ color: "red" }}>*</span>Your email address
-                </Space>
-              </StyledLabel>
-              <StyledInput placeholder="Email address" />
-              <StyledLabel>
-                <Space direction="horizontal" size={5}>
-                  <span style={{ color: "red" }}>*</span>Your phone number
-                </Space>
-              </StyledLabel>
-              <StyledInput placeholder="Phone number" />
-              <StyledLabel>Your subject</StyledLabel>
-              <StyledInput placeholder="Subject" />
-              <StyledLabel>
-                <Space direction="horizontal" size={5}>
-                  <span style={{ color: "red" }}>*</span>Message
-                </Space>
-              </StyledLabel>
-              <StyledTextArea placeholder="Message" rows={4} />
-              <MainButtonFull type="primary">Send</MainButtonFull>
-            </StyledForm>
-          </Col>
-        </Row> */}
           <div
             style={{
               fontFamily: "Arial, sans-serif",
@@ -103,14 +49,17 @@ const ContactPage = () => {
               color: text,
             }}
           >
-            <h1 style={{ color: text }}>Contact Us</h1>
+            <h1 style={{ color: text }}>
+              {isSw ? "Wasiliana nasi" : "Contact Us"}
+            </h1>
             <p>
-              Our Email Address:{" "}
+              {isSw ? "Barua pepe yetu:" : "Our Email Address:"}{" "}
               <a href="mailto:info@e-citizen.ng">info@e-citizen.ng</a>
             </p>
             <p>
-              Feel free to reach out to us via email for any inquiries or
-              feedback.
+              {isSw
+                ? "Jisikie huru kututumia barua pepe kwa maswali yoyote au maoni."
+                : "Feel free to reach out to us via email for any inquiries or feedback."}
             </p>
           </div>
         </InfoSec>

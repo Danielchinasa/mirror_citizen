@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaShieldAlt,
   FaHistory,
@@ -79,7 +79,25 @@ const BenefitDesc = styled.p`
   margin: 0;
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const VehicleBenefits = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   return (
     <BenefitsWrapper>
       <BenefitsGrid>
@@ -88,9 +106,13 @@ const VehicleBenefits = () => {
             <FaShieldAlt />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Avoid bad purchases</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Epuka ununuzi mbaya" : "Avoid bad purchases"}
+            </BenefitTitle>
             <BenefitDesc>
-              Detect accident, theft, and problem vehicles before you buy.
+              {isSw
+                ? "Gundua ajali, wizi, na magari yenye matatizo kabla ya kununua."
+                : "Detect accident, theft, and problem vehicles before you buy."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>
@@ -99,9 +121,13 @@ const VehicleBenefits = () => {
             <FaHistory />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Check ownership history</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Angalia historia ya umiliki" : "Check ownership history"}
+            </BenefitTitle>
             <BenefitDesc>
-              See past owners and transfer records to ensure legitimacy.
+              {isSw
+                ? "Ona wamiliki wa zamani na rekodi za uhamisho kuhakikisha uhalali."
+                : "See past owners and transfer records to ensure legitimacy."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>
@@ -110,9 +136,13 @@ const VehicleBenefits = () => {
             <FaExclamationTriangle />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Spot red flags</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Tambua viashiria hatari" : "Spot red flags"}
+            </BenefitTitle>
             <BenefitDesc>
-              Identify liens, theft records, and outstanding reports early.
+              {isSw
+                ? "Tambua deni, rekodi za wizi, na ripoti mapema."
+                : "Identify liens, theft records, and outstanding reports early."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>
@@ -121,9 +151,13 @@ const VehicleBenefits = () => {
             <FaThumbsUp />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Buy with confidence</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Nunua kwa ujasiri" : "Buy with confidence"}
+            </BenefitTitle>
             <BenefitDesc>
-              Make informed decisions and protect your money.
+              {isSw
+                ? "Fanya maamuzi sahihi na ulinde pesa zako."
+                : "Make informed decisions and protect your money."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>

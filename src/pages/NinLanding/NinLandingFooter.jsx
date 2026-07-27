@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -215,7 +215,25 @@ const LegalLink = styled(Link)`
   }
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const NinLandingFooter = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -228,8 +246,9 @@ const NinLandingFooter = () => {
           <BrandCol>
             <BrandLogo src={Logo} alt="eCitizen" />
             <BrandDesc>
-              Your trusted partner for digital identity verification and
-              background checks.
+              {isSw
+                ? "Mshirika wako anayeaminika kwa uthibitishaji wa utambulisho wa kidijitali na ukaguzi wa usuli."
+                : "Your trusted partner for digital identity verification and background checks."}
             </BrandDesc>
             <SocialRow>
               <SocialIcon
@@ -257,7 +276,7 @@ const NinLandingFooter = () => {
           </BrandCol>
 
           <FooterCol>
-            <FooterColTitle>Product</FooterColTitle>
+            <FooterColTitle>{isSw ? "Bidhaa" : "Product"}</FooterColTitle>
             <ExternalLink
               href="#how-it-works"
               onClick={(e) => {
@@ -265,7 +284,7 @@ const NinLandingFooter = () => {
                 scrollToSection("how-it-works");
               }}
             >
-              How it works
+              {isSw ? "Inavyofanya kazi" : "How it works"}
             </ExternalLink>
             <ExternalLink
               href="#sample-result"
@@ -274,21 +293,33 @@ const NinLandingFooter = () => {
                 scrollToSection("sample-result");
               }}
             >
-              Sample result
+              {isSw ? "Mfano wa matokeo" : "Sample result"}
             </ExternalLink>
-            <FooterLink to="/nin-verification">National ID</FooterLink>
-            <FooterLink to="/contact">API for Business</FooterLink>
+            <FooterLink to="/nin-verification">
+              {isSw ? "Kitambulisho cha Taifa" : "National ID"}
+            </FooterLink>
+            <FooterLink to="/contact">
+              {isSw ? "API ya Biashara" : "API for Business"}
+            </FooterLink>
           </FooterCol>
 
           <FooterCol>
-            <FooterColTitle>Support</FooterColTitle>
-            <FooterLink to="/faq-kenya">Help Center</FooterLink>
-            <FooterLink to="/contact">Contact Us</FooterLink>
-            <FooterLink to="/faq-kenya">FAQs</FooterLink>
+            <FooterColTitle>{isSw ? "Msaada" : "Support"}</FooterColTitle>
+            <FooterLink to="/faq-kenya">
+              {isSw ? "Kituo cha Msaada" : "Help Center"}
+            </FooterLink>
+            <FooterLink to="/contact">
+              {isSw ? "Wasiliana nasi" : "Contact Us"}
+            </FooterLink>
+            <FooterLink to="/faq-kenya">
+              {isSw ? "Maswali" : "FAQs"}
+            </FooterLink>
           </FooterCol>
 
           <FooterCol>
-            <FooterColTitle>Get the app</FooterColTitle>
+            <FooterColTitle>
+              {isSw ? "Pata programu" : "Get the app"}
+            </FooterColTitle>
             <AppCol>
               <AppBadge href="#" target="_blank" rel="noopener noreferrer">
                 <img src={playstoreImg} alt="Get it on Google Play" />
@@ -302,11 +333,17 @@ const NinLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            © e-raia.com {new Date().getFullYear()}. All Rights Reserved.
+            {isSw
+              ? `© e-raia.com ${new Date().getFullYear()}. Haki Zote Zimehifadhiwa.`
+              : `© e-raia.com ${new Date().getFullYear()}. All Rights Reserved.`}
           </Copyright>
           <LegalLinks>
-            <LegalLink to="/privacy-policy">Privacy Policy</LegalLink>
-            <LegalLink to="/terms-of-service">Terms of Service</LegalLink>
+            <LegalLink to="/privacy-policy">
+              {isSw ? "Sera ya Faragha" : "Privacy Policy"}
+            </LegalLink>
+            <LegalLink to="/terms-of-service">
+              {isSw ? "Sheria na Masharti" : "Terms of Service"}
+            </LegalLink>
           </LegalLinks>
         </FooterBottom>
       </FooterInner>

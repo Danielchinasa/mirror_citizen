@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FooterStrip,
   FooterWrapper,
@@ -35,10 +35,28 @@ import LogoWhite from "../../images/kenya_dark.png";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../components/ThemeProvider";
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const [language, setLanguage] = useState(getLanguage);
   const { isDark } = useTheme();
+
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
 
   return (
     <>
@@ -56,8 +74,9 @@ function Footer() {
                 />
               </Link>
               <BrandDesc>
-                Your trusted partner for digital identity verification and
-                background checks.
+                {isSw
+                  ? "Mshirika wako anayeaminika kwa uthibitishaji wa utambulisho wa kidijitali na ukaguzi wa usuli."
+                  : "Your trusted partner for digital identity verification and background checks."}
               </BrandDesc>
               <SocialRow>
                 <SocialIcon
@@ -92,32 +111,33 @@ function Footer() {
             </BrandCol>
 
             <FooterCol>
-              <FooterColTitle>Services</FooterColTitle>
-              {/* <FooterLink to="/nin-verification">
-                National ID Verification
+              <FooterColTitle>{isSw ? "Huduma" : "Services"}</FooterColTitle>
+              <FooterLink to="/api-docs">
+                {isSw ? "API ya Biashara" : "API for Business"}
               </FooterLink>
-
-              <FooterLink to="/vehicle-verification">
-                VIN Verification
-              </FooterLink> */}
-              <FooterLink to="/api-docs">API for Business</FooterLink>
             </FooterCol>
 
             <FooterCol>
-              <FooterColTitle>Support</FooterColTitle>
-              <FooterLink to="/contact">Contact</FooterLink>
-              <FooterLink to="/faq-kenya">FAQs</FooterLink>
+              <FooterColTitle>{isSw ? "Msaada" : "Support"}</FooterColTitle>
+              <FooterLink to="/contact">
+                {isSw ? "Wasiliana nasi" : "Contact"}
+              </FooterLink>
+              <FooterLink to="/faq-kenya">
+                {isSw ? "Maswali" : "FAQs"}
+              </FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Blog
+                {isSw ? "Blogu" : "Blog"}
               </ExternalLink>
             </FooterCol>
 
             <FooterCol>
-              <FooterColTitle>Get the app</FooterColTitle>
+              <FooterColTitle>
+                {isSw ? "Pata programu" : "Get the app"}
+              </FooterColTitle>
               <AppCol>
                 <AppBadge
                   href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
@@ -139,21 +159,23 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © e-raia.com {new Date().getFullYear()}. All Rights Reserved.
+              {isSw
+                ? `© e-raia.com ${new Date().getFullYear()}. Haki Zote Zimehifadhiwa.`
+                : `© e-raia.com ${new Date().getFullYear()}. All Rights Reserved.`}
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
-                Privacy Policy
+                {isSw ? "Sera ya Faragha" : "Privacy Policy"}
               </LegalLink>
               <LegalLink onClick={() => setIsOpen2(true)}>
-                Terms of Service
+                {isSw ? "Sheria na Masharti" : "Terms of Service"}
               </LegalLink>
             </LegalLinks>
           </FooterBottom>
         </FooterInner>
 
         <Modal
-          title="Privacy Policy"
+          title={isSw ? "Sera ya Faragha" : "Privacy Policy"}
           visible={isOpen}
           centered
           onOk={() => setIsOpen(false)}
@@ -163,7 +185,7 @@ function Footer() {
           <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
         </Modal>
         <Modal
-          title="Terms of Service"
+          title={isSw ? "Sheria na Masharti" : "Terms of Service"}
           visible={isOpen2}
           centered
           onOk={() => setIsOpen2(false)}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
@@ -98,8 +98,8 @@ const CtaButton = styled(Link)`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background: #FF4D4F;
-    border-color: #FF4D4F;
+    background: #ff4d4f;
+    border-color: #ff4d4f;
     color: #fff;
   }
 `;
@@ -118,7 +118,25 @@ const CtaPrice = styled.span`
   }
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const VehicleCta = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const verifyLink = useAuthRedirect("/verify/vehicle");
 
   return (
@@ -128,18 +146,25 @@ const VehicleCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify a vehicle?</CtaTitle>
+          <CtaTitle>
+            {isSw
+              ? "Uko tayari kuthibitisha gari?"
+              : "Ready to verify a vehicle?"}
+          </CtaTitle>
           <CtaDesc>
-            Join thousands of smart buyers who verify before they buy to avoid
-            fraud and make confident decisions.
+            {isSw
+              ? "Jiunge na maelfu ya wanunuzi wenye busara wanaothibitisha kabla ya kununua ili kuepuka ulaghai na kufanya maamuzi kwa ujasiri."
+              : "Join thousands of smart buyers who verify before they buy to avoid fraud and make confident decisions."}
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify Vehicle Now <FaArrowRight />
+            {isSw ? "Thibitisha Gari Sasa" : "Verify Vehicle Now"}{" "}
+            <FaArrowRight />
           </CtaButton>
           <CtaPrice>
-            <FaCheckCircle /> Secure &bull; Fast &bull; Reliable
+            <FaCheckCircle />{" "}
+            {isSw ? "Salama, Haraka, Inayoaminika" : "Secure, Fast, Reliable"}
           </CtaPrice>
         </CtaRight>
       </CtaInner>

@@ -23,12 +23,9 @@ import {
   FaUpload,
 } from "react-icons/fa";
 import NinLoginSample from "../NinLanding/NinLoginSample";
+import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/kenya.png";
-import ndprImg from "../../images/ndpr.png";
-import nimcImg from "../../images/nidologo.png";
-import mosipImg from "../../images/mosip.jpg";
-import gdprImg from "../../images/gdpr.jpg";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -77,14 +74,6 @@ import {
   FeatureItem,
   ServiceBtn,
   LearnMoreLink,
-  ViewAllLink,
-  ComplianceSection,
-  ComplianceInner,
-  ComplianceText,
-  ComplianceTitle,
-  ComplianceDesc,
-  ComplianceLogos,
-  ComplianceBadge,
   CtaSection,
   CtaInner,
   CtaShield,
@@ -781,33 +770,7 @@ const Home = () => {
       <NinLoginSample />
 
       {/* ── Compliance ── */}
-      <ComplianceSection>
-        <ComplianceInner>
-          <ComplianceText>
-            <ComplianceTitle>
-              {isSw
-                ? "Unaaminika. Unafuata sheria. Umejengwa kwa ajili yako."
-                : "Trusted. Compliant. Built for you."}
-            </ComplianceTitle>
-            <ComplianceDesc>
-              {isSw
-                ? "Taarifa zako ziko salama nasi."
-                : "Your data is safe with us."}
-            </ComplianceDesc>
-          </ComplianceText>
-          <ComplianceLogos>
-            <ComplianceBadge>
-              <img src={ndprImg} alt="NDPC" />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={gdprImg} alt="NCMC" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={mosipImg} alt="OSIA" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-          </ComplianceLogos>
-        </ComplianceInner>
-      </ComplianceSection>
+      <ComplianceSection isSw={isSw} />
 
       {/* ── CTA ── */}
       <CtaSection>

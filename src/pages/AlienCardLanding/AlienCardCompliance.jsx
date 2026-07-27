@@ -1,119 +1,26 @@
-import React from "react";
-import styled from "styled-components";
-import ndprImg from "../../images/ndpr.png";
-import nimcImg from "../../images/nidologo.png";
-import osiaImg from "../../images/osia.png";
+import React, { useState, useEffect } from "react";
+import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
 
-const ComplianceWrapper = styled.section`
-  padding: 20px 50px;
-  max-width: 1300px;
-  margin: 0 auto;
-
-  @media screen and (max-width: 768px) {
-    padding: 16px 30px;
-  }
-`;
-
-const ComplianceInner = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  border: 1px solid var(--ec-border);
-  border-radius: 12px;
-  padding: 36px 40px;
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-    padding: 28px 24px;
-    gap: 24px;
-  }
-`;
-
-const ComplianceText = styled.div``;
-
-const ComplianceTitle = styled.h3`
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 24px;
-  color: var(--ec-text);
-  margin: 0 0 6px;
-
-  @media screen and (max-width: 768px) {
-    font-size: 20px;
-  }
-`;
-
-const ComplianceDesc = styled.p`
-  font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  color: var(--ec-text-muted);
-  margin: 0;
-`;
-
-const LogosRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  flex-shrink: 0;
-
-  @media screen and (max-width: 768px) {
-    justify-content: center;
-    gap: 16px;
-  }
-`;
-
-const LogoBadge = styled.div`
-  border-radius: 10px;
-  padding: 12px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 80px;
-  min-height: 50px;
-  background: var(--ec-bg);
-
-  img {
-    max-height: 36px;
-    width: auto;
-    object-fit: contain;
-  }
-`;
-
-const LogoText = styled.span`
-  font-family: "Poppins", sans-serif;
-  font-weight: 800;
-  font-size: ${(props) => props.size || "18px"};
-  color: ${(props) => props.color || "#1a1a1a"};
-  letter-spacing: ${(props) => props.spacing || "0"};
-`;
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
 
 const AlienCardCompliance = () => {
-  return (
-    <ComplianceWrapper>
-      <ComplianceInner>
-        <ComplianceText>
-          <ComplianceTitle>Trusted. Secure. Compliant.</ComplianceTitle>
-          <ComplianceDesc>
-            We adhere to the highest standards for data protection and identity
-            verification.
-          </ComplianceDesc>
-        </ComplianceText>
-        <LogosRow>
-          <LogoBadge>
-            <img src={ndprImg} alt="NDPC" />
-          </LogoBadge>
-          <LogoBadge>
-            <img src={nimcImg} alt="NIMC" style={{ maxHeight: "52px" }} />
-          </LogoBadge>
-          <LogoBadge>
-            <img src={osiaImg} alt="OSIA" style={{ maxHeight: "52px" }} />
-          </LogoBadge>
-        </LogosRow>
-      </ComplianceInner>
-    </ComplianceWrapper>
-  );
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
+  return <ComplianceSection isSw={isSw} />;
 };
 
 export default AlienCardCompliance;

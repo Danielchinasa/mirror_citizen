@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaShieldAlt,
   FaCheckCircle,
@@ -79,7 +79,25 @@ const BenefitDesc = styled.p`
   margin: 0;
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const AlienCardBenefits = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   return (
     <BenefitsWrapper>
       <BenefitsGrid>
@@ -88,9 +106,13 @@ const AlienCardBenefits = () => {
             <FaShieldAlt />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Verify with confidence</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Thibitisha kwa ujasiri" : "Verify with confidence"}
+            </BenefitTitle>
             <BenefitDesc>
-              Access accurate and up-to-date NIN information.
+              {isSw
+                ? "Pata taarifa sahihi na za sasa za Alien Card."
+                : "Access accurate and up-to-date Alien Card information."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>
@@ -99,9 +121,13 @@ const AlienCardBenefits = () => {
             <FaCheckCircle />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Reduce fraud & risk</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Punguza ulaghai na hatari" : "Reduce fraud & risk"}
+            </BenefitTitle>
             <BenefitDesc>
-              Confirm identity and build trust in every transaction.
+              {isSw
+                ? "Thibitisha utambulisho na jenga uaminifu katika kila muamala."
+                : "Confirm identity and build trust in every transaction."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>
@@ -110,9 +136,13 @@ const AlienCardBenefits = () => {
             <FaClock />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Save time & resources</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Okoa muda na rasilimali" : "Save time & resources"}
+            </BenefitTitle>
             <BenefitDesc>
-              Automate verification and focus on what matters.
+              {isSw
+                ? "Otomatiki uthibitishaji na zingatia mambo muhimu."
+                : "Automate verification and focus on what matters."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>
@@ -121,9 +151,13 @@ const AlienCardBenefits = () => {
             <FaChartBar />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Built for scale</BenefitTitle>
+            <BenefitTitle>
+              {isSw ? "Imejengwa kwa kiwango" : "Built for scale"}
+            </BenefitTitle>
             <BenefitDesc>
-              Perfect for businesses, platforms and individuals.
+              {isSw
+                ? "Inafaa kwa biashara, majukwaa na watu binafsi."
+                : "Perfect for businesses, platforms and individuals."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaIdCard,
   FaPaperPlane,
@@ -158,12 +158,30 @@ const DottedConnector = styled.div`
   }
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const AlienCardHowItWorks = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   return (
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How it works</HowTitle>
+        <HowTitle>{isSw ? "Inavyofanya kazi" : "How it works"}</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -173,9 +191,13 @@ const AlienCardHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Enter details</StepName>
+            <StepName>
+              {isSw ? "Weka maelezo" : "Enter details"}
+            </StepName>
             <StepDesc>
-              Provide the Alien Card number and personal details.
+              {isSw
+                ? "Toa nambari ya Alien Card na maelezo binafsi."
+                : "Provide the Alien Card number and personal details."}
             </StepDesc>
           </StepText>
         </StepItem>
@@ -188,9 +210,11 @@ const AlienCardHowItWorks = () => {
             <FaPaperPlane />
           </StepIconBox>
           <StepText>
-            <StepName>Submit</StepName>
+            <StepName>{isSw ? "Wasilisha" : "Submit"}</StepName>
             <StepDesc>
-              We securely check your details against official records.
+              {isSw
+                ? "Tunaangalia kwa usalama maelezo yako dhidi ya rekodi rasmi."
+                : "We securely check your details against official records."}
             </StepDesc>
           </StepText>
         </StepItem>
@@ -203,9 +227,13 @@ const AlienCardHowItWorks = () => {
             <FaFileAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get results</StepName>
+            <StepName>
+              {isSw ? "Pata matokeo" : "Get results"}
+            </StepName>
             <StepDesc>
-              Receive your verification result in minutes.
+              {isSw
+                ? "Pokea matokeo yako ya uthibitishaji kwa dakika."
+                : "Receive your verification result in minutes."}
             </StepDesc>
           </StepText>
         </StepItem>

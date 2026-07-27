@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaIdCard, FaPaperPlane, FaFileAlt, FaArrowRight } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -153,12 +153,30 @@ const DottedConnector = styled.div`
   }
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const NinHowItWorks = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   return (
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How it works</HowTitle>
+        <HowTitle>{isSw ? "Inavyofanya kazi" : "How it works"}</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -168,8 +186,12 @@ const NinHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>Enter ID Number</StepName>
-            <StepDesc>Provide the National ID number you want to verify.</StepDesc>
+            <StepName>{isSw ? "Weka Nambari ya Kitambulisho" : "Enter ID Number"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Toa nambari ya Kitambulisho cha Taifa unachotaka kuthibitisha."
+                : "Provide the National ID number you want to verify."}
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -181,8 +203,12 @@ const NinHowItWorks = () => {
             <FaPaperPlane />
           </StepIconBox>
           <StepText>
-            <StepName>Submit</StepName>
-            <StepDesc>We securely check the details with official government records.</StepDesc>
+            <StepName>{isSw ? "Wasilisha" : "Submit"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Tunaangalia kwa usalama taarifa na rekodi rasmi za serikali."
+                : "We securely check the details with official government records."}
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -194,8 +220,12 @@ const NinHowItWorks = () => {
             <FaFileAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get Results</StepName>
-            <StepDesc>Receive instant verification results and ID details.</StepDesc>
+            <StepName>{isSw ? "Pata Matokeo" : "Get Results"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Pokea matokeo ya uthibitishaji papo hapo na maelezo ya kitambulisho."
+                : "Receive instant verification results and ID details."}
+            </StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>

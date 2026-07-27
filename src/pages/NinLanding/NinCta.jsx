@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
@@ -123,7 +123,25 @@ const CtaPrice = styled.span`
   }
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const NinCta = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const verifyLink = useAuthRedirect("/verify/nin");
 
   return (
@@ -133,18 +151,29 @@ const NinCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your National ID?</CtaTitle>
+          <CtaTitle>
+            {isSw
+              ? "Uko tayari kuthibitisha Kitambulisho chako cha Taifa?"
+              : "Ready to verify your National ID?"}
+          </CtaTitle>
           <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-raia for
-            fast, accurate and secure identity verification.
+            {isSw
+              ? "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-raia kwa uthibitishaji wa utambulisho wa haraka, sahihi na salama."
+              : "Join thousands of individuals and businesses that rely on e-raia for fast, accurate and secure identity verification."}
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify National ID Now <FaArrowRight />
+            {isSw
+              ? "Thibitisha Kitambulisho cha Taifa Sasa"
+              : "Verify National ID Now"}{" "}
+            <FaArrowRight />
           </CtaButton>
           <CtaPrice>
-            <FaCheckCircle /> Starting from Ksh 600 per verification
+            <FaCheckCircle />{" "}
+            {isSw
+              ? "Kuanzia Ksh 600 kwa uthibitishaji"
+              : "Starting from Ksh 600 per verification"}
           </CtaPrice>
         </CtaRight>
       </CtaInner>

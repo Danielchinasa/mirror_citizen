@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch, FaCreditCard, FaFileAlt, FaArrowRight } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -153,12 +153,30 @@ const DottedConnector = styled.div`
   }
 `;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const VehicleHowItWorks = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   return (
     <HowWrapper id="how-it-works">
       <HowHeader>
         <HowLine />
-        <HowTitle>How it works</HowTitle>
+        <HowTitle>{isSw ? "Inavyofanya kazi" : "How it works"}</HowTitle>
         <HowLine />
       </HowHeader>
       <StepsRow>
@@ -168,8 +186,12 @@ const VehicleHowItWorks = () => {
             <FaSearch />
           </StepIconBox>
           <StepText>
-            <StepName>Enter VIN</StepName>
-            <StepDesc>Enter the 17-character VIN from the vehicle.</StepDesc>
+            <StepName>{isSw ? "Weka VIN" : "Enter VIN"}</StepName>
+            <StepDesc>
+              {isSw
+                ? "Weka nambari ya VIN yenye herufi 17 kutoka kwenye gari."
+                : "Enter the 17-character VIN from the vehicle."}
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -181,8 +203,14 @@ const VehicleHowItWorks = () => {
             <FaCreditCard />
           </StepIconBox>
           <StepText>
-            <StepName>Submit &amp; Pay</StepName>
-            <StepDesc>We securely process your request and verify the vehicle.</StepDesc>
+            <StepName>
+              {isSw ? "Wasilisha na Lipa" : "Submit & Pay"}
+            </StepName>
+            <StepDesc>
+              {isSw
+                ? "Tunachakata ombi lako kwa usalama na kuthibitisha gari."
+                : "We securely process your request and verify the vehicle."}
+            </StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector>
@@ -194,8 +222,14 @@ const VehicleHowItWorks = () => {
             <FaFileAlt />
           </StepIconBox>
           <StepText>
-            <StepName>Get Instant Results</StepName>
-            <StepDesc>Receive an official report with verified vehicle details.</StepDesc>
+            <StepName>
+              {isSw ? "Pata Matokeo Papo Hapo" : "Get Instant Results"}
+            </StepName>
+            <StepDesc>
+              {isSw
+                ? "Pokea ripoti rasmi yenye maelezo ya gari yaliyothibitishwa."
+                : "Receive an official report with verified vehicle details."}
+            </StepDesc>
           </StepText>
         </StepItem>
       </StepsRow>
