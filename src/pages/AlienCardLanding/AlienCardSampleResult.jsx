@@ -21,17 +21,17 @@ const AlienCardSampleResult = () => {
     <SampleSectionWrapper id="sample-result">
       <SampleContent>
         <SampleImageWrapper>
-          <img src={ninSampleImg} alt="Sample National ID Result" />
+          <img src={ninSampleImg} alt="Sample Alien Card Result" />
         </SampleImageWrapper>
         <SampleInfo>
-          <SampleTitle>What You Get in a NIN Report</SampleTitle>
+          <SampleTitle>What You Get in a Alien Card Report</SampleTitle>
           <SampleDesc>
-            Each National ID returns comprehensive identity details sourced from
+            Each Alien Card returns comprehensive identity details sourced from
             official records, helping you make informed decisions.
           </SampleDesc>
           <CheckList>
             <CheckItem>
-              <FaCheckCircle /> Full name of the NIN holder
+              <FaCheckCircle /> Full name of the Alien Card holder
             </CheckItem>
             <CheckItem>
               <FaCheckCircle /> Date of birth and gender

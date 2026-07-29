@@ -43,13 +43,19 @@ const t = (label, isSw) => {
     Surname: isSw ? "Jina la Mwisho" : "Surname",
     NIN: "NIN",
     "Phone Number": isSw ? "Nambari ya Simu" : "Phone Number",
-    "Verification Status": isSw ? "Hali ya Uthibitishaji" : "Verification Status",
+    "Verification Status": isSw
+      ? "Hali ya Uthibitishaji"
+      : "Verification Status",
     "Date of Birth": isSw ? "Tarehe ya Kuzaliwa" : "Date of Birth",
     Gender: isSw ? "Jinsia" : "Gender",
     "Birth Country": isSw ? "Nchi ya Kuzaliwa" : "Birth Country",
     "Residence Address": isSw ? "Anwani ya Makazi" : "Residence Address",
-    "Next of Kin First Name": isSw ? "Jina la Kwanza la Jirani" : "Next of Kin First Name",
-    "Next of Kin Middle Name": isSw ? "Jina la Kati la Jirani" : "Next of Kin Middle Name",
+    "Next of Kin First Name": isSw
+      ? "Jina la Kwanza la Jirani"
+      : "Next of Kin First Name",
+    "Next of Kin Middle Name": isSw
+      ? "Jina la Kati la Jirani"
+      : "Next of Kin Middle Name",
     "Next of Kin Town": isSw ? "Mji wa Jirani" : "Next of Kin Town",
     "Next of Kin LGA": isSw ? "LGA ya Jirani" : "Next of Kin LGA",
     "Next of Kin Address": isSw ? "Anwani ya Jirani" : "Next of Kin Address",
@@ -96,7 +102,7 @@ const sampleData = {
       ["First Name", "DANIEL"],
       ["Middle Name", "CHINASA"],
       ["Surname", "OKORO"],
-      ["NIN", "7348 9021 5**"],
+      ["National ID", "7348 9021 593"],
       ["Phone Number", "0806 *** 4821"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "24-08-1992"],
@@ -118,7 +124,7 @@ const sampleData = {
       ["First Name", "ADAOBI"],
       ["Middle Name", "CHIOMA"],
       ["Surname", "NWOSU"],
-      ["NIN", "5923 4107 8**"],
+      ["National ID", "5923 4107 834"],
       ["Phone Number", "08035678456"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "08-03-1994"],
@@ -242,9 +248,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         <Header>
           <div>
             <TitleRow>
-              <Title id="sample-result-title">
-                {t("Sample result", isSw)}
-              </Title>
+              <Title id="sample-result-title">{t("Sample result", isSw)}</Title>
               <Badge>{t("This is a sample only", isSw)}</Badge>
             </TitleRow>
             <Subtitle>{t(sample.subtitle, isSw)}</Subtitle>
@@ -269,8 +273,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
                   <ResultLabel>{t(label, isSw)}</ResultLabel>
                   {status === "verified" ? (
                     <VerifiedValue>
-                      {t(value, isSw)}{" "}
-                      <FaCheckCircle />
+                      {t(value, isSw)} <FaCheckCircle />
                     </VerifiedValue>
                   ) : (
                     <ResultValue>{value}</ResultValue>
@@ -286,12 +289,8 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
               </StakeholderSectionTitle>
               <StakeholderTable>
                 <StakeholderRow $header>
-                  <StakeholderCell $header>
-                    {t("Name", isSw)}
-                  </StakeholderCell>
-                  <StakeholderCell $header>
-                    {t("Role", isSw)}
-                  </StakeholderCell>
+                  <StakeholderCell $header>{t("Name", isSw)}</StakeholderCell>
+                  <StakeholderCell $header>{t("Role", isSw)}</StakeholderCell>
                   <StakeholderCell $header>
                     {t("Nationality", isSw)}
                   </StakeholderCell>

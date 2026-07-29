@@ -112,7 +112,7 @@ const NinBenefits = () => {
             <BenefitDesc>
               {isSw
                 ? "Pata taarifa sahihi na za sasa za Kitambulisho cha Taifa."
-                : "Access accurate and up-to-date NIN information."}
+                : "Access accurate and up-to-date National ID information."}
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>

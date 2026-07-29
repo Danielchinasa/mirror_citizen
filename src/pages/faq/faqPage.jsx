@@ -64,29 +64,29 @@ const FaqPage = () => {
           <p>
             Person Identity Profile: The consent request is sent to the
             registered SMS and email (where available) attached to the data
-            subject’s NIN in the national identity system. Financial Credit
-            profile: The consent request is sent to the registered SMS and email
-            (where available) attached to the data subject’s BVN in the
-            NIBSS/BVN database.
+            subject’s National ID in the national identity system. Financial
+            Credit profile: The consent request is sent to the registered SMS
+            and email (where available) attached to the data subject’s BVN in
+            the NIBSS/BVN database.
           </p>
         </>
       ),
     },
     {
       key: "5",
-      title: "What is a NIN?",
+      title: "What is a National ID?",
       content: (
         <p>
-          The National Identification Number (NIN) is an 11-digit unique number
-          issued to all Nigerians and Legal Residents. The NIN links an
-          individual’s identity across the different agency databases; providing
-          it for verification enables a robust background check.
+          The National Identification Number (National ID) is an 11-digit unique
+          number issued to all Nigerians and Legal Residents. The National ID
+          links an individual’s identity across the different agency databases;
+          providing it for verification enables a robust background check.
         </p>
       ),
     },
     {
       key: "6",
-      title: "Why do I need to pay before verifying a NIN?",
+      title: "Why do I need to pay before verifying a National ID?",
       content: (
         <p>
           e-raia™.ng is a premium service because we put in international
@@ -97,7 +97,7 @@ const FaqPage = () => {
     },
     {
       key: "7",
-      title: "Why do I need to register before verifying a NIN?",
+      title: "Why do I need to register before verifying a National ID?",
       content: (
         <p>
           Registration ensures you can enjoy the full verification experience

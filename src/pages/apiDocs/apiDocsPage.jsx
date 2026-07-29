@@ -217,8 +217,8 @@ const ApiDocsPage = () => {
             }}
           >
             Integration guide for e-raia Identity Verification Services.
-            Wallet-based instant verification APIs for NIN, BVN, Phone,
-            Business, and Vehicle lookups.
+            Wallet-based instant verification APIs for National ID, Alien Card,
+            and Vehicle lookups.
           </Paragraph>
         </div>
 

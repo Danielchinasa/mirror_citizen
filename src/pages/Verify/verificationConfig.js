@@ -29,7 +29,7 @@ const verificationConfig = {
       {
         name: "idNumber",
         label: "National ID",
-        placeholder: "Enter 11 digits NIN",
+        placeholder: "Enter 11 digits National ID",
         type: "text",
         maxLength: 11,
         showCounter: true,
@@ -63,7 +63,7 @@ const verificationConfig = {
     ],
     sampleResult: {
       name: "Grace Ojocheneimi David",
-      identifier: "NIN: 43832856233",
+      identifier: "National ID: 43832856233",
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
     serviceName: "National ID",

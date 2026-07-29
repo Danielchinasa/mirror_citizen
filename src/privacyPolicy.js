@@ -6,7 +6,7 @@ const privacyPolicy = `
 <h6>Category of Data Collected and Processed</h6>
 <p>We only collect and use your Personal data if we have obtained your prior consent or have a lawful and legitimate interest to do so. You are at liberty to withdraw your consent at any time by contacting the Data Protection Officer at info@biosec.com.ng. The following are data collected and processed for e-raiaTM use:</p>
 <ul>
-  <li>Identification (name, NIN) and Communication data (telephone, address, e-mail, IP address)</li>
+  <li>Identification (name, National ID) and Communication data (telephone, address, e-mail, IP address)</li>
   <li>User history on e-raiaTM</li>
   <li>Billing and payments records</li>
   <li>Disclosed information (from third parties)</li>
@@ -112,7 +112,7 @@ export const privacyPolicySW = `
 <h6>Aina ya Data Inayokusanywa na Kusindikwa</h6>
 <p>Tunakusanya na kutumia Data yako Binafsi ikiwa tu tumepata ridhaa yako ya awali au tuna maslahi halali na ya kisheria kufanya hivyo. Uko huru kuondoa ridhaa yako wakati wowote kwa kuwasiliana na Afisa wa Ulinzi wa Data kwa info@biosec.com.ng. Ifuatayo ni data inayokusanywa na kusindikwa kwa matumizi ya e-raia™:</p>
 <ul>
-  <li>Utambulisho (jina, NIN) na data ya Mawasiliano (simu, anwani, barua pepe, anwani ya IP)</li>
+  <li>Utambulisho (jina, national ID) na data ya Mawasiliano (simu, anwani, barua pepe, anwani ya IP)</li>
   <li>Historia ya mtumiaji kwenye e-raia™</li>
   <li>Rekodi za bili na malipo</li>
   <li>Taarifa zilizofichuliwa (kutoka kwa watu wengine)</li>

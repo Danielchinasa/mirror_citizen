@@ -1008,7 +1008,7 @@ const DashboardPage = () => {
     "Registration: Choose this option to search for a vehicle's registration information in Nigeria using the vehicle registration number (license plate)",
   ];
   const tooltipContentBasic =
-    "A Person Identity Profile gives the distinct characteristics, attributes and information that uniquely identifies an individual. Searchable parameters are NIN, demographics, face, fingerprint, and phone number.";
+    "A Person Identity Profile gives the distinct characteristics, attributes and information that uniquely identifies an individual. Searchable parameters are National ID, demographics, face, fingerprint, and phone number.";
   const tooltipContentBusiness =
     "A business profile is a set of information and data that are used to confirm and validate the identity of a business or organization. Searchable parameters are registration number(RC), and business name.";
   const tooltipContentFinancial =
@@ -1043,7 +1043,7 @@ const DashboardPage = () => {
     setTotalveri(calculatedTotalveri);
     if (profile === "nin") {
       localStorage.setItem("profile", profile);
-      setServiceFee(ninServiceFee); // Set the service fee for NIN
+      setServiceFee(ninServiceFee); // Set the service fee for National ID
       setProcessingFee(ninProcessingFee);
       setProfile("nin");
       setUsdFee(ninUsdFee);
@@ -4079,13 +4079,13 @@ const DashboardPage = () => {
                                   trackEvent({
                                     action: "click_nin_button",
                                     category: "Person Identity Profile",
-                                    label: "NIN Button",
+                                    label: "National ID Button",
                                     value: 1,
                                   });
                                   setSelectedForm("nin");
                                 }}
                               >
-                                National Identification Number (NIN)
+                                National Identification Number (National ID)
                               </Radio>
                               <Radio
                                 value="phone"
@@ -4110,7 +4110,7 @@ const DashboardPage = () => {
                                   onClick={() => setSelectedForm("bulk_nin")}
                                 >
                                   National Identification Number{" "}
-                                  <strong>(Bulk NIN)</strong>
+                                  <strong>(Bulk National ID)</strong>
                                 </Radio>
                               ) : (
                                 ""
@@ -4121,7 +4121,8 @@ const DashboardPage = () => {
                                 disabled
                                 onClick={() => setSelectedForm("face")}
                               >
-                                National Identification Number (NIN) + Face{" "}
+                                National Identification Number (National ID) +
+                                Face{" "}
                               </Radio>
                             </Space>
                           </Radio.Group>
@@ -4487,7 +4488,7 @@ const DashboardPage = () => {
                               <StyledInput
                                 $token={token}
                                 type="text"
-                                placeholder="Enter your NIN"
+                                placeholder="Enter your National ID"
                                 name="nin"
                                 value={formData.nin}
                                 onChange={(e) => {
@@ -4499,13 +4500,13 @@ const DashboardPage = () => {
                                   }
                                 }}
                                 onBlur={() => {
-                                  // Check if the NIN is exactly 11 digits on blur
+                                  // Check if the National ID is exactly 11 digits on blur
                                   if (formData.nin.length !== 11) {
                                     Swal.fire({
                                       background: bgContainer,
                                       color: text,
                                       title: "Error",
-                                      text: "NIN must be exactly 11 digits.",
+                                      text: "National ID must be exactly 11 digits.",
                                       icon: "error",
                                       confirmButtonColor: "#DD0201",
                                     });
@@ -4530,7 +4531,7 @@ const DashboardPage = () => {
                               <StyledInput
                                 $token={token}
                                 type="text"
-                                placeholder="Enter your NIN"
+                                placeholder="Enter your National ID"
                                 name="nin"
                                 value={formData.nin}
                                 onChange={(e) => {
@@ -4542,13 +4543,13 @@ const DashboardPage = () => {
                                   }
                                 }}
                                 onBlur={() => {
-                                  // Check if the NIN is exactly 11 digits on blur
+                                  // Check if the National ID is exactly 11 digits on blur
                                   if (formData.nin.length !== 11) {
                                     Swal.fire({
                                       background: bgContainer,
                                       color: text,
                                       title: "Error",
-                                      text: "NIN must be exactly 11 digits.",
+                                      text: "National ID must be exactly 11 digits.",
                                       icon: "error",
                                       confirmButtonColor: "#DD0201",
                                     });
@@ -4705,12 +4706,12 @@ const DashboardPage = () => {
                         {basicProfileArray.includes("face") && (
                           <div>
                             <StyledLabel $token={token}>
-                              National Identification Number (NIN)*
+                              National Identification Number (National ID)*
                             </StyledLabel>
                             <StyledInput
                               $token={token}
                               type="text"
-                              placeholder="Enter your NIN"
+                              placeholder="Enter your National ID"
                               name="nin"
                               value={liveFaceNin}
                               onChange={handleLiveFaceNinChange}
@@ -4735,7 +4736,7 @@ const DashboardPage = () => {
 
                             {!isLiveFaceNinValid && (
                               <p style={{ color: "red" }}>
-                                NIN cannot be empty
+                                National ID cannot be empty
                               </p>
                             )}
                             <StyledLabel $token={token}>
@@ -4840,13 +4841,13 @@ const DashboardPage = () => {
                                 }
                               }}
                               onBlur={() => {
-                                // Check if the NIN is exactly 11 digits on blur
+                                // Check if the National ID is exactly 11 digits on blur
                                 if (formData.nin.length !== 11) {
                                   Swal.fire({
                                     background: bgContainer,
                                     color: text,
                                     title: "Error",
-                                    text: "NIN must be exactly 11 digits.",
+                                    text: "National ID must be exactly 11 digits.",
                                     icon: "error",
                                   });
                                 }
@@ -4869,7 +4870,7 @@ const DashboardPage = () => {
 
                             {!isLiveFaceNinValid && (
                               <p style={{ color: "red" }}>
-                                NIN cannot be empty
+                                National ID cannot be empty
                               </p>
                             )}
                             <StyledLabel $token={token}>
@@ -5040,7 +5041,7 @@ const DashboardPage = () => {
                                 }
                               }}
                               onBlur={() => {
-                                // Check if the NIN is exactly 11 digits on blur
+                                // Check if the National ID is exactly 11 digits on blur
                                 if (formData.bvn.length !== 11) {
                                   Swal.fire({
                                     background: bgContainer,
@@ -5204,7 +5205,7 @@ const DashboardPage = () => {
                               lg={{ span: 15 }}
                               style={{ textAlign: "left" }}
                             >
-                              <p style={{ color: text }}> NIN: </p>
+                              <p style={{ color: text }}> National ID: </p>
                             </Col>
                             <Col>
                               <p style={{ color: text }}>

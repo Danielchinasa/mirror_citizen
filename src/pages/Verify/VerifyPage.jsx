@@ -1760,7 +1760,9 @@ const VerifyPage = () => {
                 flexShrink: 0,
               }}
             />
-            <span>                {isSw ? (
+            <span>
+              {" "}
+              {isSw ? (
                 <>
                   Nakubali{" "}
                   <span
@@ -1818,7 +1820,10 @@ const VerifyPage = () => {
             </span>
           </label>
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice || !termsAccepted}>
+          <PayBtn
+            onClick={handlePay}
+            disabled={loading || loadingPrice || !termsAccepted}
+          >
             <FaLock />
             {loading
               ? isSw
@@ -2995,7 +3000,9 @@ const VerifyPage = () => {
                 flex: 1,
                 paddingRight: 8,
               }}
-            >                <div
+            >
+              {" "}
+              <div
                 dangerouslySetInnerHTML={{
                   __html:
                     legalPopupType === "tos"

@@ -24,14 +24,14 @@ const NinSampleResult = () => {
           <img src={ninSampleImg} alt="Sample National ID Result" />
         </SampleImageWrapper>
         <SampleInfo>
-          <SampleTitle>What You Get in a NIN Report</SampleTitle>
+          <SampleTitle>What You Get in a National ID Report</SampleTitle>
           <SampleDesc>
             Each National ID returns comprehensive identity details sourced from
             official records, helping you make informed decisions.
           </SampleDesc>
           <CheckList>
             <CheckItem>
-              <FaCheckCircle /> Full name of the NIN holder
+              <FaCheckCircle /> Full name of the National ID holder
             </CheckItem>
             <CheckItem>
               <FaCheckCircle /> Date of birth and gender
