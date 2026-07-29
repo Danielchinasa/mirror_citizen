@@ -86,6 +86,11 @@ function PhoneNavbar() {
 
           <NinNavMenu click={click}>
             <NinNavItem>
+              <NinNavLinkRouter to="/" onClick={closeMobileMenu}>
+                Go Back Home
+              </NinNavLinkRouter>
+            </NinNavItem>
+            <NinNavItem>
               <NinNavLink
                 onClick={() => scrollToSection("how-it-works")}
                 href="#how-it-works"
@@ -126,11 +131,7 @@ function PhoneNavbar() {
                 </DropdownWrapper>
               )}
             </NinNavItem>
-            <NinNavItem>
-              <NinNavLinkRouter to={verifyLink} onClick={closeMobileMenu}>
-                Login
-              </NinNavLinkRouter>
-            </NinNavItem>
+
             <NinNavItem>
               <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
                 Verify Phone Now <FaArrowRight />

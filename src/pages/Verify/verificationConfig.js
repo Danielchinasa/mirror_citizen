@@ -61,8 +61,8 @@ const verificationConfig = {
   },
 
   phone: {
-    heroTitle: "Verify a Phone",
-    heroHighlight: "Number",
+    heroTitle: "Verify a Phone Number ",
+    heroHighlight: " in seconds",
     heroSubtitle:
       "Enter a phone number, pay securely and get verification results instantly.",
     heroImage: require("../../images/phone_number_verification.png"),
@@ -211,8 +211,8 @@ const verificationConfig = {
   },
 
   bvn: {
-    heroTitle: "Verify Your ",
-    heroHighlight: "BVN in seconds",
+    heroTitle: "Verify Your BVN ",
+    heroHighlight: "in seconds",
     heroSubtitle:
       "Enter your BVN, pay securely and get financial verification results instantly.",
     heroImage: require("../../images/credit_profile.png"),
@@ -263,8 +263,8 @@ const verificationConfig = {
   },
 
   vehicle: {
-    heroTitle: "Check ",
-    heroHighlight: "Vehicle History",
+    heroTitle: "Check Vehicle History",
+    heroHighlight: " in seconds",
     heroSubtitle:
       "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
     heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),

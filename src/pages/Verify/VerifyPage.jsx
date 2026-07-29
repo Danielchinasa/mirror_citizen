@@ -785,10 +785,11 @@ const VerifyPage = () => {
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === true
       ) {
-        result = response["search-extension"].phoneVerification;
+        const phoneVerification =
+          response["search-extension"].phoneVerification;
+        result = phoneVerification.data || phoneVerification;
         resultDetail =
-          response["search-extension"].phoneVerification.detail ||
-          "Phone verification was successful.";
+          phoneVerification.detail || "Phone verification was successful.";
         resultRoute = "/main-dashboard";
       } else if (
         response["search-extension"] &&
@@ -810,10 +811,10 @@ const VerifyPage = () => {
         response["search-extension"].bvnVerification &&
         response["search-extension"].bvnVerification.status === true
       ) {
-        result = response["search-extension"].bvnVerification;
+        const bvnVerification = response["search-extension"].bvnVerification;
+        result = bvnVerification.data || bvnVerification;
         resultDetail =
-          response["search-extension"].bvnVerification.detail ||
-          "BVN verification was successful.";
+          bvnVerification.detail || "BVN verification was successful.";
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === true) {
         const bizArray = Array.isArray(response.business.data)
@@ -1606,13 +1607,6 @@ const VerifyPage = () => {
           label: "Address",
           value: data.residenceAddress || data.residence_address,
         });
-    }
-
-    // Phone verification
-    if (data.network) {
-      if (data.name) fields.push({ label: "Owner Name", value: data.name });
-      if (data.network) fields.push({ label: "Network", value: data.network });
-      if (data.status) fields.push({ label: "Status", value: data.status });
     }
 
     // Vehicle verification
@@ -2545,7 +2539,9 @@ const VerifyPage = () => {
                 </PopupIcon>
                 <div>
                   <PopupTitle>Terms of Service</PopupTitle>
-                  <PopupSubtitle>Please review the terms before proceeding</PopupSubtitle>
+                  <PopupSubtitle>
+                    Please review the terms before proceeding
+                  </PopupSubtitle>
                 </div>
               </PopupMeta>
               <PopupCloseButton onClick={() => setShowTermsPopup(false)}>

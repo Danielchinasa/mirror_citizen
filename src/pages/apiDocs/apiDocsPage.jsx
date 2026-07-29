@@ -516,26 +516,16 @@ const ApiDocsPage = () => {
                 {
                   label: "Response — Successful Verification",
                   body: `{
-  "status": true,
-  "detail": "Phone number verification successful",
-  "response_code": "00",
-  "endpoint_name": "phone_number/advance",
-  "data": {
-    "phone_number": "08012345678",
-    "network": "MTN",
-    "country": "Nigeria",
-    "is_active": true,
-    "line_type": "mobile"
-  },
-  "verification": {
-    "status": "VERIFIED",
-    "reference": "abc123xyz",
-    "match_score": 100
-  },
-  "session": {
-    "id": "sess_987654321",
-    "created_at": "2026-03-29T20:10:00Z"
-  }
+  "success": true,
+  "nin": "12345678901",
+  "firstName": "JOHN",
+  "lastName": "DOE",
+  "middleName": "MICHAEL",
+  "dateOfBirth": "1990-01-01",
+  "phoneNumber": "08012345678",
+  "gender": "Male",
+  "address": "Abuja, Nigeria",
+  "photo": "base64EncodedImageString"
 }`,
                 },
               ]}
