@@ -1344,12 +1344,14 @@ const DashboardPage = () => {
     value,
     transactionId,
     paymentType,
+    items,
   }) => {
     ReactGA.event("purchase", {
       currency: currency,
       value: value,
       transaction_id: transactionId,
       payment_type: paymentType,
+      items: items,
     });
   };
 
@@ -1983,7 +1985,7 @@ const DashboardPage = () => {
         handleCancel();
       }
       //!!PAYPAL PAYMENT ENDS
-    }else if (paymentMethod === 4) {
+      }else if (paymentMethod === 4) {
         //!!PAYSTACK PAYMENT START
         localStorage.setItem("paymentType", "CARD");
 
