@@ -30,6 +30,8 @@ import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
+import privacyPolicy from "../../privacyPolicy";
+import termsOfService from "../../termsOfService";
 
 import {
   PageWrapper,
@@ -203,6 +205,9 @@ const VerifyPage = () => {
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
@@ -1684,7 +1689,67 @@ const VerifyPage = () => {
             </>
           )}
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
+          {/* Terms acceptance checkbox */}
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              margin: "12px 0",
+              padding: "10px 14px",
+              border: `1.5px solid ${termsAccepted ? "var(--ec-primary)" : "var(--ec-border)"}`,
+              borderRadius: 8,
+              cursor: "pointer",
+              background: termsAccepted ? "#fffbe6" : "transparent",
+              transition: "all 0.15s",
+              fontFamily: "Nunito, sans-serif",
+              fontSize: 13,
+              color: "var(--ec-text)",
+              lineHeight: 1.5,
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              style={{ accentColor: "#FED001", width: 16, height: 16, flexShrink: 0 }}
+            />
+            <span>
+              By proceeding, you agree to our{" "}
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowTermsModal(true);
+                }}
+                style={{
+                  color: "var(--ec-primary)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Terms of Service
+              </span>{" "}
+              and{" "}
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowPrivacyModal(true);
+                }}
+                style={{
+                  color: "var(--ec-primary)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Privacy Policy
+              </span>
+              .
+            </span>
+          </label>
+
+          <PayBtn onClick={handlePay} disabled={loading || loadingPrice || !termsAccepted}>
             <FaLock />
             {loading
               ? "Processing..."
@@ -2631,44 +2696,7 @@ const VerifyPage = () => {
                   </ol>
                 )}
               </div>
-              <div
-                style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 13,
-                  color: "var(--ec-text-muted)",
-                  textAlign: "center",
-                  marginBottom: 20,
-                  lineHeight: 1.6,
-                }}
-              >
-                By proceeding, you agree to our{" "}
-                <a
-                  href={withBasePath("/terms_of_service")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href={withBasePath("/privacy_policy")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Privacy Policy
-                </a>
-                .
-              </div>
+
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
                   I Understand, Continue <FaArrowRight />
@@ -2761,6 +2789,88 @@ const VerifyPage = () => {
             />
           </div>
         </div>
+      )}
+
+      {/* Terms of Service Modal */}
+      {showTermsModal && (
+        <PopupOverlay>
+          <PopupCard style={{ maxWidth: 720 }}>
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(254, 208, 1, 0.10)",
+                    color: "#FED001",
+                  }}
+                >
+                  <FaInfoCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Terms of Service</PopupTitle>
+                  <PopupSubtitle>
+                    Please read our terms of service carefully.
+                  </PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowTermsModal(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody
+              style={{
+                maxHeight: "60vh",
+                overflowY: "auto",
+                fontFamily: "Nunito, sans-serif",
+                fontSize: 14,
+                lineHeight: 1.7,
+                color: "var(--ec-text)",
+              }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyModal && (
+        <PopupOverlay>
+          <PopupCard style={{ maxWidth: 720 }}>
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(254, 208, 1, 0.10)",
+                    color: "#FED001",
+                  }}
+                >
+                  <FaInfoCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Privacy Policy</PopupTitle>
+                  <PopupSubtitle>
+                    Please read our privacy policy carefully.
+                  </PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowPrivacyModal(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody
+              style={{
+                maxHeight: "60vh",
+                overflowY: "auto",
+                fontFamily: "Nunito, sans-serif",
+                fontSize: 14,
+                lineHeight: 1.7,
+                color: "var(--ec-text)",
+              }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
       )}
     </PageWrapper>
   );

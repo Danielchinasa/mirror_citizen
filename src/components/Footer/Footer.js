@@ -97,9 +97,9 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>Services</FooterColTitle>
-              {/* <FooterLink to="/">National ID Verification</FooterLink>
+              <FooterLink to="/#services">Ghana ID Verification</FooterLink>
 
-              <FooterLink to="/">VIN Verification</FooterLink> */}
+              <FooterLink to="/#services">VIN Verification</FooterLink>
               <FooterLink to="/api-docs">API for Business</FooterLink>
             </FooterCol>
 
