@@ -944,8 +944,7 @@ const VerifyPage = () => {
       ) {
         result =
           response.basic?.nin_data || response.basic?.data || response.basic;
-        resultDetail =
-          response.basic.detail || "Your National ID was successful.";
+        resultDetail = response.basic.detail || "Your Ghana ID was successful.";
         resultRoute = "/main-dashboard";
       } else if (
         response.basic &&
@@ -1133,9 +1132,7 @@ const VerifyPage = () => {
               </p>
               <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.8;">
                 <strong>Status:</strong> ${consent.status}<br/>
-                <strong>Required:</strong> ${
-                  consent.required ? "Yes" : "No"
-                }
+                <strong>Required:</strong> ${consent.required ? "Yes" : "No"}
                 ${
                   channelList.length > 0
                     ? `<br/><strong>Channels:</strong> ${channelList.join(", ")}`

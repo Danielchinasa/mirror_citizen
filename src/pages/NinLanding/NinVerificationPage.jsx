@@ -4,7 +4,7 @@ import NinTrustBar from "./NinTrustBar";
 import NinBenefits from "./NinBenefits";
 import NinHowItWorks from "./NinHowItWorks";
 import NinLoginSample from "./NinLoginSample";
-import NinCompliance from "./NinCompliance";
+import ComplianceBar from "../../components/ComplianceBar/ComplianceBar";
 import NinCta from "./NinCta";
 import { PageWrapper } from "./NinLanding.elements";
 
@@ -15,7 +15,7 @@ const NinVerificationPage = () => {
       <NinBenefits />
       <NinHowItWorks />
       <NinLoginSample />
-      <NinCompliance />
+      <ComplianceBar />
       <NinCta />
     </PageWrapper>
   );

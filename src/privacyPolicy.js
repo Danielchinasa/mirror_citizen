@@ -6,7 +6,7 @@ const privacyPolicy = `
 <h6>Category of Data Collected and Processed</h6>
 <p>We only collect and use your Personal data if we have obtained your prior consent or have a lawful and legitimate interest to do so. You are at liberty to withdraw your consent at any time by contacting the Data Protection Officer at info@biosec.com.ng. The following are data collected and processed for e-citizenTM use:</p>
 <ul>
-  <li>Identification (name, NIN) and Communication data (telephone, address, e-mail, IP address)</li>
+  <li>Identification (name, Ghana ID) and Communication data (telephone, address, e-mail, IP address)</li>
   <li>User history on e-citizenTM</li>
   <li>Billing and payments records</li>
   <li>Disclosed information (from third parties)</li>

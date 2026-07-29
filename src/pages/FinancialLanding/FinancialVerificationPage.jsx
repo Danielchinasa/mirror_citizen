@@ -4,7 +4,7 @@ import FinancialTrustBar from "./FinancialTrustBar";
 import FinancialBenefits from "./FinancialBenefits";
 import FinancialHowItWorks from "./FinancialHowItWorks";
 import FinancialLoginSample from "./FinancialLoginSample";
-import FinancialCompliance from "./FinancialCompliance";
+import ComplianceBar from "../../components/ComplianceBar/ComplianceBar";
 import FinancialCta from "./FinancialCta";
 import { PageWrapper } from "../NinLanding/NinLanding.elements";
 
@@ -16,7 +16,7 @@ const FinancialVerificationPage = () => {
       <FinancialBenefits />
       <FinancialHowItWorks />
       <FinancialLoginSample />
-      <FinancialCompliance />
+      <ComplianceBar />
       <FinancialCta />
     </PageWrapper>
   );

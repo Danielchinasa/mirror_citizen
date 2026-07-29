@@ -177,19 +177,19 @@ function Navbar() {
       >
         <Menu.Item key="country-ghana">
           <a
-            href="https://e-citizen.africa/gh"
+            href="https://e-citizen.ng"
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: "none" }}
           >
             <span
               role="img"
-              aria-label="Ghana flag"
+              aria-label="Nigeria flag"
               style={{ marginRight: 10 }}
             >
-              🇬🇭
+              🇳🇬
             </span>
-            Ghana
+            Nigeria
           </a>
         </Menu.Item>
         <Menu.Item key="country-kenya">
@@ -296,7 +296,7 @@ function Navbar() {
     <Menu>
       <Menu.Item key="services-nin">
         <Link to="/" style={{ textDecoration: "none" }}>
-          National ID
+          Ghana ID
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
@@ -311,15 +311,19 @@ function Navbar() {
     <Menu>
       <Menu.Item key="country-ghana">
         <a
-          href="https://e-citizen.africa/gh"
+          href="https://e-citizen.ng"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
         >
-          <span role="img" aria-label="Ghana flag" style={{ marginRight: 10 }}>
-            🇬🇭
+          <span
+            role="img"
+            aria-label="Nigeria flag"
+            style={{ marginRight: 10 }}
+          >
+            🇳🇬
           </span>
-          Ghana
+          Nigeria
         </a>
       </Menu.Item>
       <Menu.Item key="country-kenya">

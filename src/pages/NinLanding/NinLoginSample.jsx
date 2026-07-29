@@ -862,7 +862,7 @@ const NinLoginSample = () => {
                   <ResultValue>08038765678</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>National ID</ResultLabel>
+                  <ResultLabel>Ghana ID</ResultLabel>
                   <ResultValue>UG-NID-4582-7819-2043</ResultValue>
                 </ResultField>
                 <ResultField>

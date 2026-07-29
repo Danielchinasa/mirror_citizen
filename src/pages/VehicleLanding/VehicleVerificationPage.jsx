@@ -4,7 +4,7 @@ import VehicleTrustBar from "./VehicleTrustBar";
 import VehicleBenefits from "./VehicleBenefits";
 import VehicleHowItWorks from "./VehicleHowItWorks";
 import VehicleLoginSample from "./VehicleLoginSample";
-import VehicleCompliance from "./VehicleCompliance";
+import ComplianceBar from "../../components/ComplianceBar/ComplianceBar";
 import VehicleCta from "./VehicleCta";
 import { PageWrapper } from "./VehicleLanding.elements";
 
@@ -15,7 +15,7 @@ const VehicleVerificationPage = () => {
       <VehicleBenefits />
       <VehicleHowItWorks />
       <VehicleLoginSample />
-      <VehicleCompliance />
+      <ComplianceBar />
       <VehicleCta />
     </PageWrapper>
   );

@@ -21,17 +21,17 @@ const NinSampleResult = () => {
     <SampleSectionWrapper id="sample-result">
       <SampleContent>
         <SampleImageWrapper>
-          <img src={ninSampleImg} alt="Sample NIN Verification Result" />
+          <img src={ninSampleImg} alt="Sample Ghana ID Verification Result" />
         </SampleImageWrapper>
         <SampleInfo>
-          <SampleTitle>What You Get in a NIN Report</SampleTitle>
+          <SampleTitle>What You Get in a Ghana ID Report</SampleTitle>
           <SampleDesc>
-            Each NIN verification returns comprehensive identity details sourced
-            from official records, helping you make informed decisions.
+            Each Ghana ID verification returns comprehensive identity details
+            sourced from official records, helping you make informed decisions.
           </SampleDesc>
           <CheckList>
             <CheckItem>
-              <FaCheckCircle /> Full name of the NIN holder
+              <FaCheckCircle /> Full name of the Ghana ID holder
             </CheckItem>
             <CheckItem>
               <FaCheckCircle /> Date of birth and gender

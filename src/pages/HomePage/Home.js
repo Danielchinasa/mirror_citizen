@@ -25,9 +25,7 @@ import {
 import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/ghana.png";
-import ndprImg from "../../images/ndpr.png";
-import nimcImg from "../../images/nidologo.png";
-import osiaImg from "../../images/osia.png";
+import ComplianceBar from "../../components/ComplianceBar/ComplianceBar";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -78,13 +76,6 @@ import {
   ServiceBtn,
   LearnMoreLink,
   ViewAllLink,
-  ComplianceSection,
-  ComplianceInner,
-  ComplianceText,
-  ComplianceTitle,
-  ComplianceDesc,
-  ComplianceLogos,
-  ComplianceBadge,
   CtaSection,
   CtaInner,
   CtaShield,
@@ -570,7 +561,7 @@ const Home = () => {
             <ServicePrice>{formatPrice("ID Card")}</ServicePrice>
             <FeatureList>
               <FeatureItem>
-                <FaCheckCircle /> National ID lookup
+                <FaCheckCircle /> Ghana ID lookup
               </FeatureItem>
               <FeatureItem>
                 <FaCheckCircle /> Full name verification
@@ -622,28 +613,7 @@ const Home = () => {
 
       <NinLoginSample />
 
-      {/* ── Compliance ── */}
-      <ComplianceSection>
-        <ComplianceInner>
-          <ComplianceText>
-            <ComplianceTitle>
-              Trusted. Compliant. Built for you.
-            </ComplianceTitle>
-            <ComplianceDesc>Your data is safe with us.</ComplianceDesc>
-          </ComplianceText>
-          <ComplianceLogos>
-            <ComplianceBadge>
-              <img src={ndprImg} alt="NDPC" />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={nimcImg} alt="NCMC" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={osiaImg} alt="OSIA" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-          </ComplianceLogos>
-        </ComplianceInner>
-      </ComplianceSection>
+      <ComplianceBar />
 
       {/* ── CTA ── */}
       <CtaSection>

@@ -4,7 +4,7 @@ import PhoneTrustBar from "./PhoneTrustBar";
 import PhoneBenefits from "./PhoneBenefits";
 import PhoneHowItWorks from "./PhoneHowItWorks";
 import PhoneLoginSample from "./PhoneLoginSample";
-import PhoneCompliance from "./PhoneCompliance";
+import ComplianceBar from "../../components/ComplianceBar/ComplianceBar";
 import PhoneCta from "./PhoneCta";
 import { PageWrapper } from "./PhoneLanding.elements";
 
@@ -16,7 +16,7 @@ const PhoneVerificationPage = () => {
       <PhoneBenefits />
       <PhoneHowItWorks />
       <PhoneLoginSample />
-      <PhoneCompliance />
+      <ComplianceBar />
       <PhoneCta />
     </PageWrapper>
   );

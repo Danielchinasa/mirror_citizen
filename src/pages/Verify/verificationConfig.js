@@ -18,18 +18,18 @@ import {
 const verificationConfig = {
   nin: {
     heroTitle: "Verify Your ",
-    heroHighlight: "National ID",
+    heroHighlight: "Ghana ID",
     heroTitleContinue: "in seconds",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/ghana.png"),
-    breadcrumb: ["Verify Identity", "National ID"],
-    idTypeLabel: "National ID",
+    breadcrumb: ["Verify Identity", "Ghana ID"],
+    idTypeLabel: "Ghana ID",
     fields: [
       {
         name: "idNumber",
-        label: "National ID",
-        placeholder: "Enter your National ID number",
+        label: "Ghana ID",
+        placeholder: "Enter your Ghana ID number",
         type: "text",
         required: true,
       },
@@ -61,10 +61,10 @@ const verificationConfig = {
     ],
     sampleResult: {
       name: "Grace Ojocheneimi David",
-      identifier: "NIN: 43832856233",
+      identifier: "Ghana ID: 43832856233",
       tags: ["Full Name", "Photo", "Date of Birth", "And more..."],
     },
-    serviceName: "National ID",
+    serviceName: "Ghana ID",
     serviceCode: "ID_CARD",
     apiServiceName: "ID Card",
     serviceFieldKey: "idNumber",

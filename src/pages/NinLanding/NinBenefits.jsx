@@ -90,7 +90,7 @@ const NinBenefits = () => {
           <BenefitText>
             <BenefitTitle>Verify with confidence</BenefitTitle>
             <BenefitDesc>
-              Access accurate and up-to-date NIN information.
+              Access accurate and up-to-date Ghana ID information.
             </BenefitDesc>
           </BenefitText>
         </BenefitCard>

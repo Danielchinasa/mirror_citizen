@@ -64,7 +64,7 @@ const FaqPage = () => {
           <p>
             Person Identity Profile: The consent request is sent to the
             registered SMS and email (where available) attached to the data
-            subject’s NIN in the national identity system. Financial Credit
+            subject’s Ghana ID in the national identity system. Financial Credit
             profile: The consent request is sent to the registered SMS and email
             (where available) attached to the data subject’s BVN in the
             NIBSS/BVN database.
@@ -74,19 +74,19 @@ const FaqPage = () => {
     },
     {
       key: "5",
-      title: "What is a NIN?",
+      title: "What is a Ghana ID?",
       content: (
         <p>
-          The National Identification Number (NIN) is an 11-digit unique number
-          issued to all Nigerians and Legal Residents. The NIN links an
-          individual’s identity across the different agency databases; providing
-          it for verification enables a robust background check.
+          The National Identification Number (Ghana ID) is an 11-digit unique
+          number issued to all Nigerians and Legal Residents. The Ghana ID links
+          an individual’s identity across the different agency databases;
+          providing it for verification enables a robust background check.
         </p>
       ),
     },
     {
       key: "6",
-      title: "Why do I need to pay before verifying a NIN?",
+      title: "Why do I need to pay before verifying a Ghana ID?",
       content: (
         <p>
           e-Citizen™.ng is a premium service because we put in international
@@ -97,7 +97,7 @@ const FaqPage = () => {
     },
     {
       key: "7",
-      title: "Why do I need to register before verifying a NIN?",
+      title: "Why do I need to register before verifying a Ghana ID?",
       content: (
         <p>
           Registration ensures you can enjoy the full verification experience
