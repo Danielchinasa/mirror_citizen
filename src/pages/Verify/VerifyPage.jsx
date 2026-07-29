@@ -15,6 +15,7 @@ import {
   FaIdCard,
   FaInfoCircle,
   FaBuilding,
+  FaFileAlt,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
@@ -29,6 +30,8 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
+import privacyPolicy from "../../privacyPolicy";
+import termsOfService from "../../termsOfService";
 
 import {
   PageWrapper,
@@ -197,6 +200,9 @@ const VerifyPage = () => {
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsPopup, setShowTermsPopup] = useState(false);
+  const [showPrivacyPopup, setShowPrivacyPopup] = useState(false);
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
@@ -512,6 +518,7 @@ const VerifyPage = () => {
     setLoading(true);
     setError("");
     setCurrentStep(2); // Processing
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     const randomTransactionId = generateTransactionId();
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
@@ -1432,7 +1439,71 @@ const VerifyPage = () => {
             </>
           )}
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
+          {/* Separator */}
+          <div
+            style={{
+              borderTop: "1px solid #e5e7eb",
+              margin: "16px 0 12px",
+            }}
+          />
+
+          {/* Terms agreement checkbox */}
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 14px",
+              marginTop: 0,
+              marginBottom: 12,
+              border: `1.5px solid ${termsAccepted ? "#09c93a" : "#e5e7eb"}`,
+              borderRadius: 8,
+              cursor: "pointer",
+              background: termsAccepted ? "#f0fdf4" : "#fafafa",
+              transition: "all 0.2s",
+              fontFamily: "Nunito, sans-serif",
+              fontSize: 13,
+              color: "#555",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              style={{ accentColor: "#09c93a", width: 18, height: 18 }}
+            />
+            <span>
+              I agree to the{" "}
+              <span
+                onClick={() => setShowTermsPopup(true)}
+                style={{
+                  color: "var(--ec-primary)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Terms of Service
+              </span>{" "}
+              and{" "}
+              <span
+                onClick={() => setShowPrivacyPopup(true)}
+                style={{
+                  color: "var(--ec-primary)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Privacy Policy
+              </span>
+            </span>
+          </label>
+
+          <PayBtn
+            onClick={handlePay}
+            disabled={!termsAccepted || loading || loadingPrice}
+          >
             <FaLock />
             {loading
               ? "Processing..."
@@ -1547,25 +1618,25 @@ const VerifyPage = () => {
     // Vehicle verification
     if (data.vin || data.vehicleName) {
       if (data.vehicleName || data.name)
-        fields.push({ label: "Vehicle Name", value: data.vehicleName || data.name });
-      if (data.vin)
-        fields.push({ label: "VIN", value: data.vin });
-      if (data.year)
-        fields.push({ label: "Year", value: data.year });
-      if (data.make)
-        fields.push({ label: "Make", value: data.make });
-      if (data.model)
-        fields.push({ label: "Model", value: data.model });
-      if (data.trim)
-        fields.push({ label: "Trim", value: data.trim });
-      if (data.engine)
-        fields.push({ label: "Engine", value: data.engine });
+        fields.push({
+          label: "Vehicle Name",
+          value: data.vehicleName || data.name,
+        });
+      if (data.vin) fields.push({ label: "VIN", value: data.vin });
+      if (data.year) fields.push({ label: "Year", value: data.year });
+      if (data.make) fields.push({ label: "Make", value: data.make });
+      if (data.model) fields.push({ label: "Model", value: data.model });
+      if (data.trim) fields.push({ label: "Trim", value: data.trim });
+      if (data.engine) fields.push({ label: "Engine", value: data.engine });
       if (data.fuelType)
         fields.push({ label: "Fuel Type", value: data.fuelType });
       if (data.transmission)
         fields.push({ label: "Transmission", value: data.transmission });
       if (data.verificationStatus)
-        fields.push({ label: "Verification Status", value: data.verificationStatus });
+        fields.push({
+          label: "Verification Status",
+          value: data.verificationStatus,
+        });
       if (data.reference)
         fields.push({ label: "Reference", value: data.reference });
     }
@@ -2217,7 +2288,10 @@ const VerifyPage = () => {
                           data.photoUrl ||
                           data.imageUrl;
                         if (photoSrc) {
-                          if (!photoSrc.startsWith("data:") && !photoSrc.startsWith("http")) {
+                          if (
+                            !photoSrc.startsWith("data:") &&
+                            !photoSrc.startsWith("http")
+                          ) {
                             if (
                               photoSrc.startsWith("/9j/") ||
                               photoSrc.startsWith("iVBORw0KGgo")
@@ -2438,44 +2512,7 @@ const VerifyPage = () => {
                   </ol>
                 )}
               </div>
-              <div
-                style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 13,
-                  color: "var(--ec-text-muted)",
-                  textAlign: "center",
-                  marginBottom: 20,
-                  lineHeight: 1.6,
-                }}
-              >
-                By proceeding, you agree to our{" "}
-                <a
-                  href="/terms_of_service"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href="/privacy_policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Privacy Policy
-                </a>
-                .
-              </div>
+
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
                   I Understand, Continue <FaArrowRight />
@@ -2483,6 +2520,106 @@ const VerifyPage = () => {
                 <ClearBtn onClick={() => setShowDisclaimer(false)}>
                   Cancel
                 </ClearBtn>
+              </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
+
+      {/* Terms of Service Modal */}
+      {showTermsPopup && (
+        <PopupOverlay onClick={() => setShowTermsPopup(false)}>
+          <PopupCard
+            style={{ maxWidth: 720 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(9, 201, 58, 0.10)",
+                    color: "#09c93a",
+                  }}
+                >
+                  <FaFileAlt />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Terms of Service</PopupTitle>
+                  <PopupSubtitle>Please review the terms before proceeding</PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowTermsPopup(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody>
+              <div
+                style={{
+                  maxHeight: "60vh",
+                  overflowY: "auto",
+                  paddingRight: 8,
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: "var(--ec-text)",
+                }}
+              >
+                <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+              </div>
+              <PopupActionRow style={{ justifyContent: "center" }}>
+                <ContinueBtn onClick={() => setShowTermsPopup(false)}>
+                  I Understand <FaCheckCircle />
+                </ContinueBtn>
+              </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyPopup && (
+        <PopupOverlay onClick={() => setShowPrivacyPopup(false)}>
+          <PopupCard
+            style={{ maxWidth: 720 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(9, 201, 58, 0.10)",
+                    color: "#09c93a",
+                  }}
+                >
+                  <FaShieldAlt />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>Privacy Policy</PopupTitle>
+                  <PopupSubtitle>How we handle your data</PopupSubtitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowPrivacyPopup(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody>
+              <div
+                style={{
+                  maxHeight: "60vh",
+                  overflowY: "auto",
+                  paddingRight: 8,
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: "var(--ec-text)",
+                }}
+              >
+                <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+              </div>
+              <PopupActionRow style={{ justifyContent: "center" }}>
+                <ContinueBtn onClick={() => setShowPrivacyPopup(false)}>
+                  I Understand <FaCheckCircle />
+                </ContinueBtn>
               </PopupActionRow>
             </PopupBody>
           </PopupCard>
