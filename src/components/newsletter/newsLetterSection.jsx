@@ -28,7 +28,7 @@ const NewsletterSection = ({ visible, onClose }) => {
       width={400}
     >
       <p style={{ textAlign: "center" }}>
-        Be the first to get news about E-citizen
+        Be the first to get news about e-raia
       </p>
       <Form name="newsletter" onFinish={onFinish} layout="vertical">
         <Form.Item

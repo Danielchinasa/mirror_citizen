@@ -39,7 +39,7 @@ const CtaShield = styled.div`
 
   svg {
     font-size: 30px;
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -81,14 +81,14 @@ const CtaRight = styled.div`
 `;
 
 const CtaButton = styled(Link)`
-  background: #DD0201;
+  background: #dd0201;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border-radius: 10px;
-  border: 2px solid #DD0201;
+  border: 2px solid #dd0201;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -98,8 +98,8 @@ const CtaButton = styled(Link)`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background: #FF4D4F;
-    border-color: #FF4D4F;
+    background: #ff4d4f;
+    border-color: #ff4d4f;
     color: #fff;
   }
 `;
@@ -113,7 +113,7 @@ const CtaPrice = styled.span`
   color: #555;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 14px;
   }
 
@@ -136,17 +136,13 @@ const BusinessCta = () => {
           <CtaTitle>Ready to verify a company?</CtaTitle>
           <CtaDesc>
             Join thousands of businesses making smarter, safer decisions with
-            e-citizen.
+            e-raia.
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
             Verify Company Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
-            <FaCheckCircle /> From as low as <strong>N</strong>100 per
-            verification
-          </CtaPrice>
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

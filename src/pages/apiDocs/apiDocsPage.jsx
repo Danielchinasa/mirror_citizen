@@ -216,7 +216,7 @@ const ApiDocsPage = () => {
               lineHeight: "1.8",
             }}
           >
-            Integration guide for e-Citizen Identity Verification Services.
+            Integration guide for e-raia Identity Verification Services.
             Wallet-based instant verification APIs for NIN, BVN, Phone,
             Business, and Vehicle lookups.
           </Paragraph>

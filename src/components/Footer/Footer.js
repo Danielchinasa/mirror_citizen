@@ -24,8 +24,8 @@ import {
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import { Modal } from "antd";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import privacyPolicy, { privacyPolicySW } from "../../privacyPolicy";
+import termsOfService, { termsOfServiceSW } from "../../termsOfService";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa6";
@@ -182,7 +182,7 @@ function Footer() {
           onCancel={() => setIsOpen(false)}
           width={1000}
         >
-          <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+          <div dangerouslySetInnerHTML={{ __html: isSw ? privacyPolicySW : privacyPolicy }} />
         </Modal>
         <Modal
           title={isSw ? "Sheria na Masharti" : "Terms of Service"}
@@ -192,7 +192,7 @@ function Footer() {
           onCancel={() => setIsOpen2(false)}
           width={1000}
         >
-          <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+          <div dangerouslySetInnerHTML={{ __html: isSw ? termsOfServiceSW : termsOfService }} />
         </Modal>
       </FooterWrapper>
     </>

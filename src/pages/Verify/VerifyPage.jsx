@@ -29,7 +29,8 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
-import { withBasePath } from "../../routing";
+import privacyPolicyContent, { privacyPolicySW } from "../../privacyPolicy";
+import termsOfServiceContent, { termsOfServiceSW } from "../../termsOfService";
 
 import {
   PageWrapper,
@@ -209,6 +210,8 @@ const VerifyPage = () => {
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [legalPopupType, setLegalPopupType] = useState(null); // "privacy" | "tos" | null
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
@@ -1731,7 +1734,91 @@ const VerifyPage = () => {
             </>
           )}
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
+          {/* Terms & Privacy Checkbox */}
+          <label
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 10,
+              margin: "16px 0 12px",
+              cursor: "pointer",
+              fontFamily: "Nunito, sans-serif",
+              fontSize: 13,
+              lineHeight: 1.5,
+              color: "var(--ec-text)",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              style={{
+                accentColor: "#DD0201",
+                width: 16,
+                height: 16,
+                marginTop: 2,
+                flexShrink: 0,
+              }}
+            />
+            <span>                {isSw ? (
+                <>
+                  Nakubali{" "}
+                  <span
+                    onClick={() => setLegalPopupType("tos")}
+                    style={{
+                      color: "var(--ec-primary)",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Masharti ya Huduma
+                  </span>{" "}
+                  na{" "}
+                  <span
+                    onClick={() => setLegalPopupType("privacy")}
+                    style={{
+                      color: "var(--ec-primary)",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sera ya Faragha
+                  </span>
+                </>
+              ) : (
+                <>
+                  I agree to the{" "}
+                  <span
+                    onClick={() => setLegalPopupType("tos")}
+                    style={{
+                      color: "var(--ec-primary)",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Terms of Service
+                  </span>{" "}
+                  and{" "}
+                  <span
+                    onClick={() => setLegalPopupType("privacy")}
+                    style={{
+                      color: "var(--ec-primary)",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Privacy Policy
+                  </span>
+                </>
+              )}
+            </span>
+          </label>
+
+          <PayBtn onClick={handlePay} disabled={loading || loadingPrice || !termsAccepted}>
             <FaLock />
             {loading
               ? isSw
@@ -2848,78 +2935,7 @@ const VerifyPage = () => {
                   </ol>
                 )}
               </div>
-              <div
-                style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 13,
-                  color: "var(--ec-text-muted)",
-                  textAlign: "center",
-                  marginBottom: 20,
-                  lineHeight: 1.6,
-                }}
-              >
-                By proceeding, you agree to our{" "}
-                {isSw ? (
-                  <>
-                    Kwa kuendelea, unakubali{" "}
-                    <a
-                      href={withBasePath("/terms_of_service")}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "var(--ec-primary)",
-                        fontWeight: 600,
-                        textDecoration: "none",
-                      }}
-                    >
-                      Masharti ya Huduma
-                    </a>{" "}
-                    na{" "}
-                    <a
-                      href={withBasePath("/privacy_policy")}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "var(--ec-primary)",
-                        fontWeight: 600,
-                        textDecoration: "none",
-                      }}
-                    >
-                      Sera ya Faragha
-                    </a>
-                    .
-                  </>
-                ) : (
-                  <>
-                    <a
-                      href={withBasePath("/terms_of_service")}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "var(--ec-primary)",
-                        fontWeight: 600,
-                        textDecoration: "none",
-                      }}
-                    >
-                      Terms of Service
-                    </a>{" "}
-                    and{" "}
-                    <a
-                      href={withBasePath("/privacy_policy")}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "var(--ec-primary)",
-                        fontWeight: 600,
-                        textDecoration: "none",
-                      }}
-                    >
-                      Privacy Policy
-                    </a>
-                    .
-                  </>
-                )}
-              </div>
+
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
                   {isSw ? "Nimeelewa, Endelea" : "I Understand, Continue"}{" "}
@@ -2929,6 +2945,68 @@ const VerifyPage = () => {
                   {isSw ? "Ghairi" : "Cancel"}
                 </ClearBtn>
               </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
+
+      {/* Legal Content Popup (Terms / Privacy) */}
+      {legalPopupType && (
+        <PopupOverlay onClick={() => setLegalPopupType(null)}>
+          <PopupCard
+            style={{
+              maxWidth: 720,
+              maxHeight: "85vh",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PopupHeader>
+              <PopupMeta>
+                <PopupIcon
+                  style={{
+                    background: "rgba(235, 3, 24, 0.10)",
+                    color: "#EB0318",
+                  }}
+                >
+                  <FaInfoCircle />
+                </PopupIcon>
+                <div>
+                  <PopupTitle>
+                    {legalPopupType === "tos"
+                      ? isSw
+                        ? "Sheria na Masharti"
+                        : "Terms of Service"
+                      : isSw
+                        ? "Sera ya Faragha"
+                        : "Privacy Policy"}
+                  </PopupTitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setLegalPopupType(null)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody
+              style={{
+                overflowY: "auto",
+                flex: 1,
+                paddingRight: 8,
+              }}
+            >                <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    legalPopupType === "tos"
+                      ? isSw
+                        ? termsOfServiceSW
+                        : termsOfServiceContent
+                      : isSw
+                        ? privacyPolicySW
+                        : privacyPolicyContent,
+                }}
+              />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>

@@ -403,7 +403,7 @@ const MainDashboard = () => {
     },
 
     customizations: {
-      title: "Funding e-citizen wallet",
+      title: "Funding e-raia wallet",
       description: "Payment for verification service",
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },

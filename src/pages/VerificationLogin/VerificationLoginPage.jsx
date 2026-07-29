@@ -40,10 +40,27 @@ import {
 // Fallback IP (Kenya) used when both IP lookups fail so login still works
 const DEFAULT_KENYA_IP = "41.212.86.175";
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 const VerificationLoginPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
 
   const redirectTo =
     new URLSearchParams(location.search).get("redirect") || "/dashboard";
@@ -156,16 +173,16 @@ const VerificationLoginPage = () => {
   const validateForm = () => {
     const errors = {};
     if (!formData.email) {
-      errors.email = "Please enter your email";
+      errors.email = isSw ? "Tafadhali ingiza barua pepe yako" : "Please enter your email";
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)
     ) {
-      errors.email = "Invalid email format";
+      errors.email = isSw ? "Fomati ya barua pepe si sahihi" : "Invalid email format";
     }
     if (!formData.password) {
-      errors.password = "Please enter your password";
+      errors.password = isSw ? "Tafadhali ingiza nenosiri lako" : "Please enter your password";
     } else if (formData.password.length < 8) {
-      errors.password = "Password must be 8 characters or more";
+      errors.password = isSw ? "Nenosiri lazima liwe na herufi 8 au zaidi" : "Password must be 8 characters or more";
     }
     return errors;
   };
@@ -214,17 +231,17 @@ const VerificationLoginPage = () => {
         });
         history.push(redirectTo);
       } else if (response === "Incorrect email or password") {
-        setFormErrors({ general: "Incorrect email or password" });
+        setFormErrors({ general: isSw ? "Barua pepe au nenosiri si sahihi" : "Incorrect email or password" });
       } else if (response === "IP address not provided in payload") {
         setFormErrors({
           general:
-            "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time.",
+            isSw ? "Hitilafu 406: Haikubaliki. Samahani, seva haiwezi kutimiza ombi lako kwa sasa." : "Error 406: Not Acceptable. We're sorry, but the server cannot fulfill your request at this time.",
         });
       } else {
-        setFormErrors({ general: "Login failed. Please try again." });
+        setFormErrors({ general: isSw ? "Uingiaji umeshindwa. Tafadhali jaribu tena." : "Login failed. Please try again." });
       }
     } catch (error) {
-      setFormErrors({ general: "Login failed. Please try again." });
+      setFormErrors({ general: isSw ? "Uingiaji umeshindwa. Tafadhali jaribu tena." : "Login failed. Please try again." });
     } finally {
       setLoading(false);
     }
@@ -249,13 +266,13 @@ const VerificationLoginPage = () => {
           localStorage.setItem("IpAddress", ipAddress || DEFAULT_KENYA_IP);
           history.push(redirectTo);
         } else {
-          setFormErrors({ general: "Google login failed." });
-        }
-      } catch (error) {
-        setFormErrors({
-          general:
-            error?.response?.data?.message ||
-            "Google login failed. Please try again.",
+        setFormErrors({ general: isSw ? "Uingiaji wa Google umeshindwa." : "Google login failed." });
+      }
+    } catch (error) {
+      setFormErrors({
+        general:
+          error?.response?.data?.message ||
+          (isSw ? "Uingiaji wa Google umeshindwa. Tafadhali jaribu tena." : "Google login failed. Please try again."),
         });
       } finally {
         setLoading(false);
@@ -265,7 +282,7 @@ const VerificationLoginPage = () => {
 
   const handleFacebook = async (fbRes) => {
     if (!fbRes || !fbRes.accessToken) {
-      setFormErrors({ general: "Facebook login was cancelled or failed." });
+      setFormErrors({ general: isSw ? "Uingiaji wa Facebook ulighairiwa au umeshindwa." : "Facebook login was cancelled or failed." });
       return;
     }
 
@@ -286,13 +303,13 @@ const VerificationLoginPage = () => {
         localStorage.setItem("IpAddress", ipAddress || DEFAULT_KENYA_IP);
         history.push(redirectTo);
       } else {
-        setFormErrors({ general: "Facebook login failed." });
+        setFormErrors({ general: isSw ? "Uingiaji wa Facebook umeshindwa." : "Facebook login failed." });
       }
     } catch (err) {
       setFormErrors({
         general:
           err?.response?.data?.message ||
-          "Facebook login failed. Please try again.",
+          (isSw ? "Uingiaji wa Facebook umeshindwa. Tafadhali jaribu tena." : "Facebook login failed. Please try again."),
       });
     } finally {
       setLoading(false);
@@ -309,8 +326,8 @@ const VerificationLoginPage = () => {
             </SpinnerOverlay>
           )}
 
-          <LoginTitle>Welcome back</LoginTitle>
-          <LoginSubtitle>Sign in to continue your verification</LoginSubtitle>
+          <LoginTitle>{isSw ? "Karibu tena" : "Welcome back"}</LoginTitle>
+          <LoginSubtitle>{isSw ? "Ingia ili kuendelea na uthibitishaji wako" : "Sign in to continue your verification"}</LoginSubtitle>
 
           <SSOGroup>
             <SSOButton
@@ -326,7 +343,7 @@ const VerificationLoginPage = () => {
                 googleLogin();
               }}
             >
-              <FcGoogle /> Continue with Google
+              <FcGoogle /> {isSw ? "Endelea na Google" : "Continue with Google"}
             </SSOButton>
 
             <FacebookLogin
@@ -337,13 +354,13 @@ const VerificationLoginPage = () => {
               callback={handleFacebook}
               render={(renderProps) => (
                 <SSOButton type="button" onClick={renderProps.onClick}>
-                  <FaFacebook color="#1877F2" /> Continue with Facebook
+                  <FaFacebook color="#1877F2" /> {isSw ? "Endelea na Facebook" : "Continue with Facebook"}
                 </SSOButton>
               )}
             />
           </SSOGroup>
 
-          <Divider>OR</Divider>
+          <Divider>{isSw ? "AU" : "OR"}</Divider>
 
           <form onSubmit={handleSignIn}>
             {formErrors.general && (
@@ -351,10 +368,10 @@ const VerificationLoginPage = () => {
             )}
 
             <FormGroup>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>{isSw ? "Barua pepe" : "Email address"}</FormLabel>
               <FormInput
                 type="email"
-                placeholder="Enter your email"
+                placeholder={isSw ? "Ingiza barua pepe yako" : "Enter your email"}
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
@@ -363,11 +380,11 @@ const VerificationLoginPage = () => {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{isSw ? "Nenosiri" : "Password"}</FormLabel>
               <PasswordWrapper>
                 <FormInput
                   type={showPass ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={isSw ? "Ingiza nenosiri lako" : "Enter your password"}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
@@ -392,9 +409,9 @@ const VerificationLoginPage = () => {
                   checked={formData.rememberMe}
                   onChange={handleInputChange}
                 />{" "}
-                Remember me
+                {isSw ? "Nikumbuke" : "Remember me"}
               </RememberLabel>
-              <ForgotLink to="/forgot-password">Forgot password?</ForgotLink>
+              <ForgotLink to="/forgot-password">{isSw ? "Umesahau nenosiri?" : "Forgot password?"}</ForgotLink>
             </FormRow>
 
             <ReCAPTCHA
@@ -404,13 +421,13 @@ const VerificationLoginPage = () => {
             />
 
             <LoginButton type="submit" disabled={isCaptchaVerified}>
-              Login
+              {isSw ? "Ingia" : "Login"}
             </LoginButton>
           </form>
 
           <RegisterText>
-            Don't have an account?{" "}
-            <Link to="/individual/sign-up/1">Register here</Link>
+            {isSw ? "Huna akaunti?" : "Don't have an account?"}{" "}
+            <Link to="/individual/sign-up/1">{isSw ? "Jisajili hapa" : "Register here"}</Link>
           </RegisterText>
         </LoginCard>
       </MainContent>

@@ -40,7 +40,7 @@ const enContent = {
       "Registration helps protect the platform, lets you track your transactions, and gives you access to your payment history and eligible verification results.",
     ],
     [
-      "Is my verification result saved on e-Citizen?",
+      "Is my verification result saved on e-raia?",
       "Verification results may be temporarily stored in your account so you can view your search history. Results should be deleted or anonymised after the applicable retention period stated in the privacy policy.",
     ],
     [

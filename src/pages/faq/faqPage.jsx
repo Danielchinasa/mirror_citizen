@@ -12,7 +12,7 @@ const FaqPage = () => {
   const generalItems = [
     {
       key: "1",
-      title: "Does e-Citizen comply with privacy standards?",
+      title: "Does e-raia comply with privacy standards?",
       content: (
         <p>
           Yes, the platform is consent‑driven and adheres to Nigeria’s Nigeria
@@ -89,7 +89,7 @@ const FaqPage = () => {
       title: "Why do I need to pay before verifying a NIN?",
       content: (
         <p>
-          e-Citizen™.ng is a premium service because we put in international
+          e-raia™.ng is a premium service because we put in international
           standards and best practices to integrate data from multiple agencies
           who charge for access.
         </p>
@@ -101,20 +101,20 @@ const FaqPage = () => {
       content: (
         <p>
           Registration ensures you can enjoy the full verification experience
-          and track your history on e-Citizen™.
+          and track your history on e-raia™.
         </p>
       ),
     },
     {
       key: "8",
-      title: "Is my verification result saved on e-Citizen™.ng website?",
+      title: "Is my verification result saved on e-raia™.ng website?",
       content: (
         <>
           <p>
             Verification results are temporarily stored to the user’s account so
             they can view their search history later. However, search results
             will be deleted after the data retention period as specified in our
-            data retention policy at e-citizen.ng.
+            data retention policy at e-raia.ng.
           </p>
           <p>
             If your question is not answered above, please feel free to write us
@@ -140,7 +140,7 @@ const FaqPage = () => {
       content: (
         <p>
           Please check your spam/junk folder. If still not received, email
-          info@e-citizen.ng
+          info@e-raia.ng
           <p>
             Note: Verification emails are only sent to users who provided an
             email address during registration. If you did not input an email,
@@ -240,7 +240,7 @@ const FaqPage = () => {
     },
     {
       key: "5",
-      title: "What Credit Bureaus do e-citizen check?",
+      title: "What Credit Bureaus do e-raia check?",
       content: (
         <div>
           <p>1. First Central Credit Bureau </p>
@@ -360,7 +360,7 @@ const FaqPage = () => {
     },
     {
       key: "2",
-      title: "What data source does e-citizen check for Business Profile?",
+      title: "What data source does e-raia check for Business Profile?",
       content: (
         <p>
           Business Profile data comes from the Corporate Affairs Commission

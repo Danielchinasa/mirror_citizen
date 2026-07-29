@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styled from "styled-components";
-import Logo from "../../images/e-citizen_logo_ecitizen_white.png";
+import Logo from "../../images/e-raia_logo_ecitizen_white.png";
 import playstoreImg from "../../images/playstore.png";
 import appStoreImg from "../../images/appStore.png";
 
@@ -277,7 +277,7 @@ const FinancialLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            &copy; e-citizen {new Date().getFullYear()}. All Rights Reserved.
+            &copy; e-raia {new Date().getFullYear()}. All Rights Reserved.
           </Copyright>
           <LegalLinks>
             <LegalLink to="/privacy-policy">Privacy Policy</LegalLink>

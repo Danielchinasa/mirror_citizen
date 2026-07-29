@@ -2390,7 +2390,7 @@ const DashboardPage = () => {
                 <li>You understand that</li>
                 <ol type="a">
                   <li style={{ padding: "20px" }}>
-                    e-citizen’s vendor, ClearVin, LLC (“CV”), is an approved
+                    e-raia’s vendor, ClearVin, LLC (“CV”), is an approved
                     NMVTIS Data Provider,
                   </li>
                   <li style={{ padding: "20px" }}>
@@ -2416,10 +2416,10 @@ const DashboardPage = () => {
                 <li>You understand that:</li>
                 <ol type="a">
                   <li style={{ padding: "20px" }}>
-                    e-citizen™ is not an Approved NMVTIS Data Provider,
+                    e-raia™ is not an Approved NMVTIS Data Provider,
                   </li>
                   <li style={{ padding: "20px" }}>
-                    e-citizen™ has obtained the NMVTIS data contained in the
+                    e-raia™ has obtained the NMVTIS data contained in the
                     Licensed Data from an Approved NMVTIS Data Provider, and
                   </li>
                   <li style={{ padding: "20px" }}>
@@ -3166,7 +3166,7 @@ const DashboardPage = () => {
   const [transactionRef, setTransactionRef] = useState("");
   const [paystackReference, setPaystackReference] = useState("");
   const [paystackLoading, setPaystackLoading] = useState(false);
-  const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
+  const liveCaptureUrl = `https://e-raia.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
   if (loading) {
     Swal.fire({
@@ -4777,7 +4777,7 @@ const DashboardPage = () => {
                                   size="large"
                                   onClick={() => {
                                     // handleMakePaymentForLiveFace();
-                                    const liveCaptureUrl = `https://e-citizen.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
+                                    const liveCaptureUrl = `https://e-raia.ng:9443/${liveFaceNin}/ecitizen/${userToken}`;
 
                                     if (
                                       isLiveFaceNinValid &&
@@ -5598,7 +5598,7 @@ const DashboardPage = () => {
                                 style: "currency",
                                 currency: "NGN",
                               }).format(exchangeRate)}{" "}
-                              Naira{" "}
+                              Khs{" "}
                             </p>
                           </>
                         ) : (
@@ -5741,7 +5741,7 @@ const DashboardPage = () => {
                           style={{ color: "#DD0201", cursor: "pointer" }}
                           onClick={handleClickPrivacyPolicy}
                         >
-                          e-citizen™ Privacy Policy
+                          e-raia™ Privacy Policy
                         </span>{" "}
                         and{" "}
                         <span
