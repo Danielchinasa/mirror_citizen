@@ -58,7 +58,7 @@ export const NavAvatar = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #dd0201;
   color: #fff;
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@ export const Breadcrumb = styled.div`
   span {
     color: var(--ec-text-muted);
     &:last-child {
-      color: #DD0201;
+      color: #dd0201;
       font-weight: 600;
     }
   }
@@ -122,7 +122,7 @@ export const HeroTitle = styled.h1`
   margin: 0 0 16px;
 
   span {
-    color: #DD0201;
+    color: #dd0201;
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 48px;
@@ -517,7 +517,7 @@ export const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -539,7 +539,7 @@ export const FormSelect = styled.select`
   background-position: right 14px center;
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -577,7 +577,7 @@ export const ClearBtn = styled.button`
 `;
 
 export const ContinueBtn = styled.button`
-  background: #DD0201;
+  background: #dd0201;
   border: none;
   border-radius: 10px;
   padding: 12px 36px;
@@ -592,7 +592,7 @@ export const ContinueBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
   }
 
   &:disabled {
@@ -635,7 +635,7 @@ export const YouWillGetItem = styled.div`
   color: var(--ec-text-secondary);
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 14px;
     flex-shrink: 0;
   }
@@ -661,7 +661,7 @@ export const PriceAmount = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 32px;
-  color: #DD0201;
+  color: #dd0201;
   margin-bottom: 20px;
 `;
 
@@ -716,7 +716,7 @@ export const SidebarItem = styled.div`
   color: var(--ec-text-secondary);
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 16px;
     flex-shrink: 0;
   }
@@ -738,7 +738,7 @@ export const SidebarNote = styled.p`
   gap: 6px;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 14px;
   }
 `;
@@ -795,11 +795,11 @@ export const PaymentOption = styled.label`
   }
 
   &:hover {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 
   input[type="radio"] {
-    accent-color: #DD0201;
+    accent-color: #dd0201;
   }
 `;
 
@@ -821,7 +821,7 @@ export const PaymentOptionBadge = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 10px;
   font-weight: 700;
-  color: #DD0201;
+  color: #dd0201;
   background: #fdecec;
   padding: 2px 8px;
   border-radius: 4px;
@@ -847,7 +847,7 @@ export const SummaryAmount = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: #DD0201;
+  color: #dd0201;
 `;
 
 export const SummaryHeader = styled.div`
@@ -884,7 +884,7 @@ export const SummaryValue = styled.span`
 export const PayBtn = styled.button`
   width: 100%;
   padding: 14px;
-  background: #DD0201;
+  background: #dd0201;
   border: none;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
@@ -900,7 +900,7 @@ export const PayBtn = styled.button`
   transition: background 0.2s;
 
   &:hover {
-    background: #FF4D4F;
+    background: #ff4d4f;
   }
 
   &:disabled {
@@ -952,7 +952,7 @@ export const SampleTitle = styled.h3`
 export const SampleViewLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   font-weight: 600;
   cursor: pointer;
 
@@ -995,7 +995,7 @@ export const SampleAvatar = styled.div`
 
   svg {
     font-size: 22px;
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -1024,7 +1024,7 @@ export const VerifiedBadge = styled.span`
   align-items: center;
   gap: 4px;
   background: #fdecec;
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -1052,7 +1052,7 @@ export const SampleTag = styled.span`
   gap: 4px;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 10px;
   }
 `;
@@ -1100,7 +1100,7 @@ export const TrustIcon = styled.div`
   justify-content: center;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 16px;
   }
 `;
@@ -1139,7 +1139,7 @@ export const ProcessingSpinner = styled.div`
   width: 56px;
   height: 56px;
   border: 4px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
   margin-bottom: 24px;
@@ -1187,12 +1187,9 @@ export const IdTypeDisplay = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: var(--ec-text-secondary);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 16px;
   }
 `;
