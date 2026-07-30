@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useLocale } from "../../components/LocaleProvider";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
 
@@ -124,6 +125,7 @@ const CtaPrice = styled.span`
 `;
 
 const CardCta = () => {
+  const { t } = useLocale();
   const verifyLink = useAuthRedirect("/verify/nin");
 
   return (
@@ -133,15 +135,14 @@ const CardCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your Card ID?</CtaTitle>
+          <CtaTitle>{t("cta.card.title")}</CtaTitle>
           <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-citoyen
-            for fast, accurate and secure identity verification.
+            {t("cta.card.desc")}
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify Card ID Now <FaArrowRight />
+            {t("cta.card.button")} <FaArrowRight />
           </CtaButton>
           {/* <CtaPrice>
             <FaCheckCircle /> Starting from <strong>N</strong>600 per

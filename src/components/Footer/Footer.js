@@ -24,6 +24,7 @@ import {
 import Logo from "../../images/civ_logo.png";
 import LogoWhite from "../../images/civ_dark.png";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../../components/LocaleProvider";
 import { Link } from "react-router-dom";
 
 import playStore from "../../images/playstore.png";
@@ -40,6 +41,7 @@ function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const { isDark } = useTheme();
+  const { t } = useLocale();
 
   return (
     <>
@@ -62,8 +64,7 @@ function Footer() {
                 />
               </Link>
               <BrandDesc>
-                Your trusted partner for digital identity verification and
-                background checks.
+                {t("footer.brandDesc")}
               </BrandDesc>
               <SocialRow>
                 <SocialIcon
@@ -98,29 +99,25 @@ function Footer() {
             </BrandCol>
 
             <FooterCol>
-              <FooterColTitle>Services</FooterColTitle>
-              {/* <FooterLink to="/">National ID Verification</FooterLink>
-              <FooterLink to="/">Alien Card Verification</FooterLink>
-
-              <FooterLink to="/">VIN Verification</FooterLink> */}
-              <FooterLink to="/api-docs">API for Business</FooterLink>
+              <FooterColTitle>{t("footer.services")}</FooterColTitle>
+              <FooterLink to="/api-docs">{t("footer.apiForBusiness")}</FooterLink>
             </FooterCol>
 
             <FooterCol>
-              <FooterColTitle>Support</FooterColTitle>
-              <FooterLink to="/contact">Contact</FooterLink>
-              <FooterLink to="/faq-uganda">FAQs</FooterLink>
+              <FooterColTitle>{t("footer.support")}</FooterColTitle>
+              <FooterLink to="/contact">{t("footer.contact")}</FooterLink>
+              <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Blog
+                {t("footer.blog")}
               </ExternalLink>
             </FooterCol>
 
             <FooterCol>
-              <FooterColTitle>Get the app</FooterColTitle>
+              <FooterColTitle>{t("footer.getApp")}</FooterColTitle>
               <AppCol>
                 <AppBadge
                   href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
@@ -142,14 +139,14 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © citoyen.africa {new Date().getFullYear()}. All Rights Reserved.
+              {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
-                Privacy Policy
+                {t("footer.privacyPolicy")}
               </LegalLink>
               <LegalLink onClick={() => setIsOpen2(true)}>
-                Terms of Service
+                {t("footer.termsOfService")}
               </LegalLink>
             </LegalLinks>
           </FooterBottom>

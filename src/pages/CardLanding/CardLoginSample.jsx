@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import { useDispatch } from "react-redux";
@@ -466,6 +467,7 @@ const ResultDisclaimer = styled.div`
 const CardLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { t } = useLocale();
   const redirectTo = "/main-dashboard";
 
   const [formData, setFormData] = useState({
@@ -733,9 +735,9 @@ const CardLoginSample = () => {
               <Spinner />
             </SpinnerOverlay>
           )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          <LoginCardTitle>{t("login.title")}</LoginCardTitle>
           <LoginCardSub>
-            Sign in or continue to start your verification.
+            {t("login.subtitle")}
           </LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
@@ -753,7 +755,7 @@ const CardLoginSample = () => {
                     googleLogin();
                   }}
                 >
-                  <FcGoogle /> Continue with Google
+                  <FcGoogle /> {t("login.continueGoogle")}
                 </SSOButton>
                 <FacebookLogin
                   appId="541710452150170"
@@ -763,21 +765,21 @@ const CardLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                      <FaFacebook color="#1877F2" /> {t("login.continueFacebook")}
                     </SSOButton>
                   )}
                 />
               </SSOCol>
-              <Divider>OR</Divider>
+              <Divider>{t("login.or")}</Divider>
               <FormCol>
                 {formErrors.general && (
                   <ErrorAlert>{formErrors.general}</ErrorAlert>
                 )}
                 <div>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>{t("login.emailLabel")}</FormLabel>
                   <FormInput
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t("login.emailPlaceholder")}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -787,11 +789,11 @@ const CardLoginSample = () => {
                   )}
                 </div>
                 <div>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("login.passwordLabel")}</FormLabel>
                   <PasswordWrapper>
                     <FormInput
                       type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder={t("login.passwordPlaceholder")}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -815,10 +817,10 @@ const CardLoginSample = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />{" "}
-                    Remember me
+                    {t("login.rememberMe")}
                   </RememberLabel>
                   <ForgotLink to="/forgot-password">
-                    Forgot password?
+                    {t("login.forgotPassword")}
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
@@ -827,11 +829,11 @@ const CardLoginSample = () => {
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
+                  {t("login.loginButton")}
                 </LoginBtn>
                 <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
+                  {t("login.noAccount")}{" "}
+                  <Link to="/individual/sign-up/1">{t("login.registerHere")}</Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -841,11 +843,11 @@ const CardLoginSample = () => {
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
-            <SampleCardTitle>Sample result</SampleCardTitle>
-            <SampleBadge>This is a sample only</SampleBadge>
+            <SampleCardTitle>{t("sample.title")}</SampleCardTitle>
+            <SampleBadge>{t("sample.badge")}</SampleBadge>
           </SampleHeader>
           <SampleCardSub>
-            See an example of a Card ID verification result.
+            {t("sample.cardSubtitle")}
           </SampleCardSub>
           <ResultCard>
             <ResultTop>
@@ -854,37 +856,37 @@ const CardLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Full Name</ResultLabel>
+                  <ResultLabel>{t("sample.fullName")}</ResultLabel>
                   <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Phone Number</ResultLabel>
+                  <ResultLabel>{t("sample.phoneNumber")}</ResultLabel>
                   <ResultValue>0803 *** 5678</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>National ID</ResultLabel>
+                  <ResultLabel>{t("sample.nationalId")}</ResultLabel>
                   <ResultValue>UG-NID-4582-7819-2043</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Verification Status</ResultLabel>
+                  <ResultLabel>{t("sample.verificationStatus")}</ResultLabel>
                   <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
+                    {t("sample.verified")} <FaCheckCircle />
                   </VerifiedBadge>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Date of Birth</ResultLabel>
+                  <ResultLabel>{t("sample.dateOfBirth")}</ResultLabel>
                   <ResultValue>14 Mar 1990</ResultValue>
                 </ResultField>
               </ResultGrid>
             </ResultTop>
             <ResultFooter>
-              <span>Verified on 15 May, 2025, 12:45 PM</span>
-              <span>Ref: ECNIN2505151245ABCD</span>
+              <span>{t("sample.verifiedOn")} 15 May, 2025, 12:45 PM</span>
+              <span>{t("sample.ref")}: ECNIN2505151245ABCD</span>
             </ResultFooter>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
-            Results are based on data available at the time of verification.
+            {t("sample.disclaimer")}
           </ResultDisclaimer>
         </SampleCard>
       </TwoColGrid>

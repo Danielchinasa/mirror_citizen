@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useLocale } from "../../components/LocaleProvider";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
 
@@ -119,6 +120,7 @@ const CtaPrice = styled.span`
 `;
 
 const VehicleCta = () => {
+  const { t } = useLocale();
   const verifyLink = useAuthRedirect("/verify/vehicle");
 
   return (
@@ -128,15 +130,14 @@ const VehicleCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify a vehicle?</CtaTitle>
+          <CtaTitle>{t("cta.vehicle.title")}</CtaTitle>
           <CtaDesc>
-            Join thousands of smart buyers who verify before they buy to avoid
-            fraud and make confident decisions.
+            {t("cta.vehicle.desc")}
           </CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify Vehicle Now <FaArrowRight />
+            {t("cta.vehicle.button")} <FaArrowRight />
           </CtaButton>
           <CtaPrice>
             <FaCheckCircle /> Secure &bull; Fast &bull; Reliable

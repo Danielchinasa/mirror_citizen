@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 import Logo from "../../images/e-citizen_logo_ecitizen_white.png";
 import playstoreImg from "../../images/playstore.png";
 import appStoreImg from "../../images/appStore.png";
@@ -216,6 +217,7 @@ const LegalLink = styled(Link)`
 `;
 
 const NinLandingFooter = () => {
+  const { t } = useLocale();
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -228,8 +230,7 @@ const NinLandingFooter = () => {
           <BrandCol>
             <BrandLogo src={Logo} alt="eCitizen" />
             <BrandDesc>
-              Your trusted partner for digital identity verification and
-              background checks.
+              {t("footer.brandDesc")}
             </BrandDesc>
             <SocialRow>
               <SocialIcon
@@ -257,7 +258,7 @@ const NinLandingFooter = () => {
           </BrandCol>
 
           <FooterCol>
-            <FooterColTitle>Product</FooterColTitle>
+            <FooterColTitle>{t("footer.product")}</FooterColTitle>
             <ExternalLink
               href="#how-it-works"
               onClick={(e) => {
@@ -265,7 +266,7 @@ const NinLandingFooter = () => {
                 scrollToSection("how-it-works");
               }}
             >
-              How it works
+              {t("footer.howItWorks")}
             </ExternalLink>
             <ExternalLink
               href="#sample-result"
@@ -274,21 +275,21 @@ const NinLandingFooter = () => {
                 scrollToSection("sample-result");
               }}
             >
-              Sample result
+              {t("footer.sampleResult")}
             </ExternalLink>
-            <FooterLink to="/nin-verification">NNI Verification</FooterLink>
-            <FooterLink to="/contact">API for Business</FooterLink>
+            <FooterLink to="/nin-verification">{t("footer.nniVerification")}</FooterLink>
+            <FooterLink to="/contact">{t("footer.apiForBusiness")}</FooterLink>
           </FooterCol>
 
           <FooterCol>
-            <FooterColTitle>Support</FooterColTitle>
-            <FooterLink to="/faq-uganda">Help Center</FooterLink>
-            <FooterLink to="/contact">Contact Us</FooterLink>
-            <FooterLink to="/faq-uganda">FAQs</FooterLink>
+            <FooterColTitle>{t("footer.support")}</FooterColTitle>
+            <FooterLink to="/faq-uganda">{t("footer.helpCenter")}</FooterLink>
+            <FooterLink to="/contact">{t("footer.contactUs")}</FooterLink>
+            <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
           </FooterCol>
 
           <FooterCol>
-            <FooterColTitle>Get the app</FooterColTitle>
+            <FooterColTitle>{t("footer.getApp")}</FooterColTitle>
             <AppCol>
               <AppBadge href="#" target="_blank" rel="noopener noreferrer">
                 <img src={playstoreImg} alt="Get it on Google Play" />
@@ -302,11 +303,11 @@ const NinLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            © citoyen.africa {new Date().getFullYear()}. All Rights Reserved.
+            {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
           </Copyright>
           <LegalLinks>
-            <LegalLink to="/privacy-policy">Privacy Policy</LegalLink>
-            <LegalLink to="/terms-of-service">Terms of Service</LegalLink>
+            <LegalLink to="/privacy-policy">{t("footer.privacyPolicy")}</LegalLink>
+            <LegalLink to="/terms-of-service">{t("footer.termsOfService")}</LegalLink>
           </LegalLinks>
         </FooterBottom>
       </FooterInner>

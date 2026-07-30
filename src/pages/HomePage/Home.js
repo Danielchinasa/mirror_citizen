@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { useLocale } from "../../components/LocaleProvider";
+import ComplianceBanner from "../../components/ComplianceBanner/ComplianceBanner";
 import baseUrl from "../../apiConfig";
 import { apiGet, apiPost, apiPostInternalCall } from "../../apiUtils";
 import {
@@ -26,10 +27,6 @@ import {
 import NinLoginSample from "../NinLanding/NinLoginSample";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import heroImg from "../../images/cote_divoire.png";
-import ndprImg from "../../images/ndpr.png";
-import gdprImg from "../../images/gdpr.jpg";
-import nimcImg from "../../images/nidologo.png";
-import osiaImg from "../../images/osia.png";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -81,13 +78,6 @@ import {
   ServiceBtn,
   LearnMoreLink,
   ViewAllLink,
-  ComplianceSection,
-  ComplianceInner,
-  ComplianceText,
-  ComplianceTitle,
-  ComplianceDesc,
-  ComplianceLogos,
-  ComplianceBadge,
   CtaSection,
   CtaInner,
   CtaShield,
@@ -676,28 +666,7 @@ const Home = () => {
       <NinLoginSample />
 
       {/* ── Compliance ── */}
-      <ComplianceSection>
-        <ComplianceInner>
-          <ComplianceText>
-            <ComplianceTitle>{t("home.compliance.title")}</ComplianceTitle>
-            <ComplianceDesc>{t("home.compliance.desc")}</ComplianceDesc>
-          </ComplianceText>
-          <ComplianceLogos>
-            <ComplianceBadge>
-              <img src={gdprImg} alt="GDPR" />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={ndprImg} alt="NDPC" />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={nimcImg} alt="NCMC" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={osiaImg} alt="OSIA" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-          </ComplianceLogos>
-        </ComplianceInner>
-      </ComplianceSection>
+      <ComplianceBanner />
 
       {/* ── CTA ── */}
       <CtaSection>

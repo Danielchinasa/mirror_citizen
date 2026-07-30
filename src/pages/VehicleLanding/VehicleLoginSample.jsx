@@ -10,6 +10,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
@@ -463,6 +464,7 @@ const ResultDisclaimer = styled.div`
 const VehicleLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { t } = useLocale();
   const redirectTo = "/verify/vehicle";
 
   const [formData, setFormData] = useState({
@@ -724,9 +726,9 @@ const VehicleLoginSample = () => {
               <Spinner />
             </SpinnerOverlay>
           )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          <LoginCardTitle>{t("login.title")}</LoginCardTitle>
           <LoginCardSub>
-            Sign in or continue to start your verification.
+            {t("login.subtitle")}
           </LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
@@ -744,7 +746,7 @@ const VehicleLoginSample = () => {
                     googleLogin();
                   }}
                 >
-                  <FcGoogle /> Continue with Google
+                  <FcGoogle /> {t("login.continueGoogle")}
                 </SSOButton>
                 <FacebookLogin
                   appId="541710452150170"
@@ -754,21 +756,21 @@ const VehicleLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                      <FaFacebook color="#1877F2" /> {t("login.continueFacebook")}
                     </SSOButton>
                   )}
                 />
               </SSOCol>
-              <Divider>OR</Divider>
+              <Divider>{t("login.or")}</Divider>
               <FormCol>
                 {formErrors.general && (
                   <ErrorAlert>{formErrors.general}</ErrorAlert>
                 )}
                 <div>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>{t("login.emailLabel")}</FormLabel>
                   <FormInput
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t("login.emailPlaceholder")}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -778,11 +780,11 @@ const VehicleLoginSample = () => {
                   )}
                 </div>
                 <div>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("login.passwordLabel")}</FormLabel>
                   <PasswordWrapper>
                     <FormInput
                       type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder={t("login.passwordPlaceholder")}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -806,10 +808,10 @@ const VehicleLoginSample = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />{" "}
-                    Remember me
+                    {t("login.rememberMe")}
                   </RememberLabel>
                   <ForgotLink to="/forgot-password">
-                    Forgot password?
+                    {t("login.forgotPassword")}
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
@@ -818,11 +820,11 @@ const VehicleLoginSample = () => {
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
+                  {t("login.loginButton")}
                 </LoginBtn>
                 <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
+                  {t("login.noAccount")}{" "}
+                  <Link to="/individual/sign-up/1">{t("login.registerHere")}</Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -832,11 +834,11 @@ const VehicleLoginSample = () => {
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
-            <SampleCardTitle>Sample result</SampleCardTitle>
-            <SampleBadge>This is a sample only</SampleBadge>
+            <SampleCardTitle>{t("sample.title")}</SampleCardTitle>
+            <SampleBadge>{t("sample.badge")}</SampleBadge>
           </SampleHeader>
           <SampleCardSub>
-            See an example of a vehicle verification report.
+            {t("sample.vehicleSubtitle")}
           </SampleCardSub>
           <ResultCard>
             <ResultTop>
@@ -845,37 +847,37 @@ const VehicleLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Plate Number</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.plateNumber")}</ResultLabel>
                   <ResultValue>ABC-123XY</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>VIN</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.vin")}</ResultLabel>
                   <ResultValue>******5678</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Make / Model</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.makeModel")}</ResultLabel>
                   <ResultValue>Toyota Corolla</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Year</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.year")}</ResultLabel>
                   <ResultValue>2018</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Ownership Status</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.ownershipStatus")}</ResultLabel>
                   <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
+                    {t("sample.verified")} <FaCheckCircle />
                   </VerifiedBadge>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Accident History</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.accidentHistory")}</ResultLabel>
                   <ResultValue style={{ color: "#777", fontSize: 13 }}>
-                    No major records found
+                    {t("sample.vehicle.noRecords")}
                   </ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Theft / Watchlist Status</ResultLabel>
+                  <ResultLabel>{t("sample.vehicle.theftStatus")}</ResultLabel>
                   <ClearBadge>
-                    CLEAR <FaCheckCircle />
+                    {t("sample.vehicle.clear")} <FaCheckCircle />
                   </ClearBadge>
                 </ResultField>
               </ResultGrid>
@@ -883,7 +885,7 @@ const VehicleLoginSample = () => {
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
-            Results are based on data available at the time of verification.
+            {t("sample.disclaimer")}
           </ResultDisclaimer>
         </SampleCard>
       </TwoColGrid>

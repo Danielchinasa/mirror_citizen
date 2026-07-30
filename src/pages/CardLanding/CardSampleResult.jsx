@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
+import { useLocale } from "../../components/LocaleProvider";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ninSampleImg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import {
@@ -15,6 +16,7 @@ import {
 } from "./NinLanding.elements";
 
 const CardSampleResult = () => {
+  const { t } = useLocale();
   const verifyLink = useAuthRedirect("/verify/nin");
 
   return (
@@ -24,30 +26,29 @@ const CardSampleResult = () => {
           <img src={ninSampleImg} alt="Sample Card ID Verification Result" />
         </SampleImageWrapper>
         <SampleInfo>
-          <SampleTitle>What You Get in a Card ID Report</SampleTitle>
+          <SampleTitle>{t("sample.cardReportTitle")}</SampleTitle>
           <SampleDesc>
-            Each Card ID verification returns comprehensive identity details
-            sourced from official records, helping you make informed decisions.
+            {t("sample.cardReportDesc")}
           </SampleDesc>
           <CheckList>
             <CheckItem>
-              <FaCheckCircle /> Full name of the Card ID holder
+              <FaCheckCircle /> {t("sample.feature.fullName")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Date of birth and gender
+              <FaCheckCircle /> {t("sample.feature.dobGender")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Phone number and email on record
+              <FaCheckCircle /> {t("sample.feature.phoneEmail")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Photograph for visual confirmation
+              <FaCheckCircle /> {t("sample.feature.photo")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Address and state of origin
+              <FaCheckCircle /> {t("sample.feature.address")}
             </CheckItem>
           </CheckList>
           <PrimaryBtn to={verifyLink}>
-            Try It Now <FaArrowRight />
+            {t("sample.tryItNow")} <FaArrowRight />
           </PrimaryBtn>
         </SampleInfo>
       </SampleContent>
