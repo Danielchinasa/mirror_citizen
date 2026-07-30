@@ -1,12 +1,13 @@
 import React from "react";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import { useLocale } from "../../components/LocaleProvider";
+import { getPrivacyPolicy } from "../../policyContent";
 
 const PrivacyPolicy = () => {
+  const { language } = useLocale();
   return (
     <div className="container mt-5">
       <h3>Privacy Policy</h3>
-      <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />;
+      <div dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }} />;
     </div>
   );
 };

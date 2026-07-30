@@ -27,7 +27,8 @@ import { BusinessSignUp } from "../../redux/actions";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../index.css";
-import privacyPolicy from "../../privacyPolicy";
+import { useLocale } from "../../components/LocaleProvider";
+import { getPrivacyPolicy } from "../../policyContent";
 import { Modal } from "antd";
 import Swal from "sweetalert2";
 import { theme } from "antd";
@@ -322,6 +323,8 @@ const BusinessSignUp2 = () => {
       setLoading(false);
     }
   };
+  const { language } = useLocale();
+
   const [isOpen, setIsOpen] = useState(false);
   const handleClickPrivacyPolicy = () => {
     // Import the PDF file using require
@@ -558,7 +561,7 @@ const BusinessSignUp2 = () => {
                     onCancel={() => setIsOpen(false)}
                     width={1000}
                   >
-                    <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                    <div dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }} />
                   </Modal>
                   <MainButtonFull
                     type="primary"

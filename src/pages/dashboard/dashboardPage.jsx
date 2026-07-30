@@ -57,8 +57,8 @@ import {
 } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import { useLocale } from "../../components/LocaleProvider";
+import { getPrivacyPolicy, getTermsOfService } from "../../policyContent";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
@@ -105,6 +105,7 @@ const DashboardPage = () => {
 
   const { token } = theme.useToken();
   const { isDark } = useTheme();
+  const { language } = useLocale();
   const { bgContainer, text, text3 } = token;
 
   const [hasPreviousUpload, setHasPreviousUpload] = useState(false);
@@ -5756,8 +5757,7 @@ const DashboardPage = () => {
                         onCancel={() => setIsOpen(false)}
                         width={1000}
                       >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: privacyPolicy }}
+                        <div                           dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }}
                         />
                       </Modal>
                       <Modal
@@ -5769,8 +5769,7 @@ const DashboardPage = () => {
                         onCancel={() => setIsOpen2(false)}
                         width={1000}
                       >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: termsOfService }}
+                        <div                           dangerouslySetInnerHTML={{ __html: getTermsOfService(language) }}
                         />
                       </Modal>
                     </strong>

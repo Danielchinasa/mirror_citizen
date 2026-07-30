@@ -31,8 +31,7 @@ import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { useLocale } from "../../components/LocaleProvider";
 import { withBasePath } from "../../routing";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import { getPrivacyPolicy, getTermsOfService } from "../../policyContent";
 
 import {
   PageWrapper,
@@ -177,7 +176,7 @@ const LOCAL_CURRENCY = "UGX";
 const FOREIGN_CURRENCY = "USD";
 
 const VerifyPage = () => {
-  const { t } = useLocale();
+  const { t, language } = useLocale();
   const { type } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -2785,7 +2784,7 @@ const VerifyPage = () => {
                   lineHeight: 1.7,
                   color: "var(--ec-text)",
                 }}
-                dangerouslySetInnerHTML={{ __html: termsOfService }}
+                dangerouslySetInnerHTML={{ __html: getTermsOfService(language) }}
               />
             </PopupBody>
           </PopupCard>
@@ -2824,7 +2823,7 @@ const VerifyPage = () => {
                   lineHeight: 1.7,
                   color: "var(--ec-text)",
                 }}
-                dangerouslySetInnerHTML={{ __html: privacyPolicy }}
+                dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }}
               />
             </PopupBody>
           </PopupCard>
