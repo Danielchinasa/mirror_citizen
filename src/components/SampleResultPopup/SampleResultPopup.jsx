@@ -19,22 +19,13 @@ const sampleData = {
     subtitle: "See an example of a NNI verification result.",
     image: ninSampleAvatar,
     fields: [
-      ["Full Name", "DANIEL CHINASA OKORO"],
-      ["First Name", "DANIEL"],
-      ["Middle Name", "CHINASA"],
-      ["Surname", "OKORO"],
-      ["NNI", "7348 9021 5**"],
-      ["Phone Number", "0806 748 4821"],
+      ["First Name", "Jean"],
+      ["Middle Name", "Kouassi"],
+      ["Surname", "Yao"],
       ["Verification Status", "VERIFIED", "verified"],
-      ["Date of Birth", "24-08-1992"],
+      ["Date of Birth", "09-11-1991"],
       ["Gender", "Male"],
-      ["Birth Country", "Nigeria"],
-      ["Residence Address", "14 ADETOKUNBO STREET, IKEJA"],
-      ["Next of Kin First Name", "FUNMI"],
-      ["Next of Kin Middle Name", "KEMI"],
-      ["Next of Kin Town", "ABEOKUTA"],
-      ["Next of Kin LGA", "Abeokuta South"],
-      ["Next of Kin Address", "22 UNITY AVENUE, OKE ILEWO"],
+      ["Birth Country", "Côte d'Ivoire"],
     ],
   },
   card: {
@@ -267,12 +258,20 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </Top>
           {sample.stakeholders && (
             <StakeholderSection>
-              <StakeholderSectionTitle>{t("sample.stakeholders")}</StakeholderSectionTitle>
+              <StakeholderSectionTitle>
+                {t("sample.stakeholders")}
+              </StakeholderSectionTitle>
               <StakeholderTable>
                 <StakeholderRow $header>
-                  <StakeholderCell $header>{t("sample.stakeholderName")}</StakeholderCell>
-                  <StakeholderCell $header>{t("sample.stakeholderRole")}</StakeholderCell>
-                  <StakeholderCell $header>{t("sample.stakeholderNationality")}</StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("sample.stakeholderName")}
+                  </StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("sample.stakeholderRole")}
+                  </StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("sample.stakeholderNationality")}
+                  </StakeholderCell>
                 </StakeholderRow>
                 {sample.stakeholders.map((s, i) => (
                   <StakeholderRow key={i}>

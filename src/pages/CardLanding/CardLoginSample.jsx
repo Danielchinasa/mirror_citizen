@@ -736,9 +736,7 @@ const CardLoginSample = () => {
             </SpinnerOverlay>
           )}
           <LoginCardTitle>{t("login.title")}</LoginCardTitle>
-          <LoginCardSub>
-            {t("login.subtitle")}
-          </LoginCardSub>
+          <LoginCardSub>{t("login.subtitle")}</LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
               <SSOCol>
@@ -765,7 +763,8 @@ const CardLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> {t("login.continueFacebook")}
+                      <FaFacebook color="#1877F2" />{" "}
+                      {t("login.continueFacebook")}
                     </SSOButton>
                   )}
                 />
@@ -833,7 +832,9 @@ const CardLoginSample = () => {
                 </LoginBtn>
                 <RegisterText>
                   {t("login.noAccount")}{" "}
-                  <Link to="/individual/sign-up/1">{t("login.registerHere")}</Link>
+                  <Link to="/individual/sign-up/1">
+                    {t("login.registerHere")}
+                  </Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -846,9 +847,7 @@ const CardLoginSample = () => {
             <SampleCardTitle>{t("sample.title")}</SampleCardTitle>
             <SampleBadge>{t("sample.badge")}</SampleBadge>
           </SampleHeader>
-          <SampleCardSub>
-            {t("sample.cardSubtitle")}
-          </SampleCardSub>
+          <SampleCardSub>{t("sample.cardSubtitle")}</SampleCardSub>
           <ResultCard>
             <ResultTop>
               <ResultPhoto>
@@ -857,7 +856,7 @@ const CardLoginSample = () => {
               <ResultGrid>
                 <ResultField>
                   <ResultLabel>{t("sample.fullName")}</ResultLabel>
-                  <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
+                  <ResultValue>Jean Yao</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>{t("sample.phoneNumber")}</ResultLabel>
