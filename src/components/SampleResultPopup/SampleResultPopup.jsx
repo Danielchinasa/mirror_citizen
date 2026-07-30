@@ -12,6 +12,7 @@ import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+import { useLocale } from "../LocaleProvider";
 
 const sampleData = {
   nin: {
@@ -139,7 +140,63 @@ const sampleData = {
   },
 };
 
+const labelToKey = {
+  "Full Name": "sample.fullName",
+  "First Name": "sample.firstName",
+  "Middle Name": "sample.middleName",
+  Surname: "sample.surname",
+  NNI: "sample.nationalId",
+  "Phone Number": "sample.phoneNumber",
+  "Verification Status": "sample.verificationStatus",
+  "Date of Birth": "sample.dateOfBirth",
+  Gender: "sample.gender",
+  "Birth Country": "sample.birthCountry",
+  "Residence Address": "sample.address",
+  "Next of Kin First Name": "sample.nextOfKinFirstName",
+  "Next of Kin Middle Name": "sample.nextOfKinMiddleName",
+  "Next of Kin Town": "sample.nextOfKinTown",
+  "Next of Kin LGA": "sample.nextOfKinLGA",
+  "Next of Kin Address": "sample.nextOfKinAddress",
+  "Card ID": "sample.cardId",
+  Nationality: "sample.nationality",
+  "Document Type": "sample.documentType",
+  "Expiry Date": "sample.expiryDate",
+  "Company Name": "sample.companyName",
+  "RC Number": "sample.rcNumber",
+  "CAC ID": "sample.cacId",
+  Classification: "sample.classification",
+  "Registration Date": "sample.registrationDate",
+  "Verification Date": "sample.verificationDate",
+  "Customer Name": "sample.customerName",
+  BVN: "sample.bvn",
+  Address: "sample.address",
+  "Report Date": "sample.reportDate",
+  "Credit Score": "sample.creditScore",
+  Rating: "sample.rating",
+  CRC: "sample.crc",
+  "First Central": "sample.firstCentral",
+  "Credit Registry": "sample.creditRegistry",
+  "Bureaus Checked": "sample.bureausChecked",
+  "Plate Number": "sample.vehicle.plateNumber",
+  VIN: "sample.vehicle.vin",
+  "Make / Model": "sample.vehicle.makeModel",
+  Year: "sample.vehicle.year",
+  "Ownership Status": "sample.vehicle.ownershipStatus",
+  "Accident History": "sample.vehicle.accidentHistory",
+  "Theft / Watchlist Status": "sample.vehicle.theftStatus",
+};
+
+const subtypeToKey = {
+  nin: "sample.ninSubtitle",
+  card: "sample.cardSubtitle",
+  vehicle: "sample.vehicleSubtitle",
+  phone: "sample.phoneSubtitle",
+  business: "sample.businessSubtitle",
+  financial: "sample.financialSubtitle",
+};
+
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
+  const { t } = useLocale();
   const sample = sampleData[type] || sampleData.nin;
   const Icon = sample.icon;
 
@@ -174,10 +231,10 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         <Header>
           <div>
             <TitleRow>
-              <Title id="sample-result-title">Sample result</Title>
-              <Badge>This is a sample only</Badge>
+              <Title id="sample-result-title">{t("sample.title")}</Title>
+              <Badge>{t("sample.badge")}</Badge>
             </TitleRow>
-            <Subtitle>{sample.subtitle}</Subtitle>
+            <Subtitle>{t(subtypeToKey[type] || "sample.ninSubtitle")}</Subtitle>
           </div>
           <CloseButton type="button" onClick={onClose} aria-label="Close">
             <FaTimes />
@@ -196,7 +253,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
             <ResultGrid>
               {sample.fields.map(([label, value, status]) => (
                 <ResultField key={label}>
-                  <ResultLabel>{label}</ResultLabel>
+                  <ResultLabel>{t(labelToKey[label] || label)}</ResultLabel>
                   {status === "verified" ? (
                     <VerifiedValue>
                       {value} <FaCheckCircle />
@@ -210,12 +267,12 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </Top>
           {sample.stakeholders && (
             <StakeholderSection>
-              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+              <StakeholderSectionTitle>{t("sample.stakeholders")}</StakeholderSectionTitle>
               <StakeholderTable>
                 <StakeholderRow $header>
-                  <StakeholderCell $header>Name</StakeholderCell>
-                  <StakeholderCell $header>Role</StakeholderCell>
-                  <StakeholderCell $header>Nationality</StakeholderCell>
+                  <StakeholderCell $header>{t("sample.stakeholderName")}</StakeholderCell>
+                  <StakeholderCell $header>{t("sample.stakeholderRole")}</StakeholderCell>
+                  <StakeholderCell $header>{t("sample.stakeholderNationality")}</StakeholderCell>
                 </StakeholderRow>
                 {sample.stakeholders.map((s, i) => (
                   <StakeholderRow key={i}>
@@ -231,7 +288,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
 
         <Disclaimer>
           <FaInfoCircle />
-          Results are based on data available at the time of verification.
+          {t("sample.disclaimer")}
         </Disclaimer>
       </Dialog>
     </Overlay>
