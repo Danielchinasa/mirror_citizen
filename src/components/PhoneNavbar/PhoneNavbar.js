@@ -15,8 +15,10 @@ import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import { Link } from "react-router-dom";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../SampleResultPopup/SampleResultPopup";
+import { useLocale } from "../LocaleProvider";
 
 function PhoneNavbar() {
+  const { t } = useLocale();
   const [click, setClick] = useState(false);
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/phone");
@@ -60,22 +62,22 @@ function PhoneNavbar() {
                 onClick={() => scrollToSection("how-it-works")}
                 href="#how-it-works"
               >
-                How it works
+                {t("nav.howItWorks")}
               </NinNavLink>
             </NinNavItem>
             <NinNavItem>
               <NinNavLink onClick={openSampleResult} href="#sample-result">
-                Sample result
+                {t("landing.sampleResult")}
               </NinNavLink>
             </NinNavItem>
             <NinNavItem>
               <NinNavLinkRouter to={verifyLink} onClick={closeMobileMenu}>
-                Login
+                {t("nav.login")}
               </NinNavLinkRouter>
             </NinNavItem>
             <NinNavItem>
               <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
-                Verify Phone Now <FaArrowRight />
+                {t("landing.verifyPhoneNow")} <FaArrowRight />
               </NinCtaButton>
             </NinNavItem>
           </NinNavMenu>

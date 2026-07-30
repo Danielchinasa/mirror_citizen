@@ -4,6 +4,7 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import useServicePrices from "../../hooks/useServicePrices";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
 import heroImg from "../../images/phone_number_verification.png";
+import { useLocale } from "../../components/LocaleProvider";
 import {
   HeroSectionWrapper,
   HeroBgImage,
@@ -20,6 +21,7 @@ import {
 } from "./PhoneLanding.elements";
 
 const PhoneHero = () => {
+  const { t } = useLocale();
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/phone");
   const { getPrice } = useServicePrices();
@@ -35,24 +37,23 @@ const PhoneHero = () => {
         <HeroBgImage src={heroImg} alt="Phone Number Verification on eCitizen" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>PHONE VERIFICATION</HeroTag>
-            <HeroTitle>
-              Verify a <span>phone number</span> in seconds
-            </HeroTitle>
-            <HeroSubtitle>
-              Instant, secure and reliable phone number verification for
-              onboarding, due diligence and fraud&nbsp;prevention.
-            </HeroSubtitle>
+            <HeroTag>{t("phoneHero.tag")}</HeroTag>
+            <HeroTitle
+              dangerouslySetInnerHTML={{ __html: t("phoneHero.title") }}
+            />
+            <HeroSubtitle>{t("phoneHero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                Verify Phone Now <FaArrowRight />
+                {t("phoneHero.verifyBtn")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
-                See Sample Result <FaEye />
+                {t("phoneHero.seeSampleBtn")} <FaEye />
               </SecondaryBtn>
             </HeroButtons>
             <PriceBadge>
-              From <span>{getPrice(9) || "₦800"}</span> per verification
+              {t("phoneHero.priceLabel", {
+                price: getPrice(9) || "₦800",
+              })}
             </PriceBadge>
             <HeroMobileImage
               src={heroImg}

@@ -15,8 +15,10 @@ import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import { Link } from "react-router-dom";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../SampleResultPopup/SampleResultPopup";
+import { useLocale } from "../LocaleProvider";
 
 function VehicleNavbar() {
+  const { t } = useLocale();
   const [click, setClick] = useState(false);
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/vehicle");
@@ -60,22 +62,22 @@ function VehicleNavbar() {
                 onClick={() => scrollToSection("how-it-works")}
                 href="#how-it-works"
               >
-                How it works
+                {t("nav.howItWorks")}
               </NinNavLink>
             </NinNavItem>
             <NinNavItem>
               <NinNavLink onClick={openSampleResult} href="#sample-result">
-                Sample result
+                {t("landing.sampleResult")}
               </NinNavLink>
             </NinNavItem>
             <NinNavItem>
               <NinNavLinkRouter to={verifyLink} onClick={closeMobileMenu}>
-                Login
+                {t("nav.login")}
               </NinNavLinkRouter>
             </NinNavItem>
             <NinNavItem>
               <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
-                Verify Vehicle Now <FaArrowRight />
+                {t("landing.verifyVehicleNow")} <FaArrowRight />
               </NinCtaButton>
             </NinNavItem>
           </NinNavMenu>

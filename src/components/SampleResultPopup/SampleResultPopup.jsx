@@ -22,6 +22,64 @@ const subtitleKeys = {
   vehicle: "sample.subtitle.vehicle",
 };
 
+const fieldLabelKeys = {
+  "Full Name": "sample.field.fullName",
+  "First Name": "sample.field.firstName",
+  "Middle Name": "sample.field.middleName",
+  Surname: "sample.field.surname",
+  NIN: "sample.field.nin",
+  "Phone Number": "sample.field.phoneNumber",
+  "Verification Status": "sample.field.verificationStatus",
+  "Date of Birth": "sample.field.dateOfBirth",
+  Gender: "sample.field.gender",
+  "Birth Country": "sample.field.birthCountry",
+  "Residence Address": "sample.field.residenceAddress",
+  "Next of Kin First Name": "sample.field.nokFirstName",
+  "Next of Kin Middle Name": "sample.field.nokMiddleName",
+  "Next of Kin Town": "sample.field.nokTown",
+  "Next of Kin LGA": "sample.field.nokLga",
+  "Next of Kin Address": "sample.field.nokAddress",
+  "Company Name": "sample.field.companyName",
+  "RC Number": "sample.field.rcNumber",
+  "CAC ID": "sample.field.cacId",
+  Classification: "sample.field.classification",
+  "Registration Date": "sample.field.registrationDate",
+  "Verification Date": "sample.field.verificationDate",
+  "Customer Name": "sample.field.customerName",
+  BVN: "sample.field.bvn",
+  Address: "sample.field.address",
+  "Report Date": "sample.field.reportDate",
+  "Credit Score": "sample.field.creditScore",
+  Rating: "sample.field.rating",
+  CRC: "sample.field.crc",
+  "First Central": "sample.field.firstCentral",
+  "Credit Registry": "sample.field.creditRegistry",
+  "Bureaus Checked": "sample.field.bureausChecked",
+  "Plate Number": "sample.field.plateNumber",
+  VIN: "sample.field.vin",
+  "Make / Model": "sample.field.makeModel",
+  Year: "sample.field.year",
+  "Ownership Status": "sample.field.ownershipStatus",
+  "Accident History": "sample.field.accidentHistory",
+  "Theft / Watchlist Status": "sample.field.watchlistStatus",
+};
+
+const statusValueKeys = {
+  VERIFIED: "sample.value.verified",
+  CLEAR: "sample.value.clear",
+  "No major records found": "sample.value.noRecords",
+};
+
+const stakeholderRoleKeys = {
+  Director: "sample.stakeholder.director",
+  "Director / Shareholder": "sample.stakeholder.directorShareholder",
+  Shareholder: "sample.stakeholder.shareholder",
+};
+
+const nationalityKeys = {
+  Nigerian: "sample.stakeholder.nigerian",
+};
+
 const sampleData = {
   nin: {
     image: ninSampleAvatar,
@@ -186,13 +244,18 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
             <ResultGrid>
               {sample.fields.map(([label, value, status]) => (
                 <ResultField key={label}>
-                  <ResultLabel>{label}</ResultLabel>
+                  <ResultLabel>
+                    {t(fieldLabelKeys[label] || label)}
+                  </ResultLabel>
                   {status === "verified" ? (
                     <VerifiedValue>
-                      {value} <FaCheckCircle />
+                      {t(statusValueKeys[value] || value)}{' '}
+                      <FaCheckCircle />
                     </VerifiedValue>
                   ) : (
-                    <ResultValue>{value}</ResultValue>
+                    <ResultValue>
+                      {t(statusValueKeys[value] || value)}
+                    </ResultValue>
                   )}
                 </ResultField>
               ))}
@@ -218,8 +281,12 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
                 {sample.stakeholders.map((s, i) => (
                   <StakeholderRow key={i}>
                     <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>{s.role}</StakeholderCell>
-                    <StakeholderCell>{s.nationality}</StakeholderCell>
+                    <StakeholderCell>
+                      {t(stakeholderRoleKeys[s.role] || s.role)}
+                    </StakeholderCell>
+                    <StakeholderCell>
+                      {t(nationalityKeys[s.nationality] || s.nationality)}
+                    </StakeholderCell>
                   </StakeholderRow>
                 ))}
               </StakeholderTable>

@@ -4,6 +4,7 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import useServicePrices from "../../hooks/useServicePrices";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
 import heroImg from "../../images/business_verification2.png";
+import { useLocale } from "../../components/LocaleProvider";
 import {
   HeroSectionWrapper,
   HeroBgImage,
@@ -22,6 +23,7 @@ import {
 } from "./BusinessLanding.elements";
 
 const BusinessHero = () => {
+  const { t } = useLocale();
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/business");
   const { getPrice } = useServicePrices();
@@ -37,39 +39,40 @@ const BusinessHero = () => {
         <HeroBgImage src={heroImg} alt="Business Verification on eCitizen" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>BUSINESS VERIFICATION</HeroTag>
-            <HeroTitle>
-              Verify a <span>company</span>
-            </HeroTitle>
-            <HeroSubtitle>
-              Verify company registration, ownership, and key business details
-              securely in seconds. Make confident business decisions.
-            </HeroSubtitle>
+            <HeroTag>{t("businessHero.tag")}</HeroTag>
+            <HeroTitle
+              dangerouslySetInnerHTML={{ __html: t("businessHero.title") }}
+            />
+            <HeroSubtitle>{t("businessHero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                Verify Company Now <FaArrowRight />
+                {t("businessHero.verifyBtn")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
-                See Sample Result <FaEye />
+                {t("businessHero.seeSampleBtn")} <FaEye />
               </SecondaryBtn>
             </HeroButtons>
             <PriceBadgesRow>
               <PriceBadge>
-                Basic check from <span>{getPrice(2) || "₦100"}</span>
+                {t("businessHero.priceBasic", {
+                  price: getPrice(2) || "₦100",
+                })}
               </PriceBadge>
               <PriceBadge>
-                Advanced profile from <span>{getPrice(3) || "₦800"}</span>
+                {t("businessHero.priceAdvanced", {
+                  price: getPrice(3) || "₦800",
+                })}
               </PriceBadge>
             </PriceBadgesRow>
             <HeroChecks>
               <HeroCheck>
-                <FaCheckCircle /> Secure &amp; Private
+                <FaCheckCircle /> {t("businessHero.check1")}
               </HeroCheck>
               <HeroCheck>
-                <FaCheckCircle /> Official Data Sources
+                <FaCheckCircle /> {t("businessHero.check2")}
               </HeroCheck>
               <HeroCheck>
-                <FaCheckCircle /> Fast Results
+                <FaCheckCircle /> {t("businessHero.check3")}
               </HeroCheck>
             </HeroChecks>
           </HeroContent>

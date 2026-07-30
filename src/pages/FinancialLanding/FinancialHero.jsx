@@ -5,6 +5,7 @@ import useAuthRedirect from "../../hooks/useAuthRedirect";
 import useServicePrices from "../../hooks/useServicePrices";
 import SampleResultPopup from "../../components/SampleResultPopup/SampleResultPopup";
 import heroImg from "../../images/credit_profile.png";
+import { useLocale } from "../../components/LocaleProvider";
 import {
   HeroSectionWrapper,
   HeroBgImage,
@@ -32,6 +33,7 @@ const SmallerHeroImage = styled(HeroBgImage)`
 `;
 
 const FinancialHero = () => {
+  const { t } = useLocale();
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/bvn");
   const { getPrice } = useServicePrices();
@@ -47,28 +49,23 @@ const FinancialHero = () => {
         <SmallerHeroImage src={heroImg} alt="Credit Profile on eCitizen" />
         <HeroContainer>
           <HeroContent>
-            <HeroTag>CREDIT PROFILE</HeroTag>
-            <HeroTitle>
-              Check your
-              <br />
-              <span>credit profile</span>
-              <br />
-              in seconds
-            </HeroTitle>
-            <HeroSubtitle>
-              Access a fast, secure BVN-based credit profile to support lending,
-              renting and due diligence decisions.
-            </HeroSubtitle>
+            <HeroTag>{t("financialHero.tag")}</HeroTag>
+            <HeroTitle
+              dangerouslySetInnerHTML={{ __html: t("financialHero.title") }}
+            />
+            <HeroSubtitle>{t("financialHero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                Check Credit Now <FaArrowRight />
+                {t("financialHero.checkBtn")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
-                See Sample Result <FaEye />
+                {t("financialHero.seeSampleBtn")} <FaEye />
               </SecondaryBtn>
             </HeroButtons>
             <PriceBadge>
-              From <span>{getPrice(4) || "₦1,500"}</span> per report
+              {t("financialHero.priceLabel", {
+                price: getPrice(4) || "₦1,500",
+              })}
             </PriceBadge>
           </HeroContent>
         </HeroContainer>
