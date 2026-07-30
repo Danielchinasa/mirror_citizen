@@ -892,7 +892,7 @@ const AlienCardLoginSample = () => {
                   <ResultLabel>
                     {isSw ? "Jina Kamili" : "Full Name"}
                   </ResultLabel>
-                  <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
+                  <ResultValue>Brian JOAN</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>
