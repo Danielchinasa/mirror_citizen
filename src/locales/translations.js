@@ -27,7 +27,7 @@ const translations = {
     "nav.fundWalletDescription": "Minimum top-up amount is ",
     "landing.sampleResult": "Sample result",
     "landing.login": "Login",
-    "landing.verifyNinNow": "Verify NIN Now",
+    "landing.verifyNinNow": "Verify National ID Now",
     "landing.verifyPhoneNow": "Verify Phone Now",
     "landing.verifyCompanyNow": "Verify Company Now",
     "landing.checkCreditNow": "Check Credit Now",
@@ -77,7 +77,7 @@ const translations = {
     "home.compliance.desc": "Your data is safe with us.",
     "home.cta.title": "Ready to get verified?",
     "home.cta.desc":
-      "Join thousands of Ugandans who trust e-citizen for their verification needs.",
+      "Join thousands of Ugandans who trust e-raia for their verification needs.",
     "home.cta.button": "Get Started Now",
     "ninLogin.title": "Login / Continue",
     "ninLogin.subtitle": "Sign in or continue to start your verification.",
@@ -220,11 +220,11 @@ const translations = {
     "sample.disclaimer":
       "Results are based on data available at the time of verification.",
 
-    /* ── NIN Sample Section ── */
-    "ninSample.title": "What You Get in a NIN Report",
+    /* ── National ID Sample Section ── */
+    "ninSample.title": "What You Get in a National ID Report",
     "ninSample.desc":
-      "Each NIN verification returns comprehensive identity details sourced from official records, helping you make informed decisions.",
-    "ninSample.checkItem1": "Full name of the NIN holder",
+      "Each National ID verification returns comprehensive identity details sourced from official records, helping you make informed decisions.",
+    "ninSample.checkItem1": "Full name of the National ID holder",
     "ninSample.checkItem2": "Date of birth and gender",
     "ninSample.checkItem3": "Phone number and email on record",
     "ninSample.checkItem4": "Photograph for visual confirmation",
@@ -236,7 +236,7 @@ const translations = {
       "Verify your Ugandan National ID online.  <span>Fast, secure</span> and  <span>trusted.</span>",
     "ninHero.subtitle":
       "Instantly verify official National ID details from the National Identification and Registration Authority (NIRA). Get accurate results in minutes.",
-    "ninHero.verifyNinBtn": "Verify NIN Now",
+    "ninHero.verifyNinBtn": "Verify National ID Now",
     "ninHero.seeSampleBtn": "See Sample Result",
     "ninHero.trustedBy": "Trusted by 10,000+ users",
     "ninHero.trustSecureTitle": "Secure",
@@ -248,7 +248,8 @@ const translations = {
 
     /* ── Nin Landing: Benefits ── */
     "ninBenefits.title1": "Verify with confidence",
-    "ninBenefits.desc1": "Access accurate and up-to-date NIN information.",
+    "ninBenefits.desc1":
+      "Access accurate and up-to-date National ID information.",
     "ninBenefits.title2": "Reduce fraud & risk",
     "ninBenefits.desc2":
       "Confirm identity and build trust in every transaction.",
@@ -274,7 +275,7 @@ const translations = {
     /* ── Nin Landing: CTA ── */
     "ninCta.title": "Ready to verify your National ID?",
     "ninCta.desc":
-      "Join thousands of individuals and businesses that rely on e-citizen for fast, accurate and secure identity verification.",
+      "Join thousands of individuals and businesses that rely on e-raia for fast, accurate and secure identity verification.",
     "ninCta.button": "Verify National ID Now",
 
     /* ── Vehicle Landing: Hero ── */
@@ -330,7 +331,7 @@ const translations = {
     /* ── Vehicle Landing: CTA ── */
     "vehicleCta.title": "Ready to verify a vehicle?",
     "vehicleCta.desc":
-      "Join thousands of individuals and businesses that rely on e-citizen for fast, accurate and secure vehicle verification.",
+      "Join thousands of individuals and businesses that rely on e-raia for fast, accurate and secure vehicle verification.",
     "vehicleCta.button": "Check a Vehicle VIN Now",
 
     /* ── Shared Trust Indicators ── */
@@ -378,7 +379,7 @@ const translations = {
     "sample.field.firstName": "First Name",
     "sample.field.middleName": "Middle Name",
     "sample.field.surname": "Surname",
-    "sample.field.nin": "NIN",
+    "sample.field.nin": "National ID",
     "sample.field.phoneNumber": "Phone Number",
     "sample.field.verificationStatus": "Verification Status",
     "sample.field.dateOfBirth": "Date of Birth",
@@ -449,7 +450,7 @@ const translations = {
     "nav.fundWalletDescription": "Kiwango cha chini cha kuweka ni ",
     "landing.sampleResult": "Mfano wa Matokeo",
     "landing.login": "Ingia",
-    "landing.verifyNinNow": "Thibitisha NIN Sasa",
+    "landing.verifyNinNow": "Thibitisha National ID Sasa",
     "landing.verifyPhoneNow": "Thibitisha Simu Sasa",
     "landing.verifyCompanyNow": "Thibitisha Kampuni Sasa",
     "landing.checkCreditNow": "Angalia Mkopo Sasa",
@@ -501,7 +502,7 @@ const translations = {
     "home.compliance.desc": "Taarifa zako ziko salama nasi.",
     "home.cta.title": "Uko tayari kuthibitishwa?",
     "home.cta.desc":
-      "Jiunge na maelfu ya Waganda wanaoiamini e-citizen kwa mahitaji yao ya uthibitishaji.",
+      "Jiunge na maelfu ya Waganda wanaoiamini e-raia kwa mahitaji yao ya uthibitishaji.",
     "home.cta.button": "Anza Sasa",
     "ninLogin.title": "Ingia / Endelea",
     "ninLogin.subtitle": "Ingia au endelea kuanza uthibitishaji wako.",
@@ -644,11 +645,11 @@ const translations = {
     "sample.disclaimer":
       "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
 
-    /* ── NIN Sample Section ── */
-    "ninSample.title": "Unachopata katika Ripoti ya NIN",
+    /* ── National ID Sample Section ── */
+    "ninSample.title": "Unachopata katika Ripoti ya National ID",
     "ninSample.desc":
-      "Kila uthibitishaji wa NIN hurudisha maelezo kamili ya utambulisho yanayotokana na rekodi rasmi, kukusaidia kufanya maamuzi sahihi.",
-    "ninSample.checkItem1": "Jina kamili la mwenye NIN",
+      "Kila uthibitishaji wa National ID hurudisha maelezo kamili ya utambulisho yanayotokana na rekodi rasmi, kukusaidia kufanya maamuzi sahihi.",
+    "ninSample.checkItem1": "Jina kamili la mwenye National ID",
     "ninSample.checkItem2": "Tarehe ya kuzaliwa na jinsia",
     "ninSample.checkItem3": "Nambari ya simu na barua pepe iliyorekodiwa",
     "ninSample.checkItem4": "Picha kwa uthibitisho wa kuona",
@@ -660,13 +661,13 @@ const translations = {
       "Thibitisha <span>Kitambulisho chako cha Taifa</span> cha Uganda mtandaoni. Haraka, salama na ya kuaminika.",
     "ninHero.subtitle":
       "Thibitisha taarifa rasmi za Kitambulisho cha Taifa kutoka Mamlaka ya Usajili wa Taifa (NIRA). Pata matokeo sahihi kwa dakika.",
-    "ninHero.verifyNinBtn": "Thibitisha NIN Sasa",
+    "ninHero.verifyNinBtn": "Thibitisha National ID Sasa",
     "ninHero.seeSampleBtn": "Tazama Mfano wa Matokeo",
     "ninHero.trustedBy": "Inaaminika na watumiaji 10,000+",
 
     /* ── Nin Landing: Benefits ── */
     "ninBenefits.title1": "Thibitisha kwa ujasiri",
-    "ninBenefits.desc1": "Pata taarifa sahihi na za sasa za NIN.",
+    "ninBenefits.desc1": "Pata taarifa sahihi na za sasa za National ID.",
     "ninBenefits.title2": "Punguza ulaghai na hatari",
     "ninBenefits.desc2":
       "Thibitisha utambulisho na jenga uaminifu katika kila shughuli.",
@@ -694,7 +695,7 @@ const translations = {
     /* ── Nin Landing: CTA ── */
     "ninCta.title": "Uko tayari kuthibitisha Kitambulisho chako cha Taifa?",
     "ninCta.desc":
-      "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-citizen kwa uthibitishaji wa utambulisho wa haraka, sahihi na salama.",
+      "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-raia kwa uthibitishaji wa utambulisho wa haraka, sahihi na salama.",
     "ninCta.button": "Thibitisha Kitambulisho cha Taifa Sasa",
 
     /* ── Vehicle Landing: Hero ── */
@@ -749,7 +750,7 @@ const translations = {
     /* ── Vehicle Landing: CTA ── */
     "vehicleCta.title": "Uko tayari kuthibitisha gari?",
     "vehicleCta.desc":
-      "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-citizen kwa uthibitishaji wa haraka, sahihi na salama wa gari.",
+      "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-raia kwa uthibitishaji wa haraka, sahihi na salama wa gari.",
     "vehicleCta.button": "Angalia VIN ya Gari Sasa",
 
     /* ── Shared Trust Indicators ── */
@@ -772,8 +773,7 @@ const translations = {
 
     /* ── Phone Landing: Hero ── */
     "phoneHero.tag": "UTHIBITISHAJI WA SIMU",
-    "phoneHero.title":
-      "Thibitisha <span>nambari ya simu</span> kwa sekunde",
+    "phoneHero.title": "Thibitisha <span>nambari ya simu</span> kwa sekunde",
     "phoneHero.subtitle":
       "Uthibitishaji wa nambari ya simu wa haraka, salama na wa kuaminika kwa ajili ya kujiandikisha, uchunguzi wa uangalifu na kuzuia ulaghai.",
     "phoneHero.verifyBtn": "Thibitisha Simu Sasa",
@@ -798,7 +798,7 @@ const translations = {
     "sample.field.firstName": "Jina la Kwanza",
     "sample.field.middleName": "Jina la Kati",
     "sample.field.surname": "Jina la Ukoo",
-    "sample.field.nin": "NIN",
+    "sample.field.nin": "National ID",
     "sample.field.phoneNumber": "Nambari ya Simu",
     "sample.field.verificationStatus": "Hali ya Uthibitishaji",
     "sample.field.dateOfBirth": "Tarehe ya Kuzaliwa",

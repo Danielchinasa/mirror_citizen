@@ -28,8 +28,8 @@ const verificationConfig = {
     fields: [
       {
         name: "idNumber",
-        label: "NIN",
-        placeholder: "Enter 11 digits NIN",
+        label: "National ID",
+        placeholder: "Enter 11 digits National ID",
         type: "text",
         maxLength: 20,
         showCounter: true,
@@ -76,7 +76,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -120,7 +120,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -175,7 +175,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -233,7 +233,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -287,7 +287,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -350,7 +350,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -413,7 +413,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -459,7 +459,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 
@@ -503,7 +503,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-raia" },
     ],
   },
 };

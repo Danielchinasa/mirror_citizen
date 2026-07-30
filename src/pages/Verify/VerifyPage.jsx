@@ -1146,9 +1146,7 @@ const VerifyPage = () => {
               </p>
               <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.8;">
                 <strong>Status:</strong> ${consent.status}<br/>
-                <strong>Required:</strong> ${
-                  consent.required ? "Yes" : "No"
-                }
+                <strong>Required:</strong> ${consent.required ? "Yes" : "No"}
                 ${
                   channelList.length > 0
                     ? `<br/><strong>Channels:</strong> ${channelList.join(", ")}`

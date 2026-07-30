@@ -49,7 +49,10 @@ const NinHero = () => {
   return (
     <>
       <HeroWrapper>
-        <HeroBgImage src={ninHeroImg} alt="NIN Verification on eCitizen" />
+        <HeroBgImage
+          src={ninHeroImg}
+          alt="National ID Verification on eCitizen"
+        />
         <HeroContainer>
           <HeroContent>
             <HeroTitle

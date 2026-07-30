@@ -88,7 +88,6 @@ const sampleData = {
       ["First Name", "DANIEL"],
       ["Middle Name", "CHINASA"],
       ["Surname", "OKORO"],
-      ["NIN", "7348 9021 5**"],
       ["Phone Number", "0806 *** 4821"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "24-08-1992"],
@@ -220,9 +219,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         <Header>
           <div>
             <TitleRow>
-              <Title id="sample-result-title">
-                {t("sample.title")}
-              </Title>
+              <Title id="sample-result-title">{t("sample.title")}</Title>
               <Badge>{t("sample.badge")}</Badge>
             </TitleRow>
             <Subtitle>{t(subtitleKey)}</Subtitle>
@@ -244,13 +241,10 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
             <ResultGrid>
               {sample.fields.map(([label, value, status]) => (
                 <ResultField key={label}>
-                  <ResultLabel>
-                    {t(fieldLabelKeys[label] || label)}
-                  </ResultLabel>
+                  <ResultLabel>{t(fieldLabelKeys[label] || label)}</ResultLabel>
                   {status === "verified" ? (
                     <VerifiedValue>
-                      {t(statusValueKeys[value] || value)}{' '}
-                      <FaCheckCircle />
+                      {t(statusValueKeys[value] || value)} <FaCheckCircle />
                     </VerifiedValue>
                   ) : (
                     <ResultValue>

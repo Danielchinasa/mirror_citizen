@@ -23,7 +23,10 @@ const NinSampleResult = () => {
     <SampleSectionWrapper id="sample-result">
       <SampleContent>
         <SampleImageWrapper>
-          <img src={ninSampleImg} alt="Sample NIN Verification Result" />
+          <img
+            src={ninSampleImg}
+            alt="Sample National ID Verification Result"
+          />
         </SampleImageWrapper>
         <SampleInfo>
           <SampleTitle>{t("ninSample.title")}</SampleTitle>

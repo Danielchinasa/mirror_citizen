@@ -106,7 +106,7 @@ const ContactPage = () => {
             <h1 style={{ color: text }}>Contact Us</h1>
             <p>
               Our Email Address:{" "}
-              <a href="mailto:info@e-citizen.ng">info@e-citizen.ng</a>
+              <a href="mailto:ug-info@e-raia.com">ug-info@e-raia.com</a>
             </p>
             <p>
               Feel free to reach out to us via email for any inquiries or

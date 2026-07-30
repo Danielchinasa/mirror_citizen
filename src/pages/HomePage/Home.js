@@ -407,7 +407,7 @@ const Home = () => {
     <>
       {/* ── Hero ── */}
       <HeroWrapper>
-        <HeroBgImage src={heroImg} alt="e-citizen verification platform" />
+        <HeroBgImage src={heroImg} alt="e-raia verification platform" />
         <HeroContainer>
           <HeroContent>
             <HeroTitle>

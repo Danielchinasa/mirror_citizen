@@ -64,29 +64,29 @@ const FaqPage = () => {
           <p>
             Person Identity Profile: The consent request is sent to the
             registered SMS and email (where available) attached to the data
-            subject’s NIN in the national identity system. Financial Credit
-            profile: The consent request is sent to the registered SMS and email
-            (where available) attached to the data subject’s BVN in the
-            NIBSS/BVN database.
+            subject’s National ID in the national identity system. Financial
+            Credit profile: The consent request is sent to the registered SMS
+            and email (where available) attached to the data subject’s BVN in
+            the NIBSS/BVN database.
           </p>
         </>
       ),
     },
     {
       key: "5",
-      title: "What is a NIN?",
+      title: "What is a National ID?",
       content: (
         <p>
-          The National Identification Number (NIN) is an 11-digit unique number
-          issued to all Nigerians and Legal Residents. The NIN links an
-          individual’s identity across the different agency databases; providing
-          it for verification enables a robust background check.
+          The National Identification Number (National ID) is an 11-digit unique
+          number issued to all Nigerians and Legal Residents. The National ID
+          links an individual’s identity across the different agency databases;
+          providing it for verification enables a robust background check.
         </p>
       ),
     },
     {
       key: "6",
-      title: "Why do I need to pay before verifying a NIN?",
+      title: "Why do I need to pay before verifying a National ID?",
       content: (
         <p>
           e-Citizen™.ng is a premium service because we put in international
@@ -97,7 +97,7 @@ const FaqPage = () => {
     },
     {
       key: "7",
-      title: "Why do I need to register before verifying a NIN?",
+      title: "Why do I need to register before verifying a National ID?",
       content: (
         <p>
           Registration ensures you can enjoy the full verification experience
@@ -114,7 +114,7 @@ const FaqPage = () => {
             Verification results are temporarily stored to the user’s account so
             they can view their search history later. However, search results
             will be deleted after the data retention period as specified in our
-            data retention policy at e-citizen.ng.
+            data retention policy at e-raia.ng.
           </p>
           <p>
             If your question is not answered above, please feel free to write us
@@ -140,7 +140,7 @@ const FaqPage = () => {
       content: (
         <p>
           Please check your spam/junk folder. If still not received, email
-          info@e-citizen.ng
+          ug-info@e-raia.com
           <p>
             Note: Verification emails are only sent to users who provided an
             email address during registration. If you did not input an email,
@@ -240,7 +240,7 @@ const FaqPage = () => {
     },
     {
       key: "5",
-      title: "What Credit Bureaus do e-citizen check?",
+      title: "What Credit Bureaus do e-raia check?",
       content: (
         <div>
           <p>1. First Central Credit Bureau </p>
@@ -360,7 +360,7 @@ const FaqPage = () => {
     },
     {
       key: "2",
-      title: "What data source does e-citizen check for Business Profile?",
+      title: "What data source does e-raia check for Business Profile?",
       content: (
         <p>
           Business Profile data comes from the Corporate Affairs Commission
