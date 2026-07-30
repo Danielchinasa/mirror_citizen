@@ -456,7 +456,7 @@ export const PublicLanguageToggleGroup = styled.div`
 export const PublicLanguageToggle = styled.button`
   border: none;
   background: ${({ $active }) => ($active ? "#DD0201" : "transparent")};
-  color: ${({ $active }) => ($active ? "#fff" : "#111827")};
+  color: ${({ $active }) => ($active ? "#fff" : "var(--ec-text)")};
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;

@@ -148,7 +148,7 @@ function Navbar() {
             closeMobileMenu();
           }}
         >
-          SW
+          SWA
         </Menu.Item>
         <Menu.Item
           key="en"
@@ -157,11 +157,28 @@ function Navbar() {
             closeMobileMenu();
           }}
         >
-          EN
+          ENG
         </Menu.Item>
       </Menu.SubMenu>
 
       <Menu.SubMenu key="country" title={t("nav.country")}>
+        <Menu.Item key="country-ng" onClick={closeMobileMenu}>
+          <a
+            href="https://e-citizen.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Nigeria flag"
+              style={{ marginRight: 10 }}
+            >
+              🇳🇬
+            </span>
+            Nigeria
+          </a>
+        </Menu.Item>
         <Menu.Item key="country-ug" onClick={closeMobileMenu}>
           <span style={{ marginRight: 8 }}>🇺🇬</span>
           Uganda
@@ -301,6 +318,19 @@ function Navbar() {
 
   const countriesMenu = (
     <Menu>
+      <Menu.Item key="country-ng">
+        <a
+          href="https://e-citizen.ng"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span role="img" aria-label="Nigeria flag" style={{ marginRight: 10 }}>
+            🇳🇬
+          </span>
+          Nigeria
+        </a>
+      </Menu.Item>
       <Menu.Item key="country-ghana">
         <a
           href="https://e-citizen.africa/gh"
@@ -921,7 +951,7 @@ function Navbar() {
                     onClick={() => handleLanguageChange("SW")}
                     aria-pressed={language === "SW"}
                   >
-                    SW
+                    SWA
                   </PublicLanguageToggle>
                   <PublicLanguageToggle
                     type="button"
@@ -929,7 +959,7 @@ function Navbar() {
                     onClick={() => handleLanguageChange("EN")}
                     aria-pressed={language === "EN"}
                   >
-                    EN
+                    ENG
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicLanguage>
@@ -994,7 +1024,7 @@ function Navbar() {
                     }}
                     aria-pressed={language === "SW"}
                   >
-                    SW
+                    SWA
                   </PublicLanguageToggle>
                   <PublicLanguageToggle
                     type="button"
@@ -1005,7 +1035,7 @@ function Navbar() {
                     }}
                     aria-pressed={language === "EN"}
                   >
-                    EN
+                    ENG
                   </PublicLanguageToggle>
                 </PublicLanguageToggleGroup>
               </PublicMobileLanguage>

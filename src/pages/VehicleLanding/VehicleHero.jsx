@@ -13,6 +13,7 @@ import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
+import { useLocale } from "../../components/LocaleProvider";
 import {
   HeroWrapper,
   HeroStrip,
@@ -36,6 +37,7 @@ import {
 } from "../HomePage/HomePage.elements";
 
 const VehicleHero = () => {
+  const { t } = useLocale();
   const [showSampleResult, setShowSampleResult] = useState(false);
   const verifyLink = useAuthRedirect("/verify/vehicle");
 
@@ -53,21 +55,16 @@ const VehicleHero = () => {
         />
         <HeroContainer>
           <HeroContent>
-            <HeroTitle>
-              Check a vehicle VIN in <span>Uganda</span> before
-              <br />
-              you
-            </HeroTitle>
-            <HeroSubtitle>
-              Verify a vehicle's identity, status, and history in minutes. Fast,
-              secure and trusted by thousands in Uganda and the diaspora.
-            </HeroSubtitle>
+            <HeroTitle
+              dangerouslySetInnerHTML={{ __html: t("vehicleHero.title") }}
+            />
+            <HeroSubtitle>{t("vehicleHero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                Check VIN <FaArrowRight />
+                {t("vehicleHero.checkVinBtn")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>
-                See Sample Result <FaEye />
+                {t("vehicleHero.seeSampleBtn")} <FaEye />
               </SecondaryBtn>
             </HeroButtons>
             <TrustIndicators>
@@ -76,8 +73,8 @@ const VehicleHero = () => {
                   <FaLock />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Secure</TrustTitle>
-                  <TrustDesc>256-bit encrypted</TrustDesc>
+                  <TrustTitle>{t("trust.secureTitle")}</TrustTitle>
+                  <TrustDesc>{t("trust.secureDesc")}</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -85,8 +82,8 @@ const VehicleHero = () => {
                   <FaBolt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Instant</TrustTitle>
-                  <TrustDesc>Results in seconds</TrustDesc>
+                  <TrustTitle>{t("trust.instantTitle")}</TrustTitle>
+                  <TrustDesc>{t("trust.instantDesc")}</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -94,8 +91,8 @@ const VehicleHero = () => {
                   <FaShieldAlt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Compliant</TrustTitle>
-                  <TrustDesc>GDPR &amp; NDPR</TrustDesc>
+                  <TrustTitle>{t("trust.compliantTitle")}</TrustTitle>
+                  <TrustDesc>{t("trust.compliantDesc")}</TrustDesc>
                 </TrustLabel>
               </TrustItem>
             </TrustIndicators>
@@ -106,7 +103,7 @@ const VehicleHero = () => {
                 <img src={avatar3} alt="user" />
                 <img src={avatar4} alt="user" />
               </AvatarStack>
-              Trusted by 10,000+ users
+              {t("vehicleHero.trustedBy")}
             </SocialProof>
           </HeroContent>
         </HeroContainer>

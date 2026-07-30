@@ -187,6 +187,159 @@ const translations = {
     "verify.disclaimer.resultDisclaimer":
       "Results are based on data available at the time of verification.",
     "verify.disclaimer.cancel": "Cancel",
+
+    /* ── Footer ── */
+    "footer.tagline":
+      "Your trusted partner for digital identity verification and background checks.",
+    "footer.services": "Services",
+    "footer.support": "Support",
+    "footer.getApp": "Get the app",
+    "footer.apiForBusiness": "API for Business",
+    "footer.contact": "Contact",
+    "footer.faqs": "FAQs",
+    "footer.blog": "Blog",
+    "footer.privacyPolicy": "Privacy Policy",
+    "footer.termsOfService": "Terms of Service",
+    "footer.copyright": "© e-raia.com {year}. All Rights Reserved.",
+
+    /* ── Sample Result Popup ── */
+    "sample.title": "Sample result",
+    "sample.badge": "This is a sample only",
+    "sample.subtitle.nin": "See an example of a verification result.",
+    "sample.subtitle.phone":
+      "See an example of a phone number verification result.",
+    "sample.subtitle.business":
+      "See an example of a company verification result.",
+    "sample.subtitle.financial": "See an example of a Credit Profile result.",
+    "sample.subtitle.vehicle":
+      "See an example of a vehicle verification report.",
+    "sample.stakeholder.title": "Stakeholders",
+    "sample.stakeholder.name": "Name",
+    "sample.stakeholder.role": "Role",
+    "sample.stakeholder.nationality": "Nationality",
+    "sample.disclaimer":
+      "Results are based on data available at the time of verification.",
+
+    /* ── NIN Sample Section ── */
+    "ninSample.title": "What You Get in a NIN Report",
+    "ninSample.desc":
+      "Each NIN verification returns comprehensive identity details sourced from official records, helping you make informed decisions.",
+    "ninSample.checkItem1": "Full name of the NIN holder",
+    "ninSample.checkItem2": "Date of birth and gender",
+    "ninSample.checkItem3": "Phone number and email on record",
+    "ninSample.checkItem4": "Photograph for visual confirmation",
+    "ninSample.checkItem5": "Address and state of origin",
+    "ninSample.tryItNow": "Try It Now",
+
+    /* ── Nin Landing: Hero ── */
+    "ninHero.title":
+      "Verify your Ugandan National ID online.  <span>Fast, secure</span> and  <span>trusted.</span>",
+    "ninHero.subtitle":
+      "Instantly verify official National ID details from the National Identification and Registration Authority (NIRA). Get accurate results in minutes.",
+    "ninHero.verifyNinBtn": "Verify NIN Now",
+    "ninHero.seeSampleBtn": "See Sample Result",
+    "ninHero.trustedBy": "Trusted by 10,000+ users",
+    "ninHero.trustSecureTitle": "Secure",
+    "ninHero.trustSecureDesc": "256-bit encrypted",
+    "ninHero.trustInstantTitle": "Instant",
+    "ninHero.trustInstantDesc": "Results in seconds",
+    "ninHero.trustCompliantTitle": "Compliant",
+    "ninHero.trustCompliantDesc": "GDPR & NDPR",
+
+    /* ── Nin Landing: Benefits ── */
+    "ninBenefits.title1": "Verify with confidence",
+    "ninBenefits.desc1": "Access accurate and up-to-date NIN information.",
+    "ninBenefits.title2": "Reduce fraud & risk",
+    "ninBenefits.desc2":
+      "Confirm identity and build trust in every transaction.",
+    "ninBenefits.title3": "Save time & resources",
+    "ninBenefits.desc3": "Automate verification and focus on what matters.",
+    "ninBenefits.title4": "Built for scale",
+    "ninBenefits.desc4": "Perfect for businesses, platforms and individuals.",
+
+    /* ── Nin Landing: How it Works ── */
+    "ninHow.title": "How to verify your National ID",
+    "ninHow.step1Name": "Enter National ID",
+    "ninHow.step1Desc": "Provide the National ID number you want to verify",
+    "ninHow.step2Name": "Submit details",
+    "ninHow.step2Desc": "Enter required information and submit securely.",
+    "ninHow.step3Name": "Get results",
+    "ninHow.step3Desc": "Receive instant verification results.",
+
+    /* ── Nin Landing: Compliance ── */
+    "ninCompliance.title": "Trusted. Secure. Compliant.",
+    "ninCompliance.desc":
+      "We adhere to the highest standards for data protection and identity verification.",
+
+    /* ── Nin Landing: CTA ── */
+    "ninCta.title": "Ready to verify your National ID?",
+    "ninCta.desc":
+      "Join thousands of individuals and businesses that rely on e-citizen for fast, accurate and secure identity verification.",
+    "ninCta.button": "Verify National ID Now",
+
+    /* ── Vehicle Landing: Hero ── */
+    "vehicleHero.title":
+      "Check a vehicle VIN in <span>Uganda</span> before<br />you",
+    "vehicleHero.subtitle":
+      "Verify a vehicle's identity, status, and history in minutes. Fast, secure and trusted by thousands in Uganda and the diaspora.",
+    "vehicleHero.checkVinBtn": "Check VIN",
+    "vehicleHero.seeSampleBtn": "See Sample Result",
+    "vehicleHero.trustedBy": "Trusted by 10,000+ users",
+
+    /* ── Vehicle Landing: Benefits ── */
+    "vehicleBenefits.title1": "Avoid bad purchases",
+    "vehicleBenefits.desc1":
+      "Detect accident, theft, and problem vehicles before you buy.",
+    "vehicleBenefits.title2": "Check ownership history",
+    "vehicleBenefits.desc2":
+      "See past owners and transfer records to ensure legitimacy.",
+    "vehicleBenefits.title3": "Spot red flags",
+    "vehicleBenefits.desc3":
+      "Identify liens, theft records, and outstanding reports early.",
+    "vehicleBenefits.title4": "Buy with confidence",
+    "vehicleBenefits.desc4": "Make informed decisions and protect your money.",
+
+    /* ── Vehicle Landing: How it Works ── */
+    "vehicleHow.title": "How it works",
+    "vehicleHow.step1Name": "Enter VIN",
+    "vehicleHow.step1Desc": "Enter the 17-digit VIN number of the vehicle.",
+    "vehicleHow.step2Name": "Submit & Pay",
+    "vehicleHow.step2Desc":
+      "Review your details and complete payment securely.",
+    "vehicleHow.step3Name": "Get Results",
+    "vehicleHow.step3Desc": "Receive your verification report instantly.",
+
+    /* ── Vehicle Landing: Login Sample ── */
+    "vehicleLogin.sampleSubtitle":
+      "See an example of a vehicle verification report.",
+    "vehicleLogin.labelPlateNumber": "Plate Number",
+    "vehicleLogin.labelVin": "VIN",
+    "vehicleLogin.labelMakeModel": "Make / Model",
+    "vehicleLogin.labelYear": "Year",
+    "vehicleLogin.labelOwnershipStatus": "Ownership Status",
+    "vehicleLogin.labelAccidentHistory": "Accident History",
+    "vehicleLogin.labelWatchlist": "Theft / Watchlist Status",
+    "vehicleLogin.valueNoRecords": "No major records found",
+    "vehicleLogin.valueClear": "CLEAR",
+
+    /* ── Vehicle Landing: Compliance ── */
+    "vehicleCompliance.title": "Trusted. Secure. Compliant.",
+    "vehicleCompliance.desc":
+      "We adhere to the highest standards for data protection and vehicle verification.",
+
+    /* ── Vehicle Landing: CTA ── */
+    "vehicleCta.title": "Ready to verify a vehicle?",
+    "vehicleCta.desc":
+      "Join thousands of individuals and businesses that rely on e-citizen for fast, accurate and secure vehicle verification.",
+    "vehicleCta.button": "Check a Vehicle VIN Now",
+
+    /* ── Shared Trust Indicators ── */
+    "trust.secureTitle": "Secure",
+    "trust.secureDesc": "256-bit encrypted",
+    "trust.instantTitle": "Instant",
+    "trust.instantDesc": "Results in seconds",
+    "trust.compliantTitle": "Compliant",
+    "trust.compliantDesc": "GDPR & NDPR",
   },
   SW: {
     "nav.country": "Uganda",
@@ -377,6 +530,155 @@ const translations = {
     "verify.disclaimer.resultDisclaimer":
       "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
     "verify.disclaimer.cancel": "Ghairi",
+
+    /* ── Footer ── */
+    "footer.tagline":
+      "Mshirika wako wa kuaminika kwa uthibitishaji wa utambulisho wa dijitali na ukaguzi wa historia.",
+    "footer.services": "Huduma",
+    "footer.support": "Msaada",
+    "footer.getApp": "Pata programu",
+    "footer.apiForBusiness": "API kwa Biashara",
+    "footer.contact": "Wasiliana",
+    "footer.faqs": "Maswali",
+    "footer.blog": "Blogu",
+    "footer.privacyPolicy": "Sera ya Faragha",
+    "footer.termsOfService": "Sheria na Masharti",
+    "footer.copyright": "© e-raia.com {year}. Haki Zote Zimehifadhiwa.",
+
+    /* ── Sample Result Popup ── */
+    "sample.title": "Mfano wa Matokeo",
+    "sample.badge": "Huu ni mfano tu",
+    "sample.subtitle.nin": "Tazama mfano wa matokeo ya uthibitishaji.",
+    "sample.subtitle.phone":
+      "Tazama mfano wa matokeo ya uthibitishaji wa nambari ya simu.",
+    "sample.subtitle.business":
+      "Tazama mfano wa matokeo ya uthibitishaji wa kampuni.",
+    "sample.subtitle.financial":
+      "Tazama mfano wa matokeo ya Profaili ya Mikopo.",
+    "sample.subtitle.vehicle":
+      "Tazama mfano wa ripoti ya uthibitishaji wa gari.",
+    "sample.stakeholder.title": "Wadau",
+    "sample.stakeholder.name": "Jina",
+    "sample.stakeholder.role": "Wajibu",
+    "sample.stakeholder.nationality": "Utaifa",
+    "sample.disclaimer":
+      "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
+
+    /* ── NIN Sample Section ── */
+    "ninSample.title": "Unachopata katika Ripoti ya NIN",
+    "ninSample.desc":
+      "Kila uthibitishaji wa NIN hurudisha maelezo kamili ya utambulisho yanayotokana na rekodi rasmi, kukusaidia kufanya maamuzi sahihi.",
+    "ninSample.checkItem1": "Jina kamili la mwenye NIN",
+    "ninSample.checkItem2": "Tarehe ya kuzaliwa na jinsia",
+    "ninSample.checkItem3": "Nambari ya simu na barua pepe iliyorekodiwa",
+    "ninSample.checkItem4": "Picha kwa uthibitisho wa kuona",
+    "ninSample.checkItem5": "Anwani na jimbo la asili",
+    "ninSample.tryItNow": "Jaribu Sasa",
+
+    /* ── Nin Landing: Hero ── */
+    "ninHero.title":
+      "Thibitisha <span>Kitambulisho chako cha Taifa</span> cha Uganda mtandaoni. Haraka, salama na ya kuaminika.",
+    "ninHero.subtitle":
+      "Thibitisha taarifa rasmi za Kitambulisho cha Taifa kutoka Mamlaka ya Usajili wa Taifa (NIRA). Pata matokeo sahihi kwa dakika.",
+    "ninHero.verifyNinBtn": "Thibitisha NIN Sasa",
+    "ninHero.seeSampleBtn": "Tazama Mfano wa Matokeo",
+    "ninHero.trustedBy": "Inaaminika na watumiaji 10,000+",
+
+    /* ── Nin Landing: Benefits ── */
+    "ninBenefits.title1": "Thibitisha kwa ujasiri",
+    "ninBenefits.desc1": "Pata taarifa sahihi na za sasa za NIN.",
+    "ninBenefits.title2": "Punguza ulaghai na hatari",
+    "ninBenefits.desc2":
+      "Thibitisha utambulisho na jenga uaminifu katika kila shughuli.",
+    "ninBenefits.title3": "Okoa muda na rasilimali",
+    "ninBenefits.desc3": "Otomatiki uthibitishaji na zingatia yale muhimu.",
+    "ninBenefits.title4": "Imejengwa kwa kiwango",
+    "ninBenefits.desc4": "Inafaa kwa biashara, majukwaa na watu binafsi.",
+
+    /* ── Nin Landing: How it Works ── */
+    "ninHow.title": "Jinsi ya kuthibitisha Kitambulisho chako cha Taifa",
+    "ninHow.step1Name": "Weka Kitambulisho cha Taifa",
+    "ninHow.step1Desc":
+      "Toa nambari ya Kitambulisho cha Taifa unachotaka kuthibitisha",
+    "ninHow.step2Name": "Wasilisha taarifa",
+    "ninHow.step2Desc":
+      "Ingiza taarifa zinazohitajika na wasilisha kwa usalama.",
+    "ninHow.step3Name": "Pata matokeo",
+    "ninHow.step3Desc": "Pokea matokeo ya uthibitishaji mara moja.",
+
+    /* ── Nin Landing: Compliance ── */
+    "ninCompliance.title": "Inaaminika. Salama. Inatii sheria.",
+    "ninCompliance.desc":
+      "Tunafuata viwango vya juu zaidi vya ulinzi wa data na uthibitishaji wa utambulisho.",
+
+    /* ── Nin Landing: CTA ── */
+    "ninCta.title": "Uko tayari kuthibitisha Kitambulisho chako cha Taifa?",
+    "ninCta.desc":
+      "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-citizen kwa uthibitishaji wa utambulisho wa haraka, sahihi na salama.",
+    "ninCta.button": "Thibitisha Kitambulisho cha Taifa Sasa",
+
+    /* ── Vehicle Landing: Hero ── */
+    "vehicleHero.title":
+      "Angalia VIN ya gari <span>Uganda</span> kabla<br />haujanunua",
+    "vehicleHero.subtitle":
+      "Thibitisha utambulisho, hali, na historia ya gari kwa dakika. Haraka, salama na inayoaminika na maelfu nchini Uganda na diaspora.",
+    "vehicleHero.checkVinBtn": "Angalia VIN",
+    "vehicleHero.seeSampleBtn": "Tazama Mfano wa Matokeo",
+    "vehicleHero.trustedBy": "Inaaminika na watumiaji 10,000+",
+
+    /* ── Vehicle Landing: Benefits ── */
+    "vehicleBenefits.title1": "Epuka ununuzi mbaya",
+    "vehicleBenefits.desc1":
+      "Gundua ajali, wizi, na magari yenye matatizo kabla ya kununua.",
+    "vehicleBenefits.title2": "Angalia historia ya umiliki",
+    "vehicleBenefits.desc2":
+      "Ona wamiliki wa zamani na rekodi za uhamisho ili kuhakikisha uhalali.",
+    "vehicleBenefits.title3": "Tambua bendera nyekundu",
+    "vehicleBenefits.desc3": "Tambua rehani, rekodi za wizi, na ripoti mapema.",
+    "vehicleBenefits.title4": "Nunua kwa ujasiri",
+    "vehicleBenefits.desc4": "Fanya maamuzi sahihi na linda pesa zako.",
+
+    /* ── Vehicle Landing: How it Works ── */
+    "vehicleHow.title": "Inavyofanya kazi",
+    "vehicleHow.step1Name": "Weka VIN",
+    "vehicleHow.step1Desc": "Weka nambari ya VIN ya tarakimu 17 ya gari.",
+    "vehicleHow.step2Name": "Wasilisha & Lipe",
+    "vehicleHow.step2Desc":
+      "Kagua taarifa zako na ukamilishe malipo kwa usalama.",
+    "vehicleHow.step3Name": "Pata Matokeo",
+    "vehicleHow.step3Desc": "Pokea ripoti yako ya uthibitishaji mara moja.",
+
+    /* ── Vehicle Landing: Login Sample ── */
+    "vehicleLogin.sampleSubtitle":
+      "Tazama mfano wa ripoti ya uthibitishaji wa gari.",
+    "vehicleLogin.labelPlateNumber": "Nambari ya Namba",
+    "vehicleLogin.labelVin": "VIN",
+    "vehicleLogin.labelMakeModel": "Tengeneza / Mfano",
+    "vehicleLogin.labelYear": "Mwaka",
+    "vehicleLogin.labelOwnershipStatus": "Hali ya Umiliki",
+    "vehicleLogin.labelAccidentHistory": "Historia ya Ajali",
+    "vehicleLogin.labelWatchlist": "Hali ya Wizi / Orodha ya Kutazama",
+    "vehicleLogin.valueNoRecords": "Hakuna rekodi kubwa zilizopatikana",
+    "vehicleLogin.valueClear": "SAFI",
+
+    /* ── Vehicle Landing: Compliance ── */
+    "vehicleCompliance.title": "Inaaminika. Salama. Inatii sheria.",
+    "vehicleCompliance.desc":
+      "Tunafuata viwango vya juu zaidi vya ulinzi wa data na uthibitishaji wa gari.",
+
+    /* ── Vehicle Landing: CTA ── */
+    "vehicleCta.title": "Uko tayari kuthibitisha gari?",
+    "vehicleCta.desc":
+      "Jiunge na maelfu ya watu binafsi na biashara wanaotegemea e-citizen kwa uthibitishaji wa haraka, sahihi na salama wa gari.",
+    "vehicleCta.button": "Angalia VIN ya Gari Sasa",
+
+    /* ── Shared Trust Indicators ── */
+    "trust.secureTitle": "Salama",
+    "trust.secureDesc": "Imesimbwa kwa 256-bit",
+    "trust.instantTitle": "Haraka",
+    "trust.instantDesc": "Matokeo ndani ya sekunde",
+    "trust.compliantTitle": "Inatii sheria",
+    "trust.compliantDesc": "GDPR na NDPR",
   },
 };
 

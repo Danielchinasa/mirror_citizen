@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
 import osiaImg from "../../images/osia.png";
+import { useLocale } from "../../components/LocaleProvider";
 
 const ComplianceWrapper = styled.section`
   padding: 20px 50px;
@@ -82,15 +83,14 @@ const LogoBadge = styled.div`
 `;
 
 const VehicleCompliance = () => {
+  const { t } = useLocale();
+
   return (
     <ComplianceWrapper>
       <ComplianceInner>
         <ComplianceText>
-          <ComplianceTitle>Trusted. Secure. Compliant.</ComplianceTitle>
-          <ComplianceDesc>
-            We adhere to the highest standards for data protection and vehicle
-            verification.
-          </ComplianceDesc>
+          <ComplianceTitle>{t("vehicleCompliance.title")}</ComplianceTitle>
+          <ComplianceDesc>{t("vehicleCompliance.desc")}</ComplianceDesc>
         </ComplianceText>
         <LogosRow>
           <LogoBadge>

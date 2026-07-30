@@ -6,6 +6,7 @@ import {
   FaChartBar,
 } from "react-icons/fa";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 
 const BenefitsWrapper = styled.section`
   padding: 20px 50px 30px;
@@ -80,6 +81,8 @@ const BenefitDesc = styled.p`
 `;
 
 const NinBenefits = () => {
+  const { t } = useLocale();
+
   return (
     <BenefitsWrapper>
       <BenefitsGrid>
@@ -88,10 +91,8 @@ const NinBenefits = () => {
             <FaShieldAlt />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Verify with confidence</BenefitTitle>
-            <BenefitDesc>
-              Access accurate and up-to-date NIN information.
-            </BenefitDesc>
+            <BenefitTitle>{t("ninBenefits.title1")}</BenefitTitle>
+            <BenefitDesc>{t("ninBenefits.desc1")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
         <BenefitCard>
@@ -99,10 +100,8 @@ const NinBenefits = () => {
             <FaCheckCircle />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Reduce fraud & risk</BenefitTitle>
-            <BenefitDesc>
-              Confirm identity and build trust in every transaction.
-            </BenefitDesc>
+            <BenefitTitle>{t("ninBenefits.title2")}</BenefitTitle>
+            <BenefitDesc>{t("ninBenefits.desc2")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
         <BenefitCard>
@@ -110,10 +109,8 @@ const NinBenefits = () => {
             <FaClock />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Save time & resources</BenefitTitle>
-            <BenefitDesc>
-              Automate verification and focus on what matters.
-            </BenefitDesc>
+            <BenefitTitle>{t("ninBenefits.title3")}</BenefitTitle>
+            <BenefitDesc>{t("ninBenefits.desc3")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
         <BenefitCard>
@@ -121,10 +118,8 @@ const NinBenefits = () => {
             <FaChartBar />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Built for scale</BenefitTitle>
-            <BenefitDesc>
-              Perfect for businesses, platforms and individuals.
-            </BenefitDesc>
+            <BenefitTitle>{t("ninBenefits.title4")}</BenefitTitle>
+            <BenefitDesc>{t("ninBenefits.desc4")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
       </BenefitsGrid>

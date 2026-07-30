@@ -12,10 +12,18 @@ import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+import { useLocale } from "../../components/LocaleProvider";
+
+const subtitleKeys = {
+  nin: "sample.subtitle.nin",
+  phone: "sample.subtitle.phone",
+  business: "sample.subtitle.business",
+  financial: "sample.subtitle.financial",
+  vehicle: "sample.subtitle.vehicle",
+};
 
 const sampleData = {
   nin: {
-    subtitle: "See an example of a verification result.",
     image: ninSampleAvatar,
     fields: [
       ["Full Name", "DANIEL CHINASA OKORO"],
@@ -37,7 +45,6 @@ const sampleData = {
     ],
   },
   phone: {
-    subtitle: "See an example of a phone number verification result.",
     image: phoneSampleAvatar,
     fields: [
       ["Full Name", "ADAOBI CHIOMA NWOSU"],
@@ -59,7 +66,6 @@ const sampleData = {
     ],
   },
   business: {
-    subtitle: "See an example of a company verification result.",
     icon: FaBuilding,
     fields: [
       ["Company Name", "BIOSEC SOLUTIONS LIMITED"],
@@ -89,7 +95,6 @@ const sampleData = {
     ],
   },
   financial: {
-    subtitle: "See an example of a Credit Profile result.",
     image: financialSampleAvatar,
     fields: [
       ["Customer Name", "CHIJIOKE OLUWASEUN ADEBAYO"],
@@ -107,7 +112,6 @@ const sampleData = {
     ],
   },
   vehicle: {
-    subtitle: "See an example of a vehicle verification report.",
     icon: FaCar,
     fields: [
       ["Plate Number", "ABC-123XY"],
@@ -122,8 +126,10 @@ const sampleData = {
 };
 
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
+  const { t } = useLocale();
   const sample = sampleData[type] || sampleData.nin;
   const Icon = sample.icon;
+  const subtitleKey = subtitleKeys[type] || subtitleKeys.nin;
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -156,10 +162,12 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         <Header>
           <div>
             <TitleRow>
-              <Title id="sample-result-title">Sample result</Title>
-              <Badge>This is a sample only</Badge>
+              <Title id="sample-result-title">
+                {t("sample.title")}
+              </Title>
+              <Badge>{t("sample.badge")}</Badge>
             </TitleRow>
-            <Subtitle>{sample.subtitle}</Subtitle>
+            <Subtitle>{t(subtitleKey)}</Subtitle>
           </div>
           <CloseButton type="button" onClick={onClose} aria-label="Close">
             <FaTimes />
@@ -192,12 +200,20 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </Top>
           {sample.stakeholders && (
             <StakeholderSection>
-              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+              <StakeholderSectionTitle>
+                {t("sample.stakeholder.title")}
+              </StakeholderSectionTitle>
               <StakeholderTable>
                 <StakeholderRow $header>
-                  <StakeholderCell $header>Name</StakeholderCell>
-                  <StakeholderCell $header>Role</StakeholderCell>
-                  <StakeholderCell $header>Nationality</StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("sample.stakeholder.name")}
+                  </StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("sample.stakeholder.role")}
+                  </StakeholderCell>
+                  <StakeholderCell $header>
+                    {t("sample.stakeholder.nationality")}
+                  </StakeholderCell>
                 </StakeholderRow>
                 {sample.stakeholders.map((s, i) => (
                   <StakeholderRow key={i}>
@@ -213,7 +229,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
 
         <Disclaimer>
           <FaInfoCircle />
-          Results are based on data available at the time of verification.
+          {t("sample.disclaimer")}
         </Disclaimer>
       </Dialog>
     </Overlay>

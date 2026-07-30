@@ -47,6 +47,7 @@ const lightVars = {
   "--ec-step-icon-bg": "#fef2f2",
   "--ec-sidebar-bg": "#fef2f2",
   "--ec-sidebar-border": "#d1fae5",
+  "--ec-spinner-overlay": "rgba(255, 255, 255, 0.8)",
 };
 
 const darkVars = {
@@ -57,9 +58,9 @@ const darkVars = {
   "--ec-bg-primary-muted": "#2a1010",
   "--ec-text": "#f1f3f5",
   "--ec-text-secondary": "#c9d1d9",
-  "--ec-text-muted": "#9ca3af",
-  "--ec-text-faint": "#6b7280",
-  "--ec-text-faintest": "#6b7280",
+  "--ec-text-muted": "#c3cad4",
+  "--ec-text-faint": "#aeb8c5",
+  "--ec-text-faintest": "#909cab",
   "--ec-heading": "#f9fafb",
   "--ec-heading-alt": "#e2e8f0",
   "--ec-primary": "#DD0201",
@@ -92,6 +93,7 @@ const darkVars = {
   "--ec-step-icon-bg": "#1f0d0d",
   "--ec-sidebar-bg": "#1f0d0d",
   "--ec-sidebar-border": "#2d3139",
+  "--ec-spinner-overlay": "rgba(15, 17, 23, 0.72)",
 };
 
 const applyVars = (vars) => {

@@ -2,6 +2,7 @@ import React from "react";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ninSampleImg from "../../images/Verify_NIN_on_ecitizen.jpg";
+import { useLocale } from "../../components/LocaleProvider";
 import {
   SampleSectionWrapper,
   SampleContent,
@@ -15,6 +16,7 @@ import {
 } from "./NinLanding.elements";
 
 const NinSampleResult = () => {
+  const { t } = useLocale();
   const verifyLink = useAuthRedirect("/verify/nin");
 
   return (
@@ -24,30 +26,27 @@ const NinSampleResult = () => {
           <img src={ninSampleImg} alt="Sample NIN Verification Result" />
         </SampleImageWrapper>
         <SampleInfo>
-          <SampleTitle>What You Get in a NIN Report</SampleTitle>
-          <SampleDesc>
-            Each NIN verification returns comprehensive identity details sourced
-            from official records, helping you make informed decisions.
-          </SampleDesc>
+          <SampleTitle>{t("ninSample.title")}</SampleTitle>
+          <SampleDesc>{t("ninSample.desc")}</SampleDesc>
           <CheckList>
             <CheckItem>
-              <FaCheckCircle /> Full name of the NIN holder
+              <FaCheckCircle /> {t("ninSample.checkItem1")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Date of birth and gender
+              <FaCheckCircle /> {t("ninSample.checkItem2")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Phone number and email on record
+              <FaCheckCircle /> {t("ninSample.checkItem3")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Photograph for visual confirmation
+              <FaCheckCircle /> {t("ninSample.checkItem4")}
             </CheckItem>
             <CheckItem>
-              <FaCheckCircle /> Address and state of origin
+              <FaCheckCircle /> {t("ninSample.checkItem5")}
             </CheckItem>
           </CheckList>
           <PrimaryBtn to={verifyLink}>
-            Try It Now <FaArrowRight />
+            {t("ninSample.tryItNow")} <FaArrowRight />
           </PrimaryBtn>
         </SampleInfo>
       </SampleContent>

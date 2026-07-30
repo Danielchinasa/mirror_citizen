@@ -6,6 +6,7 @@ import {
   FaThumbsUp,
 } from "react-icons/fa";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 
 const BenefitsWrapper = styled.section`
   padding: 20px 50px 30px;
@@ -80,6 +81,8 @@ const BenefitDesc = styled.p`
 `;
 
 const VehicleBenefits = () => {
+  const { t } = useLocale();
+
   return (
     <BenefitsWrapper>
       <BenefitsGrid>
@@ -88,10 +91,8 @@ const VehicleBenefits = () => {
             <FaShieldAlt />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Avoid bad purchases</BenefitTitle>
-            <BenefitDesc>
-              Detect accident, theft, and problem vehicles before you buy.
-            </BenefitDesc>
+            <BenefitTitle>{t("vehicleBenefits.title1")}</BenefitTitle>
+            <BenefitDesc>{t("vehicleBenefits.desc1")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
         <BenefitCard>
@@ -99,10 +100,8 @@ const VehicleBenefits = () => {
             <FaHistory />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Check ownership history</BenefitTitle>
-            <BenefitDesc>
-              See past owners and transfer records to ensure legitimacy.
-            </BenefitDesc>
+            <BenefitTitle>{t("vehicleBenefits.title2")}</BenefitTitle>
+            <BenefitDesc>{t("vehicleBenefits.desc2")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
         <BenefitCard>
@@ -110,10 +109,8 @@ const VehicleBenefits = () => {
             <FaExclamationTriangle />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Spot red flags</BenefitTitle>
-            <BenefitDesc>
-              Identify liens, theft records, and outstanding reports early.
-            </BenefitDesc>
+            <BenefitTitle>{t("vehicleBenefits.title3")}</BenefitTitle>
+            <BenefitDesc>{t("vehicleBenefits.desc3")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
         <BenefitCard>
@@ -121,10 +118,8 @@ const VehicleBenefits = () => {
             <FaThumbsUp />
           </BenefitIcon>
           <BenefitText>
-            <BenefitTitle>Buy with confidence</BenefitTitle>
-            <BenefitDesc>
-              Make informed decisions and protect your money.
-            </BenefitDesc>
+            <BenefitTitle>{t("vehicleBenefits.title4")}</BenefitTitle>
+            <BenefitDesc>{t("vehicleBenefits.desc4")}</BenefitDesc>
           </BenefitText>
         </BenefitCard>
       </BenefitsGrid>

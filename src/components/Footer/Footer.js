@@ -34,11 +34,13 @@ import Logo from "../../images/uganda_logo.png";
 import LogoWhite from "../../images/uganda_dark.png";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../LocaleProvider";
 
 function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const { isDark } = useTheme();
+  const { t } = useLocale();
 
   return (
     <>
@@ -55,10 +57,7 @@ function Footer() {
                   style={{ marginTop: "10px", cursor: "pointer" }}
                 />
               </Link>
-              <BrandDesc>
-                Your trusted partner for digital identity verification and
-                background checks.
-              </BrandDesc>
+              <BrandDesc>{t("footer.tagline")}</BrandDesc>
               <SocialRow>
                 <SocialIcon
                   href="https://www.instagram.com/ecitizenng/"
@@ -92,35 +91,29 @@ function Footer() {
             </BrandCol>
 
             <FooterCol>
-              <FooterColTitle>Services</FooterColTitle>
-              {/* <FooterLink to="/nin-verification">
-                National ID Verification
+              <FooterColTitle>{t("footer.services")}</FooterColTitle>
+              <FooterLink to="/api-docs">
+                {t("footer.apiForBusiness")}
               </FooterLink>
-              <FooterLink to="/nin-verification">
-                Alien Card Verification
-              </FooterLink>
-
-              <FooterLink to="/vehicle-verification">
-                VIN Verification
-              </FooterLink> */}
-              <FooterLink to="/api-docs">API for Business</FooterLink>
             </FooterCol>
 
             <FooterCol>
-              <FooterColTitle>Support</FooterColTitle>
-              <FooterLink to="/contact">Contact</FooterLink>
-              <FooterLink to="/faq-uganda">FAQs</FooterLink>
+              <FooterColTitle>{t("footer.support")}</FooterColTitle>
+              <FooterLink to="/contact">
+                {t("footer.contact")}
+              </FooterLink>
+              <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Blog
+                {t("footer.blog")}
               </ExternalLink>
             </FooterCol>
 
             <FooterCol>
-              <FooterColTitle>Get the app</FooterColTitle>
+              <FooterColTitle>{t("footer.getApp")}</FooterColTitle>
               <AppCol>
                 <AppBadge
                   href="https://play.google.com/store/apps/details?id=biosec.ecitizen"
@@ -142,21 +135,21 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              © e-raia.com {new Date().getFullYear()}. All Rights Reserved.
+              {t("footer.copyright", { year: new Date().getFullYear() })}
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
-                Privacy Policy
+                {t("footer.privacyPolicy")}
               </LegalLink>
               <LegalLink onClick={() => setIsOpen2(true)}>
-                Terms of Service
+                {t("footer.termsOfService")}
               </LegalLink>
             </LegalLinks>
           </FooterBottom>
         </FooterInner>
 
         <Modal
-          title="Privacy Policy"
+          title={t("footer.privacyPolicy")}
           visible={isOpen}
           centered
           onOk={() => setIsOpen(false)}
@@ -166,7 +159,7 @@ function Footer() {
           <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
         </Modal>
         <Modal
-          title="Terms of Service"
+          title={t("footer.termsOfService")}
           visible={isOpen2}
           centered
           onOk={() => setIsOpen2(false)}

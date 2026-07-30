@@ -3,6 +3,7 @@ import { FaArrowRight, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 
 const CtaWrapper = styled.section`
   background: #fef2f2;
@@ -124,6 +125,7 @@ const CtaPrice = styled.span`
 `;
 
 const NinCta = () => {
+  const { t } = useLocale();
   const verifyLink = useAuthRedirect("/verify/nin");
 
   return (
@@ -133,15 +135,12 @@ const NinCta = () => {
           <FaShieldAlt />
         </CtaShield>
         <CtaContent>
-          <CtaTitle>Ready to verify your National ID?</CtaTitle>
-          <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-citizen
-            for fast, accurate and secure identity verification.
-          </CtaDesc>
+          <CtaTitle>{t("ninCta.title")}</CtaTitle>
+          <CtaDesc>{t("ninCta.desc")}</CtaDesc>
         </CtaContent>
         <CtaRight>
           <CtaButton to={verifyLink}>
-            Verify National ID Now <FaArrowRight />
+            {t("ninCta.button")} <FaArrowRight />
           </CtaButton>
         </CtaRight>
       </CtaInner>

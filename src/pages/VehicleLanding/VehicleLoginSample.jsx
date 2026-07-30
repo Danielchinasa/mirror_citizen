@@ -20,6 +20,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import { useLocale } from "../../components/LocaleProvider";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -461,6 +462,7 @@ const ResultDisclaimer = styled.div`
 `;
 
 const VehicleLoginSample = () => {
+  const { t } = useLocale();
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/vehicle";
@@ -724,10 +726,8 @@ const VehicleLoginSample = () => {
               <Spinner />
             </SpinnerOverlay>
           )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
-          <LoginCardSub>
-            Sign in or continue to start your verification.
-          </LoginCardSub>
+          <LoginCardTitle>{t("ninLogin.title")}</LoginCardTitle>
+          <LoginCardSub>{t("ninLogin.subtitle")}</LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
               <SSOCol>
@@ -744,7 +744,7 @@ const VehicleLoginSample = () => {
                     googleLogin();
                   }}
                 >
-                  <FcGoogle /> Continue with Google
+                  <FcGoogle /> {t("ninLogin.continueWithGoogle")}
                 </SSOButton>
                 <FacebookLogin
                   appId="541710452150170"
@@ -754,21 +754,21 @@ const VehicleLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
+                      <FaFacebook color="#1877F2" /> {t("ninLogin.continueWithFacebook")}
                     </SSOButton>
                   )}
                 />
               </SSOCol>
-              <Divider>OR</Divider>
+              <Divider>{t("ninLogin.or")}</Divider>
               <FormCol>
                 {formErrors.general && (
                   <ErrorAlert>{formErrors.general}</ErrorAlert>
                 )}
                 <div>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>{t("ninLogin.emailLabel")}</FormLabel>
                   <FormInput
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t("ninLogin.emailPlaceholder")}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -778,11 +778,11 @@ const VehicleLoginSample = () => {
                   )}
                 </div>
                 <div>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("ninLogin.passwordLabel")}</FormLabel>
                   <PasswordWrapper>
                     <FormInput
                       type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder={t("ninLogin.passwordPlaceholder")}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -806,10 +806,10 @@ const VehicleLoginSample = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />{" "}
-                    Remember me
+                    {t("ninLogin.rememberMe")}
                   </RememberLabel>
                   <ForgotLink to="/forgot-password">
-                    Forgot password?
+                    {t("ninLogin.forgotPassword")}
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
@@ -818,11 +818,11 @@ const VehicleLoginSample = () => {
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
+                  {t("ninLogin.loginButton")}
                 </LoginBtn>
                 <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
+                  {t("ninLogin.noAccount")}{" "}
+                  <Link to="/individual/sign-up/1">{t("ninLogin.registerHere")}</Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -832,12 +832,10 @@ const VehicleLoginSample = () => {
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
-            <SampleCardTitle>Sample result</SampleCardTitle>
-            <SampleBadge>This is a sample only</SampleBadge>
+            <SampleCardTitle>{t("landing.sampleResult")}</SampleCardTitle>
+            <SampleBadge>{t("ninLogin.sampleBadge")}</SampleBadge>
           </SampleHeader>
-          <SampleCardSub>
-            See an example of a vehicle verification report.
-          </SampleCardSub>
+          <SampleCardSub>{t("vehicleLogin.sampleSubtitle")}</SampleCardSub>
           <ResultCard>
             <ResultTop>
               <ResultPhoto>
@@ -845,37 +843,37 @@ const VehicleLoginSample = () => {
               </ResultPhoto>
               <ResultGrid>
                 <ResultField>
-                  <ResultLabel>Plate Number</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelPlateNumber")}</ResultLabel>
                   <ResultValue>ABC-123XY</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>VIN</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelVin")}</ResultLabel>
                   <ResultValue>******5678</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Make / Model</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelMakeModel")}</ResultLabel>
                   <ResultValue>Toyota Corolla</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Year</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelYear")}</ResultLabel>
                   <ResultValue>2018</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Ownership Status</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelOwnershipStatus")}</ResultLabel>
                   <VerifiedBadge>
-                    VERIFIED <FaCheckCircle />
+                    {t("ninLogin.verified")} <FaCheckCircle />
                   </VerifiedBadge>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Accident History</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelAccidentHistory")}</ResultLabel>
                   <ResultValue style={{ color: "#777", fontSize: 13 }}>
-                    No major records found
+                    {t("vehicleLogin.valueNoRecords")}
                   </ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>Theft / Watchlist Status</ResultLabel>
+                  <ResultLabel>{t("vehicleLogin.labelWatchlist")}</ResultLabel>
                   <ClearBadge>
-                    CLEAR <FaCheckCircle />
+                    {t("vehicleLogin.valueClear")} <FaCheckCircle />
                   </ClearBadge>
                 </ResultField>
               </ResultGrid>
@@ -883,7 +881,7 @@ const VehicleLoginSample = () => {
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
-            Results are based on data available at the time of verification.
+            {t("ninLogin.resultDisclaimer")}
           </ResultDisclaimer>
         </SampleCard>
       </TwoColGrid>

@@ -41,6 +41,14 @@ body {
   color: var(--ec-text);
   transition: background 0.2s ease, color 0.2s ease;
 }
+
+/* eBanqo's greeting popup is rendered in the host document, not inside its
+   iframe. Its white background must keep a dark foreground in dark mode. */
+.initial-prompt-message-wrapper .initial-prompt-message,
+.initial-prompt-message-wrapper .client-bot-message-container,
+.initial-prompt-message-wrapper .client-bot-message-container > p {
+  color: #1a1a1a !important;
+}
 `;
 
 export const DynamicCollapse = styled(Collapse)`
