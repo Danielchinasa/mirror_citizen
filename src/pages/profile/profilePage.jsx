@@ -383,7 +383,7 @@ const ProfilePage = () => {
               lg={{ span: 12 }}
               hidden={true}
             >
-              <StyledLabel $token={token}>NIN</StyledLabel>
+              <StyledLabel $token={token}>NNI</StyledLabel>
               <StyledInput
                 $token={token}
                 value={formData.nin}

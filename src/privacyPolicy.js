@@ -1,13 +1,13 @@
 const privacyPolicy = `
 <h6>Overview </h6>
-<p>In order to provide verification services to e-citizen™ users, Biosec Solutions Limited (“Biosec” or “the Company”) collects and/or processes  certain  types  of  information  (such  as  name, telephone  numbers,  address   etc.)  of  individuals  that  makes  them  easily  identifiable.  These individuals include users  signing  up to e-citizen™ as well as individuals  whose personal  details are verified (with their consent) by e-citizen™ users, jointly and/or severally (“Data Subjects”). </p>
+<p>In order to provide verification services to citoyen™ users, Biosec Solutions Limited (“Biosec” or “the Company”) collects and/or processes  certain  types  of  information  (such  as  name, telephone  numbers,  address   etc.)  of  individuals  that  makes  them  easily  identifiable.  These individuals include users  signing  up to citoyen™ as well as individuals  whose personal  details are verified (with their consent) by citoyen™ users, jointly and/or severally (“Data Subjects”). </p>
 
 <p>This Privacy Policy applies to all forms of systems, operations, and processes within the e- citizenTM environment that involve the collection, storage, use, transmission, and disposal of Personal Data.</p>
 <h6>Category of Data Collected and Processed</h6>
-<p>We only collect and use your Personal data if we have obtained your prior consent or have a lawful and legitimate interest to do so. You are at liberty to withdraw your consent at any time by contacting the Data Protection Officer at info@biosec.com.ng. The following are data collected and processed for e-citizenTM use:</p>
+<p>We only collect and use your Personal data if we have obtained your prior consent or have a lawful and legitimate interest to do so. You are at liberty to withdraw your consent at any time by contacting the Data Protection Officer at info@biosec.com.ng. The following are data collected and processed for citoyenTM use:</p>
 <ul>
-  <li>Identification (name, NIN) and Communication data (telephone, address, e-mail, IP address)</li>
-  <li>User history on e-citizenTM</li>
+  <li>Identification (name, NNI) and Communication data (telephone, address, e-mail, IP address)</li>
+  <li>User history on citoyenTM</li>
   <li>Billing and payments records</li>
   <li>Disclosed information (from third parties)</li>
 </ul>
@@ -19,8 +19,8 @@ const privacyPolicy = `
   <li>Data retrieval from third parties (via API)</li>
 </ul>
 <h6>Purpose of Data Collected and Processed</h6>
-<p>e-citizenTM collects Personal Data for only for the purposes identified here and for which Consent has been obtained.
-In line with the provisions of the NDPA, processing of Personal Data for e-citizenTM shall be lawful if at least one of the following applies:</p>
+<p>citoyenTM collects Personal Data for only for the purposes identified here and for which Consent has been obtained.
+In line with the provisions of the NDPA, processing of Personal Data for citoyenTM shall be lawful if at least one of the following applies:</p>
 <ul>
   <li>the Data Subject has given Consent to the processing of his/her Personal Data for one or more specific purposes,</li>
   <li>the processing is necessary for the performance of an agreement to which the Data Subject is party or in order to take steps at the request of the Data Subject prior to entering into an agreement,</li>
@@ -38,8 +38,8 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
   <li>for logging and record-keeping purposes.</li>
 </ul>
 <h6>Personal Data Retention</h6>
-<p>All personal information collected from e-citizenTM users shall be retained, stored, and destroyed in line with relevant Legislative and Regulatory Guidelines. For all Personal Data and records obtained, used, and stored, the Company shall perform periodical reviews of the data retained to confirm the accuracy, purpose, validity, and requirement to retain.</p>
-<p>To the extent permitted by applicable laws and without prejudice to the Company’s Retention Policy, the length of storage of Personal Data collected from e-citizenTM users shall, amongst other things, be determined by:</p>
+<p>All personal information collected from citoyenTM users shall be retained, stored, and destroyed in line with relevant Legislative and Regulatory Guidelines. For all Personal Data and records obtained, used, and stored, the Company shall perform periodical reviews of the data retained to confirm the accuracy, purpose, validity, and requirement to retain.</p>
+<p>To the extent permitted by applicable laws and without prejudice to the Company’s Retention Policy, the length of storage of Personal Data collected from citoyenTM users shall, amongst other things, be determined by:</p>
 <ul>
   <li>whether it is still needed for the purpose for which it was obtained; or</li>
   <li>whether the transaction or relationship has statutory implication or a required retention period; or</li>
@@ -48,18 +48,18 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
 </ul>
 <p>Notwithstanding the foregoing and pursuant to the NDPA, the Company shall be entitled to retain and process Personal Data for archiving, scientific research, historical research, or statistical purposes for public interest.</p>
 
-<p>The Company would forthwith delete Personal Data in the Company’s possession where such Personal Data is no longer required for e-citizenTM access or in line with the Company’s Retention Policy, provided no law or regulation being in force requires the Company to retain such Personal Data.</p>
-<p>Personal  Data from  the  NIMC  system retrieved  for  transmission  as  part  of  an e-citizen™ verification process shall be retained for a maximum of 24 hours while awaiting the Data Subject’s consent, and a maximum of a further 24 hours after consent has been granted, during which time the e-citizen™ user who requested the data will be able to access </p>
+<p>The Company would forthwith delete Personal Data in the Company’s possession where such Personal Data is no longer required for citoyenTM access or in line with the Company’s Retention Policy, provided no law or regulation being in force requires the Company to retain such Personal Data.</p>
+<p>Personal  Data from  the  NIMC  system retrieved  for  transmission  as  part  of  an citoyen™ verification process shall be retained for a maximum of 24 hours while awaiting the Data Subject’s consent, and a maximum of a further 24 hours after consent has been granted, during which time the citoyen™ user who requested the data will be able to access </p>
 
-<p>The  Company would  forthwith  delete Personal Data  retrieved as  part  of  an e-citizen™ verification process once 24 hours have elapsed from when consent was granted by the Data Subject.  Vehicle data shall be retained for a maximum of 7 days. Financial credit data from credit bureaus shall be retained for a maximum of 7 days</p>
+<p>The  Company would  forthwith  delete Personal Data  retrieved as  part  of  an citoyen™ verification process once 24 hours have elapsed from when consent was granted by the Data Subject.  Vehicle data shall be retained for a maximum of 7 days. Financial credit data from credit bureaus shall be retained for a maximum of 7 days</p>
 
 
 <h6>Data Security</h6>
-<p>The  Company considers  Personal Data confidential  and  as  such  must  be  adequately protected from unauthorized use and/or disclosure.  The  Company has  established adequate controls in  order  to  protect the  integrity and confidentiality of Personal Data, and to prevent personal data from being accidentally or deliberately compromised.</p><p> All data processed by e-citizen™ is encrypted both in storage and in transit. However, it must be  noted  that  no  security  measures  are  completely foolproof. The  risk  of  a  breach, although diminished, is still present.<p>
+<p>The  Company considers  Personal Data confidential  and  as  such  must  be  adequately protected from unauthorized use and/or disclosure.  The  Company has  established adequate controls in  order  to  protect the  integrity and confidentiality of Personal Data, and to prevent personal data from being accidentally or deliberately compromised.</p><p> All data processed by citoyen™ is encrypted both in storage and in transit. However, it must be  noted  that  no  security  measures  are  completely foolproof. The  risk  of  a  breach, although diminished, is still present.<p>
 <h6>Data Breach Management Procedure</h6>
 <p>A data breach procedure is established and maintained in order to deal with incidents concerning Personal  Data  or  privacy  practices  leading  to  the  accidental  or  unlawful  destruction,  loss, alteration,   unauthorized  disclosure  of,  or  access  to,  Personal  Data transmitted,  stored   or otherwise processed</p>
 <h6>Consent</h6>
-<p>Consent is required for the processing of Personal Data on e-citizenTM. The Company shall obtain the requisite consent of Data Subjects at the time of collection or processing of Personal Data. In this regard, the Company will ensure:</p>
+<p>Consent is required for the processing of Personal Data on citoyenTM. The Company shall obtain the requisite consent of Data Subjects at the time of collection or processing of Personal Data. In this regard, the Company will ensure:</p>
 <ul>
   <li>that the specific purpose of collection is made known to the Data Subject and the Consent is requested in a clear and plain language,</li>
   <li>that the Consent is freely given by the Data Subject and obtained without fraud, coercion or undue influence,</li>
@@ -70,7 +70,7 @@ In line with the provisions of the NDPA, processing of Personal Data for e-citiz
 </ul>
 <p>The Consents of minors (under the age of 18) will always be protected and obtained from minor’s representatives in accordance with applicable regulatory requirements.</p>
 <h6>Data Subject Rights</h6>
-<p>All individuals who are the subject of Personal Data held by e-citizenTM are entitled to the following rights:</p>
+<p>All individuals who are the subject of Personal Data held by citoyenTM are entitled to the following rights:</p>
 <ul>
   <li>Right to request for and access their Personal Data collected and stored. Where data is held electronically in a structured form, such as in a Database, the Data Subject has a right to receive that data in a common electronic format.</li>
   <li>Right to information on their personal data collected and stored.</li>

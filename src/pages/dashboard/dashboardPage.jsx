@@ -5725,7 +5725,7 @@ const DashboardPage = () => {
                           style={{ color: "#FD7A00", cursor: "pointer" }}
                           onClick={handleClickPrivacyPolicy}
                         >
-                          e-citizen™ Privacy Policy
+                          e-citoyen Privacy Policy
                         </span>{" "}
                         and{" "}
                         <span

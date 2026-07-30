@@ -16,7 +16,7 @@ const NinFeatures = () => {
   return (
     <FeaturesSectionWrapper>
       <FeaturesInner>
-        <SectionTitle>Why Choose eCitizen for NIN Verification?</SectionTitle>
+        <SectionTitle>Why Choose eCitizen for NNI Verification?</SectionTitle>
         <SectionSubtitle>
           Trusted by thousands of individuals and businesses across Nigeria
         </SectionSubtitle>
@@ -27,7 +27,7 @@ const NinFeatures = () => {
             </FeatureIcon>
             <FeatureTitle>Instant Results</FeatureTitle>
             <FeatureDesc>
-              Get NIN verification results in seconds, not hours. Our platform
+              Get NNI verification results in seconds, not hours. Our platform
               connects directly to official databases for real-time lookups.
             </FeatureDesc>
           </FeatureCard>

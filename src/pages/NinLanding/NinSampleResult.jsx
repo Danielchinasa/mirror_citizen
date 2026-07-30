@@ -21,17 +21,17 @@ const NinSampleResult = () => {
     <SampleSectionWrapper id="sample-result">
       <SampleContent>
         <SampleImageWrapper>
-          <img src={ninSampleImg} alt="Sample NIN Verification Result" />
+          <img src={ninSampleImg} alt="Sample NNI Verification Result" />
         </SampleImageWrapper>
         <SampleInfo>
-          <SampleTitle>What You Get in a NIN Report</SampleTitle>
+          <SampleTitle>What You Get in a NNI Report</SampleTitle>
           <SampleDesc>
-            Each NIN verification returns comprehensive identity details sourced
+            Each NNI verification returns comprehensive identity details sourced
             from official records, helping you make informed decisions.
           </SampleDesc>
           <CheckList>
             <CheckItem>
-              <FaCheckCircle /> Full name of the NIN holder
+              <FaCheckCircle /> Full name of the NNI holder
             </CheckItem>
             <CheckItem>
               <FaCheckCircle /> Date of birth and gender

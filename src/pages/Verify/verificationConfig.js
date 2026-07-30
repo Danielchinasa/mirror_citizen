@@ -121,7 +121,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-citoyen" },
     ],
   },
 
@@ -174,7 +174,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-citoyen" },
     ],
   },
 
@@ -230,7 +230,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-citoyen" },
     ],
   },
 
@@ -282,7 +282,7 @@ const verificationConfig = {
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
       { title: "Trusted Platform", desc: "Government compliant" },
-      { title: "500,000+ Users", desc: "Trust e-citizen" },
+      { title: "500,000+ Users", desc: "Trust e-citoyen" },
     ],
   },
 

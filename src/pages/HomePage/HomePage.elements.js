@@ -197,12 +197,33 @@ export const HeroSubtitle = styled.p`
 
 export const HeroButtons = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+
+  @media screen and (max-width: 960px) {
+    align-items: center;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
+`;
+
+export const HeroButtonsRow = styled.div`
+  display: flex;
   gap: 16px;
   align-items: center;
-  margin-bottom: 24px;
 
   @media screen and (max-width: 600px) {
     flex-direction: column;
+    width: 100%;
+  }
+`;
+
+export const HeroButtonFull = styled.div`
+  @media screen and (max-width: 600px) {
     width: 100%;
   }
 `;

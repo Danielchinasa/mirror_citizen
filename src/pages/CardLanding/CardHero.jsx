@@ -54,7 +54,7 @@ const CardHero = () => {
   return (
     <>
       <HeroWrapper>
-        <HeroBgImage src={heroImg} alt="e-citizen verification platform" />
+        <HeroBgImage src={heroImg} alt="e-citoyen verification platform" />
         <HeroContainer>
           <HeroContent>
             <HeroTitle>

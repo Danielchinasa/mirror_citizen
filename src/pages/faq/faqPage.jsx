@@ -12,7 +12,7 @@ const FaqPage = () => {
   const generalItems = [
     {
       key: "1",
-      title: "Does e-Citizen comply with privacy standards?",
+      title: "Does e-citoyen comply with privacy standards?",
       content: (
         <p>
           Yes, the platform is consent‑driven and adheres to Nigeria’s Nigeria
@@ -64,7 +64,7 @@ const FaqPage = () => {
           <p>
             Person Identity Profile: The consent request is sent to the
             registered SMS and email (where available) attached to the data
-            subject’s NIN in the national identity system. Financial Credit
+            subject’s NNI in the national identity system. Financial Credit
             profile: The consent request is sent to the registered SMS and email
             (where available) attached to the data subject’s BVN in the
             NIBSS/BVN database.
@@ -74,11 +74,11 @@ const FaqPage = () => {
     },
     {
       key: "5",
-      title: "What is a NIN?",
+      title: "What is a NNI?",
       content: (
         <p>
-          The National Identification Number (NIN) is an 11-digit unique number
-          issued to all Nigerians and Legal Residents. The NIN links an
+          The National Identification Card (NNI) is an 11-digit unique number
+          issued to all Nigerians and Legal Residents. The NNI links an
           individual’s identity across the different agency databases; providing
           it for verification enables a robust background check.
         </p>
@@ -86,10 +86,10 @@ const FaqPage = () => {
     },
     {
       key: "6",
-      title: "Why do I need to pay before verifying a NIN?",
+      title: "Why do I need to pay before verifying a NNI?",
       content: (
         <p>
-          e-Citizen™.ng is a premium service because we put in international
+          e-citoyen™.ng is a premium service because we put in international
           standards and best practices to integrate data from multiple agencies
           who charge for access.
         </p>
@@ -97,24 +97,24 @@ const FaqPage = () => {
     },
     {
       key: "7",
-      title: "Why do I need to register before verifying a NIN?",
+      title: "Why do I need to register before verifying a NNI?",
       content: (
         <p>
           Registration ensures you can enjoy the full verification experience
-          and track your history on e-Citizen™.
+          and track your history on e-citoyen™.
         </p>
       ),
     },
     {
       key: "8",
-      title: "Is my verification result saved on e-Citizen™.ng website?",
+      title: "Is my verification result saved on e-citoyen™.ng website?",
       content: (
         <>
           <p>
             Verification results are temporarily stored to the user’s account so
             they can view their search history later. However, search results
             will be deleted after the data retention period as specified in our
-            data retention policy at e-citizen.ng.
+            data retention policy at e-citoyen.ng.
           </p>
           <p>
             If your question is not answered above, please feel free to write us
@@ -128,7 +128,7 @@ const FaqPage = () => {
       title: "What do I do if my information is not correct?",
       content: (
         <p>
-          e‑citizen is an aggregator of data and only displays results from
+          e‑citoyen is an aggregator of data and only displays results from
           databases it connects to. If your information is incorrect, please
           visit the custodian agency.
         </p>
@@ -140,7 +140,7 @@ const FaqPage = () => {
       content: (
         <p>
           Please check your spam/junk folder. If still not received, email
-          info@e-citizen.ng
+          ci-info@citoyen.africa
           <p>
             Note: Verification emails are only sent to users who provided an
             email address during registration. If you did not input an email,
@@ -165,8 +165,8 @@ const FaqPage = () => {
       title: "I paid but got nothing",
       content: (
         <p>
-          Send an email to info@e‑citizen.ng with the payment reference, amount,
-          and the service paid for.
+          Send an email to ci-info@citoyen.africa with the payment reference,
+          amount, and the service paid for.
         </p>
       ),
     },
@@ -240,7 +240,7 @@ const FaqPage = () => {
     },
     {
       key: "5",
-      title: "What Credit Bureaus do e-citizen check?",
+      title: "What Credit Bureaus do e-citoyen check?",
       content: (
         <div>
           <p>1. First Central Credit Bureau </p>
@@ -360,7 +360,7 @@ const FaqPage = () => {
     },
     {
       key: "2",
-      title: "What data source does e-citizen check for Business Profile?",
+      title: "What data source does e-citoyen check for Business Profile?",
       content: (
         <p>
           Business Profile data comes from the Corporate Affairs Commission

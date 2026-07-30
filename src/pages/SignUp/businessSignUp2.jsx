@@ -99,7 +99,7 @@ const BusinessSignUp2 = () => {
     () => ({
       name: "Ant Design",
     }),
-    []
+    [],
   );
 
   const focusOnErrorField = (fieldName) => {
@@ -233,7 +233,7 @@ const BusinessSignUp2 = () => {
       setLoading(true);
       // Retrieve localStorage data
       const localStorageData = JSON.parse(
-        localStorage.getItem("businessFormData")
+        localStorage.getItem("businessFormData"),
       );
       // Include localStorage data in the formData object
       const formDataWithLocalStorage = {
@@ -546,7 +546,7 @@ const BusinessSignUp2 = () => {
                       style={{ color: "#FD7A00", cursor: "pointer" }}
                       onClick={handleClickPrivacyPolicy}
                     >
-                      e-citizen™ Privacy Policy
+                      e-citoyen™ Privacy Policy
                     </span>
                   </Checkbox>
                   <Modal

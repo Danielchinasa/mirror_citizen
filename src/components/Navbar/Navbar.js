@@ -166,6 +166,23 @@ function Navbar() {
           <span style={{ marginRight: 8 }}>🇨🇮</span>
           Côte d'Ivoire
         </Menu.Item>
+        <Menu.Item key="country-nigeria">
+          <a
+            href="https://e-citizen.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Nigeria flag"
+              style={{ marginRight: 10 }}
+            >
+              🇳🇬
+            </span>
+            Nigeria
+          </a>
+        </Menu.Item>
         <Menu.Item key="country-ghana">
           <a
             href="https://e-citizen.africa/gh"
@@ -292,6 +309,11 @@ function Navbar() {
           {t("nav.nationalId")}
         </Link>
       </Menu.Item>
+      <Menu.Item key="services-resident">
+        <Link to="/#services" style={{ textDecoration: "none" }}>
+          {t("nav.residentCard")}
+        </Link>
+      </Menu.Item>
       <Menu.Item key="services-vin">
         <Link to="/#services" style={{ textDecoration: "none" }}>
           {t("nav.vinVerification")}
@@ -302,6 +324,23 @@ function Navbar() {
 
   const countriesMenu = (
     <Menu>
+      <Menu.Item key="country-nigeria">
+        <a
+          href="https://e-citizen.ng"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span
+            role="img"
+            aria-label="Nigeria flag"
+            style={{ marginRight: 10 }}
+          >
+            🇳🇬
+          </span>
+          Nigeria
+        </a>
+      </Menu.Item>
       <Menu.Item key="country-ghana">
         <a
           href="https://e-citizen.africa/gh"

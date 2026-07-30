@@ -41,10 +41,10 @@ function NinNavbar() {
       <NinNav>
         <NinNavbarContainer>
           <PublicBrand to="/nin-verification">
-              <span className="brand-red">e</span>
-              <span className="brand-dot">-</span>
-              citoyen<span className="brand-dot">.africa</span>
-            </PublicBrand>
+            <span className="brand-red">e</span>
+            <span className="brand-dot">-</span>
+            citoyen<span className="brand-dot">.africa</span>
+          </PublicBrand>
 
           <NinHamburgerIcon onClick={handleClick}>
             {click ? <FaTimes /> : <FaBars />}
@@ -71,7 +71,7 @@ function NinNavbar() {
             </NinNavItem>
             <NinNavItem>
               <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
-                Verify NIN Now <FaArrowRight />
+                Verify NNI Now <FaArrowRight />
               </NinCtaButton>
             </NinNavItem>
           </NinNavMenu>

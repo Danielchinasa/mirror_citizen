@@ -98,8 +98,8 @@ const CtaButton = styled(Link)`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background: #FF8C1A;
-    border-color: #FF8C1A;
+    background: #ff8c1a;
+    border-color: #ff8c1a;
     color: #fff;
   }
 `;
@@ -135,7 +135,7 @@ const PhoneCta = () => {
         <CtaContent>
           <CtaTitle>Ready to verify a phone number?</CtaTitle>
           <CtaDesc>
-            Join thousands of businesses that rely on e-citizen for fast,
+            Join thousands of businesses that rely on e-citoyen for fast,
             accurate and secure phone number verification.
           </CtaDesc>
         </CtaContent>

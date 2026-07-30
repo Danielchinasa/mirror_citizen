@@ -276,7 +276,7 @@ const NinLandingFooter = () => {
             >
               Sample result
             </ExternalLink>
-            <FooterLink to="/nin-verification">NIN Verification</FooterLink>
+            <FooterLink to="/nin-verification">NNI Verification</FooterLink>
             <FooterLink to="/contact">API for Business</FooterLink>
           </FooterCol>
 

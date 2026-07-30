@@ -942,7 +942,7 @@ const VerifyPage = () => {
         result =
           response.basic?.nin_data || response.basic?.data || response.basic;
         resultDetail =
-          response.basic.detail || "Your NIN verification was successful.";
+          response.basic.detail || "Your NNI verification was successful.";
         resultRoute = "/main-dashboard";
       } else if (
         response.basic &&
@@ -1130,9 +1130,7 @@ const VerifyPage = () => {
               </p>
               <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.8;">
                 <strong>Status:</strong> ${consent.status}<br/>
-                <strong>Required:</strong> ${
-                  consent.required ? "Yes" : "No"
-                }
+                <strong>Required:</strong> ${consent.required ? "Yes" : "No"}
                 ${
                   channelList.length > 0
                     ? `<br/><strong>Channels:</strong> ${channelList.join(", ")}`
@@ -1828,7 +1826,11 @@ const VerifyPage = () => {
     // the first place users see the completed result.
     if (type === "vehicle") {
       addPopupField(fields, "Vehicle Name", data.vehicleName || data.name);
-      addPopupField(fields, "VIN", data.vin || data.chasisNumber || data.chassisNumber);
+      addPopupField(
+        fields,
+        "VIN",
+        data.vin || data.chasisNumber || data.chassisNumber,
+      );
       addPopupField(fields, "Year", data.year);
       addPopupField(fields, "Make", data.make);
       addPopupField(fields, "Model", data.model);
@@ -1872,7 +1874,7 @@ const VerifyPage = () => {
       return fields.slice(0, 8);
     }
 
-    // NIN / basic result (API returns lowercase: firstname, middlename, surname)
+    // NNI / basic result (API returns lowercase: firstname, middlename, surname)
     if (data.firstname || data.firstName || data.surname || data.lastname) {
       const fname = data.firstname || data.firstName;
       const mname = data.middlename || data.middleName;
@@ -2417,7 +2419,10 @@ const VerifyPage = () => {
 
                       if (photoSrc) {
                         // Add data URI prefix if it's raw base64
-                        if (!photoSrc.startsWith("data:") && !photoSrc.startsWith("http")) {
+                        if (
+                          !photoSrc.startsWith("data:") &&
+                          !photoSrc.startsWith("http")
+                        ) {
                           // Detect image type from base64 signature
                           if (
                             photoSrc.startsWith("/9j/") ||
@@ -2433,12 +2438,17 @@ const VerifyPage = () => {
                         return (
                           <img
                             src={photoSrc}
-                            alt={type === "vehicle" ? "Vehicle image" : "Verification photo"}
+                            alt={
+                              type === "vehicle"
+                                ? "Vehicle image"
+                                : "Verification photo"
+                            }
                             style={{
                               width: "100%",
                               height: "100%",
                               borderRadius: type === "vehicle" ? "8px" : "50%",
-                              objectFit: type === "vehicle" ? "contain" : "cover",
+                              objectFit:
+                                type === "vehicle" ? "contain" : "cover",
                             }}
                             onError={(e) => {
                               console.warn(
@@ -2449,7 +2459,11 @@ const VerifyPage = () => {
                           />
                         );
                       }
-                      return type === "vehicle" ? <FaCarAlt /> : <FaUserCircle />;
+                      return type === "vehicle" ? (
+                        <FaCarAlt />
+                      ) : (
+                        <FaUserCircle />
+                      );
                     })()}
                   </ResultPhotoPopup>
                   <ResultGridPopup>
@@ -2468,26 +2482,26 @@ const VerifyPage = () => {
                     ))}
                   </ResultGridPopup>
                 </ResultTopPopup>
-                  <ResultFooterPopup>
-                    <span>
-                      Verified on{" "}
-                      {new Date().toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                    <span>
-                      Ref:{" "}
-                      {type === "vehicle"
-                        ? verificationResult?.data?.verificationReference ||
-                          verificationResult?.data?.reference ||
-                          localStorage.getItem("transactionID") ||
-                          "N/A"
-                        : localStorage.getItem("transactionID") || "N/A"}
-                    </span>
-                  </ResultFooterPopup>
-                </ResultCardPopup>
+                <ResultFooterPopup>
+                  <span>
+                    Verified on{" "}
+                    {new Date().toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span>
+                    Ref:{" "}
+                    {type === "vehicle"
+                      ? verificationResult?.data?.verificationReference ||
+                        verificationResult?.data?.reference ||
+                        localStorage.getItem("transactionID") ||
+                        "N/A"
+                      : localStorage.getItem("transactionID") || "N/A"}
+                  </span>
+                </ResultFooterPopup>
+              </ResultCardPopup>
               <ResultDisclaimerPopup>
                 <FaInfoCircle />
                 Results are based on data available at the time of verification.

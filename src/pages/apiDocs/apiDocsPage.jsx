@@ -216,8 +216,8 @@ const ApiDocsPage = () => {
               lineHeight: "1.8",
             }}
           >
-            Integration guide for e-Citizen Identity Verification Services.
-            Wallet-based instant verification APIs for NIN, BVN, Phone,
+            Integration guide for e-citoyen Identity Verification Services.
+            Wallet-based instant verification APIs for NNI, BVN, Phone,
             Business, and Vehicle lookups.
           </Paragraph>
         </div>
@@ -410,11 +410,11 @@ const ApiDocsPage = () => {
           type="card"
           size="large"
         >
-          {/* NIN Tab */}
+          {/* NNI Tab */}
           <TabPane
             tab={
               <span>
-                <UserOutlined /> NIN
+                <UserOutlined /> NNI
               </span>
             }
             key="nin"
@@ -422,9 +422,9 @@ const ApiDocsPage = () => {
             <EndpointCard
               method="POST"
               path="/verify-nin"
-              title="Verify NIN"
+              title="Verify NNI"
               icon={<UserOutlined style={iconStyle} />}
-              description="Verify a National Identification Number (NIN) and retrieve the associated identity details including name, date of birth, phone, gender, address, and photo."
+              description="Verify a National Identification Number (NNI) and retrieve the associated identity details including name, date of birth, phone, gender, address, and photo."
               request={`{
   "nin": "12345678901"
 }`}

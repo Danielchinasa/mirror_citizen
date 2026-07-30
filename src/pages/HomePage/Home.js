@@ -45,6 +45,8 @@ import {
   HeroTitle,
   HeroSubtitle,
   HeroButtons,
+  HeroButtonsRow,
+  HeroButtonFull,
   PrimaryBtn,
   SecondaryBtn,
   TrustIndicators,
@@ -381,7 +383,7 @@ const Home = () => {
     <>
       {/* ── Hero ── */}
       <HeroWrapper>
-        <HeroBgImage src={heroImg} alt="e-citizen verification platform" />
+        <HeroBgImage src={heroImg} alt="e-citoyen verification platform" />
         <HeroContainer>
           <HeroContent>
             <HeroTitle>
@@ -421,26 +423,26 @@ const Home = () => {
             </HeroTitle>
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                {t("home.hero.verifyNationalId")} <FaArrowRight />
-              </PrimaryBtn>
-              <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                {t("home.hero.checkVin")} <FaArrowRight />
-              </PrimaryBtn>
+              <HeroButtonsRow>
+                <PrimaryBtn
+                  to="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById("services");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <FaIdCard /> {t("home.hero.verifyNationalId")}
+                </PrimaryBtn>
+                <PrimaryBtn to={residentVerify}>
+                  <FaAddressCard /> {t("home.hero.verifyResidentCard")}
+                </PrimaryBtn>
+              </HeroButtonsRow>
+              <HeroButtonFull>
+                <PrimaryBtn to={vehicleVerify}>
+                  <FaCar /> {t("home.hero.verifyVin")}
+                </PrimaryBtn>
+              </HeroButtonFull>
             </HeroButtons>
             <TrustIndicators>
               <TrustItem>

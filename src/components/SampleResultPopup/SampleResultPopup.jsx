@@ -15,14 +15,14 @@ import phoneSampleAvatar from "../../images/avatar1.jpg";
 
 const sampleData = {
   nin: {
-    subtitle: "See an example of a NIN verification result.",
+    subtitle: "See an example of a NNI verification result.",
     image: ninSampleAvatar,
     fields: [
       ["Full Name", "DANIEL CHINASA OKORO"],
       ["First Name", "DANIEL"],
       ["Middle Name", "CHINASA"],
       ["Surname", "OKORO"],
-      ["NIN", "7348 9021 5**"],
+      ["NNI", "7348 9021 5**"],
       ["Phone Number", "0806 748 4821"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "24-08-1992"],
@@ -62,7 +62,7 @@ const sampleData = {
       ["First Name", "ADAOBI"],
       ["Middle Name", "CHIOMA"],
       ["Surname", "NWOSU"],
-      ["NIN", "5923 4107 8**"],
+      ["NNI", "5923 4107 8**"],
       ["Phone Number", "0803 *** 5678"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "08-03-1994"],

@@ -135,7 +135,7 @@ const CardCta = () => {
         <CtaContent>
           <CtaTitle>Ready to verify your Card ID?</CtaTitle>
           <CtaDesc>
-            Join thousands of individuals and businesses that rely on e-citizen
+            Join thousands of individuals and businesses that rely on e-citoyen
             for fast, accurate and secure identity verification.
           </CtaDesc>
         </CtaContent>

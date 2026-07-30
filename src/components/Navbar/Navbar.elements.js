@@ -427,13 +427,13 @@ export const PublicLanguageToggleGroup = styled.div`
   gap: 8px;
   padding: 4px;
   border-radius: 999px;
-  background: rgba(17, 24, 39, 0.04);
+  background: var(--ec-border-light);
 `;
 
 export const PublicLanguageToggle = styled.button`
   border: none;
   background: ${({ $active }) => ($active ? "#FD7A00" : "transparent")};
-  color: ${({ $active }) => ($active ? "#fff" : "#111827")};
+  color: ${({ $active }) => ($active ? "#fff" : "var(--ec-text)")};
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
