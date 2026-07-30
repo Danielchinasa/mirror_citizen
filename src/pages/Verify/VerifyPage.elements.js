@@ -1252,9 +1252,6 @@ export const IdTypeDisplay = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: var(--ec-text);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
 
   svg {
     color: var(--ec-primary);
