@@ -4,7 +4,7 @@ import BusinessTrustBar from "./BusinessTrustBar";
 import BusinessBenefits from "./BusinessBenefits";
 import BusinessHowItWorks from "./BusinessHowItWorks";
 import BusinessLoginSample from "./BusinessLoginSample";
-import BusinessCompliance from "./BusinessCompliance";
+import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
 import BusinessCta from "./BusinessCta";
 import Footer from "../../components/Footer/Footer";
 import { PageWrapper } from "./BusinessLanding.elements";
@@ -17,7 +17,7 @@ const BusinessVerificationPage = () => {
       <BusinessBenefits />
       <BusinessHowItWorks />
       <BusinessLoginSample />
-      <BusinessCompliance />
+      <ComplianceSection />
       <BusinessCta />
       <Footer />
     </PageWrapper>

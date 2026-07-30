@@ -31,6 +31,8 @@ import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { useLocale } from "../../components/LocaleProvider";
 import { withBasePath } from "../../routing";
+import privacyPolicy from "../../privacyPolicy";
+import termsOfService from "../../termsOfService";
 
 import {
   PageWrapper,
@@ -204,6 +206,9 @@ const VerifyPage = () => {
   const [activeGateway, setActiveGateway] = useState(""); // "paystack" or "flutterwave"
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const pollingRef = useRef(null);
@@ -1719,7 +1724,83 @@ const VerifyPage = () => {
             </>
           )}
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
+          {/* Agreement section with separator */}
+          <div
+            style={{
+              borderTop: "1.5px solid #e5e7eb",
+              marginTop: 20,
+              paddingTop: 16,
+            }}
+          >
+            <label
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 12,
+                padding: "14px 16px",
+                border: `1.5px solid ${termsAgreed ? "var(--ec-primary)" : "#e5e7eb"}`,
+                borderRadius: 10,
+                cursor: "pointer",
+                background: termsAgreed ? "#fffbe6" : "#fafafa",
+                transition: "all 0.2s",
+                fontFamily: "Nunito, sans-serif",
+                fontSize: 14,
+                color: "#333",
+                lineHeight: 1.6,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={termsAgreed}
+                onChange={(e) => setTermsAgreed(e.target.checked)}
+                style={{
+                  accentColor: "var(--ec-primary)",
+                  width: 18,
+                  height: 18,
+                  flexShrink: 0,
+                  marginTop: 2,
+                }}
+              />
+              <span>
+                {t("verify.payment.agreeToTerms")}{" "}
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowTermsModal(true);
+                  }}
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  {t("verify.disclaimer.termsOfService")}
+                </span>
+                {" & "}
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPrivacyModal(true);
+                  }}
+                  style={{
+                    color: "var(--ec-primary)",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  {t("verify.disclaimer.privacyPolicy")}
+                </span>
+              </span>
+            </label>
+          </div>
+
+          <PayBtn
+            onClick={handlePay}
+            disabled={loading || loadingPrice || !termsAgreed}
+            style={{ marginTop: 0 }}
+          >
             <FaLock />
             {loading
               ? t("verify.payment.processing")
@@ -2659,44 +2740,6 @@ const VerifyPage = () => {
                   </ol>
                 )}
               </div>
-              <div
-                style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 13,
-                  color: "var(--ec-text-muted)",
-                  textAlign: "center",
-                  marginBottom: 20,
-                  lineHeight: 1.6,
-                }}
-              >
-                {t("verify.disclaimer.agreeTo")}{" "}
-                <a
-                  href={withBasePath("/terms_of_service")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  {t("verify.disclaimer.termsOfService")}
-                </a>{" "}
-                and{" "}
-                <a
-                  href={withBasePath("/privacy_policy")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  {t("verify.disclaimer.privacyPolicy")}
-                </a>
-                .
-              </div>
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
                   {t("verify.disclaimer.confirm")} <FaArrowRight />
@@ -2705,6 +2748,84 @@ const VerifyPage = () => {
                   {t("verify.disclaimer.cancel")}
                 </ClearBtn>
               </PopupActionRow>
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
+
+      {/* Terms of Service Modal */}
+      {showTermsModal && (
+        <PopupOverlay onClick={() => setShowTermsModal(false)}>
+          <PopupCard
+            style={{
+              maxWidth: 800,
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PopupHeader>
+              <PopupMeta>
+                <div style={{ flex: 1 }}>
+                  <PopupTitle>
+                    {t("verify.disclaimer.termsOfService")}
+                  </PopupTitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowTermsModal(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody style={{ flex: 1, overflow: "auto", maxHeight: "70vh" }}>
+              <div
+                style={{
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: "var(--ec-text)",
+                }}
+                dangerouslySetInnerHTML={{ __html: termsOfService }}
+              />
+            </PopupBody>
+          </PopupCard>
+        </PopupOverlay>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyModal && (
+        <PopupOverlay onClick={() => setShowPrivacyModal(false)}>
+          <PopupCard
+            style={{
+              maxWidth: 800,
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PopupHeader>
+              <PopupMeta>
+                <div style={{ flex: 1 }}>
+                  <PopupTitle>
+                    {t("verify.disclaimer.privacyPolicy")}
+                  </PopupTitle>
+                </div>
+              </PopupMeta>
+              <PopupCloseButton onClick={() => setShowPrivacyModal(false)}>
+                ×
+              </PopupCloseButton>
+            </PopupHeader>
+            <PopupBody style={{ flex: 1, overflow: "auto", maxHeight: "70vh" }}>
+              <div
+                style={{
+                  fontFamily: "Nunito, sans-serif",
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: "var(--ec-text)",
+                }}
+                dangerouslySetInnerHTML={{ __html: privacyPolicy }}
+              />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>

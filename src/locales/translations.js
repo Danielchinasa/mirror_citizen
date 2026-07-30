@@ -155,6 +155,8 @@ const translations = {
     "verify.payment.sampleSub":
       "Here's an example of what your verification result will look like.",
     "verify.payment.verified": "Verified",
+    "verify.payment.agreement": "Agreement",
+    "verify.payment.agreeToTerms": "I agree to the ",
     "verify.processing.title": "Processing Your Verification",
     "verify.processing.subtitle":
       "Please wait while we verify your information. This usually takes less than a minute.",
@@ -580,6 +582,8 @@ const translations = {
     "verify.payment.sampleSub":
       "Huu ni mfano wa jinsi matokeo yako ya uthibitishaji yatakavyokuwa.",
     "verify.payment.verified": "Imethibitishwa",
+    "verify.payment.agreement": "Mkataba",
+    "verify.payment.agreeToTerms": "Ninakubali ",
     "verify.processing.title": "Inachakata Uthibitishaji Wako",
     "verify.processing.subtitle":
       "Tafadhali subiri huku tukithibitisha taarifa zako. Kwa kawaida huchukua chini ya dakika moja.",
