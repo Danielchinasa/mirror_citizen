@@ -58,11 +58,14 @@ import {
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import privacyPolicy from "../../privacyPolicy";
+import privacyPolicyFR from "../../privacyPolicyFR";
 import termsOfService from "../../termsOfService";
+import termsOfServiceFR from "../../termsOfServiceFR";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
+import { useLocale } from "../../components/LocaleProvider";
 import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -2661,6 +2664,9 @@ const DashboardPage = () => {
   const handleClickTerms = () => {
     setIsOpen2(true);
   };
+  const { language } = useLocale();
+  const privacyContentDash = language === "FR" ? privacyPolicyFR : privacyPolicy;
+  const termsContentDash = language === "FR" ? termsOfServiceFR : termsOfService;
 
   const [basicProfileArray, setBasicProfileArray] = useState([]);
   const [businessProfileArray, setBusinessProfileArray] = useState([]);
@@ -5736,7 +5742,7 @@ const DashboardPage = () => {
                         </span>
                       </Checkbox>
                       <Modal
-                        title="Privacy Policy"
+                        title={language === "FR" ? "Politique de confidentialité" : "Privacy Policy"}
                         visible={isOpen}
                         centered
                         // open={open}
@@ -5745,11 +5751,11 @@ const DashboardPage = () => {
                         width={1000}
                       >
                         <div
-                          dangerouslySetInnerHTML={{ __html: privacyPolicy }}
+                          dangerouslySetInnerHTML={{ __html: privacyContentDash }}
                         />
                       </Modal>
                       <Modal
-                        title="Terms of Service"
+                        title={language === "FR" ? "Conditions d'utilisation" : "Terms of Service"}
                         visible={isOpen2}
                         centered
                         // open={open}
@@ -5758,7 +5764,7 @@ const DashboardPage = () => {
                         width={1000}
                       >
                         <div
-                          dangerouslySetInnerHTML={{ __html: termsOfService }}
+                          dangerouslySetInnerHTML={{ __html: termsContentDash }}
                         />
                       </Modal>
                     </strong>

@@ -29,9 +29,11 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../index.css";
 import privacyPolicy from "../../privacyPolicy";
+import privacyPolicyFR from "../../privacyPolicyFR";
 import { Modal } from "antd";
 import Swal from "sweetalert2";
 import { theme } from "antd";
+import { useLocale } from "../../components/LocaleProvider";
 import { useTheme } from "../../components/ThemeProvider";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
@@ -334,6 +336,8 @@ const IndividualSignUp = () => {
   const handleClickPrivacyPolicy = () => {
     setIsOpen(true);
   };
+  const { language } = useLocale();
+  const privacyContentInd = language === "FR" ? privacyPolicyFR : privacyPolicy;
   const [isAccepted, setIsAccepted] = useState(false);
 
   const onChangeIsAccepted = (e) => {
@@ -740,7 +744,7 @@ const IndividualSignUp = () => {
                     </span>
                   </Checkbox>
                   <Modal
-                    title="Privacy Policy"
+                    title={language === "FR" ? "Politique de confidentialité" : "Privacy Policy"}
                     visible={isOpen}
                     centered
                     // open={open}
@@ -748,7 +752,7 @@ const IndividualSignUp = () => {
                     onCancel={() => setIsOpen(false)}
                     width={1000}
                   >
-                    <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                    <div dangerouslySetInnerHTML={{ __html: privacyContentInd }} />
                   </Modal>
                   <MainButtonFull
                     type="primary"

@@ -32,7 +32,9 @@ import { getVerificationConfig } from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
 import termsOfService from "../../termsOfService";
+import termsOfServiceFR from "../../termsOfServiceFR";
 import privacyPolicy from "../../privacyPolicy";
+import privacyPolicyFR from "../../privacyPolicyFR";
 
 import {
   PageWrapper,
@@ -168,6 +170,8 @@ function generateTransactionId() {
 
 const VerifyPage = () => {
   const { language, t } = useLocale();
+  const termsContent = language === "FR" ? termsOfServiceFR : termsOfService;
+  const privacyContent = language === "FR" ? privacyPolicyFR : privacyPolicy;
   const { type } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -2644,9 +2648,9 @@ const VerifyPage = () => {
                   <FaShieldAlt />
                 </PopupIcon>
                 <div>
-                  <PopupTitle>Terms of Service</PopupTitle>
+                  <PopupTitle>{t("termsOfService.title")}</PopupTitle>
                   <PopupSubtitle>
-                    Please read the terms carefully before proceeding.
+                    {language === "FR" ? "Veuillez lire les conditions attentivement avant de continuer." : "Please read the terms carefully before proceeding."}
                   </PopupSubtitle>
                 </div>
               </PopupMeta>
@@ -2665,7 +2669,7 @@ const VerifyPage = () => {
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+              <div dangerouslySetInnerHTML={{ __html: termsContent }} />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>
@@ -2686,9 +2690,9 @@ const VerifyPage = () => {
                   <FaShieldAlt />
                 </PopupIcon>
                 <div>
-                  <PopupTitle>Privacy Policy</PopupTitle>
+                  <PopupTitle>{t("privacyPolicy.title")}</PopupTitle>
                   <PopupSubtitle>
-                    How we collect, use, and protect your personal data.
+                    {language === "FR" ? "Comment nous collectons, utilisons et protégeons vos données personnelles." : "How we collect, use, and protect your personal data."}
                   </PopupSubtitle>
                 </div>
               </PopupMeta>
@@ -2707,7 +2711,7 @@ const VerifyPage = () => {
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+              <div dangerouslySetInnerHTML={{ __html: privacyContent }} />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>

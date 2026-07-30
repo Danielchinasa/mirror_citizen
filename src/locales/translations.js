@@ -217,6 +217,9 @@ const translations = {
     "sample.vehicle.theftStatus": "Statut de vol / surveillance",
     "sample.vehicle.clear": "CLAIR",
 
+    "termsOfService.title": "Conditions d'utilisation",
+    "privacyPolicy.title": "Politique de confidentialité",
+
     /* ── CTA Sections ── */
     "cta.nin.title": "Prêt à vérifier votre NNI ?",
     "cta.nin.desc": "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification d'identité rapide, précise et sécurisée.",
@@ -570,6 +573,9 @@ const translations = {
     "sample.vehicle.noRecords": "No major records found",
     "sample.vehicle.theftStatus": "Theft / Watchlist Status",
     "sample.vehicle.clear": "CLEAR",
+
+    "termsOfService.title": "Terms of Service",
+    "privacyPolicy.title": "Privacy Policy",
 
     /* ── CTA Sections ── */
     "cta.nin.title": "Ready to verify your NNI?",

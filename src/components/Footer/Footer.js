@@ -31,7 +31,9 @@ import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import { Modal } from "antd";
 import privacyPolicy from "../../privacyPolicy";
+import privacyPolicyFR from "../../privacyPolicyFR";
 import termsOfService from "../../termsOfService";
+import termsOfServiceFR from "../../termsOfServiceFR";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa6";
@@ -41,7 +43,9 @@ function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const { isDark } = useTheme();
-  const { t } = useLocale();
+  const { language, t } = useLocale();
+  const privacyContent = language === "FR" ? privacyPolicyFR : privacyPolicy;
+  const termsContent = language === "FR" ? termsOfServiceFR : termsOfService;
 
   return (
     <>
@@ -153,24 +157,24 @@ function Footer() {
         </FooterInner>
 
         <Modal
-          title="Privacy Policy"
+          title={t("privacyPolicy.title")}
           visible={isOpen}
           centered
           onOk={() => setIsOpen(false)}
           onCancel={() => setIsOpen(false)}
           width={1000}
         >
-          <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+          <div dangerouslySetInnerHTML={{ __html: privacyContent }} />
         </Modal>
         <Modal
-          title="Terms of Service"
+          title={t("termsOfService.title")}
           visible={isOpen2}
           centered
           onOk={() => setIsOpen2(false)}
           onCancel={() => setIsOpen2(false)}
           width={1000}
         >
-          <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+          <div dangerouslySetInnerHTML={{ __html: termsContent }} />
         </Modal>
       </FooterWrapper>
     </>

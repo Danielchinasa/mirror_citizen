@@ -28,10 +28,13 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../index.css";
 import privacyPolicy from "../../privacyPolicy";
+import privacyPolicyFR from "../../privacyPolicyFR";
 import { Modal } from "antd";
 import Swal from "sweetalert2";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../../components/LocaleProvider";
+
 const { useToken } = theme;
 const { Title } = Typography;
 
@@ -324,13 +327,10 @@ const BusinessSignUp2 = () => {
   };
   const [isOpen, setIsOpen] = useState(false);
   const handleClickPrivacyPolicy = () => {
-    // Import the PDF file using require
-    // const pdf = require("../../images/e_citizen_Data_Protection_and_Privacy_Policy_FINAL.pdf");
-
-    // // Open the PDF in a new tab
-    // window.open(pdf, "_blank");
     setIsOpen(true);
   };
+  const { language } = useLocale();
+  const privacyContentBiz = language === "FR" ? privacyPolicyFR : privacyPolicy;
 
   const [isAccepted, setIsAccepted] = useState(false);
 
@@ -550,7 +550,7 @@ const BusinessSignUp2 = () => {
                     </span>
                   </Checkbox>
                   <Modal
-                    title="Privacy Policy"
+                    title={language === "FR" ? "Politique de confidentialité" : "Privacy Policy"}
                     visible={isOpen}
                     centered
                     // open={open}
@@ -558,7 +558,7 @@ const BusinessSignUp2 = () => {
                     onCancel={() => setIsOpen(false)}
                     width={1000}
                   >
-                    <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+                    <div dangerouslySetInnerHTML={{ __html: privacyContentBiz }} />
                   </Modal>
                   <MainButtonFull
                     type="primary"
