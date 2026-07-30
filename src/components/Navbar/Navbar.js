@@ -130,8 +130,16 @@ function Navbar() {
     setLanguage(language);
   };
 
+  const handleMenuClick = (e) => {
+    if (e.key === "lang-fr") {
+      handleLanguageChange("FR");
+    } else if (e.key === "lang-en") {
+      handleLanguageChange("EN");
+    }
+  };
+
   const menu = (
-    <Menu>
+    <Menu onClick={handleMenuClick}>
       <Menu.Item key="profile" onClick={closeMobileMenu}>
         <Link to="/profile" style={{ textDecoration: "none" }}>
           {t("nav.myProfile")}
@@ -141,31 +149,11 @@ function Navbar() {
       <Menu.Divider />
 
       <Menu.SubMenu key="language" title={t("nav.language")}>
-        <Menu.Item
-          key="fr"
-          onClick={() => {
-            handleLanguageChange("FR");
-            closeMobileMenu();
-          }}
-        >
-          FR
-        </Menu.Item>
-        <Menu.Item
-          key="en"
-          onClick={() => {
-            handleLanguageChange("EN");
-            closeMobileMenu();
-          }}
-        >
-          EN
-        </Menu.Item>
+        <Menu.Item key="lang-fr">FR</Menu.Item>
+        <Menu.Item key="lang-en">EN</Menu.Item>
       </Menu.SubMenu>
 
       <Menu.SubMenu key="country" title={t("nav.country")}>
-        <Menu.Item key="country-ci" onClick={closeMobileMenu}>
-          <span style={{ marginRight: 8 }}>🇨🇮</span>
-          Côte d'Ivoire
-        </Menu.Item>
         <Menu.Item key="country-nigeria">
           <a
             href="https://e-citizen.ng"

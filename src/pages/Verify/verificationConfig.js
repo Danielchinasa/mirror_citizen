@@ -401,4 +401,81 @@ const verificationConfig = {
   },
 };
 
+// Service-specific copy used to live directly in the config above.  Keep the
+// service metadata there, but overlay the display copy for the selected locale
+// so a language change re-renders the entire verification experience.
+const localizedContent = {
+  EN: {
+    nin: {
+      heroTitle: "Verify your",
+      heroHighlight: "National Identity Card",
+      heroSubtitle: "Enter the details, pay securely, and get accurate results instantly.",
+      breadcrumb: ["Verify Identity", "National ID Verification"],
+      idTypeLabel: "National Identity Number (NNI)",
+      fields: {
+        idNumber: { label: "NNI Number", placeholder: "Enter NNI number" },
+        subjectPhone: { label: "Subject contact (for consent)", placeholder: "Enter the subject's phone number" },
+        subjectEmail: { label: "Subject email (for consent)", placeholder: "Enter the subject's email address" },
+      },
+      youWillGet: ["Full personal details", "Photo", "Next-of-kin details", "Verification status", "Instant results"],
+      sampleResult: { identifier: "NNI: CI-1234567890", tags: ["Full name", "Photo", "Date of birth", "And more..."] },
+      serviceName: "National ID (NNI) Verification",
+      trustBar: [["Secure & Private", "Your data is protected"], ["Instant Results", "Results in seconds"], ["Trusted Platform", "Compliant with regulations"], ["500,000+ Users", "Trust e-citoyen"]],
+    },
+    vehicle: {
+      heroTitle: "Verify",
+      heroHighlight: "Vehicle History",
+      heroSubtitle: "Verify a vehicle by VIN to reduce fraud and make safer buying decisions.",
+      breadcrumb: ["Verify Vehicle", "VIN Verification"],
+      idTypeLabel: "Vehicle Identification Number (VIN)",
+      fields: { idNumber: { label: "VIN (Vehicle Identification Number)", placeholder: "Enter VIN" } },
+      youWillGet: ["Vehicle details", "Ownership history", "Stolen/watch-list status", "Verification status", "Instant results"],
+      sampleResult: { tags: ["Make/Model", "Ownership", "Status", "And more..."] },
+      serviceName: "VIN Verification",
+      trustBar: [["Secure & Private", "Your data is protected"], ["Instant Results", "Results in seconds"], ["Trusted Platform", "Compliant with regulations"], ["500,000+ Users", "Trust e-citoyen"]],
+    },
+    resident: {
+      heroTitle: "Verify your",
+      heroHighlight: "Resident Card",
+      heroSubtitle: "Enter resident card details, pay securely, and get results instantly.",
+      breadcrumb: ["Verify Identity", "Resident Card"],
+      idTypeLabel: "Resident Card",
+      fields: {
+        idNumber: { label: "Resident ID", placeholder: "Enter resident ID number" },
+        subjectPhone: { label: "Subject contact (for consent)", placeholder: "Enter the subject's phone number" },
+        subjectEmail: { label: "Subject email (for consent)", placeholder: "Enter the subject's email address" },
+      },
+      youWillGet: ["Personal details", "Card details", "Verification status", "Instant results"],
+      sampleResult: { identifier: "Card: CI-RES-12345", tags: ["Full name", "Card number", "Status", "And more..."] },
+      serviceName: "Resident Card Verification",
+      trustBar: [["Secure & Private", "Your data is protected"], ["Instant Results", "Results in seconds"], ["Trusted Platform", "Compliant with regulations"], ["500,000+ Users", "Trust e-citoyen"]],
+    },
+  },
+};
+
+export const getVerificationConfig = (type, language) => {
+  const config = verificationConfig[type];
+  const content = localizedContent[language]?.[type];
+  if (!config || !content) return config;
+
+  return {
+    ...config,
+    ...content,
+    fields: config.fields.map((field) => ({
+      ...field,
+      ...(content.fields?.[field.name] || {}),
+    })),
+    youWillGet: config.youWillGet.map((item, index) => ({
+      ...item,
+      text: content.youWillGet?.[index] || item.text,
+    })),
+    sampleResult: { ...config.sampleResult, ...content.sampleResult },
+    trustBar: config.trustBar.map((item, index) => ({
+      ...item,
+      title: content.trustBar?.[index]?.[0] || item.title,
+      desc: content.trustBar?.[index]?.[1] || item.desc,
+    })),
+  };
+};
+
 export default verificationConfig;
