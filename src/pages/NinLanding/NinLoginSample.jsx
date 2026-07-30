@@ -179,7 +179,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -219,7 +219,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -276,7 +276,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid var(--ec-border);
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -295,7 +295,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #DD0201;
+    color: #dd0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -340,8 +340,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: var(--ec-bg-card);
-  border: 1px solid #DD0201;
-  color: #DD0201;
+  border: 1px solid #dd0201;
+  color: #dd0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -426,7 +426,7 @@ const ResultValue = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -739,9 +739,7 @@ const NinLoginSample = () => {
             </SpinnerOverlay>
           )}
           <LoginCardTitle>{t("ninLogin.title")}</LoginCardTitle>
-          <LoginCardSub>
-            {t("ninLogin.subtitle")}
-          </LoginCardSub>
+          <LoginCardSub>{t("ninLogin.subtitle")}</LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
               <SSOCol>
@@ -768,7 +766,8 @@ const NinLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> {t("ninLogin.continueWithFacebook")}
+                      <FaFacebook color="#1877F2" />{" "}
+                      {t("ninLogin.continueWithFacebook")}
                     </SSOButton>
                   )}
                 />
@@ -836,7 +835,9 @@ const NinLoginSample = () => {
                 </LoginBtn>
                 <RegisterText>
                   {t("ninLogin.noAccount")}{" "}
-                  <Link to="/individual/sign-up/1">{t("ninLogin.registerHere")}</Link>
+                  <Link to="/individual/sign-up/1">
+                    {t("ninLogin.registerHere")}
+                  </Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -849,19 +850,13 @@ const NinLoginSample = () => {
             <SampleCardTitle>{t("landing.sampleResult")}</SampleCardTitle>
             <SampleBadge>{t("ninLogin.sampleBadge")}</SampleBadge>
           </SampleHeader>
-          <SampleCardSub>
-            {t("ninLogin.sampleSubtitle")}
-          </SampleCardSub>
+          <SampleCardSub>{t("ninLogin.sampleSubtitle")}</SampleCardSub>
           <ResultCard>
             <ResultTop>
               <ResultPhoto>
                 <img src={ninSampleAvatar} alt="Sample person" />
               </ResultPhoto>
               <ResultGrid>
-                <ResultField>
-                  <ResultLabel>{t("ninLogin.fieldFullName")}</ResultLabel>
-                  <ResultValue>KASIBANTE JOAN NAKATO</ResultValue>
-                </ResultField>
                 <ResultField>
                   <ResultLabel>{t("ninLogin.fieldPhoneNumber")}</ResultLabel>
                   <ResultValue>0803 *** 5678</ResultValue>
@@ -871,7 +866,9 @@ const NinLoginSample = () => {
                   <ResultValue>UG-NID-4582-7819-2043</ResultValue>
                 </ResultField>
                 <ResultField>
-                  <ResultLabel>{t("ninLogin.fieldVerificationStatus")}</ResultLabel>
+                  <ResultLabel>
+                    {t("ninLogin.fieldVerificationStatus")}
+                  </ResultLabel>
                   <VerifiedBadge>
                     {t("ninLogin.verified")} <FaCheckCircle />
                   </VerifiedBadge>
