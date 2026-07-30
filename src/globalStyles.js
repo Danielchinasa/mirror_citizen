@@ -41,6 +41,15 @@ body {
 a {
   cursor: pointer;
 }
+
+/* eBanqo renders its greeting prompt in the host document (outside its chat
+   iframe). The prompt keeps a white background, so it must not inherit the
+   light foreground colour used by the site's dark theme. */
+.initial-prompt-message-wrapper .initial-prompt-message,
+.initial-prompt-message-wrapper .client-bot-message-container,
+.initial-prompt-message-wrapper .client-bot-message-container > p {
+  color: #1a1a1a !important;
+}
 `;
 
 export const DynamicCollapse = styled(Collapse)`
