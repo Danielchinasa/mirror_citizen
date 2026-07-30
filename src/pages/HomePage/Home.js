@@ -327,7 +327,7 @@ const Home = () => {
           <HeroContent>
             <HeroTag>FAST. SECURE. TRUSTED.</HeroTag>
             <HeroTitle>
-              Choose the verification you need.{" "}
+              Choose the verification you need. Get trusted results{" "}
               <span
                 style={{
                   color: "#09c93a",
@@ -336,7 +336,7 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                Get trusted results in seconds.
+                in seconds.
               </span>
             </HeroTitle>
             <HeroSubtitle>

@@ -49,11 +49,8 @@ const FinancialHero = () => {
           <HeroContent>
             <HeroTag>CREDIT PROFILE</HeroTag>
             <HeroTitle>
-              Check your
-              <br />
-              <span>credit profile</span>
-              <br />
-              in seconds
+              Check your credit profile
+              <span> in seconds</span>
             </HeroTitle>
             <HeroSubtitle>
               Access a fast, secure BVN-based credit profile to support lending,
@@ -67,9 +64,9 @@ const FinancialHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadge>
+            {/* <PriceBadge>
               From <span>{getPrice(4) || "₦1,500"}</span> per report
-            </PriceBadge>
+            </PriceBadge> */}
           </HeroContent>
         </HeroContainer>
       </HeroSectionWrapper>
