@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, DatePicker } from "antd";
 import dayjs from "dayjs";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { apiPost } from "../../apiUtils";
 
 const Page = styled.main`
@@ -53,6 +56,8 @@ const Code = styled.span`
 const getCode = (search) => new URLSearchParams(search).get("code") || "";
 
 function EmailConsentFeedback({ match, location }) {
+  const history = useHistory();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const action = match.params.action;
   const code = getCode(location.search);
   const isDecline = action === "decline";
@@ -60,6 +65,16 @@ function EmailConsentFeedback({ match, location }) {
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isDecline || !code) return;
+
+    apiPost("/africa/consent/respond", { code, decision: "DECLINE" }).catch(
+      (requestError) => {
+        console.error("Unable to record declined consent:", requestError);
+      },
+    );
+  }, [code, isDecline]);
 
   const submitApproval = async (event) => {
     event.preventDefault();
@@ -77,12 +92,21 @@ function EmailConsentFeedback({ match, location }) {
 
     setStatus("submitting");
     try {
-      await apiPost("/verification/consent-response", {
+      const response = await apiPost("/africa/consent/respond", {
         code,
-        decision: "approved",
+        decision: "ACCEPT",
         dateOfBirth: dateOfBirth.format("YYYY-MM-DD"),
       });
-      setStatus("complete");
+      await Swal.fire({
+        icon: response.status === "DOB_MISMATCH" ? "warning" : "success",
+        title:
+          response.status === "DOB_MISMATCH"
+            ? "Date of birth does not match"
+            : "Consent response received",
+        text: response.message || "Your consent response has been recorded.",
+        confirmButtonColor: "#DD0201",
+      });
+      history.push(isAuthenticated ? "/dashboard" : "/");
     } catch (requestError) {
       setError(
         "We could not confirm your date of birth. Check it and try again.",
