@@ -106,7 +106,7 @@ function EmailConsentFeedback({ match, location }) {
         text: response.message || "Your consent response has been recorded.",
         confirmButtonColor: "#DD0201",
       });
-      history.push(isAuthenticated ? "/dashboard" : "/");
+      history.push(isAuthenticated ? "/main-dashboard" : "/");
     } catch (requestError) {
       setError(
         "We could not confirm your date of birth. Check it and try again.",
