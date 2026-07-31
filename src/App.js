@@ -18,6 +18,7 @@ import ContactPage from "./pages/Contact/contactPage";
 import DashboardPage from "./pages/dashboard/dashboardPage";
 import Disclaimer from "./pages/disclaimer/disclaimer";
 import Consent from "./pages/consent/consent";
+import EmailConsentFeedback from "./pages/consent/EmailConsentFeedback";
 import Result from "./pages/result/result";
 import PremblyNinResult from "./pages/result/premblyNinResult";
 import SearchExtensionResult from "./pages/result/searchExtensionResult";
@@ -183,10 +184,9 @@ function App() {
                 },
                 {
                   title: "More information",
-                  description:
-                    `Please feel free to <a href="${withBasePath(
-                      "/contact",
-                    )}">contact us</a> for any inquiries regarding our cookie policy and your options.`,
+                  description: `Please feel free to <a href="${withBasePath(
+                    "/contact",
+                  )}">contact us</a> for any inquiries regarding our cookie policy and your options.`,
                 },
               ],
             },
@@ -229,6 +229,11 @@ function AppContent() {
       <Navbar />
 
       <Switch>
+        <Route
+          path="/consent/email/:action"
+          exact
+          component={EmailConsentFeedback}
+        />
         <Route path="/nin-verification" exact component={NinVerificationPage} />
         <Route
           path="/card-verification"
