@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import ndprImg from "../../images/ndpr.png";
-import gdprImg from "../../images/gdpr.jpg";
-import mosipImg from "../../images/mosip.jpg";
+import gdprImg from "../../images/gdpr.png";
+import mosipImg from "../../images/mosip.png";
 
 /* ══════════════════════════════════════════
    Styled Components
@@ -89,9 +89,8 @@ const ComplianceBadge = styled.div`
    ══════════════════════════════════════════ */
 
 const DEFAULT_LOGOS = [
-  { src: ndprImg, alt: "NDPC" },
-  { src: gdprImg, alt: "GDPR", style: { maxHeight: 48 } },
-  { src: mosipImg, alt: "MOSIP", style: { maxHeight: 48 } },
+  { src: gdprImg, alt: "GDPR", style: { maxHeight: 58 } },
+  { src: mosipImg, alt: "MOSIP", style: { maxHeight: 58 } },
 ];
 
 /* ══════════════════════════════════════════
