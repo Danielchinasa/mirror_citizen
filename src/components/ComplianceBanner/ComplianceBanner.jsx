@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useLocale } from "../LocaleProvider";
 import ndprImg from "../../images/ndpr.png";
-import gdprImg from "../../images/gdpr.jpg";
-import mosipImg from "../../images/mosip.jpg";
+import gdprImg from "../../images/gdpr.png";
+import mosipImg from "../../images/mosip.png";
 
 const Wrapper = styled.section`
   padding: 24px 50px;
@@ -89,13 +89,10 @@ const ComplianceBanner = () => {
         </TextGroup>
         <LogosRow>
           <Badge>
-            <img src={ndprImg} alt="NDPC" />
+            <img src={gdprImg} alt="GDPR" style={{ maxHeight: 58 }} />
           </Badge>
           <Badge>
-            <img src={gdprImg} alt="GDPR" />
-          </Badge>
-          <Badge>
-            <img src={mosipImg} alt="MOSIP" />
+            <img src={mosipImg} alt="MOSIP" style={{ maxHeight: 58 }} />
           </Badge>
         </LogosRow>
       </Inner>
