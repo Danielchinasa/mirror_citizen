@@ -79,9 +79,7 @@ const NinHero = () => {
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
-                {isSw
-                  ? "Thibitisha National ID Sasa"
-                  : "Verify National ID Now"}{" "}
+                {isSw ? "Thibitisha National ID" : "Verify National ID"}{" "}
                 <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#" onClick={openSampleResult}>

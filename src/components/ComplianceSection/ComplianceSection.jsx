@@ -10,8 +10,8 @@ import {
 } from "../../pages/HomePage/HomePage.elements";
 
 import ndprImg from "../../images/ndpr.png";
-import gdprImg from "../../images/gdpr.jpg";
-import mosipImg from "../../images/mosip.jpg";
+import gdprImg from "../../images/gdpr.png";
+import mosipImg from "../../images/mosip.png";
 
 const ComplianceSection = ({ isSw }) => {
   return (
@@ -30,14 +30,14 @@ const ComplianceSection = ({ isSw }) => {
           </ComplianceDesc>
         </ComplianceText>
         <ComplianceLogos>
-          <ComplianceBadge>
+          {/* <ComplianceBadge>
             <img src={ndprImg} alt="NDPC" />
+          </ComplianceBadge> */}
+          <ComplianceBadge>
+            <img src={gdprImg} alt="NCMC" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
           <ComplianceBadge>
-            <img src={gdprImg} alt="NCMC" style={{ maxHeight: 48 }} />
-          </ComplianceBadge>
-          <ComplianceBadge>
-            <img src={mosipImg} alt="OSIA" style={{ maxHeight: 48 }} />
+            <img src={mosipImg} alt="OSIA" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
         </ComplianceLogos>
       </ComplianceInner>
