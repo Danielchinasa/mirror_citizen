@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import ndprImg from "../../images/ndpr.png";
-import gdprImg from "../../images/gdpr.jpg";
-import mosipImg from "../../images/mosip.jpg";
+import gdprImg from "../../images/gdpr.png";
+import mosipImg from "../../images/mosip.png";
 import { useLocale } from "../LocaleProvider";
 
 /* ── Styled components (matching HomePage.elements) ── */
@@ -93,13 +93,10 @@ const ComplianceSection = () => {
         </Text>
         <Logos>
           <Badge>
-            <img src={ndprImg} alt="NDPC" />
+            <img src={gdprImg} alt="GDPR" style={{ maxHeight: 58 }} />
           </Badge>
           <Badge>
-            <img src={gdprImg} alt="GDPR" />
-          </Badge>
-          <Badge>
-            <img src={mosipImg} alt="MOSIP" style={{ maxHeight: 48 }} />
+            <img src={mosipImg} alt="MOSIP" style={{ maxHeight: 58 }} />
           </Badge>
         </Logos>
       </Inner>
