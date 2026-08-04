@@ -493,7 +493,7 @@ const MainDashboard = () => {
       },
     },
     {
-      title: "Search Parameter (Value)",
+      title: "Selected Profile",
       dataIndex: "searchParameter",
       key: "searchParameter",
       filters: [
@@ -606,35 +606,35 @@ const MainDashboard = () => {
         return <span style={{ color }}>{capitalizedText}</span>;
       },
     },
-    {
-      title: "Selected Profile",
-      dataIndex: "type",
-      key: "type",
-      // sorter: (a, b) => a.type - b.type,
-      filters: [
-        {
-          text: "Basic Profile",
-          value: "Basic Profile",
-        },
-        {
-          text: "Business Profile",
-          value: "Business Profile",
-        },
-        {
-          text: "Search-Extension",
-          value: "Search-Extension",
-        },
-        {
-          text: "Financial Profile",
-          value: "Financial Profile",
-        },
-        {
-          text: "Vehicle Profile",
-          value: "Vehicle Profile",
-        },
-      ],
-      onFilter: (value, record) => record.type.indexOf(value) === 0,
-    },
+    // {
+    //   title: "Selected Profile",
+    //   dataIndex: "type",
+    //   key: "type",
+    //   // sorter: (a, b) => a.type - b.type,
+    //   filters: [
+    //     {
+    //       text: "Basic Profile",
+    //       value: "Basic Profile",
+    //     },
+    //     {
+    //       text: "Business Profile",
+    //       value: "Business Profile",
+    //     },
+    //     {
+    //       text: "Search-Extension",
+    //       value: "Search-Extension",
+    //     },
+    //     {
+    //       text: "Financial Profile",
+    //       value: "Financial Profile",
+    //     },
+    //     {
+    //       text: "Vehicle Profile",
+    //       value: "Vehicle Profile",
+    //     },
+    //   ],
+    //   onFilter: (value, record) => record.type.indexOf(value) === 0,
+    // },
 
     {
       title: "Action",
