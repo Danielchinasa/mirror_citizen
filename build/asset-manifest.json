@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/ke/static/css/main.6d8116c5.chunk.css",
-    "main.js": "/ke/static/js/main.d390203e.chunk.js",
-    "main.js.map": "/ke/static/js/main.d390203e.chunk.js.map",
+    "main.js": "/ke/static/js/main.cc60f8a6.chunk.js",
+    "main.js.map": "/ke/static/js/main.cc60f8a6.chunk.js.map",
     "runtime-main.js": "/ke/static/js/runtime-main.14139af6.js",
     "runtime-main.js.map": "/ke/static/js/runtime-main.14139af6.js.map",
     "static/css/2.ec61a722.chunk.css": "/ke/static/css/2.ec61a722.chunk.css",
-    "static/js/2.21430540.chunk.js": "/ke/static/js/2.21430540.chunk.js",
-    "static/js/2.21430540.chunk.js.map": "/ke/static/js/2.21430540.chunk.js.map",
+    "static/js/2.fdf73143.chunk.js": "/ke/static/js/2.fdf73143.chunk.js",
+    "static/js/2.fdf73143.chunk.js.map": "/ke/static/js/2.fdf73143.chunk.js.map",
     "index.html": "/ke/index.html",
-    "precache-manifest.957cf9b9284945ff4e1a49dbae475630.js": "/ke/precache-manifest.957cf9b9284945ff4e1a49dbae475630.js",
+    "precache-manifest.a83e19261a38937689533a9909e3c850.js": "/ke/precache-manifest.a83e19261a38937689533a9909e3c850.js",
     "service-worker.js": "/ke/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/ke/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.6d8116c5.chunk.css.map": "/ke/static/css/main.6d8116c5.chunk.css.map",
-    "static/js/2.21430540.chunk.js.LICENSE.txt": "/ke/static/js/2.21430540.chunk.js.LICENSE.txt",
+    "static/js/2.fdf73143.chunk.js.LICENSE.txt": "/ke/static/js/2.fdf73143.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/ke/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/ke/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/ke/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -25,7 +25,7 @@
     "static/media/credit_profile.png": "/ke/static/media/credit_profile.48765e5d.png",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/ke/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/flutterwave-logos-white.png": "/ke/static/media/flutterwave-logos-white.877be0eb.png",
-    "static/media/gdpr.jpg": "/ke/static/media/gdpr.54200db0.jpg",
+    "static/media/gdpr.png": "/ke/static/media/gdpr.9b35ecbd.png",
     "static/media/google-logo.svg": "/ke/static/media/google-logo.45aebcf8.svg",
     "static/media/icon_paystack.png": "/ke/static/media/icon_paystack.769ee98d.png",
     "static/media/individual.svg": "/ke/static/media/individual.6bec09d4.svg",
@@ -35,7 +35,7 @@
     "static/media/kenya_logo.png": "/ke/static/media/kenya_logo.f24390c2.png",
     "static/media/kenya_vehicle.png": "/ke/static/media/kenya_vehicle.c8c431f4.png",
     "static/media/lady.svg": "/ke/static/media/lady.82ff32ba.svg",
-    "static/media/mosip.jpg": "/ke/static/media/mosip.a0dd1cfe.jpg",
+    "static/media/mosip.png": "/ke/static/media/mosip.5c362e0c.png",
     "static/media/ndpr.png": "/ke/static/media/ndpr.411010b5.png",
     "static/media/nidologo.png": "/ke/static/media/nidologo.c6aae41a.png",
     "static/media/paypal.png": "/ke/static/media/paypal.db850f0f.png",
@@ -51,8 +51,8 @@
   "entrypoints": [
     "static/js/runtime-main.14139af6.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.21430540.chunk.js",
+    "static/js/2.fdf73143.chunk.js",
     "static/css/main.6d8116c5.chunk.css",
-    "static/js/main.d390203e.chunk.js"
+    "static/js/main.cc60f8a6.chunk.js"
   ]
 }

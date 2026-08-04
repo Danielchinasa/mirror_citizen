@@ -28,8 +28,9 @@ import {
   PublicMobileLink,
   PublicMobileAnchor,
   PublicDesktopOnly,
+  PublicBackButton,
 } from "./Navbar.elements";
-import { FaTimes, FaBars } from "react-icons/fa";
+import { FaTimes, FaBars, FaArrowLeft } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
@@ -37,7 +38,7 @@ import Logo from "../../images/kenya_logo.png";
 import LogoWhite from "../../images/kenya_dark.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Flex, Modal, Radio, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, fetchUserProfile } from "../../redux/actions";
@@ -64,6 +65,7 @@ const { Title } = Typography;
 
 function Navbar() {
   const history = useHistory();
+  const location = useLocation();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const dispatch = useDispatch();
@@ -116,6 +118,17 @@ function Navbar() {
     dispatch(logout());
     history.push("/");
   };
+
+  const handleGoBack = () => {
+    if (history.length > 1) {
+      history.goBack();
+      return;
+    }
+
+    history.push("/");
+  };
+
+  const isVerificationLogin = location.pathname === "/verification-login";
 
   const items = [
     // {
@@ -979,6 +992,17 @@ function Navbar() {
             </PublicCenter>
 
             <PublicActions>
+              {isVerificationLogin && (
+                <PublicBackButton
+                  type="button"
+                  onClick={handleGoBack}
+                  aria-label={isSw ? "Rudi" : "Go Back"}
+                  title={isSw ? "Rudi" : "Go Back"}
+                >
+                  <FaArrowLeft aria-hidden="true" />
+                  <span>{isSw ? "Rudi" : "Go Back"}</span>
+                </PublicBackButton>
+              )}
               <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
                 <CountryPill type="button" aria-label="Select country">
                   <span className="flag" role="img" aria-label="Kenya flag">
