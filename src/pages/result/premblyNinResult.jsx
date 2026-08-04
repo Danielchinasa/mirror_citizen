@@ -18,6 +18,7 @@ import { AiOutlineFieldNumber } from "react-icons/ai";
 import Swal from "sweetalert2";
 import { apiGetInternalCall } from "../../apiUtils";
 import styled from "styled-components";
+import { useLocale } from "../../components/LocaleProvider";
 
 /* ── Styled components ───────────────────────────────────────────── */
 
@@ -230,6 +231,7 @@ const PremblyNinResult = () => {
   const history = useHistory();
   const tokenExpire = user?.expirationDate || "";
 
+  const { t } = useLocale();
   const { token } = theme.useToken();
 
   const [loading, setLoading] = useState(true);
@@ -262,8 +264,8 @@ const PremblyNinResult = () => {
         if (payload.consent === "pending") {
           setLoading(true);
           Swal.fire({
-            title: "Awaiting Consent",
-            text: "The data subject has not yet granted consent.",
+            title: t("verify.consent.title"),
+            text: t("ninResult.awaitingConsentMsg"),
             icon: "info",
             didOpen: () => Swal.showLoading(),
           });
@@ -297,8 +299,8 @@ const PremblyNinResult = () => {
         console.error("Error fetching result:", error);
         setLoading(false);
         Swal.fire({
-          title: "Error",
-          text: "Could not load verification result.",
+          title: t("common.error"),
+          text: t("ninResult.errorLoadResult"),
           icon: "error",
           confirmButtonColor: "#FED001",
         });
@@ -325,10 +327,10 @@ const PremblyNinResult = () => {
     <PageWrapper $bg={token.bgContainer}>
       <Inner>
         <BackLink to="/main-dashboard">
-          <FaArrowLeft /> Back to Dashboard
+          <FaArrowLeft /> {t("ninResult.backToDashboard")}
         </BackLink>
 
-        <Spin spinning={loading} tip="Loading result...">
+        <Spin spinning={loading} tip={t("ninResult.loading")}>
           <ResultCard>
             {/* ── Header ── */}
             <CardHeader>
@@ -337,22 +339,24 @@ const PremblyNinResult = () => {
               </HeaderIcon>
               <HeaderText>
                 <HeaderSub>
-                  {meta?.resultText || "Identity Verification Result"}
+                  {meta?.resultText || t("ninResult.title")}
                 </HeaderSub>
                 <MetaRow>
                   {meta?.countryCode && (
-                    <MetaChip>Country: {meta.countryCode}</MetaChip>
+                    <MetaChip>
+                      {t("ninResult.country")}: {meta.countryCode}
+                    </MetaChip>
                   )}
                 </MetaRow>
               </HeaderText>
               <StatusBadge $success={isVerified}>
                 {isVerified ? (
                   <>
-                    <FaCheckCircle /> Verified
+                    <FaCheckCircle /> {t("ninResult.verified")}
                   </>
                 ) : (
                   <>
-                    <FaTimesCircle /> Not Verified
+                    <FaTimesCircle /> {t("ninResult.notVerified")}
                   </>
                 )}
               </StatusBadge>
@@ -363,17 +367,25 @@ const PremblyNinResult = () => {
               {/* Personal Details */}
               <SectionTitle>
                 <FaRegUser />
-                Personal Details
+                {t("ninResult.personalDetails")}
               </SectionTitle>
               <Grid>
-                {field(<FaRegUser />, "Full Name", result?.fullName, true)}
-                {field(<FaRegUser />, "First Name", result?.firstName)}
-                {field(<FaRegUser />, "Last Name", result?.lastName)}
-                {field(<FaRestroom />, "Gender", result?.gender)}
-                {field(<FaCalendarAlt />, "Date of Birth", result?.dateOfBirth)}
-                {field(<AiOutlineFieldNumber />, "ID Number", result?.idNumber)}
-                {field(<FaIdCard />, "ID Type", result?.idType)}
-                {field(<FaGlobe />, "Country", result?.country)}
+                {field(<FaRegUser />, t("sample.fullName"), result?.fullName, true)}
+                {field(<FaRegUser />, t("sample.firstName"), result?.firstName)}
+                {field(<FaRegUser />, t("ninResult.lastName"), result?.lastName)}
+                {field(<FaRestroom />, t("sample.gender"), result?.gender)}
+                {field(
+                  <FaCalendarAlt />,
+                  t("sample.dateOfBirth"),
+                  result?.dateOfBirth,
+                )}
+                {field(
+                  <AiOutlineFieldNumber />,
+                  t("ninResult.idNumber"),
+                  result?.idNumber,
+                )}
+                {field(<FaIdCard />, t("verify.search.idType"), result?.idType)}
+                {field(<FaGlobe />, t("ninResult.country"), result?.country)}
               </Grid>
 
               <Divider style={{ margin: "4px 0 24px" }} />
@@ -381,16 +393,18 @@ const PremblyNinResult = () => {
               {/* Session info */}
               {meta?.sessionId && (
                 <>
-                  <SectionTitle>Session Info</SectionTitle>
+                  <SectionTitle>{t("ninResult.sessionInfo")}</SectionTitle>
                   <Grid>
-                    {field(null, "Session ID", meta.sessionId)}
-                    {field(null, "Consent Status", meta.consent)}
+                    {field(null, t("ninResult.sessionId"), meta.sessionId)}
+                    {field(null, t("ninResult.consentStatus"), meta.consent)}
                   </Grid>
                   <Divider style={{ margin: "4px 0 24px" }} />
                 </>
               )}
 
-              <DashboardBtn to="/main-dashboard">Go to Dashboard</DashboardBtn>
+              <DashboardBtn to="/main-dashboard">
+                {t("verify.result.goToDashboard")}
+              </DashboardBtn>
             </CardBody>
           </ResultCard>
         </Spin>

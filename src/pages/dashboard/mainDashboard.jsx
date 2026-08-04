@@ -45,6 +45,7 @@ import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
 import { absoluteAppUrl } from "../../routing";
+import { useLocale } from "../../components/LocaleProvider";
 const { Title } = Typography;
 
 const data = [
@@ -90,6 +91,8 @@ const MainDashboard = () => {
   const userPhone = user?.phone || "";
   const userNin = user?.nin || "";
   const userCurrency = user?.currency || "";
+
+  const { t } = useLocale();
   const [ninFee, setNinFee] = useState("");
   const [faceFee, setFaceFee] = useState("");
   const [vehicleFee, setVehicleFee] = useState("");
@@ -196,8 +199,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Failed to load result.",
+        title: t("common.error"),
+        text: t("dashboard.failedToLoadResult"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -222,8 +225,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Verification Result or Consent expired",
+        title: t("common.error"),
+        text: t("dashboard.errorExpired"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -237,8 +240,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Consent Denied",
+        title: t("common.error"),
+        text: t("dashboard.consentDenied"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -251,8 +254,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Info",
-        text: "Awaiting Consent",
+        title: t("common.info"),
+        text: t("verify.consent.title"),
         icon: "info",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -266,8 +269,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Oops!",
-        text: "Sorry, No record found",
+        title: t("common.oops"),
+        text: t("dashboard.errorNoRecord"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -281,8 +284,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Oops!",
-        text: "Sorry, verification failed",
+        title: t("common.oops"),
+        text: t("dashboard.errorVerificationFailed"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -308,7 +311,7 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Oops!",
+            title: t("common.oops"),
             text: data.message,
             icon: "error",
             customClass: {
@@ -324,7 +327,7 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Oops!",
+            title: t("common.oops"),
             text: data.message,
             icon: "error",
             customClass: {
@@ -399,8 +402,8 @@ const MainDashboard = () => {
     },
 
     customizations: {
-      title: "Funding e-citoyen wallet",
-      description: "Payment for verification service",
+      title: t("dashboard.fundingWallet"),
+      description: t("dashboard.paymentDescription"),
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },
   };
@@ -479,7 +482,7 @@ const MainDashboard = () => {
 
   const columns = [
     {
-      title: "Date and Time",
+      title: t("dashboard.dateAndTime"),
       dataIndex: "insertionDate",
       key: "insertionDate",
       sorter: (a, b) => a.insertionDate - b.insertionDate,
@@ -493,7 +496,7 @@ const MainDashboard = () => {
       },
     },
     {
-      title: "Selected Profile",
+      title: t("dashboard.selectedProfile"),
       dataIndex: "searchParameter",
       key: "searchParameter",
       filters: [
@@ -510,11 +513,11 @@ const MainDashboard = () => {
           value: "Face+NIN",
         },
         {
-          text: "COMPANY NAME",
+          text: t("dashboard.filterCompanyName"),
           value: "COMPANY NAME",
         },
         {
-          text: "Vehicle Registration Number",
+          text: t("dashboard.filterVehicleRegNo"),
           value: "Vehicle Registration Number",
         },
         {
@@ -566,7 +569,7 @@ const MainDashboard = () => {
                 fontWeight: "bold",
               }}
             >
-              {record.searchValue ? record.searchValue : "NO DATA"}
+              {record.searchValue ? record.searchValue : t("dashboard.noData")}
             </span>
             )
           </span>
@@ -575,24 +578,24 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Status",
+      title: t("verify.result.status"),
       dataIndex: "consent",
       key: "consent",
       filters: [
         {
-          text: "granted",
+          text: t("dashboard.filterGranted"),
           value: "granted",
         },
         {
-          text: "pending",
+          text: t("dashboard.filterPending"),
           value: "pending",
         },
         {
-          text: "denied",
+          text: t("dashboard.filterDenied"),
           value: "denied",
         },
         {
-          text: "initiate",
+          text: t("dashboard.filterInitiate"),
           value: "initiate",
         },
       ],
@@ -637,7 +640,7 @@ const MainDashboard = () => {
     // },
 
     {
-      title: "Action",
+      title: t("dashboard.action"),
       key: "status",
       dataIndex: "status",
       render: (text, record) => {
@@ -655,18 +658,20 @@ const MainDashboard = () => {
 
         if (status.toLowerCase() === "expired") {
           return (
-            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {t("dashboard.expired")}
+            </span>
           );
         } else if (status.toLowerCase() === "no data found") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              No Data Found
+              {t("dashboard.noDataFound")}
             </span>
           );
         } else if (status.toLowerCase() === "failed") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              Failed verification
+              {t("dashboard.failedVerification")}
             </span>
           );
         } else if (status.toLowerCase() === "initiate") {
@@ -681,16 +686,22 @@ const MainDashboard = () => {
           (type === "Vehicle Profile" && new Date(insertionDate) < sevenDaysAgo)
         ) {
           return (
-            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {t("dashboard.expired")}
+            </span>
           );
         } else if (consent === "denied") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              Consent Denied
+              {t("dashboard.consentDenied")}
             </span>
           );
         } else if (consent === "pending") {
-          return <span style={{ fontWeight: "bold" }}>Awaiting Consent</span>;
+          return (
+            <span style={{ fontWeight: "bold" }}>
+              {t("verify.consent.title")}
+            </span>
+          );
         } else {
           return (
             <a
@@ -698,7 +709,10 @@ const MainDashboard = () => {
               onClick={() => handleViewResult(record)}
               style={{ cursor: "pointer" }}
             >
-              <span style={{ fontWeight: "bold" }}> View Result</span>
+              <span style={{ fontWeight: "bold" }}>
+                {" "}
+                {t("dashboard.viewResult")}
+              </span>
             </a>
           );
         }
@@ -707,12 +721,12 @@ const MainDashboard = () => {
   ];
   const columns2 = [
     {
-      title: "Transaction Ref",
+      title: t("dashboard.transactionRef"),
       dataIndex: "transactionRef",
       key: "transactionRef",
     },
     {
-      title: "Date and Time",
+      title: t("dashboard.dateAndTime"),
       dataIndex: "transactionDate",
       key: "transactionDate",
       sorter: (a, b) =>
@@ -736,7 +750,7 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Amount",
+      title: t("dashboard.amount"),
       dataIndex: "amount",
       key: "amount",
       sorter: (a, b) => Number(a.amount) - Number(b.amount),
@@ -747,7 +761,7 @@ const MainDashboard = () => {
         }),
     },
     {
-      title: "Transaction Type",
+      title: t("dashboard.transactionType"),
       dataIndex: "transactionType",
       key: "transactionType",
       filters: [
@@ -768,15 +782,15 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Status",
+      title: t("verify.result.status"),
       key: "successful",
       filters: [
         {
-          text: "Successful",
+          text: t("verify.result.successful"),
           value: "successful",
         },
         {
-          text: "Failed",
+          text: t("dashboard.failed"),
           value: "Failed",
         },
       ],
@@ -799,7 +813,9 @@ const MainDashboard = () => {
       },
       render: (_, record) => (
         <a rel="noopener noreferrer">
-          {record.successful ? "Successful" : "Failed"}
+          {record.successful
+            ? t("verify.result.successful")
+            : t("dashboard.failed")}
         </a>
       ),
     },
@@ -807,11 +823,15 @@ const MainDashboard = () => {
   const items = [
     {
       key: "1",
-      label: <span style={{ fontWeight: "bold" }}>Verification History</span>,
+      label: (
+        <span style={{ fontWeight: "bold" }}>
+          {t("dashboard.verificationHistory")}
+        </span>
+      ),
       children: (
         <>
           <Input
-            placeholder="Search..."
+            placeholder={t("dashboard.searchPlaceholder")}
             prefix={<SearchOutlined />}
             onChange={handleSearch}
             style={{
@@ -853,11 +873,15 @@ const MainDashboard = () => {
     },
     {
       key: "2",
-      label: <span style={{ fontWeight: "bold" }}>Transaction Logs</span>,
+      label: (
+        <span style={{ fontWeight: "bold" }}>
+          {t("dashboard.transactionLogs")}
+        </span>
+      ),
       children: (
         <>
           <Input
-            placeholder="Search..."
+            placeholder={t("dashboard.searchPlaceholder")}
             prefix={<SearchOutlined />}
             onChange={handleSearchTransaction}
             style={{
@@ -959,8 +983,8 @@ const MainDashboard = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
+          title: t("common.error"),
+          text: t("dashboard.paymentCancelled"),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -1013,7 +1037,7 @@ const MainDashboard = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Failed Payment",
+              title: t("dashboard.failedPayment"),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -1038,8 +1062,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "There was an issue making payment",
+        title: t("common.error"),
+        text: t("dashboard.paymentIssue"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1154,8 +1178,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: `Minimum top-up amount is ${
+        title: t("common.error"),
+        text: `${t("dashboard.minimumTopup")} ${
           userCurrency.toUpperCase() === "XOF" ? "CFA 1,000" : "$10"
         }`,
         icon: "error",
@@ -1249,8 +1273,8 @@ const MainDashboard = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize PayPal payment",
+              title: t("common.error"),
+              text: t("dashboard.paypalInitFailed"),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -1263,8 +1287,8 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Failed to initialize PayPal payment",
+            title: t("common.error"),
+            text: t("dashboard.paypalInitFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1310,8 +1334,8 @@ const MainDashboard = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize Paystack payment",
+              title: t("common.error"),
+              text: t("dashboard.paystackInitFailed"),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -1324,8 +1348,8 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: error.message || "Failed to initialize Paystack payment",
+            title: t("common.error"),
+            text: error.message || t("dashboard.paystackInitFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1411,14 +1435,14 @@ const MainDashboard = () => {
       <Spin
         spinning={paystackLoading}
         size="large"
-        tip="Loading Paystack payment..."
+        tip={t("dashboard.loadingPaystack")}
         fullscreen
       />
       <div style={{ backgroundColor: bgContainer }}>
         <Container>
           <Spin
             spinning={loadingSmall}
-            tip="Fetching result ..."
+            tip={t("dashboard.fetchingResult")}
             colorBgMask="red"
             style={{
               fontSize: "85px",
@@ -1445,7 +1469,7 @@ const MainDashboard = () => {
                     }}
                   >
                     <CustomStatistic
-                      title="Total verifications "
+                      title={t("dashboard.totalVerifications")}
                       value={totalVerificationCount}
                       valueStyle={{
                         color: "#FD7A00",
@@ -1474,7 +1498,7 @@ const MainDashboard = () => {
                     }}
                   >
                     <CustomStatistic
-                      title="Successful verifications "
+                      title={t("dashboard.successfulVerifications")}
                       value={completedVerificationCount}
                       valueStyle={{
                         color: "#FD7A00",
@@ -1503,7 +1527,7 @@ const MainDashboard = () => {
                     }}
                   >
                     <CustomStatistic
-                      title="Unsuccessful verifications "
+                      title={t("dashboard.unsuccessfulVerifications")}
                       value={failedVerificationCount}
                       valueStyle={{
                         color: "#FD7A00",
@@ -1523,17 +1547,17 @@ const MainDashboard = () => {
                   style={{ float: "right" }}
                   onClick={showModal}
                 >
-                  View Wallet
+                  {t("dashboard.viewWallet")}
                 </MainButton>
                 <Modal
-                  title="User Wallet"
+                  title={t("dashboard.userWallet")}
                   visible={isModalVisible}
                   onOk={handleOk}
-                  okText="Proceed to Payment"
+                  okText={t("nav.proceedToPayment")}
                   onCancel={handleCancel}
                   width={300}
                 >
-                  <Title level={5}> Wallet Balance:</Title>
+                  <Title level={5}> {t("nav.walletBalance")}:</Title>
                   <Title level={3} style={{ color: "#FD7A00" }}>
                     {userCurrency.toUpperCase() === "XOF"
                       ? formatToCFA(userBalance)
@@ -1541,8 +1565,8 @@ const MainDashboard = () => {
                   </Title>
 
                   <Divider style={{ border: "1px solid #D9D9D9" }} />
-                  <Title level={5}>Fund Wallet</Title>
-                  <Title level={5}>Select Payment Method</Title>
+                  <Title level={5}>{t("nav.fundWallet")}</Title>
+                  <Title level={5}>{t("nav.selectPaymentMethod")}</Title>
                   <Radio.Group
                     value={walletPaymentMethod}
                     onChange={(e) => setWalletPaymentMethod(e.target.value)}
@@ -1595,17 +1619,17 @@ const MainDashboard = () => {
                     >
                       Paystack{" "}
                       {userCurrency.toUpperCase() === "USD" &&
-                        "(Not available for USD)"}
+                        t("dashboard.notAvailableUsd")}
                     </Radio>
                   </Radio.Group>
                   <p>
-                    Enter Amount to Fund Wallet (Minimum:{" "}
+                    {t("dashboard.enterAmount")}{" "}
                     {userCurrency.toUpperCase() === "XOF" ? "CFA 1,000" : "$10"}
                     )
                   </p>
                   <Input
                     type="number"
-                    placeholder={`Enter amount (min: ${
+                    placeholder={`${t("dashboard.enterAmountPlaceholder")} ${
                       userCurrency.toUpperCase() === "XOF" ? "1000" : "10"
                     })`}
                     value={amount}
@@ -1622,7 +1646,7 @@ const MainDashboard = () => {
                           marginTop: "5px",
                         }}
                       >
-                        Minimum top-up amount is{" "}
+                        {t("dashboard.minimumTopup")}{" "}
                         {userCurrency.toUpperCase() === "XOF"
                           ? "CFA 1,000"
                           : "$10"}
@@ -1668,7 +1692,7 @@ const MainDashboard = () => {
                   style={{ color: text }}
                   onClick={handleModalOk}
                 >
-                  Close
+                  {t("nav.close")}
                 </Button>,
               ]}
             >
@@ -1698,7 +1722,7 @@ const MainDashboard = () => {
                   style={{ color: text }}
                   onClick={handlePaystackModalClose}
                 >
-                  Close
+                  {t("nav.close")}
                 </Button>,
               ]}
             >

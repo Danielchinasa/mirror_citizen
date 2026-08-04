@@ -17,11 +17,13 @@ import {
   FaExclamationTriangle,
   FaInfoCircle,
 } from "react-icons/fa";
+import { useLocale } from "../../components/LocaleProvider";
 
 const VehicleResult = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
+  const { t } = useLocale();
   const [loading, setLoading] = useState(true);
   const [resultData, setResultData] = useState(null);
 
@@ -54,7 +56,7 @@ const VehicleResult = () => {
     return (
       <PageWrapper>
         <Container>
-          <LoadingSpinner>Loading vehicle data...</LoadingSpinner>
+          <LoadingSpinner>{t("vehicleResult.loading")}</LoadingSpinner>
         </Container>
       </PageWrapper>
     );
@@ -65,7 +67,7 @@ const VehicleResult = () => {
       <PageWrapper>
         <Container>
           <ErrorCard>
-            <FaExclamationTriangle /> Unable to load vehicle data
+            <FaExclamationTriangle /> {t("vehicleResult.errorLoad")}
           </ErrorCard>
         </Container>
       </PageWrapper>
@@ -104,7 +106,7 @@ const VehicleResult = () => {
     <PageWrapper>
       <Container>
         <BackLink to="/main-dashboard">
-          <FaArrowLeft /> Back to Dashboard
+          <FaArrowLeft /> {t("ninResult.backToDashboard")}
         </BackLink>
 
         {/* Hero Section */}
@@ -119,7 +121,7 @@ const VehicleResult = () => {
             )}
           </HeroImageSection>
           <HeroContent>
-            <VehicleTitle>{vehicleName || "Vehicle"}</VehicleTitle>
+            <VehicleTitle>{vehicleName || t("vehicleResult.vehicle")}</VehicleTitle>
             <VinLine>VIN: {vin}</VinLine>
             {verificationStatus && (
               <StatusBadge $verified={verificationStatus === "VERIFIED"}>
@@ -129,7 +131,7 @@ const VehicleResult = () => {
             <MetaGrid>
               <MetaItem>
                 <MetaLabel>
-                  <FaCalendarAlt /> Year
+                  <FaCalendarAlt /> {t("sample.vehicle.year")}
                 </MetaLabel>
                 <MetaValue>
                   {spec.year ||
@@ -139,21 +141,23 @@ const VehicleResult = () => {
               </MetaItem>
               <MetaItem>
                 <MetaLabel>
-                  <FaCar /> Category
+                  <FaCar /> {t("vehicleResult.category")}
                 </MetaLabel>
                 <MetaValue>{spec.category || "-"}</MetaValue>
               </MetaItem>
               <MetaItem>
                 <MetaLabel>
-                  <FaTachometerAlt /> Age
+                  <FaTachometerAlt /> {t("vehicleResult.age")}
                 </MetaLabel>
                 <MetaValue>
-                  {vehicleAge ? `${vehicleAge} years` : "-"}
+                  {vehicleAge
+                    ? `${vehicleAge} ${t("vehicleResult.yearsLabel")}`
+                    : "-"}
                 </MetaValue>
               </MetaItem>
               <MetaItem>
                 <MetaLabel>
-                  <FaGasPump /> Fuel
+                  <FaGasPump /> {t("vehicleResult.fuel")}
                 </MetaLabel>
                 <MetaValue>
                   {spec.fuel_type || fuelDetails.Fuel_Type || "-"}
@@ -162,8 +166,9 @@ const VehicleResult = () => {
             </MetaGrid>
             {dsvi && dsvi.risk_label && (
               <RiskBadge $color={getRiskColor(dsvi.risk_label)}>
-                <FaShieldAlt /> Risk Level: {dsvi.risk_label.toUpperCase()}{" "}
-                (Score: {dsvi.score || "N/A"})
+                <FaShieldAlt /> {t("vehicleResult.riskLevel")}{" "}
+                {dsvi.risk_label.toUpperCase()} ({t("vehicleResult.score")}{" "}
+                {dsvi.score || "N/A"})
               </RiskBadge>
             )}
           </HeroContent>
@@ -171,58 +176,58 @@ const VehicleResult = () => {
 
         {/* Quick Specs */}
         <SectionCard>
-          <SectionTitle>Key Specifications</SectionTitle>
+          <SectionTitle>{t("vehicleResult.keySpecs")}</SectionTitle>
           <SpecGrid>
             <SpecItem>
-              <SpecLabel>Make</SpecLabel>
+              <SpecLabel>{t("vehicleResult.make")}</SpecLabel>
               <SpecValue>{spec.make || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Model</SpecLabel>
+              <SpecLabel>{t("vehicleResult.model")}</SpecLabel>
               <SpecValue>{spec.model || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Trim</SpecLabel>
+              <SpecLabel>{t("vehicleResult.trim")}</SpecLabel>
               <SpecValue>{spec.trim || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Engine</SpecLabel>
+              <SpecLabel>{t("vehicleResult.engine")}</SpecLabel>
               <SpecValue>{spec.engine || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Transmission</SpecLabel>
+              <SpecLabel>{t("vehicleResult.transmission")}</SpecLabel>
               <SpecValue>{spec.transmission || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Drivetrain</SpecLabel>
+              <SpecLabel>{t("vehicleResult.drivetrain")}</SpecLabel>
               <SpecValue>{spec.drivetrain || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Doors</SpecLabel>
+              <SpecLabel>{t("vehicleResult.doors")}</SpecLabel>
               <SpecValue>{spec.doors || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Seating</SpecLabel>
+              <SpecLabel>{t("vehicleResult.seating")}</SpecLabel>
               <SpecValue>{spec.standard_seating || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Made In</SpecLabel>
+              <SpecLabel>{t("vehicleResult.madeIn")}</SpecLabel>
               <SpecValue>{spec.made_in || "-"}</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>City Mileage</SpecLabel>
+              <SpecLabel>{t("vehicleResult.cityMileage")}</SpecLabel>
               <SpecValue>
                 {spec.city_mileage || fuelDetails.City_Mileage || "-"}
               </SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Highway Mileage</SpecLabel>
+              <SpecLabel>{t("vehicleResult.highwayMileage")}</SpecLabel>
               <SpecValue>
                 {spec.highway_mileage || fuelDetails.Highway_Mileage || "-"}
               </SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>Fuel Capacity</SpecLabel>
+              <SpecLabel>{t("vehicleResult.fuelCapacity")}</SpecLabel>
               <SpecValue>
                 {spec.fuel_capacity || fuelDetails.Fuel_Capacity || "-"}
               </SpecValue>
@@ -236,35 +241,35 @@ const VehicleResult = () => {
           spec.overall_width ||
           spec.overall_height) && (
           <SectionCard>
-            <SectionTitle>Dimensions & Weight</SectionTitle>
+            <SectionTitle>{t("vehicleResult.dimensions")}</SectionTitle>
             <SpecGrid>
               {spec.curb_weight && (
                 <SpecItem>
-                  <SpecLabel>Curb Weight</SpecLabel>
+                  <SpecLabel>{t("vehicleResult.curbWeight")}</SpecLabel>
                   <SpecValue>{spec.curb_weight}</SpecValue>
                 </SpecItem>
               )}
               {spec.overall_length && (
                 <SpecItem>
-                  <SpecLabel>Overall Length</SpecLabel>
+                  <SpecLabel>{t("vehicleResult.overallLength")}</SpecLabel>
                   <SpecValue>{spec.overall_length}</SpecValue>
                 </SpecItem>
               )}
               {spec.overall_width && (
                 <SpecItem>
-                  <SpecLabel>Overall Width</SpecLabel>
+                  <SpecLabel>{t("vehicleResult.overallWidth")}</SpecLabel>
                   <SpecValue>{spec.overall_width}</SpecValue>
                 </SpecItem>
               )}
               {spec.overall_height && (
                 <SpecItem>
-                  <SpecLabel>Overall Height</SpecLabel>
+                  <SpecLabel>{t("vehicleResult.overallHeight")}</SpecLabel>
                   <SpecValue>{spec.overall_height}</SpecValue>
                 </SpecItem>
               )}
               {spec.wheelbase_length && (
                 <SpecItem>
-                  <SpecLabel>Wheelbase</SpecLabel>
+                  <SpecLabel>{t("vehicleResult.wheelbase")}</SpecLabel>
                   <SpecValue>{spec.wheelbase_length}</SpecValue>
                 </SpecItem>
               )}
@@ -275,7 +280,7 @@ const VehicleResult = () => {
         {/* Equipment Details */}
         {equipments.length > 0 && (
           <SectionCard>
-            <SectionTitle>Equipment & Features</SectionTitle>
+            <SectionTitle>{t("vehicleResult.equipment")}</SectionTitle>
             {equipments.map((eq, idx) => (
               <EquipmentSection key={idx}>
                 <EquipmentTitle>{eq.section}</EquipmentTitle>
@@ -298,7 +303,7 @@ const VehicleResult = () => {
         {/* Warranty */}
         {warranty.length > 0 && (
           <SectionCard>
-            <SectionTitle>Warranty Information</SectionTitle>
+            <SectionTitle>{t("vehicleResult.warranty")}</SectionTitle>
             <WarrantyGrid>
               {warranty.map((w, idx) => (
                 <WarrantyCard key={idx}>
@@ -316,8 +321,7 @@ const VehicleResult = () => {
         )}
 
         <Disclaimer>
-          <FaInfoCircle /> Results are based on data available at the time of
-          verification.
+          <FaInfoCircle /> {t("sample.disclaimer")}
         </Disclaimer>
       </Container>
     </PageWrapper>
