@@ -133,13 +133,8 @@ function EmailConsentFeedback({ match, location }) {
           <>
             <Title>Consent declined</Title>
             <Copy>
-              You have declined this verification consent request.
-              {code && (
-                <>
-                  {" "}
-                  Consent code: <Code>{code}</Code>.
-                </>
-              )}
+              You have declined this verification consent request. You can
+              always go back and approve the consent if you change your mind.
             </Copy>
           </>
         ) : status === "complete" ? (
@@ -152,12 +147,6 @@ function EmailConsentFeedback({ match, location }) {
             <Title>Confirm your consent</Title>
             <Copy>
               Enter your date of birth to approve this verification request.
-              {code && (
-                <>
-                  {" "}
-                  Consent code: <Code>{code}</Code>.
-                </>
-              )}
             </Copy>
             <Form onSubmit={submitApproval}>
               <label htmlFor="consent-date-of-birth">Date of birth</label>
