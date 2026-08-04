@@ -54,6 +54,10 @@ const Code = styled.span`
 `;
 
 const getCode = (search) => new URLSearchParams(search).get("code") || "";
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
 
 function EmailConsentFeedback({ match, location }) {
   const history = useHistory();
@@ -62,9 +66,23 @@ function EmailConsentFeedback({ match, location }) {
   const code = getCode(location.search);
   const isDecline = action === "decline";
   const isAccept = action === "accept";
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
+  const t = (en, sw) => (isSw ? sw : en);
 
   useEffect(() => {
     if (!isDecline || !code) return;
@@ -81,12 +99,22 @@ function EmailConsentFeedback({ match, location }) {
     setError("");
 
     if (!code) {
-      setError("This consent link is missing its consent code.");
+      setError(
+        t(
+          "This consent link is missing its consent code.",
+          "Kiungo hiki cha idhini hakina msimbo wake wa idhini.",
+        ),
+      );
       return;
     }
 
     if (!dateOfBirth) {
-      setError("Enter your date of birth to approve this consent request.");
+      setError(
+        t(
+          "Enter your date of birth to approve this consent request.",
+          "Ingiza tarehe yako ya kuzaliwa ili kukubali ombi la idhini.",
+        ),
+      );
       return;
     }
 
@@ -101,15 +129,23 @@ function EmailConsentFeedback({ match, location }) {
         icon: response.status === "DOB_MISMATCH" ? "warning" : "success",
         title:
           response.status === "DOB_MISMATCH"
-            ? "Date of birth does not match"
-            : "Consent response received",
-        text: response.message || "Your consent response has been recorded.",
+            ? t("Date of birth does not match", "Tarehe ya kuzaliwa haifanani")
+            : t("Consent response received", "Majibu ya idhini yamepokelewa"),
+        text:
+          response.message ||
+          t(
+            "Your consent response has been recorded.",
+            "Jibu lako la idhini limehifadhiwa.",
+          ),
         confirmButtonColor: "#DD0201",
       });
       history.push(isAuthenticated ? "/main-dashboard" : "/");
     } catch (requestError) {
       setError(
-        "We could not confirm your date of birth. Check it and try again.",
+        t(
+          "We could not confirm your date of birth. Check it and try again.",
+          "Hatukuweza kuthibitisha tarehe yako ya kuzaliwa. Iangalie na ujaribu tena.",
+        ),
       );
       setStatus("idle");
     }
@@ -119,8 +155,15 @@ function EmailConsentFeedback({ match, location }) {
     return (
       <Page>
         <Panel>
-          <Title>Invalid consent link</Title>
-          <Copy>This consent response link is not valid.</Copy>
+          <Title>
+            {t("Invalid consent link", "Kiungo cha idhini si sahihi")}
+          </Title>
+          <Copy>
+            {t(
+              "This consent response link is not valid.",
+              "Kiungo hiki cha majibu ya idhini si sahihi.",
+            )}
+          </Copy>
         </Panel>
       </Page>
     );
@@ -131,25 +174,37 @@ function EmailConsentFeedback({ match, location }) {
       <Panel>
         {isDecline ? (
           <>
-            <Title>Consent declined</Title>
-            <Copy>You have declined this verification consent request.</Copy>
+            <Title>{t("Consent declined", "Idhini imekataliwa")}</Title>
+            <Copy>
+              {t(
+                "You have declined this verification consent request.",
+                "Umekatiza ombi hili la idhini la uthibitishaji.",
+              )}
+            </Copy>
           </>
         ) : status === "complete" ? (
           <>
-            <Title>Consent approved</Title>
+            <Title>{t("Consent approved", "Idhini imekubaliwa")}</Title>
             <Copy>
-              Your date of birth has been confirmed and your consent has been
-              recorded. You can now close this page.
+              {t(
+                "Your date of birth has been confirmed and your consent has been recorded. You can now close this page.",
+                "Tarehe yako ya kuzaliwa imethibitishwa na idhini yako imehifadhiwa. Sasa unaweza kufunga ukurasa huu.",
+              )}
             </Copy>
           </>
         ) : (
           <>
-            <Title>Confirm your consent</Title>
+            <Title>{t("Confirm your consent", "Thibitisha idhini yako")}</Title>
             <Copy>
-              Enter your date of birth to approve this verification request.
+              {t(
+                "Enter your date of birth to approve this verification request.",
+                "Ingiza tarehe ya kuzaliwa ili kukubali ombi hili la uthibitishaji.",
+              )}
             </Copy>
             <Form onSubmit={submitApproval}>
-              <label htmlFor="consent-date-of-birth">Date of birth</label>
+              <label htmlFor="consent-date-of-birth">
+                {t("Date of birth", "Tarehe ya kuzaliwa")}
+              </label>
               <DatePicker
                 id="consent-date-of-birth"
                 value={dateOfBirth}
@@ -165,7 +220,7 @@ function EmailConsentFeedback({ match, location }) {
                 loading={status === "submitting"}
                 size="large"
               >
-                Approve consent
+                {t("Approve consent", "Kubali idhini")}
               </Button>
             </Form>
           </>

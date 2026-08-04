@@ -191,9 +191,7 @@ const AlienCardHowItWorks = () => {
             <FaIdCard />
           </StepIconBox>
           <StepText>
-            <StepName>
-              {isSw ? "Weka maelezo" : "Enter details"}
-            </StepName>
+            <StepName>{isSw ? "Weka maelezo" : "Enter details"}</StepName>
             <StepDesc>
               {isSw
                 ? "Toa nambari ya Alien Card na maelezo binafsi."
@@ -227,13 +225,11 @@ const AlienCardHowItWorks = () => {
             <FaFileAlt />
           </StepIconBox>
           <StepText>
-            <StepName>
-              {isSw ? "Pata matokeo" : "Get results"}
-            </StepName>
+            <StepName>{isSw ? "Pata matokeo" : "Get results"}</StepName>
             <StepDesc>
               {isSw
-                ? "Pokea matokeo yako ya uthibitishaji kwa dakika."
-                : "Receive your verification result in minutes."}
+                ? "Pokea matokeo yako ya uthibitishaji kwa sekunde."
+                : "Receive your verification result in seconds."}
             </StepDesc>
           </StepText>
         </StepItem>

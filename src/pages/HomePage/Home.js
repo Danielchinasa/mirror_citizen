@@ -652,7 +652,7 @@ const Home = () => {
               </FeatureItem>
               <FeatureItem>
                 <FaCheckCircle />{" "}
-                {isSw ? "Matokeo ndani ya dakika" : "Results in minutes"}
+                {isSw ? "Matokeo ndani ya sekunde" : "Results in seconds"}
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={ninVerify}>
@@ -753,7 +753,7 @@ const Home = () => {
               </FeatureItem>
               <FeatureItem>
                 <FaCheckCircle />{" "}
-                {isSw ? "Matokeo ndani ya dakika" : "Results in minutes"}
+                {isSw ? "Matokeo ndani ya sekunde" : "Results in seconds"}
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={vehicleVerify}>
