@@ -196,7 +196,7 @@ const translations = {
     "consent.email.invalidCopy": "This consent response link is not valid.",
     "consent.email.declinedTitle": "Consent declined",
     "consent.email.declinedCopy":
-      "You have declined this verification consent request. You can always go back and approve the consent later.",
+      "You have declined this verification consent request. You can always go back and approve the consent if you change your mind.",
     "consent.email.approveLaterLink": "Approve consent now",
     "consent.email.approvedTitle": "Consent approved",
     "consent.email.recordedCopy": "Your consent response has been recorded.",
@@ -749,7 +749,7 @@ const translations = {
     "consent.email.invalidCopy": "Kiungo hiki cha majibu ya idhini si halali.",
     "consent.email.declinedTitle": "Idhini imekataliwa",
     "consent.email.declinedCopy":
-      "Umekataa ombi hili la idhini ya uthibitishaji. Unaweza kurudi nyuma na kuidhinisha idhini baadaye.",
+      "Umekataa ombi hili la idhini ya uthibitishaji. Unaweza kurudi nyuma na kuidhinisha idhini ukibadilisha nia.",
     "consent.email.approveLaterLink": "Idhinisha sasa",
     "consent.email.approvedTitle": "Idhini imeidhinishwa",
     "consent.email.recordedCopy": "Jibu lako la idhini limerekodiwa.",
