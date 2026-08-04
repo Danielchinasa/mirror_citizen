@@ -19,6 +19,45 @@ import Swal from "sweetalert2";
 import { apiGetInternalCall } from "../../apiUtils";
 import styled from "styled-components";
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
+const t = (label, isSw) => {
+  const translations = {
+    "Awaiting Consent": isSw ? "Kusubiri Idhini" : "Awaiting Consent",
+    "The data subject has not yet granted consent.": isSw
+      ? "Mhusika wa data bado hajakubali idhini."
+      : "The data subject has not yet granted consent.",
+    Error: isSw ? "Hitilafu" : "Error",
+    "Could not load verification result.": isSw
+      ? "Imeshindwa kupakia matokeo ya uthibitishaji."
+      : "Could not load verification result.",
+    "Loading result...": isSw ? "Inapakia matokeo..." : "Loading result...",
+    "Back to Dashboard": isSw ? "Rudi kwenye Dashibodi" : "Back to Dashboard",
+    "Identity Verification Result": isSw
+      ? "Matokeo ya Uthibitishaji wa Utambulisho"
+      : "Identity Verification Result",
+    Country: isSw ? "Nchi" : "Country",
+    Verified: isSw ? "Imethibitishwa" : "Verified",
+    "Not Verified": isSw ? "Haijathibitishwa" : "Not Verified",
+    "Personal Details": isSw ? "Maelezo Binafsi" : "Personal Details",
+    "Full Name": isSw ? "Jina Kamili" : "Full Name",
+    "First Name": isSw ? "Jina la Kwanza" : "First Name",
+    "Last Name": isSw ? "Jina la Mwisho" : "Last Name",
+    Gender: isSw ? "Jinsia" : "Gender",
+    "Date of Birth": isSw ? "Tarehe ya Kuzaliwa" : "Date of Birth",
+    "ID Number": isSw ? "Nambari ya Kitambulisho" : "ID Number",
+    "ID Type": isSw ? "Aina ya Kitambulisho" : "ID Type",
+    "Session Info": isSw ? "Taarifa za Kipindi" : "Session Info",
+    "Session ID": isSw ? "Kitambulisho cha Kipindi" : "Session ID",
+    "Consent Status": isSw ? "Hali ya Idhini" : "Consent Status",
+    "Go to Dashboard": isSw ? "Nenda kwenye Dashibodi" : "Go to Dashboard",
+  };
+  return translations[label] || label;
+};
+
 /* ── Styled components ───────────────────────────────────────────── */
 
 const PageWrapper = styled.div`
@@ -235,6 +274,8 @@ const PremblyNinResult = () => {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
   const [meta, setMeta] = useState(null);
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
 
   useEffect(() => {
     const expireDate = new Date(tokenExpire);
@@ -242,6 +283,16 @@ const PremblyNinResult = () => {
       dispatch(logout());
       history.push("/");
     }
+  }, []);
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -262,8 +313,8 @@ const PremblyNinResult = () => {
         if (payload.consent === "pending") {
           setLoading(true);
           Swal.fire({
-            title: "Awaiting Consent",
-            text: "The data subject has not yet granted consent.",
+            title: t("Awaiting Consent", isSw),
+            text: t("The data subject has not yet granted consent.", isSw),
             icon: "info",
             didOpen: () => Swal.showLoading(),
           });
@@ -297,8 +348,8 @@ const PremblyNinResult = () => {
         console.error("Error fetching result:", error);
         setLoading(false);
         Swal.fire({
-          title: "Error",
-          text: "Could not load verification result.",
+          title: t("Error", isSw),
+          text: t("Could not load verification result.", isSw),
           icon: "error",
           confirmButtonColor: "#111827",
         });
@@ -325,10 +376,10 @@ const PremblyNinResult = () => {
     <PageWrapper $bg={token.bgContainer}>
       <Inner>
         <BackLink to="/main-dashboard">
-          <FaArrowLeft /> Back to Dashboard
+          <FaArrowLeft /> {t("Back to Dashboard", isSw)}
         </BackLink>
 
-        <Spin spinning={loading} tip="Loading result...">
+        <Spin spinning={loading} tip={t("Loading result...", isSw)}>
           <ResultCard>
             {/* ── Header ── */}
             <CardHeader>
@@ -337,22 +388,24 @@ const PremblyNinResult = () => {
               </HeaderIcon>
               <HeaderText>
                 <HeaderSub>
-                  {meta?.resultText || "Identity Verification Result"}
+                  {meta?.resultText || t("Identity Verification Result", isSw)}
                 </HeaderSub>
                 <MetaRow>
                   {meta?.countryCode && (
-                    <MetaChip>Country: {meta.countryCode}</MetaChip>
+                    <MetaChip>
+                      {t("Country", isSw)}: {meta.countryCode}
+                    </MetaChip>
                   )}
                 </MetaRow>
               </HeaderText>
               <StatusBadge $success={isVerified}>
                 {isVerified ? (
                   <>
-                    <FaCheckCircle /> Verified
+                    <FaCheckCircle /> {t("Verified", isSw)}
                   </>
                 ) : (
                   <>
-                    <FaTimesCircle /> Not Verified
+                    <FaTimesCircle /> {t("Not Verified", isSw)}
                   </>
                 )}
               </StatusBadge>
@@ -363,17 +416,25 @@ const PremblyNinResult = () => {
               {/* Personal Details */}
               <SectionTitle>
                 <FaRegUser />
-                Personal Details
+                {t("Personal Details", isSw)}
               </SectionTitle>
               <Grid>
-                {field(<FaRegUser />, "Full Name", result?.fullName, true)}
-                {field(<FaRegUser />, "First Name", result?.firstName)}
-                {field(<FaRegUser />, "Last Name", result?.lastName)}
-                {field(<FaRestroom />, "Gender", result?.gender)}
-                {field(<FaCalendarAlt />, "Date of Birth", result?.dateOfBirth)}
-                {field(<AiOutlineFieldNumber />, "ID Number", result?.idNumber)}
-                {field(<FaIdCard />, "ID Type", result?.idType)}
-                {field(<FaGlobe />, "Country", result?.country)}
+                {field(<FaRegUser />, t("Full Name", isSw), result?.fullName, true)}
+                {field(<FaRegUser />, t("First Name", isSw), result?.firstName)}
+                {field(<FaRegUser />, t("Last Name", isSw), result?.lastName)}
+                {field(<FaRestroom />, t("Gender", isSw), result?.gender)}
+                {field(
+                  <FaCalendarAlt />,
+                  t("Date of Birth", isSw),
+                  result?.dateOfBirth,
+                )}
+                {field(
+                  <AiOutlineFieldNumber />,
+                  t("ID Number", isSw),
+                  result?.idNumber,
+                )}
+                {field(<FaIdCard />, t("ID Type", isSw), result?.idType)}
+                {field(<FaGlobe />, t("Country", isSw), result?.country)}
               </Grid>
 
               <Divider style={{ margin: "4px 0 24px" }} />
@@ -381,16 +442,18 @@ const PremblyNinResult = () => {
               {/* Session info */}
               {meta?.sessionId && (
                 <>
-                  <SectionTitle>Session Info</SectionTitle>
+                  <SectionTitle>{t("Session Info", isSw)}</SectionTitle>
                   <Grid>
-                    {field(null, "Session ID", meta.sessionId)}
-                    {field(null, "Consent Status", meta.consent)}
+                    {field(null, t("Session ID", isSw), meta.sessionId)}
+                    {field(null, t("Consent Status", isSw), meta.consent)}
                   </Grid>
                   <Divider style={{ margin: "4px 0 24px" }} />
                 </>
               )}
 
-              <DashboardBtn to="/main-dashboard">Go to Dashboard</DashboardBtn>
+              <DashboardBtn to="/main-dashboard">
+                {t("Go to Dashboard", isSw)}
+              </DashboardBtn>
             </CardBody>
           </ResultCard>
         </Spin>

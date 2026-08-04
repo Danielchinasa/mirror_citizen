@@ -47,6 +47,108 @@ import { trackGA4Event } from "../../hooks/analytics";
 import { absoluteAppUrl } from "../../routing";
 const { Title } = Typography;
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
+const t = (label, isSw) => {
+  const translations = {
+    Error: isSw ? "Hitilafu" : "Error",
+    Info: isSw ? "Taarifa" : "Info",
+    "Failed to load result.": isSw
+      ? "Imeshindwa kupakia matokeo."
+      : "Failed to load result.",
+    "Verification Result or Consent expired": isSw
+      ? "Matokeo ya Uthibitishaji au Idhini yameisha muda wake"
+      : "Verification Result or Consent expired",
+    "Consent Denied": isSw ? "Idhini Imekataliwa" : "Consent Denied",
+    "Awaiting Consent": isSw ? "Kusubiri Idhini" : "Awaiting Consent",
+    "Oops!": "Oops!",
+    "Sorry, No record found": isSw
+      ? "Samahani, Hakuna rekodi iliyopatikana"
+      : "Sorry, No record found",
+    "Sorry, verification failed": isSw
+      ? "Samahani, uthibitishaji umeshindwa"
+      : "Sorry, verification failed",
+    "Payment Cancelled or Declined": isSw
+      ? "Malipo Yameghairiwa au Kukataliwa"
+      : "Payment Cancelled or Declined",
+    "Failed Payment": isSw ? "Malipo Yameshindwa" : "Failed Payment",
+    "There was an issue making payment": isSw
+      ? "Kulikuwa na tatizo la kufanya malipo"
+      : "There was an issue making payment",
+    "Failed to initialize PayPal payment": isSw
+      ? "Imeshindwa kuanzisha malipo ya PayPal"
+      : "Failed to initialize PayPal payment",
+    "Failed to initialize Paystack payment": isSw
+      ? "Imeshindwa kuanzisha malipo ya Paystack"
+      : "Failed to initialize Paystack payment",
+    "Date and Time": isSw ? "Tarehe na Muda" : "Date and Time",
+    "Selected Profile": isSw
+      ? "Profaili Iliyochaguliwa"
+      : "Selected Profile",
+    Status: isSw ? "Hali" : "Status",
+    Action: isSw ? "Kitendo" : "Action",
+    "COMPANY NAME": isSw ? "JINA LA KAMPUNI" : "COMPANY NAME",
+    "Vehicle Registration Number": isSw
+      ? "Nambari ya Usajili wa Gari"
+      : "Vehicle Registration Number",
+    granted: isSw ? "imetolewa" : "granted",
+    pending: isSw ? "inasubiri" : "pending",
+    denied: isSw ? "imekataliwa" : "denied",
+    initiate: isSw ? "kuanzisha" : "initiate",
+    Expired: isSw ? "Kimeisha" : "Expired",
+    "No Data Found": isSw ? "Hakuna Data" : "No Data Found",
+    "Failed verification": isSw
+      ? "Uthibitishaji umeshindwa"
+      : "Failed verification",
+    "View Result": isSw ? "Tazama Matokeo" : "View Result",
+    "NO DATA": isSw ? "HAKUNA DATA" : "NO DATA",
+    "Transaction Ref": isSw ? "Kumbukumbu ya Muamala" : "Transaction Ref",
+    Amount: isSw ? "Kiasi" : "Amount",
+    "Transaction Type": isSw ? "Aina ya Muamala" : "Transaction Type",
+    Successful: isSw ? "Imefanikiwa" : "Successful",
+    Failed: isSw ? "Imeshindwa" : "Failed",
+    VERIFICATION: isSw ? "UTHIBITISHO" : "VERIFICATION",
+    REFUND: isSw ? "KURUDISHWA" : "REFUND",
+    TOPUP: isSw ? "KUJAZA" : "TOPUP",
+    "Verification History": isSw
+      ? "Historia ya Uthibitishaji"
+      : "Verification History",
+    "Transaction Logs": isSw ? "Rekodi za Miamala" : "Transaction Logs",
+    "Search...": isSw ? "Tafuta..." : "Search...",
+    "Total verifications ": isSw
+      ? "Jumla ya uthibitishaji "
+      : "Total verifications ",
+    "Successful verifications ": isSw
+      ? "Uthibitishaji uliofanikiwa "
+      : "Successful verifications ",
+    "Unsuccessful verifications ": isSw
+      ? "Uthibitishaji usiofanikiwa "
+      : "Unsuccessful verifications ",
+    "View Wallet": isSw ? "Tazama Pochi" : "View Wallet",
+    "User Wallet": isSw ? "Pochi ya Mtumiaji" : "User Wallet",
+    "Wallet Balance:": isSw ? "Salio la Pochi:" : "Wallet Balance:",
+    "Fund Wallet": isSw ? "Jaza Pochi" : "Fund Wallet",
+    "Select Payment Method": isSw
+      ? "Chagua Njia ya Malipo"
+      : "Select Payment Method",
+    "Proceed to Payment": isSw ? "Endelea na Malipo" : "Proceed to Payment",
+    Close: isSw ? "Funga" : "Close",
+    "(Not available for USD)": isSw
+      ? "(Haipatikani kwa USD)"
+      : "(Not available for USD)",
+    "Loading Paystack payment...": isSw
+      ? "Inapakia malipo ya Paystack..."
+      : "Loading Paystack payment...",
+    "Fetching result ...": isSw
+      ? "Inachukua matokeo ..."
+      : "Fetching result ...",
+  };
+  return translations[label] || label;
+};
+
 const data = [
   {
     key: "1",
@@ -98,6 +200,8 @@ const MainDashboard = () => {
   const [financialFee, setFinancialFee] = useState("");
   const [currencyCheck, setCurrencyCheck] = useState("NGN");
   const [loadingSmall, setLoadingSmall] = useState(false);
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
 
   const { token } = theme.useToken();
   const { isDark } = useTheme();
@@ -153,6 +257,16 @@ const MainDashboard = () => {
     fetchServiceFee();
   }, []);
 
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
@@ -198,8 +312,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Failed to load result.",
+        title: t("Error", isSw),
+        text: t("Failed to load result.", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -224,8 +338,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Verification Result or Consent expired",
+        title: t("Error", isSw),
+        text: t("Verification Result or Consent expired", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -239,8 +353,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Consent Denied",
+        title: t("Error", isSw),
+        text: t("Consent Denied", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -253,8 +367,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Info",
-        text: "Awaiting Consent",
+        title: t("Info", isSw),
+        text: t("Awaiting Consent", isSw),
         icon: "info",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -268,8 +382,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Oops!",
-        text: "Sorry, No record found",
+        title: t("Oops!", isSw),
+        text: t("Sorry, No record found", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -283,8 +397,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Oops!",
-        text: "Sorry, verification failed",
+        title: t("Oops!", isSw),
+        text: t("Sorry, verification failed", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -310,7 +424,7 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Oops!",
+            title: t("Oops!", isSw),
             text: data.message,
             icon: "error",
             customClass: {
@@ -326,7 +440,7 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Oops!",
+            title: t("Oops!", isSw),
             text: data.message,
             icon: "error",
             customClass: {
@@ -403,8 +517,10 @@ const MainDashboard = () => {
     },
 
     customizations: {
-      title: "Funding e-raia wallet",
-      description: "Payment for verification service",
+      title: isSw ? "Kujaza pochi ya e-raia" : "Funding e-raia wallet",
+      description: isSw
+        ? "Malipo ya huduma ya uthibitishaji"
+        : "Payment for verification service",
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },
   };
@@ -483,7 +599,7 @@ const MainDashboard = () => {
 
   const columns = [
     {
-      title: "Date and Time",
+      title: t("Date and Time", isSw),
       dataIndex: "insertionDate",
       key: "insertionDate",
       sorter: (a, b) => a.insertionDate - b.insertionDate,
@@ -497,7 +613,7 @@ const MainDashboard = () => {
       },
     },
     {
-      title: "Selected Profile",
+      title: t("Selected Profile", isSw),
       dataIndex: "searchParameter",
       key: "searchParameter",
       filters: [
@@ -514,11 +630,11 @@ const MainDashboard = () => {
           value: "Face+NIN",
         },
         {
-          text: "COMPANY NAME",
+          text: t("COMPANY NAME", isSw),
           value: "COMPANY NAME",
         },
         {
-          text: "Vehicle Registration Number",
+          text: t("Vehicle Registration Number", isSw),
           value: "Vehicle Registration Number",
         },
         {
@@ -570,7 +686,7 @@ const MainDashboard = () => {
                 fontWeight: "bold",
               }}
             >
-              {record.searchValue ? record.searchValue : "NO DATA"}
+              {record.searchValue ? record.searchValue : t("NO DATA", isSw)}
             </span>
             )
           </span>
@@ -579,24 +695,24 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Status",
+      title: t("Status", isSw),
       dataIndex: "consent",
       key: "consent",
       filters: [
         {
-          text: "granted",
+          text: t("granted", isSw),
           value: "granted",
         },
         {
-          text: "pending",
+          text: t("pending", isSw),
           value: "pending",
         },
         {
-          text: "denied",
+          text: t("denied", isSw),
           value: "denied",
         },
         {
-          text: "initiate",
+          text: t("initiate", isSw),
           value: "initiate",
         },
       ],
@@ -641,7 +757,7 @@ const MainDashboard = () => {
     // },
 
     {
-      title: "Action",
+      title: t("Action", isSw),
       key: "status",
       dataIndex: "status",
       render: (text, record) => {
@@ -659,18 +775,20 @@ const MainDashboard = () => {
 
         if (status.toLowerCase() === "expired") {
           return (
-            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {t("Expired", isSw)}
+            </span>
           );
         } else if (status.toLowerCase() === "no data found") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              No Data Found
+              {t("No Data Found", isSw)}
             </span>
           );
         } else if (status.toLowerCase() === "failed") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              Failed verification
+              {t("Failed verification", isSw)}
             </span>
           );
         } else if (status.toLowerCase() === "initiate") {
@@ -685,16 +803,22 @@ const MainDashboard = () => {
           (type === "Vehicle Profile" && new Date(insertionDate) < sevenDaysAgo)
         ) {
           return (
-            <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {t("Expired", isSw)}
+            </span>
           );
         } else if (consent === "denied") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              Consent Denied
+              {t("Consent Denied", isSw)}
             </span>
           );
         } else if (consent === "pending") {
-          return <span style={{ fontWeight: "bold" }}>Awaiting Consent</span>;
+          return (
+            <span style={{ fontWeight: "bold" }}>
+              {t("Awaiting Consent", isSw)}
+            </span>
+          );
         } else {
           return (
             <a
@@ -702,7 +826,10 @@ const MainDashboard = () => {
               onClick={() => handleViewResult(record)}
               style={{ cursor: "pointer" }}
             >
-              <span style={{ fontWeight: "bold" }}> View Result</span>
+              <span style={{ fontWeight: "bold" }}>
+                {" "}
+                {t("View Result", isSw)}
+              </span>
             </a>
           );
         }
@@ -711,12 +838,12 @@ const MainDashboard = () => {
   ];
   const columns2 = [
     {
-      title: "Transaction Ref",
+      title: t("Transaction Ref", isSw),
       dataIndex: "transactionRef",
       key: "transactionRef",
     },
     {
-      title: "Date and Time",
+      title: t("Date and Time", isSw),
       dataIndex: "transactionDate",
       key: "transactionDate",
       sorter: (a, b) =>
@@ -740,7 +867,7 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Amount",
+      title: t("Amount", isSw),
       dataIndex: "amount",
       key: "amount",
       sorter: (a, b) => Number(a.amount) - Number(b.amount),
@@ -751,20 +878,20 @@ const MainDashboard = () => {
         }),
     },
     {
-      title: "Transaction Type",
+      title: t("Transaction Type", isSw),
       dataIndex: "transactionType",
       key: "transactionType",
       filters: [
         {
-          text: "VERIFICATION",
+          text: t("VERIFICATION", isSw),
           value: "VERIFICATION",
         },
         {
-          text: "REFUND",
+          text: t("REFUND", isSw),
           value: "REFUND",
         },
         {
-          text: "TOPUP",
+          text: t("TOPUP", isSw),
           value: "TOPUP",
         },
       ],
@@ -772,15 +899,15 @@ const MainDashboard = () => {
     },
 
     {
-      title: "Status",
+      title: t("Status", isSw),
       key: "successful",
       filters: [
         {
-          text: "Successful",
+          text: t("Successful", isSw),
           value: "successful",
         },
         {
-          text: "Failed",
+          text: t("Failed", isSw),
           value: "Failed",
         },
       ],
@@ -803,7 +930,7 @@ const MainDashboard = () => {
       },
       render: (_, record) => (
         <a rel="noopener noreferrer">
-          {record.successful ? "Successful" : "Failed"}
+          {record.successful ? t("Successful", isSw) : t("Failed", isSw)}
         </a>
       ),
     },
@@ -811,11 +938,11 @@ const MainDashboard = () => {
   const items = [
     {
       key: "1",
-      label: <span style={{ fontWeight: "bold" }}>Verification History</span>,
+      label: <span style={{ fontWeight: "bold" }}>{t("Verification History", isSw)}</span>,
       children: (
         <>
           <Input
-            placeholder="Search..."
+            placeholder={t("Search...", isSw)}
             prefix={<SearchOutlined />}
             onChange={handleSearch}
             style={{
@@ -857,11 +984,11 @@ const MainDashboard = () => {
     },
     {
       key: "2",
-      label: <span style={{ fontWeight: "bold" }}>Transaction Logs</span>,
+      label: <span style={{ fontWeight: "bold" }}>{t("Transaction Logs", isSw)}</span>,
       children: (
         <>
           <Input
-            placeholder="Search..."
+            placeholder={t("Search...", isSw)}
             prefix={<SearchOutlined />}
             onChange={handleSearchTransaction}
             style={{
@@ -963,8 +1090,8 @@ const MainDashboard = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
+          title: t("Error", isSw),
+          text: t("Payment Cancelled or Declined", isSw),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -1017,7 +1144,7 @@ const MainDashboard = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Failed Payment",
+              title: t("Failed Payment", isSw),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -1042,8 +1169,8 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "There was an issue making payment",
+        title: t("Error", isSw),
+        text: t("There was an issue making payment", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1158,10 +1285,14 @@ const MainDashboard = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
-        }`,
+        title: t("Error", isSw),
+        text: isSw
+          ? `Kiasi cha chini cha kujaza pochi ni ${
+              userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
+            }`
+          : `Minimum top-up amount is ${
+              userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
+            }`,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1253,8 +1384,8 @@ const MainDashboard = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize PayPal payment",
+              title: t("Error", isSw),
+              text: t("Failed to initialize PayPal payment", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -1267,8 +1398,8 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Failed to initialize PayPal payment",
+            title: t("Error", isSw),
+            text: t("Failed to initialize PayPal payment", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1314,8 +1445,8 @@ const MainDashboard = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize Paystack payment",
+              title: t("Error", isSw),
+              text: t("Failed to initialize Paystack payment", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -1328,8 +1459,8 @@ const MainDashboard = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: error.message || "Failed to initialize Paystack payment",
+            title: t("Error", isSw),
+            text: error.message || t("Failed to initialize Paystack payment", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1415,14 +1546,14 @@ const MainDashboard = () => {
       <Spin
         spinning={paystackLoading}
         size="large"
-        tip="Loading Paystack payment..."
+        tip={t("Loading Paystack payment...", isSw)}
         fullscreen
       />
       <div style={{ backgroundColor: bgContainer }}>
         <Container>
           <Spin
             spinning={loadingSmall}
-            tip="Fetching result ..."
+            tip={t("Fetching result ...", isSw)}
             colorBgMask="red"
             style={{
               fontSize: "85px",
@@ -1449,7 +1580,7 @@ const MainDashboard = () => {
                     }}
                   >
                     <CustomStatistic
-                      title="Total verifications "
+                      title={t("Total verifications ", isSw)}
                       value={totalVerificationCount}
                       valueStyle={{
                         color: PRIMARY_COLOR,
@@ -1478,7 +1609,7 @@ const MainDashboard = () => {
                     }}
                   >
                     <CustomStatistic
-                      title="Successful verifications "
+                      title={t("Successful verifications ", isSw)}
                       value={completedVerificationCount}
                       valueStyle={{
                         color: PRIMARY_COLOR,
@@ -1507,7 +1638,7 @@ const MainDashboard = () => {
                     }}
                   >
                     <CustomStatistic
-                      title="Unsuccessful verifications "
+                      title={t("Unsuccessful verifications ", isSw)}
                       value={failedVerificationCount}
                       valueStyle={{
                         color: PRIMARY_COLOR,
@@ -1527,17 +1658,17 @@ const MainDashboard = () => {
                   style={{ float: "right" }}
                   onClick={showModal}
                 >
-                  View Wallet
+                  {t("View Wallet", isSw)}
                 </MainButton>
                 <Modal
-                  title="User Wallet"
+                  title={t("User Wallet", isSw)}
                   visible={isModalVisible}
                   onOk={handleOk}
-                  okText="Proceed to Payment"
+                  okText={t("Proceed to Payment", isSw)}
                   onCancel={handleCancel}
                   width={300}
                 >
-                  <Title level={5}> Wallet Balance:</Title>
+                  <Title level={5}> {t("Wallet Balance:", isSw)}</Title>
                   <Title level={3} style={{ color: PRIMARY_COLOR }}>
                     {userCurrency.toUpperCase() === "USD"
                       ? `${formatToDollar(userBalance)}`
@@ -1545,8 +1676,8 @@ const MainDashboard = () => {
                   </Title>
 
                   <Divider style={{ border: "1px solid #D9D9D9" }} />
-                  <Title level={5}>Fund Wallet</Title>
-                  <Title level={5}>Select Payment Method</Title>
+                  <Title level={5}>{t("Fund Wallet", isSw)}</Title>
+                  <Title level={5}>{t("Select Payment Method", isSw)}</Title>
                   <Radio.Group
                     value={walletPaymentMethod}
                     onChange={(e) => setWalletPaymentMethod(e.target.value)}
@@ -1599,18 +1730,29 @@ const MainDashboard = () => {
                     >
                       Paystack{" "}
                       {userCurrency.toUpperCase() === "USD" &&
-                        "(Not available for USD)"}
+                        t("(Not available for USD)", isSw)}
                     </Radio>
                   </Radio.Group>
                   <p>
-                    Enter Amount to Fund Wallet (Minimum:{" "}
-                    {userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"})
+                    {isSw
+                      ? `Weka Kiasi cha Kujaza Pochi (Kiwango cha chini: ${
+                          userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
+                        })`
+                      : `Enter Amount to Fund Wallet (Minimum: ${
+                          userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
+                        })`}
                   </p>
                   <Input
                     type="number"
-                    placeholder={`Enter amount (min: ${
-                      userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
-                    })`}
+                    placeholder={
+                      isSw
+                        ? `Weka kiasi (kiwango cha chini: ${
+                            userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
+                          })`
+                        : `Enter amount (min: ${
+                            userCurrency.toUpperCase() === "NGN" ? "1000" : "10"
+                          })`
+                    }
                     value={amount}
                     onChange={handleChange}
                     min={userCurrency.toUpperCase() === "NGN" ? 1000 : 10}
@@ -1625,10 +1767,17 @@ const MainDashboard = () => {
                           marginTop: "5px",
                         }}
                       >
-                        Minimum top-up amount is{" "}
-                        {userCurrency.toUpperCase() === "NGN"
-                          ? "KHs1,000"
-                          : "$10"}
+                        {isSw
+                          ? `Kiasi cha chini cha kujaza pochi ni ${
+                              userCurrency.toUpperCase() === "NGN"
+                                ? "KHs1,000"
+                                : "$10"
+                            }`
+                          : `Minimum top-up amount is ${
+                              userCurrency.toUpperCase() === "NGN"
+                                ? "KHs1,000"
+                                : "$10"
+                            }`}
                       </p>
                     )}
                 </Modal>
@@ -1671,7 +1820,7 @@ const MainDashboard = () => {
                   style={{ color: text }}
                   onClick={handleModalOk}
                 >
-                  Close
+                  {t("Close", isSw)}
                 </Button>,
               ]}
             >
@@ -1701,7 +1850,7 @@ const MainDashboard = () => {
                   style={{ color: text }}
                   onClick={handlePaystackModalClose}
                 >
-                  Close
+                  {t("Close", isSw)}
                 </Button>,
               ]}
             >
