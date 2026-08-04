@@ -184,7 +184,7 @@ function Navbar() {
             <span role="img" aria-label="Ghana flag" style={{ marginRight: 8 }}>
               🇬🇭
             </span>
-            Switch Country
+            Ghana
           </span>
         }
       >
