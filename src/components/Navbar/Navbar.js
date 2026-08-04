@@ -27,8 +27,9 @@ import {
   PublicLanguageToggle,
   PublicMobileLink,
   PublicMobileAnchor,
+  PublicBackButton,
 } from "./Navbar.elements";
-import { FaTimes, FaBars } from "react-icons/fa";
+import { FaTimes, FaBars, FaArrowLeft } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
@@ -36,7 +37,7 @@ import Logo from "../../images/ghana_logo.png";
 import LogoWhite from "../../images/ghana_dark.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Flex, Modal, Radio, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, fetchUserProfile } from "../../redux/actions";
@@ -63,6 +64,7 @@ const { Title } = Typography;
 
 function Navbar() {
   const history = useHistory();
+  const location = useLocation();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const dispatch = useDispatch();
@@ -115,6 +117,17 @@ function Navbar() {
     dispatch(logout());
     history.push("/");
   };
+
+  const handleGoBack = () => {
+    if (history.length > 1) {
+      history.goBack();
+      return;
+    }
+
+    history.push("/");
+  };
+
+  const isVerificationLogin = location.pathname === "/verification-login";
 
   const items = [
     // {
@@ -934,6 +947,17 @@ function Navbar() {
             </PublicCenter>
 
             <PublicActions>
+              {isVerificationLogin && (
+                <PublicBackButton
+                  type="button"
+                  onClick={handleGoBack}
+                  aria-label="Go Back"
+                  title="Go Back"
+                >
+                  <FaArrowLeft aria-hidden="true" />
+                  <span>Go Back</span>
+                </PublicBackButton>
+              )}
               <PublicHeaderLanguage>
                 <PublicLanguageToggleGroup>
                   {/* <PublicLanguageToggle

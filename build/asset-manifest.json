@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/gh/static/css/main.070be53e.chunk.css",
-    "main.js": "/gh/static/js/main.6df3081e.chunk.js",
-    "main.js.map": "/gh/static/js/main.6df3081e.chunk.js.map",
+    "main.js": "/gh/static/js/main.5d1f3fcb.chunk.js",
+    "main.js.map": "/gh/static/js/main.5d1f3fcb.chunk.js.map",
     "runtime-main.js": "/gh/static/js/runtime-main.a7701361.js",
     "runtime-main.js.map": "/gh/static/js/runtime-main.a7701361.js.map",
     "static/css/2.ec61a722.chunk.css": "/gh/static/css/2.ec61a722.chunk.css",
-    "static/js/2.d7b31972.chunk.js": "/gh/static/js/2.d7b31972.chunk.js",
-    "static/js/2.d7b31972.chunk.js.map": "/gh/static/js/2.d7b31972.chunk.js.map",
+    "static/js/2.0bcd8589.chunk.js": "/gh/static/js/2.0bcd8589.chunk.js",
+    "static/js/2.0bcd8589.chunk.js.map": "/gh/static/js/2.0bcd8589.chunk.js.map",
     "index.html": "/gh/index.html",
-    "precache-manifest.63cbc3331a86ff3413634de6c1008858.js": "/gh/precache-manifest.63cbc3331a86ff3413634de6c1008858.js",
+    "precache-manifest.065b2db4ff2bb9a801ef493119b16111.js": "/gh/precache-manifest.065b2db4ff2bb9a801ef493119b16111.js",
     "service-worker.js": "/gh/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/gh/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.070be53e.chunk.css.map": "/gh/static/css/main.070be53e.chunk.css.map",
-    "static/js/2.d7b31972.chunk.js.LICENSE.txt": "/gh/static/js/2.d7b31972.chunk.js.LICENSE.txt",
+    "static/js/2.0bcd8589.chunk.js.LICENSE.txt": "/gh/static/js/2.0bcd8589.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/gh/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/gh/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/gh/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -26,7 +26,7 @@
     "static/media/credit_profile.png": "/gh/static/media/credit_profile.48765e5d.png",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/gh/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/flutterwave-logos-white.png": "/gh/static/media/flutterwave-logos-white.877be0eb.png",
-    "static/media/gdpr.jpg": "/gh/static/media/gdpr.54200db0.jpg",
+    "static/media/gdpr.png": "/gh/static/media/gdpr.9b35ecbd.png",
     "static/media/ghana.png": "/gh/static/media/ghana.90874b7c.png",
     "static/media/ghana_dark.png": "/gh/static/media/ghana_dark.bb1642db.png",
     "static/media/ghana_logo.png": "/gh/static/media/ghana_logo.1b8a17c0.png",
@@ -35,7 +35,7 @@
     "static/media/icon_paystack.png": "/gh/static/media/icon_paystack.769ee98d.png",
     "static/media/individual.svg": "/gh/static/media/individual.6bec09d4.svg",
     "static/media/lady.svg": "/gh/static/media/lady.82ff32ba.svg",
-    "static/media/mosip.jpg": "/gh/static/media/mosip.a0dd1cfe.jpg",
+    "static/media/mosip.png": "/gh/static/media/mosip.5c362e0c.png",
     "static/media/ndpr.png": "/gh/static/media/ndpr.411010b5.png",
     "static/media/paypal.png": "/gh/static/media/paypal.db850f0f.png",
     "static/media/paystack.png": "/gh/static/media/paystack.46ac45bf.png",
@@ -50,8 +50,8 @@
   "entrypoints": [
     "static/js/runtime-main.a7701361.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.d7b31972.chunk.js",
+    "static/js/2.0bcd8589.chunk.js",
     "static/css/main.070be53e.chunk.css",
-    "static/js/main.6df3081e.chunk.js"
+    "static/js/main.5d1f3fcb.chunk.js"
   ]
 }

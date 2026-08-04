@@ -312,6 +312,43 @@ export const PublicActions = styled.div`
   }
 `;
 
+export const PublicBackButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ec-primary);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 10px 14px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ec-primary);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ec-primary);
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    span {
+      display: none;
+    }
+  }
+`;
+
 export const PublicHeaderLanguage = styled.div`
   display: none;
 
