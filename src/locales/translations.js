@@ -191,6 +191,30 @@ const translations = {
       "Results are based on data available at the time of verification.",
     "verify.disclaimer.cancel": "Cancel",
 
+    /* ── Email Consent Feedback ── */
+    "consent.email.invalidTitle": "Invalid consent link",
+    "consent.email.invalidCopy": "This consent response link is not valid.",
+    "consent.email.declinedTitle": "Consent declined",
+    "consent.email.declinedCopy":
+      "You have declined this verification consent request. You can always go back and approve the consent later.",
+    "consent.email.approveLaterLink": "Approve consent now",
+    "consent.email.approvedTitle": "Consent approved",
+    "consent.email.recordedCopy": "Your consent response has been recorded.",
+    "consent.email.confirmTitle": "Confirm your consent",
+    "consent.email.confirmCopy":
+      "Enter your date of birth to approve this verification request.",
+    "consent.email.codeLabel": "Consent code:",
+    "consent.email.dateOfBirth": "Date of birth",
+    "consent.email.approveButton": "Approve consent",
+    "consent.email.errorMissingCode":
+      "This consent link is missing its consent code.",
+    "consent.email.errorMissingDob":
+      "Enter your date of birth to approve this consent request.",
+    "consent.email.dobMismatchTitle": "Date of birth does not match",
+    "consent.email.receivedTitle": "Consent response received",
+    "consent.email.errorConfirmDob":
+      "We could not confirm your date of birth. Check it and try again.",
+
     /* ── Footer ── */
     "footer.tagline":
       "Your trusted partner for digital identity verification and background checks.",
@@ -617,6 +641,30 @@ const translations = {
     "verify.disclaimer.resultDisclaimer":
       "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
     "verify.disclaimer.cancel": "Ghairi",
+
+    /* ── Email Consent Feedback ── */
+    "consent.email.invalidTitle": "Kiungo batili cha idhini",
+    "consent.email.invalidCopy": "Kiungo hiki cha majibu ya idhini si halali.",
+    "consent.email.declinedTitle": "Idhini imekataliwa",
+    "consent.email.declinedCopy":
+      "Umekataa ombi hili la idhini ya uthibitishaji. Unaweza kurudi nyuma na kuidhinisha idhini baadaye.",
+    "consent.email.approveLaterLink": "Idhinisha sasa",
+    "consent.email.approvedTitle": "Idhini imeidhinishwa",
+    "consent.email.recordedCopy": "Jibu lako la idhini limerekodiwa.",
+    "consent.email.confirmTitle": "Thibitisha idhini yako",
+    "consent.email.confirmCopy":
+      "Weka tarehe yako ya kuzaliwa ili kuidhinisha ombi hili la uthibitishaji.",
+    "consent.email.codeLabel": "Msimbo wa idhini:",
+    "consent.email.dateOfBirth": "Tarehe ya kuzaliwa",
+    "consent.email.approveButton": "Idhinisha idhini",
+    "consent.email.errorMissingCode":
+      "Kiungo hiki cha idhini hakina msimbo wake wa idhini.",
+    "consent.email.errorMissingDob":
+      "Weka tarehe yako ya kuzaliwa ili kuidhinisha ombi hili la idhini.",
+    "consent.email.dobMismatchTitle": "Tarehe ya kuzaliwa hailingani",
+    "consent.email.receivedTitle": "Jibu la idhini limepokelewa",
+    "consent.email.errorConfirmDob":
+      "Hatukuweza kuthibitisha tarehe yako ya kuzaliwa. Angalia na ujaribu tena.",
 
     /* ── Footer ── */
     "footer.tagline":
