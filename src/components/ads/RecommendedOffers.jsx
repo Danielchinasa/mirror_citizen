@@ -5,7 +5,7 @@ import { FaArrowRight } from "react-icons/fa";
 const OFFERS = [
   {
     title: "Open a Digital Bank Account",
-    description: "Zero balance accounts in minutes.",
+    description: "Zero balance accounts in seconds.",
     link: "#",
   },
   {
@@ -163,7 +163,7 @@ const OfferLink = styled.a`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #FD7A00;
+  color: #fd7a00;
   text-decoration: none;
   display: inline-flex;
   align-items: center;

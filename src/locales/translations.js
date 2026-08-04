@@ -106,7 +106,7 @@ const translations = {
     "home.services.feature.ninLookup": "Recherche par NNI",
     "home.services.feature.fullName": "Vérification du nom complet",
     "home.services.feature.photoId": "Vérification de la photo d'identité",
-    "home.services.feature.resultsMinutes": "Résultats en quelques minutes",
+    "home.services.feature.resultsMinutes": "Résultats en quelques secondes",
     "home.services.verifyNow": "Voir les services",
     "home.services.learnMore": "En savoir plus",
     "home.services.resident.name": "Carte de Résident",
@@ -402,6 +402,32 @@ const translations = {
       ", et vous acceptez de ne pas être remboursé.",
     "verify.disclaimer.continue": "Je comprends, Continuer",
     "verify.disclaimer.cancel": "Annuler",
+
+    /* ── Email Consent Feedback ── */
+    "consent.email.invalidTitle": "Lien de consentement invalide",
+    "consent.email.invalidCopy":
+      "Ce lien de réponse de consentement n'est pas valide.",
+    "consent.email.declinedTitle": "Consentement refusé",
+    "consent.email.declinedCopy":
+      "Vous avez refusé cette demande de consentement à la vérification. Vous pouvez toujours revenir en arrière et approuver le consentement plus tard.",
+    "consent.email.approveLaterLink": "Approuver le consentement maintenant",
+    "consent.email.approvedTitle": "Consentement approuvé",
+    "consent.email.recordedCopy":
+      "Votre réponse de consentement a été enregistrée.",
+    "consent.email.confirmTitle": "Confirmez votre consentement",
+    "consent.email.confirmCopy":
+      "Saisissez votre date de naissance pour approuver cette demande de vérification.",
+    "consent.email.codeLabel": "Code de consentement :",
+    "consent.email.dateOfBirth": "Date de naissance",
+    "consent.email.approveButton": "Approuver le consentement",
+    "consent.email.errorMissingCode":
+      "Ce lien de consentement ne comporte pas de code de consentement.",
+    "consent.email.errorMissingDob":
+      "Saisissez votre date de naissance pour approuver cette demande de consentement.",
+    "consent.email.dobMismatchTitle": "La date de naissance ne correspond pas",
+    "consent.email.receivedTitle": "Réponse de consentement reçue",
+    "consent.email.errorConfirmDob":
+      "Nous n'avons pas pu confirmer votre date de naissance. Vérifiez-la et réessayez.",
   },
   EN: {
     "nav.country": "Côte d’Ivoire",
@@ -456,7 +482,7 @@ const translations = {
     "nin.how.step2Name": "Submit & pay",
     "nin.how.step2Desc": "Review your details and proceed with secure payment.",
     "nin.how.step3Name": "Get the result",
-    "nin.how.step3Desc": "Receive your verification result in minutes.",
+    "nin.how.step3Desc": "Receive your verification result in seconds.",
     "nin.hero.titlePrefix": "Verify your NNI in Côte d'Ivoire.",
     "nin.hero.word1": "Fast",
     "nin.hero.word2": "secure",
@@ -474,7 +500,7 @@ const translations = {
     "vehicle.hero.titleHighlight": "VIN",
     "vehicle.hero.titleSuffix": " in Côte d'Ivoire before you buy.",
     "vehicle.hero.subtitle":
-      "Get your vehicle's complete history in minutes and buy with confidence.",
+      "Get your vehicle's complete history in seconds and buy with confidence.",
     "vehicle.hero.verifyButton": "Verify VIN",
     "home.trust.secureTitle": "100% Secure",
     "home.trust.secureDesc": "Your data is protected",
@@ -501,7 +527,7 @@ const translations = {
     "home.services.feature.ninLookup": "NNI Lookup",
     "home.services.feature.fullName": "Full Name Verification",
     "home.services.feature.photoId": "Photo ID Verification",
-    "home.services.feature.resultsMinutes": "Results in minutes",
+    "home.services.feature.resultsMinutes": "Results in seconds",
     "home.services.verifyNow": "View Services",
     "home.services.learnMore": "Learn More",
     "home.services.resident.name": "Resident Card",
@@ -786,6 +812,30 @@ const translations = {
       ", and you accept that you will not be refunded.",
     "verify.disclaimer.continue": "I understand, Continue",
     "verify.disclaimer.cancel": "Cancel",
+
+    /* ── Email Consent Feedback ── */
+    "consent.email.invalidTitle": "Invalid consent link",
+    "consent.email.invalidCopy": "This consent response link is not valid.",
+    "consent.email.declinedTitle": "Consent declined",
+    "consent.email.declinedCopy":
+      "You have declined this verification consent request. You can always go back and approve the consent later.",
+    "consent.email.approveLaterLink": "Approve consent now",
+    "consent.email.approvedTitle": "Consent approved",
+    "consent.email.recordedCopy": "Your consent response has been recorded.",
+    "consent.email.confirmTitle": "Confirm your consent",
+    "consent.email.confirmCopy":
+      "Enter your date of birth to approve this verification request.",
+    "consent.email.codeLabel": "Consent code:",
+    "consent.email.dateOfBirth": "Date of birth",
+    "consent.email.approveButton": "Approve consent",
+    "consent.email.errorMissingCode":
+      "This consent link is missing its consent code.",
+    "consent.email.errorMissingDob":
+      "Enter your date of birth to approve this consent request.",
+    "consent.email.dobMismatchTitle": "Date of birth does not match",
+    "consent.email.receivedTitle": "Consent response received",
+    "consent.email.errorConfirmDob":
+      "We could not confirm your date of birth. Check it and try again.",
   },
 };
 

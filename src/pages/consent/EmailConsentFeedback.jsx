@@ -4,8 +4,9 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { apiPost } from "../../apiUtils";
+import { useLocale } from "../../components/LocaleProvider";
 
 const Page = styled.main`
   min-height: 62vh;
@@ -53,9 +54,20 @@ const Code = styled.span`
   letter-spacing: 1px;
 `;
 
+const NoteLink = styled(Link)`
+  color: var(--ec-primary, #fd7a00);
+  font-weight: 600;
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--ec-primary-dark, #e06c00);
+  }
+`;
+
 const getCode = (search) => new URLSearchParams(search).get("code") || "";
 
 function EmailConsentFeedback({ match, location }) {
+  const { t } = useLocale();
   const history = useHistory();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const action = match.params.action;
@@ -81,12 +93,12 @@ function EmailConsentFeedback({ match, location }) {
     setError("");
 
     if (!code) {
-      setError("This consent link is missing its consent code.");
+      setError(t("consent.email.errorMissingCode"));
       return;
     }
 
     if (!dateOfBirth) {
-      setError("Enter your date of birth to approve this consent request.");
+      setError(t("consent.email.errorMissingDob"));
       return;
     }
 
@@ -101,16 +113,14 @@ function EmailConsentFeedback({ match, location }) {
         icon: response.status === "DOB_MISMATCH" ? "warning" : "success",
         title:
           response.status === "DOB_MISMATCH"
-            ? "Date of birth does not match"
-            : "Consent response received",
-        text: response.message || "Your consent response has been recorded.",
+            ? t("consent.email.dobMismatchTitle")
+            : t("consent.email.receivedTitle"),
+        text: response.message || t("consent.email.recordedCopy"),
         confirmButtonColor: "#FD7A00",
       });
       history.push(isAuthenticated ? "/main-dashboard" : "/");
     } catch (requestError) {
-      setError(
-        "We could not confirm your date of birth. Check it and try again.",
-      );
+      setError(t("consent.email.errorConfirmDob"));
       setStatus("idle");
     }
   };
@@ -119,8 +129,8 @@ function EmailConsentFeedback({ match, location }) {
     return (
       <Page>
         <Panel>
-          <Title>Invalid consent link</Title>
-          <Copy>This consent response link is not valid.</Copy>
+          <Title>{t("consent.email.invalidTitle")}</Title>
+          <Copy>{t("consent.email.invalidCopy")}</Copy>
         </Panel>
       </Page>
     );
@@ -131,36 +141,47 @@ function EmailConsentFeedback({ match, location }) {
       <Panel>
         {isDecline ? (
           <>
-            <Title>Consent declined</Title>
+            <Title>{t("consent.email.declinedTitle")}</Title>
             <Copy>
-              You have declined this verification consent request.
+              {t("consent.email.declinedCopy")}
               {code && (
                 <>
                   {" "}
-                  Consent code: <Code>{code}</Code>.
+                  {t("consent.email.codeLabel")} <Code>{code}</Code>.
                 </>
               )}
             </Copy>
+            {code && (
+              <Copy>
+                <NoteLink
+                  to={`/consent/email/accept?code=${encodeURIComponent(code)}`}
+                >
+                  {t("consent.email.approveLaterLink")}
+                </NoteLink>
+              </Copy>
+            )}
           </>
         ) : status === "complete" ? (
           <>
-            <Title>Consent approved</Title>
-            <Copy>Your consent response has been recorded.</Copy>
+            <Title>{t("consent.email.approvedTitle")}</Title>
+            <Copy>{t("consent.email.recordedCopy")}</Copy>
           </>
         ) : (
           <>
-            <Title>Confirm your consent</Title>
+            <Title>{t("consent.email.confirmTitle")}</Title>
             <Copy>
-              Enter your date of birth to approve this verification request.
+              {t("consent.email.confirmCopy")}
               {code && (
                 <>
                   {" "}
-                  Consent code: <Code>{code}</Code>.
+                  {t("consent.email.codeLabel")} <Code>{code}</Code>.
                 </>
               )}
             </Copy>
             <Form onSubmit={submitApproval}>
-              <label htmlFor="consent-date-of-birth">Date of birth</label>
+              <label htmlFor="consent-date-of-birth">
+                {t("consent.email.dateOfBirth")}
+              </label>
               <DatePicker
                 id="consent-date-of-birth"
                 value={dateOfBirth}
@@ -176,7 +197,7 @@ function EmailConsentFeedback({ match, location }) {
                 loading={status === "submitting"}
                 size="large"
               >
-                Approve consent
+                {t("consent.email.approveButton")}
               </Button>
             </Form>
           </>
