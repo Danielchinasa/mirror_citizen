@@ -175,12 +175,6 @@ function Navbar() {
   // Authenticated user dropdown menu (profile / logout / switch country / theme)
   const menu = (
     <Menu>
-      {items.map((item) => (
-        <Menu.Item key={item.key} onClick={closeMobileMenu}>
-          {item.label}
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
       <Menu.SubMenu
         key="country-selector"
         title={
@@ -192,7 +186,7 @@ function Navbar() {
             >
               🇳🇬
             </span>
-            Switch Country
+            Nigeria
           </span>
         }
       >
@@ -219,6 +213,12 @@ function Navbar() {
       <Menu.Item key="theme-toggle" onClick={closeMobileMenu}>
         <ThemeToggle />
       </Menu.Item>
+      <Menu.Divider />
+      {items.map((item) => (
+        <Menu.Item key={item.key} onClick={closeMobileMenu}>
+          {item.label}
+        </Menu.Item>
+      ))}
     </Menu>
   );
 
@@ -1218,17 +1218,6 @@ function Navbar() {
                         </Modal>
                       </div>
 
-                      <NavItemBtn>
-                        <NavBtnLink>
-                          <OutlineButton
-                            type="primary"
-                            onClick={handleLogout}
-                            $token={token}
-                          >
-                            Logout
-                          </OutlineButton>
-                        </NavBtnLink>
-                      </NavItemBtn>
                       <div
                         style={{
                           paddingLeft: "49px",
@@ -1260,7 +1249,19 @@ function Navbar() {
                           </CountryPill>
                         </Dropdown>
                       </div>
+
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
+                      <NavItemBtn>
+                        <NavBtnLink>
+                          <OutlineButton
+                            type="primary"
+                            onClick={handleLogout}
+                            $token={token}
+                          >
+                            Logout
+                          </OutlineButton>
+                        </NavBtnLink>
+                      </NavItemBtn>
                     </>
                   )
                 : isAuthenticated && (

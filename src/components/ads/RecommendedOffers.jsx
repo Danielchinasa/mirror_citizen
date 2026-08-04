@@ -5,7 +5,7 @@ import { FaArrowRight } from "react-icons/fa";
 const OFFERS = [
   {
     title: "Open a Digital Bank Account",
-    description: "Zero balance accounts in minutes.",
+    description: "Zero balance accounts in seconds.",
     link: "#",
   },
   {
