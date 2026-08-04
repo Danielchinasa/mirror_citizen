@@ -177,8 +177,8 @@ function EmailConsentFeedback({ match, location }) {
             <Title>{t("Consent declined", "Idhini imekataliwa")}</Title>
             <Copy>
               {t(
-                "You have declined this verification consent request.",
-                "Umekatiza ombi hili la idhini la uthibitishaji.",
+                "You have declined this verification consent request. You can always go back and approve the consent if you change your mind.",
+                "Umekatiza ombi hili la idhini la uthibitishaji. Unaweza kila wakati kurudi na kukubali idhini ikiwa utabadilisha mawazo yako.",
               )}
             </Copy>
           </>
@@ -189,6 +189,12 @@ function EmailConsentFeedback({ match, location }) {
               {t(
                 "Your date of birth has been confirmed and your consent has been recorded. You can now close this page.",
                 "Tarehe yako ya kuzaliwa imethibitishwa na idhini yako imehifadhiwa. Sasa unaweza kufunga ukurasa huu.",
+              )}
+            </Copy>
+            <Copy>
+              {t(
+                "You can always go back and approve the consent if you change your mind.",
+                "Unaweza kila wakati kurudi na kukubali idhini ikiwa utabadilisha mawazo yako.",
               )}
             </Copy>
           </>
