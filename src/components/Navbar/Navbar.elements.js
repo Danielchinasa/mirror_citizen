@@ -324,6 +324,33 @@ export const PublicHeaderLanguage = styled.div`
   }
 `;
 
+export const PublicBackButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ec-border, #d9d9d9);
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: #0dc939;
+    color: #0dc939;
+  }
+
+  @media screen and (max-width: 640px) {
+    span {
+      display: none;
+    }
+  }
+`;
+
 export const PublicLogin = styled(Link)`
   color: var(--ec-text);
   text-decoration: none;
