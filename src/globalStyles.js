@@ -15,6 +15,11 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Nunito';
     cursor: default;
 }
+body {
+  background-color: var(--ec-bg, #ffffff);
+  color: var(--ec-text, #1a1a1a);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
@@ -35,6 +40,14 @@ const GlobalStyles = createGlobalStyle`
 }
 a {
   cursor: pointer;
+}
+  /* eBanqo renders its greeting prompt in the host document (outside its chat
+   iframe). The prompt keeps a white background, so it must not inherit the
+   light foreground colour used by the site's dark theme. */
+.initial-prompt-message-wrapper .initial-prompt-message,
+.initial-prompt-message-wrapper .client-bot-message-container,
+.initial-prompt-message-wrapper .client-bot-message-container > p {
+  color: #1a1a1a !important;
 }
 `;
 

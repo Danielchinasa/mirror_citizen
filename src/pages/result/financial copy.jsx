@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Typography } from "antd";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { RightOutlined } from "@ant-design/icons";
 
 import Swal from "sweetalert2";
@@ -100,7 +101,7 @@ const Financial = () => {
         // Make an API request to check consent status
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         if (response.data.consent === "pending") {
@@ -134,7 +135,7 @@ const Financial = () => {
         if ("creditRegistry-data" in response.data) {
           setCheckCreditRegistryDataStats(true);
           setCreditRegistryDataStats(
-            response.data["creditRegistry-data"]["data"]
+            response.data["creditRegistry-data"]["data"],
           );
         }
         if ("firstCentral-data" in response.data) {
@@ -263,7 +264,7 @@ const Financial = () => {
                         <div class="col-12">
                           {renderDetail(
                             "Date of Birth",
-                            basicData[0].dateOfBirth || "No Data"
+                            basicData[0].dateOfBirth || "No Data",
                           )}
                         </div>
                         <div class="col-12">
@@ -272,7 +273,7 @@ const Financial = () => {
                         <div class="col-12">
                           {renderDetail(
                             "Phone",
-                            basicData[0].phone || "No Data"
+                            basicData[0].phone || "No Data",
                           )}
                         </div>
                         <div class="col-12">
@@ -281,13 +282,13 @@ const Financial = () => {
                         <div class="col-12">
                           {renderDetail(
                             "Address",
-                            basicData[0].address || "No Data"
+                            basicData[0].address || "No Data",
                           )}
                         </div>
                         <div class="col-12">
                           {renderDetail(
                             "Email",
-                            basicData[0].email || "No Data"
+                            basicData[0].email || "No Data",
                           )}
                         </div>
                       </div>
@@ -758,7 +759,7 @@ const Financial = () => {
                         {crcsummaryData &&
                         crcsummaryData.highestLoanAmount !== null
                           ? formatAmountToNaira(
-                              crcsummaryData.highestLoanAmount
+                              crcsummaryData.highestLoanAmount,
                             )
                           : "No Data"}
                       </h6>
@@ -1052,7 +1053,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.highestLoanAmount !== null
                           ? formatAmountToNaira(
-                              creditRegistrySummaryData.highestLoanAmount
+                              creditRegistrySummaryData.highestLoanAmount,
                             )
                           : "No Data"}
                       </h6>
@@ -1100,7 +1101,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.totalOverdue !== null
                           ? formatAmountToNaira(
-                              creditRegistrySummaryData.totalOverdue
+                              creditRegistrySummaryData.totalOverdue,
                             )
                           : "No Data"}
                       </h6>
@@ -1124,7 +1125,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.totalBorrowed !== null
                           ? formatAmountToNaira(
-                              creditRegistrySummaryData.totalBorrowed
+                              creditRegistrySummaryData.totalBorrowed,
                             )
                           : "No Data"}
                       </h6>
@@ -1150,7 +1151,7 @@ const Financial = () => {
                         {creditRegistrySummaryData &&
                         creditRegistrySummaryData.totalOutstanding !== null
                           ? formatAmountToNaira(
-                              creditRegistrySummaryData.totalOutstanding
+                              creditRegistrySummaryData.totalOutstanding,
                             )
                           : "No Data"}
                       </h6>
@@ -1324,10 +1325,10 @@ const Financial = () => {
           </Card>
         </Spin>
       </InfoSec>
-      <Title level={5} style={{ marginTop: "20px" }}>
-        Your Offers
-      </Title>
-      <div class="container">
+      <div style={{ display: "none" }}>
+        <RecommendedOffers variant="green" />
+      </div>
+      <div class="container" style={{ display: "none" }}>
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
             <div class="card">

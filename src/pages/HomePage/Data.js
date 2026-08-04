@@ -22,7 +22,7 @@ export const homeObjTwo = {
   topLine: "Instant Setup",
   headline: "Extremely quick onboarding process",
   description:
-    "Once you've joined, our team of specialist will reach out to you and get you set up in minutes.",
+    "Once you've joined, our team of specialist will reach out to you and get you set up in seconds.",
   buttonLabel: "Learn More",
   imgStart: "",
   img: require("../../images/svg-2.svg"),

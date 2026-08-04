@@ -40,6 +40,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -348,8 +349,18 @@ const MainDashboard = () => {
   const navigateToResultPage = (record) => {
     const searchParameter = record.searchParameter;
     localStorage.setItem("verificationRequestId", record.id);
+    const isVinVerification =
+      searchParameter === "VIN" ||
+      searchParameter === "Vehicle Identification Number" ||
+      (record.type === "Vehicle Profile" &&
+        record.searchParameter &&
+        (record.searchParameter.includes("VIN") ||
+          record.searchParameter.includes("Chassis")));
     if (searchParameter === "Vehicle Registration Number") {
       history.push("/vehicle-registration-result");
+    } else if (isVinVerification) {
+      // Route VIN verifications to the redesigned vehicle result page
+      history.push("/vehicle-profile-result");
     } else if (record.type === "Vehicle Profile") {
       history.push("/vehicle-profile-result");
     } else if (record.type === "Business Profile") {
@@ -480,7 +491,7 @@ const MainDashboard = () => {
       },
     },
     {
-      title: "Search Parameter (Value)",
+      title: "Selected Profile",
       dataIndex: "searchParameter",
       key: "searchParameter",
       filters: [
@@ -593,35 +604,35 @@ const MainDashboard = () => {
         return <span style={{ color }}>{capitalizedText}</span>;
       },
     },
-    {
-      title: "Selected Profile",
-      dataIndex: "type",
-      key: "type",
-      // sorter: (a, b) => a.type - b.type,
-      filters: [
-        {
-          text: "Basic Profile",
-          value: "Basic Profile",
-        },
-        {
-          text: "Business Profile",
-          value: "Business Profile",
-        },
-        {
-          text: "Search-Extension",
-          value: "Search-Extension",
-        },
-        {
-          text: "Financial Profile",
-          value: "Financial Profile",
-        },
-        {
-          text: "Vehicle Profile",
-          value: "Vehicle Profile",
-        },
-      ],
-      onFilter: (value, record) => record.type.indexOf(value) === 0,
-    },
+    // {
+    //   title: "Selected Profile",
+    //   dataIndex: "type",
+    //   key: "type",
+    //   // sorter: (a, b) => a.type - b.type,
+    //   filters: [
+    //     {
+    //       text: "Basic Profile",
+    //       value: "Basic Profile",
+    //     },
+    //     {
+    //       text: "Business Profile",
+    //       value: "Business Profile",
+    //     },
+    //     {
+    //       text: "Search-Extension",
+    //       value: "Search-Extension",
+    //     },
+    //     {
+    //       text: "Financial Profile",
+    //       value: "Financial Profile",
+    //     },
+    //     {
+    //       text: "Vehicle Profile",
+    //       value: "Vehicle Profile",
+    //     },
+    //   ],
+    //   onFilter: (value, record) => record.type.indexOf(value) === 0,
+    // },
 
     {
       title: "Action",
@@ -653,7 +664,28 @@ const MainDashboard = () => {
         } else if (status.toLowerCase() === "failed") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              Failed verification
+              {record.source === "AFRICA" && record.resultText
+                ? record.resultText
+                : "Failed verification"}
+            </span>
+          );
+        } else if (record.source === "AFRICA") {
+          const isSuccessful = status.toLowerCase() === "successful";
+          const africaStatus =
+            record.resultText ||
+            (isSuccessful
+              ? "Verification completed"
+              : status.toLowerCase() === "pending"
+                ? "Verification processing"
+                : "Awaiting payment and completion");
+          return (
+            <span
+              style={{
+                color: isSuccessful ? "green" : "inherit",
+                fontWeight: "bold",
+              }}
+            >
+              {africaStatus}
             </span>
           );
         } else if (status.toLowerCase() === "initiate") {
@@ -1634,6 +1666,9 @@ const MainDashboard = () => {
                 marginBottom: "40px",
               }}
             />
+            <div style={{ display: "none" }}>
+              <RecommendedOffers variant="green" />
+            </div>
             <Notification />
             <Modal
               // title="Complete Wallet TopUp"

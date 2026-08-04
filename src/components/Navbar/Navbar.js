@@ -6,8 +6,30 @@ import {
   NavMenu,
   NavItemBtn,
   NavBtnLink,
+  PublicNav,
+  PublicNavInner,
+  PublicBrand,
+  PublicCenter,
+  CountryPill,
+  PublicNavGroup,
+  PublicTrigger,
+  PublicNavLink,
+  PublicAnchor,
+  PublicLanguage,
+  PublicActions,
+  PublicHeaderLanguage,
+  PublicDesktopOnly,
+  PublicCta,
+  PublicHamburger,
+  PublicMobilePanel,
+  PublicMobileMenu,
+  PublicLanguageToggleGroup,
+  PublicLanguageToggle,
+  PublicMobileLink,
+  PublicMobileAnchor,
+  PublicBackButton,
 } from "./Navbar.elements";
-import { FaTimes, FaBars } from "react-icons/fa";
+import { FaTimes, FaBars, FaArrowLeft } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { MainButton, OutlineButton } from "../../globalStyles";
 
@@ -15,7 +37,7 @@ import Logo from "../../images/e-citizen_logo_ecitizen.png";
 import LogoWhite from "../../images/e-citizen_logo_ecitizen_white.png";
 import defaultDp from "../../images/defaultDp.png";
 import defaultDpDark from "../../images/defaultDpDark.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Flex, Modal, Radio, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, fetchUserProfile } from "../../redux/actions";
@@ -39,8 +61,38 @@ const { useToken } = theme;
 
 const { Title } = Typography;
 
+// NOTE: this list intentionally excludes Nigeria (the current site).
+// Update the hrefs below if the real country-specific domains differ.
+const OTHER_COUNTRIES = [
+  {
+    key: "country-ghana",
+    flag: "🇬🇭",
+    label: "Ghana",
+    href: "https://e-citizen.africa/gh",
+  },
+  {
+    key: "country-kenya",
+    flag: "🇰🇪",
+    label: "Kenya",
+    href: "https://e-raia.com/ke",
+  },
+  {
+    key: "country-uganda",
+    flag: "🇺🇬",
+    label: "Uganda",
+    href: "https://e-raia.com/ug",
+  },
+  {
+    key: "country-civ",
+    flag: "🇨🇮",
+    label: "Côte d'Ivoire",
+    href: "https://citoyen.africa/ci",
+  },
+];
+
 function Navbar() {
   const history = useHistory();
+  const location = useLocation();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const dispatch = useDispatch();
@@ -94,6 +146,17 @@ function Navbar() {
     history.push("/");
   };
 
+  const handleGoBack = () => {
+    if (history.length > 1) {
+      history.goBack();
+      return;
+    }
+
+    history.push("/");
+  };
+
+  const isVerificationLogin = location.pathname === "/verification-login";
+
   const items = [
     // {
     //   key: "1",
@@ -106,9 +169,9 @@ function Navbar() {
     {
       key: "2",
       label: (
-        <a href="/profile" style={{ textDecoration: "none" }}>
+        <Link to="/profile" style={{ textDecoration: "none" }}>
           My Profile
-        </a>
+        </Link>
       ),
     },
     {
@@ -122,6 +185,7 @@ function Navbar() {
     setVisible(flag);
   };
 
+  // Authenticated user dropdown menu (profile / logout / switch country / theme)
   const menu = (
     <Menu>
       {items.map((item) => (
@@ -129,6 +193,45 @@ function Navbar() {
           {item.label}
         </Menu.Item>
       ))}
+      <Menu.Divider />
+      <Menu.SubMenu
+        key="country-selector"
+        title={
+          <span>
+            <span
+              role="img"
+              aria-label="Nigeria flag"
+              style={{ marginRight: 8 }}
+            >
+              🇳🇬
+            </span>
+            Nigeria
+          </span>
+        }
+      >
+        {OTHER_COUNTRIES.map((country) => (
+          <Menu.Item key={country.key}>
+            <a
+              href={country.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <span
+                role="img"
+                aria-label={`${country.label} flag`}
+                style={{ marginRight: 10 }}
+              >
+                {country.flag}
+              </span>
+              {country.label}
+            </a>
+          </Menu.Item>
+        ))}
+      </Menu.SubMenu>
+      <Menu.Item key="theme-toggle" onClick={closeMobileMenu}>
+        <ThemeToggle />
+      </Menu.Item>
     </Menu>
   );
 
@@ -173,6 +276,61 @@ function Navbar() {
       </Dropdown>
     );
   };
+
+  // Public (logged-out) header dropdowns
+  const servicesMenu = (
+    <Menu>
+      <Menu.Item key="services-nin">
+        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+          NIN Verification
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="services-vin">
+        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+          Phone Number Verification
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="services-vin">
+        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+          Business Profile Verification
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="services-vin">
+        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+          Financial Credit Verification
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="services-vin">
+        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+          Vehicle History Verification
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const countryMenu = (
+    <Menu>
+      {OTHER_COUNTRIES.map((country) => (
+        <Menu.Item key={country.key}>
+          <a
+            href={country.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label={`${country.label} flag`}
+              style={{ marginRight: 10 }}
+            >
+              {country.flag}
+            </span>
+            {country.label}
+          </a>
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   useEffect(() => {
     // Dispatch fetchUserProfile action when component mounts
@@ -699,6 +857,117 @@ function Navbar() {
   const { token } = theme.useToken(); // Get token from useToken
   const { text, bgContainer } = token;
 
+  const handleGetStarted = (e) => {
+    e.preventDefault();
+    closeMobileMenu();
+    if (window.location.pathname === "/") {
+      const el = document.getElementById("verification-services");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "/#verification-services";
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <PublicNav>
+          <PublicNavInner>
+            <Link to="/">
+              <img
+                src={isDark ? LogoWhite : Logo}
+                alt="Logo"
+                width={230}
+                style={{ marginTop: "10px", cursor: "pointer" }}
+              />
+            </Link>
+
+            <PublicCenter>
+              <Dropdown overlay={servicesMenu} trigger={["click"]} arrow>
+                <PublicTrigger type="button">
+                  Services <DownOutlined className="chev" />
+                </PublicTrigger>
+              </Dropdown>
+
+              <PublicAnchor href="/#how-it-works">How it works</PublicAnchor>
+              <PublicAnchor href="/#verification-services">
+                Pricing
+              </PublicAnchor>
+              <PublicNavLink to="/faq">FAQ</PublicNavLink>
+              <PublicNavLink to="/contact">Support</PublicNavLink>
+            </PublicCenter>
+
+            <PublicActions>
+              {isVerificationLogin && (
+                <PublicBackButton
+                  type="button"
+                  onClick={handleGoBack}
+                  aria-label="Go Back"
+                  title="Go Back"
+                >
+                  <FaArrowLeft aria-hidden="true" />
+                  <span>Go Back</span>
+                </PublicBackButton>
+              )}
+              <PublicHeaderLanguage>
+                <PublicLanguageToggleGroup />
+              </PublicHeaderLanguage>
+              <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
+                <CountryPill type="button" aria-label="Select country">
+                  <span className="flag" role="img" aria-label="Nigeria flag">
+                    🇳🇬
+                  </span>
+                  Nigeria
+                  <DownOutlined className="chev" />
+                </CountryPill>
+              </Dropdown>
+              <PublicDesktopOnly>
+                <ThemeToggle />
+              </PublicDesktopOnly>
+              <PublicCta href="#" onClick={handleGetStarted}>
+                Get Started
+              </PublicCta>
+              <PublicHamburger onClick={handleClick} aria-label="Open menu">
+                {click ? <FaTimes /> : <FaBars />}
+              </PublicHamburger>
+            </PublicActions>
+          </PublicNavInner>
+
+          <PublicMobilePanel $open={click}>
+            <PublicMobileMenu>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "6px 0",
+                }}
+              >
+                <ThemeToggle />
+              </div>
+
+              <PublicMobileAnchor
+                href="/#how-it-works"
+                onClick={closeMobileMenu}
+              >
+                How it works
+              </PublicMobileAnchor>
+
+              <PublicMobileLink to="/faq" onClick={closeMobileMenu}>
+                FAQ
+              </PublicMobileLink>
+              <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
+                Support
+              </PublicMobileLink>
+              <PublicMobileAnchor href="#" onClick={handleGetStarted}>
+                Get Started
+              </PublicMobileAnchor>
+            </PublicMobileMenu>
+          </PublicMobilePanel>
+        </PublicNav>
+      </>
+    );
+  }
+
   return (
     <>
       <Spin
@@ -710,7 +979,7 @@ function Navbar() {
       <IconContext.Provider value={{ color: "#000" }}>
         <Nav $token={token}>
           <NavbarContainer>
-            <Link to={isAuthenticated ? "/dashboard" : "/"}>
+            <Link to="/">
               {/* <Logo style={{ marginTop: "10px" }} /> */}
               <img
                 src={isDark ? LogoWhite : Logo}
@@ -745,7 +1014,7 @@ function Navbar() {
                     </NavBtnLink>
                   </NavItemBtn>
                   <NavItemBtn>
-                    <NavBtnLink to="/dashboard">
+                    <NavBtnLink to="/">
                       <MainButton
                         type="primary"
                         style={{
@@ -762,63 +1031,19 @@ function Navbar() {
               {!isAuthenticated && (
                 <>
                   <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink to="/login">
-                        <OutlineButton
-                          $token={token}
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          GET STARTED
-                        </OutlineButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/login">
-                        <OutlineButton
-                          $token={token}
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          GET STARTED
-                        </OutlineButton>
-                      </NavBtnLink>
-                    )}
-                  </NavItemBtn>
-                  {/* <NavItemBtn>
-                    {button ? (
-                      <NavBtnLink
-                        to="/sign-up"
+                    <NavBtnLink to="#" onClick={handleGetStarted}>
+                      <OutlineButton
+                        $token={token}
+                        type="primary"
                         style={{
                           fontFamily: "Poppins",
                           fontWeight: "700",
                         }}
                       >
-                        <MainButton type="primary">SIGN UP</MainButton>
-                      </NavBtnLink>
-                    ) : (
-                      <NavBtnLink to="/sign-up">
-                        <MainButton
-                          onClick={closeMobileMenu}
-                          fontBig
-                          type="primary"
-                          style={{
-                            fontFamily: "Poppins",
-                            fontWeight: "700",
-                          }}
-                        >
-                          SIGN UP
-                        </MainButton>
-                      </NavBtnLink>
-                    )}
-                  </NavItemBtn> */}
+                        GET STARTED
+                      </OutlineButton>
+                    </NavBtnLink>
+                  </NavItemBtn>
                   <ThemeToggle />
                 </>
               )}
@@ -859,7 +1084,7 @@ function Navbar() {
                         <Title level={4} style={{ color: "#FFFFFF" }}>
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
-                        <p onClick={showModal} style={{ color: text }}>
+                        <p onClick={showModal} style={{ color: "#FFFFFF" }}>
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
@@ -906,27 +1131,6 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "NGN" && (
-                              <Radio
-                                value={2}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  marginBottom: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PayPal
-                                <img
-                                  src={paypal}
-                                  alt="paypal"
-                                  width={60}
-                                  style={{ float: "right", marginTop: "5px" }}
-                                />
-                              </Radio>
-                            )} */}
                             <Radio
                               value={3}
                               disabled={userCurrency.toUpperCase() === "USD"}
@@ -983,7 +1187,6 @@ function Navbar() {
                             )}
                         </Modal>
                         <Modal
-                          // title="Complete Wallet TopUp"
                           style={{
                             top: 20,
                           }}
@@ -1008,10 +1211,7 @@ function Navbar() {
                             width="100%"
                             height="600"
                             src={paymentUrl}
-                            // ref={iframeRef}
-                            // onLoad={handleIframeLoad}
                           ></iframe>
-                          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
                         </Modal>
                         <Modal
                           style={{
@@ -1053,6 +1253,39 @@ function Navbar() {
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
+
+                      <div
+                        style={{
+                          paddingLeft: "49px",
+                          paddingRight: "15px",
+                        }}
+                      >
+                        <Dropdown
+                          overlay={countryMenu}
+                          trigger={["click"]}
+                          arrow
+                        >
+                          <CountryPill
+                            type="button"
+                            aria-label="Select country"
+                            style={{ color: "#FFFFFF" }}
+                          >
+                            <span
+                              className="flag"
+                              role="img"
+                              aria-label="Nigeria flag"
+                            >
+                              🇳🇬
+                            </span>
+                            Nigeria
+                            <DownOutlined
+                              className="chev"
+                              style={{ color: "#FFFFFF" }}
+                            />
+                          </CountryPill>
+                        </Dropdown>
+                      </div>
+
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
                     </>
                   )
@@ -1073,7 +1306,6 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#0DC939" }}>
                             {" "}
-                            {/* ₦{userBalance.toLocaleString()} */}
                             {userCurrency === "USD" || userCurrency === "usd"
                               ? `${formatToDollar(userBalance)}`
                               : formatToNaira(userBalance)}
@@ -1117,27 +1349,6 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "NGN" && (
-                              <Radio
-                                value={2}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  marginBottom: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PayPal
-                                <img
-                                  src={paypal}
-                                  alt="paypal"
-                                  width={60}
-                                  style={{ float: "right", marginTop: "5px" }}
-                                />
-                              </Radio>
-                            )} */}
                             <Radio
                               value={3}
                               disabled={userCurrency.toUpperCase() === "USD"}
@@ -1194,7 +1405,6 @@ function Navbar() {
                             )}
                         </Modal>
                         <Modal
-                          // title="Complete Wallet TopUp"
                           style={{
                             top: 20,
                           }}
@@ -1219,10 +1429,7 @@ function Navbar() {
                             width="100%"
                             height="600"
                             src={paymentUrl}
-                            // ref={iframeRef}
-                            // onLoad={handleIframeLoad}
                           ></iframe>
-                          {/* <button onClick={getContentFromIframe}>Get Content from Iframe</button> */}
                         </Modal>
                         <Modal
                           style={{
@@ -1253,9 +1460,7 @@ function Navbar() {
                         </Modal>
                       </div>
                       <UserDropdown />
-                      <div style={{ marginLeft: "20px" }}>
-                        <ThemeToggle />
-                      </div>
+                      <div style={{ marginLeft: "20px" }}></div>
                     </>
                   )}
             </NavMenu>

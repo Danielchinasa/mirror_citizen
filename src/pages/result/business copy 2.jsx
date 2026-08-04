@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Typography } from "antd";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import Icon, {
   RightOutlined,
   UserOutlined,
@@ -39,7 +40,7 @@ const Business = () => {
         // Make an API request to check consent status
         const response = await apiGet(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
         setBusinessData(response.data);
       } catch (error) {
@@ -106,33 +107,33 @@ const Business = () => {
                   "Business Name",
                   business.data.approvedName
                     ? business.data.approvedName
-                    : `No Data`
+                    : `No Data`,
                 )}
                 <Divider />
                 {renderDetail(
                   <BankOutlined />,
                   "Registration Number",
-                  business.data.rcNumber ? business.data.rcNumber : `No Data`
+                  business.data.rcNumber ? business.data.rcNumber : `No Data`,
                 )}
                 <Divider />
                 {renderDetail(
                   <HomeOutlined />,
                   "City",
-                  business.data.city ? business.data.city : `No Data`
+                  business.data.city ? business.data.city : `No Data`,
                 )}
               </Col>
               <Col span={6}>
                 {renderDetail(
                   <MailOutlined />,
                   "Business Email",
-                  business.data.email ? business.data.email : `No Data`
+                  business.data.email ? business.data.email : `No Data`,
                 )}
                 <Divider />
 
                 {renderDetail(
                   <MdOutlinePinDrop />,
                   "State",
-                  business.data.state ? business.data.state : `No Data`
+                  business.data.state ? business.data.state : `No Data`,
                 )}
                 <Divider />
                 {renderDetail(
@@ -140,7 +141,7 @@ const Business = () => {
                   "Postal Code",
                   business.data.postalCode
                     ? business.data.postalCode
-                    : `No Data`
+                    : `No Data`,
                 )}
               </Col>
               <Col span={6}>
@@ -149,13 +150,13 @@ const Business = () => {
                   "Company Status",
                   business.data.companyStatus
                     ? business.data.companyStatus
-                    : `No Data`
+                    : `No Data`,
                 )}
                 <Divider />
                 {renderDetail(
                   <HomeOutlined />,
                   "Business Address",
-                  business.data.address ? business.data.address : `No Data`
+                  business.data.address ? business.data.address : `No Data`,
                 )}
                 <Divider />
                 {renderDetail(
@@ -163,7 +164,7 @@ const Business = () => {
                   "Postal Code",
                   business.data.postalCode
                     ? business.data.postalCode
-                    : `No Data`
+                    : `No Data`,
                 )}
               </Col>
               <Col span={6}>
@@ -172,7 +173,7 @@ const Business = () => {
                   "Approved Name: ",
                   business.data.approvedName
                     ? business.data.approvedName
-                    : `No Data`
+                    : `No Data`,
                 )}
                 <Divider />
                 {renderDetail(
@@ -180,7 +181,7 @@ const Business = () => {
                   "Branch Address",
                   business.data.branchAddress
                     ? business.data.branchAddress
-                    : `No Data`
+                    : `No Data`,
                 )}
               </Col>
               <Divider />
@@ -197,14 +198,14 @@ const Business = () => {
                     <Col span={6}>
                       {renderDetail2(
                         "Surname:",
-                        stakeholder.surname ? stakeholder.surname : `No Data`
+                        stakeholder.surname ? stakeholder.surname : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "First Name: ",
                         stakeholder.firstname
                           ? stakeholder.firstname
-                          : `No Data`
+                          : `No Data`,
                       )}
 
                       <Divider />
@@ -213,12 +214,12 @@ const Business = () => {
                         "Other Name: ",
                         stakeholder.other_name
                           ? stakeholder.other_name
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "Email: ",
-                        stakeholder.email ? stakeholder.email : `No Data`
+                        stakeholder.email ? stakeholder.email : `No Data`,
                       )}
                     </Col>
                     <Col span={6}>
@@ -226,12 +227,12 @@ const Business = () => {
                         "Phone Number: ",
                         stakeholder.phone_number
                           ? stakeholder.phone_number
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "Gender: ",
-                        stakeholder.gender ? stakeholder.gender : `No Data`
+                        stakeholder.gender ? stakeholder.gender : `No Data`,
                       )}
                       <Divider />
 
@@ -239,25 +240,25 @@ const Business = () => {
                         "Formar Nationality: ",
                         stakeholder.former_nationality
                           ? stakeholder.former_nationality
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "Age: ",
-                        stakeholder.age ? stakeholder.age : `No Data`
+                        stakeholder.age ? stakeholder.age : `No Data`,
                       )}
                     </Col>
                     <Col span={6}>
                       {renderDetail2(
                         "City:",
-                        stakeholder.city ? stakeholder.city : `No Data`
+                        stakeholder.city ? stakeholder.city : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "Occupation: ",
                         stakeholder.occupation
                           ? stakeholder.occupation
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
 
@@ -265,12 +266,12 @@ const Business = () => {
                         "RC Number: ",
                         stakeholder.rc_number
                           ? stakeholder.rc_number
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "State: ",
-                        stakeholder.state ? stakeholder.state : `No Data`
+                        stakeholder.state ? stakeholder.state : `No Data`,
                       )}
                     </Col>
                     <Col span={6}>
@@ -278,14 +279,14 @@ const Business = () => {
                         "Is a Lawyer: ",
                         stakeholder.is_lawyer
                           ? stakeholder.is_lawyer
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
                       {renderDetail2(
                         "Formal Type: ",
                         stakeholder.form_type
                           ? stakeholder.form_type
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
 
@@ -293,7 +294,7 @@ const Business = () => {
                         "Is Chairman: ",
                         stakeholder.is_chairman
                           ? stakeholder.is_chairman
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
 
@@ -301,7 +302,7 @@ const Business = () => {
                         "Country of Residence: ",
                         stakeholder.country_of_residence
                           ? stakeholder.country_of_residence
-                          : `No Data`
+                          : `No Data`,
                       )}
                     </Col>
                     <Divider />
@@ -310,7 +311,7 @@ const Business = () => {
                         "Type of Shares: ",
                         stakeholder.type_of_shares
                           ? stakeholder.type_of_shares
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
 
@@ -318,7 +319,7 @@ const Business = () => {
                         "Number of Shares Alloted: ",
                         stakeholder.num_shares_alloted
                           ? stakeholder.num_shares_alloted
-                          : `No Data`
+                          : `No Data`,
                       )}
                     </Col>
                     <Col span={6}>
@@ -326,7 +327,7 @@ const Business = () => {
                         "Nationality: ",
                         stakeholder.nationality
                           ? stakeholder.nationality
-                          : `No Data`
+                          : `No Data`,
                       )}
                       <Divider />
 
@@ -334,7 +335,7 @@ const Business = () => {
                         "Carried over from name: ",
                         stakeholder.is_carried_over_from_name_avai
                           ? stakeholder.is_carried_over_from_name_avai
-                          : `No Data`
+                          : `No Data`,
                       )}
                     </Col>
                   </Row>
@@ -349,6 +350,10 @@ const Business = () => {
               ))}
           </Card>
         ))}
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
+        {/*
         <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
@@ -387,6 +392,7 @@ const Business = () => {
             />
           </Col>
         </Row>
+        */}
       </InfoSec>
     </Container>
   );

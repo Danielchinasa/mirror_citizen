@@ -38,6 +38,7 @@ import {
 
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiGetInternalCall } from "../../apiUtils";
@@ -96,7 +97,7 @@ const Vehicle2 = () => {
         // Make an API request to check consent status
         const postResponse = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         // Handle the response from the post request as needed
@@ -219,7 +220,7 @@ const Vehicle2 = () => {
                   {renderDetail(
                     <FaTeethOpen />,
                     "Chassis Number",
-                    `${chassisNumber}`
+                    `${chassisNumber}`,
                   )}
                   <Divider />
 
@@ -229,7 +230,7 @@ const Vehicle2 = () => {
                   {renderDetail(
                     <FaFileInvoice />,
                     "Registration Number",
-                    `${licenseNumber}`
+                    `${licenseNumber}`,
                   )}
                   <Divider />
 
@@ -251,46 +252,46 @@ const Vehicle2 = () => {
                   {renderDetail(
                     <FaRegUser />,
                     "Owner First Name",
-                    `${ownerFirstName}`
+                    `${ownerFirstName}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <FaRegUser />,
                     "Owner Last Name",
-                    `${ownerLastName}`
+                    `${ownerLastName}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <FaRegUser />,
                     "Owner Middlename",
-                    `${ownerMiddleName}`
+                    `${ownerMiddleName}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <FaCarAlt />,
                     "Vehicle Category",
-                    `${category}`
+                    `${category}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <FaPhone />,
                     "Owner Phone Number",
-                    `${ownerPhone}`
+                    `${ownerPhone}`,
                   )}
                   <Divider />
                   {renderDetail(
                     <FaFileInvoice />,
                     "Stolen Reports",
-                    `${stolenReports}`
+                    `${stolenReports}`,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <FaGlobe />,
                     "Owner Address",
-                    `${ownerAddress}`
+                    `${ownerAddress}`,
                   )}
                   <Divider />
                   {renderDetail(<FaGlobe />, "Owner LGA", `${ownerLga}`)}
@@ -300,6 +301,10 @@ const Vehicle2 = () => {
             </Card>
           </Spin>
         </InfoSec>
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
+        {/*
         <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
@@ -313,7 +318,7 @@ const Vehicle2 = () => {
                 backgroundPosition: "center",
                 height: "200px",
                 marginRight: "10px",
-                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+                cursor: "pointer",
               }}
               onClick={() => {
                 window.open(
@@ -330,7 +335,7 @@ const Vehicle2 = () => {
                 backgroundPosition: "center",
                 height: "200px",
                 marginRight: "10px",
-                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+                cursor: "pointer",
               }}
               onClick={() => {
                 window.open(
@@ -341,6 +346,7 @@ const Vehicle2 = () => {
             ></div>
           </div>
         </div>
+        */}
       </Container>
     </div>
   );

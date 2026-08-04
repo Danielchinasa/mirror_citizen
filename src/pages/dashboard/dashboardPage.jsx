@@ -1302,6 +1302,59 @@ const DashboardPage = () => {
   }
   const randomTransactionId = generateTransactionId();
 
+  const buildItems = (formData, fees) => {
+    const items = [];
+
+    Object.keys(formData).forEach((field) => {
+      if (
+        typeof formData[field] === "string" &&
+        formData[field].trim() !== "" &&
+        fees[field] !== undefined
+      ) {
+        items.push({
+          item_id: field,
+          item_name: field,
+          price: fees[field],
+          quantity: 1,
+        });
+      }
+    });
+
+    return items;
+  };
+
+  const getFinalAmount = () => {
+    return userCurrency.toUpperCase() === "NGN" &&
+      currencyCheck.toUpperCase() === "NGN"
+      ? totalServiceCost
+      : currencyCheck.toUpperCase() === "USD" &&
+        userCurrency.toUpperCase() === "NGN"
+      ? totalveriNiara
+      : currencyCheck.toUpperCase() === "USD" &&
+        userCurrency.toUpperCase() === "USD"
+      ? totalServiceCost
+      : userCurrency.toUpperCase() === "NGN" &&
+        currencyCheck.toUpperCase() !== "NGN"
+      ? outsideNgWithNiaraPrice
+      : totalServiceCost;
+  };
+
+  const logPurchase = ({
+    currency,
+    value,
+    transactionId,
+    paymentType,
+    items,
+  }) => {
+    ReactGA.event("purchase", {
+      currency: currency,
+      value: value,
+      transaction_id: transactionId,
+      payment_type: paymentType,
+      items: items,
+    });
+  };
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1488,6 +1541,41 @@ const DashboardPage = () => {
           const data = await response.json();
 
           if (response.ok && data.status === "success") {
+            //GA4
+            const formDataFees = {
+              nin: ninFee,
+              phone: phoneFee,
+              vin: vinVehicleFee,
+              license_number: vehicleFee,
+              rc: businessFee,
+              business_name: businessFee,
+              bvn: financialFee,
+              face: faceFee,
+            };
+
+            const formDataUsdFees = {
+              nin: ninUsdFee,
+              phone: phoneUsdFee,
+              vin: vinVehicleUsdFee,
+              license_number: vehicleUsdFee,
+              rc: businessUsdFee,
+              business_name: businessUsdFee,
+              bvn: financialUsdFee,
+              face: faceUsdFee,
+            };
+            
+            const isUSD = currencyCheck.toUpperCase() === "USD";
+            const fees = isUSD ? formDataUsdFees : formDataFees;
+
+            const items = buildItems(formData, fees);
+
+            logPurchase({
+              currency: isUSD ? "USD" : "NGN",
+              value: getFinalAmount(),
+              transactionId: randomTransactionId,
+              paymentType: "WALLET",
+              items,
+            });
             //!------------------- Do the Verification ------------------------//
             handleSubmit();
             //!------------------- Do the Verification End ------------------------//
@@ -1720,6 +1808,14 @@ const DashboardPage = () => {
         //!!PAYPAL PAYMENT START
         localStorage.setItem("paymentType", "INSTANT");
 
+  const handleMakePayment = async () => {
+    if (!checkboxCheckedConfirm) {
+      return (
+        <Alert message="Kindly select a payment method" type="info" showIcon />
+      );
+    }
+    setIsConfirmedBtnClicked(false);
+    setMakingPayment(true);
         if (bvnFilled) {
           if (areNoneChecked()) {
             setLoading(false);
@@ -1889,7 +1985,7 @@ const DashboardPage = () => {
         handleCancel();
       }
       //!!PAYPAL PAYMENT ENDS
-      else if (paymentMethod === 4) {
+      }else if (paymentMethod === 4) {
         //!!PAYSTACK PAYMENT START
         localStorage.setItem("paymentType", "CARD");
 
@@ -2232,6 +2328,7 @@ const DashboardPage = () => {
         console.error("Error fetching user profile:", error);
       });
   };
+
   const handleMakePaymentForLiveFace = () => {
     const formDataFees = {
       nin: ninFee + 100,
@@ -2302,7 +2399,7 @@ const DashboardPage = () => {
             padding: "15px",
           }}
         >
-          {/* <Checkbox onChange={onChange2}> */}
+          {/* <Checkbox placeholder="(originally commented out)" /> */}
           <ol style={{ fontSize: "17px" }}>
             {isBasicOn || isFinancialOn ? (
               <li style={{ padding: "20px" }}>
@@ -2332,8 +2429,6 @@ const DashboardPage = () => {
               , and you accept that you will not be refunded
             </li>
           </ol>
-
-          {/* </Checkbox> */}
         </div>
       ) : (
         ""
@@ -2365,7 +2460,7 @@ const DashboardPage = () => {
               you will not be refunded for incorrect information or lack of
               consent
             </li>
-            <li style={{ padding: "20px" }}>
+            {/* <li style={{ padding: "20px" }}>
               You understand and accept the following{" "}
               <b>
                 terms and conditions pertaining to ClearVIN’s vehicle history
@@ -2426,7 +2521,7 @@ const DashboardPage = () => {
                   </li>
                 </ol>
               </ol>
-            </li>
+            </li> */}
           </ul>
           {/* </Checkbox> */}
         </div>

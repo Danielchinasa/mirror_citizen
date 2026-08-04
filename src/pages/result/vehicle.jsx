@@ -39,6 +39,7 @@ import { LuCar } from "react-icons/lu";
 import { IoMdSpeedometer } from "react-icons/io";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import Reach1 from "../../images/reach1.jpeg";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
@@ -55,6 +56,9 @@ const Vehicle = () => {
   const [fuelType, setFuelType] = useState("-");
   const [transmission, setTransmission] = useState("-");
   const [vin, setVin] = useState("-");
+  const [vehicleName, setVehicleName] = useState("-");
+  const [vehicleAge, setVehicleAge] = useState("-");
+  const [vehicleImage, setVehicleImage] = useState("-");
   const [year, setYear] = useState("-");
   const [madeIn, setMadeIn] = useState("-");
   const [model, setModel] = useState("-");
@@ -69,6 +73,8 @@ const Vehicle = () => {
   const [chasisNumber, setChasisNumber] = useState("-");
   const [stolen, setStolen] = useState(false);
   const [report, setReport] = useState("-");
+  const [verificationStatus, setVerificationStatus] = useState("-");
+  const [verificationReference, setVerificationReference] = useState("-");
 
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
@@ -86,46 +92,59 @@ const Vehicle = () => {
         // Make an API request to check consent status
         const postResponse = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         // Handle the response from the post request as needed
 
-        const vehicleData = postResponse.data.data;
+        // Handle both response formats:
+        // - Old provider: postResponse.data.data = { vehicleName, vin, ... }
+        // - New failover: postResponse.data = { vehicle: { data: { vehicleName, vin, ... }, success: true } }
+        const rawData = postResponse.data;
+        const vehicleData = rawData.vehicle?.data || rawData.data || rawData;
 
         setLoading(false);
-        const vinSpec = vehicleData.vehicleName || "-";
-        const name = vehicleData.vin || "-";
-        const fuelType = vehicleData.fuelType || "-";
-        const transmission = vehicleData.transmission || "-";
-        const year = vehicleData.year || "-";
+        // Map API fields to local state (avoid duplicates)
+        const vinSpec = vehicleData.vin || "-";
+        const vName = vehicleData.vehicleName || vehicleData.name || "-";
+        const vAge = vehicleData.vehicleAge || "-";
+        const vImage =
+          vehicleData.vehicleImage || vehicleData.previewImageURL || vehicleData.image || "-";
+        const fuel = vehicleData.fuelType || "-";
+        const trans = vehicleData.transmission || "-";
+        const yr = vehicleData.year || "-";
         const madein = vehicleData.madeIn || "-";
-        const model = vehicleData.model || "-";
-        const trim = vehicleData.trim || "-";
-        const engine = vehicleData.engine || "-";
-        const make = vehicleData.make || "-";
-        const style = vehicleData.style || "-";
+        const mdl = vehicleData.model || "-";
+        const trm = vehicleData.trim || "-";
+        const eng = vehicleData.engine || "-";
+        const mk = vehicleData.make || "-";
         const invoice = vehicleData.invoice || "-";
         const msrp = vehicleData.msrp || "-";
-        const image = vehicleData.previewImageURL || "-";
         const pdfUri = vehicleData.pdfUri || "-";
-        const stolen = vehicleData.stolen;
-        setName(name);
-        setFuelType(fuelType);
-        setTransmission(transmission);
+        const stolenFlag = vehicleData.stolen;
+        const vStatus = vehicleData.verificationStatus || "-";
+        const vRef = vehicleData.verificationReference || vehicleData.reference || "-";
+
+        setVehicleName(vName);
+        setVehicleAge(vAge);
+        setVehicleImage(vImage);
+        setFuelType(fuel);
+        setTransmission(trans);
         setVin(vinSpec);
-        setYear(year);
+        setYear(yr);
         setMadeIn(madein);
-        setModel(model);
-        setTrim(trim);
-        setEngine(engine);
-        setMake(make);
+        setModel(mdl);
+        setTrim(trm);
+        setEngine(eng);
+        setMake(mk);
         setStyle(style);
         setInvoice(invoice);
         setMsrp(msrp);
-        setImage(image);
+        setImage(vImage);
         setpdfUri(pdfUri);
-        setStolen(stolen);
+        setStolen(stolenFlag);
+        setVerificationStatus(vStatus);
+        setVerificationReference(vRef);
 
         // Your existing code for handling response data from the consent status check
       } catch (error) {
@@ -234,12 +253,44 @@ const Vehicle = () => {
                   square
                 />
               ) : ( */}
-                  {/* <Avatar size={124} icon={<CarOutlined />} /> */}
-                  Vehicle Specification
+                  {/* Vehicle header: image and basic info */}
+                  <div
+                    style={{ display: "flex", gap: 16, alignItems: "center" }}
+                  >
+                    {vehicleImage && vehicleImage !== "-" ? (
+                      <Image
+                        width={160}
+                        src={vehicleImage}
+                        alt="Vehicle"
+                        fallback={Reach1}
+                      />
+                    ) : (
+                      <Avatar size={124} icon={<CarOutlined />} />
+                    )}
+                    <div>
+                      <Title level={4}>
+                        {vehicleName !== "-"
+                          ? vehicleName
+                          : "Vehicle History Profile"}
+                      </Title>
+                      <div>
+                        <strong>VIN:</strong> {vin}
+                      </div>
+                      <div>
+                        <strong>Age:</strong> {vehicleAge}
+                      </div>
+                      <div>
+                        <strong>Verification:</strong> {verificationStatus}
+                        {verificationReference && verificationReference !== "-"
+                          ? ` — ${verificationReference}`
+                          : null}
+                      </div>
+                    </div>
+                  </div>
                   {/* )} */}
                 </Col>
                 <Col span={6}>
-                  {renderDetail(<FaTeethOpen />, "Name", `${vin}`)}
+                  {renderDetail(<FaTeethOpen />, "Name", `${vehicleName}`)}
                   <Divider />
 
                   {renderDetail(<FaCalendarAlt />, "Year", `${year}`)}
@@ -280,7 +331,11 @@ const Vehicle = () => {
                   {renderDetail(<GiCarWheel />, "Tires", `-`)}
                 </Col> */}
                 <Col span={6}>
-                  {renderDetail(<GiChemicalTank />, "Transmission", `${transmission}`)}
+                  {renderDetail(
+                    <GiChemicalTank />,
+                    "Transmission",
+                    `${transmission}`,
+                  )}
                   {/* <Divider />
                   {renderDetail(<LuCar />, "Wheel drive", `-`)} */}
                 </Col>
@@ -394,6 +449,10 @@ const Vehicle = () => {
             </DynamicCard>
           </Spin>
         </InfoSec>
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
+        {/*
         <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
@@ -407,7 +466,7 @@ const Vehicle = () => {
                 backgroundPosition: "center",
                 marginRight: "10px",
                 height: "200px",
-                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+                cursor: "pointer",
               }}
               onClick={() => {
                 window.open(
@@ -424,7 +483,7 @@ const Vehicle = () => {
                 backgroundPosition: "center",
                 height: "200px",
                 marginRight: "10px",
-                cursor: "pointer", // Optional: Change cursor to pointer to indicate it's clickable
+                cursor: "pointer",
               }}
               onClick={() => {
                 window.open(
@@ -435,6 +494,7 @@ const Vehicle = () => {
             ></div>
           </div>
         </div>
+        */}
       </Container>
     </div>
   );

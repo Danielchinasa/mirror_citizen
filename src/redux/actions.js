@@ -5,12 +5,7 @@ import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
 import ReactGA from "react-ga4";
 
-const logPurchase = ({
-  currency,
-  value,
-  transactionId,
-  paymentType,
-}) => {
+const logPurchase = ({ currency, value, transactionId, paymentType }) => {
   ReactGA.event("purchase", {
     currency: currency,
     value: value,
@@ -23,7 +18,7 @@ export const updatePassword = (credentials) => async (dispatch) => {
   try {
     const response = await apiPost(
       `/form/reset-password/${credentials.email}/password`,
-      { newPassword: credentials.newpassword, token: credentials.token }
+      { newPassword: credentials.newpassword, token: credentials.token },
     );
 
     // Return the user data upon successful login
@@ -168,7 +163,7 @@ export const fetchVerificationData = (token, page = 0, size = 10) => {
       const response = await apiPost(
         `/user/matching-requests`,
         { page, size }, // Payload
-        token
+        token,
       );
 
       dispatch({
@@ -342,7 +337,7 @@ export const sendVerificationRequest =
       const response = await apiPost(
         `/verification/call-external-apis`,
         restructuredData,
-        token
+        token,
       );
 
       const userData = response;
@@ -413,7 +408,7 @@ export const fetchVerificationResult = (requestId, token) => {
       // Make an API call to fetch verification data
       const response = await apiGet(
         `/verification/check-consent/${requestId}`,
-        token
+        token,
       );
 
       // Dispatch the fetched data to the store
@@ -596,10 +591,12 @@ export const initiateVerificationRequest =
           delete restructuredData[section];
         }
       });
+      const ipAddress = localStorage.getItem("IpAddress") || "102.128.255.255";
       const response = await apiPost(
         `/verification/initiate`,
         restructuredData,
-        token
+        token,
+        { headers: { "X-Forwarded-For": ipAddress } },
       );
 
       // dispatch({
@@ -658,10 +655,12 @@ export const initiateStakeHoldersRequest =
           delete restructuredData[section];
         }
       });
+      const ipAddress = localStorage.getItem("IpAddress") || "102.128.255.255";
       const response = await apiPost(
         `/verification/initiate`,
         restructuredData,
-        token
+        token,
+        { headers: { "X-Forwarded-For": ipAddress } },
       );
 
       // Return the user data upon successful verification
@@ -684,15 +683,11 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-
 const buildItems = (formData) => {
   const items = [];
 
   Object.keys(formData).forEach((field) => {
-    if (
-      typeof formData[field] === "string" &&
-      formData[field].trim() !== ""
-    ) {
+    if (typeof formData[field] === "string" && formData[field].trim() !== "") {
       items.push({
         item_id: field,
         item_name: field,
@@ -789,7 +784,7 @@ export const completeVerificationRequest =
       const response = await apiPost(
         `/verification/complete `,
         restructuredData,
-        token
+        token,
       );
 
       dispatch({
@@ -800,13 +795,11 @@ export const completeVerificationRequest =
       // ✅ GA4 Purchase Tracking
       try {
         const currency = currencyCheck || "NGN";
-        const transactionId =
-          transactionID || randomTransactionId;
+        const transactionId = transactionID || randomTransactionId;
         const payment = paymentType || "INSTANT";
 
         // You can improve this if you have exact total stored
-        const value =
-          parseFloat(localStorage.getItem("totalAmount")) || 0;
+        const value = parseFloat(localStorage.getItem("totalAmount")) || 0;
 
         const items = buildItems(formData);
 
@@ -868,7 +861,7 @@ export const paymentInitializationRequest =
       const response = await apiPost(
         `/payment/flexi-initiate`,
         restructuredData,
-        token
+        token,
       );
 
       // Return the user data upon successful verification

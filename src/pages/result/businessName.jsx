@@ -48,6 +48,7 @@ import {
 } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import Reach1 from "../../images/reach1.jpeg";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { theme } from "antd";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
@@ -2687,10 +2688,10 @@ const BusinessName = () => {
               <Spin size="large" />
             )}
           </InfoSec>
-          <Title level={5} style={{ marginTop: "20px" }}>
-            Your Offers
-          </Title>
-          <div class="container">
+          <div style={{ display: "none" }}>
+            <RecommendedOffers variant="green" />
+          </div>
+          <div class="container" style={{ display: "none" }}>
             <div class="row">
               <div
                 className="col-sm-4 col-md-3 col-lg-3 mb-3 mr-3"

@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchVerificationResult } from "../../redux/actions";
 import axios from "axios";
 import { Typography } from "antd";
+import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import Icon, {
   RightOutlined,
   UserOutlined,
@@ -78,7 +79,7 @@ const Business = () => {
         // Make an API request to check consent status
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
         console.log("hre");
         console.log(response);
@@ -192,7 +193,7 @@ const Business = () => {
               {renderDetail(
                 <BankOutlined />,
                 "Registration Number",
-                `${lastName}`
+                `${lastName}`,
               )}
             </Col>
             <Col span={6}>
@@ -205,26 +206,26 @@ const Business = () => {
               {renderDetail(
                 <CheckCircleOutlined />,
                 "Company Status",
-                `${profession}`
+                `${profession}`,
               )}
               <Divider />
               {renderDetail(
                 <HomeOutlined />,
                 "Business Address",
-                `${residenceAddress}`
+                `${residenceAddress}`,
               )}
             </Col>
             <Col span={6}>
               {renderDetail(
                 <UserOutlined />,
                 "Approved Name: ",
-                `${firstName}`
+                `${firstName}`,
               )}
               <Divider />
               {renderDetail(
                 <HomeOutlined />,
                 "Branch Address",
-                `${residenceAddress}`
+                `${residenceAddress}`,
               )}
             </Col>
             <Divider />
@@ -250,12 +251,12 @@ const Business = () => {
                   "Entity:",
                   shareholder.corporation_name
                     ? shareholder.corporation_name
-                    : "No Data"
+                    : "No Data",
                 )}
                 <Divider />
                 {renderDetail(
                   "Name: ",
-                  `${shareholder.firstname} ${shareholder.surname}`
+                  `${shareholder.firstname} ${shareholder.surname}`,
                 )}
               </Col>
               <Col span={6}>
@@ -263,18 +264,18 @@ const Business = () => {
                 <Divider />
                 {renderDetail(
                   "Place of Residence: ",
-                  shareholder.address ? shareholder.address : "No Data"
+                  shareholder.address ? shareholder.address : "No Data",
                 )}
               </Col>
               <Col span={6}>
                 {renderDetail(
                   "Gender: ",
-                  shareholder.gender ? shareholder.gender : "No Data"
+                  shareholder.gender ? shareholder.gender : "No Data",
                 )}
                 <Divider />
                 {renderDetail(
                   "Nationality: ",
-                  shareholder.nationality ? shareholder.nationality : "No Data"
+                  shareholder.nationality ? shareholder.nationality : "No Data",
                 )}
               </Col>
               <Col span={6}>
@@ -282,7 +283,7 @@ const Business = () => {
                 <Divider />
                 {renderDetail(
                   "Email: ",
-                  shareholder.email ? shareholder.email : "No Data"
+                  shareholder.email ? shareholder.email : "No Data",
                 )}
               </Col>
               <Col span={6}>
@@ -290,14 +291,14 @@ const Business = () => {
                   "Phone Number: ",
                   shareholder.phone_number
                     ? shareholder.phone_number
-                    : "No Data"
+                    : "No Data",
                 )}
                 <Divider />
                 {renderDetail(
                   "Date of Birth: ",
                   shareholder.date_of_birth
                     ? shareholder.date_of_birth
-                    : "No Data"
+                    : "No Data",
                 )}
               </Col>
               <Col span={6}>
@@ -308,14 +309,14 @@ const Business = () => {
               <Col span={6}>
                 {renderDetail(
                   "Status: ",
-                  shareholder.status ? shareholder.status : "No Data"
+                  shareholder.status ? shareholder.status : "No Data",
                 )}
                 <Divider />
                 {renderDetail(
                   "Appointed on: ",
                   shareholder.date_of_appointment
                     ? shareholder.date_of_appointment
-                    : "No Data"
+                    : "No Data",
                 )}
               </Col>
               <Col span={6}>
@@ -323,13 +324,17 @@ const Business = () => {
                   "Date of Removal: ",
                   shareholder.date_of_termination
                     ? shareholder.date_of_termination
-                    : "No Data"
+                    : "No Data",
                 )}
                 <Divider />
               </Col>
             </Row>
           ))}
         </Card>
+        <div style={{ display: "none" }}>
+          <RecommendedOffers variant="green" />
+        </div>
+        {/*
         <Title level={5} style={{ marginTop: "20px" }}>
           Your Offers
         </Title>
@@ -368,6 +373,7 @@ const Business = () => {
             />
           </Col>
         </Row>
+        */}
       </InfoSec>
     </Container>
   );
