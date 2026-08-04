@@ -570,7 +570,7 @@ const Home = () => {
                 <FaCheckCircle /> Photo ID verification
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={ninVerify}>Verify Now</ServiceBtn>
@@ -600,7 +600,7 @@ const Home = () => {
                 <FaCheckCircle /> Ownership history
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>
