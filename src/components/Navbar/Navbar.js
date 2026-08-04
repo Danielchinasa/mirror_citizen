@@ -198,6 +198,23 @@ function Navbar() {
           </span>
         }
       >
+        <Menu.Item key="country-Nigeria">
+          <a
+            href="https://e-citizen.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              role="img"
+              aria-label="Nigeria flag"
+              style={{ marginRight: 10 }}
+            >
+              🇳🇬
+            </span>
+            Nigeria
+          </a>
+        </Menu.Item>
         <Menu.Item key="country-ghana">
           <a
             href="https://e-citizen.africa/gh"
@@ -247,23 +264,6 @@ function Navbar() {
               🇨🇮
             </span>
             Côte d'Ivoire
-          </a>
-        </Menu.Item>
-        <Menu.Item key="country-kenya">
-          <a
-            href="https://e-raia.com/ke"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <span
-              role="img"
-              aria-label="Kenya flag"
-              style={{ marginRight: 10 }}
-            >
-              🇰🇪
-            </span>
-            Kenya
           </a>
         </Menu.Item>
       </Menu.SubMenu>
@@ -360,6 +360,23 @@ function Navbar() {
 
   const countryMenu = (
     <Menu>
+      <Menu.Item key="country-Nigeria">
+        <a
+          href="https://e-citizen.ng"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <span
+            role="img"
+            aria-label="Nigeria flag"
+            style={{ marginRight: 10 }}
+          >
+            🇳🇬
+          </span>
+          Nigeria
+        </a>
+      </Menu.Item>
       <Menu.Item key="country-ghana">
         <a
           href="https://e-citizen.africa/gh"
@@ -402,19 +419,6 @@ function Navbar() {
             🇨🇮
           </span>
           Côte d'Ivoire
-        </a>
-      </Menu.Item>
-      <Menu.Item key="country-kenya">
-        <a
-          href="https://e-raia.com/ke"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <span role="img" aria-label="Kenya flag" style={{ marginRight: 10 }}>
-            🇰🇪
-          </span>
-          Kenya
         </a>
       </Menu.Item>
     </Menu>
@@ -1068,7 +1072,7 @@ function Navbar() {
               >
                 {isSw ? "Anza" : "Get Started"}
               </PublicMobileAnchor>
-              <div style={{ padding: "6px 0" }}>
+              {/* <div style={{ padding: "6px 0" }}>
                 <Dropdown overlay={countryMenu} trigger={["click"]}>
                   <button
                     type="button"
@@ -1095,7 +1099,7 @@ function Navbar() {
                     Kenya
                   </button>
                 </Dropdown>
-              </div>
+              </div> */}
               <div style={{ padding: "6px 0" }}>
                 <ThemeToggle />
               </div>
