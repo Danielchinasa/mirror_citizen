@@ -374,7 +374,7 @@ const Home = () => {
                 </TrustIcon>
                 <TrustLabel>
                   <TrustTitle>Fast Results</TrustTitle>
-                  <TrustDesc>Results in minutes</TrustDesc>
+                  <TrustDesc>Results in seconds</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -442,7 +442,7 @@ const Home = () => {
             </StepTop>
             <StepName>Get trusted results</StepName>
             <StepDesc>
-              Make payment and receive your results in minutes
+              Make payment and receive your Results in seconds
             </StepDesc>
           </StepCard>
         </StepsRow>
@@ -484,7 +484,7 @@ const Home = () => {
                 <FaCheckCircle /> Photo ID verification
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={ninVerify}>Verify Now</ServiceBtn>
@@ -500,7 +500,7 @@ const Home = () => {
             </ServiceIcon>
             <ServiceName>Phone Number Verification</ServiceName>
             <ServiceDesc>
-              Verify phone number ownership and network details.
+              Verify phone number ownership and address details.
             </ServiceDesc>
             <ServicePrice>
               {servicePrices?.data?.[9]?.serviceFee
@@ -512,13 +512,13 @@ const Home = () => {
                 <FaCheckCircle /> Number ownership verification
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Network provider details
+                <FaCheckCircle /> Address details
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Phone status check
+                <FaCheckCircle /> Date of birth details
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={phoneVerify}>Verify Now</ServiceBtn>
@@ -552,7 +552,7 @@ const Home = () => {
                 <FaCheckCircle /> Owner verification
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={businessVerify}>Verify Now</ServiceBtn>
@@ -586,7 +586,7 @@ const Home = () => {
                 <FaCheckCircle /> Financial standing
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={bvnVerify}>Verify Now</ServiceBtn>
@@ -618,7 +618,7 @@ const Home = () => {
                 <FaCheckCircle /> Theft records check
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
             <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>

@@ -81,14 +81,14 @@ const verificationConfig = {
     ],
     youWillGet: [
       { icon: FaUser, text: "Owner information" },
-      { icon: FaPhoneAlt, text: "Address details" },
+      { icon: FaMapMarkerAlt, text: "Address details" },
       { icon: FaCheckCircle, text: "Date of Birth" },
       { icon: FaBolt, text: "Instant results" },
     ],
     sampleResult: {
       name: "Adebayo John O.",
       identifier: "Phone: 0803 *** 5678",
-      tags: ["Owner Name", "Network", "Status", "And more..."],
+      tags: ["Owner Name", "Address", "Date of Birth", "And more..."],
     },
     serviceName: "Phone Verification",
     serviceFieldKey: "phone",

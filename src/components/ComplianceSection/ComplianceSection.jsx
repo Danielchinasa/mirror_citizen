@@ -11,17 +11,15 @@ import {
 import ndprImg from "../../images/ndpr.png";
 import nimcImg from "../../images/nidologo.png";
 import osiaImg from "../../images/osia.png";
-import gdprImg from "../../images/gdpr.jpg";
-import mosipImg from "../../images/mosip.jpg";
+import gdprImg from "../../images/gdpr.png";
+import mosipImg from "../../images/mosip.png";
 
 const ComplianceSection = () => {
   return (
     <Section>
       <ComplianceInner>
         <ComplianceText>
-          <ComplianceTitle>
-            Trusted. Compliant. Built for you.
-          </ComplianceTitle>
+          <ComplianceTitle>Trusted. Compliant. Built for you.</ComplianceTitle>
           <ComplianceDesc>Your data is safe with us.</ComplianceDesc>
         </ComplianceText>
         <ComplianceLogos>
@@ -29,16 +27,16 @@ const ComplianceSection = () => {
             <img src={ndprImg} alt="NDPC" />
           </ComplianceBadge>
           <ComplianceBadge>
-            <img src={nimcImg} alt="NCMC" style={{ maxHeight: 48 }} />
+            <img src={nimcImg} alt="NCMC" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
           <ComplianceBadge>
-            <img src={osiaImg} alt="OSIA" style={{ maxHeight: 48 }} />
+            <img src={osiaImg} alt="OSIA" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
           <ComplianceBadge>
-            <img src={gdprImg} alt="GDPR" style={{ maxHeight: 48 }} />
+            <img src={gdprImg} alt="GDPR" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
           <ComplianceBadge>
-            <img src={mosipImg} alt="MOSIP" style={{ maxHeight: 48 }} />
+            <img src={mosipImg} alt="MOSIP" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
         </ComplianceLogos>
       </ComplianceInner>
