@@ -409,7 +409,7 @@ const translations = {
       "Ce lien de réponse de consentement n'est pas valide.",
     "consent.email.declinedTitle": "Consentement refusé",
     "consent.email.declinedCopy":
-      "Vous avez refusé cette demande de consentement à la vérification. Vous pouvez toujours revenir en arrière et approuver le consentement plus tard.",
+      "Vous avez refusé cette demande de consentement à la vérification. Vous pouvez toujours revenir en arrière et approuver le consentement si vous changez d'avis.",
     "consent.email.approveLaterLink": "Approuver le consentement maintenant",
     "consent.email.approvedTitle": "Consentement approuvé",
     "consent.email.recordedCopy":
@@ -928,7 +928,7 @@ const translations = {
     "consent.email.invalidCopy": "This consent response link is not valid.",
     "consent.email.declinedTitle": "Consent declined",
     "consent.email.declinedCopy":
-      "You have declined this verification consent request. You can always go back and approve the consent later.",
+      "You have declined this verification consent request. You can always go back and approve the consent if you change your mind.",
     "consent.email.approveLaterLink": "Approve consent now",
     "consent.email.approvedTitle": "Consent approved",
     "consent.email.recordedCopy": "Your consent response has been recorded.",

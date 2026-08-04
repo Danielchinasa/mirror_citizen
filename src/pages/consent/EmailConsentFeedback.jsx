@@ -142,24 +142,7 @@ function EmailConsentFeedback({ match, location }) {
         {isDecline ? (
           <>
             <Title>{t("consent.email.declinedTitle")}</Title>
-            <Copy>
-              {t("consent.email.declinedCopy")}
-              {code && (
-                <>
-                  {" "}
-                  {t("consent.email.codeLabel")} <Code>{code}</Code>.
-                </>
-              )}
-            </Copy>
-            {code && (
-              <Copy>
-                <NoteLink
-                  to={`/consent/email/accept?code=${encodeURIComponent(code)}`}
-                >
-                  {t("consent.email.approveLaterLink")}
-                </NoteLink>
-              </Copy>
-            )}
+            <Copy>{t("consent.email.declinedCopy")}</Copy>
           </>
         ) : status === "complete" ? (
           <>
@@ -169,15 +152,7 @@ function EmailConsentFeedback({ match, location }) {
         ) : (
           <>
             <Title>{t("consent.email.confirmTitle")}</Title>
-            <Copy>
-              {t("consent.email.confirmCopy")}
-              {code && (
-                <>
-                  {" "}
-                  {t("consent.email.codeLabel")} <Code>{code}</Code>.
-                </>
-              )}
-            </Copy>
+            <Copy>{t("consent.email.confirmCopy")}</Copy>
             <Form onSubmit={submitApproval}>
               <label htmlFor="consent-date-of-birth">
                 {t("consent.email.dateOfBirth")}
