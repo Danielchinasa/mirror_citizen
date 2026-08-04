@@ -226,12 +226,13 @@ function App() {
 
 function AppContent() {
   const location = useLocation();
+  const isVerificationLogin = location.pathname === "/verification-login";
+  // These landing pages render their own Footer inline, so skip the global one
   const isNinLanding = location.pathname === "/nin-verification";
   const isPhoneLanding = location.pathname === "/phone-number-verification";
   const isBusinessLanding = location.pathname === "/business-verification";
   const isFinancialLanding = location.pathname === "/credit-profile";
   const isVehicleLanding = location.pathname === "/vehicle-verification";
-  const isVerificationLogin = location.pathname === "/verification-login";
   const isLandingPage =
     isNinLanding ||
     isPhoneLanding ||
@@ -242,7 +243,7 @@ function AppContent() {
 
   return (
     <>
-      {!isLandingPage && <Navbar />}
+      <Navbar />
 
       <Switch>
         <Route path="/nin-verification" exact component={NinVerificationPage} />

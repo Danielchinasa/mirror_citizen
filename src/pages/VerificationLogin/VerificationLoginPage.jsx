@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { FaEye, FaEyeSlash, FaBars, FaTimes, FaArrowLeft } from "react-icons/fa";
+import {
+  FaEye,
+  FaEyeSlash,
+  FaBars,
+  FaTimes,
+  FaArrowLeft,
+} from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -13,17 +19,9 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
-import Logo from "../../images/e-citizen_logo_ecitizen.png";
 
 import {
   PageWrapper,
-  LoginNav,
-  BackButton,
-  NavLogo,
-  NavLinks,
-  NavLink,
-  HamburgerBtn,
-  MobileMenu,
   MainContent,
   LoginCard,
   LoginTitle,
@@ -72,7 +70,6 @@ const VerificationLoginPage = () => {
   const [showPass, setShowPass] = useState(false);
   const [ipAddress, setIpAddress] = useState(null);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -250,57 +247,6 @@ const VerificationLoginPage = () => {
 
   return (
     <PageWrapper>
-      <LoginNav>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <BackButton onClick={handleGoBack} title="Go back">
-            <FaArrowLeft />
-          </BackButton>
-          <NavLogo to="/">
-            <img src={Logo} alt="eCitizen" />
-          </NavLogo>
-        </div>
-        <NavLinks>
-          <NavLink to="/nin-verification">NIN Verification</NavLink>
-          <NavLink to="/credit-profile">Credit Profile</NavLink>
-          <NavLink to="/business-verification">Business</NavLink>
-          <NavLink to="/vehicle-verification">Vehicle</NavLink>
-          <NavLink to="/faq">FAQs</NavLink>
-          <NavLink to="/individual/sign-up/1">Register</NavLink>
-        </NavLinks>
-        <HamburgerBtn onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-        </HamburgerBtn>
-      </LoginNav>
-      <MobileMenu open={mobileMenuOpen}>
-        <Link to="/nin-verification" onClick={() => setMobileMenuOpen(false)}>
-          NIN Verification
-        </Link>
-        <Link to="/credit-profile" onClick={() => setMobileMenuOpen(false)}>
-          Credit Profile
-        </Link>
-        <Link
-          to="/business-verification"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Business
-        </Link>
-        <Link
-          to="/vehicle-verification"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Vehicle
-        </Link>
-        <Link to="/faq" onClick={() => setMobileMenuOpen(false)}>
-          FAQs
-        </Link>
-        <Link
-          to="/individual/sign-up/1"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          Register
-        </Link>
-      </MobileMenu>
-
       <MainContent>
         <LoginCard style={{ position: "relative" }}>
           {loading && (
