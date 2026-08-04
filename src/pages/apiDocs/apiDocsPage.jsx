@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Container, InfoSec } from "../../globalStyles";
 import { Typography, Tabs, Tag, Card, Collapse, Divider } from "antd";
 import {
@@ -7,9 +7,6 @@ import {
   WalletOutlined,
   ApiOutlined,
   UserOutlined,
-  BankOutlined,
-  PhoneOutlined,
-  ShopOutlined,
   CarOutlined,
   IdcardOutlined,
 } from "@ant-design/icons";
@@ -216,9 +213,9 @@ const ApiDocsPage = () => {
               lineHeight: "1.8",
             }}
           >
-            Integration guide for e-citoyen Identity Verification Services.
-            Wallet-based instant verification APIs for NNI, BVN, Phone,
-            Business, and Vehicle lookups.
+            Integration guide for e-citoyen Identity Verification Services in
+            Côte d'Ivoire. Wallet-based instant verification APIs for National
+            ID, Resident Card, and Vehicle lookups.
           </Paragraph>
         </div>
 
@@ -277,7 +274,7 @@ const ApiDocsPage = () => {
                   fontFamily: "'Fira Code', 'Courier New', monospace",
                 }}
               >
-                https://&lt;host&gt;/api/v1/lookup
+                https://&lt;host&gt;/api/v2
               </Text>
             </div>
           </Card>
@@ -375,9 +372,10 @@ const ApiDocsPage = () => {
                 marginBottom: "0",
               }}
             >
-              All verification requests are wallet-based. The required amount is
-              deducted before processing. If verification fails, refunds are
-              processed automatically.
+              All verification requests are wallet-based and billed in West
+              African CFA francs (XOF). The required amount is deducted before
+              processing. If verification fails, refunds are processed
+              automatically.
             </Paragraph>
           </Card>
         </div>
@@ -400,9 +398,27 @@ const ApiDocsPage = () => {
         >
           Endpoints
         </Title>
+        <Paragraph
+          style={{
+            color: isDark ? "#b0c4b8" : "#666",
+            marginBottom: "24px",
+            fontSize: "14px",
+          }}
+        >
+          Each verification follows a two-step flow: first initiate the request
+          with the details below, then complete it with the returned{" "}
+          <Text code style={{ background: "transparent", border: "none" }}>
+            sessionId
+          </Text>{" "}
+          using{" "}
+          <Text code style={{ background: "transparent", border: "none" }}>
+            POST /africa/verification/CI/complete
+          </Text>
+          . The responses below show a successful completed verification.
+        </Paragraph>
 
         <Tabs
-          defaultActiveKey="nin"
+          defaultActiveKey="national-id"
           tabBarStyle={{
             marginBottom: "32px",
             fontFamily: "Poppins",
@@ -410,394 +426,249 @@ const ApiDocsPage = () => {
           type="card"
           size="large"
         >
-          {/* NNI Tab */}
+          {/* National ID Tab */}
           <TabPane
             tab={
               <span>
-                <UserOutlined /> NNI
+                <UserOutlined /> National ID
               </span>
             }
-            key="nin"
+            key="national-id"
           >
             <EndpointCard
               method="POST"
-              path="/verify-nin"
-              title="Verify NNI"
+              path="/africa/verification/CI/initiate"
+              title="National ID (NNI) Verification"
               icon={<UserOutlined style={iconStyle} />}
-              description="Verify a National Identification Number (NNI) and retrieve the associated identity details including name, date of birth, phone, gender, address, and photo."
+              description="Verify a Côte d'Ivoire National ID (Numéro National d'Identité — NNI, issued with the Carte Nationale d'Identité) and retrieve the holder's identity details including full name, date of birth, address, and ID number. Subject consent is required, so provide a phone number and/or email address for the data subject."
               request={`{
-  "nin": "12345678901"
+  "serviceCode": "NATIONAL_ID_NNI",
+  "payment": {
+    "currency": "XOF",
+    "paymentType": "INSTANT"
+  },
+  "consent": "true",
+  "idNumber": "CI-1234567890",
+  "subjectPhone": "2250701234567",
+  "subjectEmail": "subject@example.com",
+  "basic": {
+    "idNumber": "CI-1234567890"
+  }
 }`}
               responses={[
                 {
                   label: "Response — Successful Verification",
                   body: `{
   "success": true,
-  "nin": "12345678901",
-  "firstName": "JOHN",
-  "lastName": "DOE",
-  "middleName": "MICHAEL",
-  "dateOfBirth": "1990-01-01",
-  "phoneNumber": "08012345678",
-  "gender": "Male",
-  "address": "Abuja, Nigeria",
-  "photo": "base64EncodedImageString"
-}`,
-                },
-              ]}
-            />
-          </TabPane>
-
-          {/* BVN Tab */}
-          <TabPane
-            tab={
-              <span>
-                <BankOutlined /> BVN
-              </span>
-            }
-            key="bvn"
-          >
-            <EndpointCard
-              method="POST"
-              path="/bvn"
-              title="Verify BVN"
-              icon={<BankOutlined style={iconStyle} />}
-              description="Verify a Bank Verification Number (BVN) and retrieve identity details with verification status and match score."
-              request={`{
-  "bvn": "22334455667"
-}`}
-              responses={[
-                {
-                  label: "Response — Successful Verification",
-                  body: `{
-  "status": true,
-  "detail": "Verification successful",
-  "response_code": "00",
-  "endpoint_name": "bvn_with_phone",
+  "status": "COMPLETED",
+  "resultText": "National ID verification successful",
+  "resultCode": "00",
+  "countryCode": "CI",
+  "serviceCode": "NATIONAL_ID_NNI",
+  "sessionId": "sess_8f3a2c9d1e",
+  "consent": "granted",
   "data": {
-    "first_name": "JOHN",
-    "last_name": "DOE",
-    "middle_name": "MICHAEL",
-    "date_of_birth": "1990-01-01",
-    "phone_number": "08012345678",
-    "bvn": "22123456789",
-    "gender": "Male"
-  },
-  "verification": {
-    "status": "VERIFIED",
-    "match_score": 98,
-    "matched_fields": ["first_name", "last_name", "phone_number"]
+    "fullName": "KOUAMÉ YAO JEAN",
+    "firstName": "KOUAMÉ",
+    "lastName": "YAO",
+    "idNumber": "CI-1234567890",
+    "idType": "NNI",
+    "dateOfBirth": "1987-03-25",
+    "address": "Cocody, Abidjan",
+    "country": "CI",
+    "actions": {
+      "Verify_ID_Number": "VERIFIED"
+    }
   }
 }`,
                 },
-              ]}
-            />
-          </TabPane>
-
-          {/* Phone Tab */}
-          <TabPane
-            tab={
-              <span>
-                <PhoneOutlined /> Phone
-              </span>
-            }
-            key="phone"
-          >
-            <EndpointCard
-              method="POST"
-              path="/phone"
-              title="Verify Phone"
-              icon={<PhoneOutlined style={iconStyle} />}
-              description="Verify a phone number and retrieve network, country, activity status, and line type information."
-              request={`{
-  "phone": "08012345678"
-}`}
-              responses={[
                 {
-                  label: "Response — Successful Verification",
+                  label: "Response — Consent Pending",
                   body: `{
-  "status": true,
-  "detail": "Phone number verification successful",
-  "response_code": "00",
-  "endpoint_name": "phone_number/advance",
-  "data": {
-    "phone_number": "08012345678",
-    "network": "MTN",
-    "country": "Nigeria",
-    "is_active": true,
-    "line_type": "mobile"
-  },
-  "verification": {
-    "status": "VERIFIED",
-    "reference": "abc123xyz",
-    "match_score": 100
-  },
-  "session": {
-    "id": "sess_987654321",
-    "created_at": "2026-03-29T20:10:00Z"
-  }
-}`,
-                },
-              ]}
-            />
-          </TabPane>
-
-          {/* Business Tab */}
-          <TabPane
-            tab={
-              <span>
-                <ShopOutlined /> Business
-              </span>
-            }
-            key="business"
-          >
-            <EndpointCard
-              method="POST"
-              path="/business"
-              title="Business Verification — Entity Number Search"
-              icon={<ShopOutlined style={iconStyle} />}
-              description="Look up a business using its RC number from the Corporate Affairs Commission (CAC). Returns company details including address, approved name, and registration info."
-              request={`{
-  "rc_number": 1234567
-}`}
-              responses={[
-                {
-                  label: "Response — Successful Entity Number Search",
-                  body: `{
-  "success": true,
-  "requestId": 10234,
-  "request parameter": "123456",
-  "message": "Business API call successful",
-  "data": [
-    {
-      "data": {
-        "requestId": 10234,
-        "state": "Lagos",
-        "cacid": "RC123456",
-        "address": "12 Marina Street, Lagos",
-        "approvedName": "ABC TECH LIMITED",
-        "branchAddress": "Ikeja Branch",
-        "rcNumber": "123456",
-        "lga": "Lagos Island",
-        "email": "info@abctech.com",
-        "classificationId": "Private Company",
-        "registrationDate": "2020-05-10"
-      },
-      "shareholders-data": null
-    }
-  ]
-}`,
-                },
-                {
-                  label: "Response — No Record Found",
-                  body: `{
-  "success": true,
-  "message": "No record found",
-  "data": null
-}`,
-                },
-              ]}
-            />
-
-            <EndpointCard
-              method="POST"
-              path="/business"
-              title="Business Verification — Company Name Search"
-              icon={<ShopOutlined style={iconStyle} />}
-              description="Look up a business using its company name. Returns matching company details from the CAC database."
-              request={`{
-  "company_name": "ABC LTD"
-}`}
-              responses={[
-                {
-                  label: "Response — Successful Name Search",
-                  body: `{
-  "success": true,
-  "requestId": 10235,
-  "request parameter": "ABC TECH LIMITED",
-  "message": "Business API call successful",
-  "data": [
-    {
-      "data": {
-        "requestId": 10235,
-        "state": "Abuja",
-        "cacid": "RC987654",
-        "address": "Plot 45, Wuse Zone 2",
-        "approvedName": "ABC TECH LIMITED",
-        "branchAddress": null,
-        "rcNumber": "987654",
-        "lga": "AMAC",
-        "email": "contact@abctech.com",
-        "classificationId": "LLC",
-        "registrationDate": "2019-03-21"
-      },
-      "shareholders-data": null
-    }
-  ]
-}`,
-                },
-                {
-                  label: "Response — No Record Found",
-                  body: `{
-  "success": true,
-  "message": "No record found",
-  "data": null
-}`,
-                },
-              ]}
-            />
-          </TabPane>
-
-          {/* Vehicle VIN Tab */}
-          <TabPane
-            tab={
-              <span>
-                <CarOutlined /> Vehicle VIN
-              </span>
-            }
-            key="vehicle-vin"
-          >
-            <EndpointCard
-              method="POST"
-              path="/vehicle"
-              title="Vehicle VIN Verification"
-              icon={<CarOutlined style={iconStyle} />}
-              description="Verify a Vehicle Identification Number (VIN). Optionally include a stolen vehicle check. Returns vehicle make, model, year, specs, and stolen status."
-              request={`{
-  "vin": "1HGCM82633A123456",
-  "stolenCheck": true
-}`}
-              responses={[
-                {
-                  label: "Response — VIN Lookup WITH Stolen Check (Not Stolen)",
-                  body: `{
-  "success": true,
-  "data": [
-    {
-      "vin": "1HGCM82633A123456",
-      "make": "Honda",
-      "model": "Accord",
-      "year": 2020,
-      "engine": "2.4L",
-      "country": "Japan",
-      "status": "Valid",
-      "specifications": {
-        "fuel_type": "Petrol",
-        "transmission": "Automatic"
+  "success": false,
+  "status": "PENDING_CONSENT",
+  "resultText": "Consent request sent to the data subject",
+  "countryCode": "CI",
+  "serviceCode": "NATIONAL_ID_NNI",
+  "sessionId": "sess_8f3a2c9d1e",
+  "result": {
+    "subjectConsent": {
+      "status": "PENDING",
+      "required": true,
+      "channels": {
+        "email": true,
+        "whatsapp": false
       }
-    },
-    {
-      "vin": "1HGCM82633A123456",
-      "stolen": false,
-      "reported_date": null,
-      "reporting_country": null
     }
-  ],
-  "pdfUrl": "https://your-domain.com/files/vin-report-12345.pdf"
-}`,
-                },
-                {
-                  label: "Response — VIN Lookup WITHOUT Stolen Check",
-                  body: `{
-  "success": true,
-  "data": [
-    {
-      "vin": "1HGCM82633A123456",
-      "make": "Toyota",
-      "model": "Camry",
-      "year": 2018,
-      "engine": "2.5L",
-      "country": "USA",
-      "status": "Valid"
-    }
-  ],
-  "pdfUrl": "https://your-domain.com/files/vin-report-67890.pdf"
-}`,
-                },
-                {
-                  label: "Response — Vehicle is Stolen",
-                  body: `{
-  "success": true,
-  "data": [
-    {
-      "vin": "1HGCM82633A123456",
-      "make": "Lexus",
-      "model": "RX 350",
-      "year": 2019,
-      "status": "Valid"
-    },
-    {
-      "vin": "1HGCM82633A123456",
-      "stolen": true,
-      "reported_date": "2024-11-15",
-      "reporting_country": "Nigeria"
-    }
-  ],
-  "pdfUrl": "https://your-domain.com/files/vin-report-44556.pdf"
+  }
 }`,
                 },
               ]}
             />
           </TabPane>
 
-          {/* Vehicle License Tab */}
+          {/* Resident Card Tab */}
           <TabPane
             tab={
               <span>
-                <IdcardOutlined /> Vehicle License
+                <IdcardOutlined /> Resident Card
               </span>
             }
-            key="vehicle-license"
+            key="resident-card"
           >
             <EndpointCard
               method="POST"
-              path="/vehicle/license"
-              title="Vehicle License Verification"
+              path="/africa/verification/CI/initiate"
+              title="Resident Card Verification"
               icon={<IdcardOutlined style={iconStyle} />}
-              description="Verify a vehicle license number. Returns plate number, vehicle make/model, registration year, expiry date, and validity status."
+              description="Verify a Resident Card (Carte de Résident) issued to foreign residents in Côte d'Ivoire and retrieve the holder's identity and card details including full name, card number, and address. Subject consent is required."
               request={`{
-  "licenseNumber": "ABC123XY"
+  "serviceCode": "RESIDENTS_ID",
+  "payment": {
+    "currency": "XOF",
+    "paymentType": "INSTANT"
+  },
+  "consent": "true",
+  "idNumber": "CI-RES-12345",
+  "subjectPhone": "2250101234567",
+  "subjectEmail": "subject@example.com",
+  "basic": {
+    "idNumber": "CI-RES-12345"
+  }
 }`}
               responses={[
                 {
-                  label: "Response — Valid License",
+                  label: "Response — Successful Verification",
                   body: `{
   "success": true,
+  "status": "COMPLETED",
+  "resultText": "Resident Card verification successful",
+  "resultCode": "00",
+  "countryCode": "CI",
+  "serviceCode": "RESIDENTS_ID",
+  "sessionId": "sess_7b2f5a8c3d",
+  "consent": "granted",
   "data": {
-    "license_number": "ABC123XYZ",
-    "plate_number": "KJA-123AA",
-    "vehicle_make": "Toyota",
-    "vehicle_model": "Corolla",
-    "vehicle_color": "Black",
-    "registration_year": "2021",
-    "expiry_date": "2027-05-12",
-    "status": "VALID",
-    "state": "Lagos"
+    "fullName": "DIALLO MAMADOU",
+    "firstName": "MAMADOU",
+    "lastName": "DIALLO",
+    "idNumber": "CI-RES-12345",
+    "idType": "Resident Card",
+    "dateOfBirth": "1982-11-02",
+    "address": "Plateau, Abidjan",
+    "country": "CI",
+    "actions": {
+      "Verify_ID_Number": "VERIFIED"
+    }
   }
 }`,
                 },
                 {
-                  label: "Response — Expired License",
+                  label: "Response — Consent Pending",
+                  body: `{
+  "success": false,
+  "status": "PENDING_CONSENT",
+  "resultText": "Consent request sent to the data subject",
+  "countryCode": "CI",
+  "serviceCode": "RESIDENTS_ID",
+  "sessionId": "sess_7b2f5a8c3d",
+  "result": {
+    "subjectConsent": {
+      "status": "PENDING",
+      "required": true,
+      "channels": {
+        "email": true,
+        "whatsapp": false
+      }
+    }
+  }
+}`,
+                },
+              ]}
+            />
+          </TabPane>
+
+          {/* Vehicle Tab */}
+          <TabPane
+            tab={
+              <span>
+                <CarOutlined /> Vehicle
+              </span>
+            }
+            key="vehicle"
+          >
+            <EndpointCard
+              method="POST"
+              path="/africa/verification/CI/initiate"
+              title="Vehicle Verification"
+              icon={<CarOutlined style={iconStyle} />}
+              description="Verify a vehicle by its Vehicle Identification Number (VIN) and retrieve make, model, year, and specifications. Optionally include a stolen vehicle check with the stolencheck flag."
+              request={`{
+  "serviceCode": "VIN",
+  "payment": {
+    "currency": "XOF",
+    "paymentType": "INSTANT"
+  },
+  "vehicle": {
+    "vin": "5YFBURHE9JP123456",
+    "stolencheck": true
+  }
+}`}
+              responses={[
+                {
+                  label: "Response — Successful Verification",
                   body: `{
   "success": true,
+  "status": "COMPLETED",
+  "resultText": "Vehicle verification successful",
+  "resultCode": "00",
+  "countryCode": "CI",
+  "serviceCode": "VIN",
+  "sessionId": "sess_5e9c1b7d2a",
   "data": {
-    "license_number": "ABC123XYZ",
-    "plate_number": "KJA-123AA",
-    "vehicle_make": "Honda",
-    "vehicle_model": "Civic",
-    "expiry_date": "2022-05-12",
-    "status": "EXPIRED",
-    "state": "Abuja"
+    "vehicleName": "Toyota Corolla 2018",
+    "vin": "5YFBURHE9JP123456",
+    "year": "2018",
+    "category": "Sedan",
+    "fuelType": "Petrol",
+    "engine": "1.8L",
+    "transmission": "Automatic",
+    "riskLabel": "Low",
+    "verificationStatus": "VERIFIED",
+    "vehicleSpecification": {
+      "make": "Toyota",
+      "model": "Corolla",
+      "trim": "LE",
+      "driveType": "Front-Wheel Drive"
+    }
   }
 }`,
                 },
                 {
-                  label: "Response — No Record Found",
+                  label: "Response — Vehicle on Watchlist",
                   body: `{
   "success": true,
+  "status": "COMPLETED",
+  "resultText": "Vehicle verification successful",
+  "resultCode": "00",
+  "countryCode": "CI",
+  "serviceCode": "VIN",
+  "sessionId": "sess_5e9c1b7d2a",
   "data": {
-    "message": "No record found",
-    "status": "NOT_FOUND"
+    "vehicleName": "Toyota Corolla 2018",
+    "vin": "5YFBURHE9JP123456",
+    "year": "2018",
+    "riskLabel": "High",
+    "verificationStatus": "VERIFIED",
+    "vehicleSpecification": {
+      "make": "Toyota",
+      "model": "Corolla",
+      "trim": "LE"
+    },
+    "watchlist": {
+      "stolen": true,
+      "reportedDate": "2024-11-15"
+    }
   }
 }`,
                 },

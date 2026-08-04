@@ -312,6 +312,43 @@ export const PublicActions = styled.div`
   }
 `;
 
+export const PublicBackButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ec-primary);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 10px 14px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ec-primary);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ec-primary);
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    span {
+      display: none;
+    }
+  }
+`;
+
 export const PublicHeaderLanguage = styled.div`
   display: none;
 
@@ -355,7 +392,9 @@ export const PublicCta = styled.a`
   font-weight: 700;
   font-size: 15px;
   box-shadow: 0 8px 18px rgba(253, 122, 0, 0.22);
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     background: var(--ec-primary-hover);
@@ -441,7 +480,10 @@ export const PublicLanguageToggle = styled.button`
   padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);

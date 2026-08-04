@@ -23,6 +23,7 @@ const translations = {
     "nav.fundWallet": "Alimenter le Portefeuille",
     "nav.selectPaymentMethod": "Choisir le Mode de Paiement",
     "nav.close": "Fermer",
+    "nav.goBack": "Retour",
     "nav.language": "Langue",
     "nav.appearance": "Apparence",
     "nav.logout": "Déconnexion",
@@ -130,8 +131,10 @@ const translations = {
     /* ── Login / Sample Section ── */
     "login.title": "Connexion / Continuer",
     "login.welcomeBack": "Bon retour",
-    "login.signInToContinue": "Connectez-vous pour continuer votre vérification",
-    "login.subtitle": "Connectez-vous ou continuez pour commencer votre vérification.",
+    "login.signInToContinue":
+      "Connectez-vous pour continuer votre vérification",
+    "login.subtitle":
+      "Connectez-vous ou continuez pour commencer votre vérification.",
     "login.continueGoogle": "Continuer avec Google",
     "login.continueFacebook": "Continuer avec Facebook",
     "login.or": "OU",
@@ -147,8 +150,10 @@ const translations = {
     "sample.title": "Exemple de résultat",
     "sample.badge": "Ceci est un exemple uniquement",
     "sample.ninSubtitle": "Voir un exemple de résultat de vérification NNI.",
-    "sample.cardSubtitle": "Voir un exemple de résultat de vérification de carte de résident.",
-    "sample.vehicleSubtitle": "Voir un exemple de résultat de vérification VIN.",
+    "sample.cardSubtitle":
+      "Voir un exemple de résultat de vérification de carte de résident.",
+    "sample.vehicleSubtitle":
+      "Voir un exemple de résultat de vérification VIN.",
     "sample.fullName": "Nom complet",
     "sample.phoneNumber": "Numéro de téléphone",
     "sample.nationalId": "Identifiant National",
@@ -157,13 +162,18 @@ const translations = {
     "sample.dateOfBirth": "Date de naissance",
     "sample.verifiedOn": "Vérifié le",
     "sample.ref": "Réf",
-    "sample.disclaimer": "Les résultats sont basés sur les données disponibles au moment de la vérification.",
+    "sample.disclaimer":
+      "Les résultats sont basés sur les données disponibles au moment de la vérification.",
     "sample.ninReportTitle": "Ce que vous obtenez dans un rapport NNI",
-    "sample.ninReportDesc": "Chaque vérification NNI renvoie des détails d'identité complets provenant des registres officiels, vous aidant à prendre des décisions éclairées.",
-    "sample.cardReportTitle": "Ce que vous obtenez dans un rapport de carte de résident",
-    "sample.cardReportDesc": "Chaque vérification de carte de résident renvoie des détails complets provenant des registres officiels.",
+    "sample.ninReportDesc":
+      "Chaque vérification NNI renvoie des détails d'identité complets provenant des registres officiels, vous aidant à prendre des décisions éclairées.",
+    "sample.cardReportTitle":
+      "Ce que vous obtenez dans un rapport de carte de résident",
+    "sample.cardReportDesc":
+      "Chaque vérification de carte de résident renvoie des détails complets provenant des registres officiels.",
     "sample.vehicleReportTitle": "Ce que vous obtenez dans un rapport VIN",
-    "sample.vehicleReportDesc": "Chaque vérification VIN renvoie des détails complets sur le véhicule provenant des registres officiels.",
+    "sample.vehicleReportDesc":
+      "Chaque vérification VIN renvoie des détails complets sur le véhicule provenant des registres officiels.",
     "sample.tryItNow": "Essayez maintenant",
     "sample.firstName": "Prénom",
     "sample.middleName": "Deuxième prénom",
@@ -195,9 +205,12 @@ const translations = {
     "sample.firstCentral": "First Central",
     "sample.creditRegistry": "Registre de crédit",
     "sample.bureausChecked": "Bureaux vérifiés",
-    "sample.phoneSubtitle": "Voir un exemple de résultat de vérification de numéro de téléphone.",
-    "sample.businessSubtitle": "Voir un exemple de résultat de vérification d'entreprise.",
-    "sample.financialSubtitle": "Voir un exemple de résultat de profil de crédit.",
+    "sample.phoneSubtitle":
+      "Voir un exemple de résultat de vérification de numéro de téléphone.",
+    "sample.businessSubtitle":
+      "Voir un exemple de résultat de vérification d'entreprise.",
+    "sample.financialSubtitle":
+      "Voir un exemple de résultat de profil de crédit.",
     "sample.stakeholders": "Parties prenantes",
     "sample.stakeholderName": "Nom",
     "sample.stakeholderRole": "Rôle",
@@ -222,17 +235,21 @@ const translations = {
 
     /* ── CTA Sections ── */
     "cta.nin.title": "Prêt à vérifier votre NNI ?",
-    "cta.nin.desc": "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification d'identité rapide, précise et sécurisée.",
+    "cta.nin.desc":
+      "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification d'identité rapide, précise et sécurisée.",
     "cta.nin.button": "Vérifier le NNI maintenant",
     "cta.card.title": "Prêt à vérifier votre carte de résident ?",
-    "cta.card.desc": "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification d'identité rapide, précise et sécurisée.",
+    "cta.card.desc":
+      "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification d'identité rapide, précise et sécurisée.",
     "cta.card.button": "Vérifier la carte de résident maintenant",
     "cta.vehicle.title": "Prêt à vérifier un VIN ?",
-    "cta.vehicle.desc": "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification de véhicule rapide, précise et sécurisée.",
+    "cta.vehicle.desc":
+      "Rejoignez des milliers de personnes et d'entreprises qui font confiance à e-citoyen pour une vérification de véhicule rapide, précise et sécurisée.",
     "cta.vehicle.button": "Vérifier le VIN maintenant",
 
     /* ── Footer ── */
-    "footer.brandDesc": "Votre partenaire de confiance pour la vérification d'identité numérique et les vérifications d'antécédents.",
+    "footer.brandDesc":
+      "Votre partenaire de confiance pour la vérification d'identité numérique et les vérifications d'antécédents.",
     "footer.services": "Services",
     "footer.support": "Assistance",
     "footer.getApp": "Obtenir l'application",
@@ -253,12 +270,14 @@ const translations = {
 
     /* ── Verify Page ── */
     "verify.search.title": "Saisissez les détails de recherche",
-    "verify.search.subtitle": "Fournissez les détails de la personne que vous souhaitez vérifier.",
+    "verify.search.subtitle":
+      "Fournissez les détails de la personne que vous souhaitez vérifier.",
     "verify.search.idType": "Type d'identifiant",
     "verify.search.consentContact": "Coordonnées de consentement",
     "verify.search.or": "OU",
     "verify.search.youWillGet": "Vous obtiendrez",
-    "verify.search.secureNote": "Vos données sont sécurisées et utilisées uniquement pour la vérification.",
+    "verify.search.secureNote":
+      "Vos données sont sécurisées et utilisées uniquement pour la vérification.",
     "verify.search.amount": "Montant",
     "verify.search.continueToPayment": "Continuer vers le paiement",
     "verify.search.clear": "Effacer",
@@ -287,29 +306,37 @@ const translations = {
     "verify.payment.securedEncrypted": "Paiement sécurisé et crypté",
     "verify.payment.back": "Retour",
     "verify.payment.sampleResult": "Exemple de résultat",
-    "verify.payment.sampleSubtitle": "Voici un exemple de ce à quoi ressemblera votre résultat de vérification.",
+    "verify.payment.sampleSubtitle":
+      "Voici un exemple de ce à quoi ressemblera votre résultat de vérification.",
     "verify.payment.verified": "Vérifié",
     "verify.payment.loading": "Traitement...",
 
     "verify.processing.title": "Traitement de votre vérification",
-    "verify.processing.subtitle": "Veuillez patienter pendant que nous vérifions vos informations. Cela prend généralement moins d'une minute.",
+    "verify.processing.subtitle":
+      "Veuillez patienter pendant que nous vérifions vos informations. Cela prend généralement moins d'une minute.",
 
     "verify.consent.title": "En attente de consentement",
-    "verify.consent.description": "Nous avons envoyé une demande de consentement au sujet des données et attendons actuellement sa réponse. Un e-mail vous sera envoyé concernant le statut de votre demande.",
-    "verify.consent.retentionNote": "Les informations du sujet des données seront conservées pendant 24 heures à compter du moment où il accorde son consentement. Cette page se mettra automatiquement à jour lorsque le consentement sera accordé.",
+    "verify.consent.description":
+      "Nous avons envoyé une demande de consentement au sujet des données et attendons actuellement sa réponse. Un e-mail vous sera envoyé concernant le statut de votre demande.",
+    "verify.consent.retentionNote":
+      "Les informations du sujet des données seront conservées pendant 24 heures à compter du moment où il accorde son consentement. Cette page se mettra automatiquement à jour lorsque le consentement sera accordé.",
     "verify.consent.returnToDashboard": "Retour au tableau de bord",
 
-    "verify.error.selectBureau": "Veuillez sélectionner au moins un bureau de crédit.",
-    "verify.error.provideContact": "Veuillez fournir le numéro de téléphone ou l'e-mail du sujet pour le consentement.",
+    "verify.error.selectBureau":
+      "Veuillez sélectionner au moins un bureau de crédit.",
+    "verify.error.provideContact":
+      "Veuillez fournir le numéro de téléphone ou l'e-mail du sujet pour le consentement.",
     "verify.error.fillEitherOr": "Veuillez remplir au moins un des champs.",
-    "verify.error.fillRequired": "Veuillez remplir tous les champs obligatoires.",
+    "verify.error.fillRequired":
+      "Veuillez remplir tous les champs obligatoires.",
 
     "verify.result.title": "Vérification terminée !",
     "verify.result.summary": "Récapitulatif de vérification",
     "verify.result.service": "Service",
     "verify.result.amountPaid": "Montant payé",
     "verify.result.returnToDashboard": "Retour au tableau de bord",
-    "verify.result.verificationSuccessful": "Votre vérification a été effectuée avec succès.",
+    "verify.result.verificationSuccessful":
+      "Votre vérification a été effectuée avec succès.",
     "verify.result.status": "Statut",
     "verify.result.successful": "Réussie",
     "verify.result.bureauResults": "Résultats des bureaux",
@@ -336,7 +363,8 @@ const translations = {
     "verify.popup.verifiedOn": "Vérifié le",
     "verify.popup.reference": "Réf. :",
     "verify.popup.notAvailable": "Indisponible",
-    "verify.popup.dataDisclaimer": "Les résultats sont basés sur les données disponibles au moment de la vérification.",
+    "verify.popup.dataDisclaimer":
+      "Les résultats sont basés sur les données disponibles au moment de la vérification.",
     "verify.popup.viewFullResult": "Voir le résultat complet",
     "verify.popup.close": "Fermer",
 
@@ -344,24 +372,34 @@ const translations = {
     "verify.disclaimer.title": "Avis de non-responsabilité",
     "verify.disclaimer.subtitle": "Veuillez vérifier avant de continuer",
     "verify.disclaimer.vehicleHeading": "En cliquant, vous indiquez que :",
-    "verify.disclaimer.vehicleBullet1": "Vous confirmez que les détails de recherche sont corrects et vous acceptez de",
+    "verify.disclaimer.vehicleBullet1":
+      "Vous confirmez que les détails de recherche sont corrects et vous acceptez de",
     "verify.disclaimer.vehicleBullet1Bold": "ne pas être remboursé",
     "verify.disclaimer.vehicleBullet1End": "pour des informations incorrectes.",
-    "verify.disclaimer.vehicleBullet2": "Vous comprenez et acceptez que les données d'historique du véhicule proviennent de fournisseurs tiers et",
-    "verify.disclaimer.vehicleBullet2Bold": "peuvent ne pas contenir tous les enregistrements",
+    "verify.disclaimer.vehicleBullet2":
+      "Vous comprenez et acceptez que les données d'historique du véhicule proviennent de fournisseurs tiers et",
+    "verify.disclaimer.vehicleBullet2Bold":
+      "peuvent ne pas contenir tous les enregistrements",
     "verify.disclaimer.vehicleBullet2End": "pour chaque véhicule.",
     "verify.disclaimer.vehicleBullet3": "Vous comprenez que",
-    "verify.disclaimer.vehicleBullet3Bold": "les résultats de recherche peuvent revenir sans données",
-    "verify.disclaimer.vehicleBullet3End": ", et vous acceptez de ne pas être remboursé.",
-    "verify.disclaimer.consentBullet": "Vous confirmez que vous comprenez et acceptez qu'un",
+    "verify.disclaimer.vehicleBullet3Bold":
+      "les résultats de recherche peuvent revenir sans données",
+    "verify.disclaimer.vehicleBullet3End":
+      ", et vous acceptez de ne pas être remboursé.",
+    "verify.disclaimer.consentBullet":
+      "Vous confirmez que vous comprenez et acceptez qu'un",
     "verify.disclaimer.consentBulletBold": "consentement est requis",
-    "verify.disclaimer.consentBulletEnd": "du sujet des données vérifié avant de pouvoir accéder à ses données, et vous acceptez de ne pas être remboursé si le consentement est refusé.",
+    "verify.disclaimer.consentBulletEnd":
+      "du sujet des données vérifié avant de pouvoir accéder à ses données, et vous acceptez de ne pas être remboursé si le consentement est refusé.",
     "verify.disclaimer.bullet2": "Vous confirmez et acceptez que les",
     "verify.disclaimer.bullet2Bold": "détails de recherche sont corrects",
-    "verify.disclaimer.bullet2End": ", et vous acceptez de ne pas être remboursé pour des informations incorrectes.",
+    "verify.disclaimer.bullet2End":
+      ", et vous acceptez de ne pas être remboursé pour des informations incorrectes.",
     "verify.disclaimer.bullet3": "Vous comprenez et acceptez que",
-    "verify.disclaimer.bullet3Bold": "les résultats de recherche peuvent revenir sans données",
-    "verify.disclaimer.bullet3End": ", et vous acceptez de ne pas être remboursé.",
+    "verify.disclaimer.bullet3Bold":
+      "les résultats de recherche peuvent revenir sans données",
+    "verify.disclaimer.bullet3End":
+      ", et vous acceptez de ne pas être remboursé.",
     "verify.disclaimer.continue": "Je comprends, Continuer",
     "verify.disclaimer.cancel": "Annuler",
   },
@@ -389,6 +427,7 @@ const translations = {
     "nav.fundWallet": "Fund Wallet",
     "nav.selectPaymentMethod": "Select Payment Method",
     "nav.close": "Close",
+    "nav.goBack": "Go Back",
     "nav.language": "Language",
     "nav.appearance": "Appearance",
     "nav.logout": "Logout",
@@ -514,13 +553,17 @@ const translations = {
     "sample.dateOfBirth": "Date of Birth",
     "sample.verifiedOn": "Verified on",
     "sample.ref": "Ref",
-    "sample.disclaimer": "Results are based on data available at the time of verification.",
+    "sample.disclaimer":
+      "Results are based on data available at the time of verification.",
     "sample.ninReportTitle": "What You Get in a NNI Report",
-    "sample.ninReportDesc": "Each NNI verification returns comprehensive identity details sourced from official records, helping you make informed decisions.",
+    "sample.ninReportDesc":
+      "Each NNI verification returns comprehensive identity details sourced from official records, helping you make informed decisions.",
     "sample.cardReportTitle": "What You Get in a Card ID Report",
-    "sample.cardReportDesc": "Each Card ID verification returns comprehensive identity details sourced from official records.",
+    "sample.cardReportDesc":
+      "Each Card ID verification returns comprehensive identity details sourced from official records.",
     "sample.vehicleReportTitle": "What You Get in a VIN Report",
-    "sample.vehicleReportDesc": "Each VIN verification returns comprehensive vehicle details sourced from official records.",
+    "sample.vehicleReportDesc":
+      "Each VIN verification returns comprehensive vehicle details sourced from official records.",
     "sample.tryItNow": "Try It Now",
     "sample.firstName": "First Name",
     "sample.middleName": "Middle Name",
@@ -552,8 +595,10 @@ const translations = {
     "sample.firstCentral": "First Central",
     "sample.creditRegistry": "Credit Registry",
     "sample.bureausChecked": "Bureaus Checked",
-    "sample.phoneSubtitle": "See an example of a phone number verification result.",
-    "sample.businessSubtitle": "See an example of a company verification result.",
+    "sample.phoneSubtitle":
+      "See an example of a phone number verification result.",
+    "sample.businessSubtitle":
+      "See an example of a company verification result.",
     "sample.financialSubtitle": "See an example of a Credit Profile result.",
     "sample.stakeholders": "Stakeholders",
     "sample.stakeholderName": "Name",
@@ -579,17 +624,21 @@ const translations = {
 
     /* ── CTA Sections ── */
     "cta.nin.title": "Ready to verify your NNI?",
-    "cta.nin.desc": "Join thousands of individuals and businesses that rely on e-citoyen for fast, accurate and secure identity verification.",
+    "cta.nin.desc":
+      "Join thousands of individuals and businesses that rely on e-citoyen for fast, accurate and secure identity verification.",
     "cta.nin.button": "Verify NNI Now",
     "cta.card.title": "Ready to verify your Card ID?",
-    "cta.card.desc": "Join thousands of individuals and businesses that rely on e-citoyen for fast, accurate and secure identity verification.",
+    "cta.card.desc":
+      "Join thousands of individuals and businesses that rely on e-citoyen for fast, accurate and secure identity verification.",
     "cta.card.button": "Verify Card ID Now",
     "cta.vehicle.title": "Ready to verify a VIN?",
-    "cta.vehicle.desc": "Join thousands of individuals and businesses that rely on e-citoyen for fast, accurate and secure vehicle verification.",
+    "cta.vehicle.desc":
+      "Join thousands of individuals and businesses that rely on e-citoyen for fast, accurate and secure vehicle verification.",
     "cta.vehicle.button": "Verify VIN Now",
 
     /* ── Footer ── */
-    "footer.brandDesc": "Your trusted partner for digital identity verification and background checks.",
+    "footer.brandDesc":
+      "Your trusted partner for digital identity verification and background checks.",
     "footer.services": "Services",
     "footer.support": "Support",
     "footer.getApp": "Get the app",
@@ -610,12 +659,14 @@ const translations = {
 
     /* ── Verify Page ── */
     "verify.search.title": "Enter search details",
-    "verify.search.subtitle": "Provide the details of the individual you want to verify.",
+    "verify.search.subtitle":
+      "Provide the details of the individual you want to verify.",
     "verify.search.idType": "ID Type",
     "verify.search.consentContact": "Consent Contact Details",
     "verify.search.or": "OR",
     "verify.search.youWillGet": "You will get",
-    "verify.search.secureNote": "Your data is secure and used only for verification.",
+    "verify.search.secureNote":
+      "Your data is secure and used only for verification.",
     "verify.search.amount": "Amount",
     "verify.search.continueToPayment": "Continue to Payment",
     "verify.search.clear": "Clear",
@@ -644,20 +695,25 @@ const translations = {
     "verify.payment.securedEncrypted": "Secured and encrypted payment",
     "verify.payment.back": "Back",
     "verify.payment.sampleResult": "Sample Result",
-    "verify.payment.sampleSubtitle": "Here's an example of what your verification result will look like.",
+    "verify.payment.sampleSubtitle":
+      "Here's an example of what your verification result will look like.",
     "verify.payment.verified": "Verified",
     "verify.payment.loading": "Processing...",
 
     "verify.processing.title": "Processing Your Verification",
-    "verify.processing.subtitle": "Please wait while we verify your information. This usually takes less than a minute.",
+    "verify.processing.subtitle":
+      "Please wait while we verify your information. This usually takes less than a minute.",
 
     "verify.consent.title": "Awaiting Consent",
-    "verify.consent.description": "We have sent a consent request to the data subject and are currently awaiting their response. An email will be sent to you regarding the status of your request.",
-    "verify.consent.retentionNote": "The data subject's information will be retained for 24 hours from the moment they grant consent. This page will automatically update when consent is granted.",
+    "verify.consent.description":
+      "We have sent a consent request to the data subject and are currently awaiting their response. An email will be sent to you regarding the status of your request.",
+    "verify.consent.retentionNote":
+      "The data subject's information will be retained for 24 hours from the moment they grant consent. This page will automatically update when consent is granted.",
     "verify.consent.returnToDashboard": "Return to Dashboard",
 
     "verify.error.selectBureau": "Please select at least one credit bureau.",
-    "verify.error.provideContact": "Please provide the subject's phone number or email for consent.",
+    "verify.error.provideContact":
+      "Please provide the subject's phone number or email for consent.",
     "verify.error.fillEitherOr": "Please fill in at least one of the fields.",
     "verify.error.fillRequired": "Please fill in all required fields.",
 
@@ -666,7 +722,8 @@ const translations = {
     "verify.result.service": "Service",
     "verify.result.amountPaid": "Amount Paid",
     "verify.result.returnToDashboard": "Return to Dashboard",
-    "verify.result.verificationSuccessful": "Your verification has been completed successfully.",
+    "verify.result.verificationSuccessful":
+      "Your verification has been completed successfully.",
     "verify.result.status": "Status",
     "verify.result.successful": "Successful",
     "verify.result.bureauResults": "Bureau Results",
@@ -693,7 +750,8 @@ const translations = {
     "verify.popup.verifiedOn": "Verified on",
     "verify.popup.reference": "Ref:",
     "verify.popup.notAvailable": "N/A",
-    "verify.popup.dataDisclaimer": "Results are based on data available at the time of verification.",
+    "verify.popup.dataDisclaimer":
+      "Results are based on data available at the time of verification.",
     "verify.popup.viewFullResult": "View full result",
     "verify.popup.close": "Close",
 
@@ -701,24 +759,31 @@ const translations = {
     "verify.disclaimer.title": "Disclaimer",
     "verify.disclaimer.subtitle": "Please verify before continuing",
     "verify.disclaimer.vehicleHeading": "By clicking, you acknowledge that:",
-    "verify.disclaimer.vehicleBullet1": "You confirm that the search details are correct and you agree to",
+    "verify.disclaimer.vehicleBullet1":
+      "You confirm that the search details are correct and you agree to",
     "verify.disclaimer.vehicleBullet1Bold": "not be refunded",
     "verify.disclaimer.vehicleBullet1End": "for incorrect information.",
-    "verify.disclaimer.vehicleBullet2": "You understand and accept that vehicle history data comes from third-party providers and",
+    "verify.disclaimer.vehicleBullet2":
+      "You understand and accept that vehicle history data comes from third-party providers and",
     "verify.disclaimer.vehicleBullet2Bold": "may not contain all records",
     "verify.disclaimer.vehicleBullet2End": "for every vehicle.",
     "verify.disclaimer.vehicleBullet3": "You understand that",
     "verify.disclaimer.vehicleBullet3Bold": "search results may return no data",
-    "verify.disclaimer.vehicleBullet3End": ", and you agree that you will not be refunded.",
-    "verify.disclaimer.consentBullet": "You confirm that you understand and accept that",
+    "verify.disclaimer.vehicleBullet3End":
+      ", and you agree that you will not be refunded.",
+    "verify.disclaimer.consentBullet":
+      "You confirm that you understand and accept that",
     "verify.disclaimer.consentBulletBold": "consent is required",
-    "verify.disclaimer.consentBulletEnd": "from the verified data subject before accessing their data, and you accept that you will not be refunded if consent is denied.",
+    "verify.disclaimer.consentBulletEnd":
+      "from the verified data subject before accessing their data, and you accept that you will not be refunded if consent is denied.",
     "verify.disclaimer.bullet2": "You confirm and accept that the",
     "verify.disclaimer.bullet2Bold": "search details are correct",
-    "verify.disclaimer.bullet2End": ", and you accept that you will not be refunded for incorrect information.",
+    "verify.disclaimer.bullet2End":
+      ", and you accept that you will not be refunded for incorrect information.",
     "verify.disclaimer.bullet3": "You understand and accept that",
     "verify.disclaimer.bullet3Bold": "search results may return no data",
-    "verify.disclaimer.bullet3End": ", and you accept that you will not be refunded.",
+    "verify.disclaimer.bullet3End":
+      ", and you accept that you will not be refunded.",
     "verify.disclaimer.continue": "I understand, Continue",
     "verify.disclaimer.cancel": "Cancel",
   },
