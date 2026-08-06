@@ -2,16 +2,14 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
   FaBuilding,
-  FaCar,
   FaCheckCircle,
   FaInfoCircle,
   FaTimes,
-  FaUserCircle,
 } from "react-icons/fa";
-import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
 const sampleData = {
   nin: {
@@ -108,11 +106,12 @@ const sampleData = {
   },
   vehicle: {
     subtitle: "See an example of a vehicle verification report.",
-    icon: FaCar,
+    image: vehicleSampleAvatar,
+    landscape: true,
     fields: [
       ["Plate Number", "ABC-123XY"],
-      ["VIN", "******5678"],
-      ["Make / Model", "Toyota Corolla"],
+      ["VIN", "89447585678"],
+      ["Make / Model", "Toyota Sienna"],
       ["Year", "2018"],
       ["Ownership Status", "VERIFIED", "verified"],
       ["Accident History", "No major records found"],
@@ -145,6 +144,19 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
 
   if (!isOpen) return null;
 
+  const fields = sample.fields.map(([label, value, status]) => (
+    <ResultField key={label}>
+      <ResultLabel>{label}</ResultLabel>
+      {status === "verified" ? (
+        <VerifiedValue>
+          {value} <FaCheckCircle />
+        </VerifiedValue>
+      ) : (
+        <ResultValue>{value}</ResultValue>
+      )}
+    </ResultField>
+  ));
+
   return (
     <Overlay onClick={onClose} role="presentation">
       <Dialog
@@ -167,29 +179,25 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         </Header>
 
         <ResultCard>
-          <Top>
-            <Avatar>
-              {sample.image ? (
-                <img src={sample.image} alt="Sample person" />
-              ) : (
-                Icon && <Icon />
-              )}
-            </Avatar>
+          {sample.landscape ? (
             <ResultGrid>
-              {sample.fields.map(([label, value, status]) => (
-                <ResultField key={label}>
-                  <ResultLabel>{label}</ResultLabel>
-                  {status === "verified" ? (
-                    <VerifiedValue>
-                      {value} <FaCheckCircle />
-                    </VerifiedValue>
-                  ) : (
-                    <ResultValue>{value}</ResultValue>
-                  )}
-                </ResultField>
-              ))}
+              <Photo>
+                <img src={sample.image} alt="Sample vehicle" />
+              </Photo>
+              {fields}
             </ResultGrid>
-          </Top>
+          ) : (
+            <Top>
+              <Avatar>
+                {sample.image ? (
+                  <img src={sample.image} alt="Sample person" />
+                ) : (
+                  Icon && <Icon />
+                )}
+              </Avatar>
+              <ResultGrid>{fields}</ResultGrid>
+            </Top>
+          )}
           {sample.stakeholders && (
             <StakeholderSection>
               <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
@@ -314,6 +322,24 @@ const Top = styled.div`
   @media screen and (max-width: 560px) {
     flex-direction: column;
     align-items: center;
+  }
+`;
+
+const Photo = styled.div`
+  width: 160px;
+  height: 60px;
+  justify-self: center;
+  align-self: center;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ec-border);
+  background: var(--ec-primary-bg);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 `;
 

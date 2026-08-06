@@ -289,8 +289,8 @@ const verificationConfig = {
       { icon: FaBolt, text: "Instant results" },
     ],
     sampleResult: {
-      name: "Toyota Corolla 2018",
-      identifier: "VIN: ******5678",
+      name: "Toyota Sienna 2018",
+      identifier: "VIN: 47589065678",
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",
