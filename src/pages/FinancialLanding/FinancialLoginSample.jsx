@@ -6,8 +6,9 @@ import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -577,10 +578,9 @@ const ResultDisclaimer = styled.div`
 `;
 
 const FinancialLoginSample = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
+  const dispatch = useDispatch();  const history = useHistory();
   const redirectTo = "/verify/bvn";
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -852,15 +852,17 @@ const FinancialLoginSample = () => {
   return (
     <SectionWrapper id="sample-result">
       <TwoColGrid>
-        {/* Login Card */}
-        <LoginCard style={{ position: "relative" }}>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+        {/* Login Card */}        <LoginCard style={{ position: "relative" }}>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>Login / Continue</LoginCardTitle>
           <LoginCardSub>
             Sign in or continue to start your verification.
           </LoginCardSub>
@@ -962,7 +964,9 @@ const FinancialLoginSample = () => {
                 </RegisterText>
               </FormCol>
             </LoginLayout>
-          </form>
+            </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}

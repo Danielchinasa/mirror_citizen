@@ -3,7 +3,7 @@ import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
@@ -315,8 +315,13 @@ const Home = () => {
   //   }
   // };
 
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const ctaLink = isAuthenticated ? "/dashboard" : "/login";
+  const ctaLink = "#verification-services";
+
+  const handleCtaClick = (e) => {
+    e.preventDefault();
+    const el = document.getElementById("verification-services");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
@@ -643,7 +648,9 @@ const Home = () => {
               verification needs.
             </CtaDesc>
           </CtaContent>
-          <CtaButton to={ctaLink}>Get Started Now</CtaButton>
+          <CtaButton to={ctaLink} onClick={handleCtaClick}>
+            Get Started Now
+          </CtaButton>
         </CtaInner>
       </CtaSection>
 

@@ -106,6 +106,11 @@ function Footer() {
               Blog
             </ExternalLink>
           </FooterCol>
+          <FooterCol>
+            <FooterColTitle>Legal</FooterColTitle>
+            <FooterLink to="/terms_of_service">Terms of Service</FooterLink>
+            <FooterLink to="/privacy_policy">Privacy Policy</FooterLink>
+          </FooterCol>
 
           <FooterCol>
             <FooterColTitle>Get the app</FooterColTitle>

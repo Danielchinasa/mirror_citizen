@@ -924,7 +924,10 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href="#" onClick={handleGetStarted}>
+              <PublicCta
+                href="/#verification-services"
+                onClick={handleGetStarted}
+              >
                 Get Started
               </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">

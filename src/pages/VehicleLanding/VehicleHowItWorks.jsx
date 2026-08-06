@@ -163,7 +163,7 @@ const VehicleHowItWorks = () => {
           </StepIconBox>
           <StepText>
             <StepName>Make payment</StepName>
-            <StepDesc>Secure payment from as low as ₦4,000.</StepDesc>
+            <StepDesc>Make a secure payment.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector />

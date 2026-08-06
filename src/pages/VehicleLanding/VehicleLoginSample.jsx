@@ -4,8 +4,9 @@ import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -446,6 +447,7 @@ const VehicleLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/vehicle";
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -701,12 +703,16 @@ const VehicleLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>Login / Continue</LoginCardTitle>
           <LoginCardSub>
             Sign in or continue to start your verification.
           </LoginCardSub>
@@ -808,7 +814,9 @@ const VehicleLoginSample = () => {
                 </RegisterText>
               </FormCol>
             </LoginLayout>
-          </form>
+            </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}
