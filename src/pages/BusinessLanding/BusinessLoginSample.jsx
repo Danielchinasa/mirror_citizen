@@ -956,7 +956,7 @@ const BusinessLoginSample = () => {
                 <FaBuilding />
               </CompanyIcon>
               <CompanyInfo>
-                <CompanyName>BIOSEC SOLUTIONS LIMITED</CompanyName>
+                <CompanyName>Coca Cola Nigeria</CompanyName>
                 <CompanyRc>RC 456823</CompanyRc>
                 <VerifiedBadge>
                   VERIFIED <FaCheckCircle />

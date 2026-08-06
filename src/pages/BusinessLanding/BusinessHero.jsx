@@ -53,14 +53,14 @@ const BusinessHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadgesRow>
+            {/* <PriceBadgesRow>
               <PriceBadge>
                 Basic check from <span>{getPrice(2) || "₦100"}</span>
               </PriceBadge>
               <PriceBadge>
                 Advanced profile from <span>{getPrice(3) || "₦800"}</span>
               </PriceBadge>
-            </PriceBadgesRow>
+            </PriceBadgesRow> */}
             <HeroChecks>
               <HeroCheck>
                 <FaCheckCircle /> Secure &amp; Private

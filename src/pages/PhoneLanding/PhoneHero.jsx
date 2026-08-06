@@ -54,9 +54,7 @@ const PhoneHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            {/* <PriceBadge>
-              From <span>{getPrice(9) || "₦800"}</span> per verification
-            </PriceBadge> */}
+
             <HeroMobileImage
               src={heroImg}
               alt="Phone Number Verification on eCitizen"

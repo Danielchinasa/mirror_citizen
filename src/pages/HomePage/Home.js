@@ -426,9 +426,7 @@ const Home = () => {
               </StepIconBox>
             </StepTop>
             <StepName>Provide your information</StepName>
-            <StepDesc>
-              Fill in your details and upload required documents
-            </StepDesc>
+            <StepDesc>Fill in the details you want to verify</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />

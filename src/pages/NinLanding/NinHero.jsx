@@ -54,9 +54,6 @@ const NinHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadge>
-              From <span>{getPrice(0) || "₦600"}</span> per verification
-            </PriceBadge>
           </HeroContent>
         </HeroContainer>
       </HeroSectionWrapper>

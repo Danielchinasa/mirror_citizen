@@ -62,7 +62,7 @@ const sampleData = {
     subtitle: "See an example of a company verification result.",
     icon: FaBuilding,
     fields: [
-      ["Company Name", "BIOSEC SOLUTIONS LIMITED"],
+      ["Company Name", "Coca Cola Nigeria"],
       ["RC Number", "RC 456823"],
       ["CAC ID", "2198456"],
       ["Verification Status", "VERIFIED", "verified"],
