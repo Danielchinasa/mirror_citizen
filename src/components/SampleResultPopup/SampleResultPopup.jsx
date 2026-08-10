@@ -11,7 +11,7 @@ import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
 import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
-const sampleData = {
+export const sampleData = {
   nin: {
     subtitle: "See an example of a NIN verification result.",
     image: ninSampleAvatar,
@@ -93,7 +93,7 @@ const sampleData = {
       ["Customer Name", "CHIJIOKE OLUWASEUN ADEBAYO"],
       ["BVN", "2234 5678 9**"],
       ["Gender", "Male"],
-      ["Phone Number", "0802 *** 7654"],
+      ["Phone Number", "0802 345 7654"],
       ["Address", "45 Awolowo Road, Ikoyi, Lagos"],
       ["Report Date", "14 Mar 2025"],
       ["Credit Score", "718"],
@@ -120,9 +120,75 @@ const sampleData = {
   },
 };
 
-const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
+export const SampleResultContent = ({ type = "nin" }) => {
   const sample = sampleData[type] || sampleData.nin;
   const Icon = sample.icon;
+
+  const fields = sample.fields.map(([label, value, status]) => (
+    <ResultField key={label}>
+      <ResultLabel>{label}</ResultLabel>
+      {status === "verified" ? (
+        <VerifiedValue>
+          {value} <FaCheckCircle />
+        </VerifiedValue>
+      ) : (
+        <ResultValue>{value}</ResultValue>
+      )}
+    </ResultField>
+  ));
+
+  return (
+    <>
+      <ResultCard>
+        {sample.landscape ? (
+          <ResultGrid>
+            <Photo>
+              <img src={sample.image} alt="Sample vehicle" />
+            </Photo>
+            {fields}
+          </ResultGrid>
+        ) : (
+          <Top>
+            <Avatar>
+              {sample.image ? (
+                <img src={sample.image} alt="Sample person" />
+              ) : (
+                Icon && <Icon />
+              )}
+            </Avatar>
+            <ResultGrid>{fields}</ResultGrid>
+          </Top>
+        )}
+        {sample.stakeholders && (
+          <StakeholderSection>
+            <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+            <StakeholderTable>
+              <StakeholderRow $header>
+                <StakeholderCell $header>Name</StakeholderCell>
+                <StakeholderCell $header>Role</StakeholderCell>
+                <StakeholderCell $header>Nationality</StakeholderCell>
+              </StakeholderRow>
+              {sample.stakeholders.map((s, i) => (
+                <StakeholderRow key={i}>
+                  <StakeholderCell>{s.name}</StakeholderCell>
+                  <StakeholderCell>{s.role}</StakeholderCell>
+                  <StakeholderCell>{s.nationality}</StakeholderCell>
+                </StakeholderRow>
+              ))}
+            </StakeholderTable>
+          </StakeholderSection>
+        )}
+      </ResultCard>
+      <Disclaimer>
+        <FaInfoCircle />
+        Results are based on data available at the time of verification.
+      </Disclaimer>
+    </>
+  );
+};
+
+const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
+  const sample = sampleData[type] || sampleData.nin;
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -143,19 +209,6 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  const fields = sample.fields.map(([label, value, status]) => (
-    <ResultField key={label}>
-      <ResultLabel>{label}</ResultLabel>
-      {status === "verified" ? (
-        <VerifiedValue>
-          {value} <FaCheckCircle />
-        </VerifiedValue>
-      ) : (
-        <ResultValue>{value}</ResultValue>
-      )}
-    </ResultField>
-  ));
 
   return (
     <Overlay onClick={onClose} role="presentation">
@@ -178,51 +231,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </CloseButton>
         </Header>
 
-        <ResultCard>
-          {sample.landscape ? (
-            <ResultGrid>
-              <Photo>
-                <img src={sample.image} alt="Sample vehicle" />
-              </Photo>
-              {fields}
-            </ResultGrid>
-          ) : (
-            <Top>
-              <Avatar>
-                {sample.image ? (
-                  <img src={sample.image} alt="Sample person" />
-                ) : (
-                  Icon && <Icon />
-                )}
-              </Avatar>
-              <ResultGrid>{fields}</ResultGrid>
-            </Top>
-          )}
-          {sample.stakeholders && (
-            <StakeholderSection>
-              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
-              <StakeholderTable>
-                <StakeholderRow $header>
-                  <StakeholderCell $header>Name</StakeholderCell>
-                  <StakeholderCell $header>Role</StakeholderCell>
-                  <StakeholderCell $header>Nationality</StakeholderCell>
-                </StakeholderRow>
-                {sample.stakeholders.map((s, i) => (
-                  <StakeholderRow key={i}>
-                    <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>{s.role}</StakeholderCell>
-                    <StakeholderCell>{s.nationality}</StakeholderCell>
-                  </StakeholderRow>
-                ))}
-              </StakeholderTable>
-            </StakeholderSection>
-          )}
-        </ResultCard>
-
-        <Disclaimer>
-          <FaInfoCircle />
-          Results are based on data available at the time of verification.
-        </Disclaimer>
+        <SampleResultContent type={type} />
       </Dialog>
     </Overlay>
   );

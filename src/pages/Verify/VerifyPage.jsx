@@ -30,6 +30,10 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
+import {
+  SampleResultContent,
+  sampleData,
+} from "../../components/SampleResultPopup/SampleResultPopup";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 
@@ -94,14 +98,7 @@ import {
   SampleHeader,
   SampleTitle,
   SampleSub,
-  SampleResultCard,
-  SampleAvatar,
-  SampleInfo,
-  SampleName,
-  SampleId,
-  VerifiedBadge,
-  SampleTags,
-  SampleTag,
+  SampleBadge,
   TrustBar,
   TrustBarInner,
   TrustItem,
@@ -142,6 +139,16 @@ import {
 
 // Steps are now dynamic — defined inside the component based on config.requiresConsent
 
+// Maps each verify page type to the matching landing-page sample result type
+const SAMPLE_POPUP_TYPE_MAP = {
+  nin: "nin",
+  phone: "phone",
+  business: "business",
+  "business-name": "business",
+  bvn: "financial",
+  vehicle: "vehicle",
+};
+
 const PAYMENT_METHODS = [
   {
     id: "wallet",
@@ -178,6 +185,8 @@ const VerifyPage = () => {
   const dispatch = useDispatch();
 
   const config = verificationConfig[type];
+  const sampleType = SAMPLE_POPUP_TYPE_MAP[type] || "nin";
+  const sampleMeta = sampleData[sampleType] || sampleData.nin;
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
   const userDetails = useSelector((state) => state.userDetails);
@@ -409,6 +418,17 @@ const VerifyPage = () => {
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    setError("");
+  };
+
+  const handleSelectAllBureaus = () => {
+    if (!config.bureaus) return;
+    const allSelected = config.bureaus.every((b) => selectedBureaus[b.id]);
+    setSelectedBureaus(
+      allSelected
+        ? {}
+        : config.bureaus.reduce((acc, b) => ({ ...acc, [b.id]: true }), {}),
+    );
     setError("");
   };
 
@@ -1124,16 +1144,48 @@ const VerifyPage = () => {
 
           {config.bureaus && (
             <FormGroup>
-              <FormLabel>
-                Select Credit Bureau(s){" "}
-                <span style={{ color: "#dc2626" }}> *</span>
-              </FormLabel>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8,
+                  flexWrap: "wrap",
+                }}
+              >
+                <FormLabel style={{ marginBottom: 0 }}>
+                  Select Credit Bureau(s){" "}
+                  <span style={{ color: "#dc2626" }}> *</span>
+                </FormLabel>
+                <button
+                  type="button"
+                  onClick={handleSelectAllBureaus}
+                  style={{
+                    padding: "5px 14px",
+                    borderRadius: 999,
+                    border: `1.5px solid ${allBureausSelected ? "#09c93a" : "#e5e7eb"}`,
+                    background: allBureausSelected ? "#f0fdf4" : "#fff",
+                    color: "#09c93a",
+                    fontFamily: "Nunito, sans-serif",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    whiteSpace: "nowrap",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  {allBureausSelected ? "Deselect All" : "Select All"}
+                </button>
+              </div>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   gap: 10,
-                  marginTop: 4,
+                  marginTop: 8,
                 }}
               >
                 {config.bureaus.map((bureau) => (
@@ -1529,31 +1581,12 @@ const VerifyPage = () => {
       <SampleSection>
         <SampleHeader>
           <SampleTitle>Sample Result</SampleTitle>
+          <SampleBadge>This is a sample only</SampleBadge>
         </SampleHeader>
-        <SampleSub>
-          Here's an example of what your verification result will look like.
-        </SampleSub>
-        <SampleResultCard>
-          <SampleAvatar>
-            <FaUserCircle />
-          </SampleAvatar>
-          <SampleInfo>
-            <SampleName>
-              {config.sampleResult.name}
-              <VerifiedBadge>
-                <FaCheckCircle /> Verified
-              </VerifiedBadge>
-            </SampleName>
-            <SampleId>{config.sampleResult.identifier}</SampleId>
-            <SampleTags>
-              {config.sampleResult.tags.map((tag, i) => (
-                <SampleTag key={i}>
-                  <FaCheckCircle /> {tag}
-                </SampleTag>
-              ))}
-            </SampleTags>
-          </SampleInfo>
-        </SampleResultCard>
+        <SampleSub>{sampleMeta.subtitle}</SampleSub>
+        <div style={{ maxWidth: 760 }}>
+          <SampleResultContent type={sampleType} />
+        </div>
       </SampleSection>
     </>
   );

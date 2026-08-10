@@ -578,7 +578,8 @@ const ResultDisclaimer = styled.div`
 `;
 
 const FinancialLoginSample = () => {
-  const dispatch = useDispatch();  const history = useHistory();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const redirectTo = "/verify/bvn";
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
@@ -852,7 +853,8 @@ const FinancialLoginSample = () => {
   return (
     <SectionWrapper id="sample-result">
       <TwoColGrid>
-        {/* Login Card */}        <LoginCard style={{ position: "relative" }}>
+        {/* Login Card */}{" "}
+        <LoginCard style={{ position: "relative" }}>
           {isAuthenticated ? (
             <LoggedInContinueCard redirectTo={redirectTo} />
           ) : (
@@ -863,112 +865,111 @@ const FinancialLoginSample = () => {
                 </SpinnerOverlay>
               )}
               <LoginCardTitle>Login / Continue</LoginCardTitle>
-          <LoginCardSub>
-            Sign in or continue to start your verification.
-          </LoginCardSub>
-          <form onSubmit={handleSignIn}>
-            <LoginLayout>
-              <SSOCol>
-                <SSOButton
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    trackEvent({
-                      action: "click_google_signin",
-                      category: "Authentication",
-                      label: "Google Sign-In Button",
-                      value: 1,
-                    });
-                    googleLogin();
-                  }}
-                >
-                  <FcGoogle /> Continue with Google
-                </SSOButton>
-                <FacebookLogin
-                  appId="541710452150170"
-                  autoLoad={false}
-                  fields="name,picture"
-                  scope="public_profile"
-                  callback={handleFacebook}
-                  render={(renderProps) => (
-                    <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
-                    </SSOButton>
-                  )}
-                />
-              </SSOCol>
-              <Divider>OR</Divider>
-              <FormCol>
-                {formErrors.general && (
-                  <ErrorAlert>{formErrors.general}</ErrorAlert>
-                )}
-                <div>
-                  <FormLabel>Email address</FormLabel>
-                  <FormInput
-                    type="email"
-                    placeholder="Enter your email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.email && (
-                    <ErrorAlert>{formErrors.email}</ErrorAlert>
-                  )}
-                </div>
-                <div>
-                  <FormLabel>Password</FormLabel>
-                  <PasswordWrapper>
-                    <FormInput
-                      type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                    />
-                    <PasswordToggle
+              <LoginCardSub>
+                Sign in or continue to start your verification.
+              </LoginCardSub>
+              <form onSubmit={handleSignIn}>
+                <LoginLayout>
+                  <SSOCol>
+                    <SSOButton
                       type="button"
-                      onClick={() => setShowPass(!showPass)}
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        trackEvent({
+                          action: "click_google_signin",
+                          category: "Authentication",
+                          label: "Google Sign-In Button",
+                          value: 1,
+                        });
+                        googleLogin();
+                      }}
                     >
-                      {showPass ? <FaEyeSlash /> : <FaEye />}
-                    </PasswordToggle>
-                  </PasswordWrapper>
-                  {formErrors.password && (
-                    <ErrorAlert>{formErrors.password}</ErrorAlert>
-                  )}
-                </div>
-                <FormRow>
-                  <RememberLabel>
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleInputChange}
-                    />{" "}
-                    Remember me
-                  </RememberLabel>
-                  <ForgotLink to="/forgot-password">
-                    Forgot password?
-                  </ForgotLink>
-                </FormRow>
-                <ReCAPTCHA
-                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
-                  onChange={() => setIsCaptchaVerified(true)}
-                  style={{ marginBottom: 4 }}
-                />
-                <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
-                </LoginBtn>
-                <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
-                </RegisterText>
-              </FormCol>
-            </LoginLayout>
-            </form>
+                      <FcGoogle /> Continue with Google
+                    </SSOButton>
+                    <FacebookLogin
+                      appId="541710452150170"
+                      autoLoad={false}
+                      fields="name,picture"
+                      scope="public_profile"
+                      callback={handleFacebook}
+                      render={(renderProps) => (
+                        <SSOButton type="button" onClick={renderProps.onClick}>
+                          <FaFacebook color="#1877F2" /> Continue with Facebook
+                        </SSOButton>
+                      )}
+                    />
+                  </SSOCol>
+                  <Divider>OR</Divider>
+                  <FormCol>
+                    {formErrors.general && (
+                      <ErrorAlert>{formErrors.general}</ErrorAlert>
+                    )}
+                    <div>
+                      <FormLabel>Email address</FormLabel>
+                      <FormInput
+                        type="email"
+                        placeholder="Enter your email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                      {formErrors.email && (
+                        <ErrorAlert>{formErrors.email}</ErrorAlert>
+                      )}
+                    </div>
+                    <div>
+                      <FormLabel>Password</FormLabel>
+                      <PasswordWrapper>
+                        <FormInput
+                          type={showPass ? "text" : "password"}
+                          placeholder="Enter your password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                        />
+                        <PasswordToggle
+                          type="button"
+                          onClick={() => setShowPass(!showPass)}
+                        >
+                          {showPass ? <FaEyeSlash /> : <FaEye />}
+                        </PasswordToggle>
+                      </PasswordWrapper>
+                      {formErrors.password && (
+                        <ErrorAlert>{formErrors.password}</ErrorAlert>
+                      )}
+                    </div>
+                    <FormRow>
+                      <RememberLabel>
+                        <input
+                          type="checkbox"
+                          name="rememberMe"
+                          checked={formData.rememberMe}
+                          onChange={handleInputChange}
+                        />{" "}
+                        Remember me
+                      </RememberLabel>
+                      <ForgotLink to="/forgot-password">
+                        Forgot password?
+                      </ForgotLink>
+                    </FormRow>
+                    <ReCAPTCHA
+                      sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                      onChange={() => setIsCaptchaVerified(true)}
+                      style={{ marginBottom: 4 }}
+                    />
+                    <LoginBtn type="submit" disabled={!isCaptchaVerified}>
+                      Login
+                    </LoginBtn>
+                    <RegisterText>
+                      Don't have an account?{" "}
+                      <Link to="/individual/sign-up/1">Register here</Link>
+                    </RegisterText>
+                  </FormCol>
+                </LoginLayout>
+              </form>
             </>
           )}
         </LoginCard>
-
         {/* Sample Result Card */}
         <SampleCard>
           <SampleHeader>
@@ -990,7 +991,7 @@ const FinancialLoginSample = () => {
                 </ResultField>
                 <ResultField>
                   <ResultLabel>BVN</ResultLabel>
-                  <ResultValue>2234 5678 9**</ResultValue>
+                  <ResultValue>2234 5678 9984</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Gender</ResultLabel>
@@ -998,7 +999,7 @@ const FinancialLoginSample = () => {
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Phone Number</ResultLabel>
-                  <ResultValue>0802 *** 7654</ResultValue>
+                  <ResultValue>0802 948 7654</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Address</ResultLabel>
