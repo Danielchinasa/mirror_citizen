@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.d2fa212d.chunk.css",
-    "main.js": "/static/js/main.e781c613.chunk.js",
-    "main.js.map": "/static/js/main.e781c613.chunk.js.map",
+    "main.js": "/static/js/main.13e79792.chunk.js",
+    "main.js.map": "/static/js/main.13e79792.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.79a8c2b1.chunk.js": "/static/js/2.79a8c2b1.chunk.js",
-    "static/js/2.79a8c2b1.chunk.js.map": "/static/js/2.79a8c2b1.chunk.js.map",
+    "static/js/2.576a0247.chunk.js": "/static/js/2.576a0247.chunk.js",
+    "static/js/2.576a0247.chunk.js.map": "/static/js/2.576a0247.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.b62bae23049e8111b195653a4df61917.js": "/precache-manifest.b62bae23049e8111b195653a4df61917.js",
+    "precache-manifest.13323dd848d65295de869b6229ee1456.js": "/precache-manifest.13323dd848d65295de869b6229ee1456.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.d2fa212d.chunk.css.map": "/static/css/main.d2fa212d.chunk.css.map",
-    "static/js/2.79a8c2b1.chunk.js.LICENSE.txt": "/static/js/2.79a8c2b1.chunk.js.LICENSE.txt",
+    "static/js/2.576a0247.chunk.js.LICENSE.txt": "/static/js/2.576a0247.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/Hero_image_new.png": "/static/media/Hero_image_new.353f76f7.png",
@@ -27,6 +27,8 @@
     "static/media/clearvin.png": "/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/static/media/contact.2a1a7bdb.png",
     "static/media/credit_profile.png": "/static/media/credit_profile.48765e5d.png",
+    "static/media/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf": "/static/media/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.9f6a8056.pdf",
+    "static/media/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf": "/static/media/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.64e8647e.pdf",
     "static/media/e-citizen_logo_ecitizen_white.png": "/static/media/e-citizen_logo_ecitizen_white.ea54108c.png",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/flutterwave-logos-white.png": "/static/media/flutterwave-logos-white.877be0eb.png",
@@ -52,8 +54,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.79a8c2b1.chunk.js",
+    "static/js/2.576a0247.chunk.js",
     "static/css/main.d2fa212d.chunk.css",
-    "static/js/main.e781c613.chunk.js"
+    "static/js/main.13e79792.chunk.js"
   ]
 }

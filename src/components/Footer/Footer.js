@@ -23,9 +23,9 @@ import {
 import logo from "../../images/e-citizen_logo_ecitizen_white.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
-import { Modal } from "antd";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import PdfModal from "../PdfModal/PdfModal";
+import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
+import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
@@ -108,8 +108,20 @@ function Footer() {
           </FooterCol>
           <FooterCol>
             <FooterColTitle>Legal</FooterColTitle>
-            <FooterLink to="/terms_of_service">Terms of Service</FooterLink>
-            <FooterLink to="/privacy_policy">Privacy Policy</FooterLink>
+            <FooterLink
+              as="span"
+              onClick={() => setIsOpen(true)}
+              style={{ cursor: "pointer" }}
+            >
+              Terms of Service
+            </FooterLink>
+            <FooterLink
+              as="span"
+              onClick={() => setIsOpen2(true)}
+              style={{ cursor: "pointer" }}
+            >
+              Privacy Policy
+            </FooterLink>
           </FooterCol>
 
           <FooterCol>
@@ -148,26 +160,20 @@ function Footer() {
         </FooterBottom>
       </FooterInner>
 
-      <Modal
+      <PdfModal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
         title="Privacy Policy"
-        visible={isOpen}
-        centered
-        onOk={() => setIsOpen(false)}
-        onCancel={() => setIsOpen(false)}
-        width={1000}
-      >
-        <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
-      </Modal>
-      <Modal
+        src={privacyPdf}
+        height={560}
+      />
+      <PdfModal
+        open={isOpen2}
+        onClose={() => setIsOpen2(false)}
         title="Terms of Service"
-        visible={isOpen2}
-        centered
-        onOk={() => setIsOpen2(false)}
-        onCancel={() => setIsOpen2(false)}
-        width={1000}
-      >
-        <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
-      </Modal>
+        src={termsPdf}
+        height={560}
+      />
     </FooterWrapper>
   );
 }

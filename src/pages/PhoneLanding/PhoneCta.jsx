@@ -143,10 +143,10 @@ const PhoneCta = () => {
           <CtaButton to={verifyLink}>
             Verify Phone Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
+          {/* <CtaPrice>
             <FaCheckCircle /> Starting from <strong>N</strong>800 per
             verification
-          </CtaPrice>
+          </CtaPrice> */}
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

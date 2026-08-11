@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
@@ -6,6 +6,9 @@ import styled from "styled-components";
 import Logo from "../../images/e-citizen_logo_ecitizen_white.png";
 import playstoreImg from "../../images/playstore.png";
 import appStoreImg from "../../images/appStore.png";
+import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
+import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
+import PdfModal from "../../components/PdfModal/PdfModal";
 
 const FooterWrapper = styled.footer`
   background: var(--ec-footer-bg);
@@ -191,6 +194,9 @@ const LegalLink = styled(Link)`
 `;
 
 const VehicleLandingFooter = () => {
+  const [openPrivacy, setOpenPrivacy] = useState(false);
+  const [openTerms, setOpenTerms] = useState(false);
+
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -305,11 +311,38 @@ const VehicleLandingFooter = () => {
             © e-citizen {new Date().getFullYear()}. All Rights Reserved.
           </Copyright>
           <LegalLinks>
-            <LegalLink to="/privacy-policy">Privacy Policy</LegalLink>
-            <LegalLink to="/terms-of-service">Terms of Service</LegalLink>
+            <LegalLink
+              as="span"
+              onClick={() => setOpenPrivacy(true)}
+              style={{ cursor: "pointer" }}
+            >
+              Privacy Policy
+            </LegalLink>
+            <LegalLink
+              as="span"
+              onClick={() => setOpenTerms(true)}
+              style={{ cursor: "pointer" }}
+            >
+              Terms of Service
+            </LegalLink>
           </LegalLinks>
         </FooterBottom>
       </FooterInner>
+
+      <PdfModal
+        open={openPrivacy}
+        onClose={() => setOpenPrivacy(false)}
+        title="Privacy Policy"
+        src={privacyPdf}
+        height={520}
+      />
+      <PdfModal
+        open={openTerms}
+        onClose={() => setOpenTerms(false)}
+        title="Terms of Service"
+        src={termsPdf}
+        height={520}
+      />
     </FooterWrapper>
   );
 };

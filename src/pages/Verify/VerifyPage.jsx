@@ -15,7 +15,6 @@ import {
   FaIdCard,
   FaInfoCircle,
   FaBuilding,
-  FaFileAlt,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
@@ -34,8 +33,9 @@ import {
   SampleResultContent,
   sampleData,
 } from "../../components/SampleResultPopup/SampleResultPopup";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
+import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 
 import {
   PageWrapper,
@@ -836,7 +836,12 @@ const VerifyPage = () => {
         resultDetail =
           bvnVerification.detail || "BVN verification was successful.";
         resultRoute = "/main-dashboard";
-      } else if (response.business && response.business.success === true) {
+      } else if (
+        response.business &&
+        response.business.success === true &&
+        response.business.data &&
+        response.business.data !== "null"
+      ) {
         const bizArray = Array.isArray(response.business.data)
           ? response.business.data.map((item) => item.data || item)
           : [response.business.data];
@@ -853,11 +858,17 @@ const VerifyPage = () => {
             : firstBiz?.approvedName ||
               "Business has been verified successfully.";
         resultRoute = "/main-dashboard";
-      } else if (response.business && response.business.success === false) {
+      } else if (
+        response.business &&
+        (response.business.success === false || response.business.error)
+      ) {
         Swal.fire({
           icon: "error",
           title: "Verification Failed",
-          text: response.business.message,
+          text:
+            response.business.error?.message ||
+            response.business.message ||
+            "Verification failed. Please try again.",
           confirmButtonColor: "#09c93a",
         });
         setCurrentStep(1);
@@ -1003,8 +1014,12 @@ const VerifyPage = () => {
           response?.basic?.detail ||
           response?.["search-extension"]?.phoneVerification?.detail ||
           response?.["search-extension"]?.bvnVerification?.detail ||
+          response?.business?.error?.message ||
           response?.business?.message ||
+          response?.financial?.error?.message ||
           response?.financial?.message ||
+          response?.vehicle?.error?.message ||
+          response?.vehicle?.message ||
           "Verification could not be completed. A refund has been initiated.";
         Swal.fire({
           icon: "error",
@@ -2553,107 +2568,21 @@ const VerifyPage = () => {
         </PopupOverlay>
       )}
 
-      {/* Terms of Service Modal */}
-      {showTermsPopup && (
-        <PopupOverlay onClick={() => setShowTermsPopup(false)}>
-          <PopupCard
-            style={{ maxWidth: 720 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <PopupHeader>
-              <PopupMeta>
-                <PopupIcon
-                  style={{
-                    background: "rgba(9, 201, 58, 0.10)",
-                    color: "#09c93a",
-                  }}
-                >
-                  <FaFileAlt />
-                </PopupIcon>
-                <div>
-                  <PopupTitle>Terms of Service</PopupTitle>
-                  <PopupSubtitle>
-                    Please review the terms before proceeding
-                  </PopupSubtitle>
-                </div>
-              </PopupMeta>
-              <PopupCloseButton onClick={() => setShowTermsPopup(false)}>
-                ×
-              </PopupCloseButton>
-            </PopupHeader>
-            <PopupBody>
-              <div
-                style={{
-                  maxHeight: "60vh",
-                  overflowY: "auto",
-                  paddingRight: 8,
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 14,
-                  lineHeight: 1.7,
-                  color: "var(--ec-text)",
-                }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
-              </div>
-              <PopupActionRow style={{ justifyContent: "center" }}>
-                <ContinueBtn onClick={() => setShowTermsPopup(false)}>
-                  I Understand <FaCheckCircle />
-                </ContinueBtn>
-              </PopupActionRow>
-            </PopupBody>
-          </PopupCard>
-        </PopupOverlay>
-      )}
 
-      {/* Privacy Policy Modal */}
-      {showPrivacyPopup && (
-        <PopupOverlay onClick={() => setShowPrivacyPopup(false)}>
-          <PopupCard
-            style={{ maxWidth: 720 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <PopupHeader>
-              <PopupMeta>
-                <PopupIcon
-                  style={{
-                    background: "rgba(9, 201, 58, 0.10)",
-                    color: "#09c93a",
-                  }}
-                >
-                  <FaShieldAlt />
-                </PopupIcon>
-                <div>
-                  <PopupTitle>Privacy Policy</PopupTitle>
-                  <PopupSubtitle>How we handle your data</PopupSubtitle>
-                </div>
-              </PopupMeta>
-              <PopupCloseButton onClick={() => setShowPrivacyPopup(false)}>
-                ×
-              </PopupCloseButton>
-            </PopupHeader>
-            <PopupBody>
-              <div
-                style={{
-                  maxHeight: "60vh",
-                  overflowY: "auto",
-                  paddingRight: 8,
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 14,
-                  lineHeight: 1.7,
-                  color: "var(--ec-text)",
-                }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
-              </div>
-              <PopupActionRow style={{ justifyContent: "center" }}>
-                <ContinueBtn onClick={() => setShowPrivacyPopup(false)}>
-                  I Understand <FaCheckCircle />
-                </ContinueBtn>
-              </PopupActionRow>
-            </PopupBody>
-          </PopupCard>
-        </PopupOverlay>
-      )}
+      <PdfModal
+        open={showTermsPopup}
+        onClose={() => setShowTermsPopup(false)}
+        title="Terms of Service"
+        src={termsPdf}
+        height={420}
+      />
+      <PdfModal
+        open={showPrivacyPopup}
+        onClose={() => setShowPrivacyPopup(false)}
+        title="Privacy Policy"
+        src={privacyPdf}
+        height={420}
+      />
 
       {/* Paystack Payment Modal */}
       {paystackModalOpen && (
