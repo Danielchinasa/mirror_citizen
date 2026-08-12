@@ -6,7 +6,8 @@ import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -578,6 +579,7 @@ const ResultDisclaimer = styled.div`
 
 const FinancialLoginSample = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const history = useHistory();
 
   const redirectTo = "/verify/bvn";
@@ -854,6 +856,10 @@ const FinancialLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
           {loading && (
             <SpinnerOverlay>
               <Spinner />
@@ -963,6 +969,8 @@ const FinancialLoginSample = () => {
               </FormCol>
             </LoginLayout>
           </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}

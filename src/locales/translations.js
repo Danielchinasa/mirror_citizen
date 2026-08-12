@@ -249,6 +249,11 @@ const translations = {
     "sample.disclaimer":
       "Results are based on data available at the time of verification.",
 
+    /* ── Logged-in Continue Card ── */
+    "loggedInCard.title": "You're logged in",
+    "loggedInCard.continue": "Continue to Verification",
+    "loggedInCard.logout": "Not you? Log out",
+
     /* ── National ID Sample Section ── */
     "ninSample.title": "What You Get in a National ID Report",
     "ninSample.desc":
@@ -806,6 +811,11 @@ const translations = {
     "sample.stakeholder.nationality": "Utaifa",
     "sample.disclaimer":
       "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
+
+    /* ── Logged-in Continue Card ── */
+    "loggedInCard.title": "Umeshaingia",
+    "loggedInCard.continue": "Endelea na Uthibitishaji",
+    "loggedInCard.logout": "Si wewe? Ondoka",
 
     /* ── National ID Sample Section ── */
     "ninSample.title": "Unachopata katika Ripoti ya National ID",
