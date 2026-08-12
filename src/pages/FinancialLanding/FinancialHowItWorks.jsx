@@ -166,9 +166,7 @@ const FinancialHowItWorks = () => {
           </StepIconBox>
           <StepText>
             <StepName>Make payment</StepName>
-            <StepDesc>
-              Secure payment from as low as ₦1,500 per report.
-            </StepDesc>
+            <StepDesc>Make a secure payment.</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector />

@@ -959,6 +959,18 @@ export const SampleTitle = styled.h3`
   margin: 0;
 `;
 
+export const SampleBadge = styled.span`
+  background: #fff7e6;
+  color: #a15c00;
+  border: 1px solid #ffe0a3;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+`;
+
 export const SampleViewLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
@@ -978,94 +990,6 @@ export const SampleSub = styled.p`
   margin: 0 0 16px;
 `;
 
-export const SampleResultCard = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: var(--ec-bg-secondary);
-  border: 1px solid var(--ec-border);
-  border-radius: 10px;
-  padding: 16px 20px;
-
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
-export const SampleAvatar = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--ec-primary-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  svg {
-    font-size: 22px;
-    color: var(--ec-primary);
-  }
-`;
-
-export const SampleInfo = styled.div`
-  flex: 1;
-`;
-
-export const SampleName = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--ec-heading);
-`;
-
-export const SampleId = styled.span`
-  font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  color: var(--ec-text-secondary);
-`;
-
-export const VerifiedBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--ec-primary-bg);
-  color: var(--ec-primary);
-  font-family: "Nunito", sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 12px;
-
-  svg {
-    font-size: 10px;
-  }
-`;
-
-export const SampleTags = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-`;
-
-export const SampleTag = styled.span`
-  font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  color: var(--ec-text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
-  svg {
-    color: var(--ec-primary);
-    font-size: 10px;
-  }
-`;
 
 /* ─── Trust Bar ─── */
 

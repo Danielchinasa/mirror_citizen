@@ -6,8 +6,9 @@ import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -469,6 +470,7 @@ const NinLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/nin";
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -730,12 +732,16 @@ const NinLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>Login / Continue</LoginCardTitle>
           <LoginCardSub>
             Sign in or continue to start your verification.
           </LoginCardSub>
@@ -837,7 +843,9 @@ const NinLoginSample = () => {
                 </RegisterText>
               </FormCol>
             </LoginLayout>
-          </form>
+            </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}

@@ -163,7 +163,7 @@ const BusinessHowItWorks = () => {
           </StepIconBox>
           <StepText>
             <StepName>Make payment</StepName>
-            <StepDesc>Pay securely from as low as ₦100.</StepDesc>
+            <StepDesc>Make a secure payment</StepDesc>
           </StepText>
         </StepItem>
         <DottedConnector />

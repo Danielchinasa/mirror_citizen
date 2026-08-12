@@ -138,9 +138,9 @@ const VehicleCta = () => {
           <CtaButton to={verifyLink}>
             Verify Vehicle Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
+          {/* <CtaPrice>
             <FaCheckCircle /> Secure &bull; Fast &bull; Reliable
-          </CtaPrice>
+          </CtaPrice> */}
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

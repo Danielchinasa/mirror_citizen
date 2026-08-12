@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  FaEye,
-  FaEyeSlash,
-  FaCheckCircle,
-  FaInfoCircle,
-  FaCar,
-} from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -20,6 +15,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -365,38 +361,25 @@ const ResultCard = styled.div`
   }
 `;
 
-const ResultTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
-
-  @media screen and (max-width: 600px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
 const ResultPhoto = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 12px;
+  width: 150px;
+  height: 56px;
+  justify-self: center;
+  align-self: center;
+  border-radius: 10px;
   overflow: hidden;
-  flex-shrink: 0;
   border: 2px solid var(--ec-border);
   background: var(--ec-primary-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  svg {
-    font-size: 32px;
-    color: var(--ec-primary);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 `;
 
 const ResultGrid = styled.div`
-  flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 30px;
@@ -464,6 +447,7 @@ const VehicleLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/vehicle";
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -719,12 +703,16 @@ const VehicleLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>Login / Continue</LoginCardTitle>
           <LoginCardSub>
             Sign in or continue to start your verification.
           </LoginCardSub>
@@ -826,7 +814,9 @@ const VehicleLoginSample = () => {
                 </RegisterText>
               </FormCol>
             </LoginLayout>
-          </form>
+            </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}
@@ -839,22 +829,21 @@ const VehicleLoginSample = () => {
             See an example of a vehicle verification report.
           </SampleCardSub>
           <ResultCard>
-            <ResultTop>
+            <ResultGrid>
               <ResultPhoto>
-                <FaCar />
+                <img src={vehicleSampleAvatar} alt="Sample vehicle owner" />
               </ResultPhoto>
-              <ResultGrid>
                 <ResultField>
                   <ResultLabel>Plate Number</ResultLabel>
                   <ResultValue>ABC-123XY</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>VIN</ResultLabel>
-                  <ResultValue>******5678</ResultValue>
+                  <ResultValue>89447585678</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Make / Model</ResultLabel>
-                  <ResultValue>Toyota Corolla</ResultValue>
+                  <ResultValue>Toyota Sienna</ResultValue>
                 </ResultField>
                 <ResultField>
                   <ResultLabel>Year</ResultLabel>
@@ -890,8 +879,7 @@ const VehicleLoginSample = () => {
                   <ResultLabel>Fuel Type</ResultLabel>
                   <ResultValue>Petrol</ResultValue>
                 </ResultField>
-              </ResultGrid>
-            </ResultTop>
+            </ResultGrid>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
