@@ -6,7 +6,8 @@ import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -465,6 +466,7 @@ const ResultDisclaimer = styled.div`
 
 const NinLoginSample = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const history = useHistory();
   const redirectTo = "/verify/nin";
 
@@ -728,6 +730,10 @@ const NinLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
           {loading && (
             <SpinnerOverlay>
               <Spinner />
@@ -836,6 +842,8 @@ const NinLoginSample = () => {
               </FormCol>
             </LoginLayout>
           </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}
