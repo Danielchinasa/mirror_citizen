@@ -12,6 +12,7 @@ import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
 const sampleData = {
   nin: {
@@ -103,6 +104,8 @@ const sampleData = {
   },
   vehicle: {
     subtitle: "See an example of a vehicle verification report.",
+    image: vehicleSampleAvatar,
+    banner: true,
     icon: FaCar,
     fields: [
       ["Make / Model", "Toyota Corolla"],
@@ -161,14 +164,21 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         </Header>
 
         <ResultCard>
+          {sample.banner && sample.image && (
+            <PhotoBanner>
+              <img src={sample.image} alt="Sample vehicle" />
+            </PhotoBanner>
+          )}
           <Top>
-            <Avatar>
-              {sample.image ? (
-                <img src={sample.image} alt="Sample person" />
-              ) : (
-                Icon && <Icon />
-              )}
-            </Avatar>
+            {!sample.banner && (
+              <Avatar>
+                {sample.image ? (
+                  <img src={sample.image} alt="Sample person" />
+                ) : (
+                  Icon && <Icon />
+                )}
+              </Avatar>
+            )}
             <ResultGrid>
               {sample.fields.map(([label, value, status]) => (
                 <ResultField key={label}>
@@ -299,6 +309,28 @@ const ResultCard = styled.div`
   border: 1px solid var(--ec-border);
   border-radius: 8px;
   padding: 14px;
+`;
+
+const PhotoBanner = styled.div`
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--ec-border);
+  background: #fff;
+  margin-bottom: 14px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  @media screen and (max-width: 560px) {
+    height: 120px;
+  }
 `;
 
 const Top = styled.div`
