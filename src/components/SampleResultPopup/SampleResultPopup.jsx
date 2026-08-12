@@ -116,11 +116,124 @@ const sampleData = {
       ["Status", "VERIFIED", "verified"],
     ],
   },
+  "business-name": {
+    subtitle: "See an example of a company verification result.",
+    icon: FaBuilding,
+    fields: [
+      ["Company Name", "BIOSEC SOLUTIONS LIMITED"],
+      ["RC Number", "RC 456823"],
+      ["CAC ID", "2198456"],
+      ["Verification Status", "VERIFIED", "verified"],
+      ["Classification", "Private Limited Liability"],
+      ["Registration Date", "08 May 2015"],
+      ["Verification Date", "14 Mar 2025"],
+    ],
+    stakeholders: [
+      {
+        name: "BABATUNDE ADEWALE OKONKWO",
+        role: "Director",
+        nationality: "Nigerian",
+      },
+      {
+        name: "CHIDINMA GRACE OBIORA",
+        role: "Director / Shareholder",
+        nationality: "Nigerian",
+      },
+      {
+        name: "ROTIMI FEMI ADEYEMI",
+        role: "Shareholder",
+        nationality: "Nigerian",
+      },
+    ],
+  },
+  bvn: {
+    subtitle: "See an example of a BVN / Credit Profile result.",
+    image: financialSampleAvatar,
+    fields: [
+      ["Customer Name", "CHIJIOKE OLUWASEUN ADEBAYO"],
+      ["BVN", "2234 5678 9**"],
+      ["Gender", "Male"],
+      ["Phone Number", "0802 *** 7654"],
+      ["Address", "45 Awolowo Road, Ikoyi, Lagos"],
+      ["Report Date", "14 Mar 2025"],
+      ["Credit Score", "718"],
+      ["Rating", "Good", "verified"],
+      ["CRC", "Success", "verified"],
+      ["First Central", "Success", "verified"],
+      ["Credit Registry", "Success", "verified"],
+      ["Bureaus Checked", "3"],
+    ],
+  },
+};
+
+export const SampleResultContent = ({ type = "nin" }) => {
+  const sample = sampleData[type] || sampleData.nin;
+  const Icon = sample.icon;
+
+  return (
+    <>
+      <ResultCard>
+        {sample.banner && sample.image && (
+          <PhotoBanner>
+            <img src={sample.image} alt="Sample vehicle" />
+          </PhotoBanner>
+        )}
+        <Top>
+          {!sample.banner && (
+            <Avatar>
+              {sample.image ? (
+                <img src={sample.image} alt="Sample person" />
+              ) : (
+                Icon && <Icon />
+              )}
+            </Avatar>
+          )}
+          <ResultGrid>
+            {sample.fields.map(([label, value, status]) => (
+              <ResultField key={label}>
+                <ResultLabel>{label}</ResultLabel>
+                {status === "verified" ? (
+                  <VerifiedValue>
+                    {value} <FaCheckCircle />
+                  </VerifiedValue>
+                ) : (
+                  <ResultValue>{value}</ResultValue>
+                )}
+              </ResultField>
+            ))}
+          </ResultGrid>
+        </Top>
+        {sample.stakeholders && (
+          <StakeholderSection>
+            <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+            <StakeholderTable>
+              <StakeholderRow $header>
+                <StakeholderCell $header>Name</StakeholderCell>
+                <StakeholderCell $header>Role</StakeholderCell>
+                <StakeholderCell $header>Nationality</StakeholderCell>
+              </StakeholderRow>
+              {sample.stakeholders.map((s, i) => (
+                <StakeholderRow key={i}>
+                  <StakeholderCell>{s.name}</StakeholderCell>
+                  <StakeholderCell>{s.role}</StakeholderCell>
+                  <StakeholderCell>{s.nationality}</StakeholderCell>
+                </StakeholderRow>
+              ))}
+            </StakeholderTable>
+          </StakeholderSection>
+        )}
+      </ResultCard>
+
+      <Disclaimer>
+        <FaInfoCircle />
+        Results are based on data available at the time of verification.
+      </Disclaimer>
+    </>
+  );
 };
 
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   const sample = sampleData[type] || sampleData.nin;
-  const Icon = sample.icon;
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -163,62 +276,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </CloseButton>
         </Header>
 
-        <ResultCard>
-          {sample.banner && sample.image && (
-            <PhotoBanner>
-              <img src={sample.image} alt="Sample vehicle" />
-            </PhotoBanner>
-          )}
-          <Top>
-            {!sample.banner && (
-              <Avatar>
-                {sample.image ? (
-                  <img src={sample.image} alt="Sample person" />
-                ) : (
-                  Icon && <Icon />
-                )}
-              </Avatar>
-            )}
-            <ResultGrid>
-              {sample.fields.map(([label, value, status]) => (
-                <ResultField key={label}>
-                  <ResultLabel>{label}</ResultLabel>
-                  {status === "verified" ? (
-                    <VerifiedValue>
-                      {value} <FaCheckCircle />
-                    </VerifiedValue>
-                  ) : (
-                    <ResultValue>{value}</ResultValue>
-                  )}
-                </ResultField>
-              ))}
-            </ResultGrid>
-          </Top>
-          {sample.stakeholders && (
-            <StakeholderSection>
-              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
-              <StakeholderTable>
-                <StakeholderRow $header>
-                  <StakeholderCell $header>Name</StakeholderCell>
-                  <StakeholderCell $header>Role</StakeholderCell>
-                  <StakeholderCell $header>Nationality</StakeholderCell>
-                </StakeholderRow>
-                {sample.stakeholders.map((s, i) => (
-                  <StakeholderRow key={i}>
-                    <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>{s.role}</StakeholderCell>
-                    <StakeholderCell>{s.nationality}</StakeholderCell>
-                  </StakeholderRow>
-                ))}
-              </StakeholderTable>
-            </StakeholderSection>
-          )}
-        </ResultCard>
-
-        <Disclaimer>
-          <FaInfoCircle />
-          Results are based on data available at the time of verification.
-        </Disclaimer>
+        <SampleResultContent type={type} />
       </Dialog>
     </Overlay>
   );

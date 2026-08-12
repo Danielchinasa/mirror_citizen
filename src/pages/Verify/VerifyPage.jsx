@@ -28,6 +28,7 @@ import baseUrl from "../../apiConfig";
 import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
+import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
 import privacyPolicy from "../../privacyPolicy";
@@ -94,14 +95,6 @@ import {
   SampleHeader,
   SampleTitle,
   SampleSub,
-  SampleResultCard,
-  SampleAvatar,
-  SampleInfo,
-  SampleName,
-  SampleId,
-  VerifiedBadge,
-  SampleTags,
-  SampleTag,
   TrustBar,
   TrustBarInner,
   TrustItem,
@@ -1778,27 +1771,7 @@ const VerifyPage = () => {
         <SampleSub>
           Here's an example of what your verification result will look like.
         </SampleSub>
-        <SampleResultCard>
-          <SampleAvatar>
-            <FaUserCircle />
-          </SampleAvatar>
-          <SampleInfo>
-            <SampleName>
-              {config.sampleResult.name}
-              <VerifiedBadge>
-                <FaCheckCircle /> Verified
-              </VerifiedBadge>
-            </SampleName>
-            <SampleId>{config.sampleResult.identifier}</SampleId>
-            <SampleTags>
-              {config.sampleResult.tags.map((tag, i) => (
-                <SampleTag key={i}>
-                  <FaCheckCircle /> {tag}
-                </SampleTag>
-              ))}
-            </SampleTags>
-          </SampleInfo>
-        </SampleResultCard>
+        <SampleResultContent type={type} />
       </SampleSection>
     </>
   );
