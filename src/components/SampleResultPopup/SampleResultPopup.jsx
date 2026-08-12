@@ -38,11 +38,20 @@ const t = (label, isSw) => {
     "See an example of a vehicle verification report.": isSw
       ? "Ona mfano wa ripoti ya uthibitishaji wa gari."
       : "See an example of a vehicle verification report.",
+    "See an example of a BVN / Credit Profile result.": isSw
+      ? "Ona mfano wa matokeo ya BVN / Profaili ya Mikopo."
+      : "See an example of a BVN / Credit Profile result.",
+    "See an example of an Alien Card verification result.": isSw
+      ? "Ona mfano wa matokeo ya uthibitishaji wa Kadi ya Mgeni."
+      : "See an example of an Alien Card verification result.",
     "Full Name": isSw ? "Jina Kamili" : "Full Name",
     "First Name": isSw ? "Jina la Kwanza" : "First Name",
     "Middle Name": isSw ? "Jina la Kati" : "Middle Name",
     Surname: isSw ? "Jina la Mwisho" : "Surname",
     NIN: "NIN",
+    "Alien Card Number": isSw
+      ? "Nambari ya Kadi ya Mgeni"
+      : "Alien Card Number",
     "Phone Number": isSw ? "Nambari ya Simu" : "Phone Number",
     "Verification Status": isSw
       ? "Hali ya Uthibitishaji"
@@ -99,7 +108,7 @@ const sampleData = {
     subtitle: "See an example of a National ID result.",
     image: ninSampleAvatar,
     fields: [
-      ["Middle Name", "Otieno"],
+      ["First Name", "Otieno"],
       ["Surname", "Odhiambo"],
       ["Verification Status", "VERIFIED", "verified"],
       ["Date of Birth", "15-03-1994"],
@@ -133,7 +142,7 @@ const sampleData = {
     subtitle: "See an example of a company verification result.",
     icon: FaBuilding,
     fields: [
-      ["Company Name", "BIOSEC SOLUTIONS LIMITED"],
+      ["Company Name", "Cokana Limited"],
       ["RC Number", "RC 456823"],
       ["CAC ID", "2198456"],
       ["Verification Status", "VERIFIED", "verified"],
@@ -191,6 +200,153 @@ const sampleData = {
       ["Status", "VERIFIED", "verified"],
     ],
   },
+  "business-name": {
+    subtitle: "See an example of a company verification result.",
+    icon: FaBuilding,
+    fields: [
+      ["Company Name", "Cokana Limited"],
+      ["RC Number", "RC 456823"],
+      ["CAC ID", "2198456"],
+      ["Verification Status", "VERIFIED", "verified"],
+      ["Classification", "Private Limited Liability"],
+      ["Registration Date", "08 May 2015"],
+      ["Verification Date", "14 Mar 2025"],
+    ],
+    stakeholders: [
+      {
+        name: "BABATUNDE ADEWALE OKONKWO",
+        role: "Director",
+        nationality: "Nigerian",
+      },
+      {
+        name: "CHIDINMA GRACE OBIORA",
+        role: "Director / Shareholder",
+        nationality: "Nigerian",
+      },
+      {
+        name: "ROTIMI FEMI ADEYEMI",
+        role: "Shareholder",
+        nationality: "Nigerian",
+      },
+    ],
+  },
+  bvn: {
+    subtitle: "See an example of a BVN / Credit Profile result.",
+    image: financialSampleAvatar,
+    fields: [
+      ["Customer Name", "CHIJIOKE OLUWASEUN ADEBAYO"],
+      ["BVN", "2234 5678 9**"],
+      ["Gender", "Male"],
+      ["Phone Number", "0802 *** 7654"],
+      ["Address", "45 Awolowo Road, Ikoyi, Lagos"],
+      ["Report Date", "14 Mar 2025"],
+      ["Credit Score", "718"],
+      ["Rating", "Good", "verified"],
+      ["CRC", "Success", "verified"],
+      ["First Central", "Success", "verified"],
+      ["Credit Registry", "Success", "verified"],
+      ["Bureaus Checked", "3"],
+    ],
+  },
+  alien: {
+    subtitle: "See an example of an Alien Card verification result.",
+    image: ninSampleAvatar,
+    fields: [
+      ["Full Name", "Grace Ojocheneimi David"],
+      ["Alien Card Number", "ALN 4383 2856 233"],
+      ["Nationality", "Nigerian"],
+      ["Date of Birth", "15-03-1994"],
+      ["Gender", "Female"],
+      ["Verification Status", "VERIFIED", "verified"],
+      ["Residence Address", "12 Riverside Drive, Nairobi"],
+    ],
+  },
+};
+
+export const SampleResultContent = ({ type = "nin" }) => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
+  const sample = sampleData[type] || sampleData.nin;
+  const Icon = sample.icon;
+
+  return (
+    <>
+      <ResultCard>
+        {sample.banner && sample.image && (
+          <PhotoBanner>
+            <img src={sample.image} alt="Sample vehicle" />
+          </PhotoBanner>
+        )}
+        <Top>
+          {!sample.banner && (
+            <Avatar>
+              {sample.image ? (
+                <img src={sample.image} alt="Sample person" />
+              ) : (
+                Icon && <Icon />
+              )}
+            </Avatar>
+          )}
+          <ResultGrid>
+            {sample.fields.map(([label, value, status]) => (
+              <ResultField key={label}>
+                <ResultLabel>{t(label, isSw)}</ResultLabel>
+                {status === "verified" ? (
+                  <VerifiedValue>
+                    {t(value, isSw)} <FaCheckCircle />
+                  </VerifiedValue>
+                ) : (
+                  <ResultValue>{value}</ResultValue>
+                )}
+              </ResultField>
+            ))}
+          </ResultGrid>
+        </Top>
+        {sample.stakeholders && (
+          <StakeholderSection>
+            <StakeholderSectionTitle>
+              {t("Stakeholders", isSw)}
+            </StakeholderSectionTitle>
+            <StakeholderTable>
+              <StakeholderRow $header>
+                <StakeholderCell $header>{t("Name", isSw)}</StakeholderCell>
+                <StakeholderCell $header>{t("Role", isSw)}</StakeholderCell>
+                <StakeholderCell $header>
+                  {t("Nationality", isSw)}
+                </StakeholderCell>
+              </StakeholderRow>
+              {sample.stakeholders.map((s, i) => (
+                <StakeholderRow key={i}>
+                  <StakeholderCell>{s.name}</StakeholderCell>
+                  <StakeholderCell>{s.role}</StakeholderCell>
+                  <StakeholderCell>{s.nationality}</StakeholderCell>
+                </StakeholderRow>
+              ))}
+            </StakeholderTable>
+          </StakeholderSection>
+        )}
+      </ResultCard>
+
+      <Disclaimer>
+        <FaInfoCircle />
+        {t(
+          "Results are based on data available at the time of verification.",
+          isSw,
+        )}
+      </Disclaimer>
+    </>
+  );
 };
 
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
@@ -228,7 +384,6 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   if (!isOpen) return null;
 
   const sample = sampleData[type] || sampleData.nin;
-  const Icon = sample.icon;
 
   return (
     <Overlay onClick={onClose} role="presentation">
@@ -251,69 +406,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </CloseButton>
         </Header>
 
-        <ResultCard>
-          {sample.banner && sample.image && (
-            <PhotoBanner>
-              <img src={sample.image} alt="Sample vehicle" />
-            </PhotoBanner>
-          )}
-          <Top>
-            {!sample.banner && (
-              <Avatar>
-                {sample.image ? (
-                  <img src={sample.image} alt="Sample person" />
-                ) : (
-                  Icon && <Icon />
-                )}
-              </Avatar>
-            )}
-            <ResultGrid>
-              {sample.fields.map(([label, value, status]) => (
-                <ResultField key={label}>
-                  <ResultLabel>{t(label, isSw)}</ResultLabel>
-                  {status === "verified" ? (
-                    <VerifiedValue>
-                      {t(value, isSw)} <FaCheckCircle />
-                    </VerifiedValue>
-                  ) : (
-                    <ResultValue>{value}</ResultValue>
-                  )}
-                </ResultField>
-              ))}
-            </ResultGrid>
-          </Top>
-          {sample.stakeholders && (
-            <StakeholderSection>
-              <StakeholderSectionTitle>
-                {t("Stakeholders", isSw)}
-              </StakeholderSectionTitle>
-              <StakeholderTable>
-                <StakeholderRow $header>
-                  <StakeholderCell $header>{t("Name", isSw)}</StakeholderCell>
-                  <StakeholderCell $header>{t("Role", isSw)}</StakeholderCell>
-                  <StakeholderCell $header>
-                    {t("Nationality", isSw)}
-                  </StakeholderCell>
-                </StakeholderRow>
-                {sample.stakeholders.map((s, i) => (
-                  <StakeholderRow key={i}>
-                    <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>{s.role}</StakeholderCell>
-                    <StakeholderCell>{s.nationality}</StakeholderCell>
-                  </StakeholderRow>
-                ))}
-              </StakeholderTable>
-            </StakeholderSection>
-          )}
-        </ResultCard>
-
-        <Disclaimer>
-          <FaInfoCircle />
-          {t(
-            "Results are based on data available at the time of verification.",
-            isSw,
-          )}
-        </Disclaimer>
+        <SampleResultContent type={type} />
       </Dialog>
     </Overlay>
   );

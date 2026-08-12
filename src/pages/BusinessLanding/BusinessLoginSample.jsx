@@ -161,7 +161,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -201,7 +201,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -258,7 +258,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -277,7 +277,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #DD0201;
+    color: #dd0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -321,8 +321,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: #fff;
-  border: 1px solid #DD0201;
-  color: #DD0201;
+  border: 1px solid #dd0201;
+  color: #dd0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -375,7 +375,7 @@ const CompanyIcon = styled.div`
 
   svg {
     font-size: 28px;
-    color: #DD0201;
+    color: #dd0201;
   }
 `;
 
@@ -400,7 +400,7 @@ const CompanyRc = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 13px;
@@ -431,7 +431,7 @@ const ScoreCircle = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #DD0201;
+  background: #dd0201;
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -954,7 +954,7 @@ const BusinessLoginSample = () => {
                 <FaBuilding />
               </CompanyIcon>
               <CompanyInfo>
-                <CompanyName>BIOSEC SOLUTIONS LIMITED</CompanyName>
+                <CompanyName>Cokana Limited</CompanyName>
                 <CompanyRc>RC 456823</CompanyRc>
                 <VerifiedBadge>
                   VERIFIED <FaCheckCircle />
