@@ -9,7 +9,8 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import { signIn, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -444,6 +445,7 @@ const ResultDisclaimer = styled.div`
 
 const VehicleLoginSample = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const history = useHistory();
   const redirectTo = "/verify/vehicle";
 
@@ -718,6 +720,10 @@ const VehicleLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} isSw={isSw} />
+          ) : (
+            <>
           {loading && (
             <SpinnerOverlay>
               <Spinner />
@@ -834,6 +840,8 @@ const VehicleLoginSample = () => {
               </FormCol>
             </LoginLayout>
           </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}
