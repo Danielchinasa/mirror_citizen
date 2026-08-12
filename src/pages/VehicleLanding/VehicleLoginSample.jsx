@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  FaEye,
-  FaEyeSlash,
-  FaCheckCircle,
-  FaInfoCircle,
-  FaCar,
-} from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
@@ -21,6 +15,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -366,33 +361,25 @@ const ResultCard = styled.div`
   }
 `;
 
-const ResultTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
+const ResultPhoto = styled.div`
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ec-border);
+  background: #fff;
+  margin-bottom: 18px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
 
   @media screen and (max-width: 600px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
-const ResultPhoto = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 12px;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: 2px solid #e5e7eb;
-  background: var(--ec-bg-card-alt);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    font-size: 32px;
-    color: var(--ec-primary);
+    height: 120px;
   }
 `;
 
@@ -727,9 +714,7 @@ const VehicleLoginSample = () => {
             </SpinnerOverlay>
           )}
           <LoginCardTitle>{t("login.title")}</LoginCardTitle>
-          <LoginCardSub>
-            {t("login.subtitle")}
-          </LoginCardSub>
+          <LoginCardSub>{t("login.subtitle")}</LoginCardSub>
           <form onSubmit={handleSignIn}>
             <LoginLayout>
               <SSOCol>
@@ -756,7 +741,8 @@ const VehicleLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> {t("login.continueFacebook")}
+                      <FaFacebook color="#1877F2" />{" "}
+                      {t("login.continueFacebook")}
                     </SSOButton>
                   )}
                 />
@@ -824,7 +810,9 @@ const VehicleLoginSample = () => {
                 </LoginBtn>
                 <RegisterText>
                   {t("login.noAccount")}{" "}
-                  <Link to="/individual/sign-up/1">{t("login.registerHere")}</Link>
+                  <Link to="/individual/sign-up/1">
+                    {t("login.registerHere")}
+                  </Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -837,51 +825,47 @@ const VehicleLoginSample = () => {
             <SampleCardTitle>{t("sample.title")}</SampleCardTitle>
             <SampleBadge>{t("sample.badge")}</SampleBadge>
           </SampleHeader>
-          <SampleCardSub>
-            {t("sample.vehicleSubtitle")}
-          </SampleCardSub>
+          <SampleCardSub>{t("sample.vehicleSubtitle")}</SampleCardSub>
           <ResultCard>
-            <ResultTop>
-              <ResultPhoto>
-                <FaCar />
-              </ResultPhoto>
-              <ResultGrid>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.plateNumber")}</ResultLabel>
-                  <ResultValue>ABC-123XY</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.vin")}</ResultLabel>
-                  <ResultValue>******5678</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.makeModel")}</ResultLabel>
-                  <ResultValue>Toyota Corolla</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.year")}</ResultLabel>
-                  <ResultValue>2018</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.ownershipStatus")}</ResultLabel>
-                  <VerifiedBadge>
-                    {t("sample.verified")} <FaCheckCircle />
-                  </VerifiedBadge>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.accidentHistory")}</ResultLabel>
-                  <ResultValue style={{ color: "#777", fontSize: 13 }}>
-                    {t("sample.vehicle.noRecords")}
-                  </ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("sample.vehicle.theftStatus")}</ResultLabel>
-                  <ClearBadge>
-                    {t("sample.vehicle.clear")} <FaCheckCircle />
-                  </ClearBadge>
-                </ResultField>
-              </ResultGrid>
-            </ResultTop>
+            <ResultPhoto>
+              <img src={vehicleSampleAvatar} alt="Sample vehicle" />
+            </ResultPhoto>
+            <ResultGrid>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.plateNumber")}</ResultLabel>
+                <ResultValue>ABC-123XY</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.vin")}</ResultLabel>
+                <ResultValue>84759805678</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.makeModel")}</ResultLabel>
+                <ResultValue>Toyota Corolla</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.year")}</ResultLabel>
+                <ResultValue>2018</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.ownershipStatus")}</ResultLabel>
+                <VerifiedBadge>
+                  {t("sample.verified")} <FaCheckCircle />
+                </VerifiedBadge>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.accidentHistory")}</ResultLabel>
+                <ResultValue style={{ color: "#777", fontSize: 13 }}>
+                  {t("sample.vehicle.noRecords")}
+                </ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("sample.vehicle.theftStatus")}</ResultLabel>
+                <ClearBadge>
+                  {t("sample.vehicle.clear")} <FaCheckCircle />
+                </ClearBadge>
+              </ResultField>
+            </ResultGrid>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />
