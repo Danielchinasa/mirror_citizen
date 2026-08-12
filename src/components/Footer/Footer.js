@@ -135,6 +135,16 @@ function Footer() {
             </FooterCol>
 
             <FooterCol>
+              <FooterColTitle>{isSw ? "Kisheria" : "Legal"}</FooterColTitle>
+              <FooterLink to="/privacy_policy">
+                {isSw ? "Sera ya Faragha" : "Privacy Policy"}
+              </FooterLink>
+              <FooterLink to="/terms_of_service">
+                {isSw ? "Sheria na Masharti" : "Terms of Service"}
+              </FooterLink>
+            </FooterCol>
+
+            <FooterCol>
               <FooterColTitle>
                 {isSw ? "Pata programu" : "Get the app"}
               </FooterColTitle>
@@ -163,14 +173,14 @@ function Footer() {
                 ? `© e-raia.com ${new Date().getFullYear()}. Haki Zote Zimehifadhiwa.`
                 : `© e-raia.com ${new Date().getFullYear()}. All Rights Reserved.`}
             </Copyright>
-            <LegalLinks>
+            {/* <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
                 {isSw ? "Sera ya Faragha" : "Privacy Policy"}
               </LegalLink>
               <LegalLink onClick={() => setIsOpen2(true)}>
                 {isSw ? "Sheria na Masharti" : "Terms of Service"}
               </LegalLink>
-            </LegalLinks>
+            </LegalLinks> */}
           </FooterBottom>
         </FooterInner>
 
@@ -182,7 +192,11 @@ function Footer() {
           onCancel={() => setIsOpen(false)}
           width={1000}
         >
-          <div dangerouslySetInnerHTML={{ __html: isSw ? privacyPolicySW : privacyPolicy }} />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: isSw ? privacyPolicySW : privacyPolicy,
+            }}
+          />
         </Modal>
         <Modal
           title={isSw ? "Sheria na Masharti" : "Terms of Service"}
@@ -192,7 +206,11 @@ function Footer() {
           onCancel={() => setIsOpen2(false)}
           width={1000}
         >
-          <div dangerouslySetInnerHTML={{ __html: isSw ? termsOfServiceSW : termsOfService }} />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: isSw ? termsOfServiceSW : termsOfService,
+            }}
+          />
         </Modal>
       </FooterWrapper>
     </>

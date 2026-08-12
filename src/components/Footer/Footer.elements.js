@@ -69,7 +69,7 @@ export const FooterInner = styled.div`
 
 export const FooterTop = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
   gap: 40px;
   padding-bottom: 40px;
 

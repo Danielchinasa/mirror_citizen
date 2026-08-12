@@ -162,10 +162,6 @@ const VehicleCta = () => {
             {isSw ? "Thibitisha Gari Sasa" : "Verify Vehicle Now"}{" "}
             <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
-            <FaCheckCircle />{" "}
-            {isSw ? "Salama, Haraka, Inayoaminika" : "Secure, Fast, Reliable"}
-          </CtaPrice>
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

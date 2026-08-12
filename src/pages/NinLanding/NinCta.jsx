@@ -169,12 +169,6 @@ const NinCta = () => {
               : "Verify National ID Now"}{" "}
             <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
-            <FaCheckCircle />{" "}
-            {isSw
-              ? "Kuanzia Ksh 600 kwa uthibitishaji"
-              : "Starting from Ksh 600 per verification"}
-          </CtaPrice>
         </CtaRight>
       </CtaInner>
     </CtaWrapper>
