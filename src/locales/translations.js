@@ -164,6 +164,11 @@ const translations = {
     "sample.ref": "Réf",
     "sample.disclaimer":
       "Les résultats sont basés sur les données disponibles au moment de la vérification.",
+
+    /* ── Logged-in Continue Card ── */
+    "loggedInCard.title": "Vous êtes connecté(e)",
+    "loggedInCard.continue": "Continuer vers la vérification",
+    "loggedInCard.logout": "Pas vous ? Se déconnecter",
     "sample.ninReportTitle": "Ce que vous obtenez dans un rapport NNI",
     "sample.ninReportDesc":
       "Chaque vérification NNI renvoie des détails d'identité complets provenant des registres officiels, vous aidant à prendre des décisions éclairées.",
@@ -691,6 +696,11 @@ const translations = {
     "sample.ref": "Ref",
     "sample.disclaimer":
       "Results are based on data available at the time of verification.",
+
+    /* ── Logged-in Continue Card ── */
+    "loggedInCard.title": "You're logged in",
+    "loggedInCard.continue": "Continue to Verification",
+    "loggedInCard.logout": "Not you? Log out",
     "sample.ninReportTitle": "What You Get in a NNI Report",
     "sample.ninReportDesc":
       "Each NNI verification returns comprehensive identity details sourced from official records, helping you make informed decisions.",
