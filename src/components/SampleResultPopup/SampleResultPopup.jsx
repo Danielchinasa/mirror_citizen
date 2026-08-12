@@ -134,6 +134,11 @@ const sampleData = {
   },
 };
 
+// VerifyPage subtypes that reuse an existing sample design
+sampleData["business-name"] = sampleData.business;
+sampleData.bvn = sampleData.financial;
+sampleData.resident = sampleData.card;
+
 const labelToKey = {
   "Full Name": "sample.fullName",
   "First Name": "sample.firstName",
@@ -187,12 +192,89 @@ const subtypeToKey = {
   phone: "sample.phoneSubtitle",
   business: "sample.businessSubtitle",
   financial: "sample.financialSubtitle",
+  "business-name": "sample.businessSubtitle",
+  bvn: "sample.financialSubtitle",
+  resident: "sample.cardSubtitle",
+};
+
+export const SampleResultContent = ({ type = "nin" }) => {
+  const { t } = useLocale();
+  const sample = sampleData[type] || sampleData.nin;
+  const Icon = sample.icon;
+
+  return (
+    <>
+      <ResultCard>
+        {sample.banner && sample.image && (
+          <PhotoBanner>
+            <img src={sample.image} alt="Sample vehicle" />
+          </PhotoBanner>
+        )}
+        <Top>
+          {!sample.banner && (
+            <Avatar>
+              {sample.image ? (
+                <img src={sample.image} alt="Sample person" />
+              ) : (
+                Icon && <Icon />
+              )}
+            </Avatar>
+          )}
+          <ResultGrid>
+            {sample.fields.map(([label, value, status]) => (
+              <ResultField key={label}>
+                <ResultLabel>{t(labelToKey[label] || label)}</ResultLabel>
+                {status === "verified" ? (
+                  <VerifiedValue>
+                    {value} <FaCheckCircle />
+                  </VerifiedValue>
+                ) : (
+                  <ResultValue>{value}</ResultValue>
+                )}
+              </ResultField>
+            ))}
+          </ResultGrid>
+        </Top>
+        {sample.stakeholders && (
+          <StakeholderSection>
+            <StakeholderSectionTitle>
+              {t("sample.stakeholders")}
+            </StakeholderSectionTitle>
+            <StakeholderTable>
+              <StakeholderRow $header>
+                <StakeholderCell $header>
+                  {t("sample.stakeholderName")}
+                </StakeholderCell>
+                <StakeholderCell $header>
+                  {t("sample.stakeholderRole")}
+                </StakeholderCell>
+                <StakeholderCell $header>
+                  {t("sample.stakeholderNationality")}
+                </StakeholderCell>
+              </StakeholderRow>
+              {sample.stakeholders.map((s, i) => (
+                <StakeholderRow key={i}>
+                  <StakeholderCell>{s.name}</StakeholderCell>
+                  <StakeholderCell>{s.role}</StakeholderCell>
+                  <StakeholderCell>{s.nationality}</StakeholderCell>
+                </StakeholderRow>
+              ))}
+            </StakeholderTable>
+          </StakeholderSection>
+        )}
+      </ResultCard>
+
+      <Disclaimer>
+        <FaInfoCircle />
+        {t("sample.disclaimer")}
+      </Disclaimer>
+    </>
+  );
 };
 
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   const { t } = useLocale();
   const sample = sampleData[type] || sampleData.nin;
-  const Icon = sample.icon;
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -235,70 +317,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </CloseButton>
         </Header>
 
-        <ResultCard>
-          {sample.banner && sample.image && (
-            <PhotoBanner>
-              <img src={sample.image} alt="Sample vehicle" />
-            </PhotoBanner>
-          )}
-          <Top>
-            {!sample.banner && (
-              <Avatar>
-                {sample.image ? (
-                  <img src={sample.image} alt="Sample person" />
-                ) : (
-                  Icon && <Icon />
-                )}
-              </Avatar>
-            )}
-            <ResultGrid>
-              {sample.fields.map(([label, value, status]) => (
-                <ResultField key={label}>
-                  <ResultLabel>{t(labelToKey[label] || label)}</ResultLabel>
-                  {status === "verified" ? (
-                    <VerifiedValue>
-                      {value} <FaCheckCircle />
-                    </VerifiedValue>
-                  ) : (
-                    <ResultValue>{value}</ResultValue>
-                  )}
-                </ResultField>
-              ))}
-            </ResultGrid>
-          </Top>
-          {sample.stakeholders && (
-            <StakeholderSection>
-              <StakeholderSectionTitle>
-                {t("sample.stakeholders")}
-              </StakeholderSectionTitle>
-              <StakeholderTable>
-                <StakeholderRow $header>
-                  <StakeholderCell $header>
-                    {t("sample.stakeholderName")}
-                  </StakeholderCell>
-                  <StakeholderCell $header>
-                    {t("sample.stakeholderRole")}
-                  </StakeholderCell>
-                  <StakeholderCell $header>
-                    {t("sample.stakeholderNationality")}
-                  </StakeholderCell>
-                </StakeholderRow>
-                {sample.stakeholders.map((s, i) => (
-                  <StakeholderRow key={i}>
-                    <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>{s.role}</StakeholderCell>
-                    <StakeholderCell>{s.nationality}</StakeholderCell>
-                  </StakeholderRow>
-                ))}
-              </StakeholderTable>
-            </StakeholderSection>
-          )}
-        </ResultCard>
-
-        <Disclaimer>
-          <FaInfoCircle />
-          {t("sample.disclaimer")}
-        </Disclaimer>
+        <SampleResultContent type={type} />
       </Dialog>
     </Overlay>
   );
