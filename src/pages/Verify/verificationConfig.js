@@ -448,7 +448,7 @@ const verificationConfig = {
     ],
     sampleResult: {
       name: "Toyota Land Cruiser 2019",
-      identifier: "VIN: ******5678",
+      identifier: "VIN: 9846355678",
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Uganda Vehicle Verification",
@@ -491,7 +491,7 @@ const verificationConfig = {
     ],
     sampleResult: {
       name: "Toyota Corolla 2018",
-      identifier: "VIN: ******5678",
+      identifier: "VIN: 9846355678",
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",

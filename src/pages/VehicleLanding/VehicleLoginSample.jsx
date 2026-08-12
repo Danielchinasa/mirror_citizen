@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  FaEye,
-  FaEyeSlash,
-  FaCheckCircle,
-  FaInfoCircle,
-  FaCar,
-} from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
@@ -21,6 +15,7 @@ import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
 import { useLocale } from "../../components/LocaleProvider";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
 const SectionWrapper = styled.section`
   padding: 40px 50px 60px;
@@ -179,7 +174,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -219,7 +214,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -275,7 +270,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -294,7 +289,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #DD0201;
+    color: #dd0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -338,8 +333,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: #fff;
-  border: 1px solid #DD0201;
-  color: #DD0201;
+  border: 1px solid #dd0201;
+  color: #dd0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -366,33 +361,25 @@ const ResultCard = styled.div`
   }
 `;
 
-const ResultTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
+const ResultPhoto = styled.div`
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  margin-bottom: 18px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
 
   @media screen and (max-width: 600px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
-const ResultPhoto = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 12px;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: 2px solid #e5e7eb;
-  background: #fdecec;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    font-size: 32px;
-    color: #DD0201;
+    height: 120px;
   }
 `;
 
@@ -427,7 +414,7 @@ const ResultValue = styled.span`
 `;
 
 const VerifiedBadge = styled.span`
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -437,7 +424,7 @@ const VerifiedBadge = styled.span`
 `;
 
 const ClearBadge = styled.span`
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -754,7 +741,8 @@ const VehicleLoginSample = () => {
                   callback={handleFacebook}
                   render={(renderProps) => (
                     <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> {t("ninLogin.continueWithFacebook")}
+                      <FaFacebook color="#1877F2" />{" "}
+                      {t("ninLogin.continueWithFacebook")}
                     </SSOButton>
                   )}
                 />
@@ -822,7 +810,9 @@ const VehicleLoginSample = () => {
                 </LoginBtn>
                 <RegisterText>
                   {t("ninLogin.noAccount")}{" "}
-                  <Link to="/individual/sign-up/1">{t("ninLogin.registerHere")}</Link>
+                  <Link to="/individual/sign-up/1">
+                    {t("ninLogin.registerHere")}
+                  </Link>
                 </RegisterText>
               </FormCol>
             </LoginLayout>
@@ -837,47 +827,49 @@ const VehicleLoginSample = () => {
           </SampleHeader>
           <SampleCardSub>{t("vehicleLogin.sampleSubtitle")}</SampleCardSub>
           <ResultCard>
-            <ResultTop>
-              <ResultPhoto>
-                <FaCar />
-              </ResultPhoto>
-              <ResultGrid>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelPlateNumber")}</ResultLabel>
-                  <ResultValue>ABC-123XY</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelVin")}</ResultLabel>
-                  <ResultValue>******5678</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelMakeModel")}</ResultLabel>
-                  <ResultValue>Toyota Corolla</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelYear")}</ResultLabel>
-                  <ResultValue>2018</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelOwnershipStatus")}</ResultLabel>
-                  <VerifiedBadge>
-                    {t("ninLogin.verified")} <FaCheckCircle />
-                  </VerifiedBadge>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelAccidentHistory")}</ResultLabel>
-                  <ResultValue style={{ color: "#777", fontSize: 13 }}>
-                    {t("vehicleLogin.valueNoRecords")}
-                  </ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>{t("vehicleLogin.labelWatchlist")}</ResultLabel>
-                  <ClearBadge>
-                    {t("vehicleLogin.valueClear")} <FaCheckCircle />
-                  </ClearBadge>
-                </ResultField>
-              </ResultGrid>
-            </ResultTop>
+            <ResultPhoto>
+              <img src={vehicleSampleAvatar} alt="Sample vehicle" />
+            </ResultPhoto>
+            <ResultGrid>
+              <ResultField>
+                <ResultLabel>{t("vehicleLogin.labelPlateNumber")}</ResultLabel>
+                <ResultValue>ABC-123XY</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("vehicleLogin.labelVin")}</ResultLabel>
+                <ResultValue>9846355678</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("vehicleLogin.labelMakeModel")}</ResultLabel>
+                <ResultValue>Toyota Corolla</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("vehicleLogin.labelYear")}</ResultLabel>
+                <ResultValue>2018</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>
+                  {t("vehicleLogin.labelOwnershipStatus")}
+                </ResultLabel>
+                <VerifiedBadge>
+                  {t("ninLogin.verified")} <FaCheckCircle />
+                </VerifiedBadge>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>
+                  {t("vehicleLogin.labelAccidentHistory")}
+                </ResultLabel>
+                <ResultValue style={{ color: "#777", fontSize: 13 }}>
+                  {t("vehicleLogin.valueNoRecords")}
+                </ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{t("vehicleLogin.labelWatchlist")}</ResultLabel>
+                <ClearBadge>
+                  {t("vehicleLogin.valueClear")} <FaCheckCircle />
+                </ClearBadge>
+              </ResultField>
+            </ResultGrid>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />

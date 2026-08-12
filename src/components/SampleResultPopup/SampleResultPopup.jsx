@@ -12,6 +12,7 @@ import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 import { useLocale } from "../../components/LocaleProvider";
 
 const subtitleKeys = {
@@ -161,10 +162,12 @@ const sampleData = {
     ],
   },
   vehicle: {
+    image: vehicleSampleAvatar,
+    banner: true,
     icon: FaCar,
     fields: [
       ["Plate Number", "ABC-123XY"],
-      ["VIN", "******5678"],
+      ["VIN", "9846355678"],
       ["Make / Model", "Toyota Corolla"],
       ["Year", "2018"],
       ["Ownership Status", "VERIFIED", "verified"],
@@ -222,14 +225,21 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         </Header>
 
         <ResultCard>
+          {sample.banner && sample.image && (
+            <PhotoBanner>
+              <img src={sample.image} alt="Sample vehicle" />
+            </PhotoBanner>
+          )}
           <Top>
-            <Avatar>
-              {sample.image ? (
-                <img src={sample.image} alt="Sample person" />
-              ) : (
-                Icon && <Icon />
-              )}
-            </Avatar>
+            {!sample.banner && (
+              <Avatar>
+                {sample.image ? (
+                  <img src={sample.image} alt="Sample person" />
+                ) : (
+                  Icon && <Icon />
+                )}
+              </Avatar>
+            )}
             <ResultGrid>
               {sample.fields.map(([label, value, status]) => (
                 <ResultField key={label}>
@@ -374,6 +384,28 @@ const ResultCard = styled.div`
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 18px;
+`;
+
+const PhotoBanner = styled.div`
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  margin-bottom: 16px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  @media screen and (max-width: 560px) {
+    height: 120px;
+  }
 `;
 
 const Top = styled.div`
