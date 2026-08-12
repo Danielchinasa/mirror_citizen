@@ -28,6 +28,7 @@ import baseUrl from "../../apiConfig";
 import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
+import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { useLocale } from "../../components/LocaleProvider";
 import { withBasePath } from "../../routing";
@@ -94,14 +95,6 @@ import {
   SampleHeader,
   SampleTitle,
   SampleSub,
-  SampleResultCard,
-  SampleAvatar,
-  SampleInfo,
-  SampleName,
-  SampleId,
-  VerifiedBadge,
-  SampleTags,
-  SampleTag,
   TrustBar,
   TrustBarInner,
   TrustItem,
@@ -1826,27 +1819,7 @@ const VerifyPage = () => {
           <SampleTitle>{t("verify.payment.sampleResult")}</SampleTitle>
         </SampleHeader>
         <SampleSub>{t("verify.payment.sampleSub")}</SampleSub>
-        <SampleResultCard>
-          <SampleAvatar>
-            <FaUserCircle />
-          </SampleAvatar>
-          <SampleInfo>
-            <SampleName>
-              {config.sampleResult.name}
-              <VerifiedBadge>
-                <FaCheckCircle /> {t("verify.payment.verified")}
-              </VerifiedBadge>
-            </SampleName>
-            <SampleId>{config.sampleResult.identifier}</SampleId>
-            <SampleTags>
-              {config.sampleResult.tags.map((tag, i) => (
-                <SampleTag key={i}>
-                  <FaCheckCircle /> {tag}
-                </SampleTag>
-              ))}
-            </SampleTags>
-          </SampleInfo>
-        </SampleResultCard>
+        <SampleResultContent type={type} />
       </SampleSection>
     </>
   );

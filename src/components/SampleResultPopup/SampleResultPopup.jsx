@@ -21,6 +21,11 @@ const subtitleKeys = {
   business: "sample.subtitle.business",
   financial: "sample.subtitle.financial",
   vehicle: "sample.subtitle.vehicle",
+  "business-name": "sample.subtitle.business",
+  bvn: "sample.subtitle.financial",
+  nin_ug: "sample.subtitle.nin",
+  vehicle_ug: "sample.subtitle.vehicle",
+  alien: "sample.subtitle.alien",
 };
 
 const fieldLabelKeys = {
@@ -35,6 +40,8 @@ const fieldLabelKeys = {
   Gender: "sample.field.gender",
   "Birth Country": "sample.field.birthCountry",
   "Residence Address": "sample.field.residenceAddress",
+  "Alien Card Number": "sample.field.alienCardNumber",
+  Nationality: "sample.field.nationality",
   "Next of Kin First Name": "sample.field.nokFirstName",
   "Next of Kin Middle Name": "sample.field.nokMiddleName",
   "Next of Kin Town": "sample.field.nokTown",
@@ -175,12 +182,110 @@ const sampleData = {
       ["Theft / Watchlist Status", "CLEAR", "verified"],
     ],
   },
+  alien: {
+    image: ninSampleAvatar,
+    fields: [
+      ["Full Name", "Grace Ojocheneimi David"],
+      ["Alien Card Number", "ALN 4383 2856 233"],
+      ["Nationality", "Nigerian"],
+      ["Date of Birth", "15-03-1994"],
+      ["Gender", "Female"],
+      ["Verification Status", "VERIFIED", "verified"],
+      ["Residence Address", "12 Riverside Drive, Kampala"],
+    ],
+  },
+};
+
+// VerifyPage subtypes that reuse an existing sample design
+sampleData["business-name"] = sampleData.business;
+sampleData.bvn = sampleData.financial;
+sampleData.nin_ug = sampleData.nin;
+sampleData.vehicle_ug = sampleData.vehicle;
+
+export const SampleResultContent = ({ type = "nin" }) => {
+  const { t } = useLocale();
+  const sample = sampleData[type] || sampleData.nin;
+  const Icon = sample.icon;
+
+  return (
+    <>
+      <ResultCard>
+        {sample.banner && sample.image && (
+          <PhotoBanner>
+            <img src={sample.image} alt="Sample vehicle" />
+          </PhotoBanner>
+        )}
+        <Top>
+          {!sample.banner && (
+            <Avatar>
+              {sample.image ? (
+                <img src={sample.image} alt="Sample person" />
+              ) : (
+                Icon && <Icon />
+              )}
+            </Avatar>
+          )}
+          <ResultGrid>
+            {sample.fields.map(([label, value, status]) => (
+              <ResultField key={label}>
+                <ResultLabel>{t(fieldLabelKeys[label] || label)}</ResultLabel>
+                {status === "verified" ? (
+                  <VerifiedValue>
+                    {t(statusValueKeys[value] || value)} <FaCheckCircle />
+                  </VerifiedValue>
+                ) : (
+                  <ResultValue>
+                    {t(statusValueKeys[value] || value)}
+                  </ResultValue>
+                )}
+              </ResultField>
+            ))}
+          </ResultGrid>
+        </Top>
+        {sample.stakeholders && (
+          <StakeholderSection>
+            <StakeholderSectionTitle>
+              {t("sample.stakeholder.title")}
+            </StakeholderSectionTitle>
+            <StakeholderTable>
+              <StakeholderRow $header>
+                <StakeholderCell $header>
+                  {t("sample.stakeholder.name")}
+                </StakeholderCell>
+                <StakeholderCell $header>
+                  {t("sample.stakeholder.role")}
+                </StakeholderCell>
+                <StakeholderCell $header>
+                  {t("sample.stakeholder.nationality")}
+                </StakeholderCell>
+              </StakeholderRow>
+              {sample.stakeholders.map((s, i) => (
+                <StakeholderRow key={i}>
+                  <StakeholderCell>{s.name}</StakeholderCell>
+                  <StakeholderCell>
+                    {t(stakeholderRoleKeys[s.role] || s.role)}
+                  </StakeholderCell>
+                  <StakeholderCell>
+                    {t(nationalityKeys[s.nationality] || s.nationality)}
+                  </StakeholderCell>
+                </StakeholderRow>
+              ))}
+            </StakeholderTable>
+          </StakeholderSection>
+        )}
+      </ResultCard>
+
+      <Disclaimer>
+        <FaInfoCircle />
+        {t("sample.disclaimer")}
+      </Disclaimer>
+    </>
+  );
 };
 
 const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   const { t } = useLocale();
   const sample = sampleData[type] || sampleData.nin;
-  const Icon = sample.icon;
   const subtitleKey = subtitleKeys[type] || subtitleKeys.nin;
 
   useEffect(() => {
@@ -224,76 +329,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </CloseButton>
         </Header>
 
-        <ResultCard>
-          {sample.banner && sample.image && (
-            <PhotoBanner>
-              <img src={sample.image} alt="Sample vehicle" />
-            </PhotoBanner>
-          )}
-          <Top>
-            {!sample.banner && (
-              <Avatar>
-                {sample.image ? (
-                  <img src={sample.image} alt="Sample person" />
-                ) : (
-                  Icon && <Icon />
-                )}
-              </Avatar>
-            )}
-            <ResultGrid>
-              {sample.fields.map(([label, value, status]) => (
-                <ResultField key={label}>
-                  <ResultLabel>{t(fieldLabelKeys[label] || label)}</ResultLabel>
-                  {status === "verified" ? (
-                    <VerifiedValue>
-                      {t(statusValueKeys[value] || value)} <FaCheckCircle />
-                    </VerifiedValue>
-                  ) : (
-                    <ResultValue>
-                      {t(statusValueKeys[value] || value)}
-                    </ResultValue>
-                  )}
-                </ResultField>
-              ))}
-            </ResultGrid>
-          </Top>
-          {sample.stakeholders && (
-            <StakeholderSection>
-              <StakeholderSectionTitle>
-                {t("sample.stakeholder.title")}
-              </StakeholderSectionTitle>
-              <StakeholderTable>
-                <StakeholderRow $header>
-                  <StakeholderCell $header>
-                    {t("sample.stakeholder.name")}
-                  </StakeholderCell>
-                  <StakeholderCell $header>
-                    {t("sample.stakeholder.role")}
-                  </StakeholderCell>
-                  <StakeholderCell $header>
-                    {t("sample.stakeholder.nationality")}
-                  </StakeholderCell>
-                </StakeholderRow>
-                {sample.stakeholders.map((s, i) => (
-                  <StakeholderRow key={i}>
-                    <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>
-                      {t(stakeholderRoleKeys[s.role] || s.role)}
-                    </StakeholderCell>
-                    <StakeholderCell>
-                      {t(nationalityKeys[s.nationality] || s.nationality)}
-                    </StakeholderCell>
-                  </StakeholderRow>
-                ))}
-              </StakeholderTable>
-            </StakeholderSection>
-          )}
-        </ResultCard>
-
-        <Disclaimer>
-          <FaInfoCircle />
-          {t("sample.disclaimer")}
-        </Disclaimer>
+        <SampleResultContent type={type} />
       </Dialog>
     </Overlay>
   );

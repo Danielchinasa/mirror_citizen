@@ -240,6 +240,8 @@ const translations = {
     "sample.subtitle.financial": "See an example of a Credit Profile result.",
     "sample.subtitle.vehicle":
       "See an example of a vehicle verification report.",
+    "sample.subtitle.alien":
+      "See an example of an Alien Card verification result.",
     "sample.stakeholder.title": "Stakeholders",
     "sample.stakeholder.name": "Name",
     "sample.stakeholder.role": "Role",
@@ -413,6 +415,8 @@ const translations = {
     "sample.field.gender": "Gender",
     "sample.field.birthCountry": "Birth Country",
     "sample.field.residenceAddress": "Residence Address",
+    "sample.field.alienCardNumber": "Alien Card Number",
+    "sample.field.nationality": "Nationality",
     "sample.field.nokFirstName": "Next of Kin First Name",
     "sample.field.nokMiddleName": "Next of Kin Middle Name",
     "sample.field.nokTown": "Next of Kin Town",
@@ -794,6 +798,8 @@ const translations = {
       "Tazama mfano wa matokeo ya Profaili ya Mikopo.",
     "sample.subtitle.vehicle":
       "Tazama mfano wa ripoti ya uthibitishaji wa gari.",
+    "sample.subtitle.alien":
+      "Tazama mfano wa matokeo ya uthibitishaji wa Kadi ya Mgeni.",
     "sample.stakeholder.title": "Wadau",
     "sample.stakeholder.name": "Jina",
     "sample.stakeholder.role": "Wajibu",
@@ -961,6 +967,8 @@ const translations = {
     "sample.field.gender": "Jinsia",
     "sample.field.birthCountry": "Nchi ya Kuzaliwa",
     "sample.field.residenceAddress": "Anwani ya Makazi",
+    "sample.field.alienCardNumber": "Nambari ya Kadi ya Mgeni",
+    "sample.field.nationality": "Utaifa",
     "sample.field.nokFirstName": "Jina la Kwanza la Mrithi",
     "sample.field.nokMiddleName": "Jina la Kati la Mrithi",
     "sample.field.nokTown": "Mji wa Mrithi",
