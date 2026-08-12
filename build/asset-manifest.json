@@ -1,25 +1,26 @@
 {
   "files": {
     "main.css": "/ke/static/css/main.6d8116c5.chunk.css",
-    "main.js": "/ke/static/js/main.26670f18.chunk.js",
-    "main.js.map": "/ke/static/js/main.26670f18.chunk.js.map",
+    "main.js": "/ke/static/js/main.3112d965.chunk.js",
+    "main.js.map": "/ke/static/js/main.3112d965.chunk.js.map",
     "runtime-main.js": "/ke/static/js/runtime-main.14139af6.js",
     "runtime-main.js.map": "/ke/static/js/runtime-main.14139af6.js.map",
     "static/css/2.ec61a722.chunk.css": "/ke/static/css/2.ec61a722.chunk.css",
-    "static/js/2.c653ce05.chunk.js": "/ke/static/js/2.c653ce05.chunk.js",
-    "static/js/2.c653ce05.chunk.js.map": "/ke/static/js/2.c653ce05.chunk.js.map",
+    "static/js/2.38c0f0d1.chunk.js": "/ke/static/js/2.38c0f0d1.chunk.js",
+    "static/js/2.38c0f0d1.chunk.js.map": "/ke/static/js/2.38c0f0d1.chunk.js.map",
     "index.html": "/ke/index.html",
-    "precache-manifest.4f5d9dff17202c60f06aad4fee1d4b9e.js": "/ke/precache-manifest.4f5d9dff17202c60f06aad4fee1d4b9e.js",
+    "precache-manifest.cf72ac2bb9af9ef8c8d37eb83f172901.js": "/ke/precache-manifest.cf72ac2bb9af9ef8c8d37eb83f172901.js",
     "service-worker.js": "/ke/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/ke/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.6d8116c5.chunk.css.map": "/ke/static/css/main.6d8116c5.chunk.css.map",
-    "static/js/2.c653ce05.chunk.js.LICENSE.txt": "/ke/static/js/2.c653ce05.chunk.js.LICENSE.txt",
+    "static/js/2.38c0f0d1.chunk.js.LICENSE.txt": "/ke/static/js/2.38c0f0d1.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/ke/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/ke/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/ke/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
     "static/media/Verify_NIN_on_ecitizen.jpg": "/ke/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg",
     "static/media/business_verification2.png": "/ke/static/media/business_verification2.83483cfb.png",
     "static/media/check_credit_scores_on_ecitizen.png": "/ke/static/media/check_credit_scores_on_ecitizen.e1e01b75.png",
+    "static/media/cieana.jpeg": "/ke/static/media/cieana.8398a736.jpeg",
     "static/media/clearvin.png": "/ke/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/ke/static/media/contact.2a1a7bdb.png",
     "static/media/credit_profile.png": "/ke/static/media/credit_profile.48765e5d.png",
@@ -51,8 +52,8 @@
   "entrypoints": [
     "static/js/runtime-main.14139af6.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.c653ce05.chunk.js",
+    "static/js/2.38c0f0d1.chunk.js",
     "static/css/main.6d8116c5.chunk.css",
-    "static/js/main.26670f18.chunk.js"
+    "static/js/main.3112d965.chunk.js"
   ]
 }
