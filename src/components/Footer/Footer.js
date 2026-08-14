@@ -23,9 +23,9 @@ import {
 
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
-import { Modal } from "antd";
-import privacyPolicy, { privacyPolicySW } from "../../privacyPolicy";
-import termsOfService, { termsOfServiceSW } from "../../termsOfService";
+import PdfModal from "../PdfModal/PdfModal";
+import privacyPdf from "../../images/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa6";
@@ -136,10 +136,18 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>{isSw ? "Kisheria" : "Legal"}</FooterColTitle>
-              <FooterLink to="/privacy_policy">
+              <FooterLink
+                as="span"
+                onClick={() => setIsOpen(true)}
+                style={{ cursor: "pointer" }}
+              >
                 {isSw ? "Sera ya Faragha" : "Privacy Policy"}
               </FooterLink>
-              <FooterLink to="/terms_of_service">
+              <FooterLink
+                as="span"
+                onClick={() => setIsOpen2(true)}
+                style={{ cursor: "pointer" }}
+              >
                 {isSw ? "Sheria na Masharti" : "Terms of Service"}
               </FooterLink>
             </FooterCol>
@@ -173,45 +181,31 @@ function Footer() {
                 ? `© e-raia.com ${new Date().getFullYear()}. Haki Zote Zimehifadhiwa.`
                 : `© e-raia.com ${new Date().getFullYear()}. All Rights Reserved.`}
             </Copyright>
-            {/* <LegalLinks>
+            <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
                 {isSw ? "Sera ya Faragha" : "Privacy Policy"}
               </LegalLink>
               <LegalLink onClick={() => setIsOpen2(true)}>
                 {isSw ? "Sheria na Masharti" : "Terms of Service"}
               </LegalLink>
-            </LegalLinks> */}
+            </LegalLinks>
           </FooterBottom>
         </FooterInner>
 
-        <Modal
+        <PdfModal
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
           title={isSw ? "Sera ya Faragha" : "Privacy Policy"}
-          visible={isOpen}
-          centered
-          onOk={() => setIsOpen(false)}
-          onCancel={() => setIsOpen(false)}
-          width={1000}
-        >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: isSw ? privacyPolicySW : privacyPolicy,
-            }}
-          />
-        </Modal>
-        <Modal
+          src={privacyPdf}
+          height={560}
+        />
+        <PdfModal
+          open={isOpen2}
+          onClose={() => setIsOpen2(false)}
           title={isSw ? "Sheria na Masharti" : "Terms of Service"}
-          visible={isOpen2}
-          centered
-          onOk={() => setIsOpen2(false)}
-          onCancel={() => setIsOpen2(false)}
-          width={1000}
-        >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: isSw ? termsOfServiceSW : termsOfService,
-            }}
-          />
-        </Modal>
+          src={termsPdf}
+          height={560}
+        />
       </FooterWrapper>
     </>
   );

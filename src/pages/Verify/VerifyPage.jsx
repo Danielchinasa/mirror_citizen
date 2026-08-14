@@ -30,8 +30,8 @@ import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
-import privacyPolicyContent, { privacyPolicySW } from "../../privacyPolicy";
-import termsOfServiceContent, { termsOfServiceSW } from "../../termsOfService";
+import privacyPdf from "../../images/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 
 import {
   PageWrapper,
@@ -2865,8 +2865,10 @@ const VerifyPage = () => {
         <PopupOverlay onClick={() => setLegalPopupType(null)}>
           <PopupCard
             style={{
-              maxWidth: 720,
-              maxHeight: "85vh",
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
@@ -2901,22 +2903,23 @@ const VerifyPage = () => {
             </PopupHeader>
             <PopupBody
               style={{
-                overflowY: "auto",
+                display: "flex",
                 flex: 1,
-                paddingRight: 8,
+                minHeight: 0,
               }}
             >
-              {" "}
-              <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    legalPopupType === "tos"
-                      ? isSw
-                        ? termsOfServiceSW
-                        : termsOfServiceContent
-                      : isSw
-                        ? privacyPolicySW
-                        : privacyPolicyContent,
+              <iframe
+                src={legalPopupType === "tos" ? termsPdf : privacyPdf}
+                title={
+                  legalPopupType === "tos"
+                    ? "Terms of Service"
+                    : "Privacy Policy"
+                }
+                style={{
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
                 }}
               />
             </PopupBody>
