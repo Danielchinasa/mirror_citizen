@@ -6,7 +6,7 @@ import {
   FaInfoCircle,
   FaTimes,
 } from "react-icons/fa";
-import ninSampleAvatar from "../../images/BW7A9844.png";
+import ninSampleAvatar from "../../images/dp.jpeg";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
 import vehicleSampleAvatar from "../../images/cieana.jpeg";
