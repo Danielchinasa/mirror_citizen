@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/ug/static/css/main.1639b676.chunk.css",
-    "main.js": "/ug/static/js/main.b0403a98.chunk.js",
-    "main.js.map": "/ug/static/js/main.b0403a98.chunk.js.map",
+    "main.js": "/ug/static/js/main.6b0d9641.chunk.js",
+    "main.js.map": "/ug/static/js/main.6b0d9641.chunk.js.map",
     "runtime-main.js": "/ug/static/js/runtime-main.fddde96a.js",
     "runtime-main.js.map": "/ug/static/js/runtime-main.fddde96a.js.map",
     "static/css/2.ec61a722.chunk.css": "/ug/static/css/2.ec61a722.chunk.css",
-    "static/js/2.8d89d6ac.chunk.js": "/ug/static/js/2.8d89d6ac.chunk.js",
-    "static/js/2.8d89d6ac.chunk.js.map": "/ug/static/js/2.8d89d6ac.chunk.js.map",
+    "static/js/2.6031e6fd.chunk.js": "/ug/static/js/2.6031e6fd.chunk.js",
+    "static/js/2.6031e6fd.chunk.js.map": "/ug/static/js/2.6031e6fd.chunk.js.map",
     "index.html": "/ug/index.html",
-    "precache-manifest.ec277bb3fb6568219ac7cbac0dd4ece4.js": "/ug/precache-manifest.ec277bb3fb6568219ac7cbac0dd4ece4.js",
+    "precache-manifest.24e6365363caefe95ff0dff2fd95f717.js": "/ug/precache-manifest.24e6365363caefe95ff0dff2fd95f717.js",
     "service-worker.js": "/ug/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/ug/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.1639b676.chunk.css.map": "/ug/static/css/main.1639b676.chunk.css.map",
-    "static/js/2.8d89d6ac.chunk.js.LICENSE.txt": "/ug/static/js/2.8d89d6ac.chunk.js.LICENSE.txt",
+    "static/js/2.6031e6fd.chunk.js.LICENSE.txt": "/ug/static/js/2.6031e6fd.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/ug/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/ug/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/ug/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -26,6 +26,8 @@
     "static/media/clearvin.png": "/ug/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/ug/static/media/contact.2a1a7bdb.png",
     "static/media/credit_profile.png": "/ug/static/media/credit_profile.48765e5d.png",
+    "static/media/e-raia Uganda Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf": "/ug/static/media/e-raia Uganda Privacy Notice EN-SW v1.2 - Confirmed Service Scope.3c090514.pdf",
+    "static/media/e-raia Uganda Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf": "/ug/static/media/e-raia Uganda Terms of Service EN-SW v1.2 - Confirmed Service Scope.05f140e9.pdf",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/ug/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/flutterwave-logos-white.png": "/ug/static/media/flutterwave-logos-white.877be0eb.png",
     "static/media/gdpr.png": "/ug/static/media/gdpr.9b35ecbd.png",
@@ -52,8 +54,8 @@
   "entrypoints": [
     "static/js/runtime-main.fddde96a.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.8d89d6ac.chunk.js",
+    "static/js/2.6031e6fd.chunk.js",
     "static/css/main.1639b676.chunk.css",
-    "static/js/main.b0403a98.chunk.js"
+    "static/js/main.6b0d9641.chunk.js"
   ]
 }

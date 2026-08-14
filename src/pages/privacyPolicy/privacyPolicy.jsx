@@ -1,13 +1,21 @@
 import React from "react";
-import { useLocale } from "../../components/LocaleProvider";
-import { getPrivacyPolicy } from "../../policyContent";
+import privacyPdf from "../../images/e-raia Uganda Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
 
 const PrivacyPolicy = () => {
-  const { language } = useLocale();
   return (
-    <div className="container mt-5">
-      <h3>Privacy Policy</h3>
-      <div dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }} />;
+    <div className="container mt-5 mb-5">
+      <h3 className="mb-3">Privacy Policy</h3>
+      <iframe
+        src={privacyPdf}
+        title="e-raia Privacy Policy"
+        style={{
+          width: "100%",
+          height: "70vh",
+          border: "1px solid #e5e7eb",
+          borderRadius: 10,
+          display: "block",
+        }}
+      />
     </div>
   );
 };

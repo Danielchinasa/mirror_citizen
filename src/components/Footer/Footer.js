@@ -23,8 +23,9 @@ import {
 
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
-import { Modal } from "antd";
-import { getPrivacyPolicy, getTermsOfService } from "../../policyContent";
+import PdfModal from "../PdfModal/PdfModal";
+import privacyPdf from "../../images/e-raia Uganda Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-raia Uganda Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa6";
@@ -39,7 +40,7 @@ function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const { isDark } = useTheme();
-  const { t, language } = useLocale();
+  const { t } = useLocale();
 
   return (
     <>
@@ -147,26 +148,20 @@ function Footer() {
           </FooterBottom>
         </FooterInner>
 
-        <Modal
+        <PdfModal
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
           title={t("footer.privacyPolicy")}
-          visible={isOpen}
-          centered
-          onOk={() => setIsOpen(false)}
-          onCancel={() => setIsOpen(false)}
-          width={1000}
-        >
-          <div dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }} />
-        </Modal>
-        <Modal
+          src={privacyPdf}
+          height={560}
+        />
+        <PdfModal
+          open={isOpen2}
+          onClose={() => setIsOpen2(false)}
           title={t("footer.termsOfService")}
-          visible={isOpen2}
-          centered
-          onOk={() => setIsOpen2(false)}
-          onCancel={() => setIsOpen2(false)}
-          width={1000}
-        >
-          <div dangerouslySetInnerHTML={{ __html: getTermsOfService(language) }} />
-        </Modal>
+          src={termsPdf}
+          height={560}
+        />
       </FooterWrapper>
     </>
   );

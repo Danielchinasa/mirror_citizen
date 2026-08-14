@@ -32,7 +32,8 @@ import { SampleResultContent } from "../../components/SampleResultPopup/SampleRe
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { useLocale } from "../../components/LocaleProvider";
 import { withBasePath } from "../../routing";
-import { getPrivacyPolicy, getTermsOfService } from "../../policyContent";
+import privacyPdf from "../../images/e-raia Uganda Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-raia Uganda Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 
 import {
   PageWrapper,
@@ -169,7 +170,7 @@ const LOCAL_CURRENCY = "UGX";
 const FOREIGN_CURRENCY = "USD";
 
 const VerifyPage = () => {
-  const { t, language } = useLocale();
+  const { t } = useLocale();
   const { type } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -2730,8 +2731,11 @@ const VerifyPage = () => {
         <PopupOverlay onClick={() => setShowTermsModal(false)}>
           <PopupCard
             style={{
-              maxWidth: 800,
-              maxHeight: "90vh",
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
+              overflow: "hidden",
               display: "flex",
               flexDirection: "column",
             }}
@@ -2749,15 +2753,22 @@ const VerifyPage = () => {
                 ×
               </PopupCloseButton>
             </PopupHeader>
-            <PopupBody style={{ flex: 1, overflow: "auto", maxHeight: "70vh" }}>
-              <div
+            <PopupBody
+              style={{
+                display: "flex",
+                flex: 1,
+                minHeight: 0,
+              }}
+            >
+              <iframe
+                src={termsPdf}
+                title={t("verify.disclaimer.termsOfService")}
                 style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 14,
-                  lineHeight: 1.7,
-                  color: "var(--ec-text)",
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
                 }}
-                dangerouslySetInnerHTML={{ __html: getTermsOfService(language) }}
               />
             </PopupBody>
           </PopupCard>
@@ -2769,8 +2780,11 @@ const VerifyPage = () => {
         <PopupOverlay onClick={() => setShowPrivacyModal(false)}>
           <PopupCard
             style={{
-              maxWidth: 800,
-              maxHeight: "90vh",
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
+              overflow: "hidden",
               display: "flex",
               flexDirection: "column",
             }}
@@ -2788,15 +2802,22 @@ const VerifyPage = () => {
                 ×
               </PopupCloseButton>
             </PopupHeader>
-            <PopupBody style={{ flex: 1, overflow: "auto", maxHeight: "70vh" }}>
-              <div
+            <PopupBody
+              style={{
+                display: "flex",
+                flex: 1,
+                minHeight: 0,
+              }}
+            >
+              <iframe
+                src={privacyPdf}
+                title={t("verify.disclaimer.privacyPolicy")}
                 style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 14,
-                  lineHeight: 1.7,
-                  color: "var(--ec-text)",
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
                 }}
-                dangerouslySetInnerHTML={{ __html: getPrivacyPolicy(language) }}
               />
             </PopupBody>
           </PopupCard>
