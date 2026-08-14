@@ -6,7 +6,7 @@ import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
 import { useLocale } from "../../components/LocaleProvider";
 import defaultDp from "../../images/defaultDp.png";
-import ninSampleAvatar from "../../images/BW7A9844.png";
+import ninSampleAvatar from "../../images/dp.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import { signIn, fetchUserProfile } from "../../redux/actions";
@@ -736,115 +736,115 @@ const CardLoginSample = () => {
             <LoggedInContinueCard redirectTo={redirectTo} />
           ) : (
             <>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-          <LoginCardTitle>{t("login.title")}</LoginCardTitle>
-          <LoginCardSub>{t("login.subtitle")}</LoginCardSub>
-          <form onSubmit={handleSignIn}>
-            <LoginLayout>
-              <SSOCol>
-                <SSOButton
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    trackEvent({
-                      action: "click_google_signin",
-                      category: "Authentication",
-                      label: "Google Sign-In Button",
-                      value: 1,
-                    });
-                    googleLogin();
-                  }}
-                >
-                  <FcGoogle /> {t("login.continueGoogle")}
-                </SSOButton>
-                <FacebookLogin
-                  appId="541710452150170"
-                  autoLoad={false}
-                  fields="name,picture"
-                  scope="public_profile"
-                  callback={handleFacebook}
-                  render={(renderProps) => (
-                    <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" />{" "}
-                      {t("login.continueFacebook")}
-                    </SSOButton>
-                  )}
-                />
-              </SSOCol>
-              <Divider>{t("login.or")}</Divider>
-              <FormCol>
-                {formErrors.general && (
-                  <ErrorAlert>{formErrors.general}</ErrorAlert>
-                )}
-                <div>
-                  <FormLabel>{t("login.emailLabel")}</FormLabel>
-                  <FormInput
-                    type="email"
-                    placeholder={t("login.emailPlaceholder")}
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.email && (
-                    <ErrorAlert>{formErrors.email}</ErrorAlert>
-                  )}
-                </div>
-                <div>
-                  <FormLabel>{t("login.passwordLabel")}</FormLabel>
-                  <PasswordWrapper>
-                    <FormInput
-                      type={showPass ? "text" : "password"}
-                      placeholder={t("login.passwordPlaceholder")}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                    />
-                    <PasswordToggle
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>{t("login.title")}</LoginCardTitle>
+              <LoginCardSub>{t("login.subtitle")}</LoginCardSub>
+              <form onSubmit={handleSignIn}>
+                <LoginLayout>
+                  <SSOCol>
+                    <SSOButton
                       type="button"
-                      onClick={() => setShowPass(!showPass)}
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        trackEvent({
+                          action: "click_google_signin",
+                          category: "Authentication",
+                          label: "Google Sign-In Button",
+                          value: 1,
+                        });
+                        googleLogin();
+                      }}
                     >
-                      {showPass ? <FaEyeSlash /> : <FaEye />}
-                    </PasswordToggle>
-                  </PasswordWrapper>
-                  {formErrors.password && (
-                    <ErrorAlert>{formErrors.password}</ErrorAlert>
-                  )}
-                </div>
-                <FormRow>
-                  <RememberLabel>
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleInputChange}
-                    />{" "}
-                    {t("login.rememberMe")}
-                  </RememberLabel>
-                  <ForgotLink to="/forgot-password">
-                    {t("login.forgotPassword")}
-                  </ForgotLink>
-                </FormRow>
-                <ReCAPTCHA
-                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
-                  onChange={() => setIsCaptchaVerified(true)}
-                  style={{ marginBottom: 4 }}
-                />
-                <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  {t("login.loginButton")}
-                </LoginBtn>
-                <RegisterText>
-                  {t("login.noAccount")}{" "}
-                  <Link to="/individual/sign-up/1">
-                    {t("login.registerHere")}
-                  </Link>
-                </RegisterText>
-              </FormCol>
-            </LoginLayout>
-          </form>
+                      <FcGoogle /> {t("login.continueGoogle")}
+                    </SSOButton>
+                    <FacebookLogin
+                      appId="541710452150170"
+                      autoLoad={false}
+                      fields="name,picture"
+                      scope="public_profile"
+                      callback={handleFacebook}
+                      render={(renderProps) => (
+                        <SSOButton type="button" onClick={renderProps.onClick}>
+                          <FaFacebook color="#1877F2" />{" "}
+                          {t("login.continueFacebook")}
+                        </SSOButton>
+                      )}
+                    />
+                  </SSOCol>
+                  <Divider>{t("login.or")}</Divider>
+                  <FormCol>
+                    {formErrors.general && (
+                      <ErrorAlert>{formErrors.general}</ErrorAlert>
+                    )}
+                    <div>
+                      <FormLabel>{t("login.emailLabel")}</FormLabel>
+                      <FormInput
+                        type="email"
+                        placeholder={t("login.emailPlaceholder")}
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                      {formErrors.email && (
+                        <ErrorAlert>{formErrors.email}</ErrorAlert>
+                      )}
+                    </div>
+                    <div>
+                      <FormLabel>{t("login.passwordLabel")}</FormLabel>
+                      <PasswordWrapper>
+                        <FormInput
+                          type={showPass ? "text" : "password"}
+                          placeholder={t("login.passwordPlaceholder")}
+                          name="password"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                        />
+                        <PasswordToggle
+                          type="button"
+                          onClick={() => setShowPass(!showPass)}
+                        >
+                          {showPass ? <FaEyeSlash /> : <FaEye />}
+                        </PasswordToggle>
+                      </PasswordWrapper>
+                      {formErrors.password && (
+                        <ErrorAlert>{formErrors.password}</ErrorAlert>
+                      )}
+                    </div>
+                    <FormRow>
+                      <RememberLabel>
+                        <input
+                          type="checkbox"
+                          name="rememberMe"
+                          checked={formData.rememberMe}
+                          onChange={handleInputChange}
+                        />{" "}
+                        {t("login.rememberMe")}
+                      </RememberLabel>
+                      <ForgotLink to="/forgot-password">
+                        {t("login.forgotPassword")}
+                      </ForgotLink>
+                    </FormRow>
+                    <ReCAPTCHA
+                      sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                      onChange={() => setIsCaptchaVerified(true)}
+                      style={{ marginBottom: 4 }}
+                    />
+                    <LoginBtn type="submit" disabled={!isCaptchaVerified}>
+                      {t("login.loginButton")}
+                    </LoginBtn>
+                    <RegisterText>
+                      {t("login.noAccount")}{" "}
+                      <Link to="/individual/sign-up/1">
+                        {t("login.registerHere")}
+                      </Link>
+                    </RegisterText>
+                  </FormCol>
+                </LoginLayout>
+              </form>
             </>
           )}
         </LoginCard>
