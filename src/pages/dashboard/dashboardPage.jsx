@@ -57,8 +57,9 @@ import {
 } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
@@ -5751,32 +5752,20 @@ const DashboardPage = () => {
                           Terms of Service
                         </span>
                       </Checkbox>
-                      <Modal
+                      <PdfModal
+                        open={isOpen}
+                        onClose={() => setIsOpen(false)}
                         title="Privacy Policy"
-                        visible={isOpen}
-                        centered
-                        // open={open}
-                        onOk={() => setIsOpen(false)}
-                        onCancel={() => setIsOpen(false)}
-                        width={1000}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: privacyPolicy }}
-                        />
-                      </Modal>
-                      <Modal
+                        src={privacyPdf}
+                        height={560}
+                      />
+                      <PdfModal
+                        open={isOpen2}
+                        onClose={() => setIsOpen2(false)}
                         title="Terms of Service"
-                        visible={isOpen2}
-                        centered
-                        // open={open}
-                        onOk={() => setIsOpen2(false)}
-                        onCancel={() => setIsOpen2(false)}
-                        width={1000}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: termsOfService }}
-                        />
-                      </Modal>
+                        src={termsPdf}
+                        height={560}
+                      />
                     </strong>
 
                     {loading ? (

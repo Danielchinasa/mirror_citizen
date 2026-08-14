@@ -27,8 +27,8 @@ import { BusinessSignUp } from "../../redux/actions";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../index.css";
-import privacyPolicy from "../../privacyPolicy";
-import { Modal } from "antd";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf";
 import Swal from "sweetalert2";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
@@ -549,17 +549,13 @@ const BusinessSignUp2 = () => {
                       e-citizen™ Privacy Policy
                     </span>
                   </Checkbox>
-                  <Modal
+                  <PdfModal
+                    open={isOpen}
+                    onClose={() => setIsOpen(false)}
                     title="Privacy Policy"
-                    visible={isOpen}
-                    centered
-                    // open={open}
-                    onOk={() => setIsOpen(false)}
-                    onCancel={() => setIsOpen(false)}
-                    width={1000}
-                  >
-                    <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
-                  </Modal>
+                    src={privacyPdf}
+                    height={560}
+                  />
                   <MainButtonFull
                     type="primary"
                     htmlType="submit"

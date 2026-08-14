@@ -26,9 +26,9 @@ import Logo from "../../images/ghana_logo.png";
 import LogoWhite from "../../images/ghana_dark.png";
 import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
-import { Modal } from "antd";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import PdfModal from "../PdfModal/PdfModal";
+import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa6";
@@ -153,26 +153,20 @@ function Footer() {
           </FooterBottom>
         </FooterInner>
 
-        <Modal
+        <PdfModal
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
           title="Privacy Policy"
-          visible={isOpen}
-          centered
-          onOk={() => setIsOpen(false)}
-          onCancel={() => setIsOpen(false)}
-          width={1000}
-        >
-          <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
-        </Modal>
-        <Modal
+          src={privacyPdf}
+          height={560}
+        />
+        <PdfModal
+          open={isOpen2}
+          onClose={() => setIsOpen2(false)}
           title="Terms of Service"
-          visible={isOpen2}
-          centered
-          onOk={() => setIsOpen2(false)}
-          onCancel={() => setIsOpen2(false)}
-          width={1000}
-        >
-          <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
-        </Modal>
+          src={termsPdf}
+          height={560}
+        />
       </FooterWrapper>
     </>
   );

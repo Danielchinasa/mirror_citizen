@@ -88,7 +88,7 @@ const AppLogout = ({ children }) => {
     const logoutAction = () => {
       dispatch(logout());
       localStorage.clear();
-      window.location.assign(withBasePath("/login"));
+      window.location.assign(withBasePath("/"));
     };
 
     // Event listener setup

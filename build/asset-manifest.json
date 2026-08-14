@@ -1,20 +1,19 @@
 {
   "files": {
     "main.css": "/gh/static/css/main.070be53e.chunk.css",
-    "main.js": "/gh/static/js/main.22aa92a6.chunk.js",
-    "main.js.map": "/gh/static/js/main.22aa92a6.chunk.js.map",
+    "main.js": "/gh/static/js/main.ac8fde51.chunk.js",
+    "main.js.map": "/gh/static/js/main.ac8fde51.chunk.js.map",
     "runtime-main.js": "/gh/static/js/runtime-main.a7701361.js",
     "runtime-main.js.map": "/gh/static/js/runtime-main.a7701361.js.map",
     "static/css/2.ec61a722.chunk.css": "/gh/static/css/2.ec61a722.chunk.css",
-    "static/js/2.98398c3b.chunk.js": "/gh/static/js/2.98398c3b.chunk.js",
-    "static/js/2.98398c3b.chunk.js.map": "/gh/static/js/2.98398c3b.chunk.js.map",
+    "static/js/2.bf22a351.chunk.js": "/gh/static/js/2.bf22a351.chunk.js",
+    "static/js/2.bf22a351.chunk.js.map": "/gh/static/js/2.bf22a351.chunk.js.map",
     "index.html": "/gh/index.html",
-    "precache-manifest.5d253899c8b791c42d6df5d7a209d9fd.js": "/gh/precache-manifest.5d253899c8b791c42d6df5d7a209d9fd.js",
+    "precache-manifest.4bd80fbeaacf2e1059cad5b606ff802d.js": "/gh/precache-manifest.4bd80fbeaacf2e1059cad5b606ff802d.js",
     "service-worker.js": "/gh/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/gh/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.070be53e.chunk.css.map": "/gh/static/css/main.070be53e.chunk.css.map",
-    "static/js/2.98398c3b.chunk.js.LICENSE.txt": "/gh/static/js/2.98398c3b.chunk.js.LICENSE.txt",
-    "static/media/dp.jpeg": "/gh/static/media/BW7A9844.e32d1c91.png",
+    "static/js/2.bf22a351.chunk.js.LICENSE.txt": "/gh/static/js/2.bf22a351.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/gh/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/gh/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
     "static/media/Verify_NIN_on_ecitizen.jpg": "/gh/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg",
@@ -25,6 +24,9 @@
     "static/media/clearvin.png": "/gh/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/gh/static/media/contact.2a1a7bdb.png",
     "static/media/credit_profile.png": "/gh/static/media/credit_profile.48765e5d.png",
+    "static/media/dp.jpeg": "/gh/static/media/dp.ae3e1077.jpeg",
+    "static/media/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf": "/gh/static/media/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.f67ae09e.pdf",
+    "static/media/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf": "/gh/static/media/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.48e57c32.pdf",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/gh/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/flutterwave-logos-white.png": "/gh/static/media/flutterwave-logos-white.877be0eb.png",
     "static/media/gdpr.png": "/gh/static/media/gdpr.9b35ecbd.png",
@@ -51,8 +53,8 @@
   "entrypoints": [
     "static/js/runtime-main.a7701361.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.98398c3b.chunk.js",
+    "static/js/2.bf22a351.chunk.js",
     "static/css/main.070be53e.chunk.css",
-    "static/js/main.22aa92a6.chunk.js"
+    "static/js/main.ac8fde51.chunk.js"
   ]
 }

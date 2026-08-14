@@ -31,8 +31,8 @@ import verificationConfig from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf";
 
 import {
   PageWrapper,
@@ -2766,8 +2766,19 @@ const VerifyPage = () => {
 
       {/* Terms of Service Modal */}
       {showTermsModal && (
-        <PopupOverlay>
-          <PopupCard style={{ maxWidth: 720 }}>
+        <PopupOverlay onClick={() => setShowTermsModal(false)}>
+          <PopupCard
+            style={{
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <PopupHeader>
               <PopupMeta>
                 <PopupIcon
@@ -2791,15 +2802,22 @@ const VerifyPage = () => {
             </PopupHeader>
             <PopupBody
               style={{
-                maxHeight: "60vh",
-                overflowY: "auto",
-                fontFamily: "Nunito, sans-serif",
-                fontSize: 14,
-                lineHeight: 1.7,
-                color: "var(--ec-text)",
+                display: "flex",
+                flex: 1,
+                minHeight: 0,
+                padding: 0,
               }}
             >
-              <div dangerouslySetInnerHTML={{ __html: termsOfService }} />
+              <iframe
+                src={termsPdf}
+                title="Terms of Service"
+                style={{
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
+                }}
+              />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>
@@ -2807,8 +2825,19 @@ const VerifyPage = () => {
 
       {/* Privacy Policy Modal */}
       {showPrivacyModal && (
-        <PopupOverlay>
-          <PopupCard style={{ maxWidth: 720 }}>
+        <PopupOverlay onClick={() => setShowPrivacyModal(false)}>
+          <PopupCard
+            style={{
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <PopupHeader>
               <PopupMeta>
                 <PopupIcon
@@ -2832,15 +2861,22 @@ const VerifyPage = () => {
             </PopupHeader>
             <PopupBody
               style={{
-                maxHeight: "60vh",
-                overflowY: "auto",
-                fontFamily: "Nunito, sans-serif",
-                fontSize: 14,
-                lineHeight: 1.7,
-                color: "var(--ec-text)",
+                display: "flex",
+                flex: 1,
+                minHeight: 0,
+                padding: 0,
               }}
             >
-              <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
+              <iframe
+                src={privacyPdf}
+                title="Privacy Policy"
+                style={{
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
+                }}
+              />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>
