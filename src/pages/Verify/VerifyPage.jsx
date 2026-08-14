@@ -32,10 +32,8 @@ import { getVerificationConfig } from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
-import termsOfService from "../../termsOfService";
-import termsOfServiceFR from "../../termsOfServiceFR";
-import privacyPolicy from "../../privacyPolicy";
-import privacyPolicyFR from "../../privacyPolicyFR";
+import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/citoyen Cote dIvoire Terms of Service FR-EN v1.2 - Confirmed Service Scope.pdf";
 
 import {
   PageWrapper,
@@ -163,8 +161,6 @@ function generateTransactionId() {
 
 const VerifyPage = () => {
   const { language, t } = useLocale();
-  const termsContent = language === "FR" ? termsOfServiceFR : termsOfService;
-  const privacyContent = language === "FR" ? privacyPolicyFR : privacyPolicy;
   const { type } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -2609,7 +2605,18 @@ const VerifyPage = () => {
       {/* Terms of Service Popup */}
       {showTermsPopup && (
         <PopupOverlay onClick={() => setShowTermsPopup(false)}>
-          <PopupCard style={{ maxWidth: 680, maxHeight: "85vh", display: "flex", flexDirection: "column" }}>
+          <PopupCard
+            style={{
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <PopupHeader>
               <PopupMeta>
                 <PopupIcon
@@ -2633,16 +2640,22 @@ const VerifyPage = () => {
             </PopupHeader>
             <PopupBody
               style={{
-                overflowY: "auto",
+                display: "flex",
                 flex: 1,
-                fontFamily: "Nunito, sans-serif",
-                fontSize: 14,
-                lineHeight: 1.7,
-                color: "var(--ec-text)",
+                minHeight: 0,
+                padding: 0,
               }}
-              onClick={(e) => e.stopPropagation()}
             >
-              <div dangerouslySetInnerHTML={{ __html: termsContent }} />
+              <iframe
+                src={termsPdf}
+                title={t("termsOfService.title")}
+                style={{
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
+                }}
+              />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>
@@ -2651,7 +2664,18 @@ const VerifyPage = () => {
       {/* Privacy Policy Popup */}
       {showPrivacyPopup && (
         <PopupOverlay onClick={() => setShowPrivacyPopup(false)}>
-          <PopupCard style={{ maxWidth: 680, maxHeight: "85vh", display: "flex", flexDirection: "column" }}>
+          <PopupCard
+            style={{
+              width: "min(1100px, 96vw)",
+              maxWidth: "none",
+              height: "min(96vh, 1200px)",
+              maxHeight: "96vh",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <PopupHeader>
               <PopupMeta>
                 <PopupIcon
@@ -2675,16 +2699,22 @@ const VerifyPage = () => {
             </PopupHeader>
             <PopupBody
               style={{
-                overflowY: "auto",
+                display: "flex",
                 flex: 1,
-                fontFamily: "Nunito, sans-serif",
-                fontSize: 14,
-                lineHeight: 1.7,
-                color: "var(--ec-text)",
+                minHeight: 0,
+                padding: 0,
               }}
-              onClick={(e) => e.stopPropagation()}
             >
-              <div dangerouslySetInnerHTML={{ __html: privacyContent }} />
+              <iframe
+                src={privacyPdf}
+                title={t("privacyPolicy.title")}
+                style={{
+                  width: "100%",
+                  flex: 1,
+                  border: "none",
+                  display: "block",
+                }}
+              />
             </PopupBody>
           </PopupCard>
         </PopupOverlay>

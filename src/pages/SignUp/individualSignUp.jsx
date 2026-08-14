@@ -28,9 +28,8 @@ import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../index.css";
-import privacyPolicy from "../../privacyPolicy";
-import privacyPolicyFR from "../../privacyPolicyFR";
-import { Modal } from "antd";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
 import Swal from "sweetalert2";
 import { theme } from "antd";
 import { useLocale } from "../../components/LocaleProvider";
@@ -336,8 +335,7 @@ const IndividualSignUp = () => {
   const handleClickPrivacyPolicy = () => {
     setIsOpen(true);
   };
-  const { language } = useLocale();
-  const privacyContentInd = language === "FR" ? privacyPolicyFR : privacyPolicy;
+  const { t } = useLocale();
   const [isAccepted, setIsAccepted] = useState(false);
 
   const onChangeIsAccepted = (e) => {
@@ -743,17 +741,13 @@ const IndividualSignUp = () => {
                       e-citizen™ Privacy Policy
                     </span>
                   </Checkbox>
-                  <Modal
-                    title={language === "FR" ? "Politique de confidentialité" : "Privacy Policy"}
-                    visible={isOpen}
-                    centered
-                    // open={open}
-                    onOk={() => setIsOpen(false)}
-                    onCancel={() => setIsOpen(false)}
-                    width={1000}
-                  >
-                    <div dangerouslySetInnerHTML={{ __html: privacyContentInd }} />
-                  </Modal>
+                  <PdfModal
+                    open={isOpen}
+                    onClose={() => setIsOpen(false)}
+                    title={t("privacyPolicy.title")}
+                    src={privacyPdf}
+                    height={560}
+                  />
                   <MainButtonFull
                     type="primary"
                     htmlType="submit"

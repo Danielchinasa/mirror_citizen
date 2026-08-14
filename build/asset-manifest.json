@@ -1,20 +1,19 @@
 {
   "files": {
     "main.css": "/ci/static/css/main.7f7f588c.chunk.css",
-    "main.js": "/ci/static/js/main.0018a546.chunk.js",
-    "main.js.map": "/ci/static/js/main.0018a546.chunk.js.map",
+    "main.js": "/ci/static/js/main.439d66ae.chunk.js",
+    "main.js.map": "/ci/static/js/main.439d66ae.chunk.js.map",
     "runtime-main.js": "/ci/static/js/runtime-main.4f24aca6.js",
     "runtime-main.js.map": "/ci/static/js/runtime-main.4f24aca6.js.map",
     "static/css/2.ec61a722.chunk.css": "/ci/static/css/2.ec61a722.chunk.css",
-    "static/js/2.a5edfbda.chunk.js": "/ci/static/js/2.a5edfbda.chunk.js",
-    "static/js/2.a5edfbda.chunk.js.map": "/ci/static/js/2.a5edfbda.chunk.js.map",
+    "static/js/2.2d895f56.chunk.js": "/ci/static/js/2.2d895f56.chunk.js",
+    "static/js/2.2d895f56.chunk.js.map": "/ci/static/js/2.2d895f56.chunk.js.map",
     "index.html": "/ci/index.html",
-    "precache-manifest.9b80ae6b80c69a7b023f3966051b48eb.js": "/ci/precache-manifest.9b80ae6b80c69a7b023f3966051b48eb.js",
+    "precache-manifest.32e324fcb6c59be92f8e0a36fb3dd2f6.js": "/ci/precache-manifest.32e324fcb6c59be92f8e0a36fb3dd2f6.js",
     "service-worker.js": "/ci/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/ci/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.7f7f588c.chunk.css.map": "/ci/static/css/main.7f7f588c.chunk.css.map",
-    "static/js/2.a5edfbda.chunk.js.LICENSE.txt": "/ci/static/js/2.a5edfbda.chunk.js.LICENSE.txt",
-    "static/media/dp.jpeg": "/ci/static/media/BW7A9844.e32d1c91.png",
+    "static/js/2.2d895f56.chunk.js.LICENSE.txt": "/ci/static/js/2.2d895f56.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/ci/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/ci/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
     "static/media/Verify_NIN_on_ecitizen.jpg": "/ci/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg",
@@ -22,6 +21,8 @@
     "static/media/business_verification2.png": "/ci/static/media/business_verification2.83483cfb.png",
     "static/media/check_credit_scores_on_ecitizen.png": "/ci/static/media/check_credit_scores_on_ecitizen.e1e01b75.png",
     "static/media/cieana.jpeg": "/ci/static/media/cieana.8398a736.jpeg",
+    "static/media/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf": "/ci/static/media/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.7b37e718.pdf",
+    "static/media/citoyen Cote dIvoire Terms of Service FR-EN v1.2 - Confirmed Service Scope.pdf": "/ci/static/media/citoyen Cote dIvoire Terms of Service FR-EN v1.2 - Confirmed Service Scope.ef4f8a2f.pdf",
     "static/media/civ_dark.png": "/ci/static/media/civ_dark.baaf15a7.png",
     "static/media/civ_logo.png": "/ci/static/media/civ_logo.b8fe5215.png",
     "static/media/clearvin.png": "/ci/static/media/clearvin.020b3b46.png",
@@ -30,6 +31,7 @@
     "static/media/cote_divoire.png": "/ci/static/media/cote_divoire.b91c182b.png",
     "static/media/cote_vehicle.png": "/ci/static/media/cote_vehicle.fdc8caa5.png",
     "static/media/credit_profile.png": "/ci/static/media/credit_profile.48765e5d.png",
+    "static/media/dp.jpeg": "/ci/static/media/dp.ae3e1077.jpeg",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/ci/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
     "static/media/flutterwave-logos-white.png": "/ci/static/media/flutterwave-logos-white.877be0eb.png",
     "static/media/gdpr.png": "/ci/static/media/gdpr.9b35ecbd.png",
@@ -54,8 +56,8 @@
   "entrypoints": [
     "static/js/runtime-main.4f24aca6.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.a5edfbda.chunk.js",
+    "static/js/2.2d895f56.chunk.js",
     "static/css/main.7f7f588c.chunk.css",
-    "static/js/main.0018a546.chunk.js"
+    "static/js/main.439d66ae.chunk.js"
   ]
 }

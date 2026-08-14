@@ -57,15 +57,13 @@ import {
 } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import privacyPolicy from "../../privacyPolicy";
-import privacyPolicyFR from "../../privacyPolicyFR";
-import termsOfService from "../../termsOfService";
-import termsOfServiceFR from "../../termsOfServiceFR";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
+import termsPdf from "../../images/citoyen Cote dIvoire Terms of Service FR-EN v1.2 - Confirmed Service Scope.pdf";
 import Swal from "sweetalert2";
 import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
-import { useLocale } from "../../components/LocaleProvider";
 import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -2664,10 +2662,6 @@ const DashboardPage = () => {
   const handleClickTerms = () => {
     setIsOpen2(true);
   };
-  const { language } = useLocale();
-  const privacyContentDash = language === "FR" ? privacyPolicyFR : privacyPolicy;
-  const termsContentDash = language === "FR" ? termsOfServiceFR : termsOfService;
-
   const [basicProfileArray, setBasicProfileArray] = useState([]);
   const [businessProfileArray, setBusinessProfileArray] = useState([]);
   const [businessSelectedValue, setBusinessSelectedValue] = useState(null);
@@ -5741,32 +5735,20 @@ const DashboardPage = () => {
                           Terms of Service
                         </span>
                       </Checkbox>
-                      <Modal
-                        title={language === "FR" ? "Politique de confidentialité" : "Privacy Policy"}
-                        visible={isOpen}
-                        centered
-                        // open={open}
-                        onOk={() => setIsOpen(false)}
-                        onCancel={() => setIsOpen(false)}
-                        width={1000}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: privacyContentDash }}
-                        />
-                      </Modal>
-                      <Modal
-                        title={language === "FR" ? "Conditions d'utilisation" : "Terms of Service"}
-                        visible={isOpen2}
-                        centered
-                        // open={open}
-                        onOk={() => setIsOpen2(false)}
-                        onCancel={() => setIsOpen2(false)}
-                        width={1000}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: termsContentDash }}
-                        />
-                      </Modal>
+                      <PdfModal
+                        open={isOpen}
+                        onClose={() => setIsOpen(false)}
+                        title="Privacy Policy"
+                        src={privacyPdf}
+                        height={560}
+                      />
+                      <PdfModal
+                        open={isOpen2}
+                        onClose={() => setIsOpen2(false)}
+                        title="Terms of Service"
+                        src={termsPdf}
+                        height={560}
+                      />
                     </strong>
 
                     {loading ? (

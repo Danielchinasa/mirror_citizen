@@ -1,17 +1,24 @@
 import React from "react";
-import privacyPolicy from "../../privacyPolicy";
-import privacyPolicyFR from "../../privacyPolicyFR";
-import termsOfService from "../../termsOfService";
+import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
 import { useLocale } from "../../components/LocaleProvider";
 
 const PrivacyPolicy = () => {
-  const { language, t } = useLocale();
-  const content = language === "FR" ? privacyPolicyFR : privacyPolicy;
+  const { t } = useLocale();
 
   return (
-    <div className="container mt-5">
-      <h3>{t("privacyPolicy.title")}</h3>
-      <div dangerouslySetInnerHTML={{ __html: content }} />;
+    <div className="container mt-5 mb-5">
+      <h3 className="mb-3">{t("privacyPolicy.title")}</h3>
+      <iframe
+        src={privacyPdf}
+        title={t("privacyPolicy.title")}
+        style={{
+          width: "100%",
+          height: "70vh",
+          border: "1px solid #e5e7eb",
+          borderRadius: 10,
+          display: "block",
+        }}
+      />
     </div>
   );
 };
