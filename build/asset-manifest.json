@@ -1,20 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.d2fa212d.chunk.css",
-    "main.js": "/static/js/main.13e79792.chunk.js",
-    "main.js.map": "/static/js/main.13e79792.chunk.js.map",
+    "main.js": "/static/js/main.11f8f5e0.chunk.js",
+    "main.js.map": "/static/js/main.11f8f5e0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.84cfcdfc.js",
     "runtime-main.js.map": "/static/js/runtime-main.84cfcdfc.js.map",
     "static/css/2.ec61a722.chunk.css": "/static/css/2.ec61a722.chunk.css",
-    "static/js/2.576a0247.chunk.js": "/static/js/2.576a0247.chunk.js",
-    "static/js/2.576a0247.chunk.js.map": "/static/js/2.576a0247.chunk.js.map",
+    "static/js/2.1801f69d.chunk.js": "/static/js/2.1801f69d.chunk.js",
+    "static/js/2.1801f69d.chunk.js.map": "/static/js/2.1801f69d.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.13323dd848d65295de869b6229ee1456.js": "/precache-manifest.13323dd848d65295de869b6229ee1456.js",
+    "precache-manifest.256a9c0141bbdcaa50c2d3ff81a5e1d8.js": "/precache-manifest.256a9c0141bbdcaa50c2d3ff81a5e1d8.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.d2fa212d.chunk.css.map": "/static/css/main.d2fa212d.chunk.css.map",
-    "static/js/2.576a0247.chunk.js.LICENSE.txt": "/static/js/2.576a0247.chunk.js.LICENSE.txt",
-    "static/media/dp.jpeg": "/static/media/BW7A9844.e32d1c91.png",
+    "static/js/2.1801f69d.chunk.js.LICENSE.txt": "/static/js/2.1801f69d.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/static/media/Corporate.83116b9d.svg",
     "static/media/Hero_image_new.png": "/static/media/Hero_image_new.353f76f7.png",
     "static/media/NIN_verification_on_ecitizen.png": "/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -27,6 +26,7 @@
     "static/media/clearvin.png": "/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/static/media/contact.2a1a7bdb.png",
     "static/media/credit_profile.png": "/static/media/credit_profile.48765e5d.png",
+    "static/media/dp.jpeg": "/static/media/dp.ae3e1077.jpeg",
     "static/media/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf": "/static/media/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.9f6a8056.pdf",
     "static/media/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf": "/static/media/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.64e8647e.pdf",
     "static/media/e-citizen_logo_ecitizen_white.png": "/static/media/e-citizen_logo_ecitizen_white.ea54108c.png",
@@ -54,8 +54,8 @@
   "entrypoints": [
     "static/js/runtime-main.84cfcdfc.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.576a0247.chunk.js",
+    "static/js/2.1801f69d.chunk.js",
     "static/css/main.d2fa212d.chunk.css",
-    "static/js/main.13e79792.chunk.js"
+    "static/js/main.11f8f5e0.chunk.js"
   ]
 }

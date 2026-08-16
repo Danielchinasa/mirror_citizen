@@ -25,14 +25,12 @@ import playStore from "../../images/playstore.png";
 import appStore from "../../images/appStore.png";
 import PdfModal from "../PdfModal/PdfModal";
 import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
-import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 
 function Footer() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpen2, setIsOpen2] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   return (
     <FooterWrapper>
@@ -110,18 +108,12 @@ function Footer() {
             <FooterColTitle>Legal</FooterColTitle>
             <FooterLink
               as="span"
-              onClick={() => setIsOpen(true)}
+              onClick={() => setIsTermsOpen(true)}
               style={{ cursor: "pointer" }}
             >
               Terms of Service
             </FooterLink>
-            <FooterLink
-              as="span"
-              onClick={() => setIsOpen2(true)}
-              style={{ cursor: "pointer" }}
-            >
-              Privacy Policy
-            </FooterLink>
+            <FooterLink to="/privacy-policy">Privacy Policy</FooterLink>
           </FooterCol>
 
           <FooterCol>
@@ -150,10 +142,10 @@ function Footer() {
             © e-citizen {new Date().getFullYear()}. All Rights Reserved.
           </Copyright>
           <LegalLinks>
-            <LegalLink onClick={() => setIsOpen(true)}>
+            <LegalLink as={Link} to="/privacy-policy">
               Privacy Policy
             </LegalLink>
-            <LegalLink onClick={() => setIsOpen2(true)}>
+            <LegalLink onClick={() => setIsTermsOpen(true)}>
               Terms of Service
             </LegalLink>
           </LegalLinks>
@@ -161,15 +153,8 @@ function Footer() {
       </FooterInner>
 
       <PdfModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Privacy Policy"
-        src={privacyPdf}
-        height={560}
-      />
-      <PdfModal
-        open={isOpen2}
-        onClose={() => setIsOpen2(false)}
+        open={isTermsOpen}
+        onClose={() => setIsTermsOpen(false)}
         title="Terms of Service"
         src={termsPdf}
         height={560}
