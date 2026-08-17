@@ -477,6 +477,13 @@ const MainDashboard = () => {
 
   const columns = [
     {
+      title: "#",
+      key: "serialNumber",
+      width: 80,
+      align: "center",
+      render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
+    },
+    {
       title: "Date and Time",
       dataIndex: "insertionDate",
       key: "insertionDate",
@@ -822,6 +829,13 @@ const MainDashboard = () => {
         </a>
       ),
     },
+    {
+      title: "#",
+      key: "serialNumber",
+      width: 80,
+      align: "center",
+      render: (_, __, index) => index + 1,
+    },
   ];
   const items = [
     {
@@ -891,7 +905,7 @@ const MainDashboard = () => {
               <DynamicTable
                 $token={token}
                 scroll={{ x: true }}
-                columns={columns2.reverse()} // Reverse the order of columns
+                columns={[...columns2].reverse()} // Reverse the order of columns
                 dataSource={
                   filteredDataTransaction &&
                   filteredDataTransaction.slice().reverse()
