@@ -813,7 +813,7 @@ const VehicleLoginSample = () => {
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
                   {t("login.loginButton")}
-                </LoginBtn>
+                </LoginBtn>6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX
                 <RegisterText>
                   {t("login.noAccount")}{" "}
                   <Link to="/individual/sign-up/1">

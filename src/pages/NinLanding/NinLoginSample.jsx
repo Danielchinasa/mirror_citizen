@@ -822,7 +822,7 @@ const NinLoginSample = () => {
                           checked={formData.rememberMe}
                           onChange={handleInputChange}
                         />{" "}
-                        {t("login.rememberMe")}
+                        {t(6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX
                       </RememberLabel>
                       <ForgotLink to="/forgot-password">
                         {t("login.forgotPassword")}

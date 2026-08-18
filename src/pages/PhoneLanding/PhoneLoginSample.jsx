@@ -837,7 +837,7 @@ const PhoneLoginSample = () => {
                       onChange={handleInputChange}
                     />{" "}
                     Remember me
-                  </RememberLabel>
+                  </Remembe6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX
                   <ForgotLink to="/forgot-password">
                     Forgot password?
                   </ForgotLink>
