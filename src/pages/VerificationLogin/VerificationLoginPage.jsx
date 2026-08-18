@@ -416,12 +416,16 @@ const VerificationLoginPage = () => {
 
             <ReCAPTCHA
               sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
-              onChange={() => setIsCaptchaVerified(true)}
+              onChange={(token) => setIsCaptchaVerified(!!token)}
+              onExpired={() => setIsCaptchaVerified(false)}
               style={{ marginBottom: 20 }}
             />
-
-            <LoginButton type="submit" disabled={isCaptchaVerified}>
-              {isSw ? "Ingia" : "Login"}
+            
+            <LoginButton
+              type="submit"
+              disabled={!isCaptchaVerified || loading}
+            >
+              Login
             </LoginButton>
           </form>
 
