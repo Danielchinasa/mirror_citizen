@@ -822,14 +822,13 @@ const CardLoginSample = () => {
                           checked={formData.rememberMe}
                           onChange={handleInputChange}
                         />{" "}
-                        {t(6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX
-                      </RememberLabel>
+                        {t("login.rememberMe")}</RememberLabel>
                       <ForgotLink to="/forgot-password">
                         {t("login.forgotPassword")}
                       </ForgotLink>
                     </FormRow>
                     <ReCAPTCHA
-                      sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                      sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
                       onChange={() => setIsCaptchaVerified(true)}
                       style={{ marginBottom: 4 }}
                     />

@@ -837,13 +837,13 @@ const PhoneLoginSample = () => {
                       onChange={handleInputChange}
                     />{" "}
                     Remember me
-                  </Remembe6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX
+                  </RememberLabel>
                   <ForgotLink to="/forgot-password">
                     Forgot password?
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
-                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                  sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
                   onChange={() => setIsCaptchaVerified(true)}
                   style={{ marginBottom: 4 }}
                 />

@@ -807,13 +807,13 @@ const VehicleLoginSample = () => {
                   </ForgotLink>
                 </FormRow>
                 <ReCAPTCHA
-                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                  sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
                   onChange={() => setIsCaptchaVerified(true)}
                   style={{ marginBottom: 4 }}
                 />
                 <LoginBtn type="submit" disabled={!isCaptchaVerified}>
                   {t("login.loginButton")}
-                </LoginBtn>6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX
+                </LoginBtn>
                 <RegisterText>
                   {t("login.noAccount")}{" "}
                   <Link to="/individual/sign-up/1">
