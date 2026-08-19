@@ -544,7 +544,7 @@ const LoginForm = (props) => {
               Remember me
             </Checkbox>
             <ReCAPTCHA
-              sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+              sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
               onChange={handleCaptchaVerify}
             />
             <MainButtonFull

@@ -402,12 +402,16 @@ const VerificationLoginPage = () => {
             </FormRow>
 
             <ReCAPTCHA
-              sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
-              onChange={() => setIsCaptchaVerified(true)}
+              sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
+              onChange={(token) => setIsCaptchaVerified(!!token)}
+              onExpired={() => setIsCaptchaVerified(false)}
               style={{ marginBottom: 20 }}
             />
 
-            <LoginButton type="submit" disabled={isCaptchaVerified}>
+            <LoginButton
+              type="submit"
+              disabled={!isCaptchaVerified || loading}
+            >
               Login
             </LoginButton>
           </form>
