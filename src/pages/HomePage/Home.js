@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
@@ -30,6 +29,7 @@ import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
+import { getIpInfo } from "../../config/ipConfiguration";
 
 import {
   HeroWrapper,
@@ -86,9 +86,6 @@ import {
 } from "./HomePage.elements";
 const { useToken } = theme;
 
-// Fallback IP (Ghana) used when both IP lookups fail so login still works
-const DEFAULT_GHANA_IP = "102.131.16.255";
-
 const Home = () => {
   const [ipAddress, setIpAddress] = useState(null);
   const [ipCountry, setIpCountry] = useState(null);
@@ -105,75 +102,9 @@ const Home = () => {
   // Get user country from IP to show correct pricing
   useEffect(() => {
     const fetchIpInfo = async () => {
-      // ============================================================
-      // 🧪 TESTING OVERRIDE - Uncomment to use static IP/Country
-      // ============================================================
-      // When uncommented, bypasses all IP detection APIs
-      // Comment out this entire section for normal operation
-      // ============================================================
-      const testIp = "102.131.16.255"; // Ghana IP
-      const testCountry = "GH"; // Ghana
-      const testCurrency = "GHS"; // Ghanaian Cedi
-      // For testing USD pricing, use:
-      // const testIp = "8.8.8.8";           // US IP
-      // const testCountry = "US";           // United States
-      // const testCurrency = "USD";         // US Dollar
-      setIpAddress(testIp);
-      setIpCountry(testCountry);
-      localStorage.setItem("IpAddress", testIp);
-      localStorage.setItem("userCountry", testCountry);
-      localStorage.setItem("currencyCheck", testCurrency);
-      console.log(
-        "🧪 Using test IP/Country:",
-        testIp,
-        testCountry,
-        testCurrency,
-      );
-      return;
-      // ============================================================
-
-      // Try ipapi.co first — returns IP + country info in one call
-      try {
-        const response = await axios.get("https://ipapi.co/json/");
-        setIpAddress(response.data.ip);
-        localStorage.setItem("IpAddress", response.data.ip);
-        const country =
-          response.data.country_code || response.data.country || null;
-        setIpCountry(country);
-        localStorage.setItem("userCountry", country || ""); // Store country in localStorage for other pages
-        const currency = country === "GH" ? "GHS" : "USD";
-        localStorage.setItem("currencyCheck", currency);
-        return;
-      } catch (error1) {
-        console.error("Error fetching IP info from ipapi.co:", error1);
-      }
-
-      // Fallback to ipbase.com for IP and country
-      try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        const ip = response.data.ip;
-        const country = response.data.country_code || response.data.countryCode;
-        setIpAddress(ip);
-        localStorage.setItem("IpAddress", ip);
-        if (country) {
-          setIpCountry(country);
-          localStorage.setItem("userCountry", country);
-          const currency = country === "GH" ? "GHS" : "USD";
-          localStorage.setItem("currencyCheck", currency);
-        }
-        return;
-      } catch (error2) {
-        console.error("Error fetching IP from both sources:", error2);
-        // Both APIs failed - use default Ghana IP and country
-        const defaultIp = "102.131.16.255";
-        const defaultCountry = "GH";
-        const defaultCurrency = "GHS";
-        setIpAddress(defaultIp);
-        setIpCountry(defaultCountry);
-        localStorage.setItem("IpAddress", defaultIp);
-        localStorage.setItem("userCountry", defaultCountry);
-        localStorage.setItem("currencyCheck", defaultCurrency);
-      }
+      const { ip, country } = await getIpInfo();
+      setIpAddress(ip);
+      setIpCountry(country);
     };
 
     fetchIpInfo();
@@ -198,7 +129,7 @@ const Home = () => {
         const payload = {
           accessToken: response.access_token,
           deviceToken: localStorage.getItem("clientToken"),
-          ipAddress: ipAddress || DEFAULT_GHANA_IP,
+          ipAddress,
           deviceName: "Web app",
         };
 
@@ -223,7 +154,7 @@ const Home = () => {
         dispatch(fetchUserProfile(userData.jwtToken));
 
         if (userData.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress || DEFAULT_GHANA_IP);
+          if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
           history.push("/main-dashboard");
         } else {
           Swal.fire({
