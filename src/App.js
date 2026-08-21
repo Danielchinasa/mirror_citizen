@@ -270,6 +270,7 @@ function AppContent() {
           component={VerificationLoginPage}
         />
         <AppLogout>
+          <Switch>
           <Route
             path="/verify/:type"
             render={(props) => {
@@ -296,7 +297,7 @@ function AppContent() {
             component={PaystackRedirect}
           />
           <Route path="/reach/:CLICK_ID" exact component={Home} />
-          <Route path="/login" component={LoginPage} />
+          <Route path="/login" component={VerificationLoginPage} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOtp} />
           <Route path="/email-confirm" component={EmailVerifiedConfirm} />
@@ -304,7 +305,7 @@ function AppContent() {
           <ProtectedRoute path="/set-new-password" component={SetNewPassword} />
           <Route path="/password-confirm" component={PasswordResetConfirm} />
           <Route path="/contact" component={ContactPage} />
-          <ProtectedRoute path="/dashboard" component={DashboardPage} />
+          {/* <ProtectedRoute path="/dashboard" component={DashboardPage} /> */}
           <Route path="/disclaimer" component={Disclaimer} />
           <ProtectedRoute path="/consent" component={Consent} />
           <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
@@ -361,6 +362,8 @@ function AppContent() {
             exact
             component={ResetPasswordPage}
           />
+          <Route component={NotFoundPage} />
+          </Switch>
         </AppLogout>
       </Switch>
 

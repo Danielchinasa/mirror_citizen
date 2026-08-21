@@ -177,7 +177,7 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: #DD0201;
+    border-color: #dd0201;
   }
 `;
 
@@ -217,7 +217,7 @@ const RememberLabel = styled.label`
 const ForgotLink = styled(Link)`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
   text-decoration: none;
   font-weight: 600;
 
@@ -274,7 +274,7 @@ const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #DD0201;
+  border-top-color: #dd0201;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 
@@ -293,7 +293,7 @@ const RegisterText = styled.p`
   margin: 12px 0 0;
 
   a {
-    color: #DD0201;
+    color: #dd0201;
     font-weight: 600;
     text-decoration: none;
 
@@ -337,8 +337,8 @@ const SampleCardTitle = styled.h3`
 const SampleBadge = styled.span`
   display: inline-block;
   background: #fff;
-  border: 1px solid #DD0201;
-  color: #DD0201;
+  border: 1px solid #dd0201;
+  color: #dd0201;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -465,7 +465,7 @@ const CreditScoreNumber = styled.div`
 const CreditScoreBadge = styled.span`
   display: inline-block;
   background: #fdecec;
-  color: #DD0201;
+  color: #dd0201;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -495,7 +495,7 @@ const CreditMetaValue = styled.span`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 13px;
-  color: #DD0201;
+  color: #dd0201;
 `;
 
 const CreditMetaValueNeutral = styled.span`
@@ -508,7 +508,7 @@ const CreditMetaValueNeutral = styled.span`
   gap: 4px;
 
   svg {
-    color: #DD0201;
+    color: #dd0201;
     font-size: 12px;
   }
 `;
@@ -552,7 +552,7 @@ const StatValueGreen = styled.div`
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #DD0201;
+  color: #dd0201;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -860,115 +860,115 @@ const FinancialLoginSample = () => {
             <LoggedInContinueCard redirectTo={redirectTo} isSw={false} />
           ) : (
             <>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
 
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
-          <LoginCardSub>
-            Sign in or continue to start your verification.
-          </LoginCardSub>
-          <form onSubmit={handleSignIn}>
-            <LoginLayout>
-              <SSOCol>
-                <SSOButton
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    trackEvent({
-                      action: "click_google_signin",
-                      category: "Authentication",
-                      label: "Google Sign-In Button",
-                      value: 1,
-                    });
-                    googleLogin();
-                  }}
-                >
-                  <FcGoogle /> Continue with Google
-                </SSOButton>
-                <FacebookLogin
-                  appId="541710452150170"
-                  autoLoad={false}
-                  fields="name,picture"
-                  scope="public_profile"
-                  callback={handleFacebook}
-                  render={(renderProps) => (
-                    <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" /> Continue with Facebook
-                    </SSOButton>
-                  )}
-                />
-              </SSOCol>
-              <Divider>OR</Divider>
-              <FormCol>
-                {formErrors.general && (
-                  <ErrorAlert>{formErrors.general}</ErrorAlert>
-                )}
-                <div>
-                  <FormLabel>Email address</FormLabel>
-                  <FormInput
-                    type="email"
-                    placeholder="Enter your email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.email && (
-                    <ErrorAlert>{formErrors.email}</ErrorAlert>
-                  )}
-                </div>
-                <div>
-                  <FormLabel>Password</FormLabel>
-                  <PasswordWrapper>
-                    <FormInput
-                      type={showPass ? "text" : "password"}
-                      placeholder="Enter your password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                    />
-                    <PasswordToggle
+              <LoginCardTitle>Login / Continue</LoginCardTitle>
+              <LoginCardSub>
+                Sign in or continue to start your verification.
+              </LoginCardSub>
+              <form onSubmit={handleSignIn}>
+                <LoginLayout>
+                  <SSOCol>
+                    <SSOButton
                       type="button"
-                      onClick={() => setShowPass(!showPass)}
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        trackEvent({
+                          action: "click_google_signin",
+                          category: "Authentication",
+                          label: "Google Sign-In Button",
+                          value: 1,
+                        });
+                        googleLogin();
+                      }}
                     >
-                      {showPass ? <FaEyeSlash /> : <FaEye />}
-                    </PasswordToggle>
-                  </PasswordWrapper>
-                  {formErrors.password && (
-                    <ErrorAlert>{formErrors.password}</ErrorAlert>
-                  )}
-                </div>
-                <FormRow>
-                  <RememberLabel>
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleInputChange}
-                    />{" "}
-                    Remember me
-                  </RememberLabel>
-                  <ForgotLink to="/forgot-password">
-                    Forgot password?
-                  </ForgotLink>
-                </FormRow>
-                <ReCAPTCHA
-                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
-                  onChange={() => setIsCaptchaVerified(true)}
-                  style={{ marginBottom: 4 }}
-                />
-                <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  Login
-                </LoginBtn>
-                <RegisterText>
-                  Don't have an account?{" "}
-                  <Link to="/individual/sign-up/1">Register here</Link>
-                </RegisterText>
-              </FormCol>
-            </LoginLayout>
-          </form>
+                      <FcGoogle /> Continue with Google
+                    </SSOButton>
+                    <FacebookLogin
+                      appId="541710452150170"
+                      autoLoad={false}
+                      fields="name,picture"
+                      scope="public_profile"
+                      callback={handleFacebook}
+                      render={(renderProps) => (
+                        <SSOButton type="button" onClick={renderProps.onClick}>
+                          <FaFacebook color="#1877F2" /> Continue with Facebook
+                        </SSOButton>
+                      )}
+                    />
+                  </SSOCol>
+                  <Divider>OR</Divider>
+                  <FormCol>
+                    {formErrors.general && (
+                      <ErrorAlert>{formErrors.general}</ErrorAlert>
+                    )}
+                    <div>
+                      <FormLabel>Email address</FormLabel>
+                      <FormInput
+                        type="email"
+                        placeholder="Enter your email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                      {formErrors.email && (
+                        <ErrorAlert>{formErrors.email}</ErrorAlert>
+                      )}
+                    </div>
+                    <div>
+                      <FormLabel>Password</FormLabel>
+                      <PasswordWrapper>
+                        <FormInput
+                          type={showPass ? "text" : "password"}
+                          placeholder="Enter your password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                        />
+                        <PasswordToggle
+                          type="button"
+                          onClick={() => setShowPass(!showPass)}
+                        >
+                          {showPass ? <FaEyeSlash /> : <FaEye />}
+                        </PasswordToggle>
+                      </PasswordWrapper>
+                      {formErrors.password && (
+                        <ErrorAlert>{formErrors.password}</ErrorAlert>
+                      )}
+                    </div>
+                    <FormRow>
+                      <RememberLabel>
+                        <input
+                          type="checkbox"
+                          name="rememberMe"
+                          checked={formData.rememberMe}
+                          onChange={handleInputChange}
+                        />{" "}
+                        Remember me
+                      </RememberLabel>
+                      <ForgotLink to="/forgot-password">
+                        Forgot password?
+                      </ForgotLink>
+                    </FormRow>
+                    <ReCAPTCHA
+                      sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
+                      onChange={() => setIsCaptchaVerified(true)}
+                      style={{ marginBottom: 4 }}
+                    />
+                    <LoginBtn type="submit" disabled={!isCaptchaVerified}>
+                      Login
+                    </LoginBtn>
+                    <RegisterText>
+                      Don't have an account?{" "}
+                      <Link to="/individual/sign-up/1">Register here</Link>
+                    </RegisterText>
+                  </FormCol>
+                </LoginLayout>
+              </form>
             </>
           )}
         </LoginCard>

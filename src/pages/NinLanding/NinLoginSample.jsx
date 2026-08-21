@@ -859,7 +859,7 @@ const NinLoginSample = () => {
                       </ForgotLink>
                     </FormRow>
                     <ReCAPTCHA
-                      sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+                      sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
                       onChange={() => setIsCaptchaVerified(true)}
                       style={{ marginBottom: 4 }}
                     />

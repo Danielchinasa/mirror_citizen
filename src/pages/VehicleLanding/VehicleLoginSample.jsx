@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  FaEye,
-  FaEyeSlash,
-  FaCheckCircle,
-  FaInfoCircle,
-} from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
@@ -724,122 +719,130 @@ const VehicleLoginSample = () => {
             <LoggedInContinueCard redirectTo={redirectTo} isSw={isSw} />
           ) : (
             <>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-          <LoginCardTitle>
-            {isSw ? "Ingia / Endelea" : "Login / Continue"}
-          </LoginCardTitle>
-          <LoginCardSub>
-            {isSw
-              ? "Ingia au endelea kuanza uthibitishaji wako."
-              : "Sign in or continue to start your verification."}
-          </LoginCardSub>
-          <form onSubmit={handleSignIn}>
-            <LoginLayout>
-              <SSOCol>
-                <SSOButton
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    trackEvent({
-                      action: "click_google_signin",
-                      category: "Authentication",
-                      label: "Google Sign-In Button",
-                      value: 1,
-                    });
-                    googleLogin();
-                  }}
-                >
-                  <FcGoogle />{" "}
-                  {isSw ? "Endelea na Google" : "Continue with Google"}
-                </SSOButton>
-                <FacebookLogin
-                  appId="541710452150170"
-                  autoLoad={false}
-                  fields="name,picture"
-                  scope="public_profile"
-                  callback={handleFacebook}
-                  render={(renderProps) => (
-                    <SSOButton type="button" onClick={renderProps.onClick}>
-                      <FaFacebook color="#1877F2" />{" "}
-                      {isSw ? "Endelea na Facebook" : "Continue with Facebook"}
-                    </SSOButton>
-                  )}
-                />
-              </SSOCol>
-              <Divider>{isSw ? "AU" : "OR"}</Divider>
-              <FormCol>
-                {formErrors.general && (
-                  <ErrorAlert>{formErrors.general}</ErrorAlert>
-                )}
-                <div>
-                  <FormLabel>{isSw ? "Barua pepe" : "Email address"}</FormLabel>
-                  <FormInput
-                    type="email"
-                    placeholder={isSw ? "Weka barua pepe yako" : "Enter your email"}
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.email && (
-                    <ErrorAlert>{formErrors.email}</ErrorAlert>
-                  )}
-                </div>
-                <div>
-                  <FormLabel>{isSw ? "Nywila" : "Password"}</FormLabel>
-                  <PasswordWrapper>
-                    <FormInput
-                      type={showPass ? "text" : "password"}
-                      placeholder={isSw ? "Weka nywila yako" : "Enter your password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                    />
-                    <PasswordToggle
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>
+                {isSw ? "Ingia / Endelea" : "Login / Continue"}
+              </LoginCardTitle>
+              <LoginCardSub>
+                {isSw
+                  ? "Ingia au endelea kuanza uthibitishaji wako."
+                  : "Sign in or continue to start your verification."}
+              </LoginCardSub>
+              <form onSubmit={handleSignIn}>
+                <LoginLayout>
+                  <SSOCol>
+                    <SSOButton
                       type="button"
-                      onClick={() => setShowPass(!showPass)}
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        trackEvent({
+                          action: "click_google_signin",
+                          category: "Authentication",
+                          label: "Google Sign-In Button",
+                          value: 1,
+                        });
+                        googleLogin();
+                      }}
                     >
-                      {showPass ? <FaEyeSlash /> : <FaEye />}
-                    </PasswordToggle>
-                  </PasswordWrapper>
-                  {formErrors.password && (
-                    <ErrorAlert>{formErrors.password}</ErrorAlert>
-                  )}
-                </div>
-                <FormRow>
-                  <RememberLabel>
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleInputChange}
-                    />{" "}
-                    {isSw ? "Nikumbuke" : "Remember me"}
-                  </RememberLabel>
-                  <ForgotLink to="/forgot-password">
-                    {isSw ? "Umesahau nywila?" : "Forgot password?"}
-                  </ForgotLink>
-                </FormRow>
-                <ReCAPTCHA
-                  sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
-                  onChange={() => setIsCaptchaVerified(true)}
-                  style={{ marginBottom: 4 }}
-                />
-                <LoginBtn type="submit" disabled={!isCaptchaVerified}>
-                  {isSw ? "Ingia" : "Login"}
-                </LoginBtn>
-                <RegisterText>
-                  {isSw ? "Huna akaunti?" : "Don't have an account?"}{" "}
-                  <Link to="/individual/sign-up/1">
-                    {isSw ? "Jisajili hapa" : "Register here"}
-                  </Link>
-                </RegisterText>
-              </FormCol>
-            </LoginLayout>
-          </form>
+                      <FcGoogle />{" "}
+                      {isSw ? "Endelea na Google" : "Continue with Google"}
+                    </SSOButton>
+                    <FacebookLogin
+                      appId="541710452150170"
+                      autoLoad={false}
+                      fields="name,picture"
+                      scope="public_profile"
+                      callback={handleFacebook}
+                      render={(renderProps) => (
+                        <SSOButton type="button" onClick={renderProps.onClick}>
+                          <FaFacebook color="#1877F2" />{" "}
+                          {isSw
+                            ? "Endelea na Facebook"
+                            : "Continue with Facebook"}
+                        </SSOButton>
+                      )}
+                    />
+                  </SSOCol>
+                  <Divider>{isSw ? "AU" : "OR"}</Divider>
+                  <FormCol>
+                    {formErrors.general && (
+                      <ErrorAlert>{formErrors.general}</ErrorAlert>
+                    )}
+                    <div>
+                      <FormLabel>
+                        {isSw ? "Barua pepe" : "Email address"}
+                      </FormLabel>
+                      <FormInput
+                        type="email"
+                        placeholder={
+                          isSw ? "Weka barua pepe yako" : "Enter your email"
+                        }
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                      {formErrors.email && (
+                        <ErrorAlert>{formErrors.email}</ErrorAlert>
+                      )}
+                    </div>
+                    <div>
+                      <FormLabel>{isSw ? "Nywila" : "Password"}</FormLabel>
+                      <PasswordWrapper>
+                        <FormInput
+                          type={showPass ? "text" : "password"}
+                          placeholder={
+                            isSw ? "Weka nywila yako" : "Enter your password"
+                          }
+                          name="password"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                        />
+                        <PasswordToggle
+                          type="button"
+                          onClick={() => setShowPass(!showPass)}
+                        >
+                          {showPass ? <FaEyeSlash /> : <FaEye />}
+                        </PasswordToggle>
+                      </PasswordWrapper>
+                      {formErrors.password && (
+                        <ErrorAlert>{formErrors.password}</ErrorAlert>
+                      )}
+                    </div>
+                    <FormRow>
+                      <RememberLabel>
+                        <input
+                          type="checkbox"
+                          name="rememberMe"
+                          checked={formData.rememberMe}
+                          onChange={handleInputChange}
+                        />{" "}
+                        {isSw ? "Nikumbuke" : "Remember me"}
+                      </RememberLabel>
+                      <ForgotLink to="/forgot-password">
+                        {isSw ? "Umesahau nywila?" : "Forgot password?"}
+                      </ForgotLink>
+                    </FormRow>
+                    <ReCAPTCHA
+                      sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
+                      onChange={() => setIsCaptchaVerified(true)}
+                      style={{ marginBottom: 4 }}
+                    />
+                    <LoginBtn type="submit" disabled={!isCaptchaVerified}>
+                      {isSw ? "Ingia" : "Login"}
+                    </LoginBtn>
+                    <RegisterText>
+                      {isSw ? "Huna akaunti?" : "Don't have an account?"}{" "}
+                      <Link to="/individual/sign-up/1">
+                        {isSw ? "Jisajili hapa" : "Register here"}
+                      </Link>
+                    </RegisterText>
+                  </FormCol>
+                </LoginLayout>
+              </form>
             </>
           )}
         </LoginCard>
@@ -864,43 +867,39 @@ const VehicleLoginSample = () => {
               <img src={vehicleSampleAvatar} alt="Sample vehicle" />
             </ResultPhoto>
             <ResultGrid>
-                <ResultField>
-                  <ResultLabel>
-                    {isSw ? "Chapa / Model" : "Make / Model"}
-                  </ResultLabel>
-                  <ResultValue>Toyota Corolla</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>
-                    {isSw ? "Nambari ya Chasi" : "Chassis No."}
-                  </ResultLabel>
-                  <ResultValue>JT2BF22K4W0123456</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>VIN</ResultLabel>
-                  <ResultValue>JT2BF22K4W0123456</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>
-                    {isSw ? "Mwaka" : "Year"}
-                  </ResultLabel>
-                  <ResultValue>2018</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>
-                    {isSw ? "Nambari ya Injini" : "Engine No."}
-                  </ResultLabel>
-                  <ResultValue>2AZFE1234567</ResultValue>
-                </ResultField>
-                <ResultField>
-                  <ResultLabel>
-                    {isSw ? "Hali" : "Status"}
-                  </ResultLabel>
-                  <VerifiedBadge>
-                    {isSw ? "IMETHIBITISHWA" : "VERIFIED"} <FaCheckCircle />
-                  </VerifiedBadge>
-                </ResultField>
-              </ResultGrid>
+              <ResultField>
+                <ResultLabel>
+                  {isSw ? "Chapa / Model" : "Make / Model"}
+                </ResultLabel>
+                <ResultValue>Toyota Corolla</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>
+                  {isSw ? "Nambari ya Chasi" : "Chassis No."}
+                </ResultLabel>
+                <ResultValue>JT2BF22K4W0123456</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>VIN</ResultLabel>
+                <ResultValue>JT2BF22K4W0123456</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{isSw ? "Mwaka" : "Year"}</ResultLabel>
+                <ResultValue>2018</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>
+                  {isSw ? "Nambari ya Injini" : "Engine No."}
+                </ResultLabel>
+                <ResultValue>2AZFE1234567</ResultValue>
+              </ResultField>
+              <ResultField>
+                <ResultLabel>{isSw ? "Hali" : "Status"}</ResultLabel>
+                <VerifiedBadge>
+                  {isSw ? "IMETHIBITISHWA" : "VERIFIED"} <FaCheckCircle />
+                </VerifiedBadge>
+              </ResultField>
+            </ResultGrid>
           </ResultCard>
           <ResultDisclaimer>
             <FaInfoCircle />

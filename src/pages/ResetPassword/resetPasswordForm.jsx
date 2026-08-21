@@ -54,7 +54,7 @@ const ResetPasswordForm = ({ email, token }) => {
     () => ({
       name: "Ant Design",
     }),
-    []
+    [],
   );
 
   // useEffect(() => {
@@ -191,7 +191,7 @@ const ResetPasswordForm = ({ email, token }) => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-        history.push("/login");
+        history.push("/verification-login");
       } else if (response === "IP address not provided in payload") {
         setFormErrors({
           general:
@@ -304,7 +304,7 @@ const ResetPasswordForm = ({ email, token }) => {
               Remember me
             </Checkbox> */}
             {/* <ReCAPTCHA
-              sitekey="6LdDLJEpAAAAAH4yHx5GfRDcvHzvaKkwx6fMtTdT"
+              sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
               onChange={handleCaptchaVerify}
             /> */}
             ,

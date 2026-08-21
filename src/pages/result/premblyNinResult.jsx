@@ -419,7 +419,12 @@ const PremblyNinResult = () => {
                 {t("Personal Details", isSw)}
               </SectionTitle>
               <Grid>
-                {field(<FaRegUser />, t("Full Name", isSw), result?.fullName, true)}
+                {field(
+                  <FaRegUser />,
+                  t("Full Name", isSw),
+                  result?.fullName,
+                  true,
+                )}
                 {field(<FaRegUser />, t("First Name", isSw), result?.firstName)}
                 {field(<FaRegUser />, t("Last Name", isSw), result?.lastName)}
                 {field(<FaRestroom />, t("Gender", isSw), result?.gender)}

@@ -74,7 +74,7 @@ const VerifyOtp = () => {
         });
 
         // Handle further actions if needed
-        history.push("/login");
+        history.push("/verification-login");
       } else {
         setLoading(false);
         // Display error message
