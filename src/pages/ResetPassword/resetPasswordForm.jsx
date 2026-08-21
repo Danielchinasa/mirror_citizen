@@ -191,7 +191,7 @@ const ResetPasswordForm = ({ email, token }) => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-        history.push("/login");
+        history.push("/verification-login");
       } else if (response === "IP address not provided in payload") {
         setFormErrors({
           general:

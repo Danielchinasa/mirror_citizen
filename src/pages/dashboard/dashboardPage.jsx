@@ -697,7 +697,7 @@ const DashboardPage = () => {
           }
         });
 
-        history.push("/dashboard");
+        history.push("/main-dashboard");
       } else if (response.business && response.business.success === true) {
         Swal.fire({
           background: bgContainer,

@@ -47,7 +47,7 @@ const VerificationLoginPage = () => {
   const location = useLocation();
 
   const redirectTo =
-    new URLSearchParams(location.search).get("redirect") || "/dashboard";
+    new URLSearchParams(location.search).get("redirect") || "/main-dashboard";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -408,10 +408,7 @@ const VerificationLoginPage = () => {
               style={{ marginBottom: 20 }}
             />
 
-            <LoginButton
-              type="submit"
-              disabled={!isCaptchaVerified || loading}
-            >
+            <LoginButton type="submit" disabled={!isCaptchaVerified || loading}>
               Login
             </LoginButton>
           </form>

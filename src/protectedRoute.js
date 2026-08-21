@@ -12,7 +12,9 @@ function ProtectedRoute({ component: Component, redirectTo, ...restOfProps }) {
         isAuthenticated ? (
           <Component {...props} />
         ) : (
-          <Redirect to={redirectTo || "/login"} />
+          <Redirect
+            to={redirectTo || "/verification-login?redirect=/verify/nin"}
+          />
         )
       }
     />

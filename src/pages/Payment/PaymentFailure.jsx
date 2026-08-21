@@ -25,7 +25,7 @@ const PaymentFailure = () => {
   };
 
   const handleTryAgain = () => {
-    history.push("/dashboard");
+    history.push("/main-dashboard");
   };
 
   return (

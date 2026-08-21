@@ -1101,7 +1101,7 @@ function Navbar() {
                 <>
                   <NavItemBtn>
                     {button ? (
-                      <NavBtnLink to="/login">
+                      <NavBtnLink to="/verification-login?redirect=/verify/nin">
                         <OutlineButton
                           $token={token}
                           type="primary"
@@ -1114,7 +1114,7 @@ function Navbar() {
                         </OutlineButton>
                       </NavBtnLink>
                     ) : (
-                      <NavBtnLink to="/login">
+                      <NavBtnLink to="/verification-login?redirect=/verify/nin">
                         <OutlineButton
                           $token={token}
                           onClick={closeMobileMenu}

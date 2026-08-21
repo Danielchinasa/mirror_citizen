@@ -366,7 +366,7 @@ const Home = () => {
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const ctaLink = isAuthenticated
-    ? "/dashboard"
+    ? "/main-dashboard"
     : "/verification-login?redirect=/verify/nin";
 
   const formatPrice = (serviceName) => {

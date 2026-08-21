@@ -217,7 +217,7 @@ const VerifyPage = () => {
   // Redirect if invalid type
   useEffect(() => {
     if (!config) {
-      history.replace("/dashboard");
+      history.replace("/main-dashboard");
     }
   }, [config, history]);
 
@@ -1705,7 +1705,12 @@ const VerifyPage = () => {
               type="checkbox"
               checked={termsAccepted}
               onChange={(e) => setTermsAccepted(e.target.checked)}
-              style={{ accentColor: "#FED001", width: 16, height: 16, flexShrink: 0 }}
+              style={{
+                accentColor: "#FED001",
+                width: 16,
+                height: 16,
+                flexShrink: 0,
+              }}
             />
             <span>
               By proceeding, you agree to our{" "}
@@ -1742,7 +1747,10 @@ const VerifyPage = () => {
             </span>
           </label>
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice || !termsAccepted}>
+          <PayBtn
+            onClick={handlePay}
+            disabled={loading || loadingPrice || !termsAccepted}
+          >
             <FaLock />
             {loading
               ? "Processing..."
