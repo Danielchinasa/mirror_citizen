@@ -227,7 +227,7 @@ const VerifyPage = () => {
   // Redirect if invalid type
   useEffect(() => {
     if (!config) {
-      history.replace("/dashboard");
+      history.replace("/main-dashboard");
     }
   }, [config, history]);
 
@@ -2567,7 +2567,6 @@ const VerifyPage = () => {
           </PopupCard>
         </PopupOverlay>
       )}
-
 
       <PdfModal
         open={showTermsPopup}

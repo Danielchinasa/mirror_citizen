@@ -73,7 +73,9 @@ const HeroSection = ({
                 </Heading>
                 <Link
                   to={
-                    isAuthenticated ? "/dashboard" : "/#verification-services"
+                    isAuthenticated
+                      ? "/main-dashboard"
+                      : "/#verification-services"
                   }
                 >
                   <MainButton

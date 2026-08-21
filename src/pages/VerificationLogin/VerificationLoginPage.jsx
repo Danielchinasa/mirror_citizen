@@ -50,7 +50,7 @@ const VerificationLoginPage = () => {
   const location = useLocation();
 
   const redirectTo =
-    new URLSearchParams(location.search).get("redirect") || "/dashboard";
+    new URLSearchParams(location.search).get("redirect") || "/main-dashboard";
 
   const handleGoBack = () => {
     if (window.history.length > 1) {

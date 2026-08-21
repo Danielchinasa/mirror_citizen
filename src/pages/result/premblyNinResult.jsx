@@ -108,7 +108,7 @@ const PremblyNinResult = () => {
         const requestId = localStorage.getItem("verificationRequestId");
         const response = await apiGetInternalCall(
           `/verification/check-consent/${requestId}`,
-          userToken
+          userToken,
         );
 
         if (response.data.consent === "pending") {
@@ -286,20 +286,20 @@ const PremblyNinResult = () => {
                   {renderDetail(
                     <FaHome />,
                     "Residence Address",
-                    residenceAddress
+                    residenceAddress,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "State of Birth",
-                    birthState
+                    birthState,
                   )}
                   <Divider />
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Residence State",
-                    residenceState
+                    residenceState,
                   )}
                 </Col>
                 <Col span={6}>
@@ -308,7 +308,7 @@ const PremblyNinResult = () => {
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Residence LGA",
-                    residenceLGA
+                    residenceLGA,
                   )}
                 </Col>
                 <Col span={6}>
@@ -317,7 +317,7 @@ const PremblyNinResult = () => {
                   {renderDetail(
                     <IoSchoolSharp />,
                     "Education Level",
-                    educationLevel
+                    educationLevel,
                   )}
                 </Col>
                 <Divider />
@@ -325,7 +325,7 @@ const PremblyNinResult = () => {
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Origin State",
-                    originState
+                    originState,
                   )}
                   <Divider />
                   {renderDetail(<GiBodyHeight />, "Height", height)}
@@ -336,14 +336,14 @@ const PremblyNinResult = () => {
                   {renderDetail(
                     <GiBigDiamondRing />,
                     "Marital Status",
-                    maritalStatus
+                    maritalStatus,
                   )}
                 </Col>
                 <Col span={6}>
                   {renderDetail(
                     <MdOutlinePinDrop />,
                     "Origin Place",
-                    originPlace
+                    originPlace,
                   )}
                   <Divider />
                   {renderDetail(<MdTitle />, "Title", title)}
@@ -352,7 +352,7 @@ const PremblyNinResult = () => {
                   {renderDetail(
                     <MdOutlineWorkOutline />,
                     "Employment Status",
-                    employmentStatus
+                    employmentStatus,
                   )}
                   <Divider />
                   {renderDetail(<FaPray />, "Religion", religion)}

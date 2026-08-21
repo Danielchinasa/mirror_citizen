@@ -307,7 +307,7 @@ function AppContent() {
           <ProtectedRoute path="/set-new-password" component={SetNewPassword} />
           <Route path="/password-confirm" component={PasswordResetConfirm} />
           <Route path="/contact" component={ContactPage} />
-          <ProtectedRoute path="/dashboard" component={DashboardPage} />
+          {/* <ProtectedRoute path="/dashboard" component={DashboardPage} /> */}
           <Route path="/disclaimer" component={Disclaimer} />
           <ProtectedRoute path="/consent" component={Consent} />
           <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
@@ -363,6 +363,7 @@ function AppContent() {
             exact
             component={ResetPasswordPage}
           />
+          <Route component={NotFoundPage} />
         </AppLogout>
       </Switch>
 
