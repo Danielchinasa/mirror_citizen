@@ -20,7 +20,6 @@ import {
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
@@ -38,6 +37,11 @@ import FacebookLogin from "react-facebook-login";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleLogin from "react-apple-login";
 import { trackGA4Event } from "../../hooks/analytics";
+import {
+  COTE_DIVOIRE_TEST_IP_INFO,
+  getIpInfo,
+  IP_PROVIDERS,
+} from "../../config/ipConfiguration";
 
 const { useToken } = theme;
 
@@ -60,7 +64,6 @@ const LoginForm = (props) => {
   const [api, contextHolder] = notification.useNotification();
 
   const [ipAddress, setIpAddress] = useState(null);
-  const [ipCountry, setIpCountry] = useState(null);
 
   const openNotification = (placement) => {
     api.info({
@@ -78,28 +81,11 @@ const LoginForm = (props) => {
   );
 
   useEffect(() => {
-    const fetchIpAddress = async () => {
-      try {
-        // Attempt to fetch IP address from the first URL
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        setIpAddress(response.data.ip);
-      } catch (error1) {
-        console.error("Error fetching IP address from primary URL:", error1);
-        try {
-          // Attempt to fetch IP address from the second URL if the first one fails
-          const response = await axios.get("https://ipapi.co/json/");
-          setIpAddress(response.data.ip);
-        } catch (error2) {
-          console.error(
-            "Error fetching IP address from secondary URL:",
-            error2,
-          );
-          setIpAddress("105.235.70.1");
-        }
-      }
-    };
-
-    fetchIpAddress();
+    getIpInfo({
+      useTestOverride: false,
+      fallbackTestIpInfo: COTE_DIVOIRE_TEST_IP_INFO.loginFallback,
+      providers: IP_PROVIDERS.login,
+    }).then(({ ip }) => setIpAddress(ip));
 
     // Retrieve email from cookie and set in state when component mounts
     const rememberedEmail = Cookies.get("rememberedEmail");
@@ -207,7 +193,7 @@ const LoginForm = (props) => {
 
         trackGA4Event("login", { method: "email" });
         // On successful login with jwtToken, navigate to the main dashboard
-        localStorage.setItem("IpAddress", ipAddress);
+        if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
         trackEvent({
           action: "click_normail_signin_sucess",
@@ -325,7 +311,7 @@ const LoginForm = (props) => {
         dispatch(fetchUserProfile(userData.jwtToken));
 
         if (userData.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
           history.push("/main-dashboard");
         } else {
           Swal.fire({
@@ -420,7 +406,7 @@ const LoginForm = (props) => {
       dispatch(fetchUserProfile(userDataFb.jwtToken));
 
       if (userDataFb.jwtToken) {
-        localStorage.setItem("IpAddress", ipAddress);
+        if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
         history.push("/main-dashboard");
       } else {
         throw new Error("Login failed");
