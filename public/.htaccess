@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Serve existing files and directories normally; send every other request to
+# the React app so BrowserRouter can render its not-found page.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^ index.html [L]

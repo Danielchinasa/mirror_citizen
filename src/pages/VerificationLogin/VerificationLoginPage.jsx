@@ -45,7 +45,7 @@ const VerificationLoginPage = () => {
   const { t } = useLocale();
 
   const redirectTo =
-    new URLSearchParams(location.search).get("redirect") || "/dashboard";
+    new URLSearchParams(location.search).get("redirect") || "/main-dashboard";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -394,7 +394,9 @@ const VerificationLoginPage = () => {
                 />{" "}
                 {t("login.rememberMe")}
               </RememberLabel>
-              <ForgotLink to="/forgot-password">{t("login.forgotPassword")}</ForgotLink>
+              <ForgotLink to="/forgot-password">
+                {t("login.forgotPassword")}
+              </ForgotLink>
             </FormRow>
             <ReCAPTCHA
               sitekey="6Lc308cZAAAAALRRhzvQnCeHrY2WoYmIaBb-6knX"
@@ -402,11 +404,8 @@ const VerificationLoginPage = () => {
               onExpired={() => setIsCaptchaVerified(false)}
               style={{ marginBottom: 20 }}
             />
-            
-            <LoginButton
-              type="submit"
-              disabled={!isCaptchaVerified || loading}
-            >
+
+            <LoginButton type="submit" disabled={!isCaptchaVerified || loading}>
               Login
             </LoginButton>
           </form>

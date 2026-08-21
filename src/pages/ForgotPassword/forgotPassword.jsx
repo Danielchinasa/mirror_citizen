@@ -56,7 +56,7 @@ const ForgotPassword = () => {
           duration: 10, // Duration in seconds
         });
         // Redirect or perform other actions as needed
-        history.push("/login");
+        history.push("/verification-login");
       } else if (response == "user does not exist") {
         // Return a response from the API on success
         message.error(response);
