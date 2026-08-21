@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
@@ -31,6 +30,7 @@ import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
+import { getIpInfo } from "../../config/ipConfiguration";
 
 import {
   HeroWrapper,
@@ -102,105 +102,9 @@ const Home = () => {
 
   useEffect(() => {
     const fetchIpAddress = async () => {
-      // ═══════════════════════════════════════════════════════════════════
-      // 🧪 TESTING SECTION - Uncomment to manually set IP/Country/Currency
-      // ═══════════════════════════════════════════════════════════════════
-      const testIp = "41.210.160.1"; // Uganda IP
-      const testCountry = "UG"; // Uganda country code
-      const testCurrency = "UGX"; // Uganda Shilling
-
-      setIpAddress(testIp);
-      localStorage.setItem("IpAddress", testIp);
-      setIpCountry(testCountry);
-      localStorage.setItem("userCountry", testCountry);
-      localStorage.setItem("currencyCheck", testCurrency);
-      console.log(
-        "🧪 TEST MODE: Using manual IP/Country:",
-        testIp,
-        testCountry,
-      );
-      return;
-      // ═══════════════════════════════════════════════════════════════════
-
-      // Try ipapi.co first (gets IP and country)
-      try {
-        const response = await axios.get("https://ipapi.co/json/");
-        const ip = response.data.ip;
-        const country = (
-          response.data.country_code ||
-          response.data.country ||
-          ""
-        ).toUpperCase();
-
-        if (ip) {
-          localStorage.setItem("IpAddress", ip);
-          setIpAddress(ip);
-        }
-
-        if (country) {
-          localStorage.setItem("userCountry", country);
-          setIpCountry(country);
-          const currency = country === "UG" ? "UGX" : "USD";
-          localStorage.setItem("currencyCheck", currency);
-          console.log(
-            "✅ IP/Country detected from ipapi.co:",
-            ip,
-            country,
-            currency,
-          );
-          return;
-        }
-      } catch (error1) {
-        console.error("❌ ipapi.co failed:", error1);
-      }
-
-      // Fallback to ipbase.com (also gets IP and country)
-      try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        const ip = response.data.ip;
-        const country = (
-          response.data.country_code ||
-          response.data.countryCode ||
-          ""
-        ).toUpperCase();
-
-        if (ip) {
-          localStorage.setItem("IpAddress", ip);
-          setIpAddress(ip);
-        }
-
-        if (country) {
-          localStorage.setItem("userCountry", country);
-          setIpCountry(country);
-          const currency = country === "UG" ? "UGX" : "USD";
-          localStorage.setItem("currencyCheck", currency);
-          console.log(
-            "✅ IP/Country detected from ipbase.com:",
-            ip,
-            country,
-            currency,
-          );
-          return;
-        }
-      } catch (error2) {
-        console.error("❌ ipbase.com failed:", error2);
-      }
-
-      // Both APIs failed - use default Uganda values
-      const defaultIp = "41.210.160.1";
-      const defaultCountry = "UG";
-      const defaultCurrency = "UGX";
-      localStorage.setItem("IpAddress", defaultIp);
-      localStorage.setItem("userCountry", defaultCountry);
-      localStorage.setItem("currencyCheck", defaultCurrency);
-      setIpAddress(defaultIp);
-      setIpCountry(defaultCountry);
-      console.log(
-        "⚠️ Both APIs failed - using default Uganda values:",
-        defaultIp,
-        defaultCountry,
-        defaultCurrency,
-      );
+      const { ip, country } = await getIpInfo();
+      setIpAddress(ip);
+      setIpCountry(country);
     };
     fetchIpAddress();
   }, []);
@@ -249,7 +153,7 @@ const Home = () => {
         dispatch(fetchUserProfile(userData.jwtToken));
 
         if (userData.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
           history.push("/main-dashboard");
         } else {
           Swal.fire({
