@@ -391,7 +391,7 @@ const Home = () => {
   // };
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const ctaLink = isAuthenticated ? "/dashboard" : "/login";
+  const ctaLink = isAuthenticated ? "/main-dashboard" : "/verification-login";
 
   return (
     <>

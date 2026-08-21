@@ -48,7 +48,7 @@ const VerificationLoginPage = () => {
   const location = useLocation();
 
   const redirectTo =
-    new URLSearchParams(location.search).get("redirect") || "/dashboard";
+    new URLSearchParams(location.search).get("redirect") || "/main-dashboard";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -343,7 +343,8 @@ const VerificationLoginPage = () => {
               callback={handleFacebook}
               render={(renderProps) => (
                 <SSOButton type="button" onClick={renderProps.onClick}>
-                  <FaFacebook color="#1877F2" /> {t("ninLogin.continueWithFacebook")}
+                  <FaFacebook color="#1877F2" />{" "}
+                  {t("ninLogin.continueWithFacebook")}
                 </SSOButton>
               )}
             />
@@ -400,7 +401,9 @@ const VerificationLoginPage = () => {
                 />{" "}
                 {t("ninLogin.rememberMe")}
               </RememberLabel>
-              <ForgotLink to="/forgot-password">{t("ninLogin.forgotPassword")}</ForgotLink>
+              <ForgotLink to="/forgot-password">
+                {t("ninLogin.forgotPassword")}
+              </ForgotLink>
             </FormRow>
 
             <ReCAPTCHA
@@ -409,11 +412,8 @@ const VerificationLoginPage = () => {
               onExpired={() => setIsCaptchaVerified(false)}
               style={{ marginBottom: 20 }}
             />
-            
-            <LoginButton
-              type="submit"
-              disabled={!isCaptchaVerified || loading}
-            >
+
+            <LoginButton type="submit" disabled={!isCaptchaVerified || loading}>
               Login
             </LoginButton>
           </form>
