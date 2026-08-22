@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
@@ -30,6 +29,7 @@ import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
+import { getIpInfo } from "../../config/ipConfiguration";
 
 import {
   HeroWrapper,
@@ -106,74 +106,9 @@ const Home = () => {
 
   useEffect(() => {
     const fetchIpAndCountry = async () => {
-      // ============================================================
-      //  🧪 TODO: TESTING OVERRIDE - Uncomment to use static IP/Country
-      // ============================================================
-      // When uncommented, bypasses all IP detection APIs
-      // Comment out this entire section for normal operation
-      // ============================================================
-      const testIp = "41.212.86.175"; // Kenya IP
-      const testCountry = "KE"; // Kenya
-      const testCurrency = "KES"; // Kenyan Shilling
-      // For testing USD pricing, use:
-      // const testIp = "8.8.8.8";           // US IP
-      // const testCountry = "US";           // United States
-      // const testCurrency = "USD";         // US Dollar
-      setIpAddress(testIp);
-      setUserCountry(testCountry);
-      localStorage.setItem("IpAddress", testIp);
-      localStorage.setItem("userCountry", testCountry);
-      localStorage.setItem("currencyCheck", testCurrency);
-      console.log(
-        "🧪 Using test IP/Country:",
-        testIp,
-        testCountry,
-        testCurrency,
-      );
-      return;
-      // ============================================================
-
-      // Try ipapi.co first — returns IP + country info in one call
-      try {
-        const response = await axios.get("https://ipapi.co/json/");
-        setIpAddress(response.data.ip);
-        localStorage.setItem("IpAddress", response.data.ip);
-        const country = response.data.country;
-        setUserCountry(country);
-        localStorage.setItem("userCountry", country); // Store country in localStorage for other pages
-        const currency = country === "KE" ? "KES" : "USD";
-        localStorage.setItem("currencyCheck", currency);
-        return;
-      } catch (error1) {
-        console.error("Error fetching from ipapi.co:", error1);
-      }
-
-      // Fallback to ipbase.com for IP and country
-      try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        const ip = response.data.ip;
-        const country = response.data.country_code || response.data.countryCode;
-        setIpAddress(ip);
-        localStorage.setItem("IpAddress", ip);
-        if (country) {
-          setUserCountry(country);
-          localStorage.setItem("userCountry", country);
-          const currency = country === "KE" ? "KES" : "USD";
-          localStorage.setItem("currencyCheck", currency);
-        }
-        return;
-      } catch (error2) {
-        console.error("Error fetching IP from both sources:", error2);
-        // Both APIs failed - use default Kenya IP and country
-        const defaultIp = "41.212.86.175";
-        const defaultCountry = "KE";
-        const defaultCurrency = "KES";
-        setIpAddress(defaultIp);
-        setUserCountry(defaultCountry);
-        localStorage.setItem("IpAddress", defaultIp);
-        localStorage.setItem("userCountry", defaultCountry);
-        localStorage.setItem("currencyCheck", defaultCurrency);
-      }
+      const { ip, country } = await getIpInfo();
+      setIpAddress(ip);
+      setUserCountry(country);
     };
 
     fetchIpAndCountry();
@@ -233,7 +168,7 @@ const Home = () => {
         dispatch(fetchUserProfile(userData.jwtToken));
 
         if (userData.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
           history.push("/main-dashboard");
         } else {
           Swal.fire({
