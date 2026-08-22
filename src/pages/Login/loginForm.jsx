@@ -20,7 +20,6 @@ import {
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
@@ -38,6 +37,10 @@ import FacebookLogin from "react-facebook-login";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleLogin from "react-apple-login";
 import { trackGA4Event } from "../../hooks/analytics";
+import {
+  getIpInfo,
+  GHANA_TEST_IP_INFO,
+} from "../../config/ipConfiguration";
 
 const { useToken } = theme;
 
@@ -59,8 +62,7 @@ const LoginForm = (props) => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const [ipAddress, setIpAddress] = useState("41.212.86.175");
-  const [ipCountry, setIpCountry] = useState(null);
+  const [ipAddress, setIpAddress] = useState(null);
 
   const openNotification = (placement) => {
     api.info({
@@ -78,15 +80,7 @@ const LoginForm = (props) => {
   );
 
   useEffect(() => {
-    // TODO: remove hardcoded Ghana IP/currency before release
-    setIpAddress("41.212.86.175");
-    localStorage.setItem("IpAddress", "41.212.86.175");
-    localStorage.setItem("userCountry", "GH");
-    localStorage.setItem("currencyCheck", "GHS");
-
-    // TODO: remove hardcoded IP before release
-    // const fetchIpAddress = async () => { ... }
-    // fetchIpAddress();
+    getIpInfo(GHANA_TEST_IP_INFO.login).then(({ ip }) => setIpAddress(ip));
 
     // Retrieve email from cookie and set in state when component mounts
     const rememberedEmail = Cookies.get("rememberedEmail");
@@ -194,7 +188,7 @@ const LoginForm = (props) => {
 
         trackGA4Event("login", { method: "email" });
         // On successful login with jwtToken, navigate to the main dashboard
-        localStorage.setItem("IpAddress", ipAddress);
+        if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
         trackEvent({
           action: "click_normail_signin_sucess",

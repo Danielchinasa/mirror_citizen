@@ -31,8 +31,9 @@ import verificationConfig from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
-import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf";
-import termsPdf from "../../images/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf";
+import privacyPolicy from "../../privacyPolicy";
+import termsOfService from "../../termsOfService";
+import { getIpInfo } from "../../config/ipConfiguration";
 
 import {
   PageWrapper,
@@ -312,101 +313,8 @@ const VerifyPage = () => {
     let isMounted = true;
 
     const syncCurrencyFromLiveIp = async () => {
-      // First check if IP and country are already stored from main landing page
-      const storedIp = localStorage.getItem("IpAddress");
-      const storedCountry = localStorage.getItem("userCountry");
-      const storedCurrency = localStorage.getItem("currencyCheck");
-
-      // If we have all stored values, use them (main landing page already fetched)
-      if (storedIp && storedCountry && storedCurrency) {
-        if (isMounted) {
-          setCurrencyCheck(storedCurrency.toUpperCase());
-        }
-        console.log(
-          "✅ VerifyPage using stored IP/Country:",
-          storedIp,
-          storedCountry,
-          storedCurrency,
-        );
-        return; // Don't fetch again
-      }
-
-      // Otherwise, fetch IP and country (fallback for direct page access)
-      try {
-        const response = await fetch("https://ipapi.co/json/");
-        if (!response.ok) throw new Error("ipapi request failed");
-
-        const data = await response.json();
-        const countryCode = (
-          data?.country_code ||
-          data?.country ||
-          ""
-        ).toUpperCase();
-
-        if (data?.ip) {
-          localStorage.setItem("IpAddress", data.ip);
-        }
-
-        if (countryCode) {
-          localStorage.setItem("userCountry", countryCode);
-          const detectedCurrency =
-            countryCode === LOCAL_COUNTRY_CODE
-              ? LOCAL_CURRENCY
-              : FOREIGN_CURRENCY;
-
-          if (isMounted) {
-            setCurrencyCheck(detectedCurrency);
-          }
-
-          localStorage.setItem("currencyCheck", detectedCurrency);
-          return;
-        }
-      } catch (error) {
-        console.error("VerifyPage IP lookup failed:", error);
-      }
-
-      // Fallback to ipbase.com for IP and country
-      try {
-        const fallback = await fetch("https://api.ipbase.com/v1/json/");
-        if (fallback.ok) {
-          const fallbackData = await fallback.json();
-          const ip = fallbackData?.ip;
-          const country =
-            fallbackData?.country_code || fallbackData?.countryCode;
-
-          if (ip) {
-            localStorage.setItem("IpAddress", ip);
-          }
-
-          if (country) {
-            localStorage.setItem("userCountry", country);
-            const detectedCurrency =
-              country.toUpperCase() === LOCAL_COUNTRY_CODE
-                ? LOCAL_CURRENCY
-                : FOREIGN_CURRENCY;
-
-            if (isMounted) {
-              setCurrencyCheck(detectedCurrency);
-            }
-            localStorage.setItem("currencyCheck", detectedCurrency);
-            return;
-          }
-        }
-      } catch (fallbackError) {
-        console.error("VerifyPage fallback IP lookup failed:", fallbackError);
-      }
-
-      // Both APIs failed - use default Ghana values
-      const defaultIp = "102.131.16.255";
-      const defaultCountry = "GH";
-      const defaultCurrency = "GHS";
-      localStorage.setItem("IpAddress", defaultIp);
-      localStorage.setItem("userCountry", defaultCountry);
-      localStorage.setItem("currencyCheck", defaultCurrency);
-
-      if (isMounted) {
-        setCurrencyCheck(defaultCurrency);
-      }
+      const { currency } = await getIpInfo();
+      if (isMounted && currency) setCurrencyCheck(currency);
     };
 
     syncCurrencyFromLiveIp();
