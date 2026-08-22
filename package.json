@@ -59,10 +59,10 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "REACT_APP_DEPLOYMENT_ENV=development react-scripts start",
-    "build": "REACT_APP_DEPLOYMENT_ENV=production react-scripts build",
-    "build:production": "REACT_APP_DEPLOYMENT_ENV=production react-scripts build",
-    "build:staging": "REACT_APP_DEPLOYMENT_ENV=staging react-scripts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider REACT_APP_DEPLOYMENT_ENV=development react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider REACT_APP_DEPLOYMENT_ENV=production react-scripts build",
+    "build:production": "NODE_OPTIONS=--openssl-legacy-provider REACT_APP_DEPLOYMENT_ENV=production react-scripts build",
+    "build:staging": "NODE_OPTIONS=--openssl-legacy-provider REACT_APP_DEPLOYMENT_ENV=staging react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
