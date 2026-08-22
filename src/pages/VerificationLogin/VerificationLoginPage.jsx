@@ -6,7 +6,6 @@ import { FaFacebook } from "react-icons/fa";
 import { useLocale } from "../../components/LocaleProvider";
 import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
-import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
@@ -14,6 +13,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import { getIpInfo } from "../../config/ipConfiguration";
 import {
   PageWrapper,
   MainContent,
@@ -60,83 +60,8 @@ const VerificationLoginPage = () => {
 
   useEffect(() => {
     const fetchIpAddress = async () => {
-      // ============================================================
-      // 🧪 TESTING OVERRIDE - Uncomment to use static IP/Country
-      // ============================================================
-      // When uncommented, bypasses stored values and API detection
-      // Comment out this entire section for normal operation
-      // ============================================================
-      const testIp = "41.202.219.255"; // Cote d'Ivoire IP
-      const testCountry = "CI"; // Cote d'Ivoire
-      const testCurrency = "XOF"; // West African CFA franc
-      // For testing USD pricing, use:
-      // const testIp = "8.8.8.8";           // US IP
-      // const testCountry = "US";           // United States
-      // const testCurrency = "USD";         // US Dollar
-      setIpAddress(testIp);
-      localStorage.setItem("IpAddress", testIp);
-      localStorage.setItem("userCountry", testCountry);
-      localStorage.setItem("currencyCheck", testCurrency);
-      console.log(
-        "🧪 Using test IP/Country:",
-        testIp,
-        testCountry,
-        testCurrency,
-      );
-      return;
-      // ============================================================
-
-      // First check if IP and country are already stored from main landing page
-      const storedIp = localStorage.getItem("IpAddress");
-      const storedCountry = localStorage.getItem("userCountry");
-      const storedCurrency = localStorage.getItem("currencyCheck");
-
-      // If we have all stored values, use them (main landing page already fetched)
-      if (storedIp && storedCountry && storedCurrency) {
-        setIpAddress(storedIp);
-        return; // Don't fetch again
-      }
-
-      // Otherwise, fetch IP and country (fallback for direct login page access)
-      // Try ipapi.co first — returns IP + country info in one call
-      try {
-        const response = await axios.get("https://ipapi.co/json/");
-        const ip = response.data.ip;
-        const country = response.data.country_code || response.data.country;
-        const currency = country === "CI" ? "XOF" : "USD";
-        setIpAddress(ip);
-        localStorage.setItem("IpAddress", ip);
-        localStorage.setItem("userCountry", country || "");
-        localStorage.setItem("currencyCheck", currency);
-        return;
-      } catch (error1) {
-        console.error("Error fetching IP from ipapi.co:", error1);
-      }
-
-      // Fallback to ipbase.com for IP and country
-      try {
-        const response = await axios.get("https://api.ipbase.com/v1/json/");
-        const ip = response.data.ip;
-        const country = response.data.country_code || response.data.countryCode;
-        const currency = country === "CI" ? "XOF" : "USD";
-        setIpAddress(ip);
-        localStorage.setItem("IpAddress", ip);
-        if (country) {
-          localStorage.setItem("userCountry", country);
-          localStorage.setItem("currencyCheck", currency);
-        }
-        return;
-      } catch (error2) {
-        console.error("Error fetching IP from both sources:", error2);
-        // Both APIs failed - use default Cote d'Ivoire IP and country
-        const defaultIp = "41.202.219.255";
-        const defaultCountry = "CI";
-        const defaultCurrency = "XOF";
-        setIpAddress(defaultIp);
-        localStorage.setItem("IpAddress", defaultIp);
-        localStorage.setItem("userCountry", defaultCountry);
-        localStorage.setItem("currencyCheck", defaultCurrency);
-      }
+      const { ip } = await getIpInfo();
+      setIpAddress(ip);
     };
 
     fetchIpAddress();
@@ -205,7 +130,7 @@ const VerificationLoginPage = () => {
 
       if (response.jwtToken) {
         trackGA4Event("login", { method: "email" });
-        localStorage.setItem("IpAddress", ipAddress);
+        if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
         trackEvent({
           action: "click_normail_signin_sucess",
           category: "Authentication Success",
@@ -246,7 +171,7 @@ const VerificationLoginPage = () => {
         dispatch(fetchUserProfile(res.jwtToken));
 
         if (res.jwtToken) {
-          localStorage.setItem("IpAddress", ipAddress);
+          if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
           history.push(redirectTo);
         } else {
           setFormErrors({ general: "Google login failed." });
@@ -283,7 +208,7 @@ const VerificationLoginPage = () => {
       dispatch(fetchUserProfile(res.jwtToken));
 
       if (res.jwtToken) {
-        localStorage.setItem("IpAddress", ipAddress);
+        if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
         history.push(redirectTo);
       } else {
         setFormErrors({ general: "Facebook login failed." });

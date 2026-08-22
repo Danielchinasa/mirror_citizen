@@ -40,6 +40,12 @@ import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
 import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
 import termsPdf from "../../images/citoyen Cote dIvoire Terms of Service FR-EN v1.2 - Confirmed Service Scope.pdf";
+import {
+  COTE_DIVOIRE_TEST_IP_INFO,
+  getIpInfo,
+  getNonProductionTestIp,
+  isTestIpOverrideEnabled,
+} from "../../config/ipConfiguration";
 
 import {
   PageWrapper,
@@ -319,80 +325,25 @@ const VerifyPage = () => {
   // Use stored IP/country from main landing page, only fetch if missing
   useEffect(() => {
     const ensureIpAndCurrency = async () => {
-      // First check if IP and country are already stored from main landing page
       const storedIp = localStorage.getItem("IpAddress");
       const storedCountry = localStorage.getItem("userCountry");
       const storedCurrency = localStorage.getItem("currencyCheck");
 
-      // If we have all stored values, use them (main landing page already fetched)
-      if (storedIp && storedCountry && storedCurrency) {
-        console.log(
-          "✅ VerifyPage using stored IP/Country:",
-          storedIp,
-          storedCountry,
-          storedCurrency,
-        );
-        return; // Don't fetch again
+      // Retain the original non-production reuse of complete stored IP data.
+      // Production refreshes it dynamically to avoid reusing a stale test IP.
+      if (
+        isTestIpOverrideEnabled &&
+        storedIp &&
+        storedCountry &&
+        storedCurrency
+      ) {
+        return;
       }
 
-      // Otherwise, fetch IP and country (fallback for direct page access)
-      try {
-        const response = await fetch("https://ipapi.co/json/");
-        if (!response.ok) throw new Error("ipapi request failed");
-
-        const data = await response.json();
-        const ip = data?.ip;
-        const country = (
-          data?.country_code ||
-          data?.country ||
-          ""
-        ).toUpperCase();
-
-        if (ip) {
-          localStorage.setItem("IpAddress", ip);
-        }
-
-        if (country) {
-          localStorage.setItem("userCountry", country);
-          const currency = country === "CI" ? "XOF" : "USD";
-          localStorage.setItem("currencyCheck", currency);
-          return;
-        }
-      } catch (error) {
-        console.error("VerifyPage IP lookup failed:", error);
-      }
-
-      // Fallback to ipbase.com for IP and country
-      try {
-        const fallback = await fetch("https://api.ipbase.com/v1/json/");
-        if (fallback.ok) {
-          const fallbackData = await fallback.json();
-          const ip = fallbackData?.ip;
-          const country =
-            fallbackData?.country_code || fallbackData?.countryCode;
-
-          if (ip) {
-            localStorage.setItem("IpAddress", ip);
-          }
-
-          if (country) {
-            localStorage.setItem("userCountry", country);
-            const currency = country.toUpperCase() === "CI" ? "XOF" : "USD";
-            localStorage.setItem("currencyCheck", currency);
-            return;
-          }
-        }
-      } catch (fallbackError) {
-        console.error("VerifyPage fallback IP lookup failed:", fallbackError);
-      }
-
-      // Both APIs failed - use default Cote d'Ivoire values
-      const defaultIp = "41.202.219.255";
-      const defaultCountry = "CI";
-      const defaultCurrency = "XOF";
-      localStorage.setItem("IpAddress", defaultIp);
-      localStorage.setItem("userCountry", defaultCountry);
-      localStorage.setItem("currencyCheck", defaultCurrency);
+      await getIpInfo({
+        useTestOverride: false,
+        fallbackTestIpInfo: COTE_DIVOIRE_TEST_IP_INFO.primary,
+      });
     };
 
     ensureIpAndCurrency();
@@ -701,15 +652,21 @@ const VerifyPage = () => {
           serviceCode: config.serviceCode,
           ...apiFormData,
         };
+        const legacyStoredIp = localStorage.getItem("ipAddress");
+        const detectedIp =
+          legacyStoredIp || localStorage.getItem("IpAddress");
+        const ipAddress = isTestIpOverrideEnabled
+          ? legacyStoredIp ||
+            getNonProductionTestIp(
+              COTE_DIVOIRE_TEST_IP_INFO.verificationRequest,
+            )
+          : detectedIp;
         initiateResponse = await apiPostInternalCall(
           `/africa/verification/${config.countryCode}/initiate`,
           payload,
           userToken,
           {
-            headers: {
-              "X-Forwarded-For":
-                localStorage.getItem("ipAddress") || "41.207.206.172",
-            },
+            headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {},
           },
         );
         initiateResponse = initiateResponse?.data || initiateResponse;

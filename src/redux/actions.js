@@ -10,6 +10,10 @@ import {
   apiGetInternalCall,
 } from "../apiUtils";
 import ReactGA from "react-ga4";
+import {
+  COTE_DIVOIRE_TEST_IP_INFO,
+  getNonProductionTestIp,
+} from "../config/ipConfiguration";
 
 const logPurchase = ({ currency, value, transactionId, paymentType }) => {
   ReactGA.event("purchase", {
@@ -37,7 +41,9 @@ export const fetchVerificationServicePrices =
           : services[config.apiServiceName];
         rate = response.data?.rate;
       } else {
-        const ipAddress = localStorage.getItem("IpAddress") || "41.202.219.255";
+        const ipAddress =
+          localStorage.getItem("IpAddress") ||
+          getNonProductionTestIp(COTE_DIVOIRE_TEST_IP_INFO.primary);
         const response = await apiPostInternalCall(
           `/transaction/service-prices`,
           { ipAddress },
@@ -668,12 +674,14 @@ export const initiateVerificationRequest =
           delete restructuredData[section];
         }
       });
-      const ipAddress = localStorage.getItem("IpAddress") || "41.202.219.255";
+      const ipAddress =
+        localStorage.getItem("IpAddress") ||
+        getNonProductionTestIp(COTE_DIVOIRE_TEST_IP_INFO.primary);
       const response = await apiPost(
         `/africa/verification/CI/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": ipAddress } },
+        { headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {} },
       );
 
       // dispatch({
@@ -744,12 +752,14 @@ export const initiateStakeHoldersRequest =
           delete restructuredData[section];
         }
       });
-      const ipAddress = localStorage.getItem("IpAddress") || "41.202.219.255";
+      const ipAddress =
+        localStorage.getItem("IpAddress") ||
+        getNonProductionTestIp(COTE_DIVOIRE_TEST_IP_INFO.primary);
       const response = await apiPost(
         `/africa/verification/CI/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": ipAddress } },
+        { headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {} },
       );
 
       // Return the user data upon successful verification
