@@ -662,12 +662,12 @@ export const initiateVerificationRequest =
           delete restructuredData[section];
         }
       });
-      const ipAddress = localStorage.getItem("IpAddress") || "102.203.11.255";
+      const ipAddress = localStorage.getItem("IpAddress");
       const response = await apiPost(
         `/africa/verification/UG/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": ipAddress } },
+        { headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {} },
       );
 
       // dispatch({
@@ -737,12 +737,12 @@ export const initiateStakeHoldersRequest =
           delete restructuredData[section];
         }
       });
-      const ipAddress = localStorage.getItem("IpAddress") || "102.203.11.255";
+      const ipAddress = localStorage.getItem("IpAddress");
       const response = await apiPost(
         `/africa/verification/UG/initiate`,
         restructuredData,
         token,
-        { headers: { "X-Forwarded-For": ipAddress } },
+        { headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {} },
       );
 
       // Return the user data upon successful verification
