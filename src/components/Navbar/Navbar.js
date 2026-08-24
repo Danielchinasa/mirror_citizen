@@ -61,6 +61,10 @@ import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { absoluteAppUrl, withBasePath } from "../../routing";
+import {
+  formatWalletCurrency,
+  getCurrencySymbol,
+} from "../../utils/currencyFormat";
 
 const { useToken } = theme;
 
@@ -390,18 +394,10 @@ function Navbar() {
   }, [dispatch]);
 
   const userBalance = userDetails?.walletBalance || 0;
-  const formatToCFA = (value) => {
-    return new Intl.NumberFormat("fr-CI", {
-      style: "currency",
-      currency: "XOF",
-    }).format(value);
-  };
-  const formatToDollar = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(value);
-  };
+  const formatWalletDisplay = (value) =>
+    formatWalletCurrency(value, userCurrency);
+  const minTopUpAmount = userCurrency.toUpperCase() === "XOF" ? 1000 : 10;
+  const minTopUpAmountLabel = `${getCurrencySymbol(userCurrency)}${minTopUpAmount.toLocaleString()}`;
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal1Open, setModal1Open] = useState(false);
@@ -477,8 +473,8 @@ function Navbar() {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
+          title: t("common.error"),
+          text: t("verify.alert.paymentCancelledOrDeclined"),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -517,7 +513,7 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Failed Payment",
+              title: t("verify.alert.failedPayment"),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -542,8 +538,8 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "There was an issue making payment",
+        title: t("common.error"),
+        text: t("verify.alert.paymentIssue"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -651,17 +647,15 @@ function Navbar() {
   }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOk = async () => {
-    const minAmount = userCurrency.toUpperCase() === "XOF" ? 1000 : 10;
+    const minAmount = minTopUpAmount;
 
     // Validate minimum amount
     if (!amount || parseFloat(amount) < minAmount) {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "XOF" ? "CFA 1,000" : "$10"
-        }`,
+        title: t("common.error"),
+        text: `${t("dashboard.minimumTopup")} ${minTopUpAmountLabel}`,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -718,8 +712,8 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Response data does not contain a link",
+              title: t("common.error"),
+              text: t("verify.alert.noLink"),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -740,8 +734,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Failed to initialize payment",
+            title: t("common.error"),
+            text: t("verify.alert.initPaymentFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -794,8 +788,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Failed to initialize PayPal payment",
+            title: t("common.error"),
+            text: t("verify.alert.paypalInitFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -838,8 +832,8 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize Paystack payment",
+              title: t("common.error"),
+              text: t("verify.alert.paystackInitFailed"),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -857,8 +851,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: error.message || "Failed to initialize Paystack payment",
+            title: t("common.error"),
+            text: error.message || t("verify.alert.paystackInitFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -878,8 +872,8 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Failed to initialize payment",
+        title: t("common.error"),
+        text: t("verify.alert.initPaymentFailed"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1242,9 +1236,7 @@ function Navbar() {
                           {t("nav.walletBalance")}:
                           <span style={{ color: "#FD7A00" }}>
                             {" "}
-                            {userCurrency === "USD" || userCurrency === "usd"
-                              ? `${formatToDollar(userBalance)}`
-                              : formatToCFA(userBalance)}
+                            {formatWalletDisplay(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1257,9 +1249,7 @@ function Navbar() {
                         >
                           <Title level={5}>{t("nav.walletBalance")}:</Title>
                           <Title level={3} style={{ color: "#FD7A00" }}>
-                            {userCurrency.toUpperCase() === "XOF"
-                              ? formatToCFA(userBalance)
-                              : `${formatToDollar(userBalance)}`}
+                            {formatWalletDisplay(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
@@ -1326,42 +1316,26 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             {t("nav.fundWalletDescription")}{" "}
-                            {userCurrency.toUpperCase() === "XOF"
-                              ? "CFA 1,000"
-                              : "$10"}
-                            )
+                            {minTopUpAmountLabel})
                           </p>
                           <Input
                             type="number"
-                            placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "XOF"
-                                ? "1000"
-                                : "10"
-                            })`}
+                            placeholder={`Enter amount (min: ${minTopUpAmount})`}
                             value={amount}
                             onChange={handleChange}
-                            min={
-                              userCurrency.toUpperCase() === "XOF" ? 1000 : 10
-                            }
+                            min={minTopUpAmount}
                           />
-                          {amount &&
-                            parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "XOF"
-                                ? 1000
-                                : 10) && (
-                              <p
-                                style={{
-                                  color: "red",
-                                  fontSize: "12px",
-                                  marginTop: "5px",
-                                }}
-                              >
-                                Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "XOF"
-                                  ? "CFA 1,000"
-                                  : "$10"}
-                              </p>
-                            )}
+                          {amount && parseFloat(amount) < minTopUpAmount && (
+                            <p
+                              style={{
+                                color: "red",
+                                fontSize: "12px",
+                                marginTop: "5px",
+                              }}
+                            >
+                              Minimum top-up amount is {minTopUpAmountLabel}
+                            </p>
+                          )}
                         </Modal>
                         <Modal
                           // title="Complete Wallet TopUp"
@@ -1488,10 +1462,7 @@ function Navbar() {
                           {t("nav.walletBalance")}:
                           <span style={{ color: "#FD7A00" }}>
                             {" "}
-                            {/* ₦{userBalance.toLocaleString()} */}
-                            {userCurrency === "USD" || userCurrency === "usd"
-                              ? `${formatToDollar(userBalance)}`
-                              : formatToCFA(userBalance)}
+                            {formatWalletDisplay(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1504,9 +1475,7 @@ function Navbar() {
                         >
                           <Title level={5}>{t("nav.walletBalance")}:</Title>
                           <Title level={3} style={{ color: "#FD7A00" }}>
-                            {userCurrency.toUpperCase() === "XOF"
-                              ? formatToCFA(userBalance)
-                              : `${formatToDollar(userBalance)}`}
+                            {formatWalletDisplay(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
@@ -1573,42 +1542,26 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             {t("nav.fundWalletDescription")}{" "}
-                            {userCurrency.toUpperCase() === "XOF"
-                              ? "CFA 1,000"
-                              : "$10"}
-                            )
+                            {minTopUpAmountLabel})
                           </p>
                           <Input
                             type="number"
-                            placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "XOF"
-                                ? "1000"
-                                : "10"
-                            })`}
+                            placeholder={`Enter amount (min: ${minTopUpAmount})`}
                             value={amount}
                             onChange={handleChange}
-                            min={
-                              userCurrency.toUpperCase() === "XOF" ? 1000 : 10
-                            }
+                            min={minTopUpAmount}
                           />
-                          {amount &&
-                            parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "XOF"
-                                ? 1000
-                                : 10) && (
-                              <p
-                                style={{
-                                  color: "red",
-                                  fontSize: "12px",
-                                  marginTop: "5px",
-                                }}
-                              >
-                                Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "XOF"
-                                  ? "CFA 1,000"
-                                  : "$10"}
-                              </p>
-                            )}
+                          {amount && parseFloat(amount) < minTopUpAmount && (
+                            <p
+                              style={{
+                                color: "red",
+                                fontSize: "12px",
+                                marginTop: "5px",
+                              }}
+                            >
+                              Minimum top-up amount is {minTopUpAmountLabel}
+                            </p>
+                          )}
                         </Modal>
                         <Modal
                           // title="Complete Wallet TopUp"

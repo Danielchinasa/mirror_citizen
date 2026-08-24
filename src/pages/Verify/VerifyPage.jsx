@@ -38,6 +38,7 @@ import { getVerificationConfig } from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
+import { getCurrencySymbol } from "../../utils/currencyFormat";
 import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
 import termsPdf from "../../images/citoyen Cote dIvoire Terms of Service FR-EN v1.2 - Confirmed Service Scope.pdf";
 import {
@@ -382,8 +383,8 @@ const VerifyPage = () => {
         setLoadingPrice(false);
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "Could not fetch service prices. Please try again.",
+          title: t("common.error"),
+          text: t("verify.alert.fetchPricesError"),
           confirmButtonColor: "#FD7A00",
         });
       }
@@ -449,6 +450,19 @@ const VerifyPage = () => {
         ? config.allBureausDiscount.xof || 0
         : 0)
     : 0;
+
+  const normalizeCurrency = (value = "") => {
+    const normalized = String(value).trim().toUpperCase();
+    if (normalized === "FCFA" || normalized === "CFA") return "XOF";
+    return normalized;
+  };
+
+  const paymentCurrency = normalizeCurrency(currencyCheck);
+  // Always reflect the backend's wallet currency; only default to XOF before the profile has loaded
+  const effectiveWalletCurrency = userWalletCurrency
+    ? normalizeCurrency(userWalletCurrency)
+    : "XOF";
+  const walletCurrencySymbol = getCurrencySymbol(effectiveWalletCurrency);
 
   /* ── Form handlers ── */
 
@@ -596,24 +610,9 @@ const VerifyPage = () => {
     const randomTransactionId = generateTransactionId();
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
 
-    const normalizeCurrency = (value = "") => {
-      const normalized = String(value).trim().toUpperCase();
-      if (normalized === "FCFA" || normalized === "CFA") return "XOF";
-      // Map old NGN to XOF for Cote d'Ivoire (wallet migration)
-      if (normalized === "NGN") return "XOF";
-      return normalized;
-    };
-
-    const paymentCurrency = normalizeCurrency(currencyCheck);
-    const walletCurrency = normalizeCurrency(userWalletCurrency);
     const isKenyaUser =
       normalizeCurrency(config?.countryCode) === "KE" ||
       paymentCurrency === "KES";
-
-    // For Cote d'Ivoire, wallet is always in XOF regardless of stored value
-    const isCoteIvoireUser =
-      config?.countryCode === "CI" || paymentCurrency === "XOF";
-    const effectiveWalletCurrency = isCoteIvoireUser ? "XOF" : walletCurrency;
 
     // For non-Kenya users, wallet payment currency must match selected payment currency.
     if (
@@ -623,11 +622,11 @@ const VerifyPage = () => {
       effectiveWalletCurrency !== paymentCurrency
     ) {
       const mismatchMessage =
-        "Wallet currency must be same as payment currency.";
+        t("verify.alert.walletCurrencyMismatch");
       setError(mismatchMessage);
       Swal.fire({
         icon: "error",
-        title: "Currency Mismatch",
+        title: t("verify.alert.currencyMismatch"),
         text: mismatchMessage,
         confirmButtonColor: "#FD7A00",
       });
@@ -653,8 +652,7 @@ const VerifyPage = () => {
           ...apiFormData,
         };
         const legacyStoredIp = localStorage.getItem("ipAddress");
-        const detectedIp =
-          legacyStoredIp || localStorage.getItem("IpAddress");
+        const detectedIp = legacyStoredIp || localStorage.getItem("IpAddress");
         const ipAddress = isTestIpOverrideEnabled
           ? legacyStoredIp ||
             getNonProductionTestIp(
@@ -711,7 +709,7 @@ const VerifyPage = () => {
       setError(apiErrorMessage);
       Swal.fire({
         icon: "error",
-        title: apiErrorStatus === "failed" ? "Service Error" : "Error",
+        title: apiErrorStatus === "failed" ? t("verify.alert.serviceError") : t("common.error"),
         text: apiErrorMessage,
         confirmButtonColor: "#FD7A00",
       });
@@ -725,8 +723,8 @@ const VerifyPage = () => {
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
-        title: "Wallet Balance Low",
-        text: `Your wallet balance (CFA ${userBalance.toLocaleString()}) is insufficient for this transaction (CFA ${totalAmountFcfa.toLocaleString()}).`,
+        title: t("verify.alert.walletBalanceLow"),
+        text: t("verify.alert.walletInsufficient"),
         confirmButtonColor: "#FD7A00",
       });
       return;
@@ -859,8 +857,8 @@ const VerifyPage = () => {
       if (!res.ok) {
         Swal.fire({
           icon: "error",
-          title: "Payment Cancelled",
-          text: "Your payment was cancelled or declined.",
+          title: t("verify.alert.paymentCancelled"),
+          text: t("verify.alert.paymentCancelledText"),
           confirmButtonColor: "#FD7A00",
         });
         return;
@@ -879,16 +877,16 @@ const VerifyPage = () => {
       } else {
         Swal.fire({
           icon: "error",
-          title: "Payment Failed",
-          text: "Your payment could not be completed. Please try again.",
+          title: t("verify.alert.paymentFailed"),
+          text: t("verify.alert.paymentFailedText"),
           confirmButtonColor: "#FD7A00",
         });
       }
     } catch {
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "Could not verify payment status. Please check your dashboard.",
+        title: t("common.error"),
+        text: t("verify.alert.verifyPaymentStatusError"),
         confirmButtonColor: "#FD7A00",
       });
     }
@@ -928,7 +926,7 @@ const VerifyPage = () => {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: response.basic.detail,
           confirmButtonColor: "#FD7A00",
         });
@@ -951,10 +949,10 @@ const VerifyPage = () => {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text:
             response["search-extension"].phoneVerification.detail ||
-            "Verification failed",
+            t("verify.alert.verificationFailed"),
           confirmButtonColor: "#FD7A00",
         });
         setCurrentStep(1);
@@ -974,14 +972,14 @@ const VerifyPage = () => {
           ? response.business.data[0]?.data
           : response.business.data;
         result = bizData || response.business;
-        resultTitle = "Business Verification Successful";
+        resultTitle = t("verify.alert.businessVerificationSuccess");
         resultDetail =
           bizData?.approvedName || "Business has been verified successfully.";
         resultRoute = "/main-dashboard";
       } else if (response.business && response.business.success === false) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: response.business.message,
           confirmButtonColor: "#FD7A00",
         });
@@ -996,7 +994,7 @@ const VerifyPage = () => {
       } else if (response.financial && response.financial.success === false) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: response.financial.message,
           confirmButtonColor: "#FD7A00",
         });
@@ -1065,18 +1063,18 @@ const VerifyPage = () => {
           };
           resultTitle =
             bureauErrors.length > 0
-              ? "Partial Results Available"
-              : "Credit Profile Results";
+              ? t("verify.alert.partialResults")
+              : t("verify.alert.creditProfileResults");
           resultDetail = `Data received from: ${bureauResults.join(", ")}.`;
           resultRoute = "/financial-profile-result";
         } else {
           Swal.fire({
             icon: "error",
-            title: "Verification Failed",
+            title: t("verify.alert.verificationFailed"),
             text:
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
-                : "Verification failed. Please try again.",
+                : t("verify.alert.verificationFailed"),
             confirmButtonColor: "#FD7A00",
           });
           setCurrentStep(1);
@@ -1095,32 +1093,32 @@ const VerifyPage = () => {
 
         Swal.fire({
           icon: "info",
-          title: "Consent Pending",
+          title: t("verify.alert.consentPending"),
           html: `
             <div style="text-align: left; font-family: 'Nunito', sans-serif;">
               <p style="margin-bottom: 12px; font-size: 14px; color: #333;">
                 ${
                   consent.message ||
                   response.resultText ||
-                  "Consent request sent to the subject."
+                  t("verify.alert.consentResultsAvailable")
                 }
               </p>
               <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.8;">
-                <strong>Status:</strong> ${consent.status}<br/>
-                <strong>Required:</strong> ${consent.required ? "Yes" : "No"}
+                <strong>${t("verify.alert.consentStatus")}</strong> ${consent.status}<br/>
+                <strong>${t("verify.alert.consentRequired")}</strong> ${consent.required ? "Yes" : "No"}
                 ${
                   channelList.length > 0
-                    ? `<br/><strong>Channels:</strong> ${channelList.join(", ")}`
+                    ? `<br/><strong>${t("verify.alert.consentChannels")}</strong> ${channelList.join(", ")}`
                     : ""
                 }
               </div>
               <p style="font-size: 13px; color: #666; margin: 0;">
-                Results will be available after the subject accepts the consent request.
+                ${t("verify.alert.consentResultsAvailable")}
               </p>
             </div>
           `,
           confirmButtonColor: "#FD7A00",
-          confirmButtonText: "OK",
+          confirmButtonText: t("verify.alert.ok"),
         });
 
         // Set up consent polling using jobId from the response
@@ -1139,7 +1137,7 @@ const VerifyPage = () => {
       // CI / Smile ID completed verification
       if (!result && response.status === "COMPLETED" && response.result) {
         result = response.result;
-        resultTitle = "Verification Successful";
+        resultTitle = t("verify.alert.verificationSuccessful");
         resultDetail =
           response.resultText || "Your ID has been verified successfully.";
         resultRoute = "/main-dashboard";
@@ -1184,10 +1182,10 @@ const VerifyPage = () => {
           response?.["search-extension"]?.bvnVerification?.detail ||
           response?.business?.message ||
           response?.financial?.message ||
-          "Verification could not be completed. A refund has been initiated.";
+          t("verify.alert.refundInitiated");
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: errorMsg,
           confirmButtonColor: "#FD7A00",
         });
@@ -1198,8 +1196,8 @@ const VerifyPage = () => {
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
-        title: "Service Unavailable",
-        text: "Service is currently unavailable. A refund has been initiated.",
+        title: t("verify.alert.serviceUnavailable"),
+        text: t("verify.alert.serviceUnavailableText"),
         confirmButtonColor: "#FD7A00",
       });
     }
@@ -1617,7 +1615,7 @@ const VerifyPage = () => {
                     fontFamily: "Nunito",
                   }}
                 >
-                  {currencySymbol}
+                  {walletCurrencySymbol}
                   {userBalance.toLocaleString()}
                 </span>
               )}

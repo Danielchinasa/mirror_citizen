@@ -438,6 +438,71 @@ const translations = {
     "common.error": "Erreur",
     "common.info": "Info",
     "common.oops": "Oups !",
+    "common.success": "Succès",
+
+    /* ── Verify Alert Messages ── */
+    "verify.alert.fetchPricesError":
+      "Impossible de récupérer les prix des services. Veuillez réessayer.",
+    "verify.alert.currencyMismatch": "Incompatibilité de devise",
+    "verify.alert.walletCurrencyMismatch":
+      "La devise du portefeuille doit être la même que la devise de paiement.",
+    "verify.alert.serviceError": "Erreur de service",
+    "verify.alert.walletBalanceLow": "Solde du portefeuille insuffisant",
+    "verify.alert.walletInsufficient":
+      "Votre solde de portefeuille est insuffisant pour cette transaction.",
+    "verify.alert.paymentCancelled": "Paiement annulé",
+    "verify.alert.paymentCancelledText":
+      "Votre paiement a été annulé ou refusé.",
+    "verify.alert.paymentCancelledOrDeclined": "Paiement annulé ou refusé",
+    "verify.alert.paymentFailed": "Paiement échoué",
+    "verify.alert.paymentFailedText":
+      "Votre paiement n'a pas pu être traité. Veuillez réessayer.",
+    "verify.alert.verifyPaymentStatusError":
+      "Impossible de vérifier l'état du paiement. Veuillez consulter votre tableau de bord.",
+    "verify.alert.verificationFailed": "Échec de la vérification",
+    "verify.alert.verificationSuccessful": "Vérification réussie",
+    "verify.alert.businessVerificationSuccess":
+      "Vérification de l'entreprise réussie",
+    "verify.alert.partialResults": "Résultats partiels disponibles",
+    "verify.alert.creditProfileResults": "Résultats du profil de crédit",
+    "verify.alert.consentPending": "Consentement en attente",
+    "verify.alert.consentStatus": "Statut :",
+    "verify.alert.consentRequired": "Requis :",
+    "verify.alert.consentChannels": "Canaux :",
+    "verify.alert.consentResultsAvailable":
+      "Les résultats seront disponibles après que le sujet aura accepté la demande de consentement.",
+    "verify.alert.serviceUnavailable": "Service indisponible",
+    "verify.alert.serviceUnavailableText":
+      "Le service est actuellement indisponible. Un remboursement a été initié.",
+    "verify.alert.serviceUnavailableRefund":
+      "Le service est actuellement indisponible. Veuillez réessayer plus tard. Un remboursement a déjà été initié.",
+    "verify.alert.refundInitiated":
+      "La vérification n'a pas pu être terminée. Un remboursement a été initié.",
+    "verify.alert.currencyNotSelected": "Devise non sélectionnée",
+    "verify.alert.selectCurrency":
+      "Veuillez sélectionner une devise de paiement (FCFA ou USD) avant de continuer.",
+    "verify.alert.selectBureau":
+      "Au moins un bureau de crédit doit être sélectionné",
+    "verify.alert.walletMismatch":
+      "La devise du portefeuille ne correspond pas à la devise d'achat. Veuillez utiliser la bonne devise pour cette transaction.",
+    "verify.alert.walletLow":
+      "Votre solde de portefeuille est bas. Veuillez recharger avant d'effectuer un paiement.",
+    "verify.alert.paymentProcessingError":
+      "Un problème est survenu lors du traitement de votre paiement. Veuillez réessayer brièvement.",
+    "verify.alert.noLink": "Les données de réponse ne contiennent pas de lien",
+    "verify.alert.initPaymentFailed": "Échec de l'initialisation du paiement",
+    "verify.alert.paypalInitFailed":
+      "Échec de l'initialisation du paiement PayPal",
+    "verify.alert.paystackInitFailed":
+      "Échec de l'initialisation du paiement Paystack",
+    "verify.alert.pleaseWait": "Veuillez patienter",
+    "verify.alert.verificationInProgress": "Vérification en cours",
+    "verify.alert.failedPayment": "Paiement échoué",
+    "verify.alert.paymentIssue": "Un problème est survenu lors du paiement",
+    "verify.alert.ninLength": "Le NNI doit comporter exactement 11 chiffres.",
+    "verify.alert.bvnLength": "Le BVN doit comporter exactement 11 chiffres.",
+    "verify.alert.vinLength": "Le VIN doit comporter exactement 17 caractères.",
+    "verify.alert.ok": "OK",
 
     /* ── NIN Result Page ── */
     "ninResult.backToDashboard": "Retour au tableau de bord",
@@ -961,6 +1026,69 @@ const translations = {
     "common.error": "Error",
     "common.info": "Info",
     "common.oops": "Oops!",
+    "common.success": "Success",
+
+    /* ── Verify Alert Messages ── */
+    "verify.alert.fetchPricesError":
+      "Could not fetch service prices. Please try again.",
+    "verify.alert.currencyMismatch": "Currency Mismatch",
+    "verify.alert.walletCurrencyMismatch":
+      "Wallet currency must be same as payment currency.",
+    "verify.alert.serviceError": "Service Error",
+    "verify.alert.walletBalanceLow": "Wallet Balance Low",
+    "verify.alert.walletInsufficient":
+      "Your wallet balance is insufficient for this transaction.",
+    "verify.alert.paymentCancelled": "Payment Cancelled",
+    "verify.alert.paymentCancelledText":
+      "Your payment was cancelled or declined.",
+    "verify.alert.paymentCancelledOrDeclined": "Payment Cancelled or Declined",
+    "verify.alert.paymentFailed": "Payment Failed",
+    "verify.alert.paymentFailedText":
+      "Your payment could not be completed. Please try again.",
+    "verify.alert.verifyPaymentStatusError":
+      "Could not verify payment status. Please check your dashboard.",
+    "verify.alert.verificationFailed": "Verification Failed",
+    "verify.alert.verificationSuccessful": "Verification Successful",
+    "verify.alert.businessVerificationSuccess":
+      "Business Verification Successful",
+    "verify.alert.partialResults": "Partial Results Available",
+    "verify.alert.creditProfileResults": "Credit Profile Results",
+    "verify.alert.consentPending": "Consent Pending",
+    "verify.alert.consentStatus": "Status:",
+    "verify.alert.consentRequired": "Required:",
+    "verify.alert.consentChannels": "Channels:",
+    "verify.alert.consentResultsAvailable":
+      "Results will be available after the subject accepts the consent request.",
+    "verify.alert.serviceUnavailable": "Service Unavailable",
+    "verify.alert.serviceUnavailableText":
+      "Service is currently unavailable. A refund has been initiated.",
+    "verify.alert.serviceUnavailableRefund":
+      "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
+    "verify.alert.refundInitiated":
+      "Verification could not be completed. A refund has been initiated.",
+    "verify.alert.currencyNotSelected": "Currency Not Selected",
+    "verify.alert.selectCurrency":
+      "Please select a payment currency (CFA or USD) before proceeding.",
+    "verify.alert.selectBureau":
+      "At least one Credit Bureau must be selected",
+    "verify.alert.walletMismatch":
+      "Wallet currency doesn't match purchase currency. Please use the right currency for this transaction.",
+    "verify.alert.walletLow":
+      "Your wallet balance is low. Please recharge before making a payment.",
+    "verify.alert.paymentProcessingError":
+      "We encountered an issue while trying to process your payment. Please try again shortly.",
+    "verify.alert.noLink": "Response data does not contain a link",
+    "verify.alert.initPaymentFailed": "Failed to initialize payment",
+    "verify.alert.paypalInitFailed": "Failed to initialize PayPal payment",
+    "verify.alert.paystackInitFailed": "Failed to initialize Paystack payment",
+    "verify.alert.pleaseWait": "Please Wait",
+    "verify.alert.verificationInProgress": "Verification in progress",
+    "verify.alert.failedPayment": "Failed Payment",
+    "verify.alert.paymentIssue": "There was an issue making payment",
+    "verify.alert.ninLength": "NIN must be exactly 11 digits.",
+    "verify.alert.bvnLength": "BVN must be exactly 11 digits.",
+    "verify.alert.vinLength": "VIN must be exactly 17 characters.",
+    "verify.alert.ok": "OK",
 
     /* ── NIN Result Page ── */
     "ninResult.backToDashboard": "Back to Dashboard",
