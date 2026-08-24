@@ -35,6 +35,7 @@ import { withBasePath } from "../../routing";
 import privacyPdf from "../../images/e-raia Uganda Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
 import termsPdf from "../../images/e-raia Uganda Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 import { getIpInfo } from "../../config/ipConfiguration";
+import { getCurrencySymbol } from "../../utils/currencyFormat";
 
 import {
   PageWrapper,
@@ -358,8 +359,8 @@ const VerifyPage = () => {
         setLoadingPrice(false);
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "Could not fetch service prices. Please try again.",
+          title: t("common.error"),
+          text: t("verify.alert.fetchPricesError"),
           confirmButtonColor: "#DC0502",
         });
       }
@@ -416,6 +417,9 @@ const VerifyPage = () => {
 
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
+  // Wallet currency exactly as returned by the backend profile (independent of IP-based pricing currency)
+  const userCurrency = user?.currency || userDetails?.currency || "";
+  const walletCurrencySymbol = getCurrencySymbol(userCurrency);
 
   /* ── Form handlers ── */
 
@@ -571,19 +575,17 @@ const VerifyPage = () => {
     setLoading(true);
     setError("");
 
-    // For wallet payments by non-Ghanaian users, verify wallet currency matches payment currency
-    const userCurrency = user?.currency || "";
+    // Wallet payments must be in the same currency as the verification fee
     if (
       paymentMethod === "wallet" &&
-      currencyCheck.toUpperCase() !== "UGX" &&
       userCurrency &&
       userCurrency.toUpperCase() !== currencyCheck.toUpperCase()
     ) {
       setLoading(false);
       Swal.fire({
         icon: "error",
-        title: "Currency Mismatch",
-        text: "Wallet currency must match payment currency. Please use the right currency for this transaction.",
+        title: t("verify.alert.currencyMismatchTitle"),
+        text: t("verify.alert.currencyMismatchText"),
         confirmButtonColor: "#DD0402",
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -631,11 +633,11 @@ const VerifyPage = () => {
     } catch (err) {
       setLoading(false);
       setCurrentStep(1);
-      setError(err.message || "An error occurred. Please try again.");
+      setError(err.message || t("verify.alert.genericError"));
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: err.message || "An error occurred. Please try again.",
+        title: t("common.error"),
+        text: err.message || t("verify.alert.genericError"),
         confirmButtonColor: "#DC0502",
       });
     }
@@ -648,8 +650,8 @@ const VerifyPage = () => {
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
-        title: "Wallet Balance Low",
-        text: `Your wallet balance (${currencySymbol}${userBalance.toLocaleString()}) is insufficient for this transaction (${currencySymbol}${totalAmount.toLocaleString()}).`,
+        title: t("verify.alert.walletBalanceLowTitle"),
+        text: t("verify.alert.walletBalanceLowText", { balance: `${currencySymbol}${userBalance.toLocaleString()}`, required: `${currencySymbol}${totalAmount.toLocaleString()}` }),
         confirmButtonColor: "#DC0502",
       });
       return;
@@ -782,8 +784,8 @@ const VerifyPage = () => {
       if (!res.ok) {
         Swal.fire({
           icon: "error",
-          title: "Payment Cancelled",
-          text: "Your payment was cancelled or declined.",
+          title: t("verify.alert.paymentCancelledTitle"),
+          text: t("verify.alert.paymentCancelledText"),
           confirmButtonColor: "#DC0502",
         });
         return;
@@ -802,18 +804,17 @@ const VerifyPage = () => {
       } else {
         Swal.fire({
           icon: "error",
-          title: "Payment Failed",
-          text: "Your payment could not be completed. Please try again.",
+          title: t("verify.alert.paymentFailedTitle"),
+          text: t("verify.alert.paymentFailedText"),
           confirmButtonColor: "#DC0502",
         });
       }
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Could not verify payment status. Please check your dashboard.",
-        confirmButtonColor: "#DC0502",
-      });
+    } catch {        Swal.fire({
+          icon: "error",
+          title: t("common.error"),
+          text: t("verify.alert.verifyPaymentStatus"),
+          confirmButtonColor: "#DC0502",
+        });
     }
 
     setPaystackReference("");
@@ -873,7 +874,7 @@ const VerifyPage = () => {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: response.basic.detail,
           confirmButtonColor: "#DC0502",
         });
@@ -896,10 +897,10 @@ const VerifyPage = () => {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text:
             response["search-extension"].phoneVerification.detail ||
-            "Verification failed",
+            t("verify.alert.verificationFailed"),
           confirmButtonColor: "#DC0502",
         });
         setCurrentStep(1);
@@ -926,7 +927,7 @@ const VerifyPage = () => {
       } else if (response.business && response.business.success === false) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: response.business.message,
           confirmButtonColor: "#DC0502",
         });
@@ -941,7 +942,7 @@ const VerifyPage = () => {
       } else if (response.financial && response.financial.success === false) {
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: response.financial.message,
           confirmButtonColor: "#DC0502",
         });
@@ -1017,11 +1018,11 @@ const VerifyPage = () => {
         } else {
           Swal.fire({
             icon: "error",
-            title: "Verification Failed",
+            title: t("verify.alert.verificationFailed"),
             text:
               bureauErrors.length > 0
                 ? bureauErrors.join("\n")
-                : "Verification failed. Please try again.",
+                : t("verify.alert.verificationFailed"),
             confirmButtonColor: "#DC0502",
           });
           setCurrentStep(1);
@@ -1040,27 +1041,27 @@ const VerifyPage = () => {
 
         Swal.fire({
           icon: "info",
-          title: "Consent Pending",
+          title: t("verify.alert.consentPendingTitle"),
           html: `
             <div style="text-align: left; font-family: 'Nunito', sans-serif;">
               <p style="margin-bottom: 12px; font-size: 14px; color: #333;">
                 ${
                   consent.message ||
                   response.resultText ||
-                  "Consent request sent to the subject."
+                  t("verify.alert.consentRequestSent")
                 }
               </p>
               <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.8;">
-                <strong>Status:</strong> ${consent.status}<br/>
-                <strong>Required:</strong> ${consent.required ? "Yes" : "No"}
+                <strong>${t("verify.alert.consentStatus")}:</strong> ${consent.status}<br/>
+                <strong>${t("verify.alert.consentRequiredLabel")}:</strong> ${consent.required ? "Yes" : "No"}
                 ${
                   channelList.length > 0
-                    ? `<br/><strong>Channels:</strong> ${channelList.join(", ")}`
+                    ? `<br/><strong>${t("verify.alert.consentChannels")}:</strong> ${channelList.join(", ")}`
                     : ""
                 }
               </div>
               <p style="font-size: 13px; color: #666; margin: 0;">
-                Results will be available after the subject accepts the consent request.
+                ${t("verify.alert.consentResultsAvailable")}
               </p>
             </div>
           `,
@@ -1118,12 +1119,11 @@ const VerifyPage = () => {
           response?.basic?.detail ||
           response?.["search-extension"]?.phoneVerification?.detail ||
           response?.["search-extension"]?.bvnVerification?.detail ||
-          response?.business?.message ||
-          response?.financial?.message ||
-          "Verification could not be completed. A refund has been initiated.";
+          response?.business?.message ||          response?.financial?.message ||
+          t("verify.alert.refundInitiated");
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
+          title: t("verify.alert.verificationFailed"),
           text: errorMsg,
           confirmButtonColor: "#DC0502",
         });
@@ -1134,8 +1134,8 @@ const VerifyPage = () => {
       setCurrentStep(1);
       Swal.fire({
         icon: "error",
-        title: "Service Unavailable",
-        text: "Service is currently unavailable. A refund has been initiated.",
+        title: t("verify.alert.serviceUnavailableTitle"),
+        text: t("verify.alert.serviceUnavailableText"),
         confirmButtonColor: "#DC0502",
       });
     }
@@ -1536,7 +1536,7 @@ const VerifyPage = () => {
                     fontFamily: "Nunito",
                   }}
                 >
-                  {currencySymbol}
+                  {walletCurrencySymbol}
                   {userBalance.toLocaleString()}
                 </span>
               )}
@@ -2563,26 +2563,26 @@ const VerifyPage = () => {
                       color: "var(--ec-text)",
                     }}
                   >
-                    By clicking, you indicate that:
+                    {t("verify.disclaimer.clickIndicate")}
                     <ul style={{ margin: "8px 0 0", paddingLeft: 20 }}>
-                      <li style={{ marginBottom: 12 }}>
-                        You confirm that search details are correct, and you
-                        confirm that you will <strong>not be refunded</strong>{" "}
-                        for incorrect information.
-                      </li>
-                      <li style={{ marginBottom: 12 }}>
-                        You understand and accept that vehicle history data is
-                        sourced from third-party providers and{" "}
-                        <strong>may not contain all records</strong> for every
-                        vehicle.
-                      </li>
-                      <li style={{ marginBottom: 0 }}>
-                        You understand that{" "}
-                        <strong>
-                          search results may come back without any data
-                        </strong>
-                        , and you accept that you will not be refunded.
-                      </li>
+                      <li
+                        style={{ marginBottom: 12 }}
+                        dangerouslySetInnerHTML={{
+                          __html: t("verify.disclaimer.vehicleConfirmCorrect"),
+                        }}
+                      />
+                      <li
+                        style={{ marginBottom: 12 }}
+                        dangerouslySetInnerHTML={{
+                          __html: t("verify.disclaimer.vehicleThirdParty"),
+                        }}
+                      />
+                      <li
+                        style={{ marginBottom: 0 }}
+                        dangerouslySetInnerHTML={{
+                          __html: t("verify.disclaimer.vehicleNoData"),
+                        }}
+                      />
                     </ul>
                   </div>
                 ) : (
@@ -2597,27 +2597,25 @@ const VerifyPage = () => {
                     }}
                   >
                     {requiresConsent && (
-                      <li style={{ marginBottom: 12 }}>
-                        You confirm that you understand and accept that{" "}
-                        <strong>consent is required</strong> from the data
-                        subject being verified before you can access their data,
-                        and you accept that you will not be refunded if consent
-                        is withheld.
-                      </li>
+                      <li
+                        style={{ marginBottom: 12 }}
+                        dangerouslySetInnerHTML={{
+                          __html: t("verify.disclaimer.consentRequired"),
+                        }}
+                      />
                     )}
-                    <li style={{ marginBottom: 12 }}>
-                      You confirm and accept that the{" "}
-                      <strong>search details are correct</strong>, and you
-                      accept that you will not be refunded for incorrect
-                      information.
-                    </li>
-                    <li style={{ marginBottom: 0 }}>
-                      You understand and accept that{" "}
-                      <strong>
-                        search details may come back without any data
-                      </strong>
-                      , and you accept that you will not be refunded.
-                    </li>
+                    <li
+                      style={{ marginBottom: 12 }}
+                      dangerouslySetInnerHTML={{
+                        __html: t("verify.disclaimer.searchCorrect"),
+                      }}
+                    />
+                    <li
+                      style={{ marginBottom: 0 }}
+                      dangerouslySetInnerHTML={{
+                        __html: t("verify.disclaimer.searchNoData"),
+                      }}
+                    />
                   </ol>
                 )}
               </div>
