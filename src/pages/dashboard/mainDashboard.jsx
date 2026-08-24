@@ -85,9 +85,7 @@ const t = (label, isSw) => {
       ? "Imeshindwa kuanzisha malipo ya Paystack"
       : "Failed to initialize Paystack payment",
     "Date and Time": isSw ? "Tarehe na Muda" : "Date and Time",
-    "Selected Profile": isSw
-      ? "Profaili Iliyochaguliwa"
-      : "Selected Profile",
+    "Selected Profile": isSw ? "Profaili Iliyochaguliwa" : "Selected Profile",
     Status: isSw ? "Hali" : "Status",
     Action: isSw ? "Kitendo" : "Action",
     "COMPANY NAME": isSw ? "JINA LA KAMPUNI" : "COMPANY NAME",
@@ -303,9 +301,6 @@ const MainDashboard = () => {
     const twentyFourHoursAgo = new Date(
       currentDate.getTime() - 24 * 60 * 60 * 1000,
     );
-    const sevenDaysAgo = new Date(
-      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
-    );
 
     if (consent === "initiate") {
       setLoadingSmall(false);
@@ -329,9 +324,8 @@ const MainDashboard = () => {
         record.type === "Search-Extension") &&
         new Date(record.insertionDate) < fortyEightHoursAgo) ||
       (record.consent === "pending" &&
-        new Date(record.insertionDate) < twentyFourHoursAgo) ||
-      (record.type === "Vehicle Profile" &&
-        new Date(record.insertionDate) < sevenDaysAgo)
+        new Date(record.insertionDate) < twentyFourHoursAgo)
+      // Vehicle Profile/VIN verifications never expire
     ) {
       // message.error("Verification Result or Consent Expired");
       setLoadingSmall(false);
@@ -651,9 +645,6 @@ const MainDashboard = () => {
         const fortyEightHoursAgo = new Date(
           currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
-        const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
-        );
 
         let formattedValue = record.searchValue;
 
@@ -667,9 +658,8 @@ const MainDashboard = () => {
               (record.type === "Basic Profile" ||
                 record.type === "Financial Profile" ||
                 record.type === "Search-Extension") &&
-              new Date(record.insertionDate) < twentyFourHoursAgo) ||
-            (record.type === "Vehicle Profile" &&
-              new Date(record.insertionDate) < sevenDaysAgo))
+              new Date(record.insertionDate) < twentyFourHoursAgo))
+          // Vehicle Profile/VIN verifications never expire
         ) {
           // If searchValue is expired (red) and not null, cover the real value with asterisks
           formattedValue = formattedValue.replace(/.(?=.{2,}$)/g, "*"); // Replace all characters except the first two and last two with "*"
@@ -769,11 +759,8 @@ const MainDashboard = () => {
         const fortyEightHoursAgo = new Date(
           currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
-        const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
-        );
 
-        if (status.toLowerCase() === "expired") {
+        if (status.toLowerCase() === "expired" && type !== "Vehicle Profile") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
               {t("Expired", isSw)}
@@ -799,8 +786,8 @@ const MainDashboard = () => {
             type === "Search-Extension") &&
             new Date(insertionDate) < fortyEightHoursAgo) ||
           (consent === "pending" &&
-            new Date(insertionDate) < twentyFourHoursAgo) ||
-          (type === "Vehicle Profile" && new Date(insertionDate) < sevenDaysAgo)
+            new Date(insertionDate) < twentyFourHoursAgo)
+          // Vehicle Profile/VIN verifications never expire
         ) {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
@@ -938,7 +925,11 @@ const MainDashboard = () => {
   const items = [
     {
       key: "1",
-      label: <span style={{ fontWeight: "bold" }}>{t("Verification History", isSw)}</span>,
+      label: (
+        <span style={{ fontWeight: "bold" }}>
+          {t("Verification History", isSw)}
+        </span>
+      ),
       children: (
         <>
           <Input
@@ -984,7 +975,11 @@ const MainDashboard = () => {
     },
     {
       key: "2",
-      label: <span style={{ fontWeight: "bold" }}>{t("Transaction Logs", isSw)}</span>,
+      label: (
+        <span style={{ fontWeight: "bold" }}>
+          {t("Transaction Logs", isSw)}
+        </span>
+      ),
       children: (
         <>
           <Input
@@ -1460,7 +1455,8 @@ const MainDashboard = () => {
             background: bgContainer,
             color: text,
             title: t("Error", isSw),
-            text: error.message || t("Failed to initialize Paystack payment", isSw),
+            text:
+              error.message || t("Failed to initialize Paystack payment", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1736,10 +1732,14 @@ const MainDashboard = () => {
                   <p>
                     {isSw
                       ? `Weka Kiasi cha Kujaza Pochi (Kiwango cha chini: ${
-                          userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
+                          userCurrency.toUpperCase() === "NGN"
+                            ? "KHs1,000"
+                            : "$10"
                         })`
                       : `Enter Amount to Fund Wallet (Minimum: ${
-                          userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
+                          userCurrency.toUpperCase() === "NGN"
+                            ? "KHs1,000"
+                            : "$10"
                         })`}
                   </p>
                   <Input
