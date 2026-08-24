@@ -233,70 +233,71 @@ const Home = () => {
     // and falling back to a redirect if that specific popup fails.
   });
 
-  useEffect(() => {
-    const loadGoogleOneTap = () => {
-      if (window.google && window.google.accounts?.id) {
-        window.google.accounts.id.disableAutoSelect(); // ⛔ reset for dev
+  // TEMPORARILY DISABLED: Google One Tap auto sign-in
+  // useEffect(() => {
+  //   const loadGoogleOneTap = () => {
+  //     if (window.google && window.google.accounts?.id) {
+  //       window.google.accounts.id.disableAutoSelect(); // ⛔ reset for dev
 
-        window.google.accounts.id.initialize({
-          client_id:
-            "642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com",
-          callback: (credentialResponse) => {
-            login();
-          },
-          auto_select: true,
-          cancel_on_tap_outside: false,
-        });
+  //       window.google.accounts.id.initialize({
+  //         client_id:
+  //           "642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com",
+  //         callback: (credentialResponse) => {
+  //           login();
+  //         },
+  //         auto_select: true,
+  //         cancel_on_tap_outside: false,
+  //       });
 
-        window.google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed()) {
-            console.warn(
-              "⚠️ One Tap not displayed:",
-              notification.getNotDisplayedReason(),
-            );
-            // Check specifically if the reason is 'popup_blocked'
-            if (notification.getNotDisplayedReason() === "popup_blocked") {
-              console.log(
-                "Popup blocked. Initiating redirect for Google login.",
-              );
-              // Trigger Google login via redirect flow
-              // This is the key change: manually construct the redirect URL
-              const redirectUri = window.location.origin; // Or a specific redirect URL configured in your Google Cloud Console
-              const authUrl =
-                `https://accounts.google.com/o/oauth2/v2/auth?` +
-                `client_id=${"642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com"}&` +
-                `response_type=code&` + // Request an authorization code
-                `scope=openid%20profile%20email&` + // Required scopes
-                `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-                `access_type=offline&` + // If you need a refresh token
-                `prompt=consent%20select_account`; // Force user to select account and consent
+  //       window.google.accounts.id.prompt((notification) => {
+  //         if (notification.isNotDisplayed()) {
+  //           console.warn(
+  //             "⚠️ One Tap not displayed:",
+  //             notification.getNotDisplayedReason(),
+  //           );
+  //           // Check specifically if the reason is 'popup_blocked'
+  //           if (notification.getNotDisplayedReason() === "popup_blocked") {
+  //             console.log(
+  //               "Popup blocked. Initiating redirect for Google login.",
+  //             );
+  //             // Trigger Google login via redirect flow
+  //             // This is the key change: manually construct the redirect URL
+  //             const redirectUri = window.location.origin; // Or a specific redirect URL configured in your Google Cloud Console
+  //             const authUrl =
+  //               `https://accounts.google.com/o/oauth2/v2/auth?` +
+  //               `client_id=${"642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com"}&` +
+  //               `response_type=code&` + // Request an authorization code
+  //               `scope=openid%20profile%20email&` + // Required scopes
+  //               `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+  //               `access_type=offline&` + // If you need a refresh token
+  //               `prompt=consent%20select_account`; // Force user to select account and consent
 
-              window.location.href = authUrl; // Redirect the user
-            }
-          }
-          if (notification.isSkippedMoment()) {
-            console.warn(
-              "⚠️ One Tap skipped:",
-              notification.getSkippedReason(),
-            );
-          }
-          if (notification.isDismissedMoment()) {
-            console.warn(
-              "⚠️ One Tap dismissed:",
-              notification.getDismissedReason(),
-            );
-          }
-        });
-      }
-    };
+  //             window.location.href = authUrl; // Redirect the user
+  //           }
+  //         }
+  //         if (notification.isSkippedMoment()) {
+  //           console.warn(
+  //             "⚠️ One Tap skipped:",
+  //             notification.getSkippedReason(),
+  //           );
+  //         }
+  //         if (notification.isDismissedMoment()) {
+  //           console.warn(
+  //             "⚠️ One Tap dismissed:",
+  //             notification.getDismissedReason(),
+  //           );
+  //         }
+  //       });
+  //     }
+  //   };
 
-    const interval = setInterval(() => {
-      if (window.google && window.google.accounts?.id) {
-        loadGoogleOneTap();
-        clearInterval(interval);
-      }
-    }, 100);
-  }, []);
+  //   const interval = setInterval(() => {
+  //     if (window.google && window.google.accounts?.id) {
+  //       loadGoogleOneTap();
+  //       clearInterval(interval);
+  //     }
+  //   }, 100);
+  // }, []);
 
   // If you decide to handle the ID token from One Tap directly (Recommended for One Tap)
   // const handleOneTapCredential = async (idToken) => {
