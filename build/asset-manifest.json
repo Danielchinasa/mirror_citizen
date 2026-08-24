@@ -1,20 +1,19 @@
 {
   "files": {
     "main.css": "/ke/static/css/main.6d8116c5.chunk.css",
-    "main.js": "/ke/static/js/main.8644fd6a.chunk.js",
-    "main.js.map": "/ke/static/js/main.8644fd6a.chunk.js.map",
+    "main.js": "/ke/static/js/main.2acf670b.chunk.js",
+    "main.js.map": "/ke/static/js/main.2acf670b.chunk.js.map",
     "runtime-main.js": "/ke/static/js/runtime-main.14139af6.js",
     "runtime-main.js.map": "/ke/static/js/runtime-main.14139af6.js.map",
     "static/css/2.ec61a722.chunk.css": "/ke/static/css/2.ec61a722.chunk.css",
-    "static/js/2.28de954b.chunk.js": "/ke/static/js/2.28de954b.chunk.js",
-    "static/js/2.28de954b.chunk.js.map": "/ke/static/js/2.28de954b.chunk.js.map",
+    "static/js/2.5b1d49d7.chunk.js": "/ke/static/js/2.5b1d49d7.chunk.js",
+    "static/js/2.5b1d49d7.chunk.js.map": "/ke/static/js/2.5b1d49d7.chunk.js.map",
     "index.html": "/ke/index.html",
-    "precache-manifest.2c358f8c75650307b59b6821370b6b57.js": "/ke/precache-manifest.2c358f8c75650307b59b6821370b6b57.js",
+    "precache-manifest.84347c383e238f0ab961202780443380.js": "/ke/precache-manifest.84347c383e238f0ab961202780443380.js",
     "service-worker.js": "/ke/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/ke/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.6d8116c5.chunk.css.map": "/ke/static/css/main.6d8116c5.chunk.css.map",
-    "static/js/2.28de954b.chunk.js.LICENSE.txt": "/ke/static/js/2.28de954b.chunk.js.LICENSE.txt",
-    "static/media/dp.jpeg": "/ke/static/media/BW7A9844.e32d1c91.png",
+    "static/js/2.5b1d49d7.chunk.js.LICENSE.txt": "/ke/static/js/2.5b1d49d7.chunk.js.LICENSE.txt",
     "static/media/Corporate.svg": "/ke/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/ke/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
     "static/media/Verify_NIN_on_ecitizen.jpg": "/ke/static/media/Verify_NIN_on_ecitizen.0eb72260.jpg",
@@ -24,6 +23,7 @@
     "static/media/clearvin.png": "/ke/static/media/clearvin.020b3b46.png",
     "static/media/contact.png": "/ke/static/media/contact.2a1a7bdb.png",
     "static/media/credit_profile.png": "/ke/static/media/credit_profile.48765e5d.png",
+    "static/media/dp.jpeg": "/ke/static/media/dp.ae3e1077.jpeg",
     "static/media/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf": "/ke/static/media/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.366540e5.pdf",
     "static/media/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf": "/ke/static/media/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.79ee4d03.pdf",
     "static/media/flutterwave-logos-idVM8GW1LQ.png": "/ke/static/media/flutterwave-logos-idVM8GW1LQ.95e5acb2.png",
@@ -37,7 +37,6 @@
     "static/media/kenya_dark.png": "/ke/static/media/kenya_dark.1c8a9173.png",
     "static/media/kenya_logo.png": "/ke/static/media/kenya_logo.f24390c2.png",
     "static/media/kenya_vehicle.png": "/ke/static/media/kenya_vehicle.c8c431f4.png",
-    "static/media/lady.svg": "/ke/static/media/lady.82ff32ba.svg",
     "static/media/mosip.png": "/ke/static/media/mosip.5c362e0c.png",
     "static/media/ndpr.png": "/ke/static/media/ndpr.411010b5.png",
     "static/media/nidologo.png": "/ke/static/media/nidologo.c6aae41a.png",
@@ -54,8 +53,8 @@
   "entrypoints": [
     "static/js/runtime-main.14139af6.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.28de954b.chunk.js",
+    "static/js/2.5b1d49d7.chunk.js",
     "static/css/main.6d8116c5.chunk.css",
-    "static/js/main.8644fd6a.chunk.js"
+    "static/js/main.2acf670b.chunk.js"
   ]
 }

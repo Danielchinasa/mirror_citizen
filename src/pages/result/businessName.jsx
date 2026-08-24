@@ -54,6 +54,7 @@ import baseUrl from "../../apiConfig";
 import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { getLanguage, t } from "../../utils/alertTranslations";
 
 const tooltipContentStakeholders =
   "Check who the directors and shareholders are";
@@ -62,6 +63,19 @@ const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
 const BusinessName = () => {
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
@@ -258,7 +272,7 @@ const BusinessName = () => {
     Swal.fire({
       background: bgContainer,
       color: text,
-      title: "Select Payment Method",
+      title: t("Select Payment Method", isSw),
       input: "radio",
       inputOptions: paymentOptions,
       customClass: {
@@ -270,7 +284,7 @@ const BusinessName = () => {
       confirmButtonColor: "#DD0201",
       inputValidator: (value) => {
         if (!value) {
-          return "You must select a payment method";
+          return t("You must select a payment method", isSw);
         }
       },
     }).then(async (result) => {
@@ -322,8 +336,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Wallet Balance Low",
-                text: "Your wallet balance is low. Please recharge before making a payment.",
+                title: t("Wallet Balance Low", isSw),
+                text: t("Your wallet balance is low. Please recharge before making a payment.", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -344,8 +358,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Wallet Balance Low",
-                text: "Your wallet balance is low. Please recharge before making a payment.",
+                title: t("Wallet Balance Low", isSw),
+                text: t("Your wallet balance is low. Please recharge before making a payment.", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -433,8 +447,8 @@ const BusinessName = () => {
                     Swal.fire({
                       background: bgContainer,
                       color: text,
-                      title: "Error",
-                      text: "Error fetching Stake Holders",
+                    title: t("Error", isSw),
+                    text: t("Error fetching Stake Holders", isSw),
                       icon: "error",
                       customClass: {
                         confirmButton: "custom-swal-button",
@@ -455,7 +469,7 @@ const BusinessName = () => {
                   Swal.fire({
                     background: bgContainer,
                     color: text,
-                    title: "Error",
+                    title: t("Error", isSw),
                     text: response.data.business.message,
                     icon: "error",
                     customClass: {
@@ -478,7 +492,7 @@ const BusinessName = () => {
                 Swal.fire({
                   background: bgContainer,
                   color: text,
-                  title: "Error",
+                  title: t("Error", isSw),
                   text: error,
                   icon: "error",
                   customClass: {
@@ -501,8 +515,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Error",
-                text: "Payment Failed",
+                title: t("Error", isSw),
+                text: t("Payment Failed", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -524,7 +538,7 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
+              title: t("Error", isSw),
               text: error,
               icon: "error",
               customClass: {
@@ -557,11 +571,11 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Warning",
+              title: t("Warning", isSw),
               icon: "warning",
-              text: "Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?",
+              text: t("Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?", isSw),
               showCancelButton: true,
-              confirmButtonText: "Continue",
+              confirmButtonText: t("Continue", isSw),
               confirmButtonColor: "#DD0201",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -586,11 +600,11 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Warning",
+              title: t("Warning", isSw),
               icon: "warning",
-              text: "Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?",
+              text: t("Wallet currency doesn't match purchase currency. Do you want to pay with your wallet currency?", isSw),
               showCancelButton: true,
-              confirmButtonText: "Continue",
+              confirmButtonText: t("Continue", isSw),
               confirmButtonColor: "#DD0201",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -611,8 +625,8 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Wallet Balance Low",
-              text: "Your wallet balance is low. Please recharge before making a payment.",
+            title: t("Wallet Balance Low", isSw),
+            text: t("Your wallet balance is low. Please recharge before making a payment.", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -703,8 +717,8 @@ const BusinessName = () => {
                     Swal.fire({
                       background: bgContainer,
                       color: text,
-                      title: "Error",
-                      text: "Error fetching Stake Holders",
+                    title: t("Error", isSw),
+                    text: t("Error fetching Stake Holders", isSw),
                       icon: "error",
                       customClass: {
                         confirmButton: "custom-swal-button",
@@ -725,7 +739,7 @@ const BusinessName = () => {
                   Swal.fire({
                     background: bgContainer,
                     color: text,
-                    title: "Error",
+                    title: t("Error", isSw),
                     text: response.data.business.message,
                     icon: "error",
                     customClass: {
@@ -751,7 +765,7 @@ const BusinessName = () => {
                 Swal.fire({
                   background: bgContainer,
                   color: text,
-                  title: "Error",
+                  title: t("Error", isSw),
                   text: error,
                   icon: "error",
                   customClass: {
@@ -774,8 +788,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Error",
-                text: "Payment Failed",
+                title: t("Error", isSw),
+                text: t("Payment Failed", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -797,7 +811,7 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
+              title: t("Error", isSw),
               text: error,
               icon: "error",
               customClass: {
@@ -869,8 +883,8 @@ const BusinessName = () => {
                   Swal.fire({
                     background: bgContainer,
                     color: text,
-                    title: "Error",
-                    text: "Response data does not contain a link",
+                    title: t("Error", isSw),
+                    text: t("Response data does not contain a link", isSw),
                     icon: "error",
                     customClass: {
                       confirmButton: "custom-swal-button",
@@ -892,8 +906,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Error",
-                text: "Failed to initialize payment",
+                title: t("Error", isSw),
+                text: t("Failed to initialize payment", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -916,8 +930,8 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize payment",
+              title: t("Error", isSw),
+              text: t("Failed to initialize payment", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -979,8 +993,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Error",
-                text: "Failed to initialize Paystack payment",
+                title: t("Error", isSw),
+                text: t("Failed to initialize Paystack payment", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -1004,8 +1018,8 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: error.message || "Failed to initialize Paystack payment",
+              title: t("Error", isSw),
+              text: error.message || t("Failed to initialize Paystack payment", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -1055,8 +1069,8 @@ const BusinessName = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
+          title: t("Error", isSw),
+          text: t("Payment Cancelled or Declined", isSw),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -1120,7 +1134,7 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Request Error",
+                title: t("Request Error", isSw),
                 text: externalApiResponse.data.business.message,
                 icon: "error",
                 customClass: {
@@ -1150,8 +1164,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Error",
-                text: "Error fetching Stake Holders",
+                title: t("Error", isSw),
+                text: t("Error fetching Stake Holders", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -1163,6 +1177,7 @@ const BusinessName = () => {
                 confirmButtonColor: "#DD0201",
               }).then((result) => {
                 if (result.isConfirmed) {
+
                   window.location.reload();
                 }
               });
@@ -1172,7 +1187,7 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Failed Payment",
+              title: t("Failed Payment", isSw),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -1196,8 +1211,8 @@ const BusinessName = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Error fetching Stake Holders",
+            title: t("Error", isSw),
+            text: t("Error fetching Stake Holders", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1220,7 +1235,7 @@ const BusinessName = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
+        title: t("Error", isSw),
         text: error,
         icon: "error",
         customClass: {
@@ -1233,6 +1248,7 @@ const BusinessName = () => {
         confirmButtonColor: "#DD0201",
       }).then((result) => {
         if (result.isConfirmed) {
+
           window.location.reload();
         }
       });
@@ -1259,8 +1275,8 @@ const BusinessName = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
+          title: t("Error", isSw),
+          text: t("Payment Cancelled or Declined", isSw),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -1324,7 +1340,7 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Request Error",
+                title: t("Request Error", isSw),
                 text: externalApiResponse.data.business.message,
                 icon: "error",
                 customClass: {
@@ -1354,8 +1370,8 @@ const BusinessName = () => {
               Swal.fire({
                 background: bgContainer,
                 color: text,
-                title: "Error",
-                text: "Error fetching Stake Holders",
+                title: t("Error", isSw),
+                text: t("Error fetching Stake Holders", isSw),
                 icon: "error",
                 customClass: {
                   confirmButton: "custom-swal-button",
@@ -1367,6 +1383,7 @@ const BusinessName = () => {
                 confirmButtonColor: "#DD0201",
               }).then((result) => {
                 if (result.isConfirmed) {
+
                   window.location.reload();
                 }
               });
@@ -1376,7 +1393,7 @@ const BusinessName = () => {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Failed Payment",
+              title: t("Failed Payment", isSw),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -1400,8 +1417,8 @@ const BusinessName = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Error fetching Stake Holders",
+            title: t("Error", isSw),
+            text: t("Error fetching Stake Holders", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -1424,8 +1441,8 @@ const BusinessName = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "There was an issue verifying payment",
+        title: t("Error", isSw),
+        text: t("There was an issue verifying payment", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
