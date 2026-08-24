@@ -970,16 +970,36 @@ function Navbar() {
               </PublicMobileAnchor>
 
               {/* Country selector for mobile */}
-              <div style={{ borderTop: "1px solid rgba(17, 24, 39, 0.08)", paddingTop: "14px", marginTop: "4px" }}>
+              <div
+                style={{
+                  borderTop: "1px solid rgba(17, 24, 39, 0.08)",
+                  paddingTop: "14px",
+                  marginTop: "4px",
+                }}
+              >
                 <MobileCountryToggle
                   type="button"
                   onClick={() => setMobileCountryOpen((prev) => !prev)}
                 >
-                  <span role="img" aria-label="Nigeria flag" style={{ fontSize: "20px" }}>
+                  <span
+                    role="img"
+                    aria-label="Nigeria flag"
+                    style={{ fontSize: "20px" }}
+                  >
                     🇳🇬
                   </span>
                   Nigeria
-                  <span style={{ marginLeft: "auto", fontSize: "12px", transition: "transform 0.2s", transform: mobileCountryOpen ? "rotate(180deg)" : "rotate(0deg)", display: "inline-block" }}>
+                  <span
+                    style={{
+                      marginLeft: "auto",
+                      fontSize: "12px",
+                      transition: "transform 0.2s",
+                      transform: mobileCountryOpen
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)",
+                      display: "inline-block",
+                    }}
+                  >
                     ▾
                   </span>
                 </MobileCountryToggle>
@@ -992,7 +1012,11 @@ function Navbar() {
                       rel="noopener noreferrer"
                       onClick={closeMobileMenu}
                     >
-                      <span role="img" aria-label={`${country.label} flag`} style={{ fontSize: "20px" }}>
+                      <span
+                        role="img"
+                        aria-label={`${country.label} flag`}
+                        style={{ fontSize: "20px" }}
+                      >
                         {country.flag}
                       </span>
                       {country.label}
@@ -1300,30 +1324,49 @@ function Navbar() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <Dropdown
-                          overlay={countryMenu}
-                          trigger={["click"]}
-                          arrow
+                        <MobileCountryToggle
+                          type="button"
+                          onClick={() => setMobileCountryOpen((prev) => !prev)}
+                          style={{ color: "#FFFFFF" }}
                         >
-                          <CountryPill
-                            type="button"
-                            aria-label="Select country"
-                            style={{ color: "#FFFFFF" }}
+                          <span role="img" aria-label="Nigeria flag">
+                            🇳🇬
+                          </span>
+                          Nigeria
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "12px",
+                              transition: "transform 0.2s",
+                              transform: mobileCountryOpen
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
+                              display: "inline-block",
+                            }}
                           >
-                            <span
-                              className="flag"
-                              role="img"
-                              aria-label="Nigeria flag"
-                            >
-                              🇳🇬
-                            </span>
-                            Nigeria
-                            <DownOutlined
-                              className="chev"
+                            ▾
+                          </span>
+                        </MobileCountryToggle>
+                        <MobileCountryList $open={mobileCountryOpen}>
+                          {OTHER_COUNTRIES.map((country) => (
+                            <MobileCountryLink
+                              key={country.key}
+                              href={country.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={closeMobileMenu}
                               style={{ color: "#FFFFFF" }}
-                            />
-                          </CountryPill>
-                        </Dropdown>
+                            >
+                              <span
+                                role="img"
+                                aria-label={`${country.label} flag`}
+                              >
+                                {country.flag}
+                              </span>
+                              {country.label}
+                            </MobileCountryLink>
+                          ))}
+                        </MobileCountryList>
                       </div>
 
                       <ThemeToggle style={{ paddingLeft: "49px" }} />
