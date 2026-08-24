@@ -58,6 +58,10 @@ import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { absoluteAppUrl, withBasePath } from "../../routing";
+import {
+  formatWalletCurrency,
+  getCurrencySymbol,
+} from "../../utils/currencyFormat";
 
 const { useToken } = theme;
 
@@ -438,18 +442,10 @@ function Navbar() {
   );
 
   const userBalance = userDetails?.walletBalance || 0;
-  const formatToKES = (value) => {
-    return new Intl.NumberFormat("en-KE", {
-      style: "currency",
-      currency: "KES",
-    }).format(value);
-  };
-  const formatToDollar = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(value);
-  };
+  const formatWalletDisplay = (value) =>
+    formatWalletCurrency(value, userCurrency);
+  const minTopUpAmount = userCurrency.toUpperCase() === "USD" ? 10 : 1000;
+  const minTopUpAmountLabel = `${getCurrencySymbol(userCurrency)}${minTopUpAmount.toLocaleString()}`;
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal1Open, setModal1Open] = useState(false);
@@ -699,7 +695,7 @@ function Navbar() {
   }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOk = async () => {
-    const minAmount = userCurrency.toUpperCase() === "NGN" ? 1000 : 10;
+    const minAmount = minTopUpAmount;
 
     // Validate minimum amount
     if (!amount || parseFloat(amount) < minAmount) {
@@ -707,9 +703,7 @@ function Navbar() {
         background: bgContainer,
         color: text,
         title: "Error",
-        text: `Minimum top-up amount is ${
-          userCurrency.toUpperCase() === "NGN" ? "KHs1,000" : "$10"
-        }`,
+        text: `Minimum top-up amount is ${minTopUpAmountLabel}`,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1304,9 +1298,7 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#DD0201" }}>
                             {" "}
-                            {userCurrency === "USD" || userCurrency === "usd"
-                              ? `${formatToDollar(userBalance)}`
-                              : formatToKES(userBalance)}
+                            {formatWalletDisplay(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1319,9 +1311,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
-                            {userCurrency.toUpperCase() === "USD"
-                              ? `${formatToDollar(userBalance)}`
-                              : formatToKES(userBalance)}
+                            {formatWalletDisplay(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
@@ -1386,42 +1376,26 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
-                            {userCurrency.toUpperCase() === "NGN"
-                              ? "KHs1,000"
-                              : "$10"}
-                            )
+                            {minTopUpAmountLabel})
                           </p>
                           <Input
                             type="number"
-                            placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "NGN"
-                                ? "1000"
-                                : "10"
-                            })`}
+                            placeholder={`Enter amount (min: ${minTopUpAmount})`}
                             value={amount}
                             onChange={handleChange}
-                            min={
-                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
-                            }
+                            min={minTopUpAmount}
                           />
-                          {amount &&
-                            parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "NGN"
-                                ? 1000
-                                : 10) && (
-                              <p
-                                style={{
-                                  color: "red",
-                                  fontSize: "12px",
-                                  marginTop: "5px",
-                                }}
-                              >
-                                Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "NGN"
-                                  ? "KHs1,000"
-                                  : "$10"}
-                              </p>
-                            )}
+                          {amount && parseFloat(amount) < minTopUpAmount && (
+                            <p
+                              style={{
+                                color: "red",
+                                fontSize: "12px",
+                                marginTop: "5px",
+                              }}
+                            >
+                              Minimum top-up amount is {minTopUpAmountLabel}
+                            </p>
+                          )}
                         </Modal>
                         <Modal
                           // title="Complete Wallet TopUp"
@@ -1636,10 +1610,7 @@ function Navbar() {
                           Wallet Balance:
                           <span style={{ color: "#DD0201" }}>
                             {" "}
-                            {/* KHs{userBalance.toLocaleString()} */}
-                            {userCurrency === "USD" || userCurrency === "usd"
-                              ? `${formatToDollar(userBalance)}`
-                              : formatToKES(userBalance)}
+                            {formatWalletDisplay(userBalance)}
                           </span>
                         </p>
                         <Modal
@@ -1652,9 +1623,7 @@ function Navbar() {
                         >
                           <Title level={5}> Wallet Balance:</Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
-                            {userCurrency.toUpperCase() === "USD"
-                              ? `${formatToDollar(userBalance)}`
-                              : formatToKES(userBalance)}
+                            {formatWalletDisplay(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
@@ -1719,42 +1688,26 @@ function Navbar() {
                           </Radio.Group>
                           <p>
                             Enter Amount to Fund Wallet (Minimum:{" "}
-                            {userCurrency.toUpperCase() === "NGN"
-                              ? "KHs1,000"
-                              : "$10"}
-                            )
+                            {minTopUpAmountLabel})
                           </p>
                           <Input
                             type="number"
-                            placeholder={`Enter amount (min: ${
-                              userCurrency.toUpperCase() === "NGN"
-                                ? "1000"
-                                : "10"
-                            })`}
+                            placeholder={`Enter amount (min: ${minTopUpAmount})`}
                             value={amount}
                             onChange={handleChange}
-                            min={
-                              userCurrency.toUpperCase() === "NGN" ? 1000 : 10
-                            }
+                            min={minTopUpAmount}
                           />
-                          {amount &&
-                            parseFloat(amount) <
-                              (userCurrency.toUpperCase() === "NGN"
-                                ? 1000
-                                : 10) && (
-                              <p
-                                style={{
-                                  color: "red",
-                                  fontSize: "12px",
-                                  marginTop: "5px",
-                                }}
-                              >
-                                Minimum top-up amount is{" "}
-                                {userCurrency.toUpperCase() === "NGN"
-                                  ? "KHs1,000"
-                                  : "$10"}
-                              </p>
-                            )}
+                          {amount && parseFloat(amount) < minTopUpAmount && (
+                            <p
+                              style={{
+                                color: "red",
+                                fontSize: "12px",
+                                marginTop: "5px",
+                              }}
+                            >
+                              Minimum top-up amount is {minTopUpAmountLabel}
+                            </p>
+                          )}
                         </Modal>
                         <Modal
                           // title="Complete Wallet TopUp"

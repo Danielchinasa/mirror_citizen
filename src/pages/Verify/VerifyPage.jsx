@@ -32,6 +32,7 @@ import { SampleResultContent } from "../../components/SampleResultPopup/SampleRe
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import privacyPdf from "../../images/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
 import termsPdf from "../../images/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
+import { getCurrencySymbol } from "../../utils/currencyFormat";
 
 import {
   PageWrapper,
@@ -390,6 +391,9 @@ const VerifyPage = () => {
 
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
+  // Wallet currency exactly as returned by the backend profile (independent of IP-based pricing currency)
+  const userCurrency = user?.currency || userDetails?.currency || "";
+  const walletCurrencySymbol = getCurrencySymbol(userCurrency);
 
   /* ── Form handlers ── */
 
@@ -552,11 +556,9 @@ const VerifyPage = () => {
     setLoading(true);
     setError("");
 
-    // For wallet payments by non-Kenyan users, verify wallet currency matches payment currency
-    const userCurrency = user?.currency || "";
+    // Wallet payments must be in the same currency as the verification fee
     if (
       paymentMethod === "wallet" &&
-      currencyCheck.toUpperCase() !== "KES" &&
       userCurrency &&
       userCurrency.toUpperCase() !== currencyCheck.toUpperCase()
     ) {
@@ -1617,7 +1619,7 @@ const VerifyPage = () => {
                     fontFamily: "Nunito",
                   }}
                 >
-                  {currencySymbol}
+                  {walletCurrencySymbol}
                   {userBalance.toLocaleString()}
                 </span>
               )}
