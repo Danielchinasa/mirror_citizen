@@ -208,7 +208,7 @@ export const CountryPill = styled.button`
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  padding: 0;
+  padding: 4px 8px;
 
   .flag {
     font-size: 26px;
@@ -218,6 +218,10 @@ export const CountryPill = styled.button`
   .chev {
     font-size: 12px;
     color: var(--ec-text-muted);
+  }
+
+  @media screen and (max-width: 1024px) {
+    padding: 8px 10px;
   }
 `;
 
@@ -321,6 +325,55 @@ export const PublicHeaderLanguage = styled.div`
     padding: 4px;
     border-radius: 999px;
     background: rgba(17, 24, 39, 0.04);
+  }
+`;
+
+export const MobileCountrySection = styled.div`
+  @media screen and (max-width: 1024px) {
+    display: block;
+  }
+`;
+
+export const MobileCountryToggle = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const MobileCountryList = styled.div`
+  display: ${({ $open }) => ($open ? "flex" : "none")};
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 28px;
+`;
+
+export const MobileCountryLink = styled.a`
+  text-decoration: none;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &:hover {
+    color: var(--ec-primary);
   }
 `;
 

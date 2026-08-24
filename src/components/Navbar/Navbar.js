@@ -28,6 +28,9 @@ import {
   PublicMobileLink,
   PublicMobileAnchor,
   PublicBackButton,
+  MobileCountryToggle,
+  MobileCountryList,
+  MobileCountryLink,
 } from "./Navbar.elements";
 import { FaTimes, FaBars, FaArrowLeft } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
@@ -180,6 +183,7 @@ function Navbar() {
     },
   ];
   const [visible, setVisible] = useState(false);
+  const [mobileCountryOpen, setMobileCountryOpen] = useState(false);
 
   const handleVisibleChange = (flag) => {
     setVisible(flag);
@@ -964,6 +968,38 @@ function Navbar() {
               <PublicMobileAnchor href="#" onClick={handleGetStarted}>
                 Get Started
               </PublicMobileAnchor>
+
+              {/* Country selector for mobile */}
+              <div style={{ borderTop: "1px solid rgba(17, 24, 39, 0.08)", paddingTop: "14px", marginTop: "4px" }}>
+                <MobileCountryToggle
+                  type="button"
+                  onClick={() => setMobileCountryOpen((prev) => !prev)}
+                >
+                  <span role="img" aria-label="Nigeria flag" style={{ fontSize: "20px" }}>
+                    🇳🇬
+                  </span>
+                  Nigeria
+                  <span style={{ marginLeft: "auto", fontSize: "12px", transition: "transform 0.2s", transform: mobileCountryOpen ? "rotate(180deg)" : "rotate(0deg)", display: "inline-block" }}>
+                    ▾
+                  </span>
+                </MobileCountryToggle>
+                <MobileCountryList $open={mobileCountryOpen}>
+                  {OTHER_COUNTRIES.map((country) => (
+                    <MobileCountryLink
+                      key={country.key}
+                      href={country.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMobileMenu}
+                    >
+                      <span role="img" aria-label={`${country.label} flag`} style={{ fontSize: "20px" }}>
+                        {country.flag}
+                      </span>
+                      {country.label}
+                    </MobileCountryLink>
+                  ))}
+                </MobileCountryList>
+              </div>
             </PublicMobileMenu>
           </PublicMobilePanel>
         </PublicNav>
@@ -1262,6 +1298,7 @@ function Navbar() {
                           paddingLeft: "49px",
                           paddingRight: "15px",
                         }}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <Dropdown
                           overlay={countryMenu}
