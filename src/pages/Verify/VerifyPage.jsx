@@ -33,9 +33,6 @@ import verificationConfig from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
-// Required by the Terms and Privacy iframe modals introduced by the Ghana merge.
-import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confirmed Service Scope.pdf";
-import termsPdf from "../../images/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf";
 import { getIpInfo } from "../../config/ipConfiguration";
 import { getCurrencySymbol } from "../../utils/currencyFormat";
 
