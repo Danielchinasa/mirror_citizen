@@ -44,6 +44,13 @@ import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
+import {
+  NO_DATA_STATUS,
+  LEGACY_TERMINATED_CONSENT,
+  RECORD_NOT_FOUND_MESSAGE,
+  RECORD_NOT_FOUND_TITLE,
+  isNoDataOutcome,
+} from "../../constants/verificationMessages";
 const { Title } = Typography;
 
 const data = [
@@ -256,13 +263,16 @@ const MainDashboard = () => {
       return;
     }
 
-    if (consent === "No data found") {
+    if (
+      consent === NO_DATA_STATUS ||
+      consent === LEGACY_TERMINATED_CONSENT
+    ) {
       setLoadingSmall(false);
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Oops!",
-        text: "Sorry, No record found",
+        title: RECORD_NOT_FOUND_TITLE,
+        text: RECORD_NOT_FOUND_MESSAGE,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -589,10 +599,18 @@ const MainDashboard = () => {
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
       render: (text, record) => {
         let color = "";
-        if (record.consent === "denied") {
+        if (
+          record.consent === "denied" ||
+          record.consent === NO_DATA_STATUS ||
+          record.consent === LEGACY_TERMINATED_CONSENT
+        ) {
           color = "red";
         }
-        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1);
+        const capitalizedText =
+          record.consent === NO_DATA_STATUS ||
+          record.consent === LEGACY_TERMINATED_CONSENT
+            ? RECORD_NOT_FOUND_MESSAGE
+            : text.charAt(0).toUpperCase() + text.slice(1);
         return <span style={{ color }}>{capitalizedText}</span>;
       },
     },
@@ -644,10 +662,12 @@ const MainDashboard = () => {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
           );
-        } else if (status.toLowerCase() === "no data found") {
+        } else if (
+          isNoDataOutcome({ status, consent })
+        ) {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              No Data Found
+              {RECORD_NOT_FOUND_MESSAGE}
             </span>
           );
         } else if (status.toLowerCase() === "failed") {

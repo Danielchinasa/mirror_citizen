@@ -36,6 +36,11 @@ import {
 import PdfModal from "../../components/PdfModal/PdfModal";
 import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
 import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
+import {
+  RECORD_NOT_FOUND_MESSAGE,
+  RECORD_NOT_FOUND_TITLE,
+  isRecordNotFoundDetail,
+} from "../../constants/verificationMessages";
 
 import {
   PageWrapper,
@@ -816,12 +821,17 @@ const VerifyPage = () => {
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === false
       ) {
+        const phoneVerificationDetail =
+          response["search-extension"].phoneVerification.detail || "";
+        const recordNotFound = isRecordNotFoundDetail(phoneVerificationDetail);
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
-          text:
-            response["search-extension"].phoneVerification.detail ||
-            "Verification failed",
+          title: recordNotFound
+            ? RECORD_NOT_FOUND_TITLE
+            : "Verification Failed",
+          text: recordNotFound
+            ? RECORD_NOT_FOUND_MESSAGE
+            : phoneVerificationDetail || "Verification failed",
           confirmButtonColor: "#09c93a",
         });
         setCurrentStep(1);
