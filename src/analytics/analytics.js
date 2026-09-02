@@ -8,6 +8,8 @@ import {
 } from "./events";
 
 let initialized = false;
+let lastTrackedPagePath = null;
+let lastLandingPagePath = null;
 
 const BACKEND_OWNED_EVENTS = new Set([
   ANALYTICS_EVENTS.PURCHASE,
@@ -103,10 +105,16 @@ export function trackAnalyticsEvent(eventName, params = {}) {
   const eventParams = baseParams(params);
 
   if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", eventName, eventParams);
+    window.gtag("event", eventName, {
+      ...eventParams,
+      ...(ANALYTICS_CONFIG.newGa4Enabled
+        ? { send_to: ANALYTICS_CONFIG.newGa4MeasurementId }
+        : {}),
+    });
   }
 
   if (
+    eventName !== ANALYTICS_EVENTS.PAGE_VIEW &&
     ANALYTICS_CONFIG.dataLayerEnabled &&
     typeof window !== "undefined" &&
     window.dataLayer
@@ -123,6 +131,9 @@ export function trackAnalyticsEvent(eventName, params = {}) {
 }
 
 export function trackPageView(path) {
+  if (path === lastTrackedPagePath) return;
+  lastTrackedPagePath = path;
+
   trackAnalyticsEvent(ANALYTICS_EVENTS.PAGE_VIEW, {
     page_path: path,
     page_location:
@@ -132,6 +143,10 @@ export function trackPageView(path) {
 }
 
 export function trackLandingPageView(params = {}) {
+  const landingPath = params.page_path || (typeof window !== "undefined" ? window.location.pathname : "");
+  if (landingPath === lastLandingPagePath) return;
+  lastLandingPagePath = landingPath;
+
   trackAnalyticsEvent(ANALYTICS_EVENTS.LANDING_PAGE_VIEW, params);
 }
 
@@ -187,6 +202,12 @@ export function trackPaymentFailed(serviceType, params = {}) {
     ...resolveAnalyticsProduct(serviceType),
     ...params,
   });
+}
+
+export function __resetAnalyticsForTests() {
+  initialized = false;
+  lastTrackedPagePath = null;
+  lastLandingPagePath = null;
 }
 
 export { ANALYTICS_CONFIG, ANALYTICS_EVENTS, getAttribution };
