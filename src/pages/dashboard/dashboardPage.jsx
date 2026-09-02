@@ -60,7 +60,6 @@ import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import privacyPolicy from "../../privacyPolicy";
 import termsOfService from "../../termsOfService";
 import Swal from "sweetalert2";
-import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
@@ -1339,20 +1338,8 @@ const DashboardPage = () => {
       : totalServiceCost;
   };
 
-  const logPurchase = ({
-    currency,
-    value,
-    transactionId,
-    paymentType,
-    items,
-  }) => {
-    ReactGA.event("purchase", {
-      currency: currency,
-      value: value,
-      transaction_id: transactionId,
-      payment_type: paymentType,
-      items: items,
-    });
+  const logPurchase = () => {
+    // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
   };
 
   const handlePaymentMethod = async () => {

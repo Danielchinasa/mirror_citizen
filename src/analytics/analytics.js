@@ -1,0 +1,192 @@
+import ReactGA from "react-ga4";
+import { ANALYTICS_CONFIG } from "./config";
+import { captureAttribution, getAttribution } from "./attribution";
+import {
+  ANALYTICS_EVENTS,
+  resolveAnalyticsProduct,
+  sanitizeAnalyticsParams,
+} from "./events";
+
+let initialized = false;
+
+const BACKEND_OWNED_EVENTS = new Set([
+  ANALYTICS_EVENTS.PURCHASE,
+  ANALYTICS_EVENTS.REPORT_DELIVERED,
+  ANALYTICS_EVENTS.REFUND,
+]);
+
+function hasAnalyticsConsent() {
+  if (typeof document === "undefined") return false;
+  const match = document.cookie.match(/(^| )cc_cookie=([^;]+)/);
+  if (!match) return false;
+
+  try {
+    const consent = JSON.parse(decodeURIComponent(match[2]));
+    return Array.isArray(consent.categories)
+      ? consent.categories.includes("analytics")
+      : false;
+  } catch {
+    return false;
+  }
+}
+
+function baseParams(params = {}) {
+  return sanitizeAnalyticsParams({
+    country: ANALYTICS_CONFIG.country,
+    platform: ANALYTICS_CONFIG.platform,
+    brand: ANALYTICS_CONFIG.brand,
+    ...getAttribution(),
+    ...params,
+  });
+}
+
+function configureGtagMeasurement(measurementId) {
+  if (!measurementId || typeof window === "undefined" || !window.gtag) return;
+  window.gtag("config", measurementId, { send_page_view: false });
+}
+
+function ensureGtag() {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag =
+    window.gtag ||
+    function gtag() {
+      window.dataLayer.push(arguments);
+    };
+
+  if (!document.getElementById("ecitizen-analytics-gtag")) {
+    const measurementId = ANALYTICS_CONFIG.newGa4Enabled
+      ? ANALYTICS_CONFIG.newGa4MeasurementId
+      : ANALYTICS_CONFIG.legacyGtagMeasurementId;
+    const script = document.createElement("script");
+    script.id = "ecitizen-analytics-gtag";
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtag/js?id=" + measurementId;
+    document.head.appendChild(script);
+  }
+
+  window.gtag("js", new Date());
+}
+
+export function initializeAnalytics() {
+  captureAttribution();
+
+  if (initialized || !ANALYTICS_CONFIG.enabled || !hasAnalyticsConsent()) {
+    return;
+  }
+
+  ensureGtag();
+
+  if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
+    ReactGA.initialize(ANALYTICS_CONFIG.legacyReactGa4MeasurementId);
+    configureGtagMeasurement(ANALYTICS_CONFIG.legacyGtagMeasurementId);
+  }
+
+  if (ANALYTICS_CONFIG.newGa4Enabled) {
+    configureGtagMeasurement(ANALYTICS_CONFIG.newGa4MeasurementId);
+  }
+
+  if (ANALYTICS_CONFIG.googleAdsId) {
+    configureGtagMeasurement(ANALYTICS_CONFIG.googleAdsId);
+  }
+
+  initialized = true;
+}
+
+export function trackAnalyticsEvent(eventName, params = {}) {
+  if (BACKEND_OWNED_EVENTS.has(eventName)) return;
+  if (!ANALYTICS_CONFIG.enabled || !hasAnalyticsConsent()) return;
+
+  initializeAnalytics();
+
+  const eventParams = baseParams(params);
+
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName, eventParams);
+  }
+
+  if (
+    ANALYTICS_CONFIG.dataLayerEnabled &&
+    typeof window !== "undefined" &&
+    window.dataLayer
+  ) {
+    window.dataLayer.push({
+      event: eventName,
+      ...eventParams,
+    });
+  }
+
+  if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
+    ReactGA.event(eventName, eventParams);
+  }
+}
+
+export function trackPageView(path) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.PAGE_VIEW, {
+    page_path: path,
+    page_location:
+      typeof window !== "undefined" ? window.location.href : undefined,
+    page_title: typeof document !== "undefined" ? document.title : undefined,
+  });
+}
+
+export function trackLandingPageView(params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.LANDING_PAGE_VIEW, params);
+}
+
+export function trackProductSelected(serviceType, params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.PRODUCT_SELECTED, {
+    ...resolveAnalyticsProduct(serviceType),
+    ...params,
+  });
+}
+
+export function trackSignupStarted(params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.SIGNUP_STARTED, params);
+}
+
+export function trackSignUp(params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.SIGN_UP, params);
+}
+
+export function trackLogin(params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.LOGIN, params);
+}
+
+export function trackVerificationStarted(serviceType, params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.VERIFICATION_STARTED, {
+    ...resolveAnalyticsProduct(serviceType),
+    ...params,
+  });
+}
+
+export function trackFormSubmit(serviceType, params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.FORM_SUBMIT, {
+    ...resolveAnalyticsProduct(serviceType),
+    ...params,
+  });
+}
+
+export function trackBeginCheckout(serviceType, params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.BEGIN_CHECKOUT, {
+    ...resolveAnalyticsProduct(serviceType),
+    ...params,
+  });
+}
+
+export function trackPaymentInitiated(serviceType, params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.PAYMENT_INITIATED, {
+    ...resolveAnalyticsProduct(serviceType),
+    ...params,
+  });
+}
+
+export function trackPaymentFailed(serviceType, params = {}) {
+  trackAnalyticsEvent(ANALYTICS_EVENTS.PAYMENT_FAILED, {
+    ...resolveAnalyticsProduct(serviceType),
+    ...params,
+  });
+}
+
+export { ANALYTICS_CONFIG, ANALYTICS_EVENTS, getAttribution };

@@ -54,31 +54,7 @@
     <title>e-citizen - your one-stop shop for Identity Verification</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-    <!-- Google tag (gtag.js) for GA4 and Google Ads -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-XSHE0JCXW1"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-XSHE0JCXW1"); // GA4
-      gtag("config", "AW-17949220362"); // Google Ads
-    </script>
-
-    <!-- Event snippet for Purchase conversion page -->
-    <script>
-      gtag("event", "conversion", {
-        send_to: "AW-17949220362/8vVvCL6dtfcbEIq87e5C",
-        value: 1.0,
-        currency: "USD",
-        transaction_id: "",
-        // 'new_customer': true /* calculate dynamically, populate with true/false */,
-      });
-    </script>
+    <!-- Analytics and Google Ads are loaded by the app after analytics consent. -->
   </head>
   <body>
     <noscript>Verify your Nigerian identity easily.</noscript>

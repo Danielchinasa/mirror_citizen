@@ -29,6 +29,21 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
+import {
+  SampleResultContent,
+  sampleData,
+} from "../../components/SampleResultPopup/SampleResultPopup";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
+import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
+import {
+  trackBeginCheckout,
+  trackFormSubmit,
+  trackPaymentFailed,
+  trackPaymentInitiated,
+  trackVerificationStarted,
+} from "../../analytics/analytics";
+import { withAttribution } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -514,6 +529,13 @@ const VerifyPage = () => {
     setCurrentStep(2); // Processing
 
     const randomTransactionId = generateTransactionId();
+    trackVerificationStarted(type);
+    trackFormSubmit(type);
+    trackBeginCheckout(type, {
+      amount: totalAmount,
+      value: totalAmount,
+      currency: currencyCheck,
+    });
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
 
     localStorage.setItem("transactionID", randomTransactionId);
@@ -590,7 +612,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(withAttribution(requestBody)),
       });
 
       const data = await response.json();
@@ -621,6 +643,13 @@ const VerifyPage = () => {
         setPaymentUrl(response.data.authorization_url);
         setPaystackReference(response.data.reference);
         setActiveGateway("paystack");
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Paystack",
+          transaction_id: response.data.reference,
+        });
         setPaystackModalOpen(true);
         setLoading(false);
         setCurrentStep(1); // Stay on payment step while modal is open
@@ -650,7 +679,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(withAttribution(postData)),
       });
 
       const responseData = await response.json();
@@ -663,6 +692,13 @@ const VerifyPage = () => {
           "transactionID",
           responseData.data.txRef || transactionId,
         );
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Flutterwave",
+          transaction_id: responseData.data.txRef || transactionId,
+        });
         setActiveGateway("flutterwave");
         setPaystackModalOpen(true);
         setLoading(false);
@@ -700,6 +736,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
+          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
           confirmButtonColor: "#09c93a",
         });
         return;
@@ -720,6 +757,7 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
+          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
           confirmButtonColor: "#09c93a",
         });
       }

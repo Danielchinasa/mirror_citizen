@@ -24,7 +24,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
-import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";

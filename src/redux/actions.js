@@ -3,15 +3,10 @@ import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
-import ReactGA from "react-ga4";
+import { getAttribution } from "../analytics/attribution";
 
-const logPurchase = ({ currency, value, transactionId, paymentType }) => {
-  ReactGA.event("purchase", {
-    currency: currency,
-    value: value,
-    transaction_id: transactionId,
-    payment_type: paymentType,
-  });
+const logPurchase = () => {
+  // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
 };
 
 export const updatePassword = (credentials) => async (dispatch) => {
@@ -281,6 +276,8 @@ export const sendVerificationRequest =
 
       const randomTransactionId = generateTransactionId();
 
+      const attribution = getAttribution();
+
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -320,6 +317,10 @@ export const sendVerificationRequest =
           license_number: formData.license_number || "",
         },
       };
+
+      if (Object.keys(attribution).length > 0) {
+        restructuredData.attribution = attribution;
+      }
 
       // Remove fields with empty strings from the payload
       Object.keys(restructuredData).forEach((section) => {
@@ -536,6 +537,8 @@ export const initiateVerificationRequest =
 
       const randomTransactionId = generateTransactionId();
 
+      const attribution = getAttribution();
+
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -577,6 +580,10 @@ export const initiateVerificationRequest =
           license_number: formData.license_number || "",
         },
       };
+
+      if (Object.keys(attribution).length > 0) {
+        restructuredData.attribution = attribution;
+      }
 
       // Remove fields with empty strings from the payload
       Object.keys(restructuredData).forEach((section) => {
@@ -722,6 +729,8 @@ export const completeVerificationRequest =
 
       const randomTransactionId = generateTransactionId();
 
+      const attribution = getAttribution();
+
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -768,6 +777,10 @@ export const completeVerificationRequest =
         },
       };
 
+      if (Object.keys(attribution).length > 0) {
+        restructuredData.attribution = attribution;
+      }
+
       // Remove fields with empty strings from the payload
       Object.keys(restructuredData).forEach((section) => {
         Object.keys(restructuredData[section]).forEach((field) => {
@@ -791,28 +804,7 @@ export const completeVerificationRequest =
         type: "SEND_VERIFICATION_REQUEST_SUCCESS",
         payload: response,
       });
-
-      // ✅ GA4 Purchase Tracking
-      try {
-        const currency = currencyCheck || "NGN";
-        const transactionId = transactionID || randomTransactionId;
-        const payment = paymentType || "INSTANT";
-
-        // You can improve this if you have exact total stored
-        const value = parseFloat(localStorage.getItem("totalAmount")) || 0;
-
-        const items = buildItems(formData);
-
-        logPurchase({
-          currency,
-          value,
-          transactionId,
-          paymentType: payment,
-          items,
-        });
-      } catch (err) {
-        console.error("GA4 logPurchase error:", err);
-      }
+      // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
 
       // Return the user data upon successful verification
       return response;
@@ -843,6 +835,7 @@ export const paymentInitializationRequest =
         currency: currencyCheck || "NGN",
         sessionCode: localStorage.getItem("sessionCode") || "",
         type: paymentType || "INSTANT",
+        attribution: getAttribution(),
       };
 
       // Remove fields with empty strings from the payload
