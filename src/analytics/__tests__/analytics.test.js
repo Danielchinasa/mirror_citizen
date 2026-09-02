@@ -22,6 +22,7 @@ jest.mock("../config", () => ({
 import ReactGA from "react-ga4";
 import {
   __resetAnalyticsForTests,
+  initializeAnalytics,
   trackAnalyticsEvent,
   trackLandingPageView,
   trackPageView,
@@ -54,6 +55,29 @@ describe("GA4 analytics instrumentation", () => {
     delete window.dataLayer;
   });
 
+  it("queues cold-load events until new GA4 is configured", () => {
+    document.cookie = "cc_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+
+    trackPageView("/?utm_source=google&utm_medium=cpc&utm_campaign=landing_test");
+    trackLandingPageView({ page_path: "/" });
+
+    expect(window.gtag).not.toHaveBeenCalledWith("event", expect.any(String), expect.any(Object));
+
+    document.cookie = "cc_cookie=" + encodeURIComponent(JSON.stringify({ categories: ["analytics"] }));
+    initializeAnalytics();
+
+    const configCallIndex = window.gtag.mock.calls.findIndex(
+      ([command, measurementId]) => command === "config" && measurementId === "G-ETJKSQ0W0L",
+    );
+    const firstEventCallIndex = window.gtag.mock.calls.findIndex(
+      ([command]) => command === "event",
+    );
+
+    expect(configCallIndex).toBeGreaterThan(-1);
+    expect(firstEventCallIndex).toBeGreaterThan(configCallIndex);
+    expect(window.gtag.mock.calls.filter(([command]) => command === "event")).toHaveLength(2);
+  });
+
   it("emits landing_page_view once with country/platform/brand and attribution", () => {
     trackLandingPageView({ page_path: "/" });
     trackLandingPageView({ page_path: "/" });
@@ -77,14 +101,15 @@ describe("GA4 analytics instrumentation", () => {
     );
   });
 
-  it("emits NIN product_selected with canonical product fields", () => {
+  it("emits NIN product_selected once with canonical product fields", () => {
     trackProductSelected("nin");
 
-    const productCall = window.gtag.mock.calls.find(
+    const productCalls = window.gtag.mock.calls.filter(
       ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.PRODUCT_SELECTED,
     );
 
-    expect(productCall[2]).toEqual(
+    expect(productCalls).toHaveLength(1);
+    expect(productCalls[0][2]).toEqual(
       expect.objectContaining({
         send_to: "G-ETJKSQ0W0L",
         product_id: "NG_NIN",
@@ -95,6 +120,7 @@ describe("GA4 analytics instrumentation", () => {
         brand: "e-citizen",
       }),
     );
+    expect(window.dataLayer.some((entry) => entry.event === ANALYTICS_EVENTS.PRODUCT_SELECTED)).toBe(false);
   });
 
   it("does not emit duplicate new-property page_view for the same route key", () => {

@@ -8,6 +8,8 @@ import {
 } from "./events";
 
 let initialized = false;
+let flushingQueuedEvents = false;
+let pendingEvents = [];
 let lastTrackedPagePath = null;
 let lastLandingPagePath = null;
 
@@ -16,6 +18,8 @@ const BACKEND_OWNED_EVENTS = new Set([
   ANALYTICS_EVENTS.REPORT_DELIVERED,
   ANALYTICS_EVENTS.REFUND,
 ]);
+
+const MAX_PENDING_EVENTS = 50;
 
 function hasAnalyticsConsent() {
   if (typeof document === "undefined") return false;
@@ -71,11 +75,84 @@ function ensureGtag() {
   window.gtag("js", new Date());
 }
 
+function eventKey(eventName, eventParams) {
+  if (eventName === ANALYTICS_EVENTS.PAGE_VIEW) {
+    return `${eventName}:${eventParams.page_path || ""}`;
+  }
+  if (eventName === ANALYTICS_EVENTS.LANDING_PAGE_VIEW) {
+    return `${eventName}:${eventParams.page_path || ""}`;
+  }
+  if (eventName === ANALYTICS_EVENTS.PRODUCT_SELECTED) {
+    return `${eventName}:${eventParams.product_id || ""}`;
+  }
+  return `${eventName}:${JSON.stringify(eventParams)}`;
+}
+
+function queueEvent(eventName, eventParams) {
+  const key = eventKey(eventName, eventParams);
+  if (pendingEvents.some((event) => event.key === key)) return;
+
+  pendingEvents.push({ key, eventName, eventParams });
+  if (pendingEvents.length > MAX_PENDING_EVENTS) {
+    pendingEvents = pendingEvents.slice(-MAX_PENDING_EVENTS);
+  }
+}
+
+function shouldPushToDataLayer(eventName) {
+  return (
+    eventName !== ANALYTICS_EVENTS.PAGE_VIEW &&
+    !ANALYTICS_CONFIG.newGa4Enabled &&
+    ANALYTICS_CONFIG.dataLayerEnabled &&
+    typeof window !== "undefined" &&
+    window.dataLayer
+  );
+}
+
+function dispatchAnalyticsEvent(eventName, eventParams) {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName, {
+      ...eventParams,
+      ...(ANALYTICS_CONFIG.newGa4Enabled
+        ? { send_to: ANALYTICS_CONFIG.newGa4MeasurementId }
+        : {}),
+    });
+  }
+
+  if (shouldPushToDataLayer(eventName)) {
+    window.dataLayer.push({
+      event: eventName,
+      ...eventParams,
+    });
+  }
+
+  if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
+    ReactGA.event(eventName, eventParams);
+  }
+}
+
+function flushPendingEvents() {
+  if (!initialized || flushingQueuedEvents) return;
+  flushingQueuedEvents = true;
+
+  const eventsToFlush = pendingEvents;
+  pendingEvents = [];
+  eventsToFlush.forEach(({ eventName, eventParams }) => {
+    dispatchAnalyticsEvent(eventName, eventParams);
+  });
+
+  flushingQueuedEvents = false;
+}
+
 export function initializeAnalytics() {
   captureAttribution();
 
-  if (initialized || !ANALYTICS_CONFIG.enabled || !hasAnalyticsConsent()) {
-    return;
+  if (!ANALYTICS_CONFIG.enabled || !hasAnalyticsConsent()) {
+    return false;
+  }
+
+  if (initialized) {
+    flushPendingEvents();
+    return true;
   }
 
   ensureGtag();
@@ -94,40 +171,23 @@ export function initializeAnalytics() {
   }
 
   initialized = true;
+  flushPendingEvents();
+  return true;
 }
 
 export function trackAnalyticsEvent(eventName, params = {}) {
   if (BACKEND_OWNED_EVENTS.has(eventName)) return;
-  if (!ANALYTICS_CONFIG.enabled || !hasAnalyticsConsent()) return;
+  if (!ANALYTICS_CONFIG.enabled) return;
 
-  initializeAnalytics();
-
+  captureAttribution();
   const eventParams = baseParams(params);
 
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", eventName, {
-      ...eventParams,
-      ...(ANALYTICS_CONFIG.newGa4Enabled
-        ? { send_to: ANALYTICS_CONFIG.newGa4MeasurementId }
-        : {}),
-    });
+  if (!initialized && !initializeAnalytics()) {
+    queueEvent(eventName, eventParams);
+    return;
   }
 
-  if (
-    eventName !== ANALYTICS_EVENTS.PAGE_VIEW &&
-    ANALYTICS_CONFIG.dataLayerEnabled &&
-    typeof window !== "undefined" &&
-    window.dataLayer
-  ) {
-    window.dataLayer.push({
-      event: eventName,
-      ...eventParams,
-    });
-  }
-
-  if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
-    ReactGA.event(eventName, eventParams);
-  }
+  dispatchAnalyticsEvent(eventName, eventParams);
 }
 
 export function trackPageView(path) {
@@ -143,7 +203,8 @@ export function trackPageView(path) {
 }
 
 export function trackLandingPageView(params = {}) {
-  const landingPath = params.page_path || (typeof window !== "undefined" ? window.location.pathname : "");
+  const landingPath =
+    params.page_path || (typeof window !== "undefined" ? window.location.pathname : "");
   if (landingPath === lastLandingPagePath) return;
   lastLandingPagePath = landingPath;
 
@@ -206,6 +267,8 @@ export function trackPaymentFailed(serviceType, params = {}) {
 
 export function __resetAnalyticsForTests() {
   initialized = false;
+  flushingQueuedEvents = false;
+  pendingEvents = [];
   lastTrackedPagePath = null;
   lastLandingPagePath = null;
 }
