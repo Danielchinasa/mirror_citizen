@@ -108,6 +108,16 @@ function shouldPushToDataLayer(eventName) {
   );
 }
 
+function legacyReactGaParams(eventParams) {
+  if (ANALYTICS_CONFIG.newGa4Enabled && ANALYTICS_CONFIG.legacyReactGa4MeasurementId) {
+    return {
+      ...eventParams,
+      send_to: ANALYTICS_CONFIG.legacyReactGa4MeasurementId,
+    };
+  }
+  return eventParams;
+}
+
 function dispatchAnalyticsEvent(eventName, eventParams) {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("event", eventName, {
@@ -126,7 +136,7 @@ function dispatchAnalyticsEvent(eventName, eventParams) {
   }
 
   if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
-    ReactGA.event(eventName, eventParams);
+    ReactGA.event(eventName, legacyReactGaParams(eventParams));
   }
 }
 

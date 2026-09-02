@@ -87,6 +87,10 @@ describe("GA4 analytics instrumentation", () => {
     );
 
     expect(landingCalls).toHaveLength(1);
+    expect(ReactGA.event).toHaveBeenCalledWith(
+      ANALYTICS_EVENTS.LANDING_PAGE_VIEW,
+      expect.objectContaining({ send_to: "G-DDKNJYDMQ7" }),
+    );
     expect(landingCalls[0][2]).toEqual(
       expect.objectContaining({
         send_to: "G-ETJKSQ0W0L",
@@ -120,7 +124,24 @@ describe("GA4 analytics instrumentation", () => {
         brand: "e-citizen",
       }),
     );
+    expect(ReactGA.event).toHaveBeenCalledWith(
+      ANALYTICS_EVENTS.PRODUCT_SELECTED,
+      expect.objectContaining({ send_to: "G-DDKNJYDMQ7" }),
+    );
     expect(window.dataLayer.some((entry) => entry.event === ANALYTICS_EVENTS.PRODUCT_SELECTED)).toBe(false);
+  });
+
+  it("allows a legitimate later product_selected for a different product", () => {
+    trackProductSelected("nin");
+    trackProductSelected("phone");
+
+    const productCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.PRODUCT_SELECTED,
+    );
+
+    expect(productCalls).toHaveLength(2);
+    expect(productCalls[0][2]).toEqual(expect.objectContaining({ product_id: "NG_NIN" }));
+    expect(productCalls[1][2]).toEqual(expect.objectContaining({ product_id: "NG_PHONE" }));
   });
 
   it("does not emit duplicate new-property page_view for the same route key", () => {
