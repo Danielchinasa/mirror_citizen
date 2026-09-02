@@ -3,7 +3,7 @@ import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
-import { getAttribution } from "../analytics/attribution";
+import { getAttribution, withAnalyticsMetadata } from "../analytics/attribution";
 
 const logPurchase = () => {
   // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
@@ -851,9 +851,10 @@ export const paymentInitializationRequest =
           delete restructuredData[section];
         }
       });
+      const analyticsPayload = await withAnalyticsMetadata(restructuredData);
       const response = await apiPost(
         `/payment/flexi-initiate`,
-        restructuredData,
+        analyticsPayload,
         token,
       );
 

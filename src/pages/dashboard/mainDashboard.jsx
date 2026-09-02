@@ -41,6 +41,7 @@ import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 import { trackAnalyticsEvent, trackPurchaseConversion, trackGA4Event } from "../../hooks/analytics";
 const { Title } = Typography;
 
@@ -1197,7 +1198,7 @@ const MainDashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-          body: JSON.stringify(postData),
+          body: JSON.stringify(await withAnalyticsMetadata(postData)),
         });
 
         // Check if the request was successful (status code 200-299)
@@ -1237,7 +1238,7 @@ const MainDashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-          body: JSON.stringify(postData),
+          body: JSON.stringify(await withAnalyticsMetadata(postData)),
         });
 
         // Check if the request was successful (status code 200-299)

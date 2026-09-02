@@ -43,7 +43,7 @@ import {
   trackPaymentInitiated,
   trackVerificationStarted,
 } from "../../analytics/analytics";
-import { withAttribution } from "../../analytics/attribution";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -612,7 +612,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(withAttribution(requestBody)),
+        body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
       const data = await response.json();
@@ -679,7 +679,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(withAttribution(postData)),
+        body: JSON.stringify(await withAnalyticsMetadata(postData)),
       });
 
       const responseData = await response.json();

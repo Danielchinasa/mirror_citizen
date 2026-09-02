@@ -1,6 +1,6 @@
 // Paystack Payment Service
 import baseUrl from "../apiConfig";
-import { withAttribution } from "../analytics/attribution";
+import { withAnalyticsMetadata } from "../analytics/attribution";
 
 /**
  * Initiate Paystack Payment
@@ -23,7 +23,7 @@ export const initiatePaystackPayment = async (paymentData, userToken) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(withAttribution(paymentData)),
+        body: JSON.stringify(await withAnalyticsMetadata(paymentData)),
       },
     );
 

@@ -68,6 +68,7 @@ import { trackGA4Event } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 /* global Reach */
 
@@ -1522,7 +1523,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
           });
 
           const data = await response.json();
@@ -1679,7 +1680,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(postData),
+            body: JSON.stringify(await withAnalyticsMetadata(postData)),
           });
 
           // Check if the request was successful (status code 200-299)
@@ -1859,7 +1860,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(postData),
+            body: JSON.stringify(await withAnalyticsMetadata(postData)),
           });
 
           // Check if the request was successful (status code 200-299)

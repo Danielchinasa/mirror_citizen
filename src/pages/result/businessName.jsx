@@ -54,6 +54,7 @@ import baseUrl from "../../apiConfig";
 import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 const tooltipContentStakeholders =
   "Check who the directors and shareholders are";
@@ -638,7 +639,7 @@ const BusinessName = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${userToken}`,
               },
-              body: JSON.stringify(requestBody),
+              body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
             });
 
             const data = await response.json();
@@ -845,7 +846,7 @@ const BusinessName = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${userToken}`,
               },
-              body: JSON.stringify(postData),
+              body: JSON.stringify(await withAnalyticsMetadata(postData)),
             });
 
             if (response.ok) {

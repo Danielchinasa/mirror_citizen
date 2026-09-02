@@ -32,6 +32,7 @@ import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 import { trackAnalyticsEvent, trackPurchaseConversion } from "../../hooks/analytics";
 
 const { useToken } = theme;
@@ -486,7 +487,7 @@ function Navbar() {
         // Changed from fetch to axios
         const response = await axios.post(
           `${baseUrl}/payment/flexi-initiate`,
-          postData,
+          await withAnalyticsMetadata(postData),
           {
             headers: {
               "Content-Type": "application/json",
@@ -562,7 +563,7 @@ function Navbar() {
 
         const response = await axios.post(
           `${baseUrl}/payment/paypal/create`,
-          postData,
+          await withAnalyticsMetadata(postData),
           {
             headers: {
               "Content-Type": "application/json",

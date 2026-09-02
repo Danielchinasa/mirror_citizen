@@ -19,5 +19,6 @@ export const ANALYTICS_CONFIG = {
     process.env.REACT_APP_GA4_BACKEND_PURCHASE_ENABLED === "true",
   attributionStorageKey: "ecitizen_attribution",
   analyticsClientIdStorageKey: "ecitizen_analytics_client_id",
+  analyticsSessionIdTimeoutMs: 500,
   attributionTtlDays: 90,
 };
