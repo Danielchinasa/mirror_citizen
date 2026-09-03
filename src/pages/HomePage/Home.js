@@ -31,6 +31,7 @@ import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { getIpInfo } from "../../config/ipConfiguration";
+import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
 
 import {
   HeroWrapper,
@@ -100,6 +101,15 @@ const Home = () => {
   const ninVerify = useAuthRedirect("/verify/nin");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
 
+  useEffect(() => {
+    trackLandingPageView({ page_path: "/" });
+  }, []);
+
+  const handleProductSelected = (serviceType) => {
+    trackProductSelected(serviceType);
+  };
+
+  // Get user country from IP to show correct pricing
   useEffect(() => {
     const fetchIpAddress = async () => {
       const { ip, country } = await getIpInfo();
@@ -468,9 +478,13 @@ const Home = () => {
                 <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify}>
+            <ServiceBtn
+              to={ninVerify}
+              onClick={() => handleProductSelected("nin")}
+            >
               {t("home.services.verifyNow")}
             </ServiceBtn>
+
             <LearnMoreLink to="/nin-verification">
               {t("home.services.learnMore")}{" "}
               <FaArrowRight style={{ fontSize: 11 }} />
@@ -512,7 +526,10 @@ const Home = () => {
                 <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify}>
+            <ServiceBtn
+              to={vehicleVerify}
+              onClick={() => handleProductSelected("vehicle")}
+            >
               {t("home.services.verifyNow")}
             </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">

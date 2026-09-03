@@ -3,7 +3,6 @@ import { Col, Row, Image } from "antd";
 import reg from "../../images/Verify_NIN_on_ecitizen.jpg";
 import SignUpMode from "./signUpMode";
 import { theme } from "antd";
-import { trackGA4Event } from "../../hooks/analytics";
 
 const SignUpPage = () => {
   const { token } = theme.useToken(); // Get token from useToken

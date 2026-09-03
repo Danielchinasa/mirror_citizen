@@ -1,5 +1,8 @@
 // GA4 event tracking utility for custom events
+const BACKEND_OWNED_EVENTS = new Set(["purchase", "report_delivered", "refund"]);
+
 export function trackGA4Event(eventName, eventParams = {}) {
+  if (BACKEND_OWNED_EVENTS.has(eventName)) return;
   if (window.gtag) {
     window.gtag("event", eventName, eventParams);
   }

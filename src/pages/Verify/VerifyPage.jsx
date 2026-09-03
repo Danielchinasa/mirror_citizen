@@ -36,6 +36,14 @@ import privacyPdf from "../../images/e-raia Uganda Privacy Notice EN-SW v1.2 - C
 import termsPdf from "../../images/e-raia Uganda Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 import { getIpInfo } from "../../config/ipConfiguration";
 import { getCurrencySymbol } from "../../utils/currencyFormat";
+import {
+  trackBeginCheckout,
+  trackFormSubmit,
+  trackPaymentFailed,
+  trackPaymentInitiated,
+  trackVerificationStarted,
+} from "../../analytics/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -209,6 +217,11 @@ const VerifyPage = () => {
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
+  const funnelTrackedRef = useRef({
+    formSubmit: false,
+    beginCheckout: false,
+    verificationStarted: false,
+  });
 
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
@@ -370,7 +383,7 @@ const VerifyPage = () => {
 
   if (!config) return null;
 
-  const isGHS = currencyCheck === LOCAL_CURRENCY;
+  const isLocalCurrency = currencyCheck === LOCAL_CURRENCY;
 
   const bureauCount = config?.bureaus
     ? Object.values(selectedBureaus).filter(Boolean).length
@@ -380,18 +393,18 @@ const VerifyPage = () => {
   const bureauMultiplier = config?.bureaus ? Math.max(bureauCount, 1) : 1;
   const discount =
     allBureausSelected && config?.allBureausDiscount
-      ? isGHS
+      ? isLocalCurrency
         ? config.allBureausDiscount.ugx
         : config.allBureausDiscount.usd
       : 0;
 
-  const serviceFeePerCheck = isGHS
+  const serviceFeePerCheck = isLocalCurrency
     ? Number(pricingData?.serviceFee || 0)
     : Number(pricingData?.serviceFeeusd || 0);
-  const processingFeePerCheck = isGHS
+  const processingFeePerCheck = isLocalCurrency
     ? Number(pricingData?.processingFee || 0)
     : Number(pricingData?.processingFeeUsd || 0);
-  const vatPerCheck = isGHS
+  const vatPerCheck = isLocalCurrency
     ? Number(pricingData?.vat || 0)
     : Number(pricingData?.vatUsd || 0);
 
@@ -403,7 +416,7 @@ const VerifyPage = () => {
 
   const totalAmount = pricingData ? Math.max(subtotalAmount - discount, 0) : 0;
 
-  const currencySymbol = isGHS ? "USh" : "$";
+  const currencySymbol = isLocalCurrency ? "USh" : "$";
 
   const userInitials = userDetails
     ? `${(userDetails.firstName || "")[0] || ""}${
@@ -420,6 +433,32 @@ const VerifyPage = () => {
   // Wallet currency exactly as returned by the backend profile (independent of IP-based pricing currency)
   const userCurrency = user?.currency || userDetails?.currency || "";
   const walletCurrencySymbol = getCurrencySymbol(userCurrency);
+
+  const resetFunnelTracking = () => {
+    funnelTrackedRef.current = {
+      formSubmit: false,
+      beginCheckout: false,
+      verificationStarted: false,
+    };
+  };
+
+  const trackFormSubmitOnce = () => {
+    if (funnelTrackedRef.current.formSubmit) return;
+    funnelTrackedRef.current.formSubmit = true;
+    trackFormSubmit(type);
+  };
+
+  const trackBeginCheckoutOnce = (params = {}) => {
+    if (funnelTrackedRef.current.beginCheckout) return;
+    funnelTrackedRef.current.beginCheckout = true;
+    trackBeginCheckout(type, params);
+  };
+
+  const trackVerificationStartedOnce = () => {
+    if (funnelTrackedRef.current.verificationStarted) return;
+    funnelTrackedRef.current.verificationStarted = true;
+    trackVerificationStarted(type);
+  };
 
   /* ── Form handlers ── */
 
@@ -444,6 +483,7 @@ const VerifyPage = () => {
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    resetFunnelTracking();
     setError("");
   };
 
@@ -508,11 +548,17 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    trackFormSubmitOnce();
     setShowDisclaimer(true);
   };
 
   const handleDisclaimerConfirm = () => {
     setShowDisclaimer(false);
+    trackBeginCheckoutOnce({
+      amount: totalAmount,
+      value: totalAmount,
+      currency: currencyCheck,
+    });
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -606,6 +652,7 @@ const VerifyPage = () => {
 
     try {
       // 1. Initiate verification
+      trackVerificationStartedOnce();
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
@@ -670,13 +717,21 @@ const VerifyPage = () => {
         amount: totalAmount,
       };
 
+      trackPaymentInitiated(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: "Wallet",
+        transaction_id: transactionId,
+      });
+
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
       const data = await response.json();
@@ -700,13 +755,23 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
       };
 
-      const response = await initiatePaystackPayment(paymentData, userToken);
+      const response = await initiatePaystackPayment(
+        await withAnalyticsMetadata(paymentData),
+        userToken,
+      );
 
       if (response?.data?.authorization_url) {
         pendingApiFormRef.current = apiFormData;
         setPaymentUrl(response.data.authorization_url);
         setPaystackReference(response.data.reference);
         setActiveGateway("paystack");
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Paystack",
+          transaction_id: response.data.reference,
+        });
         setPaystackModalOpen(true);
         setLoading(false);
         setCurrentStep(1); // Stay on payment step while modal is open
@@ -723,7 +788,7 @@ const VerifyPage = () => {
       const postData = {
         amount: totalAmount,
         currency: currencyCheck,
-        country: "NG",
+        country: LOCAL_COUNTRY_CODE,
         description: "Payment for verification",
         payment_method: "card,mobilemoney,ussd",
         type: "VERIFICATION",
@@ -736,7 +801,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(await withAnalyticsMetadata(postData)),
       });
 
       const responseData = await response.json();
@@ -749,6 +814,13 @@ const VerifyPage = () => {
           "transactionID",
           responseData.data.txRef || transactionId,
         );
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Flutterwave",
+          transaction_id: responseData.data.txRef || transactionId,
+        });
         setActiveGateway("flutterwave");
         setPaystackModalOpen(true);
         setLoading(false);
@@ -782,6 +854,14 @@ const VerifyPage = () => {
       });
 
       if (!res.ok) {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+          payment_status: "cancelled",
+        });
         Swal.fire({
           icon: "error",
           title: t("verify.alert.paymentCancelledTitle"),
@@ -802,6 +882,13 @@ const VerifyPage = () => {
           await handleCompleteVerification(pendingApiFormRef.current);
         }
       } else {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+        });
         Swal.fire({
           icon: "error",
           title: t("verify.alert.paymentFailedTitle"),
@@ -809,13 +896,22 @@ const VerifyPage = () => {
           confirmButtonColor: "#DC0502",
         });
       }
-    } catch {        Swal.fire({
+      } catch {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+        });
+
+        Swal.fire({
           icon: "error",
           title: t("common.error"),
           text: t("verify.alert.verifyPaymentStatus"),
           confirmButtonColor: "#DC0502",
         });
-    }
+      }
 
     setPaystackReference("");
   };
@@ -1386,8 +1482,8 @@ const VerifyPage = () => {
                 >
                   {t("verify.search.discountApplied")}
                   {currencySymbol}
-                  {(isGHS
-                    ? config.allBureausDiscount.ngn
+                  {(isLocalCurrency
+                    ? config.allBureausDiscount.ugx
                     : config.allBureausDiscount.usd
                   ).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>
@@ -1774,7 +1870,7 @@ const VerifyPage = () => {
       return fields.slice(0, 8);
     }
 
-    // ── Ghana ID Card / basic result (new API format) ──
+    // ── National ID / basic result (new API format) ──
     // Check for new format fields first (fullName, idNumber, etc.)
     if (data.fullName || data.firstName || data.lastName || data.idNumber) {
       if (data.idNumber)
