@@ -215,6 +215,12 @@ const VerifyPage = () => {
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
+  const paymentAttemptInFlightRef = useRef(false);
+  const funnelTrackedRef = useRef({
+    formSubmit: false,
+    beginCheckout: false,
+    verificationStarted: false,
+  });
 
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
@@ -395,6 +401,32 @@ const VerifyPage = () => {
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
 
+  const resetFunnelTracking = () => {
+    funnelTrackedRef.current = {
+      formSubmit: false,
+      beginCheckout: false,
+      verificationStarted: false,
+    };
+  };
+
+  const trackFormSubmitOnce = () => {
+    if (funnelTrackedRef.current.formSubmit) return;
+    funnelTrackedRef.current.formSubmit = true;
+    trackFormSubmit(type);
+  };
+
+  const trackBeginCheckoutOnce = (params = {}) => {
+    if (funnelTrackedRef.current.beginCheckout) return;
+    funnelTrackedRef.current.beginCheckout = true;
+    trackBeginCheckout(type, params);
+  };
+
+  const trackVerificationStartedOnce = () => {
+    if (funnelTrackedRef.current.verificationStarted) return;
+    funnelTrackedRef.current.verificationStarted = true;
+    trackVerificationStarted(type);
+  };
+
   /* ── Form handlers ── */
 
   const handleInputChange = (e) => {
@@ -412,12 +444,16 @@ const VerifyPage = () => {
     }
 
     setFormData((prev) => ({ ...prev, ...updates }));
+    if (currentStep === 0) {
+      resetFunnelTracking();
+    }
     setError("");
   };
 
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    resetFunnelTracking();
     setError("");
   };
 
@@ -464,11 +500,17 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    trackFormSubmitOnce();
     setShowDisclaimer(true);
   };
 
   const handleDisclaimerConfirm = () => {
     setShowDisclaimer(false);
+    trackBeginCheckoutOnce({
+      amount: totalAmount,
+      value: totalAmount,
+      currency: currencyCheck,
+    });
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -524,18 +566,13 @@ const VerifyPage = () => {
   /* ── Payment flow ── */
 
   const handlePay = async () => {
+    if (paymentAttemptInFlightRef.current) return;
+    paymentAttemptInFlightRef.current = true;
     setLoading(true);
     setError("");
     setCurrentStep(2); // Processing
 
     const randomTransactionId = generateTransactionId();
-    trackVerificationStarted(type);
-    trackFormSubmit(type);
-    trackBeginCheckout(type, {
-      amount: totalAmount,
-      value: totalAmount,
-      currency: currencyCheck,
-    });
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
 
     localStorage.setItem("transactionID", randomTransactionId);
@@ -546,6 +583,7 @@ const VerifyPage = () => {
 
     try {
       // 1. Initiate verification
+      trackVerificationStartedOnce();
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
@@ -576,6 +614,8 @@ const VerifyPage = () => {
         text: err.message || "An error occurred. Please try again.",
         confirmButtonColor: "#09c93a",
       });
+    } finally {
+      paymentAttemptInFlightRef.current = false;
     }
   };
 
@@ -605,6 +645,14 @@ const VerifyPage = () => {
         paymentType: "WALLET",
         amount: totalAmount,
       };
+
+      trackPaymentInitiated(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: "Wallet",
+        transaction_id: transactionId,
+      });
 
       const response = await fetch(apiUrl, {
         method: "POST",

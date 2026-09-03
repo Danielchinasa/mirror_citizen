@@ -4,6 +4,7 @@ import { captureAttribution, getAttribution } from "./attribution";
 import {
   ANALYTICS_EVENTS,
   resolveAnalyticsProduct,
+  buildAnalyticsItem,
   sanitizeAnalyticsParams,
 } from "./events";
 
@@ -255,16 +256,36 @@ export function trackFormSubmit(serviceType, params = {}) {
 }
 
 export function trackBeginCheckout(serviceType, params = {}) {
+  const product = resolveAnalyticsProduct(serviceType);
+  const item = buildAnalyticsItem(product, params.value ?? params.amount);
+
   trackAnalyticsEvent(ANALYTICS_EVENTS.BEGIN_CHECKOUT, {
-    ...resolveAnalyticsProduct(serviceType),
+    ...product,
+    currency: params.currency || ANALYTICS_CONFIG.defaultCurrency,
     ...params,
+    ...(item ? { items: [item] } : {}),
   });
 }
 
 export function trackPaymentInitiated(serviceType, params = {}) {
+  const product = resolveAnalyticsProduct(serviceType);
+  const amount = params.value ?? params.amount;
+  const currency = params.currency || ANALYTICS_CONFIG.defaultCurrency;
+  const item = buildAnalyticsItem(product, amount);
+
   trackAnalyticsEvent(ANALYTICS_EVENTS.PAYMENT_INITIATED, {
-    ...resolveAnalyticsProduct(serviceType),
+    ...product,
+    currency,
     ...params,
+    ...(item ? { items: [item] } : {}),
+  });
+
+  trackAnalyticsEvent(ANALYTICS_EVENTS.ADD_PAYMENT_INFO, {
+    ...product,
+    currency,
+    value: amount,
+    payment_type: params.gateway,
+    ...(item ? { items: [item] } : {}),
   });
 }
 

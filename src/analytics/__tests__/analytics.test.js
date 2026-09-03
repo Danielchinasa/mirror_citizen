@@ -26,6 +26,10 @@ import {
   trackAnalyticsEvent,
   trackLandingPageView,
   trackPageView,
+  trackFormSubmit,
+  trackVerificationStarted,
+  trackBeginCheckout,
+  trackPaymentInitiated,
   trackProductSelected,
   ANALYTICS_EVENTS,
 } from "../analytics";
@@ -142,6 +146,179 @@ describe("GA4 analytics instrumentation", () => {
     expect(productCalls).toHaveLength(2);
     expect(productCalls[0][2]).toEqual(expect.objectContaining({ product_id: "NG_NIN" }));
     expect(productCalls[1][2]).toEqual(expect.objectContaining({ product_id: "NG_PHONE" }));
+  });
+
+  it("emits NIN form_submit and verification_started with canonical product fields and no PII", () => {
+    trackFormSubmit("nin", { nin: "12345678901", email: "person.com" });
+    trackVerificationStarted("nin", { nin: "12345678901", email: "person.com" });
+
+    const formSubmitCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.FORM_SUBMIT,
+    );
+    const verificationStartedCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.VERIFICATION_STARTED,
+    );
+
+    expect(formSubmitCalls).toHaveLength(1);
+    expect(verificationStartedCalls).toHaveLength(1);
+    [formSubmitCalls[0][2], verificationStartedCalls[0][2]].forEach((params) => {
+      expect(params).toEqual(
+        expect.objectContaining({
+          send_to: "G-ETJKSQ0W0L",
+          product_id: "NG_NIN",
+          product_name: "Nigeria NIN Verification",
+          product_category: "Identity",
+          country: "NG",
+          platform: "web",
+          brand: "e-citizen",
+          utm_source: "google",
+          utm_medium: "cpc",
+          utm_campaign: "nin_event_test",
+        }),
+      );
+      expect(params).not.toHaveProperty("nin");
+      expect(params).not.toHaveProperty("email");
+    });
+  });
+
+  it("emits checkout events with canonical NIN fields from centralized helpers", () => {
+    trackBeginCheckout("nin", { value: 600, amount: 600, currency: "NGN" });
+    trackPaymentInitiated("nin", {
+      value: 600,
+      amount: 600,
+      currency: "NGN",
+      gateway: "Paystack",
+      transaction_id: "PSK_123",
+    });
+
+    const checkoutCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.BEGIN_CHECKOUT,
+    );
+    const paymentCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.PAYMENT_INITIATED,
+    );
+    const addPaymentInfoCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.ADD_PAYMENT_INFO,
+    );
+
+    const expectedItem = {
+      item_id: "NG_NIN",
+      item_name: "Nigeria NIN Verification",
+      item_category: "Identity",
+      price: 600,
+      quantity: 1,
+    };
+
+    expect(checkoutCalls).toHaveLength(1);
+    expect(paymentCalls).toHaveLength(1);
+    expect(addPaymentInfoCalls).toHaveLength(1);
+    expect(checkoutCalls[0][2]).toEqual(
+      expect.objectContaining({
+        product_id: "NG_NIN",
+        product_category: "Identity",
+        value: 600,
+        currency: "NGN",
+        items: [expectedItem],
+      }),
+    );
+    expect(paymentCalls[0][2]).toEqual(
+      expect.objectContaining({
+        product_id: "NG_NIN",
+        product_category: "Identity",
+        gateway: "Paystack",
+        transaction_id: "PSK_123",
+        currency: "NGN",
+        value: 600,
+        amount: 600,
+        items: [expectedItem],
+      }),
+    );
+    expect(addPaymentInfoCalls[0][2]).toEqual(
+      expect.objectContaining({
+        send_to: "G-ETJKSQ0W0L",
+        country: "NG",
+        platform: "web",
+        brand: "e-citizen",
+        utm_source: "google",
+        utm_medium: "cpc",
+        utm_campaign: "nin_event_test",
+        product_id: "NG_NIN",
+        product_name: "Nigeria NIN Verification",
+        product_category: "Identity",
+        currency: "NGN",
+        value: 600,
+        payment_type: "Paystack",
+        items: [expectedItem],
+      }),
+    );
+    expect(addPaymentInfoCalls[0][2]).not.toHaveProperty("transaction_id");
+    expect(addPaymentInfoCalls[0][2]).not.toHaveProperty("gateway");
+  });
+
+  it("emits payment_initiated and add_payment_info once with GA4 ecommerce items and dynamic amount", () => {
+    trackPaymentInitiated("nin", {
+      value: 645,
+      amount: 645,
+      currency: "NGN",
+      gateway: "Flutterwave",
+      transaction_id: "EA521788394960251",
+    });
+
+    const paymentCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.PAYMENT_INITIATED,
+    );
+    const addPaymentInfoCalls = window.gtag.mock.calls.filter(
+      ([command, eventName]) => command === "event" && eventName === ANALYTICS_EVENTS.ADD_PAYMENT_INFO,
+    );
+    const expectedItem = {
+      item_id: "NG_NIN",
+      item_name: "Nigeria NIN Verification",
+      item_category: "Identity",
+      price: 645,
+      quantity: 1,
+    };
+
+    expect(paymentCalls).toHaveLength(1);
+    expect(addPaymentInfoCalls).toHaveLength(1);
+    expect(paymentCalls[0][2]).toEqual(
+      expect.objectContaining({
+        send_to: "G-ETJKSQ0W0L",
+        transaction_id: "EA521788394960251",
+        gateway: "Flutterwave",
+        currency: "NGN",
+        value: 645,
+        amount: 645,
+        country: "NG",
+        platform: "web",
+        brand: "e-citizen",
+        product_id: "NG_NIN",
+        product_name: "Nigeria NIN Verification",
+        product_category: "Identity",
+        utm_source: "google",
+        utm_medium: "cpc",
+        utm_campaign: "nin_event_test",
+        items: [expectedItem],
+      }),
+    );
+    expect(addPaymentInfoCalls[0][2]).toEqual(
+      expect.objectContaining({
+        send_to: "G-ETJKSQ0W0L",
+        currency: "NGN",
+        value: 645,
+        payment_type: "Flutterwave",
+        country: "NG",
+        platform: "web",
+        brand: "e-citizen",
+        product_id: "NG_NIN",
+        product_name: "Nigeria NIN Verification",
+        product_category: "Identity",
+        utm_source: "google",
+        utm_medium: "cpc",
+        utm_campaign: "nin_event_test",
+        items: [expectedItem],
+      }),
+    );
+    expect(addPaymentInfoCalls[0][2]).not.toHaveProperty("transaction_id");
   });
 
   it("does not emit duplicate new-property page_view for the same route key", () => {

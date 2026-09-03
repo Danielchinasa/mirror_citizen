@@ -8,6 +8,7 @@ export const ANALYTICS_EVENTS = {
   FORM_SUBMIT: "form_submit",
   BEGIN_CHECKOUT: "begin_checkout",
   PAYMENT_INITIATED: "payment_initiated",
+  ADD_PAYMENT_INFO: "add_payment_info",
   PAYMENT_FAILED: "payment_failed",
   PURCHASE: "purchase",
   REPORT_DELIVERED: "report_delivered",
@@ -31,6 +32,7 @@ export const ALLOWED_ANALYTICS_PARAMS = new Set([
   "value",
   "currency",
   "gateway",
+  "payment_type",
   "transaction_id",
   "payment_status",
   "report_status",
@@ -110,6 +112,23 @@ const PRODUCT_MAP = {
 export function resolveAnalyticsProduct(serviceType) {
   const key = String(serviceType || "").trim().toLowerCase();
   return PRODUCT_MAP[key] || null;
+}
+
+export function buildAnalyticsItem(product, amount) {
+  if (!product || amount === undefined || amount === null || amount === "") {
+    return null;
+  }
+
+  const price = Number(amount);
+  if (!Number.isFinite(price)) return null;
+
+  return {
+    item_id: product.product_id,
+    item_name: product.product_name,
+    item_category: product.product_category,
+    price,
+    quantity: 1,
+  };
 }
 
 export function sanitizeAnalyticsParams(params = {}) {
