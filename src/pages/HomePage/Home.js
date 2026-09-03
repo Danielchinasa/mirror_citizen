@@ -30,6 +30,7 @@ import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { getIpInfo } from "../../config/ipConfiguration";
+import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
 
 import {
   HeroWrapper,
@@ -104,6 +105,16 @@ const Home = () => {
   const alienCardVerify = useAuthRedirect("/verify/alien");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
 
+
+  useEffect(() => {
+    trackLandingPageView({ page_path: "/" });
+  }, []);
+
+  const handleProductSelected = (serviceType) => {
+    trackProductSelected(serviceType);
+  };
+
+  // Get user country from IP to show correct pricing
   useEffect(() => {
     const fetchIpAndCountry = async () => {
       const { ip, country } = await getIpInfo();
@@ -311,10 +322,18 @@ const Home = () => {
 
   // Determine currency: KES if in Kenya, USD otherwise
   // Priority: IP-detected country > localStorage > Redux user currency
+  // const currencyCheck =
+  //   userCountry === "KE"
+  //     ? "KES"
+  //     : localStorage.getItem("currencyCheck") || "KES";
+
   const currencyCheck =
-    userCountry === "KE"
-      ? "KES"
+  userCountry === "KE"
+    ? "KES"
+    : userCountry
+      ? "USD"
       : localStorage.getItem("currencyCheck") || "KES";
+
   const isKES = currencyCheck === "KES";
   const currencySymbol = isKES ? "KSh" : "$";
 
@@ -590,7 +609,10 @@ const Home = () => {
                 {isSw ? "Matokeo ndani ya sekunde" : "Results in seconds"}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify}>
+            <ServiceBtn
+              to={ninVerify}
+              onClick={() => handleProductSelected("nin")}
+            >
               {isSw ? "Thibitisha Sasa" : "Verify Now"}
             </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
@@ -642,7 +664,10 @@ const Home = () => {
                 <FaCheckCircle /> {isSw ? "Matokeo ya haraka" : "Fast results"}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={alienCardVerify}>
+            <ServiceBtn
+              to={alienCardVerify}
+              onClick={() => handleProductSelected("alien")}
+            >
               {isSw ? "Thibitisha Sasa" : "Verify Now"}
             </ServiceBtn>
             <LearnMoreLink to="/alien-card-verification">
@@ -691,7 +716,10 @@ const Home = () => {
                 {isSw ? "Matokeo ndani ya sekunde" : "Results in seconds"}
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify}>
+            <ServiceBtn
+              to={vehicleVerify}
+              onClick={() => handleProductSelected("vehicle")}
+            >
               {isSw ? "Thibitisha Sasa" : "Verify Now"}
             </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">

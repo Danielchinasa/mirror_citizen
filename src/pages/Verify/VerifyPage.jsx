@@ -33,6 +33,14 @@ import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import privacyPdf from "../../images/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
 import termsPdf from "../../images/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
 import { getCurrencySymbol } from "../../utils/currencyFormat";
+import {
+  trackBeginCheckout,
+  trackFormSubmit,
+  trackPaymentFailed,
+  trackPaymentInitiated,
+  trackVerificationStarted,
+} from "../../analytics/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -204,6 +212,11 @@ const VerifyPage = () => {
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
+  const funnelTrackedRef = useRef({
+    formSubmit: false,
+    beginCheckout: false,
+    verificationStarted: false,
+  });
 
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
@@ -395,6 +408,32 @@ const VerifyPage = () => {
   const userCurrency = user?.currency || userDetails?.currency || "";
   const walletCurrencySymbol = getCurrencySymbol(userCurrency);
 
+  const resetFunnelTracking = () => {
+    funnelTrackedRef.current = {
+      formSubmit: false,
+      beginCheckout: false,
+      verificationStarted: false,
+    };
+  };
+
+  const trackFormSubmitOnce = () => {
+    if (funnelTrackedRef.current.formSubmit) return;
+    funnelTrackedRef.current.formSubmit = true;
+    trackFormSubmit(type);
+  };
+
+  const trackBeginCheckoutOnce = (params = {}) => {
+    if (funnelTrackedRef.current.beginCheckout) return;
+    funnelTrackedRef.current.beginCheckout = true;
+    trackBeginCheckout(type, params);
+  };
+
+  const trackVerificationStartedOnce = () => {
+    if (funnelTrackedRef.current.verificationStarted) return;
+    funnelTrackedRef.current.verificationStarted = true;
+    trackVerificationStarted(type);
+  };
+
   /* ── Form handlers ── */
 
   const handleInputChange = (e) => {
@@ -418,6 +457,7 @@ const VerifyPage = () => {
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    resetFunnelTracking();
     setError("");
   };
 
@@ -489,11 +529,17 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    trackFormSubmitOnce();
     setShowDisclaimer(true);
   };
 
   const handleDisclaimerConfirm = () => {
     setShowDisclaimer(false);
+    trackBeginCheckoutOnce({
+      amount: totalAmount,
+      value: totalAmount,
+      currency: currencyCheck,
+    });
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -589,6 +635,7 @@ const VerifyPage = () => {
 
     try {
       // 1. Initiate verification
+      trackVerificationStartedOnce();
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
@@ -664,13 +711,21 @@ const VerifyPage = () => {
         amount: totalAmount,
       };
 
+      trackPaymentInitiated(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: "Wallet",
+        transaction_id: transactionId,
+      });
+
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
       const data = await response.json();
@@ -694,13 +749,23 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
       };
 
-      const response = await initiatePaystackPayment(paymentData, userToken);
+      const response = await initiatePaystackPayment(
+        await withAnalyticsMetadata(paymentData),
+        userToken,
+      );
 
       if (response?.data?.authorization_url) {
         pendingApiFormRef.current = apiFormData;
         setPaymentUrl(response.data.authorization_url);
         setPaystackReference(response.data.reference);
         setActiveGateway("paystack");
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Paystack",
+          transaction_id: response.data.reference,
+        });
         setPaystackModalOpen(true);
         setLoading(false);
         setCurrentStep(1); // Stay on payment step while modal is open
@@ -717,7 +782,7 @@ const VerifyPage = () => {
       const postData = {
         amount: totalAmount,
         currency: currencyCheck,
-        country: "NG",
+        country: "KE",
         description: "Payment for verification",
         payment_method: "card,mobilemoney,ussd",
         type: "VERIFICATION",
@@ -730,7 +795,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(await withAnalyticsMetadata(postData)),
       });
 
       const responseData = await response.json();
@@ -743,6 +808,13 @@ const VerifyPage = () => {
           "transactionID",
           responseData.data.txRef || transactionId,
         );
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Flutterwave",
+          transaction_id: responseData.data.txRef || transactionId,
+        });
         setActiveGateway("flutterwave");
         setPaystackModalOpen(true);
         setLoading(false);
@@ -776,6 +848,14 @@ const VerifyPage = () => {
       });
 
       if (!res.ok) {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+          payment_status: "cancelled",
+        });
         Swal.fire({
           icon: "error",
           title: isSw ? "Malipo Yameghairiwa" : "Payment Cancelled",
@@ -798,6 +878,13 @@ const VerifyPage = () => {
           await handleCompleteVerification(pendingApiFormRef.current);
         }
       } else {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+        });
         Swal.fire({
           icon: "error",
           title: isSw ? "Malipo Yameshindwa" : "Payment Failed",
@@ -808,6 +895,13 @@ const VerifyPage = () => {
         });
       }
     } catch {
+      trackPaymentFailed(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+        transaction_id: paystackReference,
+      });
       Swal.fire({
         icon: "error",
         title: isSw ? "Hitilafu" : "Error",
