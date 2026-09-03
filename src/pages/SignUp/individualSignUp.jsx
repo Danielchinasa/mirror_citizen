@@ -43,7 +43,7 @@ import AppleSignInButton from "../../components/sso_button/appleSignInButton";
 import FacebookLogin from "react-facebook-login";
 import AppleLogin from "react-apple-login";
 import { apiPost } from "../../apiUtils";
-import { trackGA4Event } from "../../hooks/analytics";
+import { trackSignUp } from "../../analytics/analytics";
 const { Title } = Typography;
 
 const IndividualSignUp = () => {
@@ -287,7 +287,7 @@ const IndividualSignUp = () => {
       if (response === "success") {
         // On successful sign up, fire GA4 event
 
-        trackGA4Event("sign_up", { method: "email" });
+        trackSignUp({ method: "email" });
         // On successful login, navigate to the main dashboard
         trackEvent({
           action: "click_individual_signup_form_success",

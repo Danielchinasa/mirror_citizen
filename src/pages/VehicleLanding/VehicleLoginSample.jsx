@@ -19,7 +19,8 @@ import Swal from "sweetalert2";
 import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import { trackEvent, trackGA4Event } from "../../hooks/analytics";
+import { trackEvent } from "../../hooks/analytics";
+import { trackLogin } from "../../analytics/analytics";
 import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
 const SectionWrapper = styled.section`
@@ -542,7 +543,7 @@ const VehicleLoginSample = () => {
       };
       const response = await dispatch(signIn(payload));
       if (response.jwtToken) {
-        trackGA4Event("login", { method: "email" });
+        trackLogin({ method: "email" });
         localStorage.setItem("IpAddress", ipAddress);
         history.push(redirectTo);
       } else if (response === "Incorrect email or password") {
