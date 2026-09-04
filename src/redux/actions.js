@@ -9,20 +9,11 @@ import {
   apiPostInternalCall,
   apiGetInternalCall,
 } from "../apiUtils";
-import ReactGA from "react-ga4";
 import {
   COTE_DIVOIRE_TEST_IP_INFO,
   getNonProductionTestIp,
 } from "../config/ipConfiguration";
-
-const logPurchase = ({ currency, value, transactionId, paymentType }) => {
-  ReactGA.event("purchase", {
-    currency: currency,
-    value: value,
-    transaction_id: transactionId,
-    payment_type: paymentType,
-  });
-};
+import { withAnalyticsMetadata } from "../analytics/attribution";
 
 export const fetchVerificationServicePrices =
   (config, token) => async (dispatch) => {
@@ -32,13 +23,17 @@ export const fetchVerificationServicePrices =
 
       if (config.serviceCode) {
         const response = await apiGetInternalCall(
-          `/africa/countries/KE/service-prices`,
+          `/africa/countries/CI/service-prices`,
           token,
         );
         const services = response.data?.data || response.data || [];
         serviceData = Array.isArray(services)
-          ? services.find((s) => s.service === config.apiServiceName)
-          : services[config.apiServiceName];
+        ? services.find(
+            (s) =>
+              s.service === config.serviceCode ||
+              s.service === config.apiServiceName,
+          )
+        : services[config.serviceCode] || services[config.apiServiceName];
         rate = response.data?.rate;
       } else {
         const ipAddress =
@@ -338,7 +333,7 @@ export const sendVerificationRequest =
 
       const restructuredData = {
         payment: {
-          currency: currencyCheck || "KES",
+          currency: currencyCheck || "XOF",
           transactionID: transactionID || randomTransactionId,
           paymentType: paymentType || "INSTANT",
         },
@@ -606,7 +601,7 @@ export const initiateVerificationRequest =
       const restructuredData = {
         ...(formData.serviceCode && { serviceCode: formData.serviceCode }),
         payment: {
-          currency: currencyCheck || "KES",
+          currency: currencyCheck || "XOF",
           paymentType: paymentType || "INSTANT",
         },
         consent: "true",
@@ -677,9 +672,10 @@ export const initiateVerificationRequest =
       const ipAddress =
         localStorage.getItem("IpAddress") ||
         getNonProductionTestIp(COTE_DIVOIRE_TEST_IP_INFO.primary);
+
       const response = await apiPost(
         `/africa/verification/CI/initiate`,
-        restructuredData,
+        await withAnalyticsMetadata(restructuredData),
         token,
         { headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {} },
       );
@@ -757,7 +753,7 @@ export const initiateStakeHoldersRequest =
         getNonProductionTestIp(COTE_DIVOIRE_TEST_IP_INFO.primary);
       const response = await apiPost(
         `/africa/verification/CI/initiate`,
-        restructuredData,
+        await withAnalyticsMetadata(restructuredData),
         token,
         { headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {} },
       );
@@ -782,27 +778,6 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-const buildItems = (formData) => {
-  const items = [];
-
-  Object.keys(formData).forEach((field) => {
-    if (typeof formData[field] === "string" && formData[field].trim() !== "") {
-      items.push({
-        item_id: field,
-        item_name: field,
-        price: 1, // fallback if you don’t have per-field pricing here
-        quantity: 1,
-      });
-    }
-  });
-
-  return items;
-};
-
-const getStoredAmount = () => {
-  return Number(localStorage.getItem("totalAmount") || 0);
-};
-
 export const completeVerificationRequest =
   (formData, token) => async (dispatch) => {
     try {
@@ -823,7 +798,7 @@ export const completeVerificationRequest =
 
       const restructuredData = {
         payment: {
-          currency: currencyCheck || "KES",
+          currency: currencyCheck || "XOF",
           transactionID: transactionID || randomTransactionId,
           paymentType: paymentType || "INSTANT",
         },
@@ -887,7 +862,7 @@ export const completeVerificationRequest =
       });
       const response = await apiPost(
         `/africa/verification/CI/complete`,
-        restructuredData,
+        await withAnalyticsMetadata(restructuredData),
         token,
       );
 
@@ -895,28 +870,6 @@ export const completeVerificationRequest =
         type: "SEND_VERIFICATION_REQUEST_SUCCESS",
         payload: response,
       });
-
-      // ✅ GA4 Purchase Tracking
-      try {
-        const currency = currencyCheck || "KES";
-        const transactionId = transactionID || randomTransactionId;
-        const payment = paymentType || "INSTANT";
-
-        // You can improve this if you have exact total stored
-        const value = parseFloat(localStorage.getItem("totalAmount")) || 0;
-
-        const items = buildItems(formData);
-
-        logPurchase({
-          currency,
-          value,
-          transactionId,
-          paymentType: payment,
-          items,
-        });
-      } catch (err) {
-        console.error("GA4 logPurchase error:", err);
-      }
 
       // Return the user data upon successful verification
       return response;
@@ -944,7 +897,7 @@ export const paymentInitializationRequest =
       const currencyCheck = localStorage.getItem("currencyCheck");
       const paymentType = localStorage.getItem("paymentType");
       const restructuredData = {
-        currency: currencyCheck || "KES",
+        currency: currencyCheck || "XOF",
         sessionCode: localStorage.getItem("sessionCode") || "",
         type: paymentType || "INSTANT",
       };
@@ -964,7 +917,7 @@ export const paymentInitializationRequest =
       });
       const response = await apiPost(
         `/payment/flexi-initiate`,
-        restructuredData,
+        await withAnalyticsMetadata(restructuredData),
         token,
       );
 

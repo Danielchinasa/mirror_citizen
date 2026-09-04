@@ -36,7 +36,7 @@ import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleLogin from "react-apple-login";
-import { trackGA4Event } from "../../hooks/analytics";
+import { trackLogin } from "../../analytics/analytics";
 import {
   COTE_DIVOIRE_TEST_IP_INFO,
   getIpInfo,
@@ -191,7 +191,7 @@ const LoginForm = (props) => {
       if (response.jwtToken) {
         // On successful login with jwtToken, fire GA4 event
 
-        trackGA4Event("login", { method: "email" });
+        trackLogin({ method: "email" });
         // On successful login with jwtToken, navigate to the main dashboard
         if (ipAddress) localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);

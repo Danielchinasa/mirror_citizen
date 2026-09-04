@@ -47,6 +47,14 @@ import {
   getNonProductionTestIp,
   isTestIpOverrideEnabled,
 } from "../../config/ipConfiguration";
+import {
+  trackBeginCheckout,
+  trackFormSubmit,
+  trackPaymentFailed,
+  trackPaymentInitiated,
+  trackVerificationStarted,
+} from "../../analytics/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -210,6 +218,11 @@ const VerifyPage = () => {
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
+  const funnelTrackedRef = useRef({
+    formSubmit: false,
+    beginCheckout: false,
+    verificationStarted: false,
+  });
 
   // Dynamic steps based on whether this verification type requires consent
   const requiresConsent = config?.requiresConsent || false;
@@ -464,6 +477,32 @@ const VerifyPage = () => {
     : "XOF";
   const walletCurrencySymbol = getCurrencySymbol(effectiveWalletCurrency);
 
+  const resetFunnelTracking = () => {
+    funnelTrackedRef.current = {
+      formSubmit: false,
+      beginCheckout: false,
+      verificationStarted: false,
+    };
+  };
+
+  const trackFormSubmitOnce = () => {
+    if (funnelTrackedRef.current.formSubmit) return;
+    funnelTrackedRef.current.formSubmit = true;
+    trackFormSubmit(type);
+  };
+
+  const trackBeginCheckoutOnce = (params = {}) => {
+    if (funnelTrackedRef.current.beginCheckout) return;
+    funnelTrackedRef.current.beginCheckout = true;
+    trackBeginCheckout(type, params);
+  };
+
+  const trackVerificationStartedOnce = () => {
+    if (funnelTrackedRef.current.verificationStarted) return;
+    funnelTrackedRef.current.verificationStarted = true;
+    trackVerificationStarted(type);
+  };
+
   /* ── Form handlers ── */
 
   const handleInputChange = (e) => {
@@ -487,6 +526,7 @@ const VerifyPage = () => {
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    resetFunnelTracking();
     setError("");
   };
 
@@ -550,6 +590,15 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+
+    trackFormSubmitOnce();
+
+    trackBeginCheckoutOnce({
+      amount: totalAmount,
+      value: totalAmount,
+      currency: paymentCurrency,
+    });
+
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -621,15 +670,17 @@ const VerifyPage = () => {
       effectiveWalletCurrency &&
       effectiveWalletCurrency !== paymentCurrency
     ) {
-      const mismatchMessage =
-        t("verify.alert.walletCurrencyMismatch");
+      const mismatchMessage = t("verify.alert.walletCurrencyMismatch");
+
       setError(mismatchMessage);
+
       Swal.fire({
         icon: "error",
         title: t("verify.alert.currencyMismatch"),
         text: mismatchMessage,
         confirmButtonColor: "#FD7A00",
       });
+
       return;
     }
 
@@ -643,43 +694,65 @@ const VerifyPage = () => {
     const apiFormData = buildApiFormData();
 
     try {
-      // 1. Initiate verification
+      // 1. Track verification attempt
+      trackVerificationStartedOnce();
+
+      // 2. Initiate verification
       let initiateResponse;
+
       if (config.countryCode && config.serviceCode) {
         // Africa country-specific endpoint
         const payload = {
           serviceCode: config.serviceCode,
           ...apiFormData,
         };
+
         const legacyStoredIp = localStorage.getItem("ipAddress");
-        const detectedIp = legacyStoredIp || localStorage.getItem("IpAddress");
+        const detectedIp =
+          legacyStoredIp || localStorage.getItem("IpAddress");
+
         const ipAddress = isTestIpOverrideEnabled
           ? legacyStoredIp ||
             getNonProductionTestIp(
               COTE_DIVOIRE_TEST_IP_INFO.verificationRequest,
             )
           : detectedIp;
+
         initiateResponse = await apiPostInternalCall(
           `/africa/verification/${config.countryCode}/initiate`,
           payload,
           userToken,
           {
-            headers: ipAddress ? { "X-Forwarded-For": ipAddress } : {},
+            headers: ipAddress
+              ? {
+                  "X-Forwarded-For": ipAddress,
+                }
+              : {},
           },
         );
+
         initiateResponse = initiateResponse?.data || initiateResponse;
       } else {
+        // Legacy/non-Africa fallback
         initiateResponse = await dispatch(
           initiateVerificationRequest(apiFormData, userToken),
         );
+
+        initiateResponse = initiateResponse?.data || initiateResponse;
       }
 
+      // 3. Validate initiated verification session
       if (
         initiateResponse?.sessionStatus === "INITIATED" ||
         initiateResponse?.status === "INITIATED"
       ) {
         const sessionKey =
           initiateResponse?.sessionCode || initiateResponse?.sessionId;
+
+        if (!sessionKey) {
+          throw new Error("Verification session was initiated without a session ID");
+        }
+
         localStorage.setItem("sessionCode", sessionKey);
       } else {
         throw new Error(
@@ -687,7 +760,7 @@ const VerifyPage = () => {
         );
       }
 
-      // 2. Process payment based on method
+      // 4. Process payment
       if (paymentMethod === "wallet") {
         await handleWalletPayment(randomTransactionId, apiFormData);
       } else if (paymentMethod === "flutterwave") {
@@ -699,17 +772,21 @@ const VerifyPage = () => {
       setLoading(false);
       setCurrentStep(1);
 
-      // Extract actual API error message from response
       const apiErrorMessage =
         err.response?.data?.message ||
         err.message ||
         "An error occurred. Please try again.";
+
       const apiErrorStatus = err.response?.data?.status;
 
       setError(apiErrorMessage);
+
       Swal.fire({
         icon: "error",
-        title: apiErrorStatus === "failed" ? t("verify.alert.serviceError") : t("common.error"),
+        title:
+          apiErrorStatus === "failed"
+            ? t("verify.alert.serviceError")
+            : t("common.error"),
         text: apiErrorMessage,
         confirmButtonColor: "#FD7A00",
       });
@@ -743,13 +820,21 @@ const VerifyPage = () => {
         amount: totalAmountFcfa, // always charge in CFA
       };
 
+      trackPaymentInitiated(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: "Wallet",
+        transaction_id: transactionId,
+      });
+
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
       const data = await response.json();
@@ -773,13 +858,23 @@ const VerifyPage = () => {
         sessionCode: localStorage.getItem("sessionCode"),
       };
 
-      const response = await initiatePaystackPayment(paymentData, userToken);
+      const response = await initiatePaystackPayment(
+        await withAnalyticsMetadata(paymentData),
+        userToken,
+      );
 
       if (response?.data?.authorization_url) {
         pendingApiFormRef.current = apiFormData;
         setPaymentUrl(response.data.authorization_url);
         setPaystackReference(response.data.reference);
         setActiveGateway("paystack");
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Paystack",
+          transaction_id: response.data.reference,
+        });
         setPaystackModalOpen(true);
         setLoading(false);
         setCurrentStep(1); // Stay on payment step while modal is open
@@ -796,7 +891,7 @@ const VerifyPage = () => {
       const postData = {
         amount: totalAmount,
         currency: currencyCheck,
-        country: "NG",
+        country: "GH",
         description: "Payment for verification",
         payment_method: "card,mobilemoney,ussd",
         type: "VERIFICATION",
@@ -809,7 +904,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(await withAnalyticsMetadata(postData)),
       });
 
       const responseData = await response.json();
@@ -822,6 +917,13 @@ const VerifyPage = () => {
           "transactionID",
           responseData.data.txRef || transactionId,
         );
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Flutterwave",
+          transaction_id: responseData.data.txRef || transactionId,
+        });
         setActiveGateway("flutterwave");
         setPaystackModalOpen(true);
         setLoading(false);
@@ -855,6 +957,14 @@ const VerifyPage = () => {
       });
 
       if (!res.ok) {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+          payment_status: "cancelled",
+        });
         Swal.fire({
           icon: "error",
           title: t("verify.alert.paymentCancelled"),
@@ -875,6 +985,13 @@ const VerifyPage = () => {
           await handleCompleteVerification(pendingApiFormRef.current);
         }
       } else {
+        trackPaymentFailed(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+          transaction_id: paystackReference,
+        });
         Swal.fire({
           icon: "error",
           title: t("verify.alert.paymentFailed"),
@@ -883,6 +1000,13 @@ const VerifyPage = () => {
         });
       }
     } catch {
+      trackPaymentFailed(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+        transaction_id: paystackReference,
+      });
       Swal.fire({
         icon: "error",
         title: t("common.error"),
