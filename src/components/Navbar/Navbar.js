@@ -23,6 +23,8 @@ import {
   PublicHamburger,
   PublicMobilePanel,
   PublicMobileMenu,
+  PublicMobileLanguage,
+  PublicMobileLanguageLabel,
   PublicLanguageToggleGroup,
   PublicLanguageToggle,
   PublicMobileLink,
@@ -1006,46 +1008,7 @@ function Navbar() {
                   <DownOutlined className="chev" />
                 </CountryPill>
               </Dropdown>
-              <PublicHeaderLanguage>
-                <PublicLanguageToggleGroup>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={mobileLanguage === "SW"}
-                    onClick={() => handleLanguageChange("SW")}
-                    aria-pressed={mobileLanguage === "SW"}
-                  >
-                    SW
-                  </PublicLanguageToggle>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={mobileLanguage === "EN"}
-                    onClick={() => handleLanguageChange("EN")}
-                    aria-pressed={mobileLanguage === "EN"}
-                  >
-                    EN
-                  </PublicLanguageToggle>
-                </PublicLanguageToggleGroup>
-              </PublicHeaderLanguage>
-              <PublicLanguage>
-                <PublicLanguageToggleGroup>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={mobileLanguage === "EN"}
-                    onClick={() => handleLanguageChange("EN")}
-                    aria-pressed={mobileLanguage === "EN"}
-                  >
-                    EN
-                  </PublicLanguageToggle>
-                  <PublicLanguageToggle
-                    type="button"
-                    $active={mobileLanguage === "SW"}
-                    onClick={() => handleLanguageChange("SW")}
-                    aria-pressed={mobileLanguage === "SW"}
-                  >
-                    SW
-                  </PublicLanguageToggle>
-                </PublicLanguageToggleGroup>
-              </PublicLanguage>
+
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
@@ -1118,6 +1081,29 @@ function Navbar() {
                   </button>
                 </Dropdown>
               </div> */}
+              <PublicMobileLanguage>
+                <PublicMobileLanguageLabel>
+                  {isSw ? "Lugha" : "Language"}
+                </PublicMobileLanguageLabel>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={mobileLanguage === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "SW"}
+                    onClick={() => handleLanguageChange("SW")}
+                    aria-pressed={mobileLanguage === "SW"}
+                  >
+                    SW
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
+              </PublicMobileLanguage>
               <div style={{ padding: "6px 0" }}>
                 <ThemeToggle />
               </div>
