@@ -508,9 +508,19 @@ const VerifyPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // For eitherOr fields, clear the sibling field
     const currentField = config.fields.find((f) => f.name === name);
-    const updates = { [name]: value };
+    let sanitizedValue = value;
+    if (currentField?.numericOnly || name === "subjectPhone") {
+      if (currentField?.allowPlus || name === "subjectPhone") {
+        const hasPlus = value.includes("+");
+        sanitizedValue = (hasPlus ? "+" : "") + value.replace(/\D/g, "");
+      } else {
+        sanitizedValue = value.replace(/\D/g, "");
+      }
+    }
+
+    // For eitherOr fields, clear the sibling field
+    const updates = { [name]: sanitizedValue };
     if (currentField?.eitherOr) {
       config.fields.forEach((f) => {
         if (f.eitherOr === currentField.eitherOr && f.name !== name) {
@@ -521,6 +531,40 @@ const VerifyPage = () => {
 
     setFormData((prev) => ({ ...prev, ...updates }));
     setError("");
+  };
+
+  const handleKeyDown = (field) => (e) => {
+    if (field?.numericOnly || field?.name === "subjectPhone") {
+      if (
+        e.ctrlKey ||
+        e.metaKey ||
+        e.altKey ||
+        [
+          "Backspace",
+          "Delete",
+          "Tab",
+          "Escape",
+          "Enter",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "Home",
+          "End",
+        ].includes(e.key)
+      ) {
+        return;
+      }
+      if (
+        (field?.allowPlus || field?.name === "subjectPhone") &&
+        e.key === "+"
+      ) {
+        return;
+      }
+      if (!/^[0-9]$/.test(e.key)) {
+        e.preventDefault();
+      }
+    }
   };
 
   const handleClear = () => {
@@ -708,8 +752,7 @@ const VerifyPage = () => {
         };
 
         const legacyStoredIp = localStorage.getItem("ipAddress");
-        const detectedIp =
-          legacyStoredIp || localStorage.getItem("IpAddress");
+        const detectedIp = legacyStoredIp || localStorage.getItem("IpAddress");
 
         const ipAddress = isTestIpOverrideEnabled
           ? legacyStoredIp ||
@@ -750,7 +793,9 @@ const VerifyPage = () => {
           initiateResponse?.sessionCode || initiateResponse?.sessionId;
 
         if (!sessionKey) {
-          throw new Error("Verification session was initiated without a session ID");
+          throw new Error(
+            "Verification session was initiated without a session ID",
+          );
         }
 
         localStorage.setItem("sessionCode", sessionKey);
@@ -1488,12 +1533,22 @@ const VerifyPage = () => {
                   </FormSelect>
                 ) : (
                   <FormInput
-                    type={field.type}
+                    type={field.type || "text"}
                     name={field.name}
                     placeholder={field.placeholder}
                     value={formData[field.name] || ""}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown(field)}
                     maxLength={field.maxLength}
+                    inputMode={
+                      field.inputMode ||
+                      (field.numericOnly || field.name === "subjectPhone"
+                        ? field.allowPlus || field.name === "subjectPhone"
+                          ? "tel"
+                          : "numeric"
+                        : undefined)
+                    }
+                    pattern={field.pattern}
                   />
                 )}
                 {field.showCounter && (

@@ -43,7 +43,7 @@ const translations = {
     "home.hero.and": "et",
     "home.hero.word3": "fiable.",
     "home.hero.subtitle":
-      "Services officiels de vérification d'identité pour les particuliers et les entreprises en Côte d'Ivoire et dans la diaspora.",
+      "Services de vérification d'identité pour les particuliers et les entreprises en Côte d'Ivoire et dans la diaspora.",
     "home.hero.verifyNationalId": "Vérifiez votre NNI",
     "home.hero.verifyResidentCard": "Vérifier carte de résident",
     "home.hero.verifyVin": "Vérifier le VIN",
@@ -557,29 +557,23 @@ const translations = {
     "dashboard.filterInitiate": "initier",
     "dashboard.failedPayment": "Paiement échoué",
     "dashboard.paymentCancelled": "Paiement annulé ou refusé",
-    "dashboard.paymentIssue":
-      "Un problème est survenu lors du paiement",
+    "dashboard.paymentIssue": "Un problème est survenu lors du paiement",
     "dashboard.paypalInitFailed":
       "Échec de l'initialisation du paiement PayPal",
     "dashboard.paystackInitFailed":
       "Échec de l'initialisation du paiement Paystack",
     "dashboard.failedToLoadResult": "Échec du chargement du résultat.",
-    "dashboard.errorExpired":
-      "Résultat de vérification ou consentement expiré",
-    "dashboard.errorNoRecord":
-      "Désolé, aucun enregistrement trouvé",
-    "dashboard.errorVerificationFailed":
-      "Désolé, la vérification a échoué",
+    "dashboard.errorExpired": "Résultat de vérification ou consentement expiré",
+    "dashboard.errorNoRecord": "Désolé, aucun enregistrement trouvé",
+    "dashboard.errorVerificationFailed": "Désolé, la vérification a échoué",
     "dashboard.loadingPaystack": "Chargement du paiement Paystack...",
     "dashboard.fetchingResult": "Récupération du résultat...",
     "dashboard.fundingWallet": "Financement du portefeuille e-citoyen",
-    "dashboard.paymentDescription":
-      "Paiement pour le service de vérification",
+    "dashboard.paymentDescription": "Paiement pour le service de vérification",
 
     /* ── Vehicle Result Page ── */
     "vehicleResult.loading": "Chargement des données du véhicule...",
-    "vehicleResult.errorLoad":
-      "Impossible de charger les données du véhicule",
+    "vehicleResult.errorLoad": "Impossible de charger les données du véhicule",
     "vehicleResult.vehicle": "Véhicule",
     "vehicleResult.category": "Catégorie",
     "vehicleResult.age": "Âge",
@@ -652,7 +646,7 @@ const translations = {
     "home.hero.and": "&",
     "home.hero.word3": "reliable.",
     "home.hero.subtitle":
-      "Official identity verification services for individuals and businesses in Côte d'Ivoire and the diaspora.",
+      "Identity verification services for individuals and businesses in Côte d'Ivoire and the diaspora.",
     "home.hero.verifyNationalId": "Verify Your NNI",
     "home.hero.verifyResidentCard": "Verify Resident Card",
     "home.hero.verifyVin": "Verify VIN",
@@ -1069,8 +1063,7 @@ const translations = {
     "verify.alert.currencyNotSelected": "Currency Not Selected",
     "verify.alert.selectCurrency":
       "Please select a payment currency (CFA or USD) before proceeding.",
-    "verify.alert.selectBureau":
-      "At least one Credit Bureau must be selected",
+    "verify.alert.selectBureau": "At least one Credit Bureau must be selected",
     "verify.alert.walletMismatch":
       "Wallet currency doesn't match purchase currency. Please use the right currency for this transaction.",
     "verify.alert.walletLow":
