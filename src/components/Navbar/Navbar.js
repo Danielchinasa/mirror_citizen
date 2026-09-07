@@ -321,12 +321,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
           {t("nav.nationalId")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
           {t("nav.vinVerification")}
         </Link>
       </Menu.Item>
@@ -483,7 +483,8 @@ function Navbar() {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: t("common.error"),           text: t("dashboard.paymentCancelled"),
+          title: t("common.error"),
+          text: t("dashboard.paymentCancelled"),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -521,7 +522,8 @@ function Navbar() {
           } else {
             Swal.fire({
               background: bgContainer,
-              color: text,               title: t("dashboard.failedPayment"),
+              color: text,
+              title: t("dashboard.failedPayment"),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -546,7 +548,8 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: t("common.error"),         text: t("dashboard.paymentIssue"),
+        title: t("common.error"),
+        text: t("dashboard.paymentIssue"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -719,7 +722,8 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: t("common.error"),               text: t("dashboard.alert.noLink"),
+              title: t("common.error"),
+              text: t("dashboard.alert.noLink"),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -740,7 +744,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: t("common.error"),             text: t("dashboard.alert.initPaymentFailed"),
+            title: t("common.error"),
+            text: t("dashboard.alert.initPaymentFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -793,7 +798,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: t("common.error"),             text: t("dashboard.paypalInitFailed"),
+            title: t("common.error"),
+            text: t("dashboard.paypalInitFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -836,7 +842,8 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: t("common.error"),               text: t("dashboard.paystackInitFailed"),
+              title: t("common.error"),
+              text: t("dashboard.paystackInitFailed"),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -875,7 +882,8 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: t("common.error"),         text: t("dashboard.alert.initPaymentFailed"),
+        title: t("common.error"),
+        text: t("dashboard.alert.initPaymentFailed"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1277,7 +1285,9 @@ function Navbar() {
                                 marginTop: "5px",
                               }}
                             >
-                              {t("dashboard.minimumTopup", { amount: minTopUpAmountLabel })}
+                              {t("dashboard.minimumTopup", {
+                                amount: minTopUpAmountLabel,
+                              })}
                             </p>
                           )}
                         </Modal>
@@ -1476,7 +1486,9 @@ function Navbar() {
                                 marginTop: "5px",
                               }}
                             >
-                              {t("dashboard.minimumTopup", { amount: minTopUpAmountLabel })}
+                              {t("dashboard.minimumTopup", {
+                                amount: minTopUpAmountLabel,
+                              })}
                             </p>
                           )}
                         </Modal>
