@@ -30,7 +30,10 @@ import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { getIpInfo } from "../../config/ipConfiguration";
-import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 
 import {
   HeroWrapper,
@@ -366,8 +369,8 @@ const Home = () => {
               .
             </HeroTitle>
             <HeroSubtitle>
-              Official identity verification services for individuals and
-              businesses across Ghana and the diaspora.
+              Identity verification services for individuals and businesses
+              across Ghana and the diaspora.
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn
@@ -513,7 +516,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} onClick={() => handleProductSelected("nin")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={ninVerify}
+              onClick={() => handleProductSelected("nin")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -543,7 +551,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify} onClick={() => handleProductSelected("vehicle")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={vehicleVerify}
+              onClick={() => handleProductSelected("vehicle")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
