@@ -312,12 +312,12 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
           Ghana ID
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
           VIN Verification
         </Link>
       </Menu.Item>
