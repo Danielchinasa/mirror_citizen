@@ -310,17 +310,17 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
           {t("nav.nationalId")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-resident">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/card-verification" style={{ textDecoration: "none" }}>
           {t("nav.residentCard")}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
           {t("nav.vinVerification")}
         </Link>
       </Menu.Item>
