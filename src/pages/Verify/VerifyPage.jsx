@@ -465,9 +465,19 @@ const VerifyPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // For eitherOr fields, clear the sibling field
     const currentField = config.fields.find((f) => f.name === name);
-    const updates = { [name]: value };
+    let sanitizedValue = value;
+    if (currentField?.numericOnly || name === "subjectPhone") {
+      if (currentField?.allowPlus || name === "subjectPhone") {
+        const hasPlus = value.includes("+");
+        sanitizedValue = (hasPlus ? "+" : "") + value.replace(/\D/g, "");
+      } else {
+        sanitizedValue = value.replace(/\D/g, "");
+      }
+    }
+
+    // For eitherOr fields, clear the sibling field
+    const updates = { [name]: sanitizedValue };
     if (currentField?.eitherOr) {
       config.fields.forEach((f) => {
         if (f.eitherOr === currentField.eitherOr && f.name !== name) {
@@ -478,6 +488,40 @@ const VerifyPage = () => {
 
     setFormData((prev) => ({ ...prev, ...updates }));
     setError("");
+  };
+
+  const handleKeyDown = (field) => (e) => {
+    if (field?.numericOnly || field?.name === "subjectPhone") {
+      if (
+        e.ctrlKey ||
+        e.metaKey ||
+        e.altKey ||
+        [
+          "Backspace",
+          "Delete",
+          "Tab",
+          "Escape",
+          "Enter",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "Home",
+          "End",
+        ].includes(e.key)
+      ) {
+        return;
+      }
+      if (
+        (field?.allowPlus || field?.name === "subjectPhone") &&
+        e.key === "+"
+      ) {
+        return;
+      }
+      if (!/^[0-9]$/.test(e.key)) {
+        e.preventDefault();
+      }
+    }
   };
 
   const handleClear = () => {
@@ -698,7 +742,10 @@ const VerifyPage = () => {
       Swal.fire({
         icon: "error",
         title: t("verify.alert.walletBalanceLowTitle"),
-        text: t("verify.alert.walletBalanceLowText", { balance: `${currencySymbol}${userBalance.toLocaleString()}`, required: `${currencySymbol}${totalAmount.toLocaleString()}` }),
+        text: t("verify.alert.walletBalanceLowText", {
+          balance: `${currencySymbol}${userBalance.toLocaleString()}`,
+          required: `${currencySymbol}${totalAmount.toLocaleString()}`,
+        }),
         confirmButtonColor: "#DC0502",
       });
       return;
@@ -896,22 +943,22 @@ const VerifyPage = () => {
           confirmButtonColor: "#DC0502",
         });
       }
-      } catch {
-        trackPaymentFailed(type, {
-          amount: totalAmount,
-          value: totalAmount,
-          currency: currencyCheck,
-          gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
-          transaction_id: paystackReference,
-        });
+    } catch {
+      trackPaymentFailed(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: activeGateway === "flutterwave" ? "Flutterwave" : "Paystack",
+        transaction_id: paystackReference,
+      });
 
-        Swal.fire({
-          icon: "error",
-          title: t("common.error"),
-          text: t("verify.alert.verifyPaymentStatus"),
-          confirmButtonColor: "#DC0502",
-        });
-      }
+      Swal.fire({
+        icon: "error",
+        title: t("common.error"),
+        text: t("verify.alert.verifyPaymentStatus"),
+        confirmButtonColor: "#DC0502",
+      });
+    }
 
     setPaystackReference("");
   };
@@ -1215,7 +1262,8 @@ const VerifyPage = () => {
           response?.basic?.detail ||
           response?.["search-extension"]?.phoneVerification?.detail ||
           response?.["search-extension"]?.bvnVerification?.detail ||
-          response?.business?.message ||          response?.financial?.message ||
+          response?.business?.message ||
+          response?.financial?.message ||
           t("verify.alert.refundInitiated");
         Swal.fire({
           icon: "error",
@@ -1399,12 +1447,22 @@ const VerifyPage = () => {
                   </FormSelect>
                 ) : (
                   <FormInput
-                    type={field.type}
+                    type={field.type || "text"}
                     name={field.name}
                     placeholder={field.placeholder}
                     value={formData[field.name] || ""}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown(field)}
                     maxLength={field.maxLength}
+                    inputMode={
+                      field.inputMode ||
+                      (field.numericOnly || field.name === "subjectPhone"
+                        ? field.allowPlus || field.name === "subjectPhone"
+                          ? "tel"
+                          : "numeric"
+                        : undefined)
+                    }
+                    pattern={field.pattern}
                   />
                 )}
                 {field.showCounter && (

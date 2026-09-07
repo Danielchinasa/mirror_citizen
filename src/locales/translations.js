@@ -37,7 +37,7 @@ const translations = {
     "home.hero.titleCountry": "Uganda.",
     "home.hero.titleSuffix": "Fast, Secure and Trusted.",
     "home.hero.subtitle":
-      "Official identity verification services for individuals and businesses across Uganda and the diaspora.",
+      "Identity verification services for individuals and businesses across Uganda and the diaspora.",
     "home.hero.verifyNationalId": "Verify National ID",
     "home.hero.checkVin": "Check VIN",
     "home.trust.secureTitle": "100% Secure",
@@ -191,37 +191,52 @@ const translations = {
       "Results are based on data available at the time of verification.",
     "verify.disclaimer.cancel": "Cancel",
     "verify.disclaimer.clickIndicate": "By clicking, you indicate that:",
-    "verify.disclaimer.vehicleConfirmCorrect": "You confirm that search details are correct, and you confirm that you will <strong>not be refunded</strong> for incorrect information.",
-    "verify.disclaimer.vehicleThirdParty": "You understand and accept that vehicle history data is sourced from third-party providers and <strong>may not contain all records</strong> for every vehicle.",
-    "verify.disclaimer.vehicleNoData": "You understand that <strong>search results may come back without any data</strong>, and you accept that you will not be refunded.",
-    "verify.disclaimer.consentRequired": "You confirm that you understand and accept that <strong>consent is required</strong> from the data subject being verified before you can access their data, and you accept that you will not be refunded if consent is withheld.",
-    "verify.disclaimer.searchCorrect": "You confirm and accept that the <strong>search details are correct</strong>, and you accept that you will not be refunded for incorrect information.",
-    "verify.disclaimer.searchNoData": "You understand and accept that <strong>search details may come back without any data</strong>, and you accept that you will not be refunded.",
+    "verify.disclaimer.vehicleConfirmCorrect":
+      "You confirm that search details are correct, and you confirm that you will <strong>not be refunded</strong> for incorrect information.",
+    "verify.disclaimer.vehicleThirdParty":
+      "You understand and accept that vehicle history data is sourced from third-party providers and <strong>may not contain all records</strong> for every vehicle.",
+    "verify.disclaimer.vehicleNoData":
+      "You understand that <strong>search results may come back without any data</strong>, and you accept that you will not be refunded.",
+    "verify.disclaimer.consentRequired":
+      "You confirm that you understand and accept that <strong>consent is required</strong> from the data subject being verified before you can access their data, and you accept that you will not be refunded if consent is withheld.",
+    "verify.disclaimer.searchCorrect":
+      "You confirm and accept that the <strong>search details are correct</strong>, and you accept that you will not be refunded for incorrect information.",
+    "verify.disclaimer.searchNoData":
+      "You understand and accept that <strong>search details may come back without any data</strong>, and you accept that you will not be refunded.",
     "verify.disclaimer.selectPayment": "Kindly select a payment method",
     "verify.disclaimer.confirmBtn": "Confirm",
 
     /* ── Verify Page Alerts ── */
-    "verify.alert.fetchPricesError": "Could not fetch service prices. Please try again.",
+    "verify.alert.fetchPricesError":
+      "Could not fetch service prices. Please try again.",
     "verify.alert.currencyMismatchTitle": "Currency Mismatch",
-    "verify.alert.currencyMismatchText": "Wallet currency must match payment currency. Please use the right currency for this transaction.",
+    "verify.alert.currencyMismatchText":
+      "Wallet currency must match payment currency. Please use the right currency for this transaction.",
     "verify.alert.genericError": "An error occurred. Please try again.",
     "verify.alert.walletBalanceLowTitle": "Wallet Balance Low",
-    "verify.alert.walletBalanceLowText": "Your wallet balance ({balance}) is insufficient for this transaction ({required}).",
+    "verify.alert.walletBalanceLowText":
+      "Your wallet balance ({balance}) is insufficient for this transaction ({required}).",
     "verify.alert.paymentCancelledTitle": "Payment Cancelled",
-    "verify.alert.paymentCancelledText": "Your payment was cancelled or declined.",
+    "verify.alert.paymentCancelledText":
+      "Your payment was cancelled or declined.",
     "verify.alert.paymentFailedTitle": "Payment Failed",
-    "verify.alert.paymentFailedText": "Your payment could not be completed. Please try again.",
-    "verify.alert.verifyPaymentStatus": "Could not verify payment status. Please check your dashboard.",
+    "verify.alert.paymentFailedText":
+      "Your payment could not be completed. Please try again.",
+    "verify.alert.verifyPaymentStatus":
+      "Could not verify payment status. Please check your dashboard.",
     "verify.alert.verificationFailed": "Verification Failed",
     "verify.alert.consentPendingTitle": "Consent Pending",
     "verify.alert.consentRequestSent": "Consent request sent to the subject.",
     "verify.alert.consentStatus": "Status",
     "verify.alert.consentRequiredLabel": "Required",
     "verify.alert.consentChannels": "Channels",
-    "verify.alert.consentResultsAvailable": "Results will be available after the subject accepts the consent request.",
+    "verify.alert.consentResultsAvailable":
+      "Results will be available after the subject accepts the consent request.",
     "verify.alert.serviceUnavailableTitle": "Service Unavailable",
-    "verify.alert.serviceUnavailableText": "Service is currently unavailable. A refund has been initiated.",
-    "verify.alert.refundInitiated": "Verification could not be completed. A refund has been initiated.",
+    "verify.alert.serviceUnavailableText":
+      "Service is currently unavailable. A refund has been initiated.",
+    "verify.alert.refundInitiated":
+      "Verification could not be completed. A refund has been initiated.",
 
     /* ── Email Consent Feedback ── */
     "consent.email.invalidTitle": "Invalid consent link",
@@ -557,8 +572,7 @@ const translations = {
     "dashboard.paypalInitFailed": "Failed to initialize PayPal payment",
     "dashboard.paystackInitFailed": "Failed to initialize Paystack payment",
     "dashboard.notAvailableUsd": "(Not available for USD)",
-    "dashboard.enterAmount":
-      "Enter Amount to Fund Wallet (Minimum: {amount})",
+    "dashboard.enterAmount": "Enter Amount to Fund Wallet (Minimum: {amount})",
     "dashboard.enterAmountPlaceholder": "Enter amount (min: {amount})",
     "dashboard.minimumTopup": "Minimum top-up amount is {amount}",
     "dashboard.fundingWallet": "Funding e-raia wallet",
@@ -566,19 +580,28 @@ const translations = {
 
     /* ── Dashboard Alerts ── */
     "dashboard.alert.unableGetServicePrices": "Unable to get Service Prices",
-    "dashboard.alert.businessSuccess": "Your business verification request was successful.",
-    "dashboard.alert.vehicleSuccess": "Your vehicle verification request was successful.",
+    "dashboard.alert.businessSuccess":
+      "Your business verification request was successful.",
+    "dashboard.alert.vehicleSuccess":
+      "Your vehicle verification request was successful.",
     "dashboard.alert.partialResultsTitle": "Partial Results",
     "dashboard.alert.partialResultsText": "Some bureaus could not be reached",
-    "dashboard.alert.serviceUnavailable": "Service unavailable at the moment. Please try again later.",
-    "dashboard.alert.serviceUnavailableRefund": "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
+    "dashboard.alert.serviceUnavailable":
+      "Service unavailable at the moment. Please try again later.",
+    "dashboard.alert.serviceUnavailableRefund":
+      "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
     "dashboard.alert.currencyNotSelectedTitle": "Currency Not Selected",
-    "dashboard.alert.currencyNotSelectedText": "Please select a payment currency (Naira or USD) before proceeding.",
-    "dashboard.alert.selectBureau": "At least one Credit Bureau must be selected",
-    "dashboard.alert.walletMismatch": "Wallet currency doesn't match purchase currency. Please use the right currency for this transaction.",
+    "dashboard.alert.currencyNotSelectedText":
+      "Please select a payment currency (Naira or USD) before proceeding.",
+    "dashboard.alert.selectBureau":
+      "At least one Credit Bureau must be selected",
+    "dashboard.alert.walletMismatch":
+      "Wallet currency doesn't match purchase currency. Please use the right currency for this transaction.",
     "dashboard.alert.walletLowTitle": "Wallet Balance Low",
-    "dashboard.alert.walletLowText": "Your wallet balance is low. Please recharge before making a payment.",
-    "dashboard.alert.paymentProcessingError": "We encountered an issue while trying to process your payment. Please try again shortly.",
+    "dashboard.alert.walletLowText":
+      "Your wallet balance is low. Please recharge before making a payment.",
+    "dashboard.alert.paymentProcessingError":
+      "We encountered an issue while trying to process your payment. Please try again shortly.",
     "dashboard.alert.noLink": "Response data does not contain a link",
     "dashboard.alert.initPaymentFailed": "Failed to initialize payment",
     "dashboard.alert.verificationInProgress": "Verification in progress",
@@ -655,7 +678,7 @@ const translations = {
     "home.hero.titleCountry": "Uganda.",
     "home.hero.titleSuffix": "Haraka, salama na ya kuaminika.",
     "home.hero.subtitle":
-      "Huduma rasmi za uthibitishaji wa utambulisho kwa watu binafsi na biashara kote Uganda na diaspora.",
+      "Huduma za uthibitishaji wa utambulisho kwa watu binafsi na biashara kote Uganda na diaspora.",
     "home.hero.verifyNationalId": "Thibitisha Kitambulisho cha Taifa",
     "home.hero.checkVin": "Kagua VIN",
     "home.trust.secureTitle": "Salama kwa 100%",
@@ -810,37 +833,53 @@ const translations = {
       "Matokeo yanatokana na taarifa zilizopo wakati wa uthibitishaji.",
     "verify.disclaimer.cancel": "Ghairi",
     "verify.disclaimer.clickIndicate": "Kwa kubofya, unaonyesha kuwa:",
-    "verify.disclaimer.vehicleConfirmCorrect": "Unathibitisha kuwa maelezo ya utafuti ni sahihi, na unathibitisha kuwa <strong>hutarudishiwa</strong> kwa taarifa isiyo sahihi.",
-    "verify.disclaimer.vehicleThirdParty": "Unaelewa na kukubali kuwa data ya historia ya gari inatoka kwa watoa huduma wa watu wengine na <strong>inaweza kutokana na rekodi zote</strong> kwa kila gari.",
-    "verify.disclaimer.vehicleNoData": "Unaelewa kuwa <strong>matokeo ya utafuti yanaweza kurudi bila data yoyote</strong>, na unakubali kuwa hutarudishiwa.",
-    "verify.disclaimer.consentRequired": "Unathibitisha kuwa unaelewa na kukubali kuwa <strong>idhini inahitajika</strong> kutoka kwa mhusika wa data kabla ya kuweza kufikia data yao, na unakubali kuwa hutarudishiwa ikiwa idhini itakatwa.",
-    "verify.disclaimer.searchCorrect": "Unathibitisha na kukubali kuwa <strong>maelezo ya utafuti ni sahihi</strong>, na unakubali kuwa hutarudishiwa kwa taarifa isiyo sahihi.",
-    "verify.disclaimer.searchNoData": "Unaelewa na kukubali kuwa <strong>maelezo ya utafuti yanaweza kurudi bila data yoyote</strong>, na unakubali kuwa hutarudishiwa.",
+    "verify.disclaimer.vehicleConfirmCorrect":
+      "Unathibitisha kuwa maelezo ya utafuti ni sahihi, na unathibitisha kuwa <strong>hutarudishiwa</strong> kwa taarifa isiyo sahihi.",
+    "verify.disclaimer.vehicleThirdParty":
+      "Unaelewa na kukubali kuwa data ya historia ya gari inatoka kwa watoa huduma wa watu wengine na <strong>inaweza kutokana na rekodi zote</strong> kwa kila gari.",
+    "verify.disclaimer.vehicleNoData":
+      "Unaelewa kuwa <strong>matokeo ya utafuti yanaweza kurudi bila data yoyote</strong>, na unakubali kuwa hutarudishiwa.",
+    "verify.disclaimer.consentRequired":
+      "Unathibitisha kuwa unaelewa na kukubali kuwa <strong>idhini inahitajika</strong> kutoka kwa mhusika wa data kabla ya kuweza kufikia data yao, na unakubali kuwa hutarudishiwa ikiwa idhini itakatwa.",
+    "verify.disclaimer.searchCorrect":
+      "Unathibitisha na kukubali kuwa <strong>maelezo ya utafuti ni sahihi</strong>, na unakubali kuwa hutarudishiwa kwa taarifa isiyo sahihi.",
+    "verify.disclaimer.searchNoData":
+      "Unaelewa na kukubali kuwa <strong>maelezo ya utafuti yanaweza kurudi bila data yoyote</strong>, na unakubali kuwa hutarudishiwa.",
     "verify.disclaimer.selectPayment": "Tafadhali chagua njia ya malipo",
     "verify.disclaimer.confirmBtn": "Thibitisha",
 
     /* ── Verify Page Alerts ── */
-    "verify.alert.fetchPricesError": "Imeshindwa kupata bei za huduma. Tafadhali jaribu tena.",
+    "verify.alert.fetchPricesError":
+      "Imeshindwa kupata bei za huduma. Tafadhali jaribu tena.",
     "verify.alert.currencyMismatchTitle": "Sarafu Haifanani",
-    "verify.alert.currencyMismatchText": "Sarafu ya mkoba lazima iendane na sarafu ya malipo. Tafadhali tumia sarafu sahihi kwa muamala huu.",
-    "verify.alert.genericError": "Kuna hitilafu imetokea. Tafadhali jaribu tena.",
+    "verify.alert.currencyMismatchText":
+      "Sarafu ya mkoba lazima iendane na sarafu ya malipo. Tafadhali tumia sarafu sahihi kwa muamala huu.",
+    "verify.alert.genericError":
+      "Kuna hitilafu imetokea. Tafadhali jaribu tena.",
     "verify.alert.walletBalanceLowTitle": "Salio la Mkoba ni Dogo",
-    "verify.alert.walletBalanceLowText": "Salio la mkoba lako ({balance}) halitoshi kwa muamala huu ({required}).",
+    "verify.alert.walletBalanceLowText":
+      "Salio la mkoba lako ({balance}) halitoshi kwa muamala huu ({required}).",
     "verify.alert.paymentCancelledTitle": "Malipo Yameghairiwa",
-    "verify.alert.paymentCancelledText": "Malipo yako yameghairiwa au kukataliwa.",
+    "verify.alert.paymentCancelledText":
+      "Malipo yako yameghairiwa au kukataliwa.",
     "verify.alert.paymentFailedTitle": "Malipo Yameshindwa",
-    "verify.alert.paymentFailedText": "Malipo yako hayakuweza kukamilika. Tafadhali jaribu tena.",
-    "verify.alert.verifyPaymentStatus": "Imeshindwa kuthibitisha hali ya malipo. Tafadhali angalia dashibodi yako.",
+    "verify.alert.paymentFailedText":
+      "Malipo yako hayakuweza kukamilika. Tafadhali jaribu tena.",
+    "verify.alert.verifyPaymentStatus":
+      "Imeshindwa kuthibitisha hali ya malipo. Tafadhali angalia dashibodi yako.",
     "verify.alert.verificationFailed": "Uthibitishaji Umeshindwa",
     "verify.alert.consentPendingTitle": "Idhini Inasubiri",
     "verify.alert.consentRequestSent": "Ombi la idhini limetumwa kwa mhusika.",
     "verify.alert.consentStatus": "Hali",
     "verify.alert.consentRequiredLabel": "Inahitajika",
     "verify.alert.consentChannels": "Njia",
-    "verify.alert.consentResultsAvailable": "Matokeo yatapatikana baada ya mhusika kukubali ombi la idhini.",
+    "verify.alert.consentResultsAvailable":
+      "Matokeo yatapatikana baada ya mhusika kukubali ombi la idhini.",
     "verify.alert.serviceUnavailableTitle": "Huduma Haipatikani",
-    "verify.alert.serviceUnavailableText": "Huduma kwa sasa haipatikani. Urejeshaji wa pesa umeshanzishwa.",
-    "verify.alert.refundInitiated": "Uthibitishaji haukuweza kukamilika. Urejeshaji wa pesa umeshanzishwa.",
+    "verify.alert.serviceUnavailableText":
+      "Huduma kwa sasa haipatikani. Urejeshaji wa pesa umeshanzishwa.",
+    "verify.alert.refundInitiated":
+      "Uthibitishaji haukuweza kukamilika. Urejeshaji wa pesa umeshanzishwa.",
 
     /* ── Email Consent Feedback ── */
     "consent.email.invalidTitle": "Kiungo batili cha idhini",
@@ -1125,10 +1164,8 @@ const translations = {
     "ninResult.sessionInfo": "Taarifa za Kipindi",
     "ninResult.sessionId": "Kitambulisho cha Kipindi",
     "ninResult.consentStatus": "Hali ya Idhini",
-    "ninResult.awaitingConsentMsg":
-      "Mhusika wa data bado hajakubali idhini.",
-    "ninResult.errorLoadResult":
-      "Imeshindwa kupakia matokeo ya uthibitishaji.",
+    "ninResult.awaitingConsentMsg": "Mhusika wa data bado hajakubali idhini.",
+    "ninResult.errorLoadResult": "Imeshindwa kupakia matokeo ya uthibitishaji.",
 
     /* ── Main Dashboard ── */
     "dashboard.totalVerifications": "Jumla ya uthibitishaji ",
@@ -1166,8 +1203,7 @@ const translations = {
     "dashboard.errorExpired":
       "Matokeo ya Uthibitishaji au Idhini yameisha muda wake",
     "dashboard.errorNoRecord": "Samahani, Hakuna rekodi iliyopatikana",
-    "dashboard.errorVerificationFailed":
-      "Samahani, uthibitishaji umeshindwa",
+    "dashboard.errorVerificationFailed": "Samahani, uthibitishaji umeshindwa",
     "dashboard.paymentCancelled": "Malipo Yameghairiwa au Kukataliwa",
     "dashboard.failedPayment": "Malipo Yameshindwa",
     "dashboard.paymentIssue": "Kulikuwa na tatizo la kufanya malipo",
@@ -1184,19 +1220,28 @@ const translations = {
 
     /* ── Dashboard Alerts ── */
     "dashboard.alert.unableGetServicePrices": "Imeshindwa kupata Bei za Huduma",
-    "dashboard.alert.businessSuccess": "Ombi lako la uthibitishaji wa biashara limefanikiwa.",
-    "dashboard.alert.vehicleSuccess": "Ombi lako la uthibitishaji wa gari limefanikiwa.",
+    "dashboard.alert.businessSuccess":
+      "Ombi lako la uthibitishaji wa biashara limefanikiwa.",
+    "dashboard.alert.vehicleSuccess":
+      "Ombi lako la uthibitishaji wa gari limefanikiwa.",
     "dashboard.alert.partialResultsTitle": "Matokeo ya Sehemu",
     "dashboard.alert.partialResultsText": "Baadhi ya ofisi hazikuweza kufikiwa",
-    "dashboard.alert.serviceUnavailable": "Huduma haipatikani kwa sasa. Tafadhali jaribu tena baadaye.",
-    "dashboard.alert.serviceUnavailableRefund": "Huduma haipatikani kwa sasa. Tafadhali jaribu tena baadaye. Urejeshaji wa pesa umeshanzishwa.",
+    "dashboard.alert.serviceUnavailable":
+      "Huduma haipatikani kwa sasa. Tafadhali jaribu tena baadaye.",
+    "dashboard.alert.serviceUnavailableRefund":
+      "Huduma haipatikani kwa sasa. Tafadhali jaribu tena baadaye. Urejeshaji wa pesa umeshanzishwa.",
     "dashboard.alert.currencyNotSelectedTitle": "Sarafu Haijachaguliwa",
-    "dashboard.alert.currencyNotSelectedText": "Tafadhali chagua sarafu ya malipo (Naira au USD) kabla ya kuendelea.",
-    "dashboard.alert.selectBureau": "Angalau Ofisi moja ya Mikopo lazima ichaguliwe",
-    "dashboard.alert.walletMismatch": "Sarafu ya mkoba haifanani na sarafu ya ununuzi. Tafadhali tumia sarafu sahihi kwa muamala huu.",
+    "dashboard.alert.currencyNotSelectedText":
+      "Tafadhali chagua sarafu ya malipo (Naira au USD) kabla ya kuendelea.",
+    "dashboard.alert.selectBureau":
+      "Angalau Ofisi moja ya Mikopo lazima ichaguliwe",
+    "dashboard.alert.walletMismatch":
+      "Sarafu ya mkoba haifanani na sarafu ya ununuzi. Tafadhali tumia sarafu sahihi kwa muamala huu.",
     "dashboard.alert.walletLowTitle": "Salio la Mkoba ni Dogo",
-    "dashboard.alert.walletLowText": "Salio la mkoba lako ni dogo. Tafadhali jaza tena kabla ya kufanya malipo.",
-    "dashboard.alert.paymentProcessingError": "Tulipatana na tatizo wakati wa kuchakata malipo yako. Tafadhali jaribu tena hivi karibuni.",
+    "dashboard.alert.walletLowText":
+      "Salio la mkoba lako ni dogo. Tafadhali jaza tena kabla ya kufanya malipo.",
+    "dashboard.alert.paymentProcessingError":
+      "Tulipatana na tatizo wakati wa kuchakata malipo yako. Tafadhali jaribu tena hivi karibuni.",
     "dashboard.alert.noLink": "Data ya majibu haishiwi kiungo",
     "dashboard.alert.initPaymentFailed": "Imeshindwa kuanzisha malipo",
     "dashboard.alert.verificationInProgress": "Uthibitishaji unaendelea",

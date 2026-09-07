@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/ug/static/css/main.1639b676.chunk.css",
-    "main.js": "/ug/static/js/main.6b0d9641.chunk.js",
-    "main.js.map": "/ug/static/js/main.6b0d9641.chunk.js.map",
+    "main.js": "/ug/static/js/main.4a903b4f.chunk.js",
+    "main.js.map": "/ug/static/js/main.4a903b4f.chunk.js.map",
     "runtime-main.js": "/ug/static/js/runtime-main.fddde96a.js",
     "runtime-main.js.map": "/ug/static/js/runtime-main.fddde96a.js.map",
     "static/css/2.ec61a722.chunk.css": "/ug/static/css/2.ec61a722.chunk.css",
-    "static/js/2.6031e6fd.chunk.js": "/ug/static/js/2.6031e6fd.chunk.js",
-    "static/js/2.6031e6fd.chunk.js.map": "/ug/static/js/2.6031e6fd.chunk.js.map",
+    "static/js/2.2f7ed62d.chunk.js": "/ug/static/js/2.2f7ed62d.chunk.js",
+    "static/js/2.2f7ed62d.chunk.js.map": "/ug/static/js/2.2f7ed62d.chunk.js.map",
     "index.html": "/ug/index.html",
-    "precache-manifest.24e6365363caefe95ff0dff2fd95f717.js": "/ug/precache-manifest.24e6365363caefe95ff0dff2fd95f717.js",
+    "precache-manifest.b057ee1e4e0b3dac6747a2c9b648c211.js": "/ug/precache-manifest.b057ee1e4e0b3dac6747a2c9b648c211.js",
     "service-worker.js": "/ug/service-worker.js",
     "static/css/2.ec61a722.chunk.css.map": "/ug/static/css/2.ec61a722.chunk.css.map",
     "static/css/main.1639b676.chunk.css.map": "/ug/static/css/main.1639b676.chunk.css.map",
-    "static/js/2.6031e6fd.chunk.js.LICENSE.txt": "/ug/static/js/2.6031e6fd.chunk.js.LICENSE.txt",
+    "static/js/2.2f7ed62d.chunk.js.LICENSE.txt": "/ug/static/js/2.2f7ed62d.chunk.js.LICENSE.txt",
     "static/media/BW7A9844.png": "/ug/static/media/BW7A9844.e32d1c91.png",
     "static/media/Corporate.svg": "/ug/static/media/Corporate.83116b9d.svg",
     "static/media/NIN_verification_on_ecitizen.png": "/ug/static/media/NIN_verification_on_ecitizen.dfc673b1.png",
@@ -34,7 +34,6 @@
     "static/media/google-logo.svg": "/ug/static/media/google-logo.45aebcf8.svg",
     "static/media/icon_paystack.png": "/ug/static/media/icon_paystack.769ee98d.png",
     "static/media/individual.svg": "/ug/static/media/individual.6bec09d4.svg",
-    "static/media/lady.svg": "/ug/static/media/lady.82ff32ba.svg",
     "static/media/mosip.png": "/ug/static/media/mosip.5c362e0c.png",
     "static/media/ndpr.png": "/ug/static/media/ndpr.411010b5.png",
     "static/media/paypal.png": "/ug/static/media/paypal.db850f0f.png",
@@ -54,8 +53,8 @@
   "entrypoints": [
     "static/js/runtime-main.fddde96a.js",
     "static/css/2.ec61a722.chunk.css",
-    "static/js/2.6031e6fd.chunk.js",
+    "static/js/2.2f7ed62d.chunk.js",
     "static/css/main.1639b676.chunk.css",
-    "static/js/main.6b0d9641.chunk.js"
+    "static/js/main.4a903b4f.chunk.js"
   ]
 }
