@@ -354,17 +354,17 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
           {isSw ? "Kitambulisho cha Taifa" : "National ID"}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-alien-card">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/alien-card-verification" style={{ textDecoration: "none" }}>
           {isSw ? "Uthibitishaji wa Alien Card" : "Alien Card Verification"}
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/#services" style={{ textDecoration: "none" }}>
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
           {isSw ? "Uthibitishaji wa VIN" : "VIN Verification"}
         </Link>
       </Menu.Item>
