@@ -285,27 +285,30 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
           NIN Verification
         </Link>
       </Menu.Item>
-      <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+      <Menu.Item key="services-phone">
+        <Link
+          to="/phone-number-verification"
+          style={{ textDecoration: "none" }}
+        >
           Phone Number Verification
         </Link>
       </Menu.Item>
-      <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+      <Menu.Item key="services-business">
+        <Link to="/business-verification" style={{ textDecoration: "none" }}>
           Business Profile Verification
         </Link>
       </Menu.Item>
-      <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+      <Menu.Item key="services-credit">
+        <Link to="/credit-profile" style={{ textDecoration: "none" }}>
           Financial Credit Verification
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
           Vehicle History Verification
         </Link>
       </Menu.Item>
