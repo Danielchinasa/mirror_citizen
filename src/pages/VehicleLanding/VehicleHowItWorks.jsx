@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaCreditCard, FaFileAlt, FaArrowRight } from "react-icons/fa";
+import {
+  FaSearch,
+  FaCreditCard,
+  FaFileAlt,
+  FaArrowRight,
+} from "react-icons/fa";
 import styled from "styled-components";
 
 const HowWrapper = styled.section`
@@ -203,9 +208,7 @@ const VehicleHowItWorks = () => {
             <FaCreditCard />
           </StepIconBox>
           <StepText>
-            <StepName>
-              {isSw ? "Wasilisha na Lipa" : "Submit & Pay"}
-            </StepName>
+            <StepName>{isSw ? "Wasilisha na Lipa" : "Submit & Pay"}</StepName>
             <StepDesc>
               {isSw
                 ? "Tunachakata ombi lako kwa usalama na kuthibitisha gari."

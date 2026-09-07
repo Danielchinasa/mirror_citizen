@@ -30,7 +30,10 @@ import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { getIpInfo } from "../../config/ipConfiguration";
-import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 
 import {
   HeroWrapper,
@@ -104,7 +107,6 @@ const Home = () => {
   const ninVerify = useAuthRedirect("/verify/nin");
   const alienCardVerify = useAuthRedirect("/verify/alien");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
-
 
   useEffect(() => {
     trackLandingPageView({ page_path: "/" });
@@ -328,11 +330,11 @@ const Home = () => {
   //     : localStorage.getItem("currencyCheck") || "KES";
 
   const currencyCheck =
-  userCountry === "KE"
-    ? "KES"
-    : userCountry
-      ? "USD"
-      : localStorage.getItem("currencyCheck") || "KES";
+    userCountry === "KE"
+      ? "KES"
+      : userCountry
+        ? "USD"
+        : localStorage.getItem("currencyCheck") || "KES";
 
   const isKES = currencyCheck === "KES";
   const currencySymbol = isKES ? "KSh" : "$";
@@ -381,8 +383,8 @@ const Home = () => {
             </HeroTitle>
             <HeroSubtitle>
               {isSw
-                ? "Huduma rasmi za uthibitishaji wa utambulisho kwa watu binafsi na biashara kote Kenya na diaspora."
-                : "Official identity verification for individuals and businesses across Kenya and the diaspora."}
+                ? "Rasmi za uthibitishaji wa utambulisho kwa watu binafsi na biashara kote Kenya na diaspora."
+                : "Identity verification for individuals and businesses across Kenya and the diaspora."}
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn

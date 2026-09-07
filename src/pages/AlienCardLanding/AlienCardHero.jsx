@@ -67,9 +67,7 @@ const AlienCardHero = () => {
               {isSw
                 ? "Thibitisha Alien Card nchini Kenya "
                 : "Verify an Alien Card in Kenya "}
-              <span style={redHighlight}>
-                {isSw ? "haraka" : "quickly"}
-              </span>
+              <span style={redHighlight}>{isSw ? "haraka" : "quickly"}</span>
               {isSw ? " na kwa " : " and "}
               <span style={redHighlight}>
                 {isSw ? "usalama." : "securely."}
@@ -78,7 +76,7 @@ const AlienCardHero = () => {
             <HeroSubtitle>
               {isSw
                 ? "Uthibitishaji rasmi kwa wageni nchini Kenya. Matokeo ya haraka, yanaoaminika na maelfu."
-                : "Official verification for foreigners in Kenya. Fast results, trusted by thousands."}
+                : "Verification for foreigners in Kenya. Fast results, trusted by thousands."}
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn to={verifyLink}>
