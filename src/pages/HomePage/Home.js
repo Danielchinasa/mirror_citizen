@@ -374,23 +374,23 @@ const Home = () => {
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
+                to="/nin-verification"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   const el = document.getElementById("services");
+                //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                // }}
               >
                 Verify Ghana ID
                 <FaArrowRight />
               </PrimaryBtn>
               <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
+                to="/vehicle-verification"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   const el = document.getElementById("services");
+                //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                // }}
               >
                 Check VIN <FaArrowRight />
               </PrimaryBtn>
