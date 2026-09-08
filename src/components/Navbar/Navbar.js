@@ -28,6 +28,9 @@ import {
   PublicMobileLink,
   PublicMobileAnchor,
   PublicBackButton,
+  MobileCountryToggle,
+  MobileCountryList,
+  MobileCountryLink,
 } from "./Navbar.elements";
 import { FaTimes, FaBars, FaArrowLeft } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
@@ -180,6 +183,7 @@ function Navbar() {
     },
   ];
   const [visible, setVisible] = useState(false);
+  const [mobileCountryOpen, setMobileCountryOpen] = useState(false);
 
   const handleVisibleChange = (flag) => {
     setVisible(flag);
@@ -281,27 +285,30 @@ function Navbar() {
   const servicesMenu = (
     <Menu>
       <Menu.Item key="services-nin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+        <Link to="/nin-verification" style={{ textDecoration: "none" }}>
           NIN Verification
         </Link>
       </Menu.Item>
-      <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+      <Menu.Item key="services-phone">
+        <Link
+          to="/phone-number-verification"
+          style={{ textDecoration: "none" }}
+        >
           Phone Number Verification
         </Link>
       </Menu.Item>
-      <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+      <Menu.Item key="services-business">
+        <Link to="/business-verification" style={{ textDecoration: "none" }}>
           Business Profile Verification
         </Link>
       </Menu.Item>
-      <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+      <Menu.Item key="services-credit">
+        <Link to="/credit-profile" style={{ textDecoration: "none" }}>
           Financial Credit Verification
         </Link>
       </Menu.Item>
       <Menu.Item key="services-vin">
-        <Link to="/#verification-services" style={{ textDecoration: "none" }}>
+        <Link to="/vehicle-verification" style={{ textDecoration: "none" }}>
           Vehicle History Verification
         </Link>
       </Menu.Item>
@@ -517,7 +524,6 @@ function Navbar() {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -539,13 +545,10 @@ function Navbar() {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handleModalOk();
           }
-        } else {
-          handled = true;
-          handleModalOk();
         }
       } catch (e) {
         // Network error – keep polling
@@ -561,7 +564,6 @@ function Navbar() {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -583,13 +585,10 @@ function Navbar() {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handlePaystackModalClose();
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling
@@ -964,6 +963,62 @@ function Navbar() {
               <PublicMobileAnchor href="#" onClick={handleGetStarted}>
                 Get Started
               </PublicMobileAnchor>
+
+              {/* Country selector for mobile */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(17, 24, 39, 0.08)",
+                  paddingTop: "14px",
+                  marginTop: "4px",
+                }}
+              >
+                <MobileCountryToggle
+                  type="button"
+                  onClick={() => setMobileCountryOpen((prev) => !prev)}
+                >
+                  <span
+                    role="img"
+                    aria-label="Nigeria flag"
+                    style={{ fontSize: "20px" }}
+                  >
+                    🇳🇬
+                  </span>
+                  Nigeria
+                  <span
+                    style={{
+                      marginLeft: "auto",
+                      fontSize: "12px",
+                      transition: "transform 0.2s",
+                      transform: mobileCountryOpen
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)",
+                      display: "inline-block",
+                    }}
+                  >
+                    ▾
+                  </span>
+                </MobileCountryToggle>
+                <MobileCountryList $open={mobileCountryOpen}>
+                  {OTHER_COUNTRIES.map((country) => (
+                    <MobileCountryLink
+                      key={country.key}
+                      href={country.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMobileMenu}
+                    >
+                      <span
+                        role="img"
+                        aria-label={`${country.label} flag`}
+                        style={{ fontSize: "20px" }}
+                      >
+                        {country.flag}
+                      </span>
+                      {country.label}
+                    </MobileCountryLink>
+                  ))}
+                </MobileCountryList>
+              </div>
             </PublicMobileMenu>
           </PublicMobilePanel>
         </PublicNav>
@@ -1262,31 +1317,51 @@ function Navbar() {
                           paddingLeft: "49px",
                           paddingRight: "15px",
                         }}
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <Dropdown
-                          overlay={countryMenu}
-                          trigger={["click"]}
-                          arrow
+                        <MobileCountryToggle
+                          type="button"
+                          onClick={() => setMobileCountryOpen((prev) => !prev)}
+                          style={{ color: "#FFFFFF" }}
                         >
-                          <CountryPill
-                            type="button"
-                            aria-label="Select country"
-                            style={{ color: "#FFFFFF" }}
+                          <span role="img" aria-label="Nigeria flag">
+                            🇳🇬
+                          </span>
+                          Nigeria
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "12px",
+                              transition: "transform 0.2s",
+                              transform: mobileCountryOpen
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
+                              display: "inline-block",
+                            }}
                           >
-                            <span
-                              className="flag"
-                              role="img"
-                              aria-label="Nigeria flag"
-                            >
-                              🇳🇬
-                            </span>
-                            Nigeria
-                            <DownOutlined
-                              className="chev"
+                            ▾
+                          </span>
+                        </MobileCountryToggle>
+                        <MobileCountryList $open={mobileCountryOpen}>
+                          {OTHER_COUNTRIES.map((country) => (
+                            <MobileCountryLink
+                              key={country.key}
+                              href={country.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={closeMobileMenu}
                               style={{ color: "#FFFFFF" }}
-                            />
-                          </CountryPill>
-                        </Dropdown>
+                            >
+                              <span
+                                role="img"
+                                aria-label={`${country.label} flag`}
+                              >
+                                {country.flag}
+                              </span>
+                              {country.label}
+                            </MobileCountryLink>
+                          ))}
+                        </MobileCountryList>
                       </div>
 
                       <ThemeToggle style={{ paddingLeft: "49px" }} />

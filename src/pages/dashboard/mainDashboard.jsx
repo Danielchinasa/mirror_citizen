@@ -44,6 +44,13 @@ import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { trackPurchaseConversion } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
+import {
+  NO_DATA_STATUS,
+  LEGACY_TERMINATED_CONSENT,
+  RECORD_NOT_FOUND_MESSAGE,
+  RECORD_NOT_FOUND_TITLE,
+  isNoDataOutcome,
+} from "../../constants/verificationMessages";
 const { Title } = Typography;
 
 const data = [
@@ -186,9 +193,6 @@ const MainDashboard = () => {
     const twentyFourHoursAgo = new Date(
       currentDate.getTime() - 24 * 60 * 60 * 1000,
     );
-    const sevenDaysAgo = new Date(
-      currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
-    );
 
     if (consent === "initiate") {
       setLoadingSmall(false);
@@ -212,9 +216,8 @@ const MainDashboard = () => {
         record.type === "Search-Extension") &&
         new Date(record.insertionDate) < fortyEightHoursAgo) ||
       (record.consent === "pending" &&
-        new Date(record.insertionDate) < twentyFourHoursAgo) ||
-      (record.type === "Vehicle Profile" &&
-        new Date(record.insertionDate) < sevenDaysAgo)
+        new Date(record.insertionDate) < twentyFourHoursAgo)
+      // Vehicle Profile/VIN verifications never expire
     ) {
       // message.error("Verification Result or Consent Expired");
       setLoadingSmall(false);
@@ -260,13 +263,13 @@ const MainDashboard = () => {
       return;
     }
 
-    if (consent === "No data found") {
+    if (consent === NO_DATA_STATUS || consent === LEGACY_TERMINATED_CONSENT) {
       setLoadingSmall(false);
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Oops!",
-        text: "Sorry, No record found",
+        title: RECORD_NOT_FOUND_TITLE,
+        text: RECORD_NOT_FOUND_MESSAGE,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -536,9 +539,6 @@ const MainDashboard = () => {
         const fortyEightHoursAgo = new Date(
           currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
-        const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
-        );
 
         let formattedValue = record.searchValue;
 
@@ -552,9 +552,8 @@ const MainDashboard = () => {
               (record.type === "Basic Profile" ||
                 record.type === "Financial Profile" ||
                 record.type === "Search-Extension") &&
-              new Date(record.insertionDate) < twentyFourHoursAgo) ||
-            (record.type === "Vehicle Profile" &&
-              new Date(record.insertionDate) < sevenDaysAgo))
+              new Date(record.insertionDate) < twentyFourHoursAgo))
+          // Vehicle Profile/VIN verifications never expire
         ) {
           // If searchValue is expired (red) and not null, cover the real value with asterisks
           formattedValue = formattedValue.replace(/.(?=.{2,}$)/g, "*"); // Replace all characters except the first two and last two with "*"
@@ -604,10 +603,18 @@ const MainDashboard = () => {
       onFilter: (value, record) => record.consent.indexOf(value) === 0,
       render: (text, record) => {
         let color = "";
-        if (record.consent === "denied") {
+        if (
+          record.consent === "denied" ||
+          record.consent === NO_DATA_STATUS ||
+          record.consent === LEGACY_TERMINATED_CONSENT
+        ) {
           color = "red";
         }
-        const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1);
+        const capitalizedText =
+          record.consent === NO_DATA_STATUS ||
+          record.consent === LEGACY_TERMINATED_CONSENT
+            ? RECORD_NOT_FOUND_MESSAGE
+            : text.charAt(0).toUpperCase() + text.slice(1);
         return <span style={{ color }}>{capitalizedText}</span>;
       },
     },
@@ -654,18 +661,15 @@ const MainDashboard = () => {
         const fortyEightHoursAgo = new Date(
           currentDate.getTime() - 48 * 60 * 60 * 1000,
         ); // 48 hours in milliseconds
-        const sevenDaysAgo = new Date(
-          currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
-        );
 
-        if (status.toLowerCase() === "expired") {
+        if (status.toLowerCase() === "expired" && type !== "Vehicle Profile") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
           );
-        } else if (status.toLowerCase() === "no data found") {
+        } else if (isNoDataOutcome({ status, consent })) {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
-              No Data Found
+              {RECORD_NOT_FOUND_MESSAGE}
             </span>
           );
         } else if (status.toLowerCase() === "failed") {
@@ -703,8 +707,8 @@ const MainDashboard = () => {
             type === "Search-Extension") &&
             new Date(insertionDate) < fortyEightHoursAgo) ||
           (consent === "pending" &&
-            new Date(insertionDate) < twentyFourHoursAgo) ||
-          (type === "Vehicle Profile" && new Date(insertionDate) < sevenDaysAgo)
+            new Date(insertionDate) < twentyFourHoursAgo)
+          // Vehicle Profile/VIN verifications never expire
         ) {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
@@ -1098,7 +1102,6 @@ const MainDashboard = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -1120,13 +1123,10 @@ const MainDashboard = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handleModalOk();
           }
-        } else {
-          handled = true;
-          handleModalOk();
         }
       } catch (e) {
         // Network error – keep polling
@@ -1142,7 +1142,6 @@ const MainDashboard = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -1164,13 +1163,10 @@ const MainDashboard = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handlePaystackModalClose();
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling

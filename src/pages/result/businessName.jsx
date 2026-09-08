@@ -822,6 +822,7 @@ const BusinessName = () => {
           handleCancel();
           try {
             setCacId(cacid);
+            localStorage.setItem("stakeholderCacId", cacid);
             // Assuming postData is the data you want to send to the endpoint
             const postData = {
               amount:
@@ -942,6 +943,7 @@ const BusinessName = () => {
           try {
             setPaystackLoading(true);
             setCacId(cacid);
+            localStorage.setItem("stakeholderCacId", cacid);
             // Assuming postData is the data you want to send to the endpoint
             const postData = {
               amount:
@@ -1037,162 +1039,139 @@ const BusinessName = () => {
     }).format(value);
   };
 
-  const handleModalNewOk = async () => {
+  const handleModalNewOk = async (verifiedData = null) => {
     setOpenFlutterwaveModal(false);
+    setPaymentUrl("");
 
     try {
-      const response = await fetch(
-        `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
+      let responseData = verifiedData;
+      if (!responseData) {
+        const response = await fetch(
+          `${baseUrl}/payment/check?transactionRef=${transactionRef}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
           },
-        },
-      );
-      if (!response.ok) {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-        return;
+        );
+        if (!response.ok) {
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Payment Cancelled or Declined",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
+        }
+        responseData = await response.json();
       }
-      if (response.ok) {
-        setLoading(true);
-        const responseData = await response.json();
-        const transactionID = localStorage.getItem("transactionID");
-        const paymentType = localStorage.getItem("paymentType");
+
+      setLoading(true);
+      const transactionID = localStorage.getItem("transactionID");
+      const paymentType = localStorage.getItem("paymentType");
+      const rawStatus =
+        responseData?.data?.status ||
+        responseData?.data?.paymentStatus ||
+        responseData?.data?.txStatus ||
+        (responseData?.data && typeof responseData?.data === "string"
+          ? responseData?.data
+          : null) ||
+        "";
+      const status = (
+        typeof rawStatus === "string" ? rawStatus : ""
+      ).toLowerCase();
+      const isSuccess = status === "success" || status === "successful";
+
+      if (isSuccess) {
+        const resolvedCacId = parseInt(
+          cacId ||
+            localStorage.getItem("stakeholderCacId") ||
+            myCacic ||
+            localStorage.getItem("verificationRequestCacid") ||
+            0,
+        );
+        const resolvedRequestId = parseInt(
+          requestId || localStorage.getItem("verificationRequestId") || 0,
+        );
+
+        const requestBody = {
+          sessionCode: localStorage.getItem("sessionCode"),
+          sessionStatus: "COMPLETED",
+          stakeholders: "STAKEHOLDERS",
+          currency: currencyCheck || "NGN",
+          userEmail: userEmail,
+          paymentType: paymentType || "INSTANT",
+          cacId: resolvedCacId,
+          requestId: resolvedRequestId,
+          payment: {
+            currency: currencyCheck || "NGN",
+            transactionID: transactionID || randomTransactionId,
+            paymentType: paymentType || "INSTANT",
+          },
+          transactionRef: transactionID || randomTransactionId,
+          business: {
+            requestId: resolvedRequestId,
+            cacId: resolvedCacId,
+          },
+        };
+        const externalApiResponse = await apiPostInternalCall(
+          `/verification/complete`,
+          requestBody,
+          userToken,
+        );
         if (
-          responseData.status === "success" ||
-          responseData.status === "successful"
+          externalApiResponse?.data?.business &&
+          externalApiResponse.data.business.success == false
         ) {
-          if (
-            responseData.data &&
-            (responseData.data.status === "success" ||
-              responseData.data.status === "successful")
-          ) {
-            const requestBody = {
-              sessionCode: localStorage.getItem("sessionCode"),
-              sessionStatus: "COMPLETED",
-              stakeholders: "STAKEHOLDERS",
-              currency: currencyCheck || "NGN",
-              userEmail: userEmail,
-              paymentType: paymentType || "INSTANT",
-              cacId: parseInt(cacId),
-              requestId: parseInt(requestId),
-              payment: {
-                currency: currencyCheck || "NGN",
-                transactionID: transactionID || randomTransactionId,
-                paymentType: paymentType || "INSTANT",
-              },
-              transactionRef: transactionID || randomTransactionId,
-              business: {
-                requestId: parseInt(requestId),
-                cacId: parseInt(cacId),
-              },
-            };
-            const externalApiResponse = await apiPostInternalCall(
-              `/verification/complete`,
-              requestBody,
-              userToken,
-            );
-            if (
-              externalApiResponse.data.business &&
-              externalApiResponse.data.business.success == false
-            ) {
-              setLoading(false);
-              Swal.fire({
-                background: bgContainer,
-                color: text,
-                title: "Request Error",
-                text: externalApiResponse.data.business.message,
-                icon: "error",
-                customClass: {
-                  confirmButton: "custom-swal-button",
-                },
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: true,
-                confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              });
-              return;
+          setLoading(false);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Request Error",
+            text: externalApiResponse.data.business.message,
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
             }
-            if (
-              externalApiResponse.data.business &&
-              Array.isArray(externalApiResponse.data.business.data)
-            ) {
-              setLoading(false);
-              setBusinessData(externalApiResponse.data.business.data);
-            } else {
-              setLoading(false);
-              console.error("Invalid response structure:", response.data);
-              Swal.fire({
-                background: bgContainer,
-                color: text,
-                title: "Error",
-                text: "Error fetching Stake Holders",
-                icon: "error",
-                customClass: {
-                  confirmButton: "custom-swal-button",
-                },
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: true,
-                confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              });
-            }
-          } else {
-            setLoading(false);
-            Swal.fire({
-              background: bgContainer,
-              color: text,
-              title: "Failed Payment",
-              text: responseData.data.processor_response,
-              icon: "error",
-              customClass: {
-                confirmButton: "custom-swal-button",
-              },
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              showConfirmButton: true,
-              confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-            return;
-          }
+          });
+          return;
+        }
+        if (
+          externalApiResponse?.data?.business &&
+          Array.isArray(externalApiResponse.data.business.data)
+        ) {
+          setLoading(false);
+          setBusinessData(externalApiResponse.data.business.data);
         } else {
-          setOpenFlutterwaveModal(false);
-          setLoading(true);
+          setLoading(false);
+          console.error(
+            "Invalid response structure:",
+            externalApiResponse?.data,
+          );
           Swal.fire({
             background: bgContainer,
             color: text,
@@ -1213,15 +1192,40 @@ const BusinessName = () => {
             }
           });
         }
+      } else {
+        setLoading(false);
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Failed Payment",
+          text:
+            responseData?.data?.processor_response ||
+            responseData?.message ||
+            "Your payment could not be completed. Please try again.",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error handling modal new OK:", error);
-      // Handle errors here
       Swal.fire({
         background: bgContainer,
         color: text,
         title: "Error",
-        text: error,
+        text: error?.message || "There was an issue verifying payment",
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1239,164 +1243,154 @@ const BusinessName = () => {
     }
   };
 
-  const handlePaystackModalClose = async () => {
+  const handlePaystackModalClose = async (verifiedData = null) => {
     setOpenPaystackModal(false);
+    setPaymentUrl("");
 
     try {
-      const response = await fetch(
-        `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
+      let responseData = verifiedData;
+      if (!responseData) {
+        let response = await fetch(
+          `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
           },
-        },
-      );
+        );
 
-      // Check if the request was successful (status code 200-299)
-      if (!response.ok) {
-        Swal.fire({
-          background: bgContainer,
-          color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
-          icon: "error",
-          customClass: {
-            confirmButton: "custom-swal-button",
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          showConfirmButton: true,
-          confirmButtonText: "OK",
-          confirmButtonColor: "#0DC939",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-        return;
+        if (!response.ok) {
+          response = await fetch(
+            `${baseUrl}/payment/paystack/paystack-verify?reference=${paystackReference}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+            },
+          );
+        }
+
+        // Check if the request was successful (status code 200-299)
+        if (!response.ok) {
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Error",
+            text: "Payment Cancelled or Declined",
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          return;
+        }
+        responseData = await response.json();
       }
-      if (response.ok) {
-        setLoading(true);
-        const responseData = await response.json();
-        const transactionID = localStorage.getItem("transactionID");
-        const paymentType = localStorage.getItem("paymentType");
+
+      setLoading(true);
+      const transactionID = localStorage.getItem("transactionID");
+      const paymentType = localStorage.getItem("paymentType");
+      const rawStatus =
+        responseData?.data?.status ||
+        responseData?.data?.paymentStatus ||
+        responseData?.data?.txStatus ||
+        (responseData?.data && typeof responseData?.data === "string"
+          ? responseData?.data
+          : null) ||
+        "";
+      const status = (
+        typeof rawStatus === "string" ? rawStatus : ""
+      ).toLowerCase();
+      const isSuccess = status === "success" || status === "successful";
+
+      if (isSuccess) {
+        const resolvedCacId = parseInt(
+          cacId ||
+            localStorage.getItem("stakeholderCacId") ||
+            myCacic ||
+            localStorage.getItem("verificationRequestCacid") ||
+            0,
+        );
+        const resolvedRequestId = parseInt(
+          requestId || localStorage.getItem("verificationRequestId") || 0,
+        );
+
+        const requestBody = {
+          sessionCode: localStorage.getItem("sessionCode"),
+          sessionStatus: "COMPLETED",
+          stakeholders: "STAKEHOLDERS",
+          currency: currencyCheck || "NGN",
+          userEmail: userEmail,
+          paymentType: paymentType || "INSTANT",
+          cacId: resolvedCacId,
+          requestId: resolvedRequestId,
+          payment: {
+            currency: currencyCheck || "NGN",
+            transactionID: transactionID || randomTransactionId,
+            paymentType: paymentType || "INSTANT",
+          },
+          transactionRef: transactionID || randomTransactionId,
+          business: {
+            requestId: resolvedRequestId,
+            cacId: resolvedCacId,
+          },
+        };
+        const externalApiResponse = await apiPostInternalCall(
+          `/verification/complete`,
+          requestBody,
+          userToken,
+        );
         if (
-          responseData.status === "success" ||
-          responseData.status === "successful"
+          externalApiResponse?.data?.business &&
+          externalApiResponse.data.business.success == false
         ) {
-          if (
-            responseData.data &&
-            (responseData.data.status === "success" ||
-              responseData.data.status === "successful")
-          ) {
-            const requestBody = {
-              sessionCode: localStorage.getItem("sessionCode"),
-              sessionStatus: "COMPLETED",
-              stakeholders: "STAKEHOLDERS",
-              currency: currencyCheck || "NGN",
-              userEmail: userEmail,
-              paymentType: paymentType || "INSTANT",
-              cacId: parseInt(cacId),
-              requestId: parseInt(requestId),
-              payment: {
-                currency: currencyCheck || "NGN",
-                transactionID: transactionID || randomTransactionId,
-                paymentType: paymentType || "INSTANT",
-              },
-              transactionRef: transactionID || randomTransactionId,
-              business: {
-                requestId: parseInt(requestId),
-                cacId: parseInt(cacId),
-              },
-            };
-            const externalApiResponse = await apiPostInternalCall(
-              `/verification/complete`,
-              requestBody,
-              userToken,
-            );
-            if (
-              externalApiResponse.data.business &&
-              externalApiResponse.data.business.success == false
-            ) {
-              setLoading(false);
-              Swal.fire({
-                background: bgContainer,
-                color: text,
-                title: "Request Error",
-                text: externalApiResponse.data.business.message,
-                icon: "error",
-                customClass: {
-                  confirmButton: "custom-swal-button",
-                },
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: true,
-                confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              });
-              return;
+          setLoading(false);
+          Swal.fire({
+            background: bgContainer,
+            color: text,
+            title: "Request Error",
+            text: externalApiResponse.data.business.message,
+            icon: "error",
+            customClass: {
+              confirmButton: "custom-swal-button",
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0DC939",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
             }
-            if (
-              externalApiResponse.data.business &&
-              Array.isArray(externalApiResponse.data.business.data)
-            ) {
-              setLoading(false);
-              setBusinessData(externalApiResponse.data.business.data);
-            } else {
-              setLoading(false);
-              console.error("Invalid response structure:", response.data);
-              Swal.fire({
-                background: bgContainer,
-                color: text,
-                title: "Error",
-                text: "Error fetching Stake Holders",
-                icon: "error",
-                customClass: {
-                  confirmButton: "custom-swal-button",
-                },
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: true,
-                confirmButtonText: "OK",
-                confirmButtonColor: "#0DC939",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              });
-            }
-          } else {
-            setLoading(false);
-            Swal.fire({
-              background: bgContainer,
-              color: text,
-              title: "Failed Payment",
-              text: responseData.data.processor_response,
-              icon: "error",
-              customClass: {
-                confirmButton: "custom-swal-button",
-              },
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              showConfirmButton: true,
-              confirmButtonText: "OK",
-              confirmButtonColor: "#0DC939",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-            return;
-          }
+          });
+          return;
+        }
+        if (
+          externalApiResponse?.data?.business &&
+          Array.isArray(externalApiResponse.data.business.data)
+        ) {
+          setLoading(false);
+          setBusinessData(externalApiResponse.data.business.data);
         } else {
-          setOpenPaystackModal(false);
-          setLoading(true);
+          setLoading(false);
+          console.error(
+            "Invalid response structure:",
+            externalApiResponse?.data,
+          );
           Swal.fire({
             background: bgContainer,
             color: text,
@@ -1417,15 +1411,40 @@ const BusinessName = () => {
             }
           });
         }
+      } else {
+        setLoading(false);
+        Swal.fire({
+          background: bgContainer,
+          color: text,
+          title: "Failed Payment",
+          text:
+            responseData?.data?.processor_response ||
+            responseData?.message ||
+            "Your payment could not be completed. Please try again.",
+          icon: "error",
+          customClass: {
+            confirmButton: "custom-swal-button",
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#0DC939",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+        return;
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error handling Paystack modal close:", error);
-      // Handle errors here
       Swal.fire({
         background: bgContainer,
         color: text,
         title: "Error",
-        text: "There was an issue verifying payment",
+        text: error?.message || "There was an issue verifying payment",
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -1447,15 +1466,6 @@ const BusinessName = () => {
   // Auto-close FlutterWave modal when payment reaches a terminal state
   useEffect(() => {
     if (!openFlutterwaveModal || !transactionRef) return;
-    const TERMINAL = [
-      "successful",
-      "success",
-      "failed",
-      "abandoned",
-      "cancelled",
-      "error",
-      "reversed",
-    ];
     let handled = false;
     const intervalId = setInterval(async () => {
       if (handled) return;
@@ -1472,39 +1482,61 @@ const BusinessName = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          const rawStatus =
+            data?.data?.status ||
+            data?.data?.paymentStatus ||
+            data?.data?.txStatus ||
+            (data?.data && typeof data?.data === "string"
+              ? data?.data
+              : null) ||
+            "";
+          const paymentStatus = (
+            typeof rawStatus === "string" ? rawStatus : ""
+          ).toLowerCase();
+
+          if (paymentStatus === "successful" || paymentStatus === "success") {
             handled = true;
-            handleModalNewOk();
+            clearInterval(intervalId);
+            setOpenFlutterwaveModal(false);
+            setPaymentUrl("");
+            handleModalNewOk(data);
+          } else if (
+            ["failed", "cancelled", "error", "reversed"].includes(paymentStatus)
+          ) {
+            handled = true;
+            clearInterval(intervalId);
+            setOpenFlutterwaveModal(false);
+            setPaymentUrl("");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Failed",
+              text:
+                data?.data?.processor_response ||
+                "Your payment could not be completed. Please try again.",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              confirmButtonColor: "#0DC939",
+            });
           }
-        } else {
-          handled = true;
-          handleModalNewOk();
         }
       } catch (e) {
         // Network error – keep polling
       }
     }, 4000);
     return () => clearInterval(intervalId);
-  }, [openFlutterwaveModal, transactionRef]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [openFlutterwaveModal, transactionRef, userToken]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-close Paystack modal when payment reaches a terminal state
   useEffect(() => {
     if (!openPaystackModal || !paystackReference) return;
-    const TERMINAL = [
-      "successful",
-      "success",
-      "failed",
-      "abandoned",
-      "cancelled",
-      "error",
-      "reversed",
-    ];
     let handled = false;
     const intervalId = setInterval(async () => {
       if (handled) return;
       try {
-        const response = await fetch(
+        let response = await fetch(
           `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`,
           {
             method: "GET",
@@ -1514,23 +1546,66 @@ const BusinessName = () => {
             },
           },
         );
+        if (!response.ok) {
+          response = await fetch(
+            `${baseUrl}/payment/paystack/paystack-verify?reference=${paystackReference}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+            },
+          );
+        }
         if (response.ok) {
           const data = await response.json();
-          const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          const rawStatus =
+            data?.data?.status ||
+            data?.data?.paymentStatus ||
+            data?.data?.txStatus ||
+            (data?.data && typeof data?.data === "string"
+              ? data?.data
+              : null) ||
+            "";
+          const paymentStatus = (
+            typeof rawStatus === "string" ? rawStatus : ""
+          ).toLowerCase();
+
+          if (paymentStatus === "successful" || paymentStatus === "success") {
             handled = true;
-            handlePaystackModalClose();
+            clearInterval(intervalId);
+            setOpenPaystackModal(false);
+            setPaymentUrl("");
+            handlePaystackModalClose(data);
+          } else if (
+            ["failed", "cancelled", "error", "reversed"].includes(paymentStatus)
+          ) {
+            handled = true;
+            clearInterval(intervalId);
+            setOpenPaystackModal(false);
+            setPaymentUrl("");
+            Swal.fire({
+              background: bgContainer,
+              color: text,
+              title: "Payment Failed",
+              text:
+                data?.data?.processor_response ||
+                "Your payment could not be completed. Please try again.",
+              icon: "error",
+              customClass: {
+                confirmButton: "custom-swal-button",
+              },
+              confirmButtonColor: "#0DC939",
+            });
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling
       }
     }, 4000);
     return () => clearInterval(intervalId);
-  }, [openPaystackModal, paystackReference]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [openPaystackModal, paystackReference, userToken]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [activeKey, setActiveKey] = React.useState(null);
 

@@ -29,9 +29,9 @@ const ComplianceSection = () => {
           <ComplianceBadge>
             <img src={nimcImg} alt="NCMC" style={{ maxHeight: 58 }} />
           </ComplianceBadge>
-          <ComplianceBadge>
+          {/* <ComplianceBadge>
             <img src={osiaImg} alt="OSIA" style={{ maxHeight: 58 }} />
-          </ComplianceBadge>
+          </ComplianceBadge> */}
           <ComplianceBadge>
             <img src={gdprImg} alt="GDPR" style={{ maxHeight: 58 }} />
           </ComplianceBadge>

@@ -93,6 +93,7 @@ const verificationConfig = {
     serviceName: "Phone Verification",
     serviceFieldKey: "phone",
     priceIndex: 9,
+    requiresConsent: true,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
