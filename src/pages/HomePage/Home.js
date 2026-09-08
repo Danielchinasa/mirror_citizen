@@ -31,7 +31,10 @@ import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { getIpInfo } from "../../config/ipConfiguration";
-import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 
 import {
   HeroWrapper,
@@ -330,22 +333,22 @@ const Home = () => {
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
+                to="/nin-verification"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   const el = document.getElementById("services");
+                //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                // }}
               >
                 {t("home.hero.verifyNationalId")} <FaArrowRight />
               </PrimaryBtn>
               <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
+                to="/vehicle-verification"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   const el = document.getElementById("services");
+                //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                // }}
               >
                 {t("home.hero.checkVin")} <FaArrowRight />
               </PrimaryBtn>
