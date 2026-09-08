@@ -388,12 +388,12 @@ const Home = () => {
             </HeroSubtitle>
             <HeroButtons>
               <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
+                to="/nin-verification"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   const el = document.getElementById("services");
+                //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                // }}
               >
                 {isSw
                   ? "Thibitisha Kitambulisho cha Taifa"
@@ -403,24 +403,17 @@ const Home = () => {
             </HeroButtons>
             <HeroButtons>
               <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
+                to="/alien-card-verification"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   const el = document.getElementById("services");
+                //   if (el) el.scrollIntoView({ behavior: "smooth" });
+                // }}
               >
                 {isSw ? "Thibitisha Alien Card" : "Verify Alien Card"}{" "}
                 <FaArrowRight />
               </PrimaryBtn>
-              <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
+              <PrimaryBtn to="/vehicle-verification">
                 {isSw ? "Kagua VIN" : "Check VIN"} <FaArrowRight />
               </PrimaryBtn>
             </HeroButtons>
