@@ -524,7 +524,6 @@ function Navbar() {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -546,13 +545,10 @@ function Navbar() {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handleModalOk();
           }
-        } else {
-          handled = true;
-          handleModalOk();
         }
       } catch (e) {
         // Network error – keep polling
@@ -568,7 +564,6 @@ function Navbar() {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -590,13 +585,10 @@ function Navbar() {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handlePaystackModalClose();
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling

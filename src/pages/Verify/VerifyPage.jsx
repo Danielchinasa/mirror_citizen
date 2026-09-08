@@ -124,6 +124,13 @@ import {
   PopupSubtitle,
   PopupCloseButton,
   PopupBody,
+  PopupCountBanner,
+  PopupBusinessList,
+  PopupBusinessItem,
+  PopupBusinessIcon,
+  PopupBusinessInfo,
+  PopupBusinessName,
+  PopupBusinessMeta,
   PopupRow,
   PopupField,
   PopupFieldLabel,
@@ -222,7 +229,12 @@ const VerifyPage = () => {
   const consentPollingRef = useRef(null);
 
   // Dynamic steps based on whether this verification type requires consent
-  const requiresConsent = config?.requiresConsent || false;
+  const isConsentVerification =
+    type === "nin" ||
+    type === "phone" ||
+    type === "bvn" ||
+    Boolean(config?.requiresConsent);
+  const requiresConsent = isConsentVerification;
   const STEPS = requiresConsent
     ? ["Search", "Payment", "Processing", "Consent", "Result"]
     : ["Search", "Payment", "Processing", "Result"];
@@ -240,15 +252,7 @@ const VerifyPage = () => {
   useEffect(() => {
     if (!paystackModalOpen || !paystackReference) return;
 
-    const terminalStatuses = [
-      "successful",
-      "success",
-      "failed",
-      "abandoned",
-      "cancelled",
-      "error",
-      "reversed",
-    ];
+    let isHandled = false;
 
     const checkEndpoint =
       activeGateway === "flutterwave"
@@ -256,6 +260,7 @@ const VerifyPage = () => {
         : `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`;
 
     pollingRef.current = setInterval(async () => {
+      if (isHandled) return;
       try {
         const res = await fetch(checkEndpoint, {
           headers: {
@@ -265,14 +270,41 @@ const VerifyPage = () => {
         });
         if (res.ok) {
           const data = await res.json();
-          const status = (
-            data?.status ||
+          const paymentStatus = (
             data?.data?.status ||
+            data?.data?.paymentStatus ||
             ""
           ).toLowerCase();
-          if (terminalStatuses.includes(status)) {
-            handlePaystackModalClose();
+
+          if (paymentStatus === "successful" || paymentStatus === "success") {
+            isHandled = true;
+            if (pollingRef.current) clearInterval(pollingRef.current);
+            setPaystackModalOpen(false);
+            setPaymentUrl("");
+            setPaystackReference("");
+            setLoading(true);
+            setCurrentStep(2); // Processing
+            if (pendingApiFormRef.current) {
+              await handleCompleteVerification(pendingApiFormRef.current);
+            }
+          } else if (
+            ["failed", "cancelled", "error", "reversed"].includes(paymentStatus)
+          ) {
+            isHandled = true;
+            if (pollingRef.current) clearInterval(pollingRef.current);
+            setPaystackModalOpen(false);
+            setPaymentUrl("");
+            setPaystackReference("");
+            Swal.fire({
+              icon: "error",
+              title: "Payment Failed",
+              text:
+                data?.data?.processor_response ||
+                "Your payment could not be completed. Please try again.",
+              confirmButtonColor: "#09c93a",
+            });
           }
+          // Note: "abandoned", "pending", "ongoing" means the user is still in the checkout modal. Keep polling!
         }
       } catch {
         // Ignore polling errors
@@ -296,9 +328,19 @@ const VerifyPage = () => {
         );
         if (response?.consent === "granted") {
           setConsentPending(false);
-          setCurrentStep(RESULT_STEP);
           if (consentPollingRef.current)
             clearInterval(consentPollingRef.current);
+          Swal.fire({
+            icon: "success",
+            title: "Verification Successful",
+            text: "Consent has been granted and your verification is complete.",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#09c93a",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then(() => {
+            history.push("/main-dashboard");
+          });
         }
       } catch (err) {
         console.error("Consent check error:", err);
@@ -712,12 +754,14 @@ const VerifyPage = () => {
     setPaystackModalOpen(false);
     setPaymentUrl("");
 
-    if (!paystackReference) return;
+    const ref = paystackReference;
+    setPaystackReference("");
+    if (!ref) return;
 
     const checkEndpoint =
       activeGateway === "flutterwave"
-        ? `${baseUrl}/payment/check?transactionRef=${paystackReference}`
-        : `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`;
+        ? `${baseUrl}/payment/check?transactionRef=${ref}`
+        : `${baseUrl}/payment/check-pulse?transactionRef=${ref}`;
 
     try {
       const res = await fetch(checkEndpoint, {
@@ -727,44 +771,39 @@ const VerifyPage = () => {
         },
       });
 
-      if (!res.ok) {
-        Swal.fire({
-          icon: "error",
-          title: "Payment Cancelled",
-          text: "Your payment was cancelled or declined.",
-          confirmButtonColor: "#09c93a",
-        });
-        return;
-      }
+      if (res.ok) {
+        const data = await res.json();
+        const paymentStatus = (
+          data?.data?.status ||
+          data?.data?.paymentStatus ||
+          ""
+        ).toLowerCase();
 
-      const data = await res.json();
-      const status = (data?.status || data?.data?.status || "").toLowerCase();
-
-      if (status === "successful" || status === "success") {
-        // Payment succeeded — proceed with verification
-        setLoading(true);
-        setCurrentStep(2); // Processing
-        if (pendingApiFormRef.current) {
-          await handleCompleteVerification(pendingApiFormRef.current);
+        if (paymentStatus === "successful" || paymentStatus === "success") {
+          // Payment succeeded before closing — proceed with verification
+          setLoading(true);
+          setCurrentStep(2); // Processing
+          if (pendingApiFormRef.current) {
+            await handleCompleteVerification(pendingApiFormRef.current);
+          }
+          return;
         }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Payment Failed",
-          text: "Your payment could not be completed. Please try again.",
-          confirmButtonColor: "#09c93a",
-        });
       }
+
+      Swal.fire({
+        icon: "info",
+        title: "Payment Cancelled",
+        text: "You closed the payment window before completing the transaction.",
+        confirmButtonColor: "#09c93a",
+      });
     } catch {
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Could not verify payment status. Please check your dashboard.",
+        icon: "info",
+        title: "Payment Cancelled",
+        text: "Payment window was closed.",
         confirmButtonColor: "#09c93a",
       });
     }
-
-    setPaystackReference("");
   };
 
   const handleCompleteVerification = async (apiFormData) => {
@@ -995,11 +1034,12 @@ const VerifyPage = () => {
           route: resultRoute,
         });
 
-        if (requiresConsent) {
-          // Extract requestId from API response for consent polling
+        if (isConsentVerification) {
+          // Extract requestId from API response if present
           const requestId =
             response.basic?.data?.requestId ||
             response.basic?.requestId ||
+            response["search-extension"]?.phoneVerification?.requestId ||
             response["search-extension"]?.bvnVerification?.requestId ||
             response.financial?.requestId ||
             "";
@@ -1007,12 +1047,34 @@ const VerifyPage = () => {
           if (requestId) {
             setConsentRequestId(requestId);
             localStorage.setItem("verificationRequestId", requestId);
+          }
+
+          const isPendingConsent =
+            Boolean(requestId) &&
+            (response.basic?.consent === "pending" ||
+              response["search-extension"]?.phoneVerification?.consent ===
+                "pending" ||
+              response["search-extension"]?.bvnVerification?.consent ===
+                "pending" ||
+              response.financial?.consent === "pending" ||
+              response.consent === "pending");
+
+          if (isPendingConsent) {
             setConsentPending(true);
             setCurrentStep(CONSENT_STEP);
           } else {
-            // No requestId — consent may already be granted, show results
-            setShowResultPopup(true);
-            setCurrentStep(RESULT_STEP);
+            // Take away result popup for consent verifications; show standard success alert
+            Swal.fire({
+              icon: "success",
+              title: "Verification Successful",
+              text: resultDetail || "Your verification was successful.",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#09c93a",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then(() => {
+              history.push("/main-dashboard");
+            });
           }
         } else {
           setShowResultPopup(true);
@@ -2150,8 +2212,8 @@ const VerifyPage = () => {
         </div>
       </ContentWrapper>
 
-      {/* Trust Bar */}
-      {showResultPopup && verificationResult && (
+      {/* Result Popup - only for non-consent verifications (business, vehicle) */}
+      {showResultPopup && verificationResult && !isConsentVerification && (
         <PopupOverlay>
           <PopupCard>
             <PopupHeader>
@@ -2177,90 +2239,25 @@ const VerifyPage = () => {
               {/* Business list result */}
               {verificationResult.data?._isBusinessList ? (
                 <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      marginBottom: 16,
-                      padding: "10px 16px",
-                      background: "var(--ec-primary-bg)",
-                      borderRadius: 10,
-                      fontFamily: "Nunito, sans-serif",
-                      fontSize: 14,
-                      color: "var(--ec-primary)",
-                      fontWeight: 700,
-                    }}
-                  >
+                  <PopupCountBanner>
                     <FaBuilding />
                     {verificationResult.data.businesses.length}{" "}
                     {verificationResult.data.businesses.length === 1
                       ? "company"
                       : "companies"}{" "}
                     found
-                  </div>
-                  <div
-                    style={{
-                      maxHeight: 380,
-                      overflowY: "auto",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 10,
-                      marginBottom: 16,
-                      paddingRight: 4,
-                    }}
-                  >
+                  </PopupCountBanner>
+                  <PopupBusinessList>
                     {verificationResult.data.businesses.map((biz, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          border: "1px solid var(--ec-border)",
-                          borderRadius: 12,
-                          padding: "16px 20px",
-                          background: "var(--ec-bg-card)",
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: 14,
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 42,
-                            height: 42,
-                            borderRadius: "50%",
-                            background: "var(--ec-primary-bg)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
-                            color: "var(--ec-primary)",
-                            fontSize: 18,
-                          }}
-                        >
+                      <PopupBusinessItem key={idx}>
+                        <PopupBusinessIcon>
                           <FaBuilding />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div
-                            style={{
-                              fontFamily: "Poppins, sans-serif",
-                              fontWeight: 700,
-                              fontSize: 15,
-                              color: "var(--ec-text)",
-                              marginBottom: 4,
-                              wordBreak: "break-word",
-                            }}
-                          >
+                        </PopupBusinessIcon>
+                        <PopupBusinessInfo>
+                          <PopupBusinessName>
                             {biz.approvedName || biz.companyName || "N/A"}
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexWrap: "wrap",
-                              gap: "4px 16px",
-                              fontFamily: "Nunito, sans-serif",
-                              fontSize: 13,
-                            }}
-                          >
+                          </PopupBusinessName>
+                          <PopupBusinessMeta>
                             {(biz.rcNumber || biz.rc_number) && (
                               <span style={{ color: "var(--ec-text-muted)" }}>
                                 RC:{" "}
@@ -2291,16 +2288,16 @@ const VerifyPage = () => {
                                 </strong>
                               </span>
                             )}
-                          </div>
-                        </div>
+                          </PopupBusinessMeta>
+                        </PopupBusinessInfo>
                         <VerifiedBadgePopup
                           style={{ flexShrink: 0, alignSelf: "center" }}
                         >
                           <FaCheckCircle /> Verified
                         </VerifiedBadgePopup>
-                      </div>
+                      </PopupBusinessItem>
                     ))}
-                  </div>
+                  </PopupBusinessList>
                   <ResultFooterPopup
                     style={{ borderTop: "none", padding: "0 0 12px" }}
                   >

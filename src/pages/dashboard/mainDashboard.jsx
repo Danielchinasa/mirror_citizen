@@ -263,10 +263,7 @@ const MainDashboard = () => {
       return;
     }
 
-    if (
-      consent === NO_DATA_STATUS ||
-      consent === LEGACY_TERMINATED_CONSENT
-    ) {
+    if (consent === NO_DATA_STATUS || consent === LEGACY_TERMINATED_CONSENT) {
       setLoadingSmall(false);
       Swal.fire({
         background: bgContainer,
@@ -662,9 +659,7 @@ const MainDashboard = () => {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Expired</span>
           );
-        } else if (
-          isNoDataOutcome({ status, consent })
-        ) {
+        } else if (isNoDataOutcome({ status, consent })) {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>
               {RECORD_NOT_FOUND_MESSAGE}
@@ -1093,7 +1088,6 @@ const MainDashboard = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -1115,13 +1109,10 @@ const MainDashboard = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handleModalOk();
           }
-        } else {
-          handled = true;
-          handleModalOk();
         }
       } catch (e) {
         // Network error – keep polling
@@ -1137,7 +1128,6 @@ const MainDashboard = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -1159,13 +1149,10 @@ const MainDashboard = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handlePaystackModalClose();
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling

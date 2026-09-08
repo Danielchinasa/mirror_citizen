@@ -3529,7 +3529,6 @@ const DashboardPage = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -3551,13 +3550,10 @@ const DashboardPage = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handleModalNewOk();
           }
-        } else {
-          handled = true;
-          handleModalNewOk();
         }
       } catch (e) {
         // Network error – keep polling
@@ -3573,7 +3569,6 @@ const DashboardPage = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -3595,13 +3590,10 @@ const DashboardPage = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handlePaystackModalClose();
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling
