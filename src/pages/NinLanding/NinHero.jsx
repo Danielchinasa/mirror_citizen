@@ -74,14 +74,7 @@ const NinHero = () => {
             </HeroTitle>
             <HeroSubtitle>{t("nin.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
-              <PrimaryBtn
-                to="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
+              <PrimaryBtn to="/verification-login">
                 {t("home.hero.verifyNationalId")} <FaArrowRight />
               </PrimaryBtn>
               <SecondaryBtn href="#sample-result" onClick={openSampleResult}>

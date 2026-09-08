@@ -204,9 +204,7 @@ const VehicleLandingFooter = () => {
         <FooterTop>
           <BrandCol>
             <BrandLogo src={Logo} alt="eCitizen" />
-            <BrandDesc>
-              {t("footer.brandDesc")}
-            </BrandDesc>
+            <BrandDesc>{t("footer.brandDesc")}</BrandDesc>
             <SocialRow>
               <SocialIcon
                 href="https://instagram.com"
@@ -267,9 +265,9 @@ const VehicleLandingFooter = () => {
 
           <FooterCol>
             <FooterColTitle>{t("footer.support")}</FooterColTitle>
-            <FooterLink to="/faq-uganda">{t("footer.helpCenter")}</FooterLink>
+            <FooterLink to="/faq-ci">{t("footer.helpCenter")}</FooterLink>
             <FooterLink to="/contact">{t("footer.contactUs")}</FooterLink>
-            <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
+            <FooterLink to="/faq-ci">{t("footer.faqs")}</FooterLink>
           </FooterCol>
 
           <FooterCol>
@@ -287,11 +285,18 @@ const VehicleLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
+            {t("footer.copyright").replace(
+              "{year}",
+              String(new Date().getFullYear()),
+            )}
           </Copyright>
           <LegalLinks>
-            <LegalLink to="/privacy-policy">{t("footer.privacyPolicy")}</LegalLink>
-            <LegalLink to="/terms-of-service">{t("footer.termsOfService")}</LegalLink>
+            <LegalLink to="/privacy-policy">
+              {t("footer.privacyPolicy")}
+            </LegalLink>
+            <LegalLink to="/terms-of-service">
+              {t("footer.termsOfService")}
+            </LegalLink>
           </LegalLinks>
         </FooterBottom>
       </FooterInner>

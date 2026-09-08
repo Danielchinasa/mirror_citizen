@@ -933,7 +933,7 @@ function Navbar() {
               <PublicAnchor href={withBasePath("/#services")}>
                 {t("nav.pricing")}
               </PublicAnchor>
-              <PublicNavLink to="/faq-uganda">{t("nav.faq")}</PublicNavLink>
+              <PublicNavLink to="/faq-ci">{t("nav.faq")}</PublicNavLink>
               <PublicNavLink to="/contact">{t("nav.support")}</PublicNavLink>
             </PublicCenter>
 
@@ -1010,7 +1010,7 @@ function Navbar() {
               >
                 {t("nav.howItWorks")}
               </PublicMobileAnchor>
-              <PublicMobileLink to="/faq-uganda" onClick={closeMobileMenu}>
+              <PublicMobileLink to="/faq-ci" onClick={closeMobileMenu}>
                 {t("nav.faq")}
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
@@ -1214,7 +1214,7 @@ function Navbar() {
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
-                        <NavBtnLink to="/faq-uganda">
+                        <NavBtnLink to="/faq-ci">
                           <MainButton type="primary">
                             {t("nav.faqs")}
                           </MainButton>

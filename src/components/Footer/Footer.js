@@ -63,9 +63,7 @@ function Footer() {
                   style={{ marginTop: "10px", cursor: "pointer" }}
                 />
               </Link>
-              <BrandDesc>
-                {t("footer.brandDesc")}
-              </BrandDesc>
+              <BrandDesc>{t("footer.brandDesc")}</BrandDesc>
               <SocialRow>
                 <SocialIcon
                   href="https://www.instagram.com/ecitizenng/"
@@ -100,13 +98,15 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>{t("footer.services")}</FooterColTitle>
-              <FooterLink to="/api-docs">{t("footer.apiForBusiness")}</FooterLink>
+              <FooterLink to="/api-docs">
+                {t("footer.apiForBusiness")}
+              </FooterLink>
             </FooterCol>
 
             <FooterCol>
               <FooterColTitle>{t("footer.support")}</FooterColTitle>
               <FooterLink to="/contact">{t("footer.contact")}</FooterLink>
-              <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
+              <FooterLink to="/faq-ci">{t("footer.faqs")}</FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"
                 target="_blank"
@@ -139,7 +139,10 @@ function Footer() {
 
           <FooterBottom>
             <Copyright>
-              {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
+              {t("footer.copyright").replace(
+                "{year}",
+                String(new Date().getFullYear()),
+              )}
             </Copyright>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>

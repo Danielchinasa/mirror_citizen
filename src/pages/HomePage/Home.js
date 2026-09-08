@@ -31,7 +31,10 @@ import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
 import avatar4 from "../../images/avatar4.jpg";
 import { getIpInfo } from "../../config/ipConfiguration";
-import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 
 import {
   HeroWrapper,
@@ -358,22 +361,15 @@ const Home = () => {
             <HeroSubtitle>{t("home.hero.subtitle")}</HeroSubtitle>
             <HeroButtons>
               <HeroButtonsRow>
-                <PrimaryBtn
-                  to="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById("services");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
+                <PrimaryBtn to="/nin-verification">
                   <FaIdCard /> {t("home.hero.verifyNationalId")}
                 </PrimaryBtn>
-                <PrimaryBtn to={residentVerify}>
+                <PrimaryBtn to={"/card-verification"}>
                   <FaAddressCard /> {t("home.hero.verifyResidentCard")}
                 </PrimaryBtn>
               </HeroButtonsRow>
               <HeroButtonFull>
-                <PrimaryBtn to={vehicleVerify}>
+                <PrimaryBtn to={"/vehicle-verification"}>
                   <FaCar /> {t("home.hero.verifyVin")}
                 </PrimaryBtn>
               </HeroButtonFull>
@@ -508,7 +504,7 @@ const Home = () => {
                 <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-                        <ServiceBtn
+            <ServiceBtn
               to={ninVerify}
               onClick={() => handleProductSelected("national_id_nni")}
             >
@@ -603,7 +599,7 @@ const Home = () => {
                 <FaCheckCircle /> {t("home.services.feature.resultsMinutes")}
               </FeatureItem>
             </FeatureList>
-             <ServiceBtn
+            <ServiceBtn
               to={vehicleVerify}
               onClick={() => handleProductSelected("vin")}
             >

@@ -229,9 +229,7 @@ const CardLandingFooter = () => {
         <FooterTop>
           <BrandCol>
             <BrandLogo src={Logo} alt="eCitizen" />
-            <BrandDesc>
-              {t("footer.brandDesc")}
-            </BrandDesc>
+            <BrandDesc>{t("footer.brandDesc")}</BrandDesc>
             <SocialRow>
               <SocialIcon
                 href="https://instagram.com"
@@ -277,15 +275,17 @@ const CardLandingFooter = () => {
             >
               {t("footer.sampleResult")}
             </ExternalLink>
-            <FooterLink to="/nin-verification">{t("footer.nniVerification")}</FooterLink>
+            <FooterLink to="/nin-verification">
+              {t("footer.nniVerification")}
+            </FooterLink>
             <FooterLink to="/contact">{t("footer.apiForBusiness")}</FooterLink>
           </FooterCol>
 
           <FooterCol>
             <FooterColTitle>{t("footer.support")}</FooterColTitle>
-            <FooterLink to="/faq-uganda">{t("footer.helpCenter")}</FooterLink>
+            <FooterLink to="/faq-ci">{t("footer.helpCenter")}</FooterLink>
             <FooterLink to="/contact">{t("footer.contactUs")}</FooterLink>
-            <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
+            <FooterLink to="/faq-ci">{t("footer.faqs")}</FooterLink>
           </FooterCol>
 
           <FooterCol>
@@ -303,11 +303,18 @@ const CardLandingFooter = () => {
 
         <FooterBottom>
           <Copyright>
-            {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
+            {t("footer.copyright").replace(
+              "{year}",
+              String(new Date().getFullYear()),
+            )}
           </Copyright>
           <LegalLinks>
-            <LegalLink to="/privacy-policy">{t("footer.privacyPolicy")}</LegalLink>
-            <LegalLink to="/terms-of-service">{t("footer.termsOfService")}</LegalLink>
+            <LegalLink to="/privacy-policy">
+              {t("footer.privacyPolicy")}
+            </LegalLink>
+            <LegalLink to="/terms-of-service">
+              {t("footer.termsOfService")}
+            </LegalLink>
           </LegalLinks>
         </FooterBottom>
       </FooterInner>

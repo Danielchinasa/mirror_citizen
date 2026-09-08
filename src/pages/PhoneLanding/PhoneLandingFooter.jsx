@@ -266,9 +266,9 @@ const PhoneLandingFooter = () => {
 
           <FooterCol>
             <FooterColTitle>Support</FooterColTitle>
-            <FooterLink to="/faq-uganda">Help Center</FooterLink>
+            <FooterLink to="/faq-ci">Help Center</FooterLink>
             <FooterLink to="/contact">Contact Us</FooterLink>
-            <FooterLink to="/faq-uganda">FAQs</FooterLink>
+            <FooterLink to="/faq-ci">FAQs</FooterLink>
           </FooterCol>
 
           <FooterCol>

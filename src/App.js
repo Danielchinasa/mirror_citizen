@@ -347,7 +347,7 @@ function AppContent() {
               component={Financial}
             />
             <Route path="/faq" component={FaqPage} />
-            <Route path="/faq-uganda" exact component={UgandaFaqPage} />
+            <Route path="/faq-ci" exact component={UgandaFaqPage} />
             <Route path="/api-docs" component={ApiDocsPage} />
             <ProtectedRoute path="/profile" component={ProfilePage} />
             {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
