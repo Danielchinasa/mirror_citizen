@@ -5,7 +5,7 @@ export const ANALYTICS_CONFIG = {
   brand: process.env.REACT_APP_ANALYTICS_BRAND || "e-citizen",
   defaultCurrency: process.env.REACT_APP_ANALYTICS_DEFAULT_CURRENCY || "NGN",
   newGa4MeasurementId:
-    process.env.REACT_APP_GA4_MEASUREMENT_ID || "G-ETJKSQ0W0L",
+    process.env.REACT_APP_GA4_MEASUREMENT_ID || "G-GTKPPQ4D13",
   newGa4Enabled: process.env.REACT_APP_GA4_NEW_PROPERTY_ENABLED === "true",
   legacyGtagMeasurementId:
     process.env.REACT_APP_LEGACY_GTAG_MEASUREMENT_ID || "G-XSHE0JCXW1",
