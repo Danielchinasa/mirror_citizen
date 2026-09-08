@@ -52,6 +52,7 @@ import ProtectedRoute from "./protectedRoute";
 import ReactGA from "react-ga4";
 import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
+import PrivacyPolicyWeb from "./pages/privacyPolicy/privacyPolicyWeb";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
 
 import usePageTracking from "./hooks/usePageTracking";
