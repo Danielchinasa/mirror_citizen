@@ -131,6 +131,16 @@ const translations = {
     "verify.search.discount": "Discount",
     "verify.search.totalToBePaid": "Total to be paid",
     "verify.search.continueToPayment": "Continue to Payment",
+    "verify.search.unavailable": "Unavailable",
+    "verify.search.unableToGetFees": "Unable to get service fees",
+    "verify.search.loadingFees": "Loading fees...",
+    "verify.search.feesUnavailableNotice":
+      "Pricing for this service is currently unavailable. Please try again or contact support.",
+    "verify.search.topErrorNotice":
+      "Unable to get service fees at the moment. Please try again.",
+    "verify.search.retry": "Retry",
+    "verify.search.unableToGetFeesError":
+      "Unable to get service fees. Please try again before proceeding.",
     "verify.search.clear": "Clear",
     "verify.error.selectBureau": "Please select at least one credit bureau.",
     "verify.error.fillField": "Please fill in at least one of the fields.",
@@ -773,6 +783,16 @@ const translations = {
     "verify.search.discount": "Punguzo",
     "verify.search.totalToBePaid": "Jumla ya kulipwa",
     "verify.search.continueToPayment": "Endelea kwa Malipo",
+    "verify.search.unavailable": "Haipatikani",
+    "verify.search.unableToGetFees": "Ada Hazipatikani",
+    "verify.search.loadingFees": "Inapakia ada...",
+    "verify.search.feesUnavailableNotice":
+      "Bei za huduma hii hazipatikani kwa sasa. Tafadhali jaribu tena au wasiliana na huduma kwa wateja.",
+    "verify.search.topErrorNotice":
+      "Imeshindwa kupata ada za huduma kwa sasa. Tafadhali jaribu tena.",
+    "verify.search.retry": "Jaribu Tena",
+    "verify.search.unableToGetFeesError":
+      "Imeshindwa kupata ada za huduma. Tafadhali jaribu tena kabla ya kuendelea.",
     "verify.search.clear": "Futa",
     "verify.error.selectBureau":
       "Tafadhali chagua angalau ofisi moja ya mikopo.",
