@@ -1539,16 +1539,16 @@ const VerifyPage = () => {
                       alignItems: "center",
                       gap: 10,
                       padding: "10px 14px",
-                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DD0201" : "#e5e7eb"}`,
+                      border: `1.5px solid ${selectedBureaus[bureau.id] ? "#DD0201" : "var(--ec-border)"}`,
                       borderRadius: 8,
                       cursor: "pointer",
                       background: selectedBureaus[bureau.id]
-                        ? "#fef2f2"
-                        : "#fff",
+                        ? "var(--ec-primary-bg)"
+                        : "var(--ec-bg-input)",
                       transition: "all 0.15s",
                       fontFamily: "Nunito, sans-serif",
                       fontSize: 14,
-                      color: "#333",
+                      color: "var(--ec-text)",
                     }}
                   >
                     <input
@@ -1742,7 +1742,9 @@ const VerifyPage = () => {
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
               {method.icon && (
-                <method.icon style={{ fontSize: 16, color: "#555" }} />
+                <method.icon
+                  style={{ fontSize: 16, color: "var(--ec-text-secondary)" }}
+                />
               )}
               {method.id === "paystack" && (
                 <img
@@ -1763,7 +1765,7 @@ const VerifyPage = () => {
                 <span
                   style={{
                     fontSize: 11,
-                    color: "#777",
+                    color: "var(--ec-text-muted)",
                     fontFamily: "Nunito",
                   }}
                 >

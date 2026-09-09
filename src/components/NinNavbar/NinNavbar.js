@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   NinNav,
   NinNavbarContainer,
@@ -16,9 +16,27 @@ import { Link } from "react-router-dom";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import SampleResultPopup from "../SampleResultPopup/SampleResultPopup";
 
+const getLanguage = () => {
+  if (typeof window === "undefined") return "SW";
+  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+};
+
 function NinNavbar() {
   const [click, setClick] = useState(false);
   const [showSampleResult, setShowSampleResult] = useState(false);
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const verifyLink = useAuthRedirect("/verify/nin");
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -60,22 +78,25 @@ function NinNavbar() {
                 onClick={() => scrollToSection("how-it-works")}
                 href="#how-it-works"
               >
-                How it works
+                {isSw ? "Inavyofanya kazi" : "How it works"}
               </NinNavLink>
             </NinNavItem>
             <NinNavItem>
               <NinNavLink onClick={openSampleResult} href="#sample-result">
-                Sample result
+                {isSw ? "Mfano wa matokeo" : "Sample result"}
               </NinNavLink>
             </NinNavItem>
             <NinNavItem>
               <NinNavLinkRouter to={verifyLink} onClick={closeMobileMenu}>
-                Login
+                {isSw ? "Ingia" : "Login"}
               </NinNavLinkRouter>
             </NinNavItem>
             <NinNavItem>
               <NinCtaButton to={verifyLink} onClick={closeMobileMenu}>
-                Verify National ID Now <FaArrowRight />
+                {isSw
+                  ? "Thibitisha Kitambulisho cha Taifa Sasa"
+                  : "Verify National ID Now"}{" "}
+                <FaArrowRight />
               </NinCtaButton>
             </NinNavItem>
           </NinNavMenu>

@@ -508,6 +508,7 @@ export const FormInput = styled.input`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   color: var(--ec-text);
+  background: var(--ec-bg-input);
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -531,7 +532,7 @@ export const FormSelect = styled.select`
   color: var(--ec-text);
   outline: none;
   box-sizing: border-box;
-  background: var(--ec-bg);
+  background: var(--ec-bg-input);
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -783,12 +784,13 @@ export const PaymentOption = styled.label`
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border: 2px solid ${(props) => (props.selected ? "#DD0201" : "#e5e7eb")};
+  border: 2px solid ${(props) => (props.selected ? "#DD0201" : "var(--ec-border)")};
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.2s;
-  background: ${(props) => (props.selected ? "#fef2f2" : "#fff")};
+  background: ${(props) =>
+    props.selected ? "var(--ec-primary-bg)" : "var(--ec-bg-input)"};
 
   &:last-child {
     margin-bottom: 0;

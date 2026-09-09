@@ -64,6 +64,7 @@ import {
   formatWalletCurrency,
   getCurrencySymbol,
 } from "../../utils/currencyFormat";
+import { t } from "../../utils/alertTranslations";
 
 const { useToken } = theme;
 
@@ -136,28 +137,6 @@ function Navbar() {
 
   const isVerificationLogin = location.pathname === "/verification-login";
 
-  const items = [
-    // {
-    //   key: "1",
-    //   label: (
-    //     <a href="/main-dashboard" style={{ textDecoration: "none" }}>
-    //       Dashboard
-    //     </a>
-    //   ),
-    // },
-    {
-      key: "2",
-      label: (
-        <Link to="/profile" style={{ textDecoration: "none" }}>
-          My Profile
-        </Link>
-      ),
-    },
-    {
-      key: "3",
-      label: <span onClick={handleLogout}>Logout</span>,
-    },
-  ];
   const [visible, setVisible] = useState(false);
   const [mobileLanguage, setMobileLanguage] = useState(() => {
     if (typeof window === "undefined") return "SW";
@@ -179,12 +158,45 @@ function Navbar() {
 
   const isSw = mobileLanguage === "SW";
 
+  useEffect(() => {
+    const onLanguageChange = () => {
+      const lang = window.localStorage.getItem("siteLanguage") || "SW";
+      setMobileLanguage(lang);
+    };
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
+  const items = [
+    // {
+    //   key: "1",
+    //   label: (
+    //     <a href="/main-dashboard" style={{ textDecoration: "none" }}>
+    //       {isSw ? "Dashibodi" : "Dashboard"}
+    //     </a>
+    //   ),
+    // },
+    {
+      key: "2",
+      label: (
+        <Link to="/profile" style={{ textDecoration: "none" }}>
+          {isSw ? "Profaili Yangu" : "My Profile"}
+        </Link>
+      ),
+    },
+    {
+      key: "3",
+      label: <span onClick={handleLogout}>{isSw ? "Ondoka" : "Logout"}</span>,
+    },
+  ];
+
   const menu = (
     <Menu>
-      <Menu.SubMenu
-        key="language"
-        title={mobileLanguage === "SW" ? "Language" : "Language"}
-      >
+      <Menu.SubMenu key="language" title={isSw ? "Lugha" : "Language"}>
         <Menu.Item
           key="lang-en"
           onClick={() => {
@@ -523,8 +535,8 @@ function Navbar() {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: "Payment Cancelled or Declined",
+          title: t("Error", isSw),
+          text: t("Payment Cancelled or Declined", isSw),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -532,7 +544,7 @@ function Navbar() {
           allowOutsideClick: false,
           allowEscapeKey: false,
           showConfirmButton: true,
-          confirmButtonText: "OK",
+          confirmButtonText: t("OK", isSw),
           confirmButtonColor: "#DD0201",
         }).then((result) => {
           if (result.isConfirmed) {
@@ -563,7 +575,7 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Failed Payment",
+              title: t("Failed Payment", isSw),
               text: responseData.data.processor_response,
               icon: "error",
               customClass: {
@@ -572,7 +584,7 @@ function Navbar() {
               allowOutsideClick: false,
               allowEscapeKey: false,
               showConfirmButton: true,
-              confirmButtonText: "OK",
+              confirmButtonText: t("OK", isSw),
               confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
@@ -588,8 +600,8 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "There was an issue making payment",
+        title: t("Error", isSw),
+        text: t("There was an issue making payment", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -597,7 +609,7 @@ function Navbar() {
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: true,
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK", isSw),
         confirmButtonColor: "#DD0201",
       }).then((result) => {
         if (result.isConfirmed) {
@@ -704,8 +716,10 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: `Minimum top-up amount is ${minTopUpAmountLabel}`,
+        title: t("Error", isSw),
+        text: isSw
+          ? `Kiwango cha chini cha kujaza ni ${minTopUpAmountLabel}`
+          : `Minimum top-up amount is ${minTopUpAmountLabel}`,
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -713,7 +727,7 @@ function Navbar() {
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: true,
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK", isSw),
         confirmButtonColor: "#DD0201",
       });
       return;
@@ -762,8 +776,8 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Response data does not contain a link",
+              title: t("Error", isSw),
+              text: t("Response data does not contain a link", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -771,7 +785,7 @@ function Navbar() {
               allowOutsideClick: false,
               allowEscapeKey: false,
               showConfirmButton: true,
-              confirmButtonText: "OK",
+              confirmButtonText: t("OK", isSw),
               confirmButtonColor: "#DD0201",
             }).then((result) => {
               if (result.isConfirmed) {
@@ -784,8 +798,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Failed to initialize payment",
+            title: t("Error", isSw),
+            text: t("Failed to initialize payment", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -793,7 +807,7 @@ function Navbar() {
             allowOutsideClick: false,
             allowEscapeKey: false,
             showConfirmButton: true,
-            confirmButtonText: "OK",
+            confirmButtonText: t("OK", isSw),
             confirmButtonColor: "#DD0201",
           }).then((result) => {
             if (result.isConfirmed) {
@@ -838,8 +852,8 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Failed to initialize PayPal payment",
+            title: t("Error", isSw),
+            text: t("Failed to initialize PayPal payment", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -847,7 +861,7 @@ function Navbar() {
             allowOutsideClick: false,
             allowEscapeKey: false,
             showConfirmButton: true,
-            confirmButtonText: "OK",
+            confirmButtonText: t("OK", isSw),
             confirmButtonColor: "#DD0201",
           });
         }
@@ -882,8 +896,8 @@ function Navbar() {
             Swal.fire({
               background: bgContainer,
               color: text,
-              title: "Error",
-              text: "Failed to initialize Paystack payment",
+              title: t("Error", isSw),
+              text: t("Failed to initialize Paystack payment", isSw),
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
@@ -891,7 +905,7 @@ function Navbar() {
               allowOutsideClick: false,
               allowEscapeKey: false,
               showConfirmButton: true,
-              confirmButtonText: "OK",
+              confirmButtonText: t("OK", isSw),
               confirmButtonColor: "#DD0201",
             });
           }
@@ -901,8 +915,9 @@ function Navbar() {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: error.message || "Failed to initialize Paystack payment",
+            title: t("Error", isSw),
+            text:
+              error.message || t("Failed to initialize Paystack payment", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -910,7 +925,7 @@ function Navbar() {
             allowOutsideClick: false,
             allowEscapeKey: false,
             showConfirmButton: true,
-            confirmButtonText: "OK",
+            confirmButtonText: t("OK", isSw),
             confirmButtonColor: "#DD0201",
           });
         }
@@ -922,8 +937,8 @@ function Navbar() {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Failed to initialize payment",
+        title: t("Error", isSw),
+        text: t("Failed to initialize payment", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -931,7 +946,7 @@ function Navbar() {
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: true,
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK", isSw),
         confirmButtonColor: "#DD0201",
       }).then((result) => {
         if (result.isConfirmed) {
@@ -981,7 +996,9 @@ function Navbar() {
               <PublicAnchor href={withBasePath("/#services")}>
                 {isSw ? "Bei" : "Pricing"}
               </PublicAnchor>
-              <PublicNavLink to="/faq-kenya">FAQ</PublicNavLink>
+              <PublicNavLink to="/faq-kenya">
+                {isSw ? "Maswali" : "FAQ"}
+              </PublicNavLink>
               <PublicNavLink to="/contact">
                 {isSw ? "Msaada" : "Support"}
               </PublicNavLink>
@@ -1000,7 +1017,10 @@ function Navbar() {
                 </PublicBackButton>
               )}
               <Dropdown overlay={countryMenu} trigger={["click"]} arrow>
-                <CountryPill type="button" aria-label="Select country">
+                <CountryPill
+                  type="button"
+                  aria-label={isSw ? "Chagua nchi" : "Select country"}
+                >
                   <span className="flag" role="img" aria-label="Kenya flag">
                     🇰🇪
                   </span>
@@ -1010,12 +1030,33 @@ function Navbar() {
               </Dropdown>
 
               <PublicDesktopOnly>
+                <PublicLanguageToggleGroup>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "EN"}
+                    onClick={() => handleLanguageChange("EN")}
+                    aria-pressed={mobileLanguage === "EN"}
+                  >
+                    EN
+                  </PublicLanguageToggle>
+                  <PublicLanguageToggle
+                    type="button"
+                    $active={mobileLanguage === "SW"}
+                    onClick={() => handleLanguageChange("SW")}
+                    aria-pressed={mobileLanguage === "SW"}
+                  >
+                    SW
+                  </PublicLanguageToggle>
+                </PublicLanguageToggleGroup>
                 <ThemeToggle />
               </PublicDesktopOnly>
               <PublicCta href={withBasePath("/#services")}>
                 {isSw ? "Anza" : "Get Started"}
               </PublicCta>
-              <PublicHamburger onClick={handleClick} aria-label="Open menu">
+              <PublicHamburger
+                onClick={handleClick}
+                aria-label={isSw ? "Fungua menyu" : "Open menu"}
+              >
                 {click ? <FaTimes /> : <FaBars />}
               </PublicHamburger>
             </PublicActions>
@@ -1042,7 +1083,7 @@ function Navbar() {
                 {isSw ? "Inavyofanya kazi" : "How it works"}
               </PublicMobileAnchor>
               <PublicMobileLink to="/faq-kenya" onClick={closeMobileMenu}>
-                FAQ
+                {isSw ? "Maswali" : "FAQ"}
               </PublicMobileLink>
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 {isSw ? "Msaada" : "Support"}
@@ -1119,7 +1160,11 @@ function Navbar() {
       <Spin
         spinning={paystackLoading}
         size="large"
-        tip="Loading Paystack payment..."
+        tip={
+          isSw
+            ? "Inapakia malipo ya Paystack..."
+            : "Loading Paystack payment..."
+        }
         fullscreen
       />
       <IconContext.Provider value={{ color: "#000" }}>
@@ -1159,7 +1204,7 @@ function Navbar() {
                         }}
                         $token={token}
                       >
-                        View Dashboard
+                        {isSw ? "Tazama Dashibodi" : "View Dashboard"}
                       </OutlineButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -1172,7 +1217,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        Verify Now
+                        {isSw ? "Thibitisha Sasa" : "Verify Now"}
                       </MainButton>
                     </NavBtnLink>
                   </NavItemBtn>
@@ -1191,7 +1236,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          GET STARTED
+                          {isSw ? "ANZA" : "GET STARTED"}
                         </OutlineButton>
                       </NavBtnLink>
                     ) : (
@@ -1206,7 +1251,7 @@ function Navbar() {
                             fontWeight: "700",
                           }}
                         >
-                          GET STARTED
+                          {isSw ? "ANZA" : "GET STARTED"}
                         </OutlineButton>
                       </NavBtnLink>
                     )}
@@ -1247,22 +1292,28 @@ function Navbar() {
                     <>
                       {/* <NavItemBtn>
                         <NavBtnLink to="/main-dashboard">
-                          <MainButton type="primary">Dashboard</MainButton>
+                          <MainButton type="primary">{isSw ? "Dashibodi" : "Dashboard"}</MainButton>
                         </NavBtnLink>
                       </NavItemBtn> */}
                       <NavItemBtn>
                         <NavBtnLink to="/profile">
-                          <MainButton type="primary">My Profile</MainButton>
+                          <MainButton type="primary">
+                            {isSw ? "Profaili Yangu" : "My Profile"}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/contact">
-                          <MainButton type="primary">Contact Us</MainButton>
+                          <MainButton type="primary">
+                            {isSw ? "Wasiliana Nasi" : "Contact Us"}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <NavItemBtn>
                         <NavBtnLink to="/faq-kenya">
-                          <MainButton type="primary">FAQs</MainButton>
+                          <MainButton type="primary">
+                            {isSw ? "Maswali" : "FAQs"}
+                          </MainButton>
                         </NavBtnLink>
                       </NavItemBtn>
                       <div
@@ -1281,28 +1332,39 @@ function Navbar() {
                           onClick={showModal}
                           style={{ color: "rgba(255,255,255,0.85)" }}
                         >
-                          Wallet Balance:
+                          {isSw ? "Salio la Pochi:" : "Wallet Balance:"}
                           <span style={{ color: "#DD0201" }}>
                             {" "}
                             {formatWalletDisplay(userBalance)}
                           </span>
                         </p>
                         <Modal
-                          title="User Wallet"
+                          title={isSw ? "Pochi ya Mtumiaji" : "User Wallet"}
                           open={isModalVisible}
                           onOk={handleOk}
-                          okText="Proceed to Payment"
+                          okText={
+                            isSw ? "Endelea na Malipo" : "Proceed to Payment"
+                          }
                           onCancel={handleCancel}
                           width={300}
                         >
-                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={5}>
+                            {" "}
+                            {isSw ? "Salio la Pochi:" : "Wallet Balance:"}
+                          </Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
                             {formatWalletDisplay(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
-                          <Title level={5}>Fund Wallet</Title>
-                          <Title level={5}>Select Payment Method</Title>
+                          <Title level={5}>
+                            {isSw ? "Jaza Pochi" : "Fund Wallet"}
+                          </Title>
+                          <Title level={5}>
+                            {isSw
+                              ? "Chagua Njia ya Malipo"
+                              : "Select Payment Method"}
+                          </Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1323,27 +1385,6 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "NGN" && (
-                              <Radio
-                                value={2}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  marginBottom: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PayPal
-                                <img
-                                  src={paypal}
-                                  alt="paypal"
-                                  width={60}
-                                  style={{ float: "right", marginTop: "5px" }}
-                                />
-                              </Radio>
-                            )} */}
                             <Radio
                               value={3}
                               disabled={userCurrency.toUpperCase() === "USD"}
@@ -1357,16 +1398,23 @@ function Navbar() {
                             >
                               Paystack{" "}
                               {userCurrency.toUpperCase() === "USD" &&
-                                "(Not available for USD)"}
+                                (isSw
+                                  ? "(Haipatikani kwa USD)"
+                                  : "(Not available for USD)")}
                             </Radio>
                           </Radio.Group>
                           <p>
-                            Enter Amount to Fund Wallet (Minimum:{" "}
-                            {minTopUpAmountLabel})
+                            {isSw
+                              ? `Weka Kiasi cha Kujaza Pochi (Kiwango cha Chini: ${minTopUpAmountLabel})`
+                              : `Enter Amount to Fund Wallet (Minimum: ${minTopUpAmountLabel})`}
                           </p>
                           <Input
                             type="number"
-                            placeholder={`Enter amount (min: ${minTopUpAmount})`}
+                            placeholder={
+                              isSw
+                                ? `Weka kiasi (kiwango cha chini: ${minTopUpAmount})`
+                                : `Enter amount (min: ${minTopUpAmount})`
+                            }
                             value={amount}
                             onChange={handleChange}
                             min={minTopUpAmount}
@@ -1379,7 +1427,9 @@ function Navbar() {
                                 marginTop: "5px",
                               }}
                             >
-                              Minimum top-up amount is {minTopUpAmountLabel}
+                              {isSw
+                                ? `Kiwango cha chini cha kujaza ni ${minTopUpAmountLabel}`
+                                : `Minimum top-up amount is ${minTopUpAmountLabel}`}
                             </p>
                           )}
                         </Modal>
@@ -1399,7 +1449,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handleModalOk}
                             >
-                              Close
+                              {isSw ? "Funga" : "Close"}
                             </Button>,
                           ]}
                         >
@@ -1429,7 +1479,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handlePaystackModalClose}
                             >
-                              Close
+                              {isSw ? "Funga" : "Close"}
                             </Button>,
                           ]}
                         >
@@ -1545,7 +1595,7 @@ function Navbar() {
                             onClick={handleLogout}
                             $token={token}
                           >
-                            Logout
+                            {isSw ? "Ondoka" : "Logout"}
                           </OutlineButton>
                         </NavBtnLink>
                       </NavItemBtn>
@@ -1553,33 +1603,6 @@ function Navbar() {
                   )
                 : isAuthenticated && (
                     <>
-                      {/* <div
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        <PublicLanguageToggleGroup>
-                          <PublicLanguageToggle
-                            type="button"
-                            $active={mobileLanguage === "EN"}
-                            onClick={() => handleLanguageChange("EN")}
-                            aria-pressed={mobileLanguage === "EN"}
-                          >
-                            EN
-                          </PublicLanguageToggle>
-                          <PublicLanguageToggle
-                            type="button"
-                            $active={mobileLanguage === "SW"}
-                            onClick={() => handleLanguageChange("SW")}
-                            aria-pressed={mobileLanguage === "SW"}
-                          >
-                            SW
-                          </PublicLanguageToggle>
-                        </PublicLanguageToggleGroup>
-                        <ThemeToggle />
-                      </div> */}
                       <div
                         style={{
                           marginTop: "20px",
@@ -1593,28 +1616,39 @@ function Navbar() {
                           {userDetails?.firstName} {userDetails?.lastName}
                         </Title>
                         <p onClick={showModal} style={{ color: text }}>
-                          Wallet Balance:
+                          {isSw ? "Salio la Pochi:" : "Wallet Balance:"}
                           <span style={{ color: "#DD0201" }}>
                             {" "}
                             {formatWalletDisplay(userBalance)}
                           </span>
                         </p>
                         <Modal
-                          title="User Wallet"
+                          title={isSw ? "Pochi ya Mtumiaji" : "User Wallet"}
                           open={isModalVisible}
                           onOk={handleOk}
-                          okText="Proceed to Payment"
+                          okText={
+                            isSw ? "Endelea na Malipo" : "Proceed to Payment"
+                          }
                           onCancel={handleCancel}
                           width={300}
                         >
-                          <Title level={5}> Wallet Balance:</Title>
+                          <Title level={5}>
+                            {" "}
+                            {isSw ? "Salio la Pochi:" : "Wallet Balance:"}
+                          </Title>
                           <Title level={3} style={{ color: "#DD0201" }}>
                             {formatWalletDisplay(userBalance)}
                           </Title>
 
                           <Divider style={{ border: "1px solid #D9D9D9" }} />
-                          <Title level={5}>Fund Wallet</Title>
-                          <Title level={5}>Select Payment Method</Title>
+                          <Title level={5}>
+                            {isSw ? "Jaza Pochi" : "Fund Wallet"}
+                          </Title>
+                          <Title level={5}>
+                            {isSw
+                              ? "Chagua Njia ya Malipo"
+                              : "Select Payment Method"}
+                          </Title>
                           <Radio.Group
                             value={walletPaymentMethod}
                             onChange={(e) =>
@@ -1635,27 +1669,6 @@ function Navbar() {
                             >
                               FlutterWave
                             </Radio>
-                            {/* {userCurrency.toUpperCase() !== "NGN" && (
-                              <Radio
-                                value={2}
-                                style={{
-                                  display: "block",
-                                  border: "1px solid #e8e8e8",
-                                  borderRadius: "5px",
-                                  padding: "10px",
-                                  marginBottom: "10px",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PayPal
-                                <img
-                                  src={paypal}
-                                  alt="paypal"
-                                  width={60}
-                                  style={{ float: "right", marginTop: "5px" }}
-                                />
-                              </Radio>
-                            )} */}
                             <Radio
                               value={3}
                               disabled={userCurrency.toUpperCase() === "USD"}
@@ -1669,16 +1682,23 @@ function Navbar() {
                             >
                               Paystack{" "}
                               {userCurrency.toUpperCase() === "USD" &&
-                                "(Not available for USD)"}
+                                (isSw
+                                  ? "(Haipatikani kwa USD)"
+                                  : "(Not available for USD)")}
                             </Radio>
                           </Radio.Group>
                           <p>
-                            Enter Amount to Fund Wallet (Minimum:{" "}
-                            {minTopUpAmountLabel})
+                            {isSw
+                              ? `Weka Kiasi cha Kujaza Pochi (Kiwango cha Chini: ${minTopUpAmountLabel})`
+                              : `Enter Amount to Fund Wallet (Minimum: ${minTopUpAmountLabel})`}
                           </p>
                           <Input
                             type="number"
-                            placeholder={`Enter amount (min: ${minTopUpAmount})`}
+                            placeholder={
+                              isSw
+                                ? `Weka kiasi (kiwango cha chini: ${minTopUpAmount})`
+                                : `Enter amount (min: ${minTopUpAmount})`
+                            }
                             value={amount}
                             onChange={handleChange}
                             min={minTopUpAmount}
@@ -1691,7 +1711,9 @@ function Navbar() {
                                 marginTop: "5px",
                               }}
                             >
-                              Minimum top-up amount is {minTopUpAmountLabel}
+                              {isSw
+                                ? `Kiwango cha chini cha kujaza ni ${minTopUpAmountLabel}`
+                                : `Minimum top-up amount is ${minTopUpAmountLabel}`}
                             </p>
                           )}
                         </Modal>
@@ -1711,7 +1733,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handleModalOk}
                             >
-                              Close
+                              {isSw ? "Funga" : "Close"}
                             </Button>,
                           ]}
                         >
@@ -1741,7 +1763,7 @@ function Navbar() {
                               type="dashed"
                               onClick={handlePaystackModalClose}
                             >
-                              Close
+                              {isSw ? "Funga" : "Close"}
                             </Button>,
                           ]}
                         >
