@@ -49,14 +49,13 @@ import LiveFaceScreen from "./pages/liveFace/liveFace";
 import BusinessName from "./pages/result/businessName";
 import AppLogout from "./components/AppLogOut";
 import ProtectedRoute from "./protectedRoute";
-import ReactGA from "react-ga4";
 import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
 import PrivacyPolicyWeb from "./pages/privacyPolicy/privacyPolicyWeb";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
 
-import usePageTracking from "./hooks/usePageTracking";
 import AnalyticsTracker from "./AnalyticsTracker";
+import { initializeAnalytics } from "./analytics/analytics";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentCancel from "./pages/Payment/PaymentCancel";
@@ -74,10 +73,8 @@ import ApiDocsPage from "./pages/apiDocs/apiDocsPage";
 import { ThemeProvider } from "./components/ThemeProvider";
 
 function App() {
-  // ReactGA.initialize("G-XSHE0JCXW1");
-  ReactGA.initialize("G-DDKNJYDMQ7");
-  usePageTracking();
   useEffect(() => {
+    initializeAnalytics();
     CookieConsent.run({
       page_scripts: true,
       categories: {
@@ -99,7 +96,7 @@ function App() {
           services: {
             ga: {
               label: "Google Analytics",
-              onAccept: () => {},
+              onAccept: () => initializeAnalytics(),
               onReject: () => {},
             },
             youtube: {
@@ -131,10 +128,12 @@ function App() {
 
       onConsent: ({ cookie }) => {
         console.log("onConsent fired!", cookie);
+        initializeAnalytics();
       },
 
       onChange: ({ changedCategories, changedServices }) => {
         console.log("onChange fired!", changedCategories, changedServices);
+        initializeAnalytics();
       },
 
       onModalReady: ({ modalName }) => {

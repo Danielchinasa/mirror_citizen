@@ -35,15 +35,18 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import Notification from "../../Notification";
 import { Typography } from "antd";
-import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { initiatePaystackPayment } from "../../services/paystackService";
-import { trackPurchaseConversion } from "../../hooks/analytics";
-import { trackGA4Event } from "../../hooks/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
+import {
+  trackAnalyticsEvent,
+  trackPurchaseConversion,
+  trackGA4Event,
+} from "../../hooks/analytics";
 import {
   NO_DATA_STATUS,
   LEGACY_TERMINATED_CONSENT,
@@ -1032,19 +1035,7 @@ const MainDashboard = () => {
               value: parseFloat(transactionAmount) || 1.0,
               currency: userCurrency || "NGN",
             });
-            // Payment successful - fire GA4 purchase event
-            trackGA4Event("purchase", {
-              transaction_id: paystackReference,
-              value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
-              items: [{ id: paystackReference, name: "Paystack Payment" }],
-            });
-            // Payment successful - track conversion and refresh profile
-            trackPurchaseConversion({
-              value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
-              transactionId: paystackReference,
-            });
+            // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
             dispatch(fetchUserProfile(userToken));
           } else {
             Swal.fire({
@@ -1195,10 +1186,9 @@ const MainDashboard = () => {
 
       return;
     }
-
-    ReactGA.event({
-      category: "User",
-      action: "Topped up wallet",
+    trackAnalyticsEvent("wallet_topup_started", {
+      amount: parseFloat(amount) || undefined,
+      currency: userCurrency,
     });
 
     setIsModalVisible(false);
@@ -1222,7 +1212,7 @@ const MainDashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-          body: JSON.stringify(postData),
+          body: JSON.stringify(await withAnalyticsMetadata(postData)),
         });
 
         // Check if the request was successful (status code 200-299)
@@ -1262,7 +1252,7 @@ const MainDashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           },
-          body: JSON.stringify(postData),
+          body: JSON.stringify(await withAnalyticsMetadata(postData)),
         });
 
         // Check if the request was successful (status code 200-299)

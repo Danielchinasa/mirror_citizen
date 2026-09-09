@@ -119,7 +119,7 @@ const VerificationLoginPage = () => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     trackEvent({
-      action: "click_normail_signin_attempt",
+      action: "click_normal_signin_attempt",
       category: "Authentication Attempt",
       label: "Normal Signin Attempt",
       value: 1,
@@ -153,7 +153,7 @@ const VerificationLoginPage = () => {
         trackGA4Event("login", { method: "email" });
         localStorage.setItem("IpAddress", ipAddress);
         trackEvent({
-          action: "click_normail_signin_sucess",
+          action: "click_normal_signin_success",
           category: "Authentication Success",
           label: "Normal Signin Success",
           value: 1,

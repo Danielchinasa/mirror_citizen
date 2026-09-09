@@ -1,8 +1,7 @@
-// GA4 event tracking utility for custom events
+import { trackAnalyticsEvent } from "../analytics/analytics";
+
 export function trackGA4Event(eventName, eventParams = {}) {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
+  trackAnalyticsEvent(eventName, eventParams);
 }
 
 // Example usage (remove or comment out in production):
