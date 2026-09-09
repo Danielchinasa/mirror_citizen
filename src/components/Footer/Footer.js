@@ -87,7 +87,7 @@ function Footer() {
                   <FaInstagram />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://x.com/ERaiaAfrica"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
