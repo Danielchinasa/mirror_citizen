@@ -1365,8 +1365,12 @@ function Navbar() {
                           marginBottom: "20px",
                         }}
                       >
-                        <PublicMobileLanguage style={{ borderBottom: "none", display: "flex" }}>
-                          <PublicMobileLanguageLabel style={{ color: "#FFFFFF" }}>
+                        <PublicMobileLanguage
+                          style={{ borderBottom: "none", display: "flex" }}
+                        >
+                          <PublicMobileLanguageLabel
+                            style={{ color: "#FFFFFF" }}
+                          >
                             {t("nav.language")}
                           </PublicMobileLanguageLabel>
                           <PublicLanguageToggleGroup>
@@ -1404,7 +1408,6 @@ function Navbar() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
-
                         <Dropdown
                           overlay={countriesMenu}
                           trigger={["click"]}
@@ -1418,11 +1421,11 @@ function Navbar() {
                             <span
                               className="flag"
                               role="img"
-                              aria-label="Ghana flag"
+                              aria-label="Uganda flag"
                             >
-                              🇬🇭
+                              🇺🇬
                             </span>
-                            Ghana
+                            Uganda
                             <DownOutlined
                               className="chev"
                               style={{ color: "#FFFFFF" }}
