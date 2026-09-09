@@ -1661,7 +1661,7 @@ const VerifyPage = () => {
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
               {method.icon && (
-                <method.icon style={{ fontSize: 16, color: "#555" }} />
+                <method.icon style={{ fontSize: 16, color: "var(--ec-text-muted)" }} />
               )}
               {method.id === "paystack" && (
                 <img
@@ -1686,7 +1686,7 @@ const VerifyPage = () => {
                 <span
                   style={{
                     fontSize: 11,
-                    color: "#777",
+                    color: "var(--ec-text-faint)",
                     fontFamily: "Nunito",
                   }}
                 >

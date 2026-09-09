@@ -508,12 +508,14 @@ export const FormInput = styled.input`
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   color: var(--ec-text-secondary);
+  background: var(--ec-bg-card);
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.2s;
 
   &::placeholder {
-    color: #bbb;
+    color: var(--ec-text-muted);
+    opacity: 0.7;
   }
 
   &:focus {
@@ -783,12 +785,12 @@ export const PaymentOption = styled.label`
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border: 2px solid ${(props) => (props.selected ? "#DD0201" : "#e5e7eb")};
+  border: 2px solid ${(props) => (props.selected ? "var(--ec-primary)" : "var(--ec-border)")};
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.2s;
-  background: ${(props) => (props.selected ? "#fef2f2" : "#fff")};
+  background: ${(props) => (props.selected ? "var(--ec-bg-primary-light)" : "var(--ec-bg-card)")};
 
   &:last-child {
     margin-bottom: 0;
