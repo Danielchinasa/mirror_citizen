@@ -1362,9 +1362,49 @@ function Navbar() {
                         style={{
                           paddingLeft: "49px",
                           paddingRight: "15px",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        <PublicMobileLanguage style={{ borderBottom: "none", display: "flex" }}>
+                          <PublicMobileLanguageLabel style={{ color: "#FFFFFF" }}>
+                            {t("nav.language")}
+                          </PublicMobileLanguageLabel>
+                          <PublicLanguageToggleGroup>
+                            <PublicLanguageToggle
+                              type="button"
+                              $active={language === "SW"}
+                              onClick={() => {
+                                handleLanguageChange("SW");
+                                closeMobileMenu();
+                              }}
+                              aria-pressed={language === "SW"}
+                              style={{ color: "#FFFFFF" }}
+                            >
+                              SWA
+                            </PublicLanguageToggle>
+                            <PublicLanguageToggle
+                              type="button"
+                              $active={language === "EN"}
+                              onClick={() => {
+                                handleLanguageChange("EN");
+                                closeMobileMenu();
+                              }}
+                              aria-pressed={language === "EN"}
+                              style={{ color: "#FFFFFF" }}
+                            >
+                              ENG
+                            </PublicLanguageToggle>
+                          </PublicLanguageToggleGroup>
+                        </PublicMobileLanguage>
+                      </div>
+                      <div
+                        style={{
+                          paddingLeft: "49px",
+                          paddingRight: "15px",
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
+
                         <Dropdown
                           overlay={countriesMenu}
                           trigger={["click"]}
