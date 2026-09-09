@@ -526,11 +526,11 @@ export const fetchVerificationServicePrices =
           `/africa/countries/GH/service-prices`,
           token,
         );
-        const services = response.data?.data || response.data || [];
+        const services = response?.data?.data || response?.data || [];
         serviceData = Array.isArray(services)
-          ? services.find((s) => s.service === config.apiServiceName)
-          : services[config.apiServiceName];
-        rate = response.data?.rate;
+          ? services.find((s) => s?.service === config.apiServiceName)
+          : services?.[config.apiServiceName];
+        rate = response?.data?.rate;
       } else {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await apiPostInternalCall(
@@ -538,11 +538,22 @@ export const fetchVerificationServicePrices =
           { ipAddress },
           token,
         );
-        serviceData = response.data.data[config.priceIndex];
-        rate = response.data.rate;
+        serviceData = response?.data?.data?.[config.priceIndex];
+        rate = response?.data?.rate;
+      }
+
+      if (
+        !serviceData ||
+        (serviceData.serviceFee === undefined &&
+          serviceData.serviceFee2 === undefined &&
+          serviceData.price === undefined &&
+          serviceData.price2 === undefined)
+      ) {
+        return { status: "failed", message: "Could not fetch service prices" };
       }
 
       return {
+        status: "success",
         price: serviceData.price,
         serviceFee: serviceData.serviceFee,
         vat: serviceData.VAT,
@@ -558,8 +569,11 @@ export const fetchVerificationServicePrices =
         rate,
       };
     } catch (error) {
-      if (error.response) return error.response;
-      return { status: "failed", message: "Could not fetch service prices" };
+      return {
+        status: "failed",
+        message:
+          error?.response?.data?.message || "Could not fetch service prices",
+      };
     }
   };
 
