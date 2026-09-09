@@ -136,3 +136,434 @@ export const NavBtnLink = styled(Link)`
   border: none;
   outline: none;
 `;
+
+export const PublicNav = styled.nav`
+  background: var(--ec-bg);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+`;
+
+export const PublicNavInner = styled.div`
+  max-width: 1500px;
+  margin: 0 auto;
+  height: 92px;
+  padding: 0 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  @media screen and (max-width: 1024px) {
+    padding: 0 24px;
+  }
+`;
+
+export const PublicBrand = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ec-text);
+  text-decoration: none;
+
+  .brand-red {
+    color: var(--ec-primary);
+  }
+
+  .brand-dot {
+    color: var(--ec-text);
+  }
+`;
+
+export const PublicCenter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  flex: 1;
+  justify-content: center;
+
+  @media screen and (max-width: 1100px) {
+    gap: 24px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const CountryPill = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+
+  .flag {
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .chev {
+    font-size: 12px;
+    color: var(--ec-text-muted);
+  }
+
+  @media screen and (max-width: 1024px) {
+    padding: 8px 10px;
+  }
+`;
+
+export const PublicNavGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const PublicTrigger = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+
+  .chev {
+    font-size: 12px;
+    color: var(--ec-text-muted);
+  }
+`;
+
+export const PublicNavLink = styled(Link)`
+  color: var(--ec-text);
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const PublicAnchor = styled.a`
+  color: var(--ec-text);
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const PublicTextLink = styled(Link)`
+  color: var(--ec-text);
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const PublicLanguage = styled.div`
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const PublicActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-shrink: 0;
+
+  @media screen and (max-width: 1024px) {
+    gap: 14px;
+  }
+`;
+
+export const PublicHeaderLanguage = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.04);
+  }
+`;
+
+export const MobileCountrySection = styled.div`
+  @media screen and (max-width: 1024px) {
+    display: block;
+  }
+`;
+
+export const MobileCountryToggle = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const MobileCountryList = styled.div`
+  display: ${({ $open }) => ($open ? "flex" : "none")};
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 28px;
+`;
+
+export const MobileCountryLink = styled.a`
+  text-decoration: none;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const PublicBackButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ec-border, #d9d9d9);
+  background: transparent;
+  color: var(--ec-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: #0dc939;
+    color: #0dc939;
+  }
+
+  @media screen and (max-width: 640px) {
+    span {
+      display: none;
+    }
+  }
+`;
+
+export const PublicLogin = styled(Link)`
+  color: var(--ec-text);
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const PublicCta = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--ec-primary);
+  color: #fff;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 8px 18px rgba(254, 208, 1, 0.22);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: var(--ec-primary);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const PublicDesktopOnly = styled.div`
+  display: inline-flex;
+  align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+export const PublicHamburger = styled.button`
+  display: none;
+  border: none;
+  background: transparent;
+  color: var(--ec-text);
+  font-size: 1.8rem;
+  cursor: pointer;
+
+  @media screen and (max-width: 1024px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+export const PublicMobilePanel = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: ${({ $open }) => ($open ? "block" : "none")};
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+    background: var(--ec-bg);
+    padding: 16px 24px 22px;
+  }
+`;
+
+export const PublicMobileMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+`;
+
+export const PublicMobileLanguage = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 4px 0 14px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+  }
+`;
+
+export const PublicMobileLanguageLabel = styled.span`
+  color: var(--ec-text-muted);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+export const PublicLanguageToggleGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.04);
+`;
+
+export const PublicLanguageToggle = styled.button`
+  border: none;
+  background: ${({ $active }) => ($active ? "#FBCB19" : "transparent")};
+  color: ${({ $active }) => ($active ? "#fff" : "#111827")};
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+`;
+
+export const PublicMobileLink = styled(Link)`
+  color: var(--ec-text);
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 0;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;
+
+export const PublicMobileAnchor = styled.a`
+  color: var(--ec-text);
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 0;
+
+  &:hover {
+    color: var(--ec-primary);
+  }
+`;

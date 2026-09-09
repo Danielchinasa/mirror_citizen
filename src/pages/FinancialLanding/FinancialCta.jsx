@@ -143,9 +143,6 @@ const FinancialCta = () => {
           <CtaButton to={verifyLink}>
             Check Credit Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
-            <FaCheckCircle /> Starting from <strong>N</strong>1,500 per report
-          </CtaPrice>
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

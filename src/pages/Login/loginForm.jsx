@@ -214,7 +214,7 @@ const LoginForm = (props) => {
           label: "Normal Signin Success",
           value: 1,
         });
-        history.push("/dashboard");
+        history.push("/main-dashboard");
       } else if (response === "Incorrect email or password") {
         setFormErrors({ general: response }); // Set error message
         Swal.fire({
@@ -325,7 +325,7 @@ const LoginForm = (props) => {
 
         if (userData.jwtToken) {
           localStorage.setItem("IpAddress", ipAddress);
-          history.push("/dashboard");
+          history.push("/main-dashboard");
         } else {
           Swal.fire({
             background: bgContainer,
@@ -420,7 +420,7 @@ const LoginForm = (props) => {
 
       if (userDataFb.jwtToken) {
         localStorage.setItem("IpAddress", ipAddress);
-        history.push("/dashboard");
+        history.push("/main-dashboard");
       } else {
         throw new Error("Login failed");
       }

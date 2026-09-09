@@ -17,9 +17,9 @@ import {
 
 const verificationConfig = {
   nin: {
-    heroTitle: "Verify Your ",
-    heroHighlight: "NIN ",
-    heroContinue: "in seconds",
+    heroTitle: "Verify Your NIN",
+    heroHighlight: "in seconds ",
+    heroContinue: "",
     heroSubtitle:
       "Enter details, pay securely and get accurate results instantly.",
     heroImage: require("../../images/nin_verification_hero2.png"),
@@ -61,8 +61,8 @@ const verificationConfig = {
   },
 
   phone: {
-    heroTitle: "Verify a Phone",
-    heroHighlight: "Number",
+    heroTitle: "Verify a Phone Number ",
+    heroHighlight: " in seconds",
     heroSubtitle:
       "Enter a phone number, pay securely and get verification results instantly.",
     heroImage: require("../../images/phone_number_verification.png"),
@@ -81,19 +81,19 @@ const verificationConfig = {
     ],
     youWillGet: [
       { icon: FaUser, text: "Owner information" },
-      { icon: FaPhoneAlt, text: "Network details" },
-      { icon: FaCheckCircle, text: "Verification status" },
-      { icon: FaMapMarkerAlt, text: "Region details" },
+      { icon: FaMapMarkerAlt, text: "Address details" },
+      { icon: FaCheckCircle, text: "Date of Birth" },
       { icon: FaBolt, text: "Instant results" },
     ],
     sampleResult: {
       name: "Adebayo John O.",
       identifier: "Phone: 0803 *** 5678",
-      tags: ["Owner Name", "Network", "Status", "And more..."],
+      tags: ["Owner Name", "Address", "Date of Birth", "And more..."],
     },
     serviceName: "Phone Verification",
     serviceFieldKey: "phone",
     priceIndex: 9,
+    requiresConsent: true,
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
@@ -212,8 +212,8 @@ const verificationConfig = {
   },
 
   bvn: {
-    heroTitle: "Verify Your ",
-    heroHighlight: "BVN in seconds",
+    heroTitle: "Verify Your BVN ",
+    heroHighlight: "in seconds",
     heroSubtitle:
       "Enter your BVN, pay securely and get financial verification results instantly.",
     heroImage: require("../../images/credit_profile.png"),
@@ -264,8 +264,8 @@ const verificationConfig = {
   },
 
   vehicle: {
-    heroTitle: "Check ",
-    heroHighlight: "Vehicle History",
+    heroTitle: "Check Vehicle History",
+    heroHighlight: " in seconds",
     heroSubtitle:
       "Verify a vehicle by VIN to reduce fraud and make safer purchase decisions.",
     heroImage: require("../../images/VIN_verification_platform_in_nigeria.png"),
@@ -290,8 +290,8 @@ const verificationConfig = {
       { icon: FaBolt, text: "Instant results" },
     ],
     sampleResult: {
-      name: "Toyota Corolla 2018",
-      identifier: "VIN: ******5678",
+      name: "Toyota Sienna 2018",
+      identifier: "VIN: 47589065678",
       tags: ["Make/Model", "Ownership", "Status", "And more..."],
     },
     serviceName: "Vehicle Verification",

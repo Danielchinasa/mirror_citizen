@@ -10,8 +10,9 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, fetchUserProfile } from "../../redux/actions";
+import LoggedInContinueCard from "../../components/LoggedInContinueCard/LoggedInContinueCard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -570,6 +571,7 @@ const BusinessLoginSample = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const redirectTo = "/verify/business";
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -831,12 +833,16 @@ const BusinessLoginSample = () => {
       <TwoColGrid>
         {/* Login Card */}
         <LoginCard style={{ position: "relative" }}>
-          {loading && (
-            <SpinnerOverlay>
-              <Spinner />
-            </SpinnerOverlay>
-          )}
-          <LoginCardTitle>Login / Continue</LoginCardTitle>
+          {isAuthenticated ? (
+            <LoggedInContinueCard redirectTo={redirectTo} />
+          ) : (
+            <>
+              {loading && (
+                <SpinnerOverlay>
+                  <Spinner />
+                </SpinnerOverlay>
+              )}
+              <LoginCardTitle>Login / Continue</LoginCardTitle>
           <LoginCardSub>
             Sign in or continue to start your verification.
           </LoginCardSub>
@@ -938,7 +944,9 @@ const BusinessLoginSample = () => {
                 </RegisterText>
               </FormCol>
             </LoginLayout>
-          </form>
+            </form>
+            </>
+          )}
         </LoginCard>
 
         {/* Sample Result Card */}
@@ -956,7 +964,7 @@ const BusinessLoginSample = () => {
                 <FaBuilding />
               </CompanyIcon>
               <CompanyInfo>
-                <CompanyName>BIOSEC SOLUTIONS LIMITED</CompanyName>
+                <CompanyName>Coca Cola Nigeria</CompanyName>
                 <CompanyRc>RC 456823</CompanyRc>
                 <VerifiedBadge>
                   VERIFIED <FaCheckCircle />

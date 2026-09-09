@@ -38,9 +38,9 @@ const NinHero = () => {
             <HeroTitle>
               Verify your
               <br />
-              <span>NIN online</span>
+              NIN online
               <br />
-              in seconds
+              <span>in seconds</span>
             </HeroTitle>
             <HeroSubtitle>
               Instant, secure and reliable National Identification Number (NIN)
@@ -54,9 +54,6 @@ const NinHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadge>
-              From <span>{getPrice(0) || "₦600"}</span> per verification
-            </PriceBadge>
           </HeroContent>
         </HeroContainer>
       </HeroSectionWrapper>

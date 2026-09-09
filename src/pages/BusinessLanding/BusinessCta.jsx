@@ -143,10 +143,10 @@ const BusinessCta = () => {
           <CtaButton to={verifyLink}>
             Verify Company Now <FaArrowRight />
           </CtaButton>
-          <CtaPrice>
+          {/* <CtaPrice>
             <FaCheckCircle /> From as low as <strong>N</strong>100 per
             verification
-          </CtaPrice>
+          </CtaPrice> */}
         </CtaRight>
       </CtaInner>
     </CtaWrapper>

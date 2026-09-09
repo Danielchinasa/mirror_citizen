@@ -32,12 +32,15 @@ const PhoneHero = () => {
   return (
     <>
       <HeroSectionWrapper>
-        <HeroBgImage src={heroImg} alt="Phone Number Verification on eCitizen" />
+        <HeroBgImage
+          src={heroImg}
+          alt="Phone Number Verification on eCitizen"
+        />
         <HeroContainer>
           <HeroContent>
             <HeroTag>PHONE VERIFICATION</HeroTag>
             <HeroTitle>
-              Verify a <span>phone number</span> in seconds
+              Verify a phone number <span>in seconds</span>
             </HeroTitle>
             <HeroSubtitle>
               Instant, secure and reliable phone number verification for
@@ -51,9 +54,7 @@ const PhoneHero = () => {
                 See Sample Result <FaEye />
               </SecondaryBtn>
             </HeroButtons>
-            <PriceBadge>
-              From <span>{getPrice(9) || "₦800"}</span> per verification
-            </PriceBadge>
+
             <HeroMobileImage
               src={heroImg}
               alt="Phone Number Verification on eCitizen"

@@ -251,29 +251,57 @@ export const ContentWrapper = styled.div`
 export const PopupOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1100;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media screen and (max-width: 600px) {
+    padding: 12px;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 8px 8px 16px;
+  }
 `;
 
 export const PopupCard = styled.div`
   width: min(680px, 100%);
+  max-height: min(92vh, 820px);
   background: var(--ec-bg);
   border-radius: 20px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   animation: ${fadeIn} 0.25s ease-out;
+  margin: auto;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    max-height: 94vh;
+    border-radius: 16px;
+  }
 `;
 
 export const PopupHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  gap: 16px;
   padding: 24px 24px 0;
+  flex-shrink: 0;
+
+  @media screen and (max-width: 600px) {
+    padding: 16px 16px 0;
+    gap: 12px;
+  }
 `;
 
 export const PopupMeta = styled.div`
@@ -281,6 +309,11 @@ export const PopupMeta = styled.div`
   align-items: flex-start;
   gap: 16px;
   flex: 1;
+  min-width: 0;
+
+  @media screen and (max-width: 600px) {
+    gap: 10px;
+  }
 `;
 
 export const PopupIcon = styled.div`
@@ -294,6 +327,12 @@ export const PopupIcon = styled.div`
   justify-content: center;
   font-size: 22px;
   flex-shrink: 0;
+
+  @media screen and (max-width: 600px) {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
 `;
 
 export const PopupTitle = styled.h3`
@@ -302,29 +341,170 @@ export const PopupTitle = styled.h3`
   font-weight: 700;
   margin: 0;
   color: var(--ec-text);
+  word-break: break-word;
+
+  @media screen and (max-width: 600px) {
+    font-size: 17px;
+    line-height: 1.3;
+  }
 `;
 
 export const PopupSubtitle = styled.p`
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   font-family: "Nunito", sans-serif;
   color: var(--ec-text-secondary);
-  line-height: 1.6;
-  font-size: 15px;
+  line-height: 1.5;
+  font-size: 14px;
+  word-break: break-word;
+
+  @media screen and (max-width: 600px) {
+    font-size: 12.5px;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
 `;
 
 export const PopupCloseButton = styled.button`
   background: transparent;
   border: none;
   color: var(--ec-text-muted);
-  font-size: 24px;
+  font-size: 26px;
   line-height: 1;
   cursor: pointer;
-  padding: 0;
-  margin: 0;
+  padding: 4px 8px;
+  margin: -4px -4px 0 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    color: var(--ec-text);
+    background: var(--ec-bg-secondary);
+  }
+
+  @media screen and (max-width: 600px) {
+    font-size: 24px;
+    padding: 4px 6px;
+  }
 `;
 
 export const PopupBody = styled.div`
   padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+
+  @media screen and (max-width: 600px) {
+    padding: 16px 14px;
+  }
+`;
+
+export const PopupCountBanner = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 10px 16px;
+  background: var(--ec-primary-bg);
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: var(--ec-primary);
+  font-weight: 700;
+
+  @media screen and (max-width: 600px) {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+`;
+
+export const PopupBusinessList = styled.div`
+  max-height: min(380px, 45vh);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-right: 4px;
+
+  @media screen and (max-width: 600px) {
+    max-height: min(300px, 40vh);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+`;
+
+export const PopupBusinessItem = styled.div`
+  border: 1px solid var(--ec-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  background: var(--ec-bg-card);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.2s ease;
+
+  @media screen and (max-width: 540px) {
+    padding: 12px 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+`;
+
+export const PopupBusinessIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ec-primary-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--ec-primary);
+  font-size: 18px;
+
+  @media screen and (max-width: 540px) {
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+  }
+`;
+
+export const PopupBusinessInfo = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+export const PopupBusinessName = styled.div`
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ec-text);
+  margin-bottom: 4px;
+  word-break: break-word;
+
+  @media screen and (max-width: 540px) {
+    font-size: 13.5px;
+  }
+`;
+
+export const PopupBusinessMeta = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+
+  @media screen and (max-width: 540px) {
+    font-size: 12px;
+    gap: 3px 10px;
+  }
 `;
 
 export const PopupRow = styled.div`
@@ -333,11 +513,21 @@ export const PopupRow = styled.div`
   gap: 18px;
   margin-bottom: 18px;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 600px) {
+    gap: 12px;
+    margin-bottom: 14px;
+  }
 `;
 
 export const PopupField = styled.div`
   flex: 1 1 45%;
   min-width: 180px;
+
+  @media screen and (max-width: 600px) {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
 `;
 
 export const PopupFieldLabel = styled.div`
@@ -345,6 +535,11 @@ export const PopupFieldLabel = styled.div`
   font-size: 13px;
   color: var(--ec-text-muted);
   margin-bottom: 6px;
+
+  @media screen and (max-width: 600px) {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
 `;
 
 export const PopupFieldValue = styled.div`
@@ -352,6 +547,11 @@ export const PopupFieldValue = styled.div`
   font-size: 16px;
   font-weight: 700;
   color: var(--ec-text);
+  word-break: break-word;
+
+  @media screen and (max-width: 600px) {
+    font-size: 14px;
+  }
 `;
 
 export const PopupActionRow = styled.div`
@@ -360,6 +560,20 @@ export const PopupActionRow = styled.div`
   gap: 12px;
   justify-content: flex-end;
   margin-top: 18px;
+
+  @media screen and (max-width: 540px) {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+
+    button {
+      width: 100% !important;
+      justify-content: center !important;
+      text-align: center !important;
+      padding: 12px 16px !important;
+      font-size: 15px !important;
+    }
+  }
 `;
 
 export const ResultCardPopup = styled.div`
@@ -369,14 +583,26 @@ export const ResultCardPopup = styled.div`
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
   overflow: hidden;
   margin-bottom: 20px;
+
+  @media screen and (max-width: 600px) {
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
 `;
 
 export const ResultTopPopup = styled.div`
   display: flex;
   gap: 24px;
-  padding: 28px;
+  padding: 24px;
   align-items: flex-start;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 600px) {
+    padding: 16px 14px;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const ResultPhotoPopup = styled.div`
@@ -390,69 +616,129 @@ export const ResultPhotoPopup = styled.div`
   color: var(--ec-text);
   font-size: 32px;
   flex-shrink: 0;
+  overflow: hidden;
+
+  @media screen and (max-width: 600px) {
+    width: 68px;
+    height: 68px;
+    font-size: 26px;
+    margin: 0 auto;
+  }
 `;
 
 export const ResultGridPopup = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(180px, 1fr));
-  gap: 20px 32px;
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  gap: 16px 24px;
   width: 100%;
+  flex: 1;
+  min-width: 0;
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 14px;
+  }
+
+  @media screen and (max-width: 440px) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
 `;
 
 export const ResultFieldPopup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  min-width: 0;
+  word-break: break-word;
 `;
 
 export const ResultLabelPopup = styled.span`
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--ec-text-faint);
+  line-height: 1.3;
 `;
 
 export const ResultValuePopup = styled.span`
   font-family: "Poppins", sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--ec-text);
+  line-height: 1.35;
+  word-break: break-word;
+
+  @media screen and (max-width: 600px) {
+    font-size: 14px;
+  }
 `;
 
 export const VerifiedBadgePopup = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 6px 10px;
   border-radius: 999px;
   background: var(--ec-primary-bg);
   color: var(--ec-primary);
   font-family: "Nunito", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
+  width: fit-content;
+
+  @media screen and (max-width: 600px) {
+    font-size: 11px;
+    padding: 4px 8px;
+    gap: 4px;
+  }
 `;
 
 export const ResultFooterPopup = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 16px;
-  padding: 20px 28px 24px;
+  gap: 12px;
+  padding: 16px 24px;
   border-top: 1px solid var(--ec-border-light);
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   color: var(--ec-text-muted);
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 600px) {
+    padding: 10px 14px;
+    font-size: 11.5px;
+    flex-direction: column;
+    gap: 4px;
+  }
 `;
 
 export const ResultDisclaimerPopup = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  margin-bottom: 18px;
-  padding: 16px 24px;
-  border-radius: 14px;
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
   background: var(--ec-bg-secondary);
   color: #3b82f6;
   font-family: "Nunito", sans-serif;
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.45;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 15px;
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: 10px 12px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    gap: 8px;
+  }
 `;
 
 /* ─── Search Form ─── */
@@ -959,6 +1245,18 @@ export const SampleTitle = styled.h3`
   margin: 0;
 `;
 
+export const SampleBadge = styled.span`
+  background: #fff7e6;
+  color: #a15c00;
+  border: 1px solid #ffe0a3;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+`;
+
 export const SampleViewLink = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
@@ -976,95 +1274,6 @@ export const SampleSub = styled.p`
   font-size: 15px;
   color: var(--ec-text-muted);
   margin: 0 0 16px;
-`;
-
-export const SampleResultCard = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: var(--ec-bg-secondary);
-  border: 1px solid var(--ec-border);
-  border-radius: 10px;
-  padding: 16px 20px;
-
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
-export const SampleAvatar = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--ec-primary-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  svg {
-    font-size: 22px;
-    color: var(--ec-primary);
-  }
-`;
-
-export const SampleInfo = styled.div`
-  flex: 1;
-`;
-
-export const SampleName = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--ec-heading);
-`;
-
-export const SampleId = styled.span`
-  font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  color: var(--ec-text-secondary);
-`;
-
-export const VerifiedBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--ec-primary-bg);
-  color: var(--ec-primary);
-  font-family: "Nunito", sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 12px;
-
-  svg {
-    font-size: 10px;
-  }
-`;
-
-export const SampleTags = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-`;
-
-export const SampleTag = styled.span`
-  font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  color: var(--ec-text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
-  svg {
-    color: var(--ec-primary);
-    font-size: 10px;
-  }
 `;
 
 /* ─── Trust Bar ─── */
@@ -1197,9 +1406,6 @@ export const IdTypeDisplay = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: var(--ec-text);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
 
   svg {
     color: var(--ec-primary);

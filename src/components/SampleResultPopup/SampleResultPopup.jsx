@@ -2,18 +2,16 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
   FaBuilding,
-  FaCar,
   FaCheckCircle,
   FaInfoCircle,
   FaTimes,
-  FaUserCircle,
 } from "react-icons/fa";
-import defaultDp from "../../images/defaultDp.png";
-import ninSampleAvatar from "../../images/BW7A9844.png";
+import ninSampleAvatar from "../../images/dp.jpeg";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
+import vehicleSampleAvatar from "../../images/cieana.jpeg";
 
-const sampleData = {
+export const sampleData = {
   nin: {
     subtitle: "See an example of a NIN verification result.",
     image: ninSampleAvatar,
@@ -62,7 +60,7 @@ const sampleData = {
     subtitle: "See an example of a company verification result.",
     icon: FaBuilding,
     fields: [
-      ["Company Name", "BIOSEC SOLUTIONS LIMITED"],
+      ["Company Name", "Coca Cola Nigeria"],
       ["RC Number", "RC 456823"],
       ["CAC ID", "2198456"],
       ["Verification Status", "VERIFIED", "verified"],
@@ -95,7 +93,7 @@ const sampleData = {
       ["Customer Name", "CHIJIOKE OLUWASEUN ADEBAYO"],
       ["BVN", "2234 5678 9**"],
       ["Gender", "Male"],
-      ["Phone Number", "0802 *** 7654"],
+      ["Phone Number", "0802 345 7654"],
       ["Address", "45 Awolowo Road, Ikoyi, Lagos"],
       ["Report Date", "14 Mar 2025"],
       ["Credit Score", "718"],
@@ -108,11 +106,12 @@ const sampleData = {
   },
   vehicle: {
     subtitle: "See an example of a vehicle verification report.",
-    icon: FaCar,
+    image: vehicleSampleAvatar,
+    landscape: true,
     fields: [
       ["Plate Number", "ABC-123XY"],
-      ["VIN", "******5678"],
-      ["Make / Model", "Toyota Corolla"],
+      ["VIN", "89447585678"],
+      ["Make / Model", "Toyota Sienna"],
       ["Year", "2018"],
       ["Ownership Status", "VERIFIED", "verified"],
       ["Accident History", "No major records found"],
@@ -121,9 +120,75 @@ const sampleData = {
   },
 };
 
-const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
+export const SampleResultContent = ({ type = "nin" }) => {
   const sample = sampleData[type] || sampleData.nin;
   const Icon = sample.icon;
+
+  const fields = sample.fields.map(([label, value, status]) => (
+    <ResultField key={label}>
+      <ResultLabel>{label}</ResultLabel>
+      {status === "verified" ? (
+        <VerifiedValue>
+          {value} <FaCheckCircle />
+        </VerifiedValue>
+      ) : (
+        <ResultValue>{value}</ResultValue>
+      )}
+    </ResultField>
+  ));
+
+  return (
+    <>
+      <ResultCard>
+        {sample.landscape ? (
+          <ResultGrid>
+            <Photo>
+              <img src={sample.image} alt="Sample vehicle" />
+            </Photo>
+            {fields}
+          </ResultGrid>
+        ) : (
+          <Top>
+            <Avatar>
+              {sample.image ? (
+                <img src={sample.image} alt="Sample person" />
+              ) : (
+                Icon && <Icon />
+              )}
+            </Avatar>
+            <ResultGrid>{fields}</ResultGrid>
+          </Top>
+        )}
+        {sample.stakeholders && (
+          <StakeholderSection>
+            <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
+            <StakeholderTable>
+              <StakeholderRow $header>
+                <StakeholderCell $header>Name</StakeholderCell>
+                <StakeholderCell $header>Role</StakeholderCell>
+                <StakeholderCell $header>Nationality</StakeholderCell>
+              </StakeholderRow>
+              {sample.stakeholders.map((s, i) => (
+                <StakeholderRow key={i}>
+                  <StakeholderCell>{s.name}</StakeholderCell>
+                  <StakeholderCell>{s.role}</StakeholderCell>
+                  <StakeholderCell>{s.nationality}</StakeholderCell>
+                </StakeholderRow>
+              ))}
+            </StakeholderTable>
+          </StakeholderSection>
+        )}
+      </ResultCard>
+      <Disclaimer>
+        <FaInfoCircle />
+        Results are based on data available at the time of verification.
+      </Disclaimer>
+    </>
+  );
+};
+
+const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
+  const sample = sampleData[type] || sampleData.nin;
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -166,55 +231,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
           </CloseButton>
         </Header>
 
-        <ResultCard>
-          <Top>
-            <Avatar>
-              {sample.image ? (
-                <img src={sample.image} alt="Sample person" />
-              ) : (
-                Icon && <Icon />
-              )}
-            </Avatar>
-            <ResultGrid>
-              {sample.fields.map(([label, value, status]) => (
-                <ResultField key={label}>
-                  <ResultLabel>{label}</ResultLabel>
-                  {status === "verified" ? (
-                    <VerifiedValue>
-                      {value} <FaCheckCircle />
-                    </VerifiedValue>
-                  ) : (
-                    <ResultValue>{value}</ResultValue>
-                  )}
-                </ResultField>
-              ))}
-            </ResultGrid>
-          </Top>
-          {sample.stakeholders && (
-            <StakeholderSection>
-              <StakeholderSectionTitle>Stakeholders</StakeholderSectionTitle>
-              <StakeholderTable>
-                <StakeholderRow $header>
-                  <StakeholderCell $header>Name</StakeholderCell>
-                  <StakeholderCell $header>Role</StakeholderCell>
-                  <StakeholderCell $header>Nationality</StakeholderCell>
-                </StakeholderRow>
-                {sample.stakeholders.map((s, i) => (
-                  <StakeholderRow key={i}>
-                    <StakeholderCell>{s.name}</StakeholderCell>
-                    <StakeholderCell>{s.role}</StakeholderCell>
-                    <StakeholderCell>{s.nationality}</StakeholderCell>
-                  </StakeholderRow>
-                ))}
-              </StakeholderTable>
-            </StakeholderSection>
-          )}
-        </ResultCard>
-
-        <Disclaimer>
-          <FaInfoCircle />
-          Results are based on data available at the time of verification.
-        </Disclaimer>
+        <SampleResultContent type={type} />
       </Dialog>
     </Overlay>
   );
@@ -314,6 +331,24 @@ const Top = styled.div`
   @media screen and (max-width: 560px) {
     flex-direction: column;
     align-items: center;
+  }
+`;
+
+const Photo = styled.div`
+  width: 160px;
+  height: 60px;
+  justify-self: center;
+  align-self: center;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ec-border);
+  background: var(--ec-primary-bg);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 `;
 

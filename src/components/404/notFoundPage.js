@@ -3,14 +3,18 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Result, Button } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
-import CustomNotFoundImage from "../../images/lady.svg"; // Import your custom image
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const NotFoundPage = () => {
   const history = useHistory();
 
-  const handleGoHome = () => {
-    history.push("/dashboard");
+  const handleGoBack = () => {
+    if (window.history.length > 1) {
+      history.goBack();
+      return;
+    }
+
+    history.push("/");
   };
 
   return (
@@ -24,11 +28,15 @@ const NotFoundPage = () => {
     >
       <Result
         status="404"
-        title="Result not found"
-        subTitle="Please check your input value and try again."
+        title="Page not found"
+        subTitle="The page you are looking for does not exist or may have moved."
         extra={
-          <Button type="primary" onClick={handleGoHome}>
-            Back to Verifications
+          <Button
+            type="primary"
+            icon={<ArrowLeftOutlined />}
+            onClick={handleGoBack}
+          >
+            Go back
           </Button>
         }
       />

@@ -57,8 +57,9 @@ import {
 } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import privacyPolicy from "../../privacyPolicy";
-import termsOfService from "../../termsOfService";
+import PdfModal from "../../components/PdfModal/PdfModal";
+import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
+import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 import Swal from "sweetalert2";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
@@ -695,7 +696,7 @@ const DashboardPage = () => {
           }
         });
 
-        history.push("/dashboard");
+        history.push("/main-dashboard");
       } else if (response.business && response.business.success === true) {
         Swal.fire({
           background: bgContainer,
@@ -1328,15 +1329,15 @@ const DashboardPage = () => {
       currencyCheck.toUpperCase() === "NGN"
       ? totalServiceCost
       : currencyCheck.toUpperCase() === "USD" &&
-        userCurrency.toUpperCase() === "NGN"
-      ? totalveriNiara
-      : currencyCheck.toUpperCase() === "USD" &&
-        userCurrency.toUpperCase() === "USD"
-      ? totalServiceCost
-      : userCurrency.toUpperCase() === "NGN" &&
-        currencyCheck.toUpperCase() !== "NGN"
-      ? outsideNgWithNiaraPrice
-      : totalServiceCost;
+          userCurrency.toUpperCase() === "NGN"
+        ? totalveriNiara
+        : currencyCheck.toUpperCase() === "USD" &&
+            userCurrency.toUpperCase() === "USD"
+          ? totalServiceCost
+          : userCurrency.toUpperCase() === "NGN" &&
+              currencyCheck.toUpperCase() !== "NGN"
+            ? outsideNgWithNiaraPrice
+            : totalServiceCost;
   };
 
   const logPurchase = () => {
@@ -1551,7 +1552,7 @@ const DashboardPage = () => {
               bvn: financialUsdFee,
               face: faceUsdFee,
             };
-            
+
             const isUSD = currencyCheck.toUpperCase() === "USD";
             const fees = isUSD ? formDataUsdFees : formDataFees;
 
@@ -1796,95 +1797,121 @@ const DashboardPage = () => {
         //!!PAYPAL PAYMENT START
         localStorage.setItem("paymentType", "INSTANT");
 
-  const handleMakePayment = async () => {
-    if (!checkboxCheckedConfirm) {
-      return (
-        <Alert message="Kindly select a payment method" type="info" showIcon />
-      );
-    }
-    setIsConfirmedBtnClicked(false);
-    setMakingPayment(true);
-        if (bvnFilled) {
-          if (areNoneChecked()) {
-            setLoading(false);
-            setIsConfirmedBtnClicked(false);
-            setLoadingSmall(false);
-            setMakingPayment(false);
-            Swal.fire({
-              background: bgContainer,
-              color: text,
-              title: "Error",
-              text: "At least one Credit Bereau must be selected",
-              icon: "error",
-              customClass: {
-                confirmButton: "custom-swal-button",
-              },
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            });
-            return;
+        const handleMakePayment = async () => {
+          if (!checkboxCheckedConfirm) {
+            return (
+              <Alert
+                message="Kindly select a payment method"
+                type="info"
+                showIcon
+              />
+            );
           }
-        }
-        handleCancel();
-        //!! Do verification initiate here
-        const initiateResponse = await dispatch(
-          initiateVerificationRequest(formData, userToken),
-        );
-        setIsConfirmedBtnClicked(false);
-        setLoadingSmall(false);
-        if (initiateResponse?.sessionStatus == "INITIATED") {
-          localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+          setIsConfirmedBtnClicked(false);
+          setMakingPayment(true);
+          if (bvnFilled) {
+            if (areNoneChecked()) {
+              setLoading(false);
+              setIsConfirmedBtnClicked(false);
+              setLoadingSmall(false);
+              setMakingPayment(false);
+              Swal.fire({
+                background: bgContainer,
+                color: text,
+                title: "Error",
+                text: "At least one Credit Bereau must be selected",
+                icon: "error",
+                customClass: {
+                  confirmButton: "custom-swal-button",
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+              return;
+            }
+          }
+          handleCancel();
+          //!! Do verification initiate here
+          const initiateResponse = await dispatch(
+            initiateVerificationRequest(formData, userToken),
+          );
           setIsConfirmedBtnClicked(false);
           setLoadingSmall(false);
-        }
-        try {
-          const postData = {
-            tx_ref: randomTransactionId,
-            amount:
-              currencyCheck.toUpperCase() === "USD"
-                ? outsideNgWithNiara === true
-                  ? `${outsideNgWithNiaraPrice}`
-                  : `${totalServiceCost}`
-                : `${totalServiceCost}`,
-            currency: paystackCurrency,
-            email: userEmail,
-            type: "VERIFICATION",
-            stakeHolders: "NON-STAKEHOLDER",
-            sessionCode: localStorage.getItem("sessionCode"),
-            return_url: window.location.origin + "/payment/success",
-            cancel_url: window.location.origin + "/payment/failure",
-          };
-          const response = await fetch(`${baseUrl}/payment/paypal/create`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userToken}`,
-            },
-            body: JSON.stringify(await withAnalyticsMetadata(postData)),
-          });
+          if (initiateResponse?.sessionStatus == "INITIATED") {
+            localStorage.setItem("sessionCode", initiateResponse?.sessionCode);
+            setIsConfirmedBtnClicked(false);
+            setLoadingSmall(false);
+          }
+          try {
+            const postData = {
+              tx_ref: randomTransactionId,
+              amount:
+                currencyCheck.toUpperCase() === "USD"
+                  ? outsideNgWithNiara === true
+                    ? `${outsideNgWithNiaraPrice}`
+                    : `${totalServiceCost}`
+                  : `${totalServiceCost}`,
+              currency: paystackCurrency,
+              email: userEmail,
+              type: "VERIFICATION",
+              stakeHolders: "NON-STAKEHOLDER",
+              sessionCode: localStorage.getItem("sessionCode"),
+              return_url: window.location.origin + "/payment/success",
+              cancel_url: window.location.origin + "/payment/failure",
+            };
+            const response = await fetch(`${baseUrl}/payment/paypal/create`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+              },
+              body: JSON.stringify(await withAnalyticsMetadata(postData)),
+            });
 
-          // Check if the request was successful (status code 200-299)
-          if (response.ok) {
-            const responseData = await response.json();
-            console.log("Response Data:", responseData);
+            // Check if the request was successful (status code 200-299)
+            if (response.ok) {
+              const responseData = await response.json();
+              console.log("Response Data:", responseData);
 
-            if (responseData.status === "success") {
-              if (responseData.approval_url) {
-                // Store transaction details before redirecting
-                localStorage.setItem("transactionID", responseData.tx_ref);
-                localStorage.setItem("paymentType", "CARD");
+              if (responseData.status === "success") {
+                if (responseData.approval_url) {
+                  // Store transaction details before redirecting
+                  localStorage.setItem("transactionID", responseData.tx_ref);
+                  localStorage.setItem("paymentType", "CARD");
 
-                //!------------- Redirect to PayPal approval URL --------------//
-                window.location.href = responseData.approval_url;
+                  //!------------- Redirect to PayPal approval URL --------------//
+                  window.location.href = responseData.approval_url;
 
-                //!------------- Redirect to PayPal approval URL End --------------//
+                  //!------------- Redirect to PayPal approval URL End --------------//
+                } else {
+                  console.error("Response data does not contain a link");
+                  Swal.fire({
+                    background: bgContainer,
+                    color: text,
+                    title: "Error",
+                    text: "Response data does not contain a link",
+                    icon: "error",
+                    customClass: {
+                      confirmButton: "custom-swal-button",
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0DC939",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.reload();
+                    }
+                  });
+                  return;
+                }
               } else {
-                console.error("Response data does not contain a link");
                 Swal.fire({
                   background: bgContainer,
                   color: text,
                   title: "Error",
-                  text: "Response data does not contain a link",
+                  text: "Failed to initialize PayPal payment",
                   icon: "error",
                   customClass: {
                     confirmButton: "custom-swal-button",
@@ -1902,6 +1929,7 @@ const DashboardPage = () => {
                 return;
               }
             } else {
+              // Handle errors here
               Swal.fire({
                 background: bgContainer,
                 color: text,
@@ -1923,8 +1951,8 @@ const DashboardPage = () => {
               });
               return;
             }
-          } else {
-            // Handle errors here
+          } catch (error) {
+            console.error("An error occurred:", error);
             Swal.fire({
               background: bgContainer,
               color: text,
@@ -1946,34 +1974,11 @@ const DashboardPage = () => {
             });
             return;
           }
-        } catch (error) {
-          console.error("An error occurred:", error);
-          Swal.fire({
-            background: bgContainer,
-            color: text,
-            title: "Error",
-            text: "Failed to initialize PayPal payment",
-            icon: "error",
-            customClass: {
-              confirmButton: "custom-swal-button",
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            showConfirmButton: true,
-            confirmButtonText: "OK",
-            confirmButtonColor: "#0DC939",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-          return;
-        }
-        setIsConfirmedBtnClicked(false);
-        handleCancel();
-      }
-      //!!PAYPAL PAYMENT ENDS
-      }else if (paymentMethod === 4) {
+          setIsConfirmedBtnClicked(false);
+          handleCancel();
+        };
+        //!!PAYPAL PAYMENT ENDS
+      } else if (paymentMethod === 4) {
         //!!PAYSTACK PAYMENT START
         localStorage.setItem("paymentType", "CARD");
 
@@ -2731,7 +2736,6 @@ const DashboardPage = () => {
     // Trigger the file input click event
     fileInputRef.current.click();
   };
-
   const handleButtonClickFinger = () => {
     // Trigger the file input click event
     fileInputRef.current.click();
@@ -3513,7 +3517,6 @@ const DashboardPage = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -3535,13 +3538,10 @@ const DashboardPage = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handleModalNewOk();
           }
-        } else {
-          handled = true;
-          handleModalNewOk();
         }
       } catch (e) {
         // Network error – keep polling
@@ -3557,7 +3557,6 @@ const DashboardPage = () => {
       "successful",
       "success",
       "failed",
-      "abandoned",
       "cancelled",
       "error",
       "reversed",
@@ -3579,13 +3578,10 @@ const DashboardPage = () => {
         if (response.ok) {
           const data = await response.json();
           const status = (data?.data?.status || "").toLowerCase();
-          if (TERMINAL.includes(status) || data?.status === "success") {
+          if (TERMINAL.includes(status)) {
             handled = true;
             handlePaystackModalClose();
           }
-        } else {
-          handled = true;
-          handlePaystackModalClose();
         }
       } catch (e) {
         // Network error – keep polling
@@ -5831,32 +5827,20 @@ const DashboardPage = () => {
                           Terms of Service
                         </span>
                       </Checkbox>
-                      <Modal
+                      <PdfModal
+                        open={isOpen}
+                        onClose={() => setIsOpen(false)}
                         title="Privacy Policy"
-                        visible={isOpen}
-                        centered
-                        // open={open}
-                        onOk={() => setIsOpen(false)}
-                        onCancel={() => setIsOpen(false)}
-                        width={1000}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: privacyPolicy }}
-                        />
-                      </Modal>
-                      <Modal
+                        src={privacyPdf}
+                        height={560}
+                      />
+                      <PdfModal
+                        open={isOpen2}
+                        onClose={() => setIsOpen2(false)}
                         title="Terms of Service"
-                        visible={isOpen2}
-                        centered
-                        // open={open}
-                        onOk={() => setIsOpen2(false)}
-                        onCancel={() => setIsOpen2(false)}
-                        width={1000}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{ __html: termsOfService }}
-                        />
-                      </Modal>
+                        src={termsPdf}
+                        height={560}
+                      />
                     </strong>
 
                     {loading ? (

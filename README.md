@@ -13,6 +13,18 @@ e-Citizen allows you to see and verify it. eCitizen is a secure way to verify yo
 * React Router
 * React Hooks
 
+# Mobile App
+
+A React Native Expo implementation for eCitizen Kenya lives at `../mobile/`.
+
+```sh
+cd ../mobile
+npm install
+npm start
+```
+
+It reuses the web app's service model and staging API endpoints for authentication, Kenya service pricing, verification initiation, verification history, payment history, and profile data.
+
 # Screenshot
 <img src="./ECitizen.png" alt="the screenshot of the app large screen"/>
 

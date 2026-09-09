@@ -71,7 +71,13 @@ const HeroSection = ({
                   </span>{" "}
                   for identity verification
                 </Heading>
-                <Link to={isAuthenticated ? "/dashboard" : "/login"}>
+                <Link
+                  to={
+                    isAuthenticated
+                      ? "/main-dashboard"
+                      : "/#verification-services"
+                  }
+                >
                   <MainButton
                     big
                     fontBig

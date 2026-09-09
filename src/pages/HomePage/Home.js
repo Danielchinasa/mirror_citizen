@@ -3,7 +3,7 @@ import NewsletterSection from "../../components/newsletter/newsLetterSection";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signIn, fetchUserProfile, logout } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { theme } from "antd";
@@ -26,11 +26,12 @@ import {
   FaFileAlt,
 } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
-import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
+import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 import heroImg from "../../images/Hero_image_new.png";
-import ndprImg from "../../images/ndpr.png";
-import nimcImg from "../../images/nidologo.png";
-import osiaImg from "../../images/osia.png";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
 import avatar3 from "../../images/avatar3.jpg";
@@ -79,13 +80,6 @@ import {
   ServiceBtn,
   LearnMoreLink,
   ViewAllLink,
-  ComplianceSection,
-  ComplianceInner,
-  ComplianceText,
-  ComplianceTitle,
-  ComplianceDesc,
-  ComplianceLogos,
-  ComplianceBadge,
   CtaSection,
   CtaInner,
   CtaShield,
@@ -251,70 +245,71 @@ const Home = () => {
     // and falling back to a redirect if that specific popup fails.
   });
 
-  useEffect(() => {
-    const loadGoogleOneTap = () => {
-      if (window.google && window.google.accounts?.id) {
-        window.google.accounts.id.disableAutoSelect(); // ⛔ reset for dev
+  // TEMPORARILY DISABLED: Google One Tap auto sign-in
+  // useEffect(() => {
+  //   const loadGoogleOneTap = () => {
+  //     if (window.google && window.google.accounts?.id) {
+  //       window.google.accounts.id.disableAutoSelect(); // ⛔ reset for dev
 
-        window.google.accounts.id.initialize({
-          client_id:
-            "642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com",
-          callback: (credentialResponse) => {
-            login();
-          },
-          auto_select: true,
-          cancel_on_tap_outside: false,
-        });
+  //       window.google.accounts.id.initialize({
+  //         client_id:
+  //           "642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com",
+  //         callback: (credentialResponse) => {
+  //           login();
+  //         },
+  //         auto_select: true,
+  //         cancel_on_tap_outside: false,
+  //       });
 
-        window.google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed()) {
-            console.warn(
-              "⚠️ One Tap not displayed:",
-              notification.getNotDisplayedReason(),
-            );
-            // Check specifically if the reason is 'popup_blocked'
-            if (notification.getNotDisplayedReason() === "popup_blocked") {
-              console.log(
-                "Popup blocked. Initiating redirect for Google login.",
-              );
-              // Trigger Google login via redirect flow
-              // This is the key change: manually construct the redirect URL
-              const redirectUri = window.location.origin; // Or a specific redirect URL configured in your Google Cloud Console
-              const authUrl =
-                `https://accounts.google.com/o/oauth2/v2/auth?` +
-                `client_id=${"642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com"}&` +
-                `response_type=code&` + // Request an authorization code
-                `scope=openid%20profile%20email&` + // Required scopes
-                `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-                `access_type=offline&` + // If you need a refresh token
-                `prompt=consent%20select_account`; // Force user to select account and consent
+  //       window.google.accounts.id.prompt((notification) => {
+  //         if (notification.isNotDisplayed()) {
+  //           console.warn(
+  //             "⚠️ One Tap not displayed:",
+  //             notification.getNotDisplayedReason(),
+  //           );
+  //           // Check specifically if the reason is 'popup_blocked'
+  //           if (notification.getNotDisplayedReason() === "popup_blocked") {
+  //             console.log(
+  //               "Popup blocked. Initiating redirect for Google login.",
+  //             );
+  //             // Trigger Google login via redirect flow
+  //             // This is the key change: manually construct the redirect URL
+  //             const redirectUri = window.location.origin; // Or a specific redirect URL configured in your Google Cloud Console
+  //             const authUrl =
+  //               `https://accounts.google.com/o/oauth2/v2/auth?` +
+  //               `client_id=${"642042384169-d0uquoka9qll83ucfm8ck7esdvptknls.apps.googleusercontent.com"}&` +
+  //               `response_type=code&` + // Request an authorization code
+  //               `scope=openid%20profile%20email&` + // Required scopes
+  //               `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+  //               `access_type=offline&` + // If you need a refresh token
+  //               `prompt=consent%20select_account`; // Force user to select account and consent
 
-              window.location.href = authUrl; // Redirect the user
-            }
-          }
-          if (notification.isSkippedMoment()) {
-            console.warn(
-              "⚠️ One Tap skipped:",
-              notification.getSkippedReason(),
-            );
-          }
-          if (notification.isDismissedMoment()) {
-            console.warn(
-              "⚠️ One Tap dismissed:",
-              notification.getDismissedReason(),
-            );
-          }
-        });
-      }
-    };
+  //             window.location.href = authUrl; // Redirect the user
+  //           }
+  //         }
+  //         if (notification.isSkippedMoment()) {
+  //           console.warn(
+  //             "⚠️ One Tap skipped:",
+  //             notification.getSkippedReason(),
+  //           );
+  //         }
+  //         if (notification.isDismissedMoment()) {
+  //           console.warn(
+  //             "⚠️ One Tap dismissed:",
+  //             notification.getDismissedReason(),
+  //           );
+  //         }
+  //       });
+  //     }
+  //   };
 
-    const interval = setInterval(() => {
-      if (window.google && window.google.accounts?.id) {
-        loadGoogleOneTap();
-        clearInterval(interval);
-      }
-    }, 100);
-  }, []);
+  //   const interval = setInterval(() => {
+  //     if (window.google && window.google.accounts?.id) {
+  //       loadGoogleOneTap();
+  //       clearInterval(interval);
+  //     }
+  //   }, 100);
+  // }, []);
 
   // If you decide to handle the ID token from One Tap directly (Recommended for One Tap)
   // const handleOneTapCredential = async (idToken) => {
@@ -333,8 +328,13 @@ const Home = () => {
   //   }
   // };
 
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const ctaLink = isAuthenticated ? "/dashboard" : "/login";
+  const ctaLink = "#verification-services";
+
+  const handleCtaClick = (e) => {
+    e.preventDefault();
+    const el = document.getElementById("verification-services");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
@@ -345,7 +345,7 @@ const Home = () => {
           <HeroContent>
             <HeroTag>FAST. SECURE. TRUSTED.</HeroTag>
             <HeroTitle>
-              Choose the verification you need.{" "}
+              Choose the verification you need. Get trusted results{" "}
               <span
                 style={{
                   color: "#09c93a",
@@ -354,7 +354,7 @@ const Home = () => {
                   fontWeight: "inherit",
                 }}
               >
-                Get trusted results in seconds.
+                in seconds.
               </span>
             </HeroTitle>
             <HeroSubtitle>
@@ -392,7 +392,7 @@ const Home = () => {
                 </TrustIcon>
                 <TrustLabel>
                   <TrustTitle>Fast Results</TrustTitle>
-                  <TrustDesc>Results in minutes</TrustDesc>
+                  <TrustDesc>Results in seconds</TrustDesc>
                 </TrustLabel>
               </TrustItem>
               <TrustItem>
@@ -444,9 +444,7 @@ const Home = () => {
               </StepIconBox>
             </StepTop>
             <StepName>Provide your information</StepName>
-            <StepDesc>
-              Fill in your details and upload required documents
-            </StepDesc>
+            <StepDesc>Fill in the details you want to verify</StepDesc>
           </StepCard>
           <StepArrow>
             <FaArrowRight />
@@ -460,7 +458,7 @@ const Home = () => {
             </StepTop>
             <StepName>Get trusted results</StepName>
             <StepDesc>
-              Make payment and receive your results in minutes
+              Make payment and receive your Results in seconds
             </StepDesc>
           </StepCard>
         </StepsRow>
@@ -489,7 +487,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[0]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[0].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -502,11 +500,55 @@ const Home = () => {
                 <FaCheckCircle /> Photo ID verification
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} onClick={() => handleProductSelected("nin")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={ninVerify}
+              onClick={() => handleProductSelected("nin")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
+              Learn more <FaArrowRight style={{ fontSize: 11 }} />
+            </LearnMoreLink>
+          </ServiceCard>
+
+          {/* Phone Number Verification */}
+          <ServiceCard>
+            <ServiceIcon>
+              <FaPhoneAlt />
+            </ServiceIcon>
+            <ServiceName>Phone Number Verification</ServiceName>
+            <ServiceDesc>
+              Verify phone number ownership and address details.
+            </ServiceDesc>
+            <ServicePrice>
+              {servicePrices?.data?.[9]?.serviceFee
+                ? `${priceCurrencySymbol}${Number(servicePrices.data[9].serviceFee).toLocaleString()}`
+                : "-"}
+            </ServicePrice>
+            <FeatureList>
+              <FeatureItem>
+                <FaCheckCircle /> Number ownership verification
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Address details
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Date of birth details
+              </FeatureItem>
+              <FeatureItem>
+                <FaCheckCircle /> Results in seconds
+              </FeatureItem>
+            </FeatureList>
+            <ServiceBtn
+              to={phoneVerify}
+              onClick={() => handleProductSelected("phone")}
+            >
+              Verify Now
+            </ServiceBtn>
+            <LearnMoreLink to="/phone-number-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
@@ -523,7 +565,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[2]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[2].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -536,10 +578,15 @@ const Home = () => {
                 <FaCheckCircle /> Owner verification
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={businessVerify} onClick={() => handleProductSelected("business")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={businessVerify}
+              onClick={() => handleProductSelected("business")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/business-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -557,7 +604,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[4]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[4].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}1,700`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -570,10 +617,15 @@ const Home = () => {
                 <FaCheckCircle /> Financial standing
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={bvnVerify} onClick={() => handleProductSelected("bvn")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={bvnVerify}
+              onClick={() => handleProductSelected("bvn")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/credit-profile">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -589,7 +641,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[5]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[5].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}2,500`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -602,45 +654,16 @@ const Home = () => {
                 <FaCheckCircle /> Theft records check
               </FeatureItem>
               <FeatureItem>
-                <FaCheckCircle /> Results in minutes
+                <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify} onClick={() => handleProductSelected("vehicle")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={vehicleVerify}
+              onClick={() => handleProductSelected("vehicle")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
-              Learn more <FaArrowRight style={{ fontSize: 11 }} />
-            </LearnMoreLink>
-          </ServiceCard>
-
-          {/* Phone Number Verification */}
-          <ServiceCard>
-            <ServiceIcon>
-              <FaPhoneAlt />
-            </ServiceIcon>
-            <ServiceName>Phone Number Verification</ServiceName>
-            <ServiceDesc>
-              Verify phone number ownership and network details.
-            </ServiceDesc>
-            <ServicePrice>
-              {servicePrices?.data?.[9]?.serviceFee
-                ? `${priceCurrencySymbol}${Number(servicePrices.data[9].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
-            </ServicePrice>
-            <FeatureList>
-              <FeatureItem>
-                <FaCheckCircle /> Number ownership verification
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Network provider details
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Phone status check
-              </FeatureItem>
-              <FeatureItem>
-                <FaCheckCircle /> Results in minutes
-              </FeatureItem>
-            </FeatureList>
-            <ServiceBtn to={phoneVerify} onClick={() => handleProductSelected("phone")}>Verify Now</ServiceBtn>
-            <LearnMoreLink to="/phone-number-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
@@ -648,27 +671,7 @@ const Home = () => {
       </ServicesSection>
 
       {/* ── Compliance ── */}
-      <ComplianceSection>
-        <ComplianceInner>
-          <ComplianceText>
-            <ComplianceTitle>
-              Trusted. Compliant. Built for you.
-            </ComplianceTitle>
-            <ComplianceDesc>Your data is safe with us.</ComplianceDesc>
-          </ComplianceText>
-          <ComplianceLogos>
-            <ComplianceBadge>
-              <img src={ndprImg} alt="NDPC" />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={nimcImg} alt="NCMC" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-            <ComplianceBadge>
-              <img src={osiaImg} alt="OSIA" style={{ maxHeight: 48 }} />
-            </ComplianceBadge>
-          </ComplianceLogos>
-        </ComplianceInner>
-      </ComplianceSection>
+      <ComplianceSection />
 
       {/* ── CTA ── */}
       <CtaSection>
@@ -683,7 +686,9 @@ const Home = () => {
               verification needs.
             </CtaDesc>
           </CtaContent>
-          <CtaButton to={ctaLink}>Get Started Now</CtaButton>
+          <CtaButton to={ctaLink} onClick={handleCtaClick}>
+            Get Started Now
+          </CtaButton>
         </CtaInner>
       </CtaSection>
 

@@ -37,6 +37,11 @@ import PdfModal from "../../components/PdfModal/PdfModal";
 import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
 import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 import {
+  RECORD_NOT_FOUND_MESSAGE,
+  RECORD_NOT_FOUND_TITLE,
+  isRecordNotFoundDetail,
+} from "../../constants/verificationMessages";
+import {
   trackBeginCheckout,
   trackFormSubmit,
   trackPaymentFailed,
@@ -106,14 +111,7 @@ import {
   SampleHeader,
   SampleTitle,
   SampleSub,
-  SampleResultCard,
-  SampleAvatar,
-  SampleInfo,
-  SampleName,
-  SampleId,
-  VerifiedBadge,
-  SampleTags,
-  SampleTag,
+  SampleBadge,
   TrustBar,
   TrustBarInner,
   TrustItem,
@@ -134,6 +132,13 @@ import {
   PopupSubtitle,
   PopupCloseButton,
   PopupBody,
+  PopupCountBanner,
+  PopupBusinessList,
+  PopupBusinessItem,
+  PopupBusinessIcon,
+  PopupBusinessInfo,
+  PopupBusinessName,
+  PopupBusinessMeta,
   PopupRow,
   PopupField,
   PopupFieldLabel,
@@ -153,6 +158,16 @@ import {
 } from "./VerifyPage.elements";
 
 // Steps are now dynamic — defined inside the component based on config.requiresConsent
+
+// Maps each verify page type to the matching landing-page sample result type
+const SAMPLE_POPUP_TYPE_MAP = {
+  nin: "nin",
+  phone: "phone",
+  business: "business",
+  "business-name": "business",
+  bvn: "financial",
+  vehicle: "vehicle",
+};
 
 const PAYMENT_METHODS = [
   {
@@ -190,6 +205,8 @@ const VerifyPage = () => {
   const dispatch = useDispatch();
 
   const config = verificationConfig[type];
+  const sampleType = SAMPLE_POPUP_TYPE_MAP[type] || "nin";
+  const sampleMeta = sampleData[sampleType] || sampleData.nin;
   const user = useSelector((state) => state.user);
   const userToken = user?.jwtToken || "";
   const userDetails = useSelector((state) => state.userDetails);
@@ -202,6 +219,7 @@ const VerifyPage = () => {
   const [pricingData, setPricingData] = useState(null);
   const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
+  const [priceError, setPriceError] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
   const [paystackModalOpen, setPaystackModalOpen] = useState(false);
@@ -212,6 +230,9 @@ const VerifyPage = () => {
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsPopup, setShowTermsPopup] = useState(false);
+  const [showPrivacyPopup, setShowPrivacyPopup] = useState(false);
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
@@ -223,7 +244,12 @@ const VerifyPage = () => {
   });
 
   // Dynamic steps based on whether this verification type requires consent
-  const requiresConsent = config?.requiresConsent || false;
+  const isConsentVerification =
+    type === "nin" ||
+    type === "phone" ||
+    type === "bvn" ||
+    Boolean(config?.requiresConsent);
+  const requiresConsent = isConsentVerification;
   const STEPS = requiresConsent
     ? ["Search", "Payment", "Processing", "Consent", "Result"]
     : ["Search", "Payment", "Processing", "Result"];
@@ -233,7 +259,7 @@ const VerifyPage = () => {
   // Redirect if invalid type
   useEffect(() => {
     if (!config) {
-      history.replace("/dashboard");
+      history.replace("/main-dashboard");
     }
   }, [config, history]);
 
@@ -241,15 +267,7 @@ const VerifyPage = () => {
   useEffect(() => {
     if (!paystackModalOpen || !paystackReference) return;
 
-    const terminalStatuses = [
-      "successful",
-      "success",
-      "failed",
-      "abandoned",
-      "cancelled",
-      "error",
-      "reversed",
-    ];
+    let isHandled = false;
 
     const checkEndpoint =
       activeGateway === "flutterwave"
@@ -257,6 +275,7 @@ const VerifyPage = () => {
         : `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`;
 
     pollingRef.current = setInterval(async () => {
+      if (isHandled) return;
       try {
         const res = await fetch(checkEndpoint, {
           headers: {
@@ -266,14 +285,41 @@ const VerifyPage = () => {
         });
         if (res.ok) {
           const data = await res.json();
-          const status = (
-            data?.status ||
+          const paymentStatus = (
             data?.data?.status ||
+            data?.data?.paymentStatus ||
             ""
           ).toLowerCase();
-          if (terminalStatuses.includes(status)) {
-            handlePaystackModalClose();
+
+          if (paymentStatus === "successful" || paymentStatus === "success") {
+            isHandled = true;
+            if (pollingRef.current) clearInterval(pollingRef.current);
+            setPaystackModalOpen(false);
+            setPaymentUrl("");
+            setPaystackReference("");
+            setLoading(true);
+            setCurrentStep(2); // Processing
+            if (pendingApiFormRef.current) {
+              await handleCompleteVerification(pendingApiFormRef.current);
+            }
+          } else if (
+            ["failed", "cancelled", "error", "reversed"].includes(paymentStatus)
+          ) {
+            isHandled = true;
+            if (pollingRef.current) clearInterval(pollingRef.current);
+            setPaystackModalOpen(false);
+            setPaymentUrl("");
+            setPaystackReference("");
+            Swal.fire({
+              icon: "error",
+              title: "Payment Failed",
+              text:
+                data?.data?.processor_response ||
+                "Your payment could not be completed. Please try again.",
+              confirmButtonColor: "#09c93a",
+            });
           }
+          // Note: "abandoned", "pending", "ongoing" means the user is still in the checkout modal. Keep polling!
         }
       } catch {
         // Ignore polling errors
@@ -297,9 +343,19 @@ const VerifyPage = () => {
         );
         if (response?.consent === "granted") {
           setConsentPending(false);
-          setCurrentStep(RESULT_STEP);
           if (consentPollingRef.current)
             clearInterval(consentPollingRef.current);
+          Swal.fire({
+            icon: "success",
+            title: "Verification Successful",
+            text: "Consent has been granted and your verification is complete.",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#09c93a",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then(() => {
+            history.push("/main-dashboard");
+          });
         }
       } catch (err) {
         console.error("Consent check error:", err);
@@ -324,42 +380,50 @@ const VerifyPage = () => {
   }, []);
 
   // Fetch service prices
-  useEffect(() => {
+  const fetchPrices = useCallback(async () => {
     if (!config || !userToken) return;
 
-    const fetchPrices = async () => {
-      try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await apiPostInternalCall(
-          `/transaction/service-prices`,
-          { ipAddress },
-          userToken,
-        );
-        setLoadingPrice(false);
-        const serviceData = response.data.data[config.priceIndex];
-        setDetectedCurrency(response.data.data[0]?.currency || null);
-        setPricingData({
-          price: serviceData.price,
-          serviceFee: serviceData.serviceFee,
-          vat: serviceData.VAT,
-          priceUsd: serviceData.price2,
-          serviceFeeusd: serviceData.serviceFee2,
-          vatUsd: serviceData.VAT2,
-          processingFee: serviceData.processingFee || 0,
-          rate: response.data.rate,
-        });
-      } catch (err) {
-        setLoadingPrice(false);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#09c93a",
-        });
+    setLoadingPrice(true);
+    setPriceError(null);
+    try {
+      const ipAddress = localStorage.getItem("IpAddress");
+      const response = await apiPostInternalCall(
+        `/transaction/service-prices`,
+        { ipAddress },
+        userToken,
+      );
+      const serviceData = response?.data?.data?.[config.priceIndex];
+      if (!serviceData) {
+        throw new Error("Service price information is currently unavailable.");
       }
-    };
-    fetchPrices();
+      setDetectedCurrency(response?.data?.data?.[0]?.currency || null);
+      setPricingData({
+        price: serviceData.price,
+        serviceFee: serviceData.serviceFee,
+        vat: serviceData.VAT,
+        priceUsd: serviceData.price2,
+        serviceFeeusd: serviceData.serviceFee2,
+        vatUsd: serviceData.VAT2,
+        processingFee: serviceData.processingFee || 0,
+        rate: response.data.rate,
+      });
+      setLoadingPrice(false);
+    } catch (err) {
+      setLoadingPrice(false);
+      setPricingData(null);
+      setPriceError("Could not fetch service prices. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Could not fetch service prices. Please try again.",
+        confirmButtonColor: "#09c93a",
+      });
+    }
   }, [config, userToken]);
+
+  useEffect(() => {
+    fetchPrices();
+  }, [fetchPrices]);
 
   if (!config) return null;
 
@@ -457,6 +521,17 @@ const VerifyPage = () => {
     setError("");
   };
 
+  const handleSelectAllBureaus = () => {
+    if (!config.bureaus) return;
+    const allSelected = config.bureaus.every((b) => selectedBureaus[b.id]);
+    setSelectedBureaus(
+      allSelected
+        ? {}
+        : config.bureaus.reduce((acc, b) => ({ ...acc, [b.id]: true }), {}),
+    );
+    setError("");
+  };
+
   const isFormValid = () => {
     // Check all strictly required fields
     const requiredValid = config.fields
@@ -486,6 +561,22 @@ const VerifyPage = () => {
   /* ── Step navigation ── */
 
   const handleContinueToPayment = () => {
+    if (loadingPrice) {
+      setError("Please wait while verification pricing is being loaded.");
+      return;
+    }
+    if (priceError || !pricingData) {
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please check your connection and try again.",
+      );
+      Swal.fire({
+        icon: "warning",
+        title: "Pricing Unavailable",
+        text: "Could not retrieve service price. Please try again.",
+        confirmButtonColor: "#09c93a",
+      });
+      return;
+    }
     if (!isFormValid()) {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
@@ -505,6 +596,13 @@ const VerifyPage = () => {
   };
 
   const handleDisclaimerConfirm = () => {
+    if (priceError || !pricingData) {
+      setShowDisclaimer(false);
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please try again.",
+      );
+      return;
+    }
     setShowDisclaimer(false);
     trackBeginCheckoutOnce({
       amount: totalAmount,
@@ -566,11 +664,18 @@ const VerifyPage = () => {
   /* ── Payment flow ── */
 
   const handlePay = async () => {
+    if (priceError || !pricingData) {
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please try again.",
+      );
+      return;
+    }
     if (paymentAttemptInFlightRef.current) return;
     paymentAttemptInFlightRef.current = true;
     setLoading(true);
     setError("");
     setCurrentStep(2); // Processing
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     const randomTransactionId = generateTransactionId();
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
@@ -764,12 +869,14 @@ const VerifyPage = () => {
     setPaystackModalOpen(false);
     setPaymentUrl("");
 
-    if (!paystackReference) return;
+    const ref = paystackReference;
+    setPaystackReference("");
+    if (!ref) return;
 
     const checkEndpoint =
       activeGateway === "flutterwave"
-        ? `${baseUrl}/payment/check?transactionRef=${paystackReference}`
-        : `${baseUrl}/payment/check-pulse?transactionRef=${paystackReference}`;
+        ? `${baseUrl}/payment/check?transactionRef=${ref}`
+        : `${baseUrl}/payment/check-pulse?transactionRef=${ref}`;
 
     try {
       const res = await fetch(checkEndpoint, {
@@ -791,15 +898,21 @@ const VerifyPage = () => {
       }
 
       const data = await res.json();
-      const status = (data?.status || data?.data?.status || "").toLowerCase();
+      const paymentStatus = (
+        data?.data?.status ||
+        data?.status ||
+        data?.data?.paymentStatus ||
+        ""
+      ).toLowerCase();
 
-      if (status === "successful" || status === "success") {
-        // Payment succeeded — proceed with verification
+      if (paymentStatus === "successful" || paymentStatus === "success") {
+        // Payment succeeded before closing — proceed with verification
         setLoading(true);
         setCurrentStep(2); // Processing
         if (pendingApiFormRef.current) {
           await handleCompleteVerification(pendingApiFormRef.current);
         }
+        return;
       } else {
         Swal.fire({
           icon: "error",
@@ -811,14 +924,12 @@ const VerifyPage = () => {
       }
     } catch {
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Could not verify payment status. Please check your dashboard.",
+        icon: "info",
+        title: "Payment Cancelled",
+        text: "Payment window was closed.",
         confirmButtonColor: "#09c93a",
       });
     }
-
-    setPaystackReference("");
   };
 
   const handleCompleteVerification = async (apiFormData) => {
@@ -864,22 +975,28 @@ const VerifyPage = () => {
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === true
       ) {
-        result = response["search-extension"].phoneVerification;
+        const phoneVerification =
+          response["search-extension"].phoneVerification;
+        result = phoneVerification.data || phoneVerification;
         resultDetail =
-          response["search-extension"].phoneVerification.detail ||
-          "Phone verification was successful.";
+          phoneVerification.detail || "Phone verification was successful.";
         resultRoute = "/main-dashboard";
       } else if (
         response["search-extension"] &&
         response["search-extension"].phoneVerification &&
         response["search-extension"].phoneVerification.status === false
       ) {
+        const phoneVerificationDetail =
+          response["search-extension"].phoneVerification.detail || "";
+        const recordNotFound = isRecordNotFoundDetail(phoneVerificationDetail);
         Swal.fire({
           icon: "error",
-          title: "Verification Failed",
-          text:
-            response["search-extension"].phoneVerification.detail ||
-            "Verification failed",
+          title: recordNotFound
+            ? RECORD_NOT_FOUND_TITLE
+            : "Verification Failed",
+          text: recordNotFound
+            ? RECORD_NOT_FOUND_MESSAGE
+            : phoneVerificationDetail || "Verification failed",
           confirmButtonColor: "#09c93a",
         });
         setCurrentStep(1);
@@ -889,12 +1006,17 @@ const VerifyPage = () => {
         response["search-extension"].bvnVerification &&
         response["search-extension"].bvnVerification.status === true
       ) {
-        result = response["search-extension"].bvnVerification;
+        const bvnVerification = response["search-extension"].bvnVerification;
+        result = bvnVerification.data || bvnVerification;
         resultDetail =
-          response["search-extension"].bvnVerification.detail ||
-          "BVN verification was successful.";
+          bvnVerification.detail || "BVN verification was successful.";
         resultRoute = "/main-dashboard";
-      } else if (response.business && response.business.success === true) {
+      } else if (
+        response.business &&
+        response.business.success === true &&
+        response.business.data &&
+        response.business.data !== "null"
+      ) {
         const bizArray = Array.isArray(response.business.data)
           ? response.business.data.map((item) => item.data || item)
           : [response.business.data];
@@ -911,11 +1033,17 @@ const VerifyPage = () => {
             : firstBiz?.approvedName ||
               "Business has been verified successfully.";
         resultRoute = "/main-dashboard";
-      } else if (response.business && response.business.success === false) {
+      } else if (
+        response.business &&
+        (response.business.success === false || response.business.error)
+      ) {
         Swal.fire({
           icon: "error",
           title: "Verification Failed",
-          text: response.business.message,
+          text:
+            response.business.error?.message ||
+            response.business.message ||
+            "Verification failed. Please try again.",
           confirmButtonColor: "#09c93a",
         });
         setCurrentStep(1);
@@ -935,6 +1063,13 @@ const VerifyPage = () => {
         });
         setCurrentStep(1);
         return;
+      } else if (response.vehicle && response.vehicle.success === true) {
+        const vehicleData = response.vehicle.data || response.vehicle;
+        result = vehicleData;
+        resultTitle = "Vehicle Verification Successful";
+        resultDetail =
+          vehicleData.vehicleName || "VIN verification was successful.";
+        resultRoute = "/vehicle-profile-result";
       } else if (
         response?.advance ||
         response?.firstCentral ||
@@ -1025,11 +1160,12 @@ const VerifyPage = () => {
           route: resultRoute,
         });
 
-        if (requiresConsent) {
-          // Extract requestId from API response for consent polling
+        if (isConsentVerification) {
+          // Extract requestId from API response if present
           const requestId =
             response.basic?.data?.requestId ||
             response.basic?.requestId ||
+            response["search-extension"]?.phoneVerification?.requestId ||
             response["search-extension"]?.bvnVerification?.requestId ||
             response.financial?.requestId ||
             "";
@@ -1037,12 +1173,34 @@ const VerifyPage = () => {
           if (requestId) {
             setConsentRequestId(requestId);
             localStorage.setItem("verificationRequestId", requestId);
+          }
+
+          const isPendingConsent =
+            Boolean(requestId) &&
+            (response.basic?.consent === "pending" ||
+              response["search-extension"]?.phoneVerification?.consent ===
+                "pending" ||
+              response["search-extension"]?.bvnVerification?.consent ===
+                "pending" ||
+              response.financial?.consent === "pending" ||
+              response.consent === "pending");
+
+          if (isPendingConsent) {
             setConsentPending(true);
             setCurrentStep(CONSENT_STEP);
           } else {
-            // No requestId — consent may already be granted, show results
-            setShowResultPopup(true);
-            setCurrentStep(RESULT_STEP);
+            // Take away result popup for consent verifications; show standard success alert
+            Swal.fire({
+              icon: "success",
+              title: "Verification Successful",
+              text: resultDetail || "Your verification was successful.",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#09c93a",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then(() => {
+              history.push("/main-dashboard");
+            });
           }
         } else {
           setShowResultPopup(true);
@@ -1054,8 +1212,12 @@ const VerifyPage = () => {
           response?.basic?.detail ||
           response?.["search-extension"]?.phoneVerification?.detail ||
           response?.["search-extension"]?.bvnVerification?.detail ||
+          response?.business?.error?.message ||
           response?.business?.message ||
+          response?.financial?.error?.message ||
           response?.financial?.message ||
+          response?.vehicle?.error?.message ||
+          response?.vehicle?.message ||
           "Verification could not be completed. A refund has been initiated.";
         Swal.fire({
           icon: "error",
@@ -1195,16 +1357,48 @@ const VerifyPage = () => {
 
           {config.bureaus && (
             <FormGroup>
-              <FormLabel>
-                Select Credit Bureau(s){" "}
-                <span style={{ color: "#dc2626" }}> *</span>
-              </FormLabel>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8,
+                  flexWrap: "wrap",
+                }}
+              >
+                <FormLabel style={{ marginBottom: 0 }}>
+                  Select Credit Bureau(s){" "}
+                  <span style={{ color: "#dc2626" }}> *</span>
+                </FormLabel>
+                <button
+                  type="button"
+                  onClick={handleSelectAllBureaus}
+                  style={{
+                    padding: "5px 14px",
+                    borderRadius: 999,
+                    border: `1.5px solid ${allBureausSelected ? "#09c93a" : "#e5e7eb"}`,
+                    background: allBureausSelected ? "#f0fdf4" : "#fff",
+                    color: "#09c93a",
+                    fontFamily: "Nunito, sans-serif",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    whiteSpace: "nowrap",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  {allBureausSelected ? "Deselect All" : "Select All"}
+                </button>
+              </div>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   gap: 10,
-                  marginTop: 4,
+                  marginTop: 8,
                 }}
               >
                 {config.bureaus.map((bureau) => (
@@ -1289,8 +1483,48 @@ const VerifyPage = () => {
           <PriceAmount>
             {loadingPrice
               ? "Loading..."
-              : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+              : priceError || !pricingData
+                ? "-"
+                : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
+          {(priceError || (!loadingPrice && !pricingData)) && (
+            <div
+              style={{
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: 8,
+                padding: "10px 12px",
+                color: "#b91c1c",
+                fontSize: 13,
+                marginBottom: 14,
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <FaInfoCircle />
+                <span>Failed to load service price.</span>
+              </div>
+              <button
+                type="button"
+                onClick={fetchPrices}
+                style={{
+                  alignSelf: "flex-start",
+                  background: "none",
+                  border: "none",
+                  color: "#dc2626",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                  fontSize: 12,
+                  padding: 0,
+                  fontWeight: 600,
+                }}
+              >
+                Click here to retry
+              </button>
+            </div>
+          )}
           <PriceBreakdown>
             {pricingData &&
               (() => {
@@ -1359,10 +1593,20 @@ const VerifyPage = () => {
           </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
-            disabled={!isFormValid()}
+            disabled={
+              !isFormValid() || loadingPrice || !!priceError || !pricingData
+            }
             style={{ width: "100%", justifyContent: "center" }}
           >
-            Continue to Payment <FaArrowRight />
+            {loadingPrice ? (
+              "Loading Price..."
+            ) : priceError || !pricingData ? (
+              "Price Unavailable"
+            ) : (
+              <>
+                Continue to Payment <FaArrowRight />
+              </>
+            )}
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
@@ -1432,7 +1676,9 @@ const VerifyPage = () => {
             <SummaryAmount>
               {loadingPrice
                 ? "..."
-                : `${currencySymbol}${totalAmount.toLocaleString()}`}
+                : priceError || !pricingData
+                  ? "-"
+                  : `${currencySymbol}${totalAmount.toLocaleString()}`}
             </SummaryAmount>
           </SummaryHeader>
 
@@ -1511,11 +1757,83 @@ const VerifyPage = () => {
             </>
           )}
 
-          <PayBtn onClick={handlePay} disabled={loading || loadingPrice}>
+          {/* Separator */}
+          <div
+            style={{
+              borderTop: "1px solid #e5e7eb",
+              margin: "16px 0 12px",
+            }}
+          />
+
+          {/* Terms agreement checkbox */}
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 14px",
+              marginTop: 0,
+              marginBottom: 12,
+              border: `1.5px solid ${termsAccepted ? "#09c93a" : "#e5e7eb"}`,
+              borderRadius: 8,
+              cursor: "pointer",
+              background: termsAccepted ? "#f0fdf4" : "#fafafa",
+              transition: "all 0.2s",
+              fontFamily: "Nunito, sans-serif",
+              fontSize: 13,
+              color: "#555",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              style={{ accentColor: "#09c93a", width: 18, height: 18 }}
+            />
+            <span>
+              I agree to the{" "}
+              <span
+                onClick={() => setShowTermsPopup(true)}
+                style={{
+                  color: "var(--ec-primary)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Terms of Service
+              </span>{" "}
+              and{" "}
+              <span
+                onClick={() => setShowPrivacyPopup(true)}
+                style={{
+                  color: "var(--ec-primary)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Privacy Policy
+              </span>
+            </span>
+          </label>
+
+          <PayBtn
+            onClick={handlePay}
+            disabled={
+              !termsAccepted ||
+              loading ||
+              loadingPrice ||
+              !!priceError ||
+              !pricingData
+            }
+          >
             <FaLock />
             {loading
               ? "Processing..."
-              : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
+              : priceError || !pricingData
+                ? "Price Unavailable"
+                : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
           </PayBtn>
 
           <SecuredBy>
@@ -1536,31 +1854,12 @@ const VerifyPage = () => {
       <SampleSection>
         <SampleHeader>
           <SampleTitle>Sample Result</SampleTitle>
+          <SampleBadge>This is a sample only</SampleBadge>
         </SampleHeader>
-        <SampleSub>
-          Here's an example of what your verification result will look like.
-        </SampleSub>
-        <SampleResultCard>
-          <SampleAvatar>
-            <FaUserCircle />
-          </SampleAvatar>
-          <SampleInfo>
-            <SampleName>
-              {config.sampleResult.name}
-              <VerifiedBadge>
-                <FaCheckCircle /> Verified
-              </VerifiedBadge>
-            </SampleName>
-            <SampleId>{config.sampleResult.identifier}</SampleId>
-            <SampleTags>
-              {config.sampleResult.tags.map((tag, i) => (
-                <SampleTag key={i}>
-                  <FaCheckCircle /> {tag}
-                </SampleTag>
-              ))}
-            </SampleTags>
-          </SampleInfo>
-        </SampleResultCard>
+        <SampleSub>{sampleMeta.subtitle}</SampleSub>
+        <div style={{ maxWidth: 760 }}>
+          <SampleResultContent type={sampleType} />
+        </div>
       </SampleSection>
     </>
   );
@@ -1616,11 +1915,30 @@ const VerifyPage = () => {
         });
     }
 
-    // Phone verification
-    if (data.network) {
-      if (data.name) fields.push({ label: "Owner Name", value: data.name });
-      if (data.network) fields.push({ label: "Network", value: data.network });
-      if (data.status) fields.push({ label: "Status", value: data.status });
+    // Vehicle verification
+    if (data.vin || data.vehicleName) {
+      if (data.vehicleName || data.name)
+        fields.push({
+          label: "Vehicle Name",
+          value: data.vehicleName || data.name,
+        });
+      if (data.vin) fields.push({ label: "VIN", value: data.vin });
+      if (data.year) fields.push({ label: "Year", value: data.year });
+      if (data.make) fields.push({ label: "Make", value: data.make });
+      if (data.model) fields.push({ label: "Model", value: data.model });
+      if (data.trim) fields.push({ label: "Trim", value: data.trim });
+      if (data.engine) fields.push({ label: "Engine", value: data.engine });
+      if (data.fuelType)
+        fields.push({ label: "Fuel Type", value: data.fuelType });
+      if (data.transmission)
+        fields.push({ label: "Transmission", value: data.transmission });
+      if (data.verificationStatus)
+        fields.push({
+          label: "Verification Status",
+          value: data.verificationStatus,
+        });
+      if (data.reference)
+        fields.push({ label: "Reference", value: data.reference });
     }
 
     // Business (API returns: approvedName, rcNumber, registrationDate, address, email, lga, state, classificationId)
@@ -2080,8 +2398,8 @@ const VerifyPage = () => {
         </div>
       </ContentWrapper>
 
-      {/* Trust Bar */}
-      {showResultPopup && verificationResult && (
+      {/* Result Popup - only for non-consent verifications (business, vehicle) */}
+      {showResultPopup && verificationResult && !isConsentVerification && (
         <PopupOverlay>
           <PopupCard>
             <PopupHeader>
@@ -2107,90 +2425,25 @@ const VerifyPage = () => {
               {/* Business list result */}
               {verificationResult.data?._isBusinessList ? (
                 <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      marginBottom: 16,
-                      padding: "10px 16px",
-                      background: "var(--ec-primary-bg)",
-                      borderRadius: 10,
-                      fontFamily: "Nunito, sans-serif",
-                      fontSize: 14,
-                      color: "var(--ec-primary)",
-                      fontWeight: 700,
-                    }}
-                  >
+                  <PopupCountBanner>
                     <FaBuilding />
                     {verificationResult.data.businesses.length}{" "}
                     {verificationResult.data.businesses.length === 1
                       ? "company"
                       : "companies"}{" "}
                     found
-                  </div>
-                  <div
-                    style={{
-                      maxHeight: 380,
-                      overflowY: "auto",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 10,
-                      marginBottom: 16,
-                      paddingRight: 4,
-                    }}
-                  >
+                  </PopupCountBanner>
+                  <PopupBusinessList>
                     {verificationResult.data.businesses.map((biz, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          border: "1px solid var(--ec-border)",
-                          borderRadius: 12,
-                          padding: "16px 20px",
-                          background: "var(--ec-bg-card)",
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: 14,
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 42,
-                            height: 42,
-                            borderRadius: "50%",
-                            background: "var(--ec-primary-bg)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
-                            color: "var(--ec-primary)",
-                            fontSize: 18,
-                          }}
-                        >
+                      <PopupBusinessItem key={idx}>
+                        <PopupBusinessIcon>
                           <FaBuilding />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div
-                            style={{
-                              fontFamily: "Poppins, sans-serif",
-                              fontWeight: 700,
-                              fontSize: 15,
-                              color: "var(--ec-text)",
-                              marginBottom: 4,
-                              wordBreak: "break-word",
-                            }}
-                          >
+                        </PopupBusinessIcon>
+                        <PopupBusinessInfo>
+                          <PopupBusinessName>
                             {biz.approvedName || biz.companyName || "N/A"}
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexWrap: "wrap",
-                              gap: "4px 16px",
-                              fontFamily: "Nunito, sans-serif",
-                              fontSize: 13,
-                            }}
-                          >
+                          </PopupBusinessName>
+                          <PopupBusinessMeta>
                             {(biz.rcNumber || biz.rc_number) && (
                               <span style={{ color: "var(--ec-text-muted)" }}>
                                 RC:{" "}
@@ -2221,16 +2474,16 @@ const VerifyPage = () => {
                                 </strong>
                               </span>
                             )}
-                          </div>
-                        </div>
+                          </PopupBusinessMeta>
+                        </PopupBusinessInfo>
                         <VerifiedBadgePopup
                           style={{ flexShrink: 0, alignSelf: "center" }}
                         >
                           <FaCheckCircle /> Verified
                         </VerifiedBadgePopup>
-                      </div>
+                      </PopupBusinessItem>
                     ))}
-                  </div>
+                  </PopupBusinessList>
                   <ResultFooterPopup
                     style={{ borderTop: "none", padding: "0 0 12px" }}
                   >
@@ -2256,6 +2509,8 @@ const VerifyPage = () => {
                         const data = verificationResult?.data;
                         if (!data) return <FaUserCircle />;
                         let photoSrc =
+                          data.vehicleImage ||
+                          data.previewImageURL ||
                           data.photo ||
                           data.signature ||
                           data.image ||
@@ -2268,7 +2523,10 @@ const VerifyPage = () => {
                           data.photoUrl ||
                           data.imageUrl;
                         if (photoSrc) {
-                          if (!photoSrc.startsWith("data:")) {
+                          if (
+                            !photoSrc.startsWith("data:") &&
+                            !photoSrc.startsWith("http")
+                          ) {
                             if (
                               photoSrc.startsWith("/9j/") ||
                               photoSrc.startsWith("iVBORw0KGgo")
@@ -2489,44 +2747,7 @@ const VerifyPage = () => {
                   </ol>
                 )}
               </div>
-              <div
-                style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 13,
-                  color: "var(--ec-text-muted)",
-                  textAlign: "center",
-                  marginBottom: 20,
-                  lineHeight: 1.6,
-                }}
-              >
-                By proceeding, you agree to our{" "}
-                <a
-                  href="/terms_of_service"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href="/privacy_policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--ec-primary)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Privacy Policy
-                </a>
-                .
-              </div>
+
               <PopupActionRow style={{ justifyContent: "center" }}>
                 <ContinueBtn onClick={handleDisclaimerConfirm}>
                   I Understand, Continue <FaArrowRight />
@@ -2539,6 +2760,21 @@ const VerifyPage = () => {
           </PopupCard>
         </PopupOverlay>
       )}
+
+      <PdfModal
+        open={showTermsPopup}
+        onClose={() => setShowTermsPopup(false)}
+        title="Terms of Service"
+        src={termsPdf}
+        height={420}
+      />
+      <PdfModal
+        open={showPrivacyPopup}
+        onClose={() => setShowPrivacyPopup(false)}
+        title="Privacy Policy"
+        src={privacyPdf}
+        height={420}
+      />
 
       {/* Paystack Payment Modal */}
       {paystackModalOpen && (
