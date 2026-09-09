@@ -27,7 +27,10 @@ import {
 } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
-import { trackLandingPageView, trackProductSelected } from "../../analytics/analytics";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 import heroImg from "../../images/Hero_image_new.png";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
@@ -500,7 +503,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify} onClick={() => handleProductSelected("nin")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={ninVerify}
+              onClick={() => handleProductSelected("nin")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -534,7 +542,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={phoneVerify} onClick={() => handleProductSelected("phone")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={phoneVerify}
+              onClick={() => handleProductSelected("phone")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/phone-number-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -568,7 +581,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={businessVerify} onClick={() => handleProductSelected("business")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={businessVerify}
+              onClick={() => handleProductSelected("business")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/business-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -602,7 +620,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={bvnVerify} onClick={() => handleProductSelected("bvn")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={bvnVerify}
+              onClick={() => handleProductSelected("bvn")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/credit-profile">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -634,7 +657,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify} onClick={() => handleProductSelected("vehicle")}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={vehicleVerify}
+              onClick={() => handleProductSelected("vehicle")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
