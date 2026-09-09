@@ -951,7 +951,11 @@ function Navbar() {
               )}
               <Dropdown overlay={countriesMenu} trigger={["click"]} arrow>
                 <PublicTrigger type="button">
-                  <span className="flag" role="img" aria-label="Uganda flag">
+                  <span
+                    className="flag"
+                    role="img"
+                    aria-label="Côte-D'Ivoire flag"
+                  >
                     🇨🇮
                   </span>
                   {t("nav.country")} <DownOutlined className="chev" />
@@ -1413,6 +1417,102 @@ function Navbar() {
                         style={{
                           paddingLeft: "49px",
                           paddingRight: "15px",
+                          marginBottom: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span
+                          style={{
+                            color: "#FFFFFF",
+                            fontFamily: "Nunito, sans-serif",
+                            fontSize: "15px",
+                            fontWeight: 700,
+                          }}
+                        >
+                          {t("nav.language")}
+                        </span>
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: "4px",
+                            borderRadius: "999px",
+                            background: "rgba(255, 255, 255, 0.12)",
+                            border: "1px solid rgba(255, 255, 255, 0.2)",
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleLanguageChange("FR");
+                              closeMobileMenu();
+                            }}
+                            aria-pressed={language === "FR"}
+                            style={{
+                              border: "none",
+                              borderRadius: "999px",
+                              cursor: "pointer",
+                              padding: "8px 14px",
+                              fontFamily: "Nunito, sans-serif",
+                              fontSize: "13px",
+                              fontWeight: 700,
+                              letterSpacing: "0.04em",
+                              background:
+                                language === "FR" ? "#FD7A00" : "transparent",
+                              color:
+                                language === "FR"
+                                  ? "#FFFFFF"
+                                  : "rgba(255, 255, 255, 0.9)",
+                              boxShadow:
+                                language === "FR"
+                                  ? "0 2px 6px rgba(253, 122, 0, 0.4)"
+                                  : "none",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            FR
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleLanguageChange("EN");
+                              closeMobileMenu();
+                            }}
+                            aria-pressed={language === "EN"}
+                            style={{
+                              border: "none",
+                              borderRadius: "999px",
+                              cursor: "pointer",
+                              padding: "8px 14px",
+                              fontFamily: "Nunito, sans-serif",
+                              fontSize: "13px",
+                              fontWeight: 700,
+                              letterSpacing: "0.04em",
+                              background:
+                                language === "EN" ? "#FD7A00" : "transparent",
+                              color:
+                                language === "EN"
+                                  ? "#FFFFFF"
+                                  : "rgba(255, 255, 255, 0.9)",
+                              boxShadow:
+                                language === "EN"
+                                  ? "0 2px 6px rgba(253, 122, 0, 0.4)"
+                                  : "none",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            EN
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          paddingLeft: "49px",
+                          paddingRight: "15px",
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -1429,11 +1529,11 @@ function Navbar() {
                             <span
                               className="flag"
                               role="img"
-                              aria-label="Ghana flag"
+                              aria-label="Côte-D'Ivoire flag"
                             >
-                              🇬🇭
+                              🇨🇮
                             </span>
-                            Ghana
+                            Côte-D'Ivoire
                             <DownOutlined
                               className="chev"
                               style={{ color: "#FFFFFF" }}

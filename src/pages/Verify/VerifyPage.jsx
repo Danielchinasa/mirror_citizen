@@ -28,6 +28,7 @@ import {
   initiateVerificationRequest,
   completeVerificationRequest,
   fetchUserProfile,
+  fetchVerificationServicePrices,
 } from "../../redux/actions";
 import { apiPostInternalCall, apiGet } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
@@ -202,6 +203,7 @@ const VerifyPage = () => {
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
+  const [priceError, setPriceError] = useState(false);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
   const [paystackModalOpen, setPaystackModalOpen] = useState(false);
@@ -363,49 +365,58 @@ const VerifyPage = () => {
     ensureIpAndCurrency();
   }, []);
 
+  const isPricingValid = (data) => {
+    if (!data || typeof data !== "object") return false;
+    if (data.status === "failed") return false;
+    if (typeof data.status === "number" && data.status >= 400) return false;
+    if (data.isAxiosError) return false;
+
+    const hasLocalFee =
+      data.serviceFee !== undefined &&
+      data.serviceFee !== null &&
+      !isNaN(Number(data.serviceFee));
+    const hasUsdFee =
+      data.serviceFeeusd !== undefined &&
+      data.serviceFeeusd !== null &&
+      !isNaN(Number(data.serviceFeeusd));
+
+    return hasLocalFee || hasUsdFee;
+  };
+
   // Fetch service prices
-  useEffect(() => {
+  const fetchPrices = useCallback(async () => {
     if (!config) return;
 
-    const fetchPrices = async () => {
-      try {
-        const response = await apiGet(`/africa/countries/CI/service-prices`);
-        const services = response.data?.data || response.data || response;
-        const serviceData = Array.isArray(services)
-          ? services.find(
-              (s) =>
-                s.service?.toLowerCase() ===
-                config.apiServiceName?.toLowerCase(),
-            )
-          : null;
+    setLoadingPrice(true);
+    setPriceError(false);
 
-        if (!serviceData) throw new Error("Service not found in price list");
-
-        setLoadingPrice(false);
-        setPricingData({
-          price: serviceData.price,
-          serviceFee: serviceData.serviceFee,
-          vat: serviceData.VAT,
-          priceUsd: serviceData.price2,
-          serviceFeeusd: serviceData.serviceFee2,
-          vatUsd: serviceData.VAT2,
-          processingFee: serviceData.processingFee || 0,
-          rate: response.data?.rate || 1,
-        });
-      } catch (err) {
-        setLoadingPrice(false);
-        Swal.fire({
-          icon: "error",
-          title: t("common.error"),
-          text: t("verify.alert.fetchPricesError"),
-          confirmButtonColor: "#FD7A00",
-        });
+    try {
+      const data = await dispatch(
+        fetchVerificationServicePrices(config, userToken),
+      );
+      if (isPricingValid(data)) {
+        setPricingData(data);
+        setPriceError(false);
+      } else {
+        setPricingData(null);
+        setPriceError(true);
       }
-    };
+    } catch (err) {
+      setPricingData(null);
+      setPriceError(true);
+    } finally {
+      setLoadingPrice(false);
+    }
+  }, [config, userToken, dispatch]);
+
+  useEffect(() => {
     fetchPrices();
-  }, [config]);
+  }, [fetchPrices]);
 
   if (!config) return null;
+
+  const isPriceAvailable =
+    !loadingPrice && !priceError && isPricingValid(pricingData);
 
   const currencyCheck = localStorage.getItem("currencyCheck") || "XOF";
   const isLocal = currencyCheck.toUpperCase() === "XOF";
@@ -423,17 +434,21 @@ const VerifyPage = () => {
         : config.allBureausDiscount.usd
       : 0;
 
-  const totalAmount = pricingData
-    ? isLocal
-      ? ((pricingData.serviceFee || 0) +
-          (pricingData.processingFee || 0) +
-          (pricingData.vat || 0)) *
-          bureauMultiplier -
-        discount
-      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
-          bureauMultiplier -
-        discount
-    : 0;
+  const totalAmount =
+    isPriceAvailable && pricingData
+      ? Math.max(
+          isLocal
+            ? ((pricingData.serviceFee || 0) +
+                (pricingData.processingFee || 0) +
+                (pricingData.vat || 0)) *
+                bureauMultiplier -
+                discount
+            : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
+                bureauMultiplier -
+                discount,
+          0,
+        )
+      : 0;
 
   const currencySymbol = isLocal ? "CFA " : "$";
 
@@ -454,15 +469,19 @@ const VerifyPage = () => {
   // The wallet is always held in CFA (XOF). Compute the CFA total so wallet
   // comparisons and charges are always in the correct currency, regardless of
   // what currency is displayed to the user.
-  const totalAmountFcfa = pricingData
-    ? ((pricingData.serviceFee || 0) +
-        (pricingData.processingFee || 0) +
-        (pricingData.vat || 0)) *
-        bureauMultiplier -
-      (allBureausSelected && config?.allBureausDiscount
-        ? config.allBureausDiscount.xof || 0
-        : 0)
-    : 0;
+  const totalAmountFcfa =
+    isPriceAvailable && pricingData
+      ? Math.max(
+          ((pricingData.serviceFee || 0) +
+            (pricingData.processingFee || 0) +
+            (pricingData.vat || 0)) *
+            bureauMultiplier -
+            (allBureausSelected && config?.allBureausDiscount
+              ? config.allBureausDiscount.xof || 0
+              : 0),
+          0,
+        )
+      : 0;
 
   const normalizeCurrency = (value = "") => {
     const normalized = String(value).trim().toUpperCase();
@@ -611,6 +630,18 @@ const VerifyPage = () => {
   /* ── Step navigation ── */
 
   const handleContinueToPayment = () => {
+    if (loadingPrice) return;
+
+    if (!isPriceAvailable) {
+      setError(
+        t(
+          "verify.search.unableToGetFeesError",
+          "Unable to get service fees. Please try again before proceeding.",
+        ),
+      );
+      return;
+    }
+
     if (!isFormValid()) {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
@@ -699,6 +730,16 @@ const VerifyPage = () => {
 
   const handlePay = async () => {
     setError("");
+
+    if (!isPriceAvailable || totalAmount <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: t("common.error"),
+        text: t("verify.alert.fetchPricesError"),
+        confirmButtonColor: "#FD7A00",
+      });
+      return;
+    }
 
     const randomTransactionId = generateTransactionId();
     const selectedMethod = PAYMENT_METHODS.find((m) => m.id === paymentMethod);
@@ -1405,6 +1446,43 @@ const VerifyPage = () => {
       <FormCardSub>{t("verify.search.subtitle")}</FormCardSub>
 
       {error && <ErrorAlert>{error}</ErrorAlert>}
+      {!loadingPrice && !isPriceAvailable && !error && (
+        <ErrorAlert
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 8,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <FaInfoCircle />
+            <span>
+              {t(
+                "verify.search.topErrorNotice",
+                "Unable to get service fees at the moment. Please try again.",
+              )}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={fetchPrices}
+            style={{
+              background: "none",
+              border: "1px solid currentColor",
+              color: "inherit",
+              borderRadius: 6,
+              padding: "4px 10px",
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {t("verify.search.retry", "Retry")}
+          </button>
+        </ErrorAlert>
+      )}
 
       <SearchGrid>
         <div>
@@ -1653,88 +1731,181 @@ const VerifyPage = () => {
 
         <SidebarCard>
           <PriceLabel>{t("verify.search.amount")}</PriceLabel>
-          <PriceAmount>
+          <PriceAmount
+            style={
+              !isPriceAvailable && !loadingPrice
+                ? { color: "#dc2626", fontSize: 18 }
+                : {}
+            }
+          >
             {loadingPrice
               ? t("verify.search.loading")
-              : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+              : isPriceAvailable
+                ? `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                : t("verify.search.unavailable", "Unavailable")}
           </PriceAmount>
-          <PriceBreakdown>
-            {pricingData &&
-              (() => {
-                const processingFees = isLocal
-                  ? (pricingData.serviceFee || 0) +
-                    (pricingData.processingFee || 0)
-                  : pricingData.serviceFeeusd || 0;
-                const taxCharges = isLocal
-                  ? pricingData.vat || 0
-                  : pricingData.vatUsd || 0;
-                const perBureau = processingFees + taxCharges;
-                const subtotal = perBureau * bureauMultiplier;
-                const totalToPay = subtotal - discount;
-                return (
-                  <>
-                    <PriceRow>
-                      <span>
-                        {t("verify.search.processingFees")}
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(processingFees * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    <PriceRow>
-                      <span>
-                        {t("verify.search.taxAndCharges")}
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(taxCharges * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    {discount > 0 && (
+
+          {!loadingPrice && !isPriceAvailable && (
+            <div
+              style={{
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: 8,
+                padding: "10px 12px",
+                margin: "12px 0",
+                fontSize: 13,
+                color: "#991b1b",
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontWeight: 600,
+                }}
+              >
+                <FaInfoCircle />
+                <span>
+                  {t(
+                    "verify.search.unableToGetFees",
+                    "Unable to get service fees",
+                  )}
+                </span>
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#7f1d1d",
+                  lineHeight: 1.4,
+                }}
+              >
+                {t(
+                  "verify.search.feesUnavailableNotice",
+                  "Pricing for this service is currently unavailable. Please try again or contact support.",
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={fetchPrices}
+                style={{
+                  background: "#dc2626",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "6px 12px",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  alignSelf: "flex-start",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                <FaBolt /> {t("verify.search.retry", "Retry")}
+              </button>
+            </div>
+          )}
+
+          {isPriceAvailable && (
+            <PriceBreakdown>
+              {pricingData &&
+                (() => {
+                  const processingFees = isLocal
+                    ? (pricingData.serviceFee || 0) +
+                      (pricingData.processingFee || 0)
+                    : pricingData.serviceFeeusd || 0;
+                  const taxCharges = isLocal
+                    ? pricingData.vat || 0
+                    : pricingData.vatUsd || 0;
+                  const perBureau = processingFees + taxCharges;
+                  const subtotal = perBureau * bureauMultiplier;
+                  const totalToPay = subtotal - discount;
+                  return (
+                    <>
                       <PriceRow>
-                        <span style={{ color: "#16a34a" }}>
-                          {t("verify.search.discount")}
+                        <span>
+                          {t("verify.search.processingFees")}
+                          {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                         </span>
-                        <span style={{ color: "#16a34a" }}>
-                          -{currencySymbol}
-                          {discount.toLocaleString(undefined, {
+                        <span>
+                          {currencySymbol}
+                          {(processingFees * bureauMultiplier).toLocaleString(
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                            },
+                          )}
+                        </span>
+                      </PriceRow>
+                      <PriceRow>
+                        <span>
+                          {t("verify.search.taxAndCharges")}
+                          {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                        </span>
+                        <span>
+                          {currencySymbol}
+                          {(taxCharges * bureauMultiplier).toLocaleString(
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                            },
+                          )}
+                        </span>
+                      </PriceRow>
+                      {discount > 0 && (
+                        <PriceRow>
+                          <span style={{ color: "#16a34a" }}>
+                            {t("verify.search.discount")}
+                          </span>
+                          <span style={{ color: "#16a34a" }}>
+                            -{currencySymbol}
+                            {discount.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                            })}
+                          </span>
+                        </PriceRow>
+                      )}
+                      <PriceTotalRow>
+                        <span>{t("verify.search.totalToBePaid")}</span>
+                        <span>
+                          {currencySymbol}
+                          {totalToPay.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                           })}
                         </span>
-                      </PriceRow>
-                    )}
-                    <PriceTotalRow>
-                      <span>{t("verify.search.totalToBePaid")}</span>
-                      <span>
-                        {currencySymbol}
-                        {totalToPay.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                        })}
-                      </span>
-                    </PriceTotalRow>
-                  </>
-                );
-              })()}
-          </PriceBreakdown>
+                      </PriceTotalRow>
+                    </>
+                  );
+                })()}
+            </PriceBreakdown>
+          )}
           <ContinueBtn
             onClick={handleContinueToPayment}
-            disabled={!isFormValid()}
+            disabled={!isFormValid() || loadingPrice || !isPriceAvailable}
+            title={
+              !isPriceAvailable && !loadingPrice
+                ? t(
+                    "verify.search.unableToGetFees",
+                    "Unable to get service fees",
+                  )
+                : undefined
+            }
             style={{ width: "100%", justifyContent: "center" }}
           >
-            {t("verify.search.continueToPayment")} <FaArrowRight />
+            {loadingPrice
+              ? t("verify.search.loadingFees", "Loading fees...")
+              : !isPriceAvailable
+                ? t(
+                    "verify.search.unableToGetFees",
+                    "Unable to Get Service Fees",
+                  )
+                : t("verify.search.continueToPayment")}{" "}
+            {isPriceAvailable && !loadingPrice && <FaArrowRight />}
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
@@ -1808,7 +1979,9 @@ const VerifyPage = () => {
             <SummaryAmount>
               {loadingPrice
                 ? "..."
-                : `${currencySymbol}${totalAmount.toLocaleString()}`}
+                : isPriceAvailable
+                  ? `${currencySymbol}${totalAmount.toLocaleString()}`
+                  : t("verify.search.unavailable", "Unavailable")}
             </SummaryAmount>
           </SummaryHeader>
 
@@ -1835,7 +2008,7 @@ const VerifyPage = () => {
             <SummaryValue>{userEmail || "—"}</SummaryValue>
           </SummaryRow>
 
-          {pricingData && (
+          {isPriceAvailable && pricingData && (
             <>
               <div
                 style={{
@@ -1966,7 +2139,9 @@ const VerifyPage = () => {
 
           <PayBtn
             onClick={() => setShowPayDisclaimer(true)}
-            disabled={loading || loadingPrice || !termsAccepted}
+            disabled={
+              loading || loadingPrice || !termsAccepted || !isPriceAvailable
+            }
           >
             <FaLock />
             {loading

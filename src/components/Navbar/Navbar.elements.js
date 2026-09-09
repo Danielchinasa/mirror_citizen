@@ -447,32 +447,34 @@ export const PublicMobileLanguage = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 4px 0 14px;
+    padding: 8px 0 16px;
     margin-bottom: 6px;
-    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+    border-bottom: 1px solid var(--ec-border);
   }
 `;
 
 export const PublicMobileLanguageLabel = styled.span`
-  color: var(--ec-text-muted);
+  color: var(--ec-text);
   font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 `;
 
 export const PublicLanguageToggleGroup = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   padding: 4px;
   border-radius: 999px;
   background: var(--ec-border-light);
+  border: 1px solid var(--ec-border);
 `;
 
 export const PublicLanguageToggle = styled.button`
   border: none;
   background: ${({ $active }) => ($active ? "#FD7A00" : "transparent")};
-  color: ${({ $active }) => ($active ? "#fff" : "var(--ec-text)")};
+  color: ${({ $active }) =>
+    $active ? "#ffffff" : "var(--ec-text)"} !important;
   font-family: "Nunito", sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -480,13 +482,18 @@ export const PublicLanguageToggle = styled.button`
   padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
+  box-shadow: ${({ $active }) =>
+    $active ? "0 2px 6px rgba(253, 122, 0, 0.35)" : "none"};
   transition:
     background 0.2s ease,
     color 0.2s ease,
+    box-shadow 0.2s ease,
     transform 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);
+    color: ${({ $active }) =>
+      $active ? "#ffffff" : "var(--ec-primary)"} !important;
   }
 `;
 

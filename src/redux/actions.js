@@ -21,20 +21,24 @@ export const fetchVerificationServicePrices =
       let serviceData;
       let rate;
 
-      if (config.serviceCode) {
+      if (config.serviceCode || config.apiServiceName) {
         const response = await apiGetInternalCall(
           `/africa/countries/CI/service-prices`,
           token,
         );
-        const services = response.data?.data || response.data || [];
+        const services = response?.data?.data || response?.data || [];
         serviceData = Array.isArray(services)
-        ? services.find(
-            (s) =>
-              s.service === config.serviceCode ||
-              s.service === config.apiServiceName,
-          )
-        : services[config.serviceCode] || services[config.apiServiceName];
-        rate = response.data?.rate;
+          ? services.find(
+              (s) =>
+                (config.serviceCode &&
+                  s?.service?.toLowerCase() ===
+                    config.serviceCode.toLowerCase()) ||
+                (config.apiServiceName &&
+                  s?.service?.toLowerCase() ===
+                    config.apiServiceName.toLowerCase()),
+            )
+          : services?.[config.serviceCode] || services?.[config.apiServiceName];
+        rate = response?.data?.rate;
       } else {
         const ipAddress =
           localStorage.getItem("IpAddress") ||
@@ -44,11 +48,22 @@ export const fetchVerificationServicePrices =
           { ipAddress },
           token,
         );
-        serviceData = response.data.data[config.priceIndex];
-        rate = response.data.rate;
+        serviceData = response?.data?.data?.[config.priceIndex];
+        rate = response?.data?.rate;
+      }
+
+      if (
+        !serviceData ||
+        (serviceData.serviceFee === undefined &&
+          serviceData.serviceFee2 === undefined &&
+          serviceData.price === undefined &&
+          serviceData.price2 === undefined)
+      ) {
+        return { status: "failed", message: "Could not fetch service prices" };
       }
 
       return {
+        status: "success",
         price: serviceData.price,
         serviceFee: serviceData.serviceFee,
         vat: serviceData.VAT,
@@ -56,11 +71,14 @@ export const fetchVerificationServicePrices =
         serviceFeeusd: serviceData.serviceFee2,
         vatUsd: serviceData.VAT2,
         processingFee: serviceData.processingFee || 0,
-        rate,
+        rate: rate || 1,
       };
     } catch (error) {
-      if (error.response) return error.response;
-      return { status: "failed", message: "Could not fetch service prices" };
+      return {
+        status: "failed",
+        message:
+          error?.response?.data?.message || "Could not fetch service prices",
+      };
     }
   };
 

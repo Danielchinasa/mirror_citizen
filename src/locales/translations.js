@@ -285,6 +285,17 @@ const translations = {
       "Vos données sont sécurisées et utilisées uniquement pour la vérification.",
     "verify.search.amount": "Montant",
     "verify.search.continueToPayment": "Continuer vers le paiement",
+    "verify.search.unavailable": "Indisponible",
+    "verify.search.unableToGetFees":
+      "Impossible d'obtenir les frais de service",
+    "verify.search.loadingFees": "Chargement des frais...",
+    "verify.search.feesUnavailableNotice":
+      "La tarification de ce service est actuellement indisponible. Veuillez réessayer ou contacter l'assistance.",
+    "verify.search.topErrorNotice":
+      "Impossible d'obtenir les frais de service pour le moment. Veuillez réessayer.",
+    "verify.search.retry": "Réessayer",
+    "verify.search.unableToGetFeesError":
+      "Impossible d'obtenir les frais de service. Veuillez réessayer avant de continuer.",
     "verify.search.clear": "Effacer",
     "verify.search.processingFees": "Frais de traitement",
     "verify.search.taxAndCharges": "Taxes et frais",
@@ -874,6 +885,16 @@ const translations = {
       "Your data is secure and used only for verification.",
     "verify.search.amount": "Amount",
     "verify.search.continueToPayment": "Continue to Payment",
+    "verify.search.unavailable": "Unavailable",
+    "verify.search.unableToGetFees": "Unable to get service fees",
+    "verify.search.loadingFees": "Loading fees...",
+    "verify.search.feesUnavailableNotice":
+      "Pricing for this service is currently unavailable. Please try again or contact support.",
+    "verify.search.topErrorNotice":
+      "Unable to get service fees at the moment. Please try again.",
+    "verify.search.retry": "Retry",
+    "verify.search.unableToGetFeesError":
+      "Unable to get service fees. Please try again before proceeding.",
     "verify.search.clear": "Clear",
     "verify.search.processingFees": "Processing fees",
     "verify.search.taxAndCharges": "Tax & charges",
