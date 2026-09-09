@@ -475,7 +475,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[0]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[0].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -509,7 +509,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[9]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[9].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -543,7 +543,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[2]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[2].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -577,7 +577,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[4]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[4].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}1,700`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -609,7 +609,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[5]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[5].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}2,500`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>

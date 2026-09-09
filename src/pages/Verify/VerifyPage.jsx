@@ -211,6 +211,7 @@ const VerifyPage = () => {
   const [pricingData, setPricingData] = useState(null);
   const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
+  const [priceError, setPriceError] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
   const [paystackModalOpen, setPaystackModalOpen] = useState(false);
@@ -365,42 +366,50 @@ const VerifyPage = () => {
   }, []);
 
   // Fetch service prices
-  useEffect(() => {
+  const fetchPrices = useCallback(async () => {
     if (!config || !userToken) return;
 
-    const fetchPrices = async () => {
-      try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await apiPostInternalCall(
-          `/transaction/service-prices`,
-          { ipAddress },
-          userToken,
-        );
-        setLoadingPrice(false);
-        const serviceData = response.data.data[config.priceIndex];
-        setDetectedCurrency(response.data.data[0]?.currency || null);
-        setPricingData({
-          price: serviceData.price,
-          serviceFee: serviceData.serviceFee,
-          vat: serviceData.VAT,
-          priceUsd: serviceData.price2,
-          serviceFeeusd: serviceData.serviceFee2,
-          vatUsd: serviceData.VAT2,
-          processingFee: serviceData.processingFee || 0,
-          rate: response.data.rate,
-        });
-      } catch (err) {
-        setLoadingPrice(false);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#09c93a",
-        });
+    setLoadingPrice(true);
+    setPriceError(null);
+    try {
+      const ipAddress = localStorage.getItem("IpAddress");
+      const response = await apiPostInternalCall(
+        `/transaction/service-prices`,
+        { ipAddress },
+        userToken,
+      );
+      const serviceData = response?.data?.data?.[config.priceIndex];
+      if (!serviceData) {
+        throw new Error("Service price information is currently unavailable.");
       }
-    };
-    fetchPrices();
+      setDetectedCurrency(response?.data?.data?.[0]?.currency || null);
+      setPricingData({
+        price: serviceData.price,
+        serviceFee: serviceData.serviceFee,
+        vat: serviceData.VAT,
+        priceUsd: serviceData.price2,
+        serviceFeeusd: serviceData.serviceFee2,
+        vatUsd: serviceData.VAT2,
+        processingFee: serviceData.processingFee || 0,
+        rate: response.data.rate,
+      });
+      setLoadingPrice(false);
+    } catch (err) {
+      setLoadingPrice(false);
+      setPricingData(null);
+      setPriceError("Could not fetch service prices. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Could not fetch service prices. Please try again.",
+        confirmButtonColor: "#09c93a",
+      });
+    }
   }, [config, userToken]);
+
+  useEffect(() => {
+    fetchPrices();
+  }, [fetchPrices]);
 
   if (!config) return null;
 
@@ -508,6 +517,22 @@ const VerifyPage = () => {
   /* ── Step navigation ── */
 
   const handleContinueToPayment = () => {
+    if (loadingPrice) {
+      setError("Please wait while verification pricing is being loaded.");
+      return;
+    }
+    if (priceError || !pricingData) {
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please check your connection and try again.",
+      );
+      Swal.fire({
+        icon: "warning",
+        title: "Pricing Unavailable",
+        text: "Could not retrieve service price. Please try again.",
+        confirmButtonColor: "#09c93a",
+      });
+      return;
+    }
     if (!isFormValid()) {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
@@ -526,6 +551,13 @@ const VerifyPage = () => {
   };
 
   const handleDisclaimerConfirm = () => {
+    if (priceError || !pricingData) {
+      setShowDisclaimer(false);
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please try again.",
+      );
+      return;
+    }
     setShowDisclaimer(false);
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -582,6 +614,12 @@ const VerifyPage = () => {
   /* ── Payment flow ── */
 
   const handlePay = async () => {
+    if (priceError || !pricingData) {
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please try again.",
+      );
+      return;
+    }
     setLoading(true);
     setError("");
     setCurrentStep(2); // Processing
@@ -1357,8 +1395,48 @@ const VerifyPage = () => {
           <PriceAmount>
             {loadingPrice
               ? "Loading..."
-              : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+              : priceError || !pricingData
+                ? "-"
+                : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
+          {(priceError || (!loadingPrice && !pricingData)) && (
+            <div
+              style={{
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: 8,
+                padding: "10px 12px",
+                color: "#b91c1c",
+                fontSize: 13,
+                marginBottom: 14,
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <FaInfoCircle />
+                <span>Failed to load service price.</span>
+              </div>
+              <button
+                type="button"
+                onClick={fetchPrices}
+                style={{
+                  alignSelf: "flex-start",
+                  background: "none",
+                  border: "none",
+                  color: "#dc2626",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                  fontSize: 12,
+                  padding: 0,
+                  fontWeight: 600,
+                }}
+              >
+                Click here to retry
+              </button>
+            </div>
+          )}
           <PriceBreakdown>
             {pricingData &&
               (() => {
@@ -1427,10 +1505,20 @@ const VerifyPage = () => {
           </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
-            disabled={!isFormValid()}
+            disabled={
+              !isFormValid() || loadingPrice || !!priceError || !pricingData
+            }
             style={{ width: "100%", justifyContent: "center" }}
           >
-            Continue to Payment <FaArrowRight />
+            {loadingPrice ? (
+              "Loading Price..."
+            ) : priceError || !pricingData ? (
+              "Price Unavailable"
+            ) : (
+              <>
+                Continue to Payment <FaArrowRight />
+              </>
+            )}
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
@@ -1500,7 +1588,9 @@ const VerifyPage = () => {
             <SummaryAmount>
               {loadingPrice
                 ? "..."
-                : `${currencySymbol}${totalAmount.toLocaleString()}`}
+                : priceError || !pricingData
+                  ? "-"
+                  : `${currencySymbol}${totalAmount.toLocaleString()}`}
             </SummaryAmount>
           </SummaryHeader>
 
@@ -1642,12 +1732,20 @@ const VerifyPage = () => {
 
           <PayBtn
             onClick={handlePay}
-            disabled={!termsAccepted || loading || loadingPrice}
+            disabled={
+              !termsAccepted ||
+              loading ||
+              loadingPrice ||
+              !!priceError ||
+              !pricingData
+            }
           >
             <FaLock />
             {loading
               ? "Processing..."
-              : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
+              : priceError || !pricingData
+                ? "Price Unavailable"
+                : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
           </PayBtn>
 
           <SecuredBy>
