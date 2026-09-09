@@ -197,6 +197,7 @@ const VerifyPage = () => {
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
+  const [priceError, setPriceError] = useState(false);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
   const [paystackModalOpen, setPaystackModalOpen] = useState(false);
@@ -334,33 +335,58 @@ const VerifyPage = () => {
     };
   }, []);
 
+  const isPricingValid = (data) => {
+    if (!data || typeof data !== "object") return false;
+    if (data.status === "failed") return false;
+    if (typeof data.status === "number" && data.status >= 400) return false;
+    if (data.isAxiosError) return false;
+
+    const hasKesFee =
+      data.serviceFee !== undefined &&
+      data.serviceFee !== null &&
+      !isNaN(Number(data.serviceFee));
+    const hasUsdFee =
+      data.serviceFeeusd !== undefined &&
+      data.serviceFeeusd !== null &&
+      !isNaN(Number(data.serviceFeeusd));
+
+    return hasKesFee || hasUsdFee;
+  };
+
   // Fetch service prices
-  useEffect(() => {
+  const fetchPrices = useCallback(async () => {
     if (!config || !userToken) return;
 
-    const fetchPrices = async () => {
-      try {
-        const pricingData = await dispatch(
-          fetchVerificationServicePrices(config, userToken),
-        );
-        setLoadingPrice(false);
-        setPricingData(pricingData);
-      } catch (err) {
-        setLoadingPrice(false);
-        Swal.fire({
-          icon: "error",
-          title: isSw ? "Hitilafu" : "Error",
-          text: isSw
-            ? "Imeshindwa kupata bei za huduma. Tafadhali jaribu tena."
-            : "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#DD0201",
-        });
+    setLoadingPrice(true);
+    setPriceError(false);
+
+    try {
+      const data = await dispatch(
+        fetchVerificationServicePrices(config, userToken),
+      );
+      if (isPricingValid(data)) {
+        setPricingData(data);
+        setPriceError(false);
+      } else {
+        setPricingData(null);
+        setPriceError(true);
       }
-    };
+    } catch (err) {
+      setPricingData(null);
+      setPriceError(true);
+    } finally {
+      setLoadingPrice(false);
+    }
+  }, [config, userToken, dispatch]);
+
+  useEffect(() => {
     fetchPrices();
-  }, [config, userToken]);
+  }, [fetchPrices]);
 
   if (!config) return null;
+
+  const isPriceAvailable =
+    !loadingPrice && !priceError && isPricingValid(pricingData);
 
   const currencyCheck = localStorage.getItem("currencyCheck") || "KES";
   const isKES = currencyCheck.toUpperCase() === "KES";
@@ -378,17 +404,18 @@ const VerifyPage = () => {
         : config.allBureausDiscount.usd
       : 0;
 
-  const totalAmount = pricingData
-    ? isKES
-      ? ((pricingData.serviceFee || 0) +
-          (pricingData.processingFee || 0) +
-          (pricingData.vat || 0)) *
-          bureauMultiplier -
-        discount
-      : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
-          bureauMultiplier -
-        discount
-    : 0;
+  const totalAmount =
+    isPriceAvailable && pricingData
+      ? isKES
+        ? ((pricingData.serviceFee || 0) +
+            (pricingData.processingFee || 0) +
+            (pricingData.vat || 0)) *
+            bureauMultiplier -
+          discount
+        : ((pricingData.serviceFeeusd || 0) + (pricingData.vatUsd || 0)) *
+            bureauMultiplier -
+          discount
+      : 0;
 
   const currencySymbol = isKES ? "KSh" : "$";
 
@@ -542,6 +569,17 @@ const VerifyPage = () => {
   /* ── Step navigation ── */
 
   const handleContinueToPayment = () => {
+    if (loadingPrice) return;
+
+    if (!isPriceAvailable) {
+      setError(
+        isSw
+          ? "Imeshindwa kupata ada za huduma. Tafadhali jaribu tena kabla ya kuendelea."
+          : "Unable to get service fees. Please try again before proceeding.",
+      );
+      return;
+    }
+
     if (!isFormValid()) {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
@@ -645,6 +683,19 @@ const VerifyPage = () => {
   const handlePay = async () => {
     setLoading(true);
     setError("");
+
+    if (!isPriceAvailable || totalAmount <= 0) {
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: isSw ? "Hitilafu" : "Error",
+        text: isSw
+          ? "Imeshindwa kupata ada za huduma. Tafadhali jaribu tena."
+          : "Unable to get service fees. Please try again.",
+        confirmButtonColor: "#DD0201",
+      });
+      return;
+    }
 
     // Wallet payments must be in the same currency as the verification fee
     if (
@@ -1359,8 +1410,6 @@ const VerifyPage = () => {
           : "Provide the details of the individual you want to verify."}
       </FormCardSub>
 
-      {error && <ErrorAlert>{error}</ErrorAlert>}
-
       <SearchGrid>
         <div>
           <FormGroup>
@@ -1619,93 +1668,189 @@ const VerifyPage = () => {
 
         <SidebarCard>
           <PriceLabel>{isSw ? "Kiasi" : "Amount"}</PriceLabel>
-          <PriceAmount>
+          <PriceAmount
+            style={
+              !isPriceAvailable && !loadingPrice
+                ? { color: "#dc2626", fontSize: 18 }
+                : {}
+            }
+          >
             {loadingPrice
               ? isSw
                 ? "Inapakia..."
                 : "Loading..."
-              : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+              : isPriceAvailable
+                ? `${currencySymbol}${totalAmount.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}`
+                : isSw
+                  ? "Haipatikani"
+                  : "Unavailable"}
           </PriceAmount>
-          <PriceBreakdown>
-            {pricingData &&
-              (() => {
-                const processingFees = isKES
-                  ? (pricingData.serviceFee || 0) +
-                    (pricingData.processingFee || 0)
-                  : pricingData.serviceFeeusd || 0;
-                const taxCharges = isKES
-                  ? pricingData.vat || 0
-                  : pricingData.vatUsd || 0;
-                const perBureau = processingFees + taxCharges;
-                const subtotal = perBureau * bureauMultiplier;
-                const totalToPay = subtotal - discount;
-                return (
-                  <>
-                    <PriceRow>
-                      <span>
-                        {isSw ? "Ada za uchakataji" : "Processing fees"}
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(processingFees * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    <PriceRow>
-                      <span>
-                        {isSw ? "Kodi na ada" : "Tax & charges"}
-                        {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {(taxCharges * bureauMultiplier).toLocaleString(
-                          undefined,
-                          {
-                            minimumFractionDigits: 2,
-                          },
-                        )}
-                      </span>
-                    </PriceRow>
-                    {discount > 0 && (
+
+          {!loadingPrice && !isPriceAvailable && (
+            <div
+              style={{
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: 8,
+                padding: "10px 12px",
+                margin: "12px 0",
+                fontSize: 13,
+                color: "#991b1b",
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontWeight: 600,
+                }}
+              >
+                <FaInfoCircle />
+                <span>
+                  {isSw
+                    ? "Imeshindwa kupata ada za huduma"
+                    : "Unable to get service fees"}
+                </span>
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#7f1d1d",
+                  lineHeight: 1.4,
+                }}
+              >
+                {isSw
+                  ? "Bei za huduma hii hazipatikani kwa sasa. Tafadhali jaribu tena au wasiliana na huduma kwa wateja."
+                  : "Pricing for this service is currently unavailable. Please try again or contact support."}
+              </div>
+              <button
+                type="button"
+                onClick={fetchPrices}
+                style={{
+                  background: "#dc2626",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "6px 12px",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  alignSelf: "flex-start",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                <FaBolt /> {isSw ? "Jaribu Tena" : "Retry"}
+              </button>
+            </div>
+          )}
+
+          {isPriceAvailable && (
+            <PriceBreakdown>
+              {pricingData &&
+                (() => {
+                  const processingFees = isKES
+                    ? (pricingData.serviceFee || 0) +
+                      (pricingData.processingFee || 0)
+                    : pricingData.serviceFeeusd || 0;
+                  const taxCharges = isKES
+                    ? pricingData.vat || 0
+                    : pricingData.vatUsd || 0;
+                  const perBureau = processingFees + taxCharges;
+                  const subtotal = perBureau * bureauMultiplier;
+                  const totalToPay = subtotal - discount;
+                  return (
+                    <>
                       <PriceRow>
-                        <span style={{ color: "#16a34a" }}>
-                          {isSw ? "Punguzo" : "Discount"}
+                        <span>
+                          {isSw ? "Ada za uchakataji" : "Processing fees"}
+                          {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
                         </span>
-                        <span style={{ color: "#16a34a" }}>
-                          -{currencySymbol}
-                          {discount.toLocaleString(undefined, {
+                        <span>
+                          {currencySymbol}
+                          {(processingFees * bureauMultiplier).toLocaleString(
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                            },
+                          )}
+                        </span>
+                      </PriceRow>
+                      <PriceRow>
+                        <span>
+                          {isSw ? "Kodi na ada" : "Tax & charges"}
+                          {bureauMultiplier > 1 ? ` × ${bureauMultiplier}` : ""}
+                        </span>
+                        <span>
+                          {currencySymbol}
+                          {(taxCharges * bureauMultiplier).toLocaleString(
+                            undefined,
+                            {
+                              minimumFractionDigits: 2,
+                            },
+                          )}
+                        </span>
+                      </PriceRow>
+                      {discount > 0 && (
+                        <PriceRow>
+                          <span style={{ color: "#16a34a" }}>
+                            {isSw ? "Punguzo" : "Discount"}
+                          </span>
+                          <span style={{ color: "#16a34a" }}>
+                            -{currencySymbol}
+                            {discount.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                            })}
+                          </span>
+                        </PriceRow>
+                      )}
+                      <PriceTotalRow>
+                        <span>
+                          {isSw ? "Jumla ya kulipa" : "Total to be paid"}
+                        </span>
+                        <span>
+                          {currencySymbol}
+                          {totalToPay.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                           })}
                         </span>
-                      </PriceRow>
-                    )}
-                    <PriceTotalRow>
-                      <span>
-                        {isSw ? "Jumla ya kulipa" : "Total to be paid"}
-                      </span>
-                      <span>
-                        {currencySymbol}
-                        {totalToPay.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                        })}
-                      </span>
-                    </PriceTotalRow>
-                  </>
-                );
-              })()}
-          </PriceBreakdown>
+                      </PriceTotalRow>
+                    </>
+                  );
+                })()}
+            </PriceBreakdown>
+          )}
           <ContinueBtn
             onClick={handleContinueToPayment}
-            disabled={!isFormValid()}
+            disabled={!isFormValid() || loadingPrice || !isPriceAvailable}
+            title={
+              !isPriceAvailable && !loadingPrice
+                ? isSw
+                  ? "Imeshindwa kupata ada za huduma"
+                  : "Unable to get service fees"
+                : undefined
+            }
             style={{ width: "100%", justifyContent: "center" }}
           >
-            {isSw ? "Endelea kwa Malipo" : "Continue to Payment"}{" "}
-            <FaArrowRight />
+            {loadingPrice
+              ? isSw
+                ? "Inapakia ada..."
+                : "Loading fees..."
+              : !isPriceAvailable
+                ? isSw
+                  ? "Ada Hazipatikani"
+                  : "Unable to Get Service Fees"
+                : isSw
+                  ? "Endelea kwa Malipo"
+                  : "Continue to Payment"}{" "}
+            {isPriceAvailable && !loadingPrice && <FaArrowRight />}
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
@@ -1785,7 +1930,11 @@ const VerifyPage = () => {
             <SummaryAmount>
               {loadingPrice
                 ? "..."
-                : `${currencySymbol}${totalAmount.toLocaleString()}`}
+                : isPriceAvailable
+                  ? `${currencySymbol}${totalAmount.toLocaleString()}`
+                  : isSw
+                    ? "Haipatikani"
+                    : "Unavailable"}
             </SummaryAmount>
           </SummaryHeader>
 
@@ -1812,7 +1961,7 @@ const VerifyPage = () => {
             <SummaryValue>{userEmail || "—"}</SummaryValue>
           </SummaryRow>
 
-          {pricingData && (
+          {isPriceAvailable && pricingData && (
             <>
               <div
                 style={{
@@ -1962,7 +2111,9 @@ const VerifyPage = () => {
 
           <PayBtn
             onClick={handlePay}
-            disabled={loading || loadingPrice || !termsAccepted}
+            disabled={
+              loading || loadingPrice || !termsAccepted || !isPriceAvailable
+            }
           >
             <FaLock />
             {loading
@@ -2582,10 +2733,15 @@ const VerifyPage = () => {
         <HeroInner>
           <HeroText>
             <HeroTitle>
-              {config.heroTitle} <span>{config.heroHighlight}</span>{" "}
+              {isSw ? "Thibitisha Kitambulisho Chako" : config.heroTitle}{" "}
+              <span>{isSw ? "kwa sekunde" : config.heroHighlight}</span>{" "}
               {config.heroTitleContinue}
             </HeroTitle>
-            <HeroSubtitle>{config.heroSubtitle}</HeroSubtitle>
+            <HeroSubtitle>
+              {isSw
+                ? "Weka maelezo, lipa kwa usalama na upate matokeo sahihi mara moja."
+                : config.heroSubtitle}
+            </HeroSubtitle>
           </HeroText>
           <HeroImage src={config.heroImage} alt={config.serviceName} />
         </HeroInner>
