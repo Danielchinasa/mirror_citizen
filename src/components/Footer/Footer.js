@@ -72,14 +72,14 @@ function Footer() {
                   <FaInstagram />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://x.com/ECitizenAfrica"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaXTwitter />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://www.facebook.com/profile.php?id=61593887716716"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

@@ -36,9 +36,10 @@ const verificationConfig = {
       {
         name: "subjectPhone",
         label: "Subject Contact Number (for consent)",
-        placeholder: "Enter subject's phone number",
+        placeholder: "e.g. 241234567",
         type: "tel",
         inputMode: "tel",
+        hasCountryCode: true,
         pattern: "[+]?[0-9]*",
         numericOnly: true,
         allowPlus: true,

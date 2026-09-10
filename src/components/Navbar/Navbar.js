@@ -983,8 +983,8 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href={withBasePath("/#services")}>
-                Get Started
+              <PublicCta href={withBasePath("/verification-login")}>
+                Sign In / Register
               </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
@@ -1018,10 +1018,10 @@ function Navbar() {
                 Support
               </PublicMobileLink>
               <PublicMobileAnchor
-                href={withBasePath("/#how-it-works")}
+                href={withBasePath("/verification-login")}
                 onClick={closeMobileMenu}
               >
-                Get Started
+                Sign In / Register
               </PublicMobileAnchor>
             </PublicMobileMenu>
           </PublicMobilePanel>
