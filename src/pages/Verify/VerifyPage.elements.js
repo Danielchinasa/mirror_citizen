@@ -785,12 +785,14 @@ export const PaymentOption = styled.label`
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border: 2px solid ${(props) => (props.selected ? "var(--ec-primary)" : "var(--ec-border)")};
+  border: 2px solid
+    ${(props) => (props.selected ? "var(--ec-primary)" : "var(--ec-border)")};
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.2s;
-  background: ${(props) => (props.selected ? "var(--ec-bg-primary-light)" : "var(--ec-bg-card)")};
+  background: ${(props) =>
+    props.selected ? "var(--ec-bg-primary-light)" : "var(--ec-bg-card)"};
 
   &:last-child {
     margin-bottom: 0;
@@ -1193,5 +1195,111 @@ export const IdTypeDisplay = styled.div`
   svg {
     color: #dd0201;
     font-size: 16px;
+  }
+`;
+
+/* ─── Country Code & Phone Input ─── */
+
+export const PhoneInputGroup = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--ec-border);
+  border-radius: 10px;
+  background: var(--ec-bg-card);
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  position: relative;
+
+  &:focus-within {
+    border-color: #dd0201;
+  }
+`;
+
+export const PhoneCountryWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-right: 1px solid var(--ec-border);
+  background: rgba(0, 0, 0, 0.02);
+  border-top-left-radius: 9px;
+  border-bottom-left-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+`;
+
+export const PhoneCountryDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px 14px 14px;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ec-text-secondary);
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+`;
+
+export const PhoneCountrySelect = styled.select`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+`;
+
+export const PhoneInputField = styled.input`
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  color: var(--ec-text-secondary);
+  outline: none;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: var(--ec-text-muted);
+    opacity: 0.7;
+  }
+`;
+
+export const PhoneAttachedHint = styled.div`
+  margin-top: 6px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  color: var(--ec-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .attached-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    strong {
+      color: var(--ec-heading, #111);
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
   }
 `;

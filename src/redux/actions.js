@@ -523,7 +523,7 @@ export const fetchVerificationServicePrices =
 
       if (config.serviceCode) {
         const response = await apiGetInternalCall(
-          `/africa/countries/UG/service-pricesoo`,
+          `/africa/countries/UG/service-prices`,
           token,
         );
         const services = response?.data?.data || response?.data || [];
@@ -534,7 +534,7 @@ export const fetchVerificationServicePrices =
       } else {
         const ipAddress = localStorage.getItem("IpAddress");
         const response = await apiPostInternalCall(
-          `/transaction/service-pricesoo`,
+          `/transaction/service-prices`,
           { ipAddress },
           token,
         );

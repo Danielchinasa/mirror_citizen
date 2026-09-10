@@ -60,28 +60,28 @@ function Footer() {
               <BrandDesc>{t("footer.tagline")}</BrandDesc>
               <SocialRow>
                 <SocialIcon
-                  href="https://www.instagram.com/ecitizenng/"
+                  href="https://www.instagram.com/biosecofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaInstagram />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://x.com/ERaiaAfrica"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaXTwitter />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://www.facebook.com/profile.php?id=61593887716716"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaFacebook />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://www.tiktok.com/@ecitizenng"
+                  href="https://www.tiktok.com/@biosecofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -99,9 +99,7 @@ function Footer() {
 
             <FooterCol>
               <FooterColTitle>{t("footer.support")}</FooterColTitle>
-              <FooterLink to="/contact">
-                {t("footer.contact")}
-              </FooterLink>
+              <FooterLink to="/contact">{t("footer.contact")}</FooterLink>
               <FooterLink to="/faq-uganda">{t("footer.faqs")}</FooterLink>
               <ExternalLink
                 href="https://blog.e-citizen.ng/"

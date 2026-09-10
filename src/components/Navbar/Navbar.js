@@ -987,7 +987,7 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href={withBasePath("/#services")}>
+              <PublicCta href={withBasePath("/verification-login")}>
                 {t("nav.getStarted")}
               </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
@@ -1024,7 +1024,7 @@ function Navbar() {
               </PublicMobileLink>
 
               <PublicMobileAnchor
-                href={withBasePath("/#services")}
+                href={withBasePath("/verification-login")}
                 onClick={closeMobileMenu}
               >
                 {t("nav.getStarted")}
