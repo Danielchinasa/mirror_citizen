@@ -80,7 +80,7 @@ function Footer() {
               </BrandDesc>
               <SocialRow>
                 <SocialIcon
-                  href="https://www.instagram.com/ecitizenng/"
+                  href="https://www.instagram.com/biosecofficial/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -94,14 +94,14 @@ function Footer() {
                   <FaXTwitter />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://www.facebook.com/profile.php?id=61593887716716"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaFacebook />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://www.tiktok.com/@ecitizenng"
+                  href="https://www.tiktok.com/@biosecofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
