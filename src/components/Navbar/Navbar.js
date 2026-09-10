@@ -58,7 +58,10 @@ import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { withAnalyticsMetadata } from "../../analytics/attribution";
-import { trackAnalyticsEvent, trackPurchaseConversion } from "../../hooks/analytics";
+import {
+  trackAnalyticsEvent,
+  trackPurchaseConversion,
+} from "../../hooks/analytics";
 
 const { useToken } = theme;
 
@@ -922,11 +925,8 @@ function Navbar() {
               <PublicDesktopOnly>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta
-                href="/#verification-services"
-                onClick={handleGetStarted}
-              >
-                Get Started
+              <PublicCta href="/verification-login">
+                Sign In / Register
               </PublicCta>
               <PublicHamburger onClick={handleClick} aria-label="Open menu">
                 {click ? <FaTimes /> : <FaBars />}
@@ -959,8 +959,8 @@ function Navbar() {
               <PublicMobileLink to="/contact" onClick={closeMobileMenu}>
                 Support
               </PublicMobileLink>
-              <PublicMobileAnchor href="#" onClick={handleGetStarted}>
-                Get Started
+              <PublicMobileAnchor href="/verification-login">
+                Sign In / Register
               </PublicMobileAnchor>
 
               {/* Country selector for mobile */}
@@ -1088,7 +1088,7 @@ function Navbar() {
               {!isAuthenticated && (
                 <>
                   <NavItemBtn>
-                    <NavBtnLink to="#" onClick={handleGetStarted}>
+                    <NavBtnLink to="/verification-login">
                       <OutlineButton
                         $token={token}
                         type="primary"
@@ -1097,7 +1097,7 @@ function Navbar() {
                           fontWeight: "700",
                         }}
                       >
-                        GET STARTED
+                        Sign In / Register
                       </OutlineButton>
                     </NavBtnLink>
                   </NavItemBtn>

@@ -1502,9 +1502,26 @@ const VerifyPage = () => {
                 gap: 6,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontWeight: 600,
+                }}
+              >
                 <FaInfoCircle />
-                <span>Failed to load service price.</span>
+                <span>Unable to get service fees</span>
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#7f1d1d",
+                  lineHeight: 1.4,
+                }}
+              >
+                Pricing for this service is currently unavailable. Please try
+                again or contact support.
               </div>
               <button
                 type="button"
@@ -1521,7 +1538,7 @@ const VerifyPage = () => {
                   fontWeight: 600,
                 }}
               >
-                Click here to retry
+                Retry
               </button>
             </div>
           )}
