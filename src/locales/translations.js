@@ -10,7 +10,7 @@ const translations = {
     "nav.faq": "FAQ",
     "nav.support": "Assistance",
     "nav.login": "Connexion",
-    "nav.getStarted": "Commencer",
+    "nav.getStarted": "Connexion",
     "nav.getStartedCaps": "COMMENCER",
     "nav.viewDashboard": "Voir le Tableau de Bord",
     "nav.verifyNow": "Vérifier Maintenant",
@@ -345,6 +345,8 @@ const translations = {
     "verify.error.fillEitherOr": "Veuillez remplir au moins un des champs.",
     "verify.error.fillRequired":
       "Veuillez remplir tous les champs obligatoires.",
+    "verify.error.invalidPhone":
+      "Veuillez entrer un numéro de téléphone de contact valide.",
 
     "verify.result.title": "Vérification terminée !",
     "verify.result.summary": "Récapitulatif de vérification",
@@ -625,7 +627,7 @@ const translations = {
     "nav.faq": "FAQ",
     "nav.support": "Support",
     "nav.login": "Log In",
-    "nav.getStarted": "Get Started",
+    "nav.getStarted": "Sign In / Register",
     "nav.getStartedCaps": "GET STARTED",
     "nav.viewDashboard": "View Dashboard",
     "nav.verifyNow": "Verify Now",
@@ -942,6 +944,8 @@ const translations = {
       "Please provide the subject's phone number or email for consent.",
     "verify.error.fillEitherOr": "Please fill in at least one of the fields.",
     "verify.error.fillRequired": "Please fill in all required fields.",
+    "verify.error.invalidPhone":
+      "Please enter a valid subject contact phone number.",
 
     "verify.result.title": "Verification Complete!",
     "verify.result.summary": "Verification Summary",

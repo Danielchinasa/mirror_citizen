@@ -39,7 +39,8 @@ const verificationConfig = {
       {
         name: "subjectPhone",
         label: "Contact du sujet (pour consentement)",
-        placeholder: "Entrez le numéro de téléphone du sujet",
+        placeholder: "p. ex. +225XXXXXXXXX",
+        hasCountryCode: true,
         type: "tel",
         inputMode: "tel",
         pattern: "[+]?[0-9]*",
@@ -361,7 +362,8 @@ const verificationConfig = {
       {
         name: "subjectPhone",
         label: "Contact du sujet (pour consentement)",
-        placeholder: "Entrez le numéro de téléphone du sujet",
+        placeholder: "p. ex. +225XXXXXXXXX",
+        hasCountryCode: true,
         type: "tel",
         inputMode: "tel",
         pattern: "[+]?[0-9]*",
@@ -425,7 +427,7 @@ const localizedContent = {
         idNumber: { label: "NNI Number", placeholder: "Enter NNI number" },
         subjectPhone: {
           label: "Subject contact (for consent)",
-          placeholder: "Enter the subject's phone number",
+          placeholder: "e.g. 712345678",
         },
         subjectEmail: {
           label: "Subject email (for consent)",
@@ -496,7 +498,7 @@ const localizedContent = {
         },
         subjectPhone: {
           label: "Subject contact (for consent)",
-          placeholder: "Enter the subject's phone number",
+          placeholder: "e.g. 712345678",
         },
         subjectEmail: {
           label: "Subject email (for consent)",

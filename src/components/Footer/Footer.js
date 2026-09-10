@@ -66,28 +66,28 @@ function Footer() {
               <BrandDesc>{t("footer.brandDesc")}</BrandDesc>
               <SocialRow>
                 <SocialIcon
-                  href="https://www.instagram.com/ecitizenng/"
+                  href="https://www.instagram.com/biosecofficial/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaInstagram />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://x.com/CitoyenAfrica"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaXTwitter />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://x.com/ecitizenng"
+                  href="https://www.facebook.com/profile.php?id=61593902775843"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaFacebook />
                 </SocialIcon>
                 <SocialIcon
-                  href="https://www.tiktok.com/@ecitizenng"
+                  href="https://www.tiktok.com/@biosecofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

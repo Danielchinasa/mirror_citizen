@@ -154,7 +154,19 @@ import {
   ResultFooterPopup,
   ResultDisclaimerPopup,
   ErrorAlert,
+  PhoneInputGroup,
+  PhoneCountryWrapper,
+  PhoneCountryDisplay,
+  PhoneCountrySelect,
+  PhoneInputField,
+  PhoneAttachedHint,
 } from "./VerifyPage.elements";
+import {
+  COUNTRY_CODES,
+  getDefaultCountryCode,
+  DUMMY_PHONE_PLACEHOLDER,
+  formatPhoneNumberWithCountryCode,
+} from "./countryCodes";
 
 // Steps are now dynamic — defined inside the component based on config.requiresConsent
 
@@ -198,6 +210,13 @@ const VerifyPage = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
+  const [subjectCountryCode, setSubjectCountryCode] = useState(() =>
+    getDefaultCountryCode(),
+  );
+  const [subjectPhoneLocal, setSubjectPhoneLocal] = useState("");
+  const currentCountryObj =
+    COUNTRY_CODES.find((c) => c.code === subjectCountryCode) ||
+    COUNTRY_CODES[0];
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -250,7 +269,9 @@ const VerifyPage = () => {
     if (!config) {
       history.replace("/main-dashboard");
     }
-  }, [config, history]);
+    setSubjectPhoneLocal("");
+    setSubjectCountryCode(getDefaultCountryCode());
+  }, [config, history, type]);
 
   // Poll payment status for Paystack or Flutterwave
   useEffect(() => {
@@ -586,8 +607,63 @@ const VerifyPage = () => {
     }
   };
 
+  const handleCountryCodeChange = (e) => {
+    const newCode = e.target.value;
+    setSubjectCountryCode(newCode);
+
+    if (subjectPhoneLocal && subjectPhoneLocal.trim()) {
+      const attached = formatPhoneNumberWithCountryCode(
+        subjectPhoneLocal,
+        newCode,
+      );
+      setFormData((prev) => ({ ...prev, subjectPhone: attached }));
+    }
+  };
+
+  const handleSubjectPhoneChange = (e) => {
+    let rawVal = e.target.value;
+
+    // If pasted number starts with +, find matching country code
+    if (rawVal.startsWith("+")) {
+      const matched = COUNTRY_CODES.find((c) => rawVal.startsWith(c.code));
+      if (matched) {
+        setSubjectCountryCode(matched.code);
+        rawVal = rawVal.slice(matched.code.length);
+      }
+    }
+
+    let cleanDigits = rawVal.replace(/\D/g, "");
+
+    // If clean digits start with the country code digits (e.g. pasted 225...), strip it
+    const codeDigits = (subjectCountryCode || "").replace(/\D/g, "");
+    if (
+      codeDigits &&
+      cleanDigits.startsWith(codeDigits) &&
+      cleanDigits.length > codeDigits.length + 5
+    ) {
+      cleanDigits = cleanDigits.slice(codeDigits.length);
+    }
+
+    setSubjectPhoneLocal(cleanDigits);
+
+    if (!cleanDigits) {
+      setFormData((prev) => ({ ...prev, subjectPhone: "" }));
+      setError("");
+      return;
+    }
+
+    const attached = formatPhoneNumberWithCountryCode(
+      cleanDigits,
+      subjectCountryCode,
+    );
+    setFormData((prev) => ({ ...prev, subjectPhone: attached }));
+    setError("");
+  };
+
   const handleClear = () => {
     setFormData({});
+    setSubjectPhoneLocal("");
+    setSubjectCountryCode(getDefaultCountryCode());
     setSelectedBureaus({});
     resetFunnelTracking();
     setError("");
@@ -663,6 +739,19 @@ const VerifyPage = () => {
               : t("verify.error.fillRequired"),
       );
       return;
+    }
+
+    if (formData.subjectPhone?.trim()) {
+      const digitsOnly = formData.subjectPhone.replace(/\D/g, "");
+      if (digitsOnly.length < 8) {
+        setError(
+          t(
+            "verify.error.invalidPhone",
+            "Veuillez entrer un numéro de téléphone de contact valide.",
+          ),
+        );
+        return;
+      }
     }
     setError("");
 
@@ -1609,6 +1698,74 @@ const VerifyPage = () => {
                       </option>
                     ))}
                   </FormSelect>
+                ) : field.name === "subjectPhone" || field.hasCountryCode ? (
+                  <>
+                    <PhoneInputGroup>
+                      <PhoneCountryWrapper title="Click to change country code">
+                        <PhoneCountryDisplay>
+                          <span>{currentCountryObj.flag}</span>
+                          <span>{currentCountryObj.code}</span>
+                          <span
+                            style={{
+                              fontSize: 10,
+                              color: "#888",
+                              marginLeft: 2,
+                            }}
+                          >
+                            ▼
+                          </span>
+                        </PhoneCountryDisplay>
+                        <PhoneCountrySelect
+                          value={subjectCountryCode}
+                          onChange={handleCountryCodeChange}
+                          aria-label="Select country code"
+                        >
+                          {COUNTRY_CODES.map((item) => (
+                            <option
+                              key={`${item.iso}-${item.code}-${item.country}`}
+                              value={item.code}
+                            >
+                              {item.flag} {item.code} ({item.country})
+                            </option>
+                          ))}
+                        </PhoneCountrySelect>
+                      </PhoneCountryWrapper>
+                      <PhoneInputField
+                        type="tel"
+                        name={field.name}
+                        placeholder={
+                          field.placeholder || `e.g. ${DUMMY_PHONE_PLACEHOLDER}`
+                        }
+                        value={subjectPhoneLocal}
+                        onChange={handleSubjectPhoneChange}
+                        onKeyDown={handleKeyDown(field)}
+                        maxLength={15}
+                        inputMode="tel"
+                      />
+                    </PhoneInputGroup>
+                    <PhoneAttachedHint>
+                      {formData.subjectPhone ? (
+                        <div className="attached-preview">
+                          <span>
+                            {language === "FR" ? "Attaché :" : "Attached:"}
+                          </span>
+                          <strong>{formData.subjectPhone}</strong>
+                        </div>
+                      ) : (
+                        <span>
+                          {language === "FR" ? "Exemple :" : "Sample:"}{" "}
+                          <strong>{DUMMY_PHONE_PLACEHOLDER}</strong>{" "}
+                          {language === "FR" ? "(sans 0)" : "(without 0)"}
+                        </span>
+                      )}
+                      {field.showCounter && (
+                        <span>
+                          {(formData[field.name] || "").length}/
+                          {field.maxLength}
+                        </span>
+                      )}
+                    </PhoneAttachedHint>
+                  </>
                 ) : (
                   <FormInput
                     type={field.type || "text"}
@@ -1629,11 +1786,13 @@ const VerifyPage = () => {
                     pattern={field.pattern}
                   />
                 )}
-                {field.showCounter && (
-                  <CharCounter>
-                    {(formData[field.name] || "").length}/{field.maxLength}
-                  </CharCounter>
-                )}
+                {field.showCounter &&
+                  field.name !== "subjectPhone" &&
+                  !field.hasCountryCode && (
+                    <CharCounter>
+                      {(formData[field.name] || "").length}/{field.maxLength}
+                    </CharCounter>
+                  )}
               </FormGroup>
             </React.Fragment>
           ))}

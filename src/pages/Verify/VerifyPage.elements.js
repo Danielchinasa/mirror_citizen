@@ -1204,3 +1204,99 @@ export const IdTypeDisplay = styled.div`
     font-size: 16px;
   }
 `;
+
+/* ─── Phone Number with Country Code Prefix ─── */
+
+export const PhoneInputGroup = styled.div`
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid var(--ec-border);
+  border-radius: 10px;
+  background: var(--ec-bg-input);
+  overflow: hidden;
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--ec-primary);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+  }
+`;
+
+export const PhoneCountryWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--ec-bg-secondary);
+  border-right: 1px solid var(--ec-border);
+  cursor: pointer;
+  flex-shrink: 0;
+`;
+
+export const PhoneCountryDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ec-text);
+  white-space: nowrap;
+  pointer-events: none;
+`;
+
+export const PhoneCountrySelect = styled.select`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  appearance: none;
+  font-size: 14px;
+`;
+
+export const PhoneInputField = styled.input`
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 14px 16px;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  color: var(--ec-text);
+
+  &::placeholder {
+    color: var(--ec-input-placeholder);
+    font-size: 15px;
+  }
+`;
+
+export const PhoneAttachedHint = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  color: var(--ec-text-muted);
+
+  .attached-preview {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    strong {
+      color: var(--ec-primary);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  span strong {
+    color: var(--ec-text);
+  }
+`;
