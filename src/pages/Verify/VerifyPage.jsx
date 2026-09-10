@@ -1506,8 +1506,7 @@ const VerifyPage = () => {
                         letterSpacing: "0.5px",
                       }}
                     >
-                      {t("verify.consent.contactDetails") ||
-                        "Consent Contact Details"}
+                      {"Consent Contact Details"}
                     </div>
                   </>
                 )}
