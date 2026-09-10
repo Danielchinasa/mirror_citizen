@@ -10,6 +10,7 @@ import {
   Divider,
   Spin,
   Radio,
+  Pagination,
 } from "antd";
 import paypal from "../../images/paypal.png";
 import {
@@ -171,9 +172,9 @@ const MainDashboard = () => {
     }
   }, [dispatch, userToken, currentPage, pageSize]);
 
-  const handlePageChange = (page, pageSize) => {
-    setCurrentPage(page);
-    setPageSize(pageSize);
+  const handlePageChange = (page, nextPageSize) => {
+    setCurrentPage(nextPageSize !== pageSize ? 1 : page);
+    setPageSize(nextPageSize);
   };
 
   // Log the verificationData to the console
@@ -864,28 +865,31 @@ const MainDashboard = () => {
 
           <div ref={componentRef}>
             {list && (
-              <DynamicTable
-                $token={token}
-                expandable
-                scroll={{ x: true }}
-                columns={columns}
-                dataSource={filteredData && filteredData}
-                onRow={(record, rowIndex) => {
-                  return {
-                    onClick: () => handleViewResult(record),
-                    style: { cursor: "pointer" },
-                  };
-                }}
-                pagination={{
-                  current: currentPage,
-                  pageSize: pageSize,
-                  className: "ant-pagination ant-pagination-item",
-                  total: verificationData && verificationData.totalCount,
-                  onChange: handlePageChange,
-                  showSizeChanger: true,
-                  position: ["bottomCenter"],
-                }}
-              />
+              <>
+                <DynamicTable
+                  $token={token}
+                  expandable
+                  scroll={{ x: true }}
+                  columns={columns}
+                  dataSource={filteredData && filteredData}
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: () => handleViewResult(record),
+                      style: { cursor: "pointer" },
+                    };
+                  }}
+                  pagination={false}
+                />
+                <Pagination
+                  current={currentPage}
+                  pageSize={pageSize}
+                  className="ant-pagination ant-pagination-item"
+                  total={verificationData && verificationData.totalCount}
+                  onChange={handlePageChange}
+                  showSizeChanger
+                  style={{ marginTop: 16, textAlign: "center" }}
+                />
+              </>
             )}
           </div>
         </>
