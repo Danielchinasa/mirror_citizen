@@ -388,7 +388,7 @@ const VerifyPage = () => {
     try {
       const ipAddress = localStorage.getItem("IpAddress");
       const response = await apiPostInternalCall(
-        `/transaction/service-pricesrr`,
+        `/transaction/service-prices`,
         { ipAddress },
         userToken,
       );
