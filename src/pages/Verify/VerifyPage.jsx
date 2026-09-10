@@ -41,6 +41,14 @@ import {
   RECORD_NOT_FOUND_TITLE,
   isRecordNotFoundDetail,
 } from "../../constants/verificationMessages";
+import {
+  trackBeginCheckout,
+  trackFormSubmit,
+  trackPaymentFailed,
+  trackPaymentInitiated,
+  trackVerificationStarted,
+} from "../../analytics/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -228,6 +236,12 @@ const VerifyPage = () => {
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
+  const paymentAttemptInFlightRef = useRef(false);
+  const funnelTrackedRef = useRef({
+    formSubmit: false,
+    beginCheckout: false,
+    verificationStarted: false,
+  });
 
   // Dynamic steps based on whether this verification type requires consent
   const isConsentVerification =
@@ -451,6 +465,32 @@ const VerifyPage = () => {
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
 
+  const resetFunnelTracking = () => {
+    funnelTrackedRef.current = {
+      formSubmit: false,
+      beginCheckout: false,
+      verificationStarted: false,
+    };
+  };
+
+  const trackFormSubmitOnce = () => {
+    if (funnelTrackedRef.current.formSubmit) return;
+    funnelTrackedRef.current.formSubmit = true;
+    trackFormSubmit(type);
+  };
+
+  const trackBeginCheckoutOnce = (params = {}) => {
+    if (funnelTrackedRef.current.beginCheckout) return;
+    funnelTrackedRef.current.beginCheckout = true;
+    trackBeginCheckout(type, params);
+  };
+
+  const trackVerificationStartedOnce = () => {
+    if (funnelTrackedRef.current.verificationStarted) return;
+    funnelTrackedRef.current.verificationStarted = true;
+    trackVerificationStarted(type);
+  };
+
   /* ── Form handlers ── */
 
   const handleInputChange = (e) => {
@@ -468,12 +508,16 @@ const VerifyPage = () => {
     }
 
     setFormData((prev) => ({ ...prev, ...updates }));
+    if (currentStep === 0) {
+      resetFunnelTracking();
+    }
     setError("");
   };
 
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    resetFunnelTracking();
     setError("");
   };
 
@@ -547,6 +591,7 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    trackFormSubmitOnce();
     setShowDisclaimer(true);
   };
 
@@ -559,6 +604,11 @@ const VerifyPage = () => {
       return;
     }
     setShowDisclaimer(false);
+    trackBeginCheckoutOnce({
+      amount: totalAmount,
+      value: totalAmount,
+      currency: currencyCheck,
+    });
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -620,6 +670,8 @@ const VerifyPage = () => {
       );
       return;
     }
+    if (paymentAttemptInFlightRef.current) return;
+    paymentAttemptInFlightRef.current = true;
     setLoading(true);
     setError("");
     setCurrentStep(2); // Processing
@@ -636,6 +688,7 @@ const VerifyPage = () => {
 
     try {
       // 1. Initiate verification
+      trackVerificationStartedOnce();
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
@@ -666,6 +719,8 @@ const VerifyPage = () => {
         text: err.message || "An error occurred. Please try again.",
         confirmButtonColor: "#09c93a",
       });
+    } finally {
+      paymentAttemptInFlightRef.current = false;
     }
   };
 
@@ -696,13 +751,21 @@ const VerifyPage = () => {
         amount: totalAmount,
       };
 
+      trackPaymentInitiated(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: "Wallet",
+        transaction_id: transactionId,
+      });
+
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
       const data = await response.json();
@@ -733,6 +796,13 @@ const VerifyPage = () => {
         setPaymentUrl(response.data.authorization_url);
         setPaystackReference(response.data.reference);
         setActiveGateway("paystack");
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Paystack",
+          transaction_id: response.data.reference,
+        });
         setPaystackModalOpen(true);
         setLoading(false);
         setCurrentStep(1); // Stay on payment step while modal is open
@@ -762,7 +832,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(await withAnalyticsMetadata(postData)),
       });
 
       const responseData = await response.json();
@@ -775,6 +845,13 @@ const VerifyPage = () => {
           "transactionID",
           responseData.data.txRef || transactionId,
         );
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Flutterwave",
+          transaction_id: responseData.data.txRef || transactionId,
+        });
         setActiveGateway("flutterwave");
         setPaystackModalOpen(true);
         setLoading(false);
@@ -809,31 +886,42 @@ const VerifyPage = () => {
         },
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        const paymentStatus = (
-          data?.data?.status ||
-          data?.data?.paymentStatus ||
-          ""
-        ).toLowerCase();
-
-        if (paymentStatus === "successful" || paymentStatus === "success") {
-          // Payment succeeded before closing — proceed with verification
-          setLoading(true);
-          setCurrentStep(2); // Processing
-          if (pendingApiFormRef.current) {
-            await handleCompleteVerification(pendingApiFormRef.current);
-          }
-          return;
-        }
+      if (!res.ok) {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Cancelled",
+          text: "Your payment was cancelled or declined.",
+          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          confirmButtonColor: "#09c93a",
+        });
+        return;
       }
 
-      Swal.fire({
-        icon: "info",
-        title: "Payment Cancelled",
-        text: "You closed the payment window before completing the transaction.",
-        confirmButtonColor: "#09c93a",
-      });
+      const data = await res.json();
+      const paymentStatus = (
+        data?.data?.status ||
+        data?.status ||
+        data?.data?.paymentStatus ||
+        ""
+      ).toLowerCase();
+
+      if (paymentStatus === "successful" || paymentStatus === "success") {
+        // Payment succeeded before closing — proceed with verification
+        setLoading(true);
+        setCurrentStep(2); // Processing
+        if (pendingApiFormRef.current) {
+          await handleCompleteVerification(pendingApiFormRef.current);
+        }
+        return;
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: "Your payment could not be completed. Please try again.",
+          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          confirmButtonColor: "#09c93a",
+        });
+      }
     } catch {
       Swal.fire({
         icon: "info",

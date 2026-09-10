@@ -49,7 +49,6 @@ import { Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Space, Divider, Input } from "antd";
 import paypal from "../../images/paypal.png";
-import ReactGA from "react-ga4";
 import Swal from "sweetalert2";
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { theme } from "antd";
@@ -58,7 +57,8 @@ import baseUrl from "../../apiConfig";
 import { imageBaseUrl } from "../../apiConfig";
 import axios from "axios"; // Import axios
 import { initiatePaystackPayment } from "../../services/paystackService";
-import { trackPurchaseConversion } from "../../hooks/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
+import { trackAnalyticsEvent, trackPurchaseConversion } from "../../hooks/analytics";
 
 const { useToken } = theme;
 
@@ -621,10 +621,9 @@ function Navbar() {
       });
       return;
     }
-
-    ReactGA.event({
-      category: "User",
-      action: "Topped up wallet",
+    trackAnalyticsEvent("wallet_topup_started", {
+      amount: parseFloat(amount) || undefined,
+      currency: userCurrency,
     });
 
     setIsModalVisible(false);
@@ -645,7 +644,7 @@ function Navbar() {
         // Changed from fetch to axios
         const response = await axios.post(
           `${baseUrl}/payment/flexi-initiate`,
-          postData,
+          await withAnalyticsMetadata(postData),
           {
             headers: {
               "Content-Type": "application/json",
@@ -721,7 +720,7 @@ function Navbar() {
 
         const response = await axios.post(
           `${baseUrl}/payment/paypal/create`,
-          postData,
+          await withAnalyticsMetadata(postData),
           {
             headers: {
               "Content-Type": "application/json",

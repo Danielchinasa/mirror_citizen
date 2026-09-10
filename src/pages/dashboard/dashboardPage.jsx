@@ -61,7 +61,6 @@ import PdfModal from "../../components/PdfModal/PdfModal";
 import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
 import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 import Swal from "sweetalert2";
-import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
@@ -70,6 +69,7 @@ import { trackGA4Event } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 /* global Reach */
 
@@ -1340,20 +1340,8 @@ const DashboardPage = () => {
             : totalServiceCost;
   };
 
-  const logPurchase = ({
-    currency,
-    value,
-    transactionId,
-    paymentType,
-    items,
-  }) => {
-    ReactGA.event("purchase", {
-      currency: currency,
-      value: value,
-      transaction_id: transactionId,
-      payment_type: paymentType,
-      items: items,
-    });
+  const logPurchase = () => {
+    // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
   };
 
   const handlePaymentMethod = async () => {
@@ -1536,7 +1524,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
           });
 
           const data = await response.json();
@@ -1693,7 +1681,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(postData),
+            body: JSON.stringify(await withAnalyticsMetadata(postData)),
           });
 
           // Check if the request was successful (status code 200-299)
@@ -1877,7 +1865,7 @@ const DashboardPage = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${userToken}`,
               },
-              body: JSON.stringify(postData),
+              body: JSON.stringify(await withAnalyticsMetadata(postData)),
             });
 
             // Check if the request was successful (status code 200-299)
