@@ -300,7 +300,7 @@ function AppContent() {
               component={PaystackRedirect}
             />
             <Route path="/reach/:CLICK_ID" exact component={Home} />
-            <Route path="/login" component={LoginPage} />
+            <Route path="/login" component={VerificationLoginPage} />
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/verify-otp" component={VerifyOtp} />
             <Route path="/email-confirm" component={EmailVerifiedConfirm} />
