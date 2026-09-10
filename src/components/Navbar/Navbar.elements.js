@@ -434,7 +434,6 @@ export const PublicCta = styled.a`
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 15px;
-  box-shadow: 0 8px 18px rgba(254, 208, 1, 0.22);
   transition:
     background 0.2s ease,
     transform 0.2s ease;

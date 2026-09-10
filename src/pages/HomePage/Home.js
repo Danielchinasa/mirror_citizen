@@ -27,6 +27,7 @@ import {
 } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
+import NinLoginSample from "../NinLanding/NinLoginSample";
 import {
   trackLandingPageView,
   trackProductSelected,
@@ -669,6 +670,8 @@ const Home = () => {
           </ServiceCard>
         </CardsGrid>
       </ServicesSection>
+
+      <NinLoginSample />
 
       {/* ── Compliance ── */}
       <ComplianceSection />
