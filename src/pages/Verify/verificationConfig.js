@@ -35,6 +35,7 @@ const verificationConfig = {
         showCounter: true,
         required: true,
       },
+      /* TODO: I will put this back later
       {
         name: "subjectPhone",
         label: "Subject Contact Number (for consent)",
@@ -49,6 +50,7 @@ const verificationConfig = {
         showCounter: true,
         required: false,
       },
+      */
       {
         name: "subjectEmail",
         label: "Subject Email (for consent)",
@@ -307,6 +309,7 @@ const verificationConfig = {
         showCounter: true,
         required: true,
       },
+      /* TODO: I will put this back later
       {
         name: "subjectPhone",
         label: "Subject Contact Number (for consent)",
@@ -321,6 +324,7 @@ const verificationConfig = {
         showCounter: true,
         required: false,
       },
+      */
       {
         name: "subjectEmail",
         label: "Subject Email (for consent)",
