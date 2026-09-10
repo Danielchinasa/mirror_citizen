@@ -1649,9 +1649,7 @@ const VerifyPage = () => {
                     />
                   </div>
                 )}
-              {/* TODO: Put back the 'or' separator when subject contact phone is restored */}
               {field.name === "subjectEmail" &&
-                false &&
                 idx > 0 &&
                 config.fields[idx - 1].name === "subjectPhone" && (
                   <div
@@ -1680,126 +1678,122 @@ const VerifyPage = () => {
                     />
                   </div>
                 )}
-              {/* TODO: put back subject contact phone field later */}
-              {field.name !== "subjectPhone" && (
-                <FormGroup>
-                  <FormLabel>
-                    {field.label}
-                    {field.required && (
-                      <span style={{ color: "#dc2626" }}> *</span>
-                    )}
-                  </FormLabel>
-                  {field.type === "select" ? (
-                    <FormSelect
-                      name={field.name}
-                      value={formData[field.name] || ""}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">{field.placeholder}</option>
-                      {field.options.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </FormSelect>
-                  ) : field.name === "subjectPhone" || field.hasCountryCode ? (
-                    <>
-                      <PhoneInputGroup>
-                        <PhoneCountryWrapper title="Click to change country code">
-                          <PhoneCountryDisplay>
-                            <span>{currentCountryObj.flag}</span>
-                            <span>{currentCountryObj.code}</span>
-                            <span
-                              style={{
-                                fontSize: 10,
-                                color: "#888",
-                                marginLeft: 2,
-                              }}
-                            >
-                              ▼
-                            </span>
-                          </PhoneCountryDisplay>
-                          <PhoneCountrySelect
-                            value={subjectCountryCode}
-                            onChange={handleCountryCodeChange}
-                            aria-label="Select country code"
-                          >
-                            {COUNTRY_CODES.map((item) => (
-                              <option
-                                key={`${item.iso}-${item.code}-${item.country}`}
-                                value={item.code}
-                              >
-                                {item.flag} {item.code} ({item.country})
-                              </option>
-                            ))}
-                          </PhoneCountrySelect>
-                        </PhoneCountryWrapper>
-                        <PhoneInputField
-                          type="tel"
-                          name={field.name}
-                          placeholder={
-                            field.placeholder ||
-                            `e.g. ${DUMMY_PHONE_PLACEHOLDER}`
-                          }
-                          value={subjectPhoneLocal}
-                          onChange={handleSubjectPhoneChange}
-                          onKeyDown={handleKeyDown(field)}
-                          maxLength={15}
-                          inputMode="tel"
-                        />
-                      </PhoneInputGroup>
-                      <PhoneAttachedHint>
-                        {formData.subjectPhone ? (
-                          <div className="attached-preview">
-                            <span>
-                              {language === "FR" ? "Attaché :" : "Attached:"}
-                            </span>
-                            <strong>{formData.subjectPhone}</strong>
-                          </div>
-                        ) : (
-                          <span>
-                            {language === "FR" ? "Exemple :" : "Sample:"}{" "}
-                            <strong>{DUMMY_PHONE_PLACEHOLDER}</strong>{" "}
-                            {language === "FR" ? "(sans 0)" : "(without 0)"}
-                          </span>
-                        )}
-                        {field.showCounter && (
-                          <span>
-                            {(formData[field.name] || "").length}/
-                            {field.maxLength}
-                          </span>
-                        )}
-                      </PhoneAttachedHint>
-                    </>
-                  ) : (
-                    <FormInput
-                      type={field.type || "text"}
-                      name={field.name}
-                      placeholder={field.placeholder}
-                      value={formData[field.name] || ""}
-                      onChange={handleInputChange}
-                      onKeyDown={handleKeyDown(field)}
-                      maxLength={field.maxLength}
-                      inputMode={
-                        field.inputMode ||
-                        (field.numericOnly || field.name === "subjectPhone"
-                          ? field.allowPlus || field.name === "subjectPhone"
-                            ? "tel"
-                            : "numeric"
-                          : undefined)
-                      }
-                      pattern={field.pattern}
-                    />
+              <FormGroup>
+                <FormLabel>
+                  {field.label}
+                  {field.required && (
+                    <span style={{ color: "#dc2626" }}> *</span>
                   )}
-                  {field.showCounter &&
-                    field.name !== "subjectPhone" &&
-                    !field.hasCountryCode && (
-                      <CharCounter>
-                        {(formData[field.name] || "").length}/{field.maxLength}
-                      </CharCounter>
-                    )}
-                </FormGroup>
-              )}
+                </FormLabel>
+                {field.type === "select" ? (
+                  <FormSelect
+                    name={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">{field.placeholder}</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </FormSelect>
+                ) : field.name === "subjectPhone" || field.hasCountryCode ? (
+                  <>
+                    <PhoneInputGroup>
+                      <PhoneCountryWrapper title="Click to change country code">
+                        <PhoneCountryDisplay>
+                          <span>{currentCountryObj.flag}</span>
+                          <span>{currentCountryObj.code}</span>
+                          <span
+                            style={{
+                              fontSize: 10,
+                              color: "#888",
+                              marginLeft: 2,
+                            }}
+                          >
+                            ▼
+                          </span>
+                        </PhoneCountryDisplay>
+                        <PhoneCountrySelect
+                          value={subjectCountryCode}
+                          onChange={handleCountryCodeChange}
+                          aria-label="Select country code"
+                        >
+                          {COUNTRY_CODES.map((item) => (
+                            <option
+                              key={`${item.iso}-${item.code}-${item.country}`}
+                              value={item.code}
+                            >
+                              {item.flag} {item.code} ({item.country})
+                            </option>
+                          ))}
+                        </PhoneCountrySelect>
+                      </PhoneCountryWrapper>
+                      <PhoneInputField
+                        type="tel"
+                        name={field.name}
+                        placeholder={
+                          field.placeholder || `e.g. ${DUMMY_PHONE_PLACEHOLDER}`
+                        }
+                        value={subjectPhoneLocal}
+                        onChange={handleSubjectPhoneChange}
+                        onKeyDown={handleKeyDown(field)}
+                        maxLength={15}
+                        inputMode="tel"
+                      />
+                    </PhoneInputGroup>
+                    <PhoneAttachedHint>
+                      {formData.subjectPhone ? (
+                        <div className="attached-preview">
+                          <span>
+                            {language === "FR" ? "Attaché :" : "Attached:"}
+                          </span>
+                          <strong>{formData.subjectPhone}</strong>
+                        </div>
+                      ) : (
+                        <span>
+                          {language === "FR" ? "Exemple :" : "Sample:"}{" "}
+                          <strong>{DUMMY_PHONE_PLACEHOLDER}</strong>{" "}
+                          {language === "FR" ? "(sans 0)" : "(without 0)"}
+                        </span>
+                      )}
+                      {field.showCounter && (
+                        <span>
+                          {(formData[field.name] || "").length}/
+                          {field.maxLength}
+                        </span>
+                      )}
+                    </PhoneAttachedHint>
+                  </>
+                ) : (
+                  <FormInput
+                    type={field.type || "text"}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown(field)}
+                    maxLength={field.maxLength}
+                    inputMode={
+                      field.inputMode ||
+                      (field.numericOnly || field.name === "subjectPhone"
+                        ? field.allowPlus || field.name === "subjectPhone"
+                          ? "tel"
+                          : "numeric"
+                        : undefined)
+                    }
+                    pattern={field.pattern}
+                  />
+                )}
+                {field.showCounter &&
+                  field.name !== "subjectPhone" &&
+                  !field.hasCountryCode && (
+                    <CharCounter>
+                      {(formData[field.name] || "").length}/{field.maxLength}
+                    </CharCounter>
+                  )}
+              </FormGroup>
             </React.Fragment>
           ))}
 
