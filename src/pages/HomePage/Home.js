@@ -27,6 +27,11 @@ import {
 } from "react-icons/fa";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import ComplianceSection from "../../components/ComplianceSection/ComplianceSection";
+import NinLoginSample from "../NinLanding/NinLoginSample";
+import {
+  trackLandingPageView,
+  trackProductSelected,
+} from "../../analytics/analytics";
 import heroImg from "../../images/Hero_image_new.png";
 import avatar1 from "../../images/avatar1.jpg";
 import avatar2 from "../../images/avatar2.jpg";
@@ -100,6 +105,14 @@ const Home = () => {
   const bvnVerify = useAuthRedirect("/verify/bvn");
   const vehicleVerify = useAuthRedirect("/verify/vehicle");
   const phoneVerify = useAuthRedirect("/verify/phone");
+
+  useEffect(() => {
+    trackLandingPageView({ page_path: "/" });
+  }, []);
+
+  const handleProductSelected = (serviceType) => {
+    trackProductSelected(serviceType);
+  };
 
   useEffect(() => {
     const fetchIpAddress = async () => {
@@ -475,7 +488,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[0]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[0].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -491,7 +504,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={ninVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={ninVerify}
+              onClick={() => handleProductSelected("nin")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/nin-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -509,7 +527,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[9]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[9].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -525,7 +543,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={phoneVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={phoneVerify}
+              onClick={() => handleProductSelected("phone")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/phone-number-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -543,7 +566,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[2]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[2].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}100`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -559,7 +582,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={businessVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={businessVerify}
+              onClick={() => handleProductSelected("business")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/business-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -577,7 +605,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[4]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[4].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}1,700`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -593,7 +621,12 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={bvnVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={bvnVerify}
+              onClick={() => handleProductSelected("bvn")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/credit-profile">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
@@ -609,7 +642,7 @@ const Home = () => {
             <ServicePrice>
               {servicePrices?.data?.[5]?.serviceFee
                 ? `${priceCurrencySymbol}${Number(servicePrices.data[5].serviceFee).toLocaleString()}`
-                : `${priceCurrencySymbol}2,500`}
+                : "-"}
             </ServicePrice>
             <FeatureList>
               <FeatureItem>
@@ -625,13 +658,20 @@ const Home = () => {
                 <FaCheckCircle /> Results in seconds
               </FeatureItem>
             </FeatureList>
-            <ServiceBtn to={vehicleVerify}>Verify Now</ServiceBtn>
+            <ServiceBtn
+              to={vehicleVerify}
+              onClick={() => handleProductSelected("vehicle")}
+            >
+              Verify Now
+            </ServiceBtn>
             <LearnMoreLink to="/vehicle-verification">
               Learn more <FaArrowRight style={{ fontSize: 11 }} />
             </LearnMoreLink>
           </ServiceCard>
         </CardsGrid>
       </ServicesSection>
+
+      <NinLoginSample />
 
       {/* ── Compliance ── */}
       <ComplianceSection />

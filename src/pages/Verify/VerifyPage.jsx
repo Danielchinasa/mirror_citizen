@@ -41,6 +41,14 @@ import {
   RECORD_NOT_FOUND_TITLE,
   isRecordNotFoundDetail,
 } from "../../constants/verificationMessages";
+import {
+  trackBeginCheckout,
+  trackFormSubmit,
+  trackPaymentFailed,
+  trackPaymentInitiated,
+  trackVerificationStarted,
+} from "../../analytics/analytics";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 import {
   PageWrapper,
@@ -211,6 +219,7 @@ const VerifyPage = () => {
   const [pricingData, setPricingData] = useState(null);
   const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
+  const [priceError, setPriceError] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
   const [paystackModalOpen, setPaystackModalOpen] = useState(false);
@@ -227,6 +236,12 @@ const VerifyPage = () => {
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
   const consentPollingRef = useRef(null);
+  const paymentAttemptInFlightRef = useRef(false);
+  const funnelTrackedRef = useRef({
+    formSubmit: false,
+    beginCheckout: false,
+    verificationStarted: false,
+  });
 
   // Dynamic steps based on whether this verification type requires consent
   const isConsentVerification =
@@ -365,42 +380,50 @@ const VerifyPage = () => {
   }, []);
 
   // Fetch service prices
-  useEffect(() => {
+  const fetchPrices = useCallback(async () => {
     if (!config || !userToken) return;
 
-    const fetchPrices = async () => {
-      try {
-        const ipAddress = localStorage.getItem("IpAddress");
-        const response = await apiPostInternalCall(
-          `/transaction/service-prices`,
-          { ipAddress },
-          userToken,
-        );
-        setLoadingPrice(false);
-        const serviceData = response.data.data[config.priceIndex];
-        setDetectedCurrency(response.data.data[0]?.currency || null);
-        setPricingData({
-          price: serviceData.price,
-          serviceFee: serviceData.serviceFee,
-          vat: serviceData.VAT,
-          priceUsd: serviceData.price2,
-          serviceFeeusd: serviceData.serviceFee2,
-          vatUsd: serviceData.VAT2,
-          processingFee: serviceData.processingFee || 0,
-          rate: response.data.rate,
-        });
-      } catch (err) {
-        setLoadingPrice(false);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Could not fetch service prices. Please try again.",
-          confirmButtonColor: "#09c93a",
-        });
+    setLoadingPrice(true);
+    setPriceError(null);
+    try {
+      const ipAddress = localStorage.getItem("IpAddress");
+      const response = await apiPostInternalCall(
+        `/transaction/service-prices`,
+        { ipAddress },
+        userToken,
+      );
+      const serviceData = response?.data?.data?.[config.priceIndex];
+      if (!serviceData) {
+        throw new Error("Service price information is currently unavailable.");
       }
-    };
-    fetchPrices();
+      setDetectedCurrency(response?.data?.data?.[0]?.currency || null);
+      setPricingData({
+        price: serviceData.price,
+        serviceFee: serviceData.serviceFee,
+        vat: serviceData.VAT,
+        priceUsd: serviceData.price2,
+        serviceFeeusd: serviceData.serviceFee2,
+        vatUsd: serviceData.VAT2,
+        processingFee: serviceData.processingFee || 0,
+        rate: response.data.rate,
+      });
+      setLoadingPrice(false);
+    } catch (err) {
+      setLoadingPrice(false);
+      setPricingData(null);
+      setPriceError("Could not fetch service prices. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Could not fetch service prices. Please try again.",
+        confirmButtonColor: "#09c93a",
+      });
+    }
   }, [config, userToken]);
+
+  useEffect(() => {
+    fetchPrices();
+  }, [fetchPrices]);
 
   if (!config) return null;
 
@@ -442,6 +465,32 @@ const VerifyPage = () => {
   const userEmail = userDetails?.email || "";
   const userBalance = userDetails?.walletBalance || 0;
 
+  const resetFunnelTracking = () => {
+    funnelTrackedRef.current = {
+      formSubmit: false,
+      beginCheckout: false,
+      verificationStarted: false,
+    };
+  };
+
+  const trackFormSubmitOnce = () => {
+    if (funnelTrackedRef.current.formSubmit) return;
+    funnelTrackedRef.current.formSubmit = true;
+    trackFormSubmit(type);
+  };
+
+  const trackBeginCheckoutOnce = (params = {}) => {
+    if (funnelTrackedRef.current.beginCheckout) return;
+    funnelTrackedRef.current.beginCheckout = true;
+    trackBeginCheckout(type, params);
+  };
+
+  const trackVerificationStartedOnce = () => {
+    if (funnelTrackedRef.current.verificationStarted) return;
+    funnelTrackedRef.current.verificationStarted = true;
+    trackVerificationStarted(type);
+  };
+
   /* ── Form handlers ── */
 
   const handleInputChange = (e) => {
@@ -459,12 +508,16 @@ const VerifyPage = () => {
     }
 
     setFormData((prev) => ({ ...prev, ...updates }));
+    if (currentStep === 0) {
+      resetFunnelTracking();
+    }
     setError("");
   };
 
   const handleClear = () => {
     setFormData({});
     setSelectedBureaus({});
+    resetFunnelTracking();
     setError("");
   };
 
@@ -508,6 +561,22 @@ const VerifyPage = () => {
   /* ── Step navigation ── */
 
   const handleContinueToPayment = () => {
+    if (loadingPrice) {
+      setError("Please wait while verification pricing is being loaded.");
+      return;
+    }
+    if (priceError || !pricingData) {
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please check your connection and try again.",
+      );
+      Swal.fire({
+        icon: "warning",
+        title: "Pricing Unavailable",
+        text: "Could not retrieve service price. Please try again.",
+        confirmButtonColor: "#09c93a",
+      });
+      return;
+    }
     if (!isFormValid()) {
       const hasEitherOr = config.fields.some((f) => f.eitherOr);
       const noBureauSelected =
@@ -522,11 +591,24 @@ const VerifyPage = () => {
       return;
     }
     setError("");
+    trackFormSubmitOnce();
     setShowDisclaimer(true);
   };
 
   const handleDisclaimerConfirm = () => {
+    if (priceError || !pricingData) {
+      setShowDisclaimer(false);
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please try again.",
+      );
+      return;
+    }
     setShowDisclaimer(false);
+    trackBeginCheckoutOnce({
+      amount: totalAmount,
+      value: totalAmount,
+      currency: currencyCheck,
+    });
     setCurrentStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -582,6 +664,14 @@ const VerifyPage = () => {
   /* ── Payment flow ── */
 
   const handlePay = async () => {
+    if (priceError || !pricingData) {
+      setError(
+        "Unable to proceed: service prices could not be loaded. Please try again.",
+      );
+      return;
+    }
+    if (paymentAttemptInFlightRef.current) return;
+    paymentAttemptInFlightRef.current = true;
     setLoading(true);
     setError("");
     setCurrentStep(2); // Processing
@@ -598,6 +688,7 @@ const VerifyPage = () => {
 
     try {
       // 1. Initiate verification
+      trackVerificationStartedOnce();
       const initiateResponse = await dispatch(
         initiateVerificationRequest(apiFormData, userToken),
       );
@@ -628,6 +719,8 @@ const VerifyPage = () => {
         text: err.message || "An error occurred. Please try again.",
         confirmButtonColor: "#09c93a",
       });
+    } finally {
+      paymentAttemptInFlightRef.current = false;
     }
   };
 
@@ -658,13 +751,21 @@ const VerifyPage = () => {
         amount: totalAmount,
       };
 
+      trackPaymentInitiated(type, {
+        amount: totalAmount,
+        value: totalAmount,
+        currency: currencyCheck,
+        gateway: "Wallet",
+        transaction_id: transactionId,
+      });
+
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
       const data = await response.json();
@@ -695,6 +796,13 @@ const VerifyPage = () => {
         setPaymentUrl(response.data.authorization_url);
         setPaystackReference(response.data.reference);
         setActiveGateway("paystack");
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Paystack",
+          transaction_id: response.data.reference,
+        });
         setPaystackModalOpen(true);
         setLoading(false);
         setCurrentStep(1); // Stay on payment step while modal is open
@@ -724,7 +832,7 @@ const VerifyPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(await withAnalyticsMetadata(postData)),
       });
 
       const responseData = await response.json();
@@ -737,6 +845,13 @@ const VerifyPage = () => {
           "transactionID",
           responseData.data.txRef || transactionId,
         );
+        trackPaymentInitiated(type, {
+          amount: totalAmount,
+          value: totalAmount,
+          currency: currencyCheck,
+          gateway: "Flutterwave",
+          transaction_id: responseData.data.txRef || transactionId,
+        });
         setActiveGateway("flutterwave");
         setPaystackModalOpen(true);
         setLoading(false);
@@ -771,31 +886,42 @@ const VerifyPage = () => {
         },
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        const paymentStatus = (
-          data?.data?.status ||
-          data?.data?.paymentStatus ||
-          ""
-        ).toLowerCase();
-
-        if (paymentStatus === "successful" || paymentStatus === "success") {
-          // Payment succeeded before closing — proceed with verification
-          setLoading(true);
-          setCurrentStep(2); // Processing
-          if (pendingApiFormRef.current) {
-            await handleCompleteVerification(pendingApiFormRef.current);
-          }
-          return;
-        }
+      if (!res.ok) {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Cancelled",
+          text: "Your payment was cancelled or declined.",
+          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          confirmButtonColor: "#09c93a",
+        });
+        return;
       }
 
-      Swal.fire({
-        icon: "info",
-        title: "Payment Cancelled",
-        text: "You closed the payment window before completing the transaction.",
-        confirmButtonColor: "#09c93a",
-      });
+      const data = await res.json();
+      const paymentStatus = (
+        data?.data?.status ||
+        data?.status ||
+        data?.data?.paymentStatus ||
+        ""
+      ).toLowerCase();
+
+      if (paymentStatus === "successful" || paymentStatus === "success") {
+        // Payment succeeded before closing — proceed with verification
+        setLoading(true);
+        setCurrentStep(2); // Processing
+        if (pendingApiFormRef.current) {
+          await handleCompleteVerification(pendingApiFormRef.current);
+        }
+        return;
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: "Your payment could not be completed. Please try again.",
+          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          confirmButtonColor: "#09c93a",
+        });
+      }
     } catch {
       Swal.fire({
         icon: "info",
@@ -1357,8 +1483,65 @@ const VerifyPage = () => {
           <PriceAmount>
             {loadingPrice
               ? "Loading..."
-              : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+              : priceError || !pricingData
+                ? "-"
+                : `${currencySymbol}${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
           </PriceAmount>
+          {(priceError || (!loadingPrice && !pricingData)) && (
+            <div
+              style={{
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: 8,
+                padding: "10px 12px",
+                color: "#b91c1c",
+                fontSize: 13,
+                marginBottom: 14,
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontWeight: 600,
+                }}
+              >
+                <FaInfoCircle />
+                <span>Unable to get service fees</span>
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#7f1d1d",
+                  lineHeight: 1.4,
+                }}
+              >
+                Pricing for this service is currently unavailable. Please try
+                again or contact support.
+              </div>
+              <button
+                type="button"
+                onClick={fetchPrices}
+                style={{
+                  alignSelf: "flex-start",
+                  background: "none",
+                  border: "none",
+                  color: "#dc2626",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                  fontSize: 12,
+                  padding: 0,
+                  fontWeight: 600,
+                }}
+              >
+                Retry
+              </button>
+            </div>
+          )}
           <PriceBreakdown>
             {pricingData &&
               (() => {
@@ -1427,10 +1610,20 @@ const VerifyPage = () => {
           </PriceBreakdown>
           <ContinueBtn
             onClick={handleContinueToPayment}
-            disabled={!isFormValid()}
+            disabled={
+              !isFormValid() || loadingPrice || !!priceError || !pricingData
+            }
             style={{ width: "100%", justifyContent: "center" }}
           >
-            Continue to Payment <FaArrowRight />
+            {loadingPrice ? (
+              "Loading Price..."
+            ) : priceError || !pricingData ? (
+              "Price Unavailable"
+            ) : (
+              <>
+                Continue to Payment <FaArrowRight />
+              </>
+            )}
           </ContinueBtn>
         </SidebarCard>
       </SearchGrid>
@@ -1500,7 +1693,9 @@ const VerifyPage = () => {
             <SummaryAmount>
               {loadingPrice
                 ? "..."
-                : `${currencySymbol}${totalAmount.toLocaleString()}`}
+                : priceError || !pricingData
+                  ? "-"
+                  : `${currencySymbol}${totalAmount.toLocaleString()}`}
             </SummaryAmount>
           </SummaryHeader>
 
@@ -1642,12 +1837,20 @@ const VerifyPage = () => {
 
           <PayBtn
             onClick={handlePay}
-            disabled={!termsAccepted || loading || loadingPrice}
+            disabled={
+              !termsAccepted ||
+              loading ||
+              loadingPrice ||
+              !!priceError ||
+              !pricingData
+            }
           >
             <FaLock />
             {loading
               ? "Processing..."
-              : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
+              : priceError || !pricingData
+                ? "Price Unavailable"
+                : `Pay ${currencySymbol}${totalAmount.toLocaleString()}`}
           </PayBtn>
 
           <SecuredBy>

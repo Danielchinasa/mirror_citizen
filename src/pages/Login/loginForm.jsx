@@ -24,7 +24,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
-import ReactGA from "react-ga4";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import baseUrl from "../../apiConfig";
@@ -156,7 +155,7 @@ const LoginForm = (props) => {
 
   const handleSignIn = async (event) => {
     trackEvent({
-      action: "click_normail_signin_attempt",
+      action: "click_normal_signin_attempt",
       category: "Authentication Attempt",
       label: "Normal Signin Attempt",
       value: 1,
@@ -210,7 +209,7 @@ const LoginForm = (props) => {
         localStorage.setItem("IpAddress", ipAddress);
         setLoading(false);
         trackEvent({
-          action: "click_normail_signin_sucess",
+          action: "click_normal_signin_success",
           category: "Authentication Success",
           label: "Normal Signin Success",
           value: 1,

@@ -60,7 +60,7 @@ function Footer() {
                 <FaXTwitter />
               </SocialIcon>
               <SocialIcon
-                href="https://www.facebook.com/ecitizenng"
+                href="https://www.facebook.com/profile.php?id=100066689567403"
                 target="_blank"
                 rel="noopener noreferrer"
               >

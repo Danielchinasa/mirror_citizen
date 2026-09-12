@@ -5,6 +5,10 @@ import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
 import { getAttribution, withAnalyticsMetadata } from "../analytics/attribution";
 
+const logPurchase = () => {
+  // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
+};
+
 export const updatePassword = (credentials) => async (dispatch) => {
   try {
     const response = await apiPost(
@@ -273,6 +277,7 @@ export const sendVerificationRequest =
       const randomTransactionId = generateTransactionId();
       const attribution = getAttribution();
 
+
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -533,6 +538,7 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
       const attribution = getAttribution();
 
+
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -703,6 +709,7 @@ export const completeVerificationRequest =
       const randomTransactionId = generateTransactionId();
       const attribution = getAttribution();
 
+
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -776,8 +783,7 @@ export const completeVerificationRequest =
         type: "SEND_VERIFICATION_REQUEST_SUCCESS",
         payload: response,
       });
-
-      // Purchase is emitted only by the backend after authoritative payment success.
+      // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
 
       // Return the user data upon successful verification
       return response;

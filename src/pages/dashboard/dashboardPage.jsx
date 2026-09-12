@@ -61,7 +61,6 @@ import PdfModal from "../../components/PdfModal/PdfModal";
 import termsPdf from "../../images/e-citizen_Nigeria_Terms_of_Service_v2.1_Confirmed.pdf";
 import privacyPdf from "../../images/e-citizen_Nigeria_Privacy_Notice_v2.1_Confirmed.pdf";
 import Swal from "sweetalert2";
-import ReactGA from "react-ga4";
 import { UploadOutlined } from "@ant-design/icons";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
@@ -70,6 +69,7 @@ import { trackGA4Event } from "../../hooks/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
+import { withAnalyticsMetadata } from "../../analytics/attribution";
 
 /* global Reach */
 
@@ -1303,6 +1303,48 @@ const DashboardPage = () => {
   }
   const randomTransactionId = generateTransactionId();
 
+  const buildItems = (formData, fees) => {
+    const items = [];
+
+    Object.keys(formData).forEach((field) => {
+      if (
+        typeof formData[field] === "string" &&
+        formData[field].trim() !== "" &&
+        fees[field] !== undefined
+      ) {
+        items.push({
+          item_id: field,
+          item_name: field,
+          price: fees[field],
+          quantity: 1,
+        });
+      }
+    });
+
+    return items;
+  };
+
+  const getFinalAmount = () => {
+    return userCurrency.toUpperCase() === "NGN" &&
+      currencyCheck.toUpperCase() === "NGN"
+      ? totalServiceCost
+      : currencyCheck.toUpperCase() === "USD" &&
+          userCurrency.toUpperCase() === "NGN"
+        ? totalveriNiara
+        : currencyCheck.toUpperCase() === "USD" &&
+            userCurrency.toUpperCase() === "USD"
+          ? totalServiceCost
+          : userCurrency.toUpperCase() === "NGN" &&
+              currencyCheck.toUpperCase() !== "NGN"
+            ? outsideNgWithNiaraPrice
+            : totalServiceCost;
+  };
+
+  const logPurchase = () => {
+    // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
+  };
+
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1483,7 +1525,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
           });
 
           const data = await response.json();
@@ -1605,7 +1647,7 @@ const DashboardPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${userToken}`,
             },
-            body: JSON.stringify(postData),
+            body: JSON.stringify(await withAnalyticsMetadata(postData)),
           });
 
           // Check if the request was successful (status code 200-299)
@@ -1789,7 +1831,7 @@ const DashboardPage = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${userToken}`,
               },
-              body: JSON.stringify(postData),
+              body: JSON.stringify(await withAnalyticsMetadata(postData)),
             });
 
             // Check if the request was successful (status code 200-299)
