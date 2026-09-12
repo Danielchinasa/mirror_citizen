@@ -114,6 +114,7 @@ function Footer() {
               Terms of Service
             </FooterLink>
             <FooterLink to="/privacy-policy">Privacy Policy</FooterLink>
+            <FooterLink to="/account-deletion">Account Deletion</FooterLink>
           </FooterCol>
 
           <FooterCol>
@@ -144,6 +145,9 @@ function Footer() {
           <LegalLinks>
             <LegalLink as={Link} to="/privacy-policy">
               Privacy Policy
+            </LegalLink>
+            <LegalLink as={Link} to="/account-deletion">
+              Account Deletion
             </LegalLink>
             <LegalLink onClick={() => setIsTermsOpen(true)}>
               Terms of Service

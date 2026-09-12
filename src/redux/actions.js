@@ -3,16 +3,7 @@ import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
-import ReactGA from "react-ga4";
-
-const logPurchase = ({ currency, value, transactionId, paymentType }) => {
-  ReactGA.event("purchase", {
-    currency: currency,
-    value: value,
-    transaction_id: transactionId,
-    payment_type: paymentType,
-  });
-};
+import { getAttribution, withAnalyticsMetadata } from "../analytics/attribution";
 
 export const updatePassword = (credentials) => async (dispatch) => {
   try {
@@ -280,6 +271,7 @@ export const sendVerificationRequest =
       }
 
       const randomTransactionId = generateTransactionId();
+      const attribution = getAttribution();
 
       const restructuredData = {
         payment: {
@@ -320,6 +312,10 @@ export const sendVerificationRequest =
           license_number: formData.license_number || "",
         },
       };
+
+      if (Object.keys(attribution).length > 0) {
+        restructuredData.attribution = attribution;
+      }
 
       // Remove fields with empty strings from the payload
       Object.keys(restructuredData).forEach((section) => {
@@ -535,6 +531,7 @@ export const initiateVerificationRequest =
       }
 
       const randomTransactionId = generateTransactionId();
+      const attribution = getAttribution();
 
       const restructuredData = {
         payment: {
@@ -577,6 +574,10 @@ export const initiateVerificationRequest =
           license_number: formData.license_number || "",
         },
       };
+
+      if (Object.keys(attribution).length > 0) {
+        restructuredData.attribution = attribution;
+      }
 
       // Remove fields with empty strings from the payload
       Object.keys(restructuredData).forEach((section) => {
@@ -683,27 +684,6 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-const buildItems = (formData) => {
-  const items = [];
-
-  Object.keys(formData).forEach((field) => {
-    if (typeof formData[field] === "string" && formData[field].trim() !== "") {
-      items.push({
-        item_id: field,
-        item_name: field,
-        price: 1, // fallback if you don’t have per-field pricing here
-        quantity: 1,
-      });
-    }
-  });
-
-  return items;
-};
-
-const getStoredAmount = () => {
-  return Number(localStorage.getItem("totalAmount") || 0);
-};
-
 export const completeVerificationRequest =
   (formData, token) => async (dispatch) => {
     try {
@@ -721,6 +701,7 @@ export const completeVerificationRequest =
       }
 
       const randomTransactionId = generateTransactionId();
+      const attribution = getAttribution();
 
       const restructuredData = {
         payment: {
@@ -768,6 +749,10 @@ export const completeVerificationRequest =
         },
       };
 
+      if (Object.keys(attribution).length > 0) {
+        restructuredData.attribution = attribution;
+      }
+
       // Remove fields with empty strings from the payload
       Object.keys(restructuredData).forEach((section) => {
         Object.keys(restructuredData[section]).forEach((field) => {
@@ -792,27 +777,7 @@ export const completeVerificationRequest =
         payload: response,
       });
 
-      // ✅ GA4 Purchase Tracking
-      try {
-        const currency = currencyCheck || "NGN";
-        const transactionId = transactionID || randomTransactionId;
-        const payment = paymentType || "INSTANT";
-
-        // You can improve this if you have exact total stored
-        const value = parseFloat(localStorage.getItem("totalAmount")) || 0;
-
-        const items = buildItems(formData);
-
-        logPurchase({
-          currency,
-          value,
-          transactionId,
-          paymentType: payment,
-          items,
-        });
-      } catch (err) {
-        console.error("GA4 logPurchase error:", err);
-      }
+      // Purchase is emitted only by the backend after authoritative payment success.
 
       // Return the user data upon successful verification
       return response;
@@ -843,6 +808,7 @@ export const paymentInitializationRequest =
         currency: currencyCheck || "NGN",
         sessionCode: localStorage.getItem("sessionCode") || "",
         type: paymentType || "INSTANT",
+        attribution: getAttribution(),
       };
 
       // Remove fields with empty strings from the payload
@@ -858,9 +824,10 @@ export const paymentInitializationRequest =
           delete restructuredData[section];
         }
       });
+      const analyticsPayload = await withAnalyticsMetadata(restructuredData);
       const response = await apiPost(
         `/payment/flexi-initiate`,
-        restructuredData,
+        analyticsPayload,
         token,
       );
 

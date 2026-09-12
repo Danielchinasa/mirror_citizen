@@ -1036,13 +1036,6 @@ const MainDashboard = () => {
               value: parseFloat(transactionAmount) || 1.0,
               currency: userCurrency || "NGN",
             });
-            // Payment successful - fire GA4 purchase event
-            trackGA4Event("purchase", {
-              transaction_id: paystackReference,
-              value: parseFloat(transactionAmount) || 1.0,
-              currency: userCurrency || "NGN",
-              items: [{ id: paystackReference, name: "Paystack Payment" }],
-            });
             // Payment successful - track conversion and refresh profile
             trackPurchaseConversion({
               value: parseFloat(transactionAmount) || 1.0,
