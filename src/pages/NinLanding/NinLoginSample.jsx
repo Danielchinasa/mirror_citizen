@@ -764,10 +764,12 @@ const NinLoginSample = () => {
                       <FcGoogle /> Continue with Google
                     </SSOButton>
                     <FacebookLogin
-                      appId="541710452150170"
+                      appId="1522913045806222"
                       autoLoad={false}
-                      fields="name,picture"
-                      scope="public_profile"
+                      fields="name,email,picture"
+                      scope="public_profile,email"
+                      redirectUri="https://e-citizen.ng/verification-login"
+                      responseType="code"
                       callback={handleFacebook}
                       render={(renderProps) => (
                         <SSOButton type="button" onClick={renderProps.onClick}>

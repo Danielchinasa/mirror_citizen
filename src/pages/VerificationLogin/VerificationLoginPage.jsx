@@ -51,6 +51,8 @@ const VerificationLoginPage = () => {
 
   const redirectTo =
     new URLSearchParams(location.search).get("redirect") || "/main-dashboard";
+  const facebookRedirectUri =
+    "https://e-citizen.ng" + location.pathname + (location.search || "");
 
   const handleGoBack = () => {
     if (window.history.length > 1) {
@@ -276,10 +278,12 @@ const VerificationLoginPage = () => {
             </SSOButton>
 
             <FacebookLogin
-              appId="541710452150170"
+              appId="1522913045806222"
               autoLoad={false}
-              fields="name,picture"
-              scope="public_profile"
+              fields="name,email,picture"
+              scope="public_profile,email"
+              redirectUri={facebookRedirectUri}
+              responseType="code"
               callback={handleFacebook}
               render={(renderProps) => (
                 <SSOButton type="button" onClick={renderProps.onClick}>
