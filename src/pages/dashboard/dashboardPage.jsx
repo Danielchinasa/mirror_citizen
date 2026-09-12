@@ -1344,6 +1344,7 @@ const DashboardPage = () => {
     // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
   };
 
+
   const handlePaymentMethod = async () => {
     // Ensure no duplicate state updates
     setModalVisible(false);
@@ -1530,41 +1531,6 @@ const DashboardPage = () => {
           const data = await response.json();
 
           if (response.ok && data.status === "success") {
-            //GA4
-            const formDataFees = {
-              nin: ninFee,
-              phone: phoneFee,
-              vin: vinVehicleFee,
-              license_number: vehicleFee,
-              rc: businessFee,
-              business_name: businessFee,
-              bvn: financialFee,
-              face: faceFee,
-            };
-
-            const formDataUsdFees = {
-              nin: ninUsdFee,
-              phone: phoneUsdFee,
-              vin: vinVehicleUsdFee,
-              license_number: vehicleUsdFee,
-              rc: businessUsdFee,
-              business_name: businessUsdFee,
-              bvn: financialUsdFee,
-              face: faceUsdFee,
-            };
-
-            const isUSD = currencyCheck.toUpperCase() === "USD";
-            const fees = isUSD ? formDataUsdFees : formDataFees;
-
-            const items = buildItems(formData, fees);
-
-            logPurchase({
-              currency: isUSD ? "USD" : "NGN",
-              value: getFinalAmount(),
-              transactionId: randomTransactionId,
-              paymentType: "WALLET",
-              items,
-            });
             //!------------------- Do the Verification ------------------------//
             handleSubmit();
             //!------------------- Do the Verification End ------------------------//
