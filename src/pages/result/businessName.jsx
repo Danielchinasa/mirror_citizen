@@ -55,6 +55,7 @@ import { apiPostInternalCall, apiGetInternalCall } from "../../apiUtils";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { initiatePaystackPayment } from "../../services/paystackService";
 import { withAnalyticsMetadata } from "../../analytics/attribution";
+import { trackPurchase } from "../../analytics/analytics";
 
 const tooltipContentStakeholders =
   "Check who the directors and shareholders are";
@@ -379,6 +380,12 @@ const BusinessName = () => {
             const data = await response.json();
 
             if (data.status === "success") {
+              const serviceType =
+                localStorage.getItem("serviceType") || "business_name";
+              trackPurchase(serviceType, {
+                gateway: "Wallet",
+                transaction_id: randomTransactionId,
+              });
               const transactionID = localStorage.getItem("transactionID");
               const paymentType = localStorage.getItem("paymentType");
 

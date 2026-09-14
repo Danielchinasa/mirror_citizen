@@ -110,7 +110,10 @@ function shouldPushToDataLayer(eventName) {
 }
 
 function legacyReactGaParams(eventParams) {
-  if (ANALYTICS_CONFIG.newGa4Enabled && ANALYTICS_CONFIG.legacyReactGa4MeasurementId) {
+  if (
+    ANALYTICS_CONFIG.newGa4Enabled &&
+    ANALYTICS_CONFIG.legacyReactGa4MeasurementId
+  ) {
     return {
       ...eventParams,
       send_to: ANALYTICS_CONFIG.legacyReactGa4MeasurementId,
@@ -119,8 +122,47 @@ function legacyReactGaParams(eventParams) {
   return eventParams;
 }
 
+function dispatchFacebookEvent(eventName, eventParams) {
+  if (typeof window === "undefined" || !window.fbq) return;
+
+  const fbParams = {};
+  if (eventParams.currency) fbParams.currency = eventParams.currency;
+  if (eventParams.value) fbParams.value = eventParams.value;
+
+  switch (eventName) {
+    case ANALYTICS_EVENTS.PAGE_VIEW:
+    case ANALYTICS_EVENTS.LANDING_PAGE_VIEW:
+      window.fbq("track", "PageView");
+      break;
+    case ANALYTICS_EVENTS.PURCHASE:
+      window.fbq("track", "Purchase", fbParams);
+      break;
+    case ANALYTICS_EVENTS.BEGIN_CHECKOUT:
+    case ANALYTICS_EVENTS.PAYMENT_INITIATED:
+      window.fbq("track", "InitiateCheckout", fbParams);
+      break;
+    case ANALYTICS_EVENTS.ADD_PAYMENT_INFO:
+      window.fbq("track", "AddPaymentInfo", fbParams);
+      break;
+    case ANALYTICS_EVENTS.SIGN_UP:
+      window.fbq("track", "CompleteRegistration", fbParams);
+      break;
+    case ANALYTICS_EVENTS.VERIFICATION_STARTED:
+    case ANALYTICS_EVENTS.FORM_SUBMIT:
+      window.fbq("track", "Lead", fbParams);
+      break;
+    case ANALYTICS_EVENTS.PRODUCT_SELECTED:
+      window.fbq("track", "ViewContent", fbParams);
+      break;
+    default:
+      break;
+  }
+}
+
 function dispatchAnalyticsEvent(eventName, eventParams) {
-  if (typeof window !== "undefined" && window.gtag) {
+  const isBackendOwned = BACKEND_OWNED_EVENTS.has(eventName);
+
+  if (!isBackendOwned && typeof window !== "undefined" && window.gtag) {
     window.gtag("event", eventName, {
       ...eventParams,
       ...(ANALYTICS_CONFIG.newGa4Enabled
@@ -129,16 +171,18 @@ function dispatchAnalyticsEvent(eventName, eventParams) {
     });
   }
 
-  if (shouldPushToDataLayer(eventName)) {
+  if (!isBackendOwned && shouldPushToDataLayer(eventName)) {
     window.dataLayer.push({
       event: eventName,
       ...eventParams,
     });
   }
 
-  if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
+  if (!isBackendOwned && ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
     ReactGA.event(eventName, legacyReactGaParams(eventParams));
   }
+
+  dispatchFacebookEvent(eventName, eventParams);
 }
 
 function flushPendingEvents() {
@@ -187,7 +231,6 @@ export function initializeAnalytics() {
 }
 
 export function trackAnalyticsEvent(eventName, params = {}) {
-  if (BACKEND_OWNED_EVENTS.has(eventName)) return;
   if (!ANALYTICS_CONFIG.enabled) return;
 
   captureAttribution();
@@ -215,7 +258,8 @@ export function trackPageView(path) {
 
 export function trackLandingPageView(params = {}) {
   const landingPath =
-    params.page_path || (typeof window !== "undefined" ? window.location.pathname : "");
+    params.page_path ||
+    (typeof window !== "undefined" ? window.location.pathname : "");
   if (landingPath === lastLandingPagePath) return;
   lastLandingPagePath = landingPath;
 
@@ -293,6 +337,21 @@ export function trackPaymentFailed(serviceType, params = {}) {
   trackAnalyticsEvent(ANALYTICS_EVENTS.PAYMENT_FAILED, {
     ...resolveAnalyticsProduct(serviceType),
     ...params,
+  });
+}
+
+export function trackPurchase(serviceType, params = {}) {
+  const product = resolveAnalyticsProduct(serviceType);
+  const amount = params.value ?? params.amount;
+  const currency = params.currency || ANALYTICS_CONFIG.defaultCurrency;
+  const item = buildAnalyticsItem(product, amount);
+
+  trackAnalyticsEvent(ANALYTICS_EVENTS.PURCHASE, {
+    ...product,
+    currency,
+    value: amount,
+    ...params,
+    ...(item ? { items: [item] } : {}),
   });
 }
 

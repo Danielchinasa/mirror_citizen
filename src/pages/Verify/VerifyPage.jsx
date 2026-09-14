@@ -47,6 +47,7 @@ import {
   trackPaymentFailed,
   trackPaymentInitiated,
   trackVerificationStarted,
+  trackPurchase,
 } from "../../analytics/analytics";
 import { withAnalyticsMetadata } from "../../analytics/attribution";
 
@@ -297,6 +298,10 @@ const VerifyPage = () => {
             if (pollingRef.current) clearInterval(pollingRef.current);
             setPaystackModalOpen(false);
             setPaymentUrl("");
+            trackPurchase(type, {
+              gateway: activeGateway,
+              transaction_id: paystackReference,
+            });
             setPaystackReference("");
             setLoading(true);
             setCurrentStep(2); // Processing
@@ -802,6 +807,10 @@ const VerifyPage = () => {
       const data = await response.json();
 
       if (response.ok && data.status === "success") {
+        trackPurchase(type, {
+          gateway: "Wallet",
+          transaction_id: transactionId,
+        });
         await handleCompleteVerification(apiFormData);
       } else {
         throw new Error(data.message || "Wallet payment failed");
@@ -938,6 +947,10 @@ const VerifyPage = () => {
 
       if (paymentStatus === "successful" || paymentStatus === "success") {
         // Payment succeeded before closing — proceed with verification
+        trackPurchase(type, {
+          gateway: activeGateway,
+          transaction_id: paystackReference,
+        });
         setLoading(true);
         setCurrentStep(2); // Processing
         if (pendingApiFormRef.current) {
