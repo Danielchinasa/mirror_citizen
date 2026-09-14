@@ -576,8 +576,8 @@ const Home = () => {
                   : null;
                 if (!s) return `${currencySymbol}—`;
                 if (isKES)
-                  return `${currencySymbol}${Number(s.price).toLocaleString()}`;
-                return `${currencySymbol}${Number(s.price2 || s.price_usd || s.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                  return `${currencySymbol}${Number(s.serviceFee).toLocaleString()}`;
+                return `${currencySymbol}${Number(s.serviceFee2 || s.price_usd || s.serviceFee).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -636,8 +636,8 @@ const Home = () => {
                   : null;
                 if (!s) return `${currencySymbol}—`;
                 if (isKES)
-                  return `${currencySymbol}${Number(s.price).toLocaleString()}`;
-                return `${currencySymbol}${Number(s.price2 || s.price_usd || s.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                  return `${currencySymbol}${Number(s.serviceFee).toLocaleString()}`;
+                return `${currencySymbol}${Number(s.serviceFee2 || s.price_usd || s.serviceFee).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -691,8 +691,8 @@ const Home = () => {
                   : null;
                 if (!s) return `${currencySymbol}—`;
                 if (isKES)
-                  return `${currencySymbol}${Number(s.price).toLocaleString()}`;
-                return `${currencySymbol}${Number(s.price2 || s.price_usd || s.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                  return `${currencySymbol}${Number(s.serviceFee).toLocaleString()}`;
+                return `${currencySymbol}${Number(s.serviceFee2 || s.price_usd || s.serviceFee).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
               })()}
             </ServicePrice>
             <FeatureList>
