@@ -642,6 +642,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
+      vehiclePackage: formData.vehiclePackage || "standard",
     };
 
     // Map form fields to API form
@@ -1354,6 +1355,85 @@ const VerifyPage = () => {
               </FormGroup>
             </React.Fragment>
           ))}
+
+          {type === "vehicle" && (
+            <FormGroup>
+              <FormLabel>Select Platform</FormLabel>
+              <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      formData.vehiclePackage === "standard" ||
+                      !formData.vehiclePackage
+                    }
+                    onChange={() =>
+                      handleInputChange({
+                        target: { name: "vehiclePackage", value: "standard" },
+                      })
+                    }
+                    style={{
+                      cursor: "pointer",
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#09c93a",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "15px",
+                      fontFamily: "Nunito, sans-serif",
+                      color: "#374151",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Standard
+                  </span>
+                </label>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.vehiclePackage === "premium"}
+                    onChange={() =>
+                      handleInputChange({
+                        target: { name: "vehiclePackage", value: "premium" },
+                      })
+                    }
+                    style={{
+                      cursor: "pointer",
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#09c93a",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "15px",
+                      fontFamily: "Nunito, sans-serif",
+                      color: "#374151",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Premium
+                  </span>
+                </label>
+              </div>
+            </FormGroup>
+          )}
 
           {config.bureaus && (
             <FormGroup>
