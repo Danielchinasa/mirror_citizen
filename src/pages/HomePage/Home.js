@@ -486,8 +486,8 @@ const Home = () => {
                   localStorage.getItem("currencyCheck") === "XOF";
                 if (!s) return isCI ? "CFA —" : "$ —";
                 return isCI
-                  ? `CFA ${Number(s.price).toLocaleString()}`
-                  : `$${Number(s.price2).toFixed(2)}`;
+                  ? `CFA ${Number(s.serviceFee).toLocaleString()}`
+                  : `$${Number(s.serviceFee2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -534,8 +534,8 @@ const Home = () => {
                   localStorage.getItem("currencyCheck") === "XOF";
                 if (!s) return isCI ? "CFA —" : "$ —";
                 return isCI
-                  ? `CFA ${Number(s.price).toLocaleString()}`
-                  : `$${Number(s.price2).toFixed(2)}`;
+                  ? `CFA ${Number(s.serviceFee).toLocaleString()}`
+                  : `$${Number(s.serviceFee2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -581,8 +581,8 @@ const Home = () => {
                   localStorage.getItem("currencyCheck") === "XOF";
                 if (!s) return isCI ? "CFA —" : "$ —";
                 return isCI
-                  ? `CFA ${Number(s.price).toLocaleString()}`
-                  : `$${Number(s.price2).toFixed(2)}`;
+                  ? `CFA ${Number(s.serviceFee).toLocaleString()}`
+                  : `$${Number(s.serviceFee2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>

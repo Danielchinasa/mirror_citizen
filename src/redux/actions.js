@@ -20,6 +20,7 @@ export const fetchVerificationServicePrices =
     try {
       let serviceData;
       let rate;
+      let allServices;
 
       if (config.serviceCode || config.apiServiceName) {
         const response = await apiGetInternalCall(
@@ -27,6 +28,7 @@ export const fetchVerificationServicePrices =
           token,
         );
         const services = response?.data?.data || response?.data || [];
+        allServices = services;
         serviceData = Array.isArray(services)
           ? services.find(
               (s) =>
@@ -48,6 +50,7 @@ export const fetchVerificationServicePrices =
           { ipAddress },
           token,
         );
+        allServices = response?.data?.data;
         serviceData = response?.data?.data?.[config.priceIndex];
         rate = response?.data?.rate;
       }
@@ -72,6 +75,7 @@ export const fetchVerificationServicePrices =
         vatUsd: serviceData.VAT2,
         processingFee: serviceData.processingFee || 0,
         rate: rate || 1,
+        allServices,
       };
     } catch (error) {
       return {
@@ -386,6 +390,7 @@ export const sendVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
+          platform: formData.platform || "",
         },
       };
 
@@ -659,6 +664,7 @@ export const initiateVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
+          platform: formData.platform || "",
         },
       };
 
@@ -862,6 +868,7 @@ export const completeVerificationRequest =
             stolencheck: formData.stolencheck || false,
           }),
           license_number: formData.license_number || "",
+          platform: formData.platform || "",
         },
       };
 

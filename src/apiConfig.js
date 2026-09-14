@@ -6,7 +6,7 @@ const imageBaseUrl = "https://api-staging.e-citizen.ng";
 // true  = use the configured Cote d'Ivoire test IP in development and staging.
 // false = detect the user's live IP through the configured IP providers.
 // Production always blocks the test IP, even if this is accidentally left true.
-const enableTestIpOverride = true;
+const enableTestIpOverride = false;
 
 //Prod API
 // const baseUrl = "https://e-citizen.ng:8444/api/v2";

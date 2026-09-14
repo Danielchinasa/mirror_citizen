@@ -223,6 +223,7 @@ const VerifyPage = () => {
   const [pricingData, setPricingData] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [priceError, setPriceError] = useState(false);
+  const [allServicePrices, setAllServicePrices] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [selectedBureaus, setSelectedBureaus] = useState({});
   const [paystackModalOpen, setPaystackModalOpen] = useState(false);
@@ -415,9 +416,49 @@ const VerifyPage = () => {
       const data = await dispatch(
         fetchVerificationServicePrices(config, userToken),
       );
-      if (isPricingValid(data)) {
-        setPricingData(data);
-        setPriceError(false);
+      if (data && data.status === "success") {
+        setAllServicePrices({
+          data: data.allServices,
+          rate: data.rate,
+        });
+
+        let serviceData = null;
+        if (config.serviceCode || config.apiServiceName) {
+          const targetServiceName =
+            type === "vehicle" && formData.platform === "premium"
+              ? "STOLEN_CHECK"
+              : config.apiServiceName || config.serviceCode;
+          serviceData = Array.isArray(data.allServices)
+            ? data.allServices.find(
+                (s) =>
+                  s?.service?.toLowerCase() ===
+                  targetServiceName?.toLowerCase(),
+              )
+            : data.allServices?.[targetServiceName];
+        } else {
+          const targetIndex =
+            type === "vehicle" && formData.platform === "premium"
+              ? 7
+              : config.priceIndex;
+          serviceData = data.allServices?.[targetIndex];
+        }
+
+        if (serviceData) {
+          setPricingData({
+            price: serviceData.price,
+            serviceFee: serviceData.serviceFee,
+            vat: serviceData.VAT,
+            priceUsd: serviceData.price2,
+            serviceFeeusd: serviceData.serviceFee2,
+            vatUsd: serviceData.VAT2,
+            processingFee: serviceData.processingFee || 0,
+            rate: data.rate,
+          });
+          setPriceError(false);
+        } else {
+          setPricingData(null);
+          setPriceError(true);
+        }
       } else {
         setPricingData(null);
         setPriceError(true);
@@ -433,6 +474,43 @@ const VerifyPage = () => {
   useEffect(() => {
     fetchPrices();
   }, [fetchPrices]);
+
+  useEffect(() => {
+    if (allServicePrices && config) {
+      let serviceData = null;
+      if (config.serviceCode || config.apiServiceName) {
+        const targetServiceName =
+          type === "vehicle" && formData.platform === "premium"
+            ? "STOLEN_CHECK"
+            : config.apiServiceName || config.serviceCode;
+        serviceData = Array.isArray(allServicePrices.data)
+          ? allServicePrices.data.find(
+              (s) =>
+                s?.service?.toLowerCase() === targetServiceName?.toLowerCase(),
+            )
+          : allServicePrices.data?.[targetServiceName];
+      } else {
+        const targetIndex =
+          type === "vehicle" && formData.platform === "premium"
+            ? 7
+            : config.priceIndex;
+        serviceData = allServicePrices.data?.[targetIndex];
+      }
+
+      if (serviceData) {
+        setPricingData({
+          price: serviceData.price,
+          serviceFee: serviceData.serviceFee,
+          vat: serviceData.VAT,
+          priceUsd: serviceData.price2,
+          serviceFeeusd: serviceData.serviceFee2,
+          vatUsd: serviceData.VAT2,
+          processingFee: serviceData.processingFee || 0,
+          rate: allServicePrices.rate,
+        });
+      }
+    }
+  }, [allServicePrices, config, type, formData.platform]);
 
   if (!config) return null;
 
@@ -787,7 +865,7 @@ const VerifyPage = () => {
       business_name: "",
       bvn: "",
       vin: "",
-      stolencheck: "",
+      stolencheck: formData.platform === "premium" ? true : "",
       license_number: "",
       face: "",
       nin_csv: "",
@@ -796,6 +874,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
+      platform: formData.platform || "standard",
     };
 
     // Map form fields to API form
@@ -1796,6 +1875,84 @@ const VerifyPage = () => {
               </FormGroup>
             </React.Fragment>
           ))}
+
+          {type === "vehicle" && (
+            <FormGroup>
+              <FormLabel>Select Platform</FormLabel>
+              <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      formData.platform === "standard" || !formData.platform
+                    }
+                    onChange={() =>
+                      handleInputChange({
+                        target: { name: "platform", value: "standard" },
+                      })
+                    }
+                    style={{
+                      cursor: "pointer",
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#09c93a",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "15px",
+                      fontFamily: "Nunito, sans-serif",
+                      color: "#374151",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Standard
+                  </span>
+                </label>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.platform === "premium"}
+                    onChange={() =>
+                      handleInputChange({
+                        target: { name: "platform", value: "premium" },
+                      })
+                    }
+                    style={{
+                      cursor: "pointer",
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#09c93a",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "15px",
+                      fontFamily: "Nunito, sans-serif",
+                      color: "#374151",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Premium
+                  </span>
+                </label>
+              </div>
+            </FormGroup>
+          )}
 
           {config.bureaus && (
             <FormGroup>
