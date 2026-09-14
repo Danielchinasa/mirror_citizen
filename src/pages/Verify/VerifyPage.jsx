@@ -397,7 +397,7 @@ const VerifyPage = () => {
       setAllServicePrices({ data: allData, rate: response?.data?.rate });
 
       const targetIndex =
-        type === "vehicle" && formData.vehiclePackage === "premium"
+        type === "vehicle" && formData.platform === "premium"
           ? 7
           : config.priceIndex;
       const serviceData = allData?.[targetIndex];
@@ -436,7 +436,7 @@ const VerifyPage = () => {
   useEffect(() => {
     if (allServicePrices && config) {
       const targetIndex =
-        type === "vehicle" && formData.vehiclePackage === "premium"
+        type === "vehicle" && formData.platform === "premium"
           ? 7
           : config.priceIndex;
       const serviceData = allServicePrices.data?.[targetIndex];
@@ -453,7 +453,7 @@ const VerifyPage = () => {
         });
       }
     }
-  }, [allServicePrices, config, type, formData.vehiclePackage]);
+  }, [allServicePrices, config, type, formData.platform]);
 
   if (!config) return null;
 
@@ -663,7 +663,7 @@ const VerifyPage = () => {
       business_name: "",
       bvn: "",
       vin: "",
-      stolencheck: formData.vehiclePackage === "premium" ? true : "",
+      stolencheck: formData.platform === "premium" ? true : "",
       license_number: "",
       face: "",
       nin_csv: "",
@@ -672,7 +672,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
-      vehiclePackage: formData.vehiclePackage || "standard",
+      platform: formData.platform || "standard",
     };
 
     // Map form fields to API form
@@ -1401,12 +1401,11 @@ const VerifyPage = () => {
                   <input
                     type="checkbox"
                     checked={
-                      formData.vehiclePackage === "standard" ||
-                      !formData.vehiclePackage
+                      formData.platform === "standard" || !formData.platform
                     }
                     onChange={() =>
                       handleInputChange({
-                        target: { name: "vehiclePackage", value: "standard" },
+                        target: { name: "platform", value: "standard" },
                       })
                     }
                     style={{
@@ -1437,10 +1436,10 @@ const VerifyPage = () => {
                 >
                   <input
                     type="checkbox"
-                    checked={formData.vehiclePackage === "premium"}
+                    checked={formData.platform === "premium"}
                     onChange={() =>
                       handleInputChange({
-                        target: { name: "vehiclePackage", value: "premium" },
+                        target: { name: "platform", value: "premium" },
                       })
                     }
                     style={{

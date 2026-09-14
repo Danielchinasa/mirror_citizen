@@ -3,7 +3,10 @@ import axios from "axios";
 import baseUrl from "../apiConfig";
 import { persistor } from "../redux/store";
 import { apiGet, apiPost, apiPostNoObject } from "../apiUtils";
-import { getAttribution, withAnalyticsMetadata } from "../analytics/attribution";
+import {
+  getAttribution,
+  withAnalyticsMetadata,
+} from "../analytics/attribution";
 
 const logPurchase = () => {
   // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
@@ -315,6 +318,7 @@ export const sendVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
+          platform: formData.platform || "",
         },
       };
 
@@ -578,6 +582,7 @@ export const initiateVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
+          platform: formData.platform || "",
         },
       };
 
@@ -774,6 +779,7 @@ export const completeVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
+          platform: formData.platform || "",
         },
       };
 
