@@ -1328,7 +1328,6 @@ const VerifyPage = () => {
               {config.idTypeLabel}
             </IdTypeDisplay>
           </FormGroup>
-
           {config.fields.map((field, idx) => (
             <React.Fragment key={field.name}>
               {field.eitherOr &&
@@ -1398,8 +1397,8 @@ const VerifyPage = () => {
               </FormGroup>
             </React.Fragment>
           ))}
-
-          {type === "vehicle" && (
+          {/* TODO: Uncomment this section if platform selection is needed for */}
+          {/* {type === "vehicle" && (
             <FormGroup>
               <FormLabel>Select Platform</FormLabel>
               <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
@@ -1475,8 +1474,7 @@ const VerifyPage = () => {
                 </label>
               </div>
             </FormGroup>
-          )}
-
+          )} */}
           {config.bureaus && (
             <FormGroup>
               <div
@@ -1582,7 +1580,6 @@ const VerifyPage = () => {
               )}
             </FormGroup>
           )}
-
           <YouWillGetCard>
             <YouWillGetTitle>You will get</YouWillGetTitle>
             <YouWillGetRow>
@@ -1594,7 +1591,6 @@ const VerifyPage = () => {
               ))}
             </YouWillGetRow>
           </YouWillGetCard>
-
           <SidebarNote>
             <FaShieldAlt /> Your data is secure and used only for verification.
           </SidebarNote>
