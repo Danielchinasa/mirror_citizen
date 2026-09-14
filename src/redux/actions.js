@@ -278,8 +278,8 @@ export const sendVerificationRequest =
       }
 
       const randomTransactionId = generateTransactionId();
-
       const attribution = getAttribution();
+
 
       const restructuredData = {
         payment: {
@@ -540,8 +540,8 @@ export const initiateVerificationRequest =
       }
 
       const randomTransactionId = generateTransactionId();
-
       const attribution = getAttribution();
+
 
       const restructuredData = {
         payment: {
@@ -695,27 +695,6 @@ export const initiateStakeHoldersRequest =
     }
   };
 
-const buildItems = (formData) => {
-  const items = [];
-
-  Object.keys(formData).forEach((field) => {
-    if (typeof formData[field] === "string" && formData[field].trim() !== "") {
-      items.push({
-        item_id: field,
-        item_name: field,
-        price: 1, // fallback if you don’t have per-field pricing here
-        quantity: 1,
-      });
-    }
-  });
-
-  return items;
-};
-
-const getStoredAmount = () => {
-  return Number(localStorage.getItem("totalAmount") || 0);
-};
-
 export const completeVerificationRequest =
   (formData, token) => async (dispatch) => {
     try {
@@ -733,8 +712,8 @@ export const completeVerificationRequest =
       }
 
       const randomTransactionId = generateTransactionId();
-
       const attribution = getAttribution();
+
 
       const restructuredData = {
         payment: {
