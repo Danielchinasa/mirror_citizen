@@ -463,8 +463,8 @@ const Home = () => {
                   : null;
                 if (!s) return isLocal ? "USh —" : "$ —";
                 return isLocal
-                  ? `USh ${Number(s.price).toLocaleString()}`
-                  : `$${Number(s.price2).toFixed(2)}`;
+                  ? `USh ${Number(s.serviceFee).toLocaleString()}`
+                  : `$${Number(s.serviceFee2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>
@@ -511,8 +511,8 @@ const Home = () => {
                   : null;
                 if (!s) return isLocal ? "USh —" : "$ —";
                 return isLocal
-                  ? `USh ${Number(s.price).toLocaleString()}`
-                  : `$${Number(s.price2).toFixed(2)}`;
+                  ? `USh ${Number(s.serviceFee).toLocaleString()}`
+                  : `$${Number(s.serviceFee2).toFixed(2)}`;
               })()}
             </ServicePrice>
             <FeatureList>

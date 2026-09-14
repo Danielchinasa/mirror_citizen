@@ -453,18 +453,14 @@ const VerifyPage = () => {
   const serviceFeePerCheck = isLocalCurrency
     ? Number(pricingData?.serviceFee || 0)
     : Number(pricingData?.serviceFeeusd || 0);
-  const processingFeePerCheck = isLocalCurrency
-    ? Number(pricingData?.processingFee || 0)
-    : Number(pricingData?.processingFeeUsd || 0);
   const vatPerCheck = isLocalCurrency
     ? Number(pricingData?.vat || 0)
     : Number(pricingData?.vatUsd || 0);
 
   const serviceFeeTotal = serviceFeePerCheck * bureauMultiplier;
-  const processingFeeTotal = processingFeePerCheck * bureauMultiplier;
   const vatTotal = vatPerCheck * bureauMultiplier;
-  const subtotalAmount = serviceFeeTotal + processingFeeTotal + vatTotal;
-  const taxChargesTotal = vatTotal + processingFeeTotal;
+  const subtotalAmount = serviceFeeTotal + vatTotal;
+  const taxChargesTotal = vatTotal;
 
   const totalAmount =
     isPriceAvailable && pricingData
