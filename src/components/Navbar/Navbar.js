@@ -1050,7 +1050,10 @@ function Navbar() {
                 </PublicLanguageToggleGroup>
                 <ThemeToggle />
               </PublicDesktopOnly>
-              <PublicCta href={withBasePath("/#services")}>
+              <PublicCta
+                href={withBasePath("/verification-login")}
+                aria-label={isSw ? "Anza" : "Get Started"}
+              >
                 {isSw ? "Anza" : "Get Started"}
               </PublicCta>
               <PublicHamburger
@@ -1089,7 +1092,7 @@ function Navbar() {
                 {isSw ? "Msaada" : "Support"}
               </PublicMobileLink>
               <PublicMobileAnchor
-                href={withBasePath("/#services")}
+                href={withBasePath("/verification-login")}
                 onClick={closeMobileMenu}
               >
                 {isSw ? "Anza" : "Get Started"}
