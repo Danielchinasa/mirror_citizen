@@ -217,6 +217,7 @@ const VerifyPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
+  const [allServicePrices, setAllServicePrices] = useState(null);
   const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [priceError, setPriceError] = useState(null);
@@ -392,11 +393,18 @@ const VerifyPage = () => {
         { ipAddress },
         userToken,
       );
-      const serviceData = response?.data?.data?.[config.priceIndex];
+      const allData = response?.data?.data;
+      setAllServicePrices({ data: allData, rate: response?.data?.rate });
+
+      const targetIndex =
+        type === "vehicle" && formData.vehiclePackage === "premium"
+          ? 7
+          : config.priceIndex;
+      const serviceData = allData?.[targetIndex];
       if (!serviceData) {
         throw new Error("Service price information is currently unavailable.");
       }
-      setDetectedCurrency(response?.data?.data?.[0]?.currency || null);
+      setDetectedCurrency(allData?.[0]?.currency || null);
       setPricingData({
         price: serviceData.price,
         serviceFee: serviceData.serviceFee,
@@ -405,7 +413,7 @@ const VerifyPage = () => {
         serviceFeeusd: serviceData.serviceFee2,
         vatUsd: serviceData.VAT2,
         processingFee: serviceData.processingFee || 0,
-        rate: response.data.rate,
+        rate: response?.data?.rate,
       });
       setLoadingPrice(false);
     } catch (err) {
@@ -419,11 +427,33 @@ const VerifyPage = () => {
         confirmButtonColor: "#09c93a",
       });
     }
-  }, [config, userToken]);
+  }, [config, userToken]); // intentionally removed formData.vehiclePackage to avoid re-fetching
 
   useEffect(() => {
     fetchPrices();
   }, [fetchPrices]);
+
+  useEffect(() => {
+    if (allServicePrices && config) {
+      const targetIndex =
+        type === "vehicle" && formData.vehiclePackage === "premium"
+          ? 7
+          : config.priceIndex;
+      const serviceData = allServicePrices.data?.[targetIndex];
+      if (serviceData) {
+        setPricingData({
+          price: serviceData.price,
+          serviceFee: serviceData.serviceFee,
+          vat: serviceData.VAT,
+          priceUsd: serviceData.price2,
+          serviceFeeusd: serviceData.serviceFee2,
+          vatUsd: serviceData.VAT2,
+          processingFee: serviceData.processingFee || 0,
+          rate: allServicePrices.rate,
+        });
+      }
+    }
+  }, [allServicePrices, config, type, formData.vehiclePackage]);
 
   if (!config) return null;
 
@@ -633,7 +663,7 @@ const VerifyPage = () => {
       business_name: "",
       bvn: "",
       vin: "",
-      stolencheck: "",
+      stolencheck: formData.vehiclePackage === "premium" ? true : "",
       license_number: "",
       face: "",
       nin_csv: "",
