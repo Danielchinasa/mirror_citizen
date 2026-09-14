@@ -439,19 +439,15 @@ const VerifyPage = () => {
   const serviceFeePerCheck = isGHS
     ? Number(pricingData?.serviceFee || 0)
     : Number(pricingData?.serviceFeeusd || 0);
-  const processingFeePerCheck = isGHS
-    ? Number(pricingData?.processingFee || 0)
-    : Number(pricingData?.processingFeeUsd || 0);
   const vatPerCheck = isGHS
     ? Number(pricingData?.vat || 0)
     : Number(pricingData?.vatUsd || 0);
 
   const serviceFeeTotal = serviceFeePerCheck * bureauMultiplier;
-  const processingFeeTotal = processingFeePerCheck * bureauMultiplier;
   const vatTotal = vatPerCheck * bureauMultiplier;
   const displayProcessingFeeTotal = serviceFeeTotal;
-  const displayTaxAndChargesTotal = vatTotal + processingFeeTotal;
-  const subtotalAmount = serviceFeeTotal + processingFeeTotal + vatTotal;
+  const displayTaxAndChargesTotal = vatTotal;
+  const subtotalAmount = serviceFeeTotal + vatTotal;
 
   const totalAmount =
     isPriceAvailable && pricingData

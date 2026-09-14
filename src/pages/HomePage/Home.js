@@ -319,9 +319,13 @@ const Home = () => {
     if (!s) return "—";
     const isGhana = ipCountry === "GH";
     if (isGhana) {
-      return s?.price ? `GH₵${Number(s.price).toLocaleString()}` : "GH₵—";
+      return s?.serviceFee
+        ? `GH₵${Number(s.serviceFee).toLocaleString()}`
+        : "GH₵—";
     } else {
-      return s?.price2 ? `$${Number(s.price2).toLocaleString()}` : "$—";
+      return s?.serviceFee2
+        ? `$${Number(s.serviceFee2).toLocaleString()}`
+        : "$—";
     }
   };
 
