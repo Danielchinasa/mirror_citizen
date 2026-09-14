@@ -125,41 +125,58 @@ function legacyReactGaParams(eventParams) {
 function dispatchFacebookEvent(eventName, eventParams) {
   if (typeof window === "undefined" || !window.fbq) return;
 
-  const fbParams = {};
-  if (eventParams.currency) fbParams.currency = eventParams.currency;
-  if (eventParams.value) fbParams.value = eventParams.value;
+  const fbParams = { ...eventParams };
 
   switch (eventName) {
     case ANALYTICS_EVENTS.PAGE_VIEW:
     case ANALYTICS_EVENTS.LANDING_PAGE_VIEW:
-      window.fbq("track", "PageView");
+      console.log("🔵 [FB Pixel] Firing: PageView", fbParams);
+      window.fbq("track", "PageView", fbParams);
       break;
     case ANALYTICS_EVENTS.PURCHASE:
+      console.log("🔵 [FB Pixel] Firing: Purchase", fbParams);
       window.fbq("track", "Purchase", fbParams);
       break;
     case ANALYTICS_EVENTS.BEGIN_CHECKOUT:
     case ANALYTICS_EVENTS.PAYMENT_INITIATED:
+      console.log("🔵 [FB Pixel] Firing: InitiateCheckout", fbParams);
       window.fbq("track", "InitiateCheckout", fbParams);
       break;
     case ANALYTICS_EVENTS.ADD_PAYMENT_INFO:
+      console.log("🔵 [FB Pixel] Firing: AddPaymentInfo", fbParams);
       window.fbq("track", "AddPaymentInfo", fbParams);
       break;
     case ANALYTICS_EVENTS.SIGN_UP:
+      console.log("🔵 [FB Pixel] Firing: CompleteRegistration", fbParams);
       window.fbq("track", "CompleteRegistration", fbParams);
       break;
     case ANALYTICS_EVENTS.VERIFICATION_STARTED:
     case ANALYTICS_EVENTS.FORM_SUBMIT:
+      console.log("🔵 [FB Pixel] Firing: Lead", fbParams);
       window.fbq("track", "Lead", fbParams);
       break;
     case ANALYTICS_EVENTS.PRODUCT_SELECTED:
+      console.log("🔵 [FB Pixel] Firing: ViewContent", fbParams);
       window.fbq("track", "ViewContent", fbParams);
       break;
+    case ANALYTICS_EVENTS.PAYMENT_FAILED:
+      console.log("🔵 [FB Pixel] Firing Custom: PaymentFailed", fbParams);
+      window.fbq("trackCustom", "PaymentFailed", fbParams);
+      break;
     default:
+      // Track any unmapped events as custom events so you don't miss anything
+      console.log(`🔵 [FB Pixel] Firing Custom: ${eventName}`, fbParams);
+      window.fbq("trackCustom", eventName, fbParams);
       break;
   }
 }
 
 function dispatchAnalyticsEvent(eventName, eventParams) {
+  console.log(
+    `🚀 [Analytics Tracker] Dispatched Event: ${eventName}`,
+    eventParams,
+  );
+
   const isBackendOwned = BACKEND_OWNED_EVENTS.has(eventName);
 
   if (!isBackendOwned && typeof window !== "undefined" && window.gtag) {
