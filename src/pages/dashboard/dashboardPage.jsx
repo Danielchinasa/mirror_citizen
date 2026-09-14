@@ -66,6 +66,7 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 import { trackEvent } from "../../hooks/analytics";
 import { trackGA4Event } from "../../hooks/analytics";
+import { trackPurchase } from "../../analytics/analytics";
 import baseUrl from "../../apiConfig";
 import { apiPostInternalCall } from "../../apiUtils";
 import { initiatePaystackPayment } from "../../services/paystackService";
@@ -1340,8 +1341,11 @@ const DashboardPage = () => {
             : totalServiceCost;
   };
 
-  const logPurchase = () => {
-    // Browser-owned purchase tracking is retired; backend payment confirmation owns purchase.
+  const logPurchase = (params) => {
+    // We send purchase to FB Pixel via trackPurchase.
+    // GA4 backend handles GA4 side.
+    const serviceType = localStorage.getItem("serviceType") || "wallet_topup";
+    trackPurchase(serviceType, params);
   };
 
 

@@ -47,6 +47,7 @@ import {
   trackPaymentFailed,
   trackPaymentInitiated,
   trackVerificationStarted,
+  trackPurchase,
 } from "../../analytics/analytics";
 import { withAnalyticsMetadata } from "../../analytics/attribution";
 
@@ -217,6 +218,7 @@ const VerifyPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingData, setPricingData] = useState(null);
+  const [allServicePrices, setAllServicePrices] = useState(null);
   const [detectedCurrency, setDetectedCurrency] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(true);
   const [priceError, setPriceError] = useState(null);
@@ -296,6 +298,10 @@ const VerifyPage = () => {
             if (pollingRef.current) clearInterval(pollingRef.current);
             setPaystackModalOpen(false);
             setPaymentUrl("");
+            trackPurchase(type, {
+              gateway: activeGateway,
+              transaction_id: paystackReference,
+            });
             setPaystackReference("");
             setLoading(true);
             setCurrentStep(2); // Processing
@@ -392,11 +398,18 @@ const VerifyPage = () => {
         { ipAddress },
         userToken,
       );
-      const serviceData = response?.data?.data?.[config.priceIndex];
+      const allData = response?.data?.data;
+      setAllServicePrices({ data: allData, rate: response?.data?.rate });
+
+      const targetIndex =
+        type === "vehicle" && formData.platform === "premium"
+          ? 7
+          : config.priceIndex;
+      const serviceData = allData?.[targetIndex];
       if (!serviceData) {
         throw new Error("Service price information is currently unavailable.");
       }
-      setDetectedCurrency(response?.data?.data?.[0]?.currency || null);
+      setDetectedCurrency(allData?.[0]?.currency || null);
       setPricingData({
         price: serviceData.price,
         serviceFee: serviceData.serviceFee,
@@ -405,7 +418,7 @@ const VerifyPage = () => {
         serviceFeeusd: serviceData.serviceFee2,
         vatUsd: serviceData.VAT2,
         processingFee: serviceData.processingFee || 0,
-        rate: response.data.rate,
+        rate: response?.data?.rate,
       });
       setLoadingPrice(false);
     } catch (err) {
@@ -419,11 +432,33 @@ const VerifyPage = () => {
         confirmButtonColor: "#09c93a",
       });
     }
-  }, [config, userToken]);
+  }, [config, userToken]); // intentionally removed formData.vehiclePackage to avoid re-fetching
 
   useEffect(() => {
     fetchPrices();
   }, [fetchPrices]);
+
+  useEffect(() => {
+    if (allServicePrices && config) {
+      const targetIndex =
+        type === "vehicle" && formData.platform === "premium"
+          ? 7
+          : config.priceIndex;
+      const serviceData = allServicePrices.data?.[targetIndex];
+      if (serviceData) {
+        setPricingData({
+          price: serviceData.price,
+          serviceFee: serviceData.serviceFee,
+          vat: serviceData.VAT,
+          priceUsd: serviceData.price2,
+          serviceFeeusd: serviceData.serviceFee2,
+          vatUsd: serviceData.VAT2,
+          processingFee: serviceData.processingFee || 0,
+          rate: allServicePrices.rate,
+        });
+      }
+    }
+  }, [allServicePrices, config, type, formData.platform]);
 
   if (!config) return null;
 
@@ -633,7 +668,7 @@ const VerifyPage = () => {
       business_name: "",
       bvn: "",
       vin: "",
-      stolencheck: "",
+      stolencheck: formData.platform === "premium" ? true : "",
       license_number: "",
       face: "",
       nin_csv: "",
@@ -642,6 +677,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
+      platform: formData.platform || "standard",
     };
 
     // Map form fields to API form
@@ -771,6 +807,10 @@ const VerifyPage = () => {
       const data = await response.json();
 
       if (response.ok && data.status === "success") {
+        trackPurchase(type, {
+          gateway: "Wallet",
+          transaction_id: transactionId,
+        });
         await handleCompleteVerification(apiFormData);
       } else {
         throw new Error(data.message || "Wallet payment failed");
@@ -907,6 +947,10 @@ const VerifyPage = () => {
 
       if (paymentStatus === "successful" || paymentStatus === "success") {
         // Payment succeeded before closing — proceed with verification
+        trackPurchase(type, {
+          gateway: activeGateway,
+          transaction_id: paystackReference,
+        });
         setLoading(true);
         setCurrentStep(2); // Processing
         if (pendingApiFormRef.current) {
@@ -1284,7 +1328,6 @@ const VerifyPage = () => {
               {config.idTypeLabel}
             </IdTypeDisplay>
           </FormGroup>
-
           {config.fields.map((field, idx) => (
             <React.Fragment key={field.name}>
               {field.eitherOr &&
@@ -1354,7 +1397,84 @@ const VerifyPage = () => {
               </FormGroup>
             </React.Fragment>
           ))}
-
+          {/* TODO: Uncomment this section if platform selection is needed for */}
+          {/* {type === "vehicle" && (
+            <FormGroup>
+              <FormLabel>Select Platform</FormLabel>
+              <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      formData.platform === "standard" || !formData.platform
+                    }
+                    onChange={() =>
+                      handleInputChange({
+                        target: { name: "platform", value: "standard" },
+                      })
+                    }
+                    style={{
+                      cursor: "pointer",
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#09c93a",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "15px",
+                      fontFamily: "Nunito, sans-serif",
+                      color: "#374151",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Standard
+                  </span>
+                </label>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.platform === "premium"}
+                    onChange={() =>
+                      handleInputChange({
+                        target: { name: "platform", value: "premium" },
+                      })
+                    }
+                    style={{
+                      cursor: "pointer",
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#09c93a",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "15px",
+                      fontFamily: "Nunito, sans-serif",
+                      color: "#374151",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Premium
+                  </span>
+                </label>
+              </div>
+            </FormGroup>
+          )} */}
           {config.bureaus && (
             <FormGroup>
               <div
@@ -1460,7 +1580,6 @@ const VerifyPage = () => {
               )}
             </FormGroup>
           )}
-
           <YouWillGetCard>
             <YouWillGetTitle>You will get</YouWillGetTitle>
             <YouWillGetRow>
@@ -1472,7 +1591,6 @@ const VerifyPage = () => {
               ))}
             </YouWillGetRow>
           </YouWillGetCard>
-
           <SidebarNote>
             <FaShieldAlt /> Your data is secure and used only for verification.
           </SidebarNote>
