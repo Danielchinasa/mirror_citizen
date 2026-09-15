@@ -280,7 +280,6 @@ export const sendVerificationRequest =
       const randomTransactionId = generateTransactionId();
       const attribution = getAttribution();
 
-
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -318,7 +317,7 @@ export const sendVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
-          platform: formData.platform || "",
+          // platform: formData.platform || "",
         },
       };
 
@@ -542,7 +541,6 @@ export const initiateVerificationRequest =
       const randomTransactionId = generateTransactionId();
       const attribution = getAttribution();
 
-
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -582,7 +580,7 @@ export const initiateVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
-          platform: formData.platform || "",
+          // platform: formData.platform || "",
         },
       };
 
@@ -714,7 +712,6 @@ export const completeVerificationRequest =
       const randomTransactionId = generateTransactionId();
       const attribution = getAttribution();
 
-
       const restructuredData = {
         payment: {
           currency: currencyCheck || "NGN",
@@ -758,7 +755,7 @@ export const completeVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
-          platform: formData.platform || "",
+          // platform: formData.platform || "",
         },
       };
 
