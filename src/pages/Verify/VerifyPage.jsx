@@ -1510,8 +1510,8 @@ const VerifyPage = () => {
           response?.business?.message ||
           response?.financial?.message ||
           (isSw
-            ? "Uthibitishaji haukukamilika. Marejesho yameanzishwa."
-            : "Verification could not be completed. A refund has been initiated.");
+            ? "Uthibitishaji haukuweza kukamilika. Huduma haipatikani kwa sasa."
+            : "Verification could not be completed. Service is not available at the moment.");
         Swal.fire({
           icon: "error",
           title: isSw ? "Uthibitishaji Umeshindwa" : "Verification Failed",
@@ -1527,8 +1527,8 @@ const VerifyPage = () => {
         icon: "error",
         title: isSw ? "Huduma Haipatikani" : "Service Unavailable",
         text: isSw
-          ? "Huduma haipatikani kwa sasa. Marejesho yameanzishwa."
-          : "Service is currently unavailable. A refund has been initiated.",
+          ? "Uthibitishaji haukuweza kukamilika. Huduma haipatikani kwa sasa."
+          : "Verification could not be completed. Service is not available at the moment.",
         confirmButtonColor: "#DD0201",
       });
     }
