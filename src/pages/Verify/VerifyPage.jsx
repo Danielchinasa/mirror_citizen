@@ -1381,7 +1381,7 @@ const VerifyPage = () => {
           response?.["search-extension"]?.bvnVerification?.detail ||
           response?.business?.message ||
           response?.financial?.message ||
-          "Verification could not be completed. A refund has been initiated.";
+          "Verification could not be completed. Service is not available at the moment.";
         Swal.fire({
           icon: "error",
           title: "Verification Failed",
@@ -1396,7 +1396,7 @@ const VerifyPage = () => {
       Swal.fire({
         icon: "error",
         title: "Service Unavailable",
-        text: "Service is currently unavailable. A refund has been initiated.",
+        text: "Service is not available at the moment.",
         confirmButtonColor: "#FED001",
       });
     }
