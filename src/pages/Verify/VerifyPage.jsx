@@ -677,7 +677,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
-      platform: formData.platform || "standard",
+      // platform: formData.platform || "standard",
     };
 
     // Map form fields to API form
