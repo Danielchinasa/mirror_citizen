@@ -390,7 +390,7 @@ export const sendVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
-          platform: formData.platform || "",
+          // platform: formData.platform || "",
         },
       };
 
@@ -664,7 +664,7 @@ export const initiateVerificationRequest =
           vin: formData.vin || "",
           ...(formData.vin && { stolencheck: formData.stolencheck || false }),
           license_number: formData.license_number || "",
-          platform: formData.platform || "",
+          // platform: formData.platform || "",
         },
       };
 
@@ -868,7 +868,7 @@ export const completeVerificationRequest =
             stolencheck: formData.stolencheck || false,
           }),
           license_number: formData.license_number || "",
-          platform: formData.platform || "",
+          // platform: formData.platform || "",
         },
       };
 
