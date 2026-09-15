@@ -820,7 +820,7 @@ const VerifyPage = () => {
       paymentType: "",
       currency: "",
       consent: "true",
-      platform: formData.platform || "standard",
+      // platform: formData.platform || "standard",
     };
 
     // Map form fields to API form
@@ -1795,7 +1795,7 @@ const VerifyPage = () => {
             </React.Fragment>
           ))}
 
-          {type === "vehicle" && (
+          {/* {type === "vehicle" && (
             <FormGroup>
               <FormLabel>Select Platform</FormLabel>
               <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
@@ -1871,7 +1871,7 @@ const VerifyPage = () => {
                 </label>
               </div>
             </FormGroup>
-          )}
+          )} */}
 
           {config.bureaus && (
             <FormGroup>
