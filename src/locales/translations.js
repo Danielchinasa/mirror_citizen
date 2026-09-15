@@ -244,9 +244,9 @@ const translations = {
       "Results will be available after the subject accepts the consent request.",
     "verify.alert.serviceUnavailableTitle": "Service Unavailable",
     "verify.alert.serviceUnavailableText":
-      "Service is currently unavailable. A refund has been initiated.",
+      "Verification could not be completed. Service is not available at the moment.",
     "verify.alert.refundInitiated":
-      "Verification could not be completed. A refund has been initiated.",
+      "Verification could not be completed. Service is not available at the moment.",
 
     /* ── Email Consent Feedback ── */
     "consent.email.invalidTitle": "Invalid consent link",
@@ -599,7 +599,7 @@ const translations = {
     "dashboard.alert.serviceUnavailable":
       "Service unavailable at the moment. Please try again later.",
     "dashboard.alert.serviceUnavailableRefund":
-      "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
+      "Verification could not be completed. Service is not available at the moment.",
     "dashboard.alert.currencyNotSelectedTitle": "Currency Not Selected",
     "dashboard.alert.currencyNotSelectedText":
       "Please select a payment currency (Naira or USD) before proceeding.",
@@ -899,7 +899,7 @@ const translations = {
     "verify.alert.serviceUnavailableText":
       "Huduma kwa sasa haipatikani. Urejeshaji wa pesa umeshanzishwa.",
     "verify.alert.refundInitiated":
-      "Uthibitishaji haukuweza kukamilika. Urejeshaji wa pesa umeshanzishwa.",
+      "Uthibitishaji haukuweza kukamilika. Huduma haipatikani kwa sasa.",
 
     /* ── Email Consent Feedback ── */
     "consent.email.invalidTitle": "Kiungo batili cha idhini",
