@@ -490,7 +490,7 @@ const translations = {
     "verify.alert.serviceUnavailableRefund":
       "Le service est actuellement indisponible. Veuillez réessayer plus tard. Un remboursement a déjà été initié.",
     "verify.alert.refundInitiated":
-      "La vérification n'a pas pu être terminée. Un remboursement a été initié.",
+      "La vérification n'a pas pu être effectuée. Le service n'est pas disponible pour le moment.",
     "verify.alert.currencyNotSelected": "Devise non sélectionnée",
     "verify.alert.selectCurrency":
       "Veuillez sélectionner une devise de paiement (FCFA ou USD) avant de continuer.",
@@ -1080,11 +1080,11 @@ const translations = {
       "Results will be available after the subject accepts the consent request.",
     "verify.alert.serviceUnavailable": "Service Unavailable",
     "verify.alert.serviceUnavailableText":
-      "Service is currently unavailable. A refund has been initiated.",
+      "Verification could not be completed. Service is not available at the moment.",
     "verify.alert.serviceUnavailableRefund":
-      "Service unavailable at the moment. Please try again later. A refund has already been initiated.",
+      "Verification could not be completed. Service is not available at the moment.",
     "verify.alert.refundInitiated":
-      "Verification could not be completed. A refund has been initiated.",
+      "Verification could not be completed. Service is not available at the moment.",
     "verify.alert.currencyNotSelected": "Currency Not Selected",
     "verify.alert.selectCurrency":
       "Please select a payment currency (CFA or USD) before proceeding.",
