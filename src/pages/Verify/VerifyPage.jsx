@@ -1262,7 +1262,7 @@ const VerifyPage = () => {
           response?.financial?.message ||
           response?.vehicle?.error?.message ||
           response?.vehicle?.message ||
-          "Verification could not be completed. A refund has been initiated.";
+          "Verification could not be completed. Service is not available at the moment.";
         Swal.fire({
           icon: "error",
           title: "Verification Failed",
@@ -1277,7 +1277,7 @@ const VerifyPage = () => {
       Swal.fire({
         icon: "error",
         title: "Service Unavailable",
-        text: "Service is currently unavailable. A refund has been initiated.",
+        text: "The service is not available at the moment.",
         confirmButtonColor: "#09c93a",
       });
     }
