@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import { useGoogleLogin } from "@react-oauth/google";
 import { apiPost } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { FACEBOOK_APP_ID } from "../../config/facebook";
 import { trackEvent, trackGA4Event } from "../../hooks/analytics";
 
 import {
@@ -278,7 +279,7 @@ const VerificationLoginPage = () => {
             </SSOButton>
 
             <FacebookLogin
-              appId="1522913045806222"
+              appId={FACEBOOK_APP_ID}
               autoLoad={false}
               fields="name,email,picture"
               scope="public_profile,email"

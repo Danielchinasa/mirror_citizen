@@ -47,6 +47,7 @@ import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleSignInButton from "../../components/sso_button/appleSignInButton";
 import FacebookLogin from "react-facebook-login";
+import { FACEBOOK_APP_ID } from "../../config/facebook";
 import AppleLogin from "react-apple-login";
 import { apiPost } from "../../apiUtils";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -573,7 +574,7 @@ const IndividualSignUp = () => {
                       }}
                     />
                     <FacebookLogin
-                      appId="1522913045806222"
+                      appId={FACEBOOK_APP_ID}
                       autoLoad={false}
                       fields="name,email,picture"
                       scope="public_profile,email"
