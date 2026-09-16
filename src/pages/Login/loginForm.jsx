@@ -34,6 +34,7 @@ import AppleSignInButton from "../../components/sso_button/appleSignInButton";
 import { trackEvent } from "../../hooks/analytics";
 import { apiPost, apiPostInternalCall } from "../../apiUtils";
 import FacebookLogin from "react-facebook-login";
+import { FACEBOOK_APP_ID } from "../../config/facebook";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleLogin from "react-apple-login";
 import { trackGA4Event } from "../../hooks/analytics";
@@ -491,7 +492,7 @@ const LoginForm = (props) => {
               />
 
               <FacebookLogin
-                appId="1522913045806222"
+                appId={FACEBOOK_APP_ID}
                 autoLoad={false}
                 fields="name,email,picture"
                 scope="public_profile,email"
