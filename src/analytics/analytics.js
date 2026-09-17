@@ -123,6 +123,7 @@ function legacyReactGaParams(eventParams) {
 }
 
 function dispatchFacebookEvent(eventName, eventParams) {
+  return; // Temporarily disabled Facebook Pixel events
   if (typeof window === "undefined" || !window.fbq) return;
 
   const fbParams = { ...eventParams };
@@ -172,6 +173,7 @@ function dispatchFacebookEvent(eventName, eventParams) {
 }
 
 function dispatchAnalyticsEvent(eventName, eventParams) {
+  return; // Temporarily disabled Google Analytics / GTM / tags
   console.log(
     `🚀 [Analytics Tracker] Dispatched Event: ${eventName}`,
     eventParams,
@@ -216,6 +218,7 @@ function flushPendingEvents() {
 }
 
 export function initializeAnalytics() {
+  return false; // Temporarily disabled analytics initialization
   captureAttribution();
 
   if (!ANALYTICS_CONFIG.enabled || !hasAnalyticsConsent()) {
