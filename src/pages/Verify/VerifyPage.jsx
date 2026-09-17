@@ -24,6 +24,7 @@ import {
   FaCarAlt,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Tooltip } from "antd";
 import {
   initiateVerificationRequest,
   completeVerificationRequest,
@@ -1911,9 +1912,31 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Standard
+                    <Tooltip
+                      title={
+                        language === "FR" ? (
+                          <div>
+                            <strong>Recherche standard de NIV (VIN)</strong>
+                            <br />
+                            Informations essentielles sur le véhicule : Identité du véhicule, caractéristiques, moteur, transmission, dimensions, informations sur le carburant, et autres détails disponibles sur le véhicule.
+                          </div>
+                        ) : (
+                          <div>
+                            <strong>Standard VIN Search</strong>
+                            <br />
+                            Essential vehicle information: Vehicle identity, specifications, engine, transmission, dimensions, fuel information, and other available vehicle details.
+                          </div>
+                        )
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
                 <label
@@ -1945,9 +1968,31 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Premium
+                    <Tooltip
+                      title={
+                        language === "FR" ? (
+                          <div>
+                            <strong>Recherche avancée de NIV (VIN)</strong>
+                            <br />
+                            Historique détaillé du véhicule et rapport des risques : Tout ce dont vous avez besoin pour enquêter sur l'historique disponible d'un véhicule d'occasion — y compris les accidents, les titres de propriété, les véhicules récupérés (salvage), le kilométrage, l'assurance, les privilèges (liens), les enchères, l'évaluation, les vols et les rappels.
+                          </div>
+                        ) : (
+                          <div>
+                            <strong>Advanced VIN Search</strong>
+                            <br />
+                            Detailed vehicle history & risk report: Everything you need to investigate a used vehicle's available history — including accident, title, salvage, mileage, insurance, lien, auction, valuation, theft, and recall records.
+                          </div>
+                        )
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
               </div>
