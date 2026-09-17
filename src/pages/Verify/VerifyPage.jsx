@@ -17,6 +17,7 @@ import {
   FaBuilding,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Tooltip } from "antd";
 import {
   initiateVerificationRequest,
   completeVerificationRequest,
@@ -1433,9 +1434,25 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Standard
+                    <Tooltip
+                      title={
+                        <div>
+                          <strong>Standard VIN Search</strong>
+                          <br />
+                          Essential vehicle information: Vehicle identity,
+                          specifications, engine, transmission, dimensions, fuel
+                          information, and other available vehicle details.
+                        </div>
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
                 <label
@@ -1467,9 +1484,27 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Premium
+                    <Tooltip
+                      title={
+                        <div>
+                          <strong>Advanced VIN Search</strong>
+                          <br />
+                          Detailed vehicle history & risk report: Everything you
+                          need to investigate a used vehicle's available history
+                          — including accident, title, salvage, mileage,
+                          insurance, lien, auction, valuation, theft, and recall
+                          records.
+                        </div>
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
               </div>
