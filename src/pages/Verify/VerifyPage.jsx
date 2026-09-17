@@ -16,6 +16,7 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Tooltip } from "antd";
 import {
   initiateVerificationRequest,
   completeVerificationRequest,
@@ -1830,9 +1831,31 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Standard
+                    <Tooltip
+                      title={
+                        isSw ? (
+                          <div>
+                            <strong>Utafutaji wa Kawaida wa Namba ya Gari (VIN)</strong>
+                            <br />
+                            Maelezo muhimu ya gari: Utambulisho wa gari, vipimo, injini, mfumo wa gia, ukubwa, taarifa za mafuta, na maelezo mengine ya gari yanayopatikana.
+                          </div>
+                        ) : (
+                          <div>
+                            <strong>Standard VIN Search</strong>
+                            <br />
+                            Essential vehicle information: Vehicle identity, specifications, engine, transmission, dimensions, fuel information, and other available vehicle details.
+                          </div>
+                        )
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
                 <label
@@ -1864,9 +1887,31 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Premium
+                    <Tooltip
+                      title={
+                        isSw ? (
+                          <div>
+                            <strong>Utafutaji wa Kina wa Namba ya Gari (VIN)</strong>
+                            <br />
+                            Historia ya kina ya gari na ripoti ya hatari: Kila kitu unachohitaji ili kuchunguza historia inayopatikana ya gari lililotumika — ikiwa ni pamoja na ajali, umiliki, kuokolewa (salvage), umbali uliosafiriwa, bima, rehani, mnada, thamani, wizi, na kumbukumbu za kuitwa kurekebishwa.
+                          </div>
+                        ) : (
+                          <div>
+                            <strong>Advanced VIN Search</strong>
+                            <br />
+                            Detailed vehicle history & risk report: Everything you need to investigate a used vehicle's available history — including accident, title, salvage, mileage, insurance, lien, auction, valuation, theft, and recall records.
+                          </div>
+                        )
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
               </div>
