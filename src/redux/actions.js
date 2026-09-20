@@ -313,12 +313,14 @@ export const sendVerificationRequest =
         reach: {
           CLICK_ID: CLICK_ID || "",
         },
-        vehicle: {
-          vin: formData.vin || "",
-          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
-          license_number: formData.license_number || "",
-          // platform: formData.platform || "",
-        },
+        ...((formData.vin || formData.license_number || formData.platform) && {
+          vehicle: {
+            vin: formData.vin || "",
+            ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+            license_number: formData.license_number || "",
+            platform: formData.platform || "",
+          },
+        }),
       };
 
       if (Object.keys(attribution).length > 0) {
@@ -576,12 +578,14 @@ export const initiateVerificationRequest =
         reach: {
           CLICK_ID: CLICK_ID || "",
         },
-        vehicle: {
-          vin: formData.vin || "",
-          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
-          license_number: formData.license_number || "",
-          // platform: formData.platform || "",
-        },
+        ...((formData.vin || formData.license_number || formData.platform) && {
+          vehicle: {
+            vin: formData.vin || "",
+            ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+            license_number: formData.license_number || "",
+            platform: formData.platform || "",
+          },
+        }),
       };
 
       if (Object.keys(attribution).length > 0) {
@@ -751,12 +755,14 @@ export const completeVerificationRequest =
         reach: {
           CLICK_ID: CLICK_ID || "",
         },
-        vehicle: {
-          vin: formData.vin || "",
-          ...(formData.vin && { stolencheck: formData.stolencheck || false }),
-          license_number: formData.license_number || "",
-          // platform: formData.platform || "",
-        },
+        ...((formData.vin || formData.license_number || formData.platform) && {
+          vehicle: {
+            vin: formData.vin || "",
+            ...(formData.vin && { stolencheck: formData.stolencheck || false }),
+            license_number: formData.license_number || "",
+            platform: formData.platform || "",
+          },
+        }),
       };
 
       if (Object.keys(attribution).length > 0) {

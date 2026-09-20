@@ -234,6 +234,7 @@ const VerifyPage = () => {
   const [consentRequestId, setConsentRequestId] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [marketingAccepted, setMarketingAccepted] = useState(true);
   const [showTermsPopup, setShowTermsPopup] = useState(false);
   const [showPrivacyPopup, setShowPrivacyPopup] = useState(false);
   const pollingRef = useRef(null);
@@ -669,7 +670,8 @@ const VerifyPage = () => {
       business_name: "",
       bvn: "",
       vin: "",
-      stolencheck: formData.platform === "premium" ? true : "",
+      stolencheck:
+        type === "vehicle" && formData.platform === "premium" ? true : "",
       license_number: "",
       face: "",
       nin_csv: "",
@@ -678,7 +680,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
-      // platform: formData.platform || "standard",
+      platform: type === "vehicle" ? formData.platform || "standard" : "",
     };
 
     // Map form fields to API form
@@ -1399,7 +1401,7 @@ const VerifyPage = () => {
             </React.Fragment>
           ))}
           {/* TODO: Uncomment this section if platform selection is needed for */}
-          {/* {type === "vehicle" && (
+          {type === "vehicle" && (
             <FormGroup>
               <FormLabel>Select Platform</FormLabel>
               <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
@@ -1509,7 +1511,7 @@ const VerifyPage = () => {
                 </label>
               </div>
             </FormGroup>
-          )} */}
+          )}
           {config.bureaus && (
             <FormGroup>
               <div
@@ -1985,6 +1987,36 @@ const VerifyPage = () => {
               >
                 Privacy Policy
               </span>
+            </span>
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 14px",
+              marginTop: 0,
+              marginBottom: 12,
+              border: `1.5px solid ${marketingAccepted ? "#09c93a" : "#e5e7eb"}`,
+              borderRadius: 8,
+              cursor: "pointer",
+              background: marketingAccepted ? "#f0fdf4" : "#fafafa",
+              transition: "all 0.2s",
+              fontFamily: "Nunito, sans-serif",
+              fontSize: 13,
+              color: "#555",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={marketingAccepted}
+              onChange={(e) => setMarketingAccepted(e.target.checked)}
+              style={{ accentColor: "#09c93a", width: 18, height: 18 }}
+            />
+            <span>
+              Send me occasional offers and relevant e-citizen service
+              recommendations.
             </span>
           </label>
 
