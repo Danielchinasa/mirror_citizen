@@ -230,6 +230,7 @@ const VerifyPage = () => {
   const [consentRequestId, setConsentRequestId] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [marketingAccepted, setMarketingAccepted] = useState(true);
   const [legalPopupType, setLegalPopupType] = useState(null); // "privacy" | "tos" | null
   const pollingRef = useRef(null);
   const pendingApiFormRef = useRef(null);
@@ -2458,6 +2459,39 @@ const VerifyPage = () => {
                   </span>
                 </>
               )}
+            </span>
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 12,
+              marginBottom: 24,
+              fontSize: "0.9rem",
+              color: "#4B5563",
+              lineHeight: 1.5,
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={marketingAccepted}
+              onChange={(e) => setMarketingAccepted(e.target.checked)}
+              style={{
+                width: 18,
+                height: 18,
+                cursor: "pointer",
+                accentColor: "var(--ec-primary)",
+                marginTop: 2,
+                flexShrink: 0,
+              }}
+            />
+            <span>
+              {" "}
+              {isSw
+                ? "Nitumie ofa za mara kwa mara na mapendekezo muhimu ya huduma za e-raia."
+                : "Send me occasional offers and relevant e-raia service recommendations."}
             </span>
           </label>
 
