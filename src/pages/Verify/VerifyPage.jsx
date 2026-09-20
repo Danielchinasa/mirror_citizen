@@ -234,6 +234,7 @@ const VerifyPage = () => {
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [showPayDisclaimer, setShowPayDisclaimer] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [marketingAccepted, setMarketingAccepted] = useState(true);
   const [showTermsPopup, setShowTermsPopup] = useState(false);
   const [showPrivacyPopup, setShowPrivacyPopup] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
@@ -2495,6 +2496,39 @@ const VerifyPage = () => {
                 {t("verify.payment.privacyPolicy")}
               </a>
               .
+            </span>
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 12,
+              marginBottom: 24,
+              fontSize: "0.9rem",
+              color: "#4B5563",
+              lineHeight: 1.5,
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={marketingAccepted}
+              onChange={(e) => setMarketingAccepted(e.target.checked)}
+              style={{
+                width: 18,
+                height: 18,
+                cursor: "pointer",
+                accentColor: "var(--ec-primary)",
+                marginTop: 2,
+                flexShrink: 0,
+              }}
+            />
+            <span>
+              {" "}
+              {language === "FR"
+                ? "Envoyez-moi des offres occasionnelles et des recommandations de services e-citizen pertinentes."
+                : "Send me occasional offers and relevant e-citizen service recommendations."}
             </span>
           </label>
 
