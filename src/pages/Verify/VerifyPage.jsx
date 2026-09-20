@@ -233,6 +233,7 @@ const VerifyPage = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [termsAgreed, setTermsAgreed] = useState(false);
+  const [marketingAccepted, setMarketingAccepted] = useState(true);
   const [consentPending, setConsentPending] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
   const pollingRef = useRef(null);
@@ -2152,6 +2153,39 @@ const VerifyPage = () => {
                 >
                   {t("verify.disclaimer.privacyPolicy")}
                 </span>
+              </span>
+            </label>
+            <label
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 12,
+                marginTop: 16,
+                padding: "14px 16px",
+                fontSize: 14,
+                color: "#333",
+                lineHeight: 1.6,
+                cursor: "pointer",
+                fontFamily: "Nunito, sans-serif",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={marketingAccepted}
+                onChange={(e) => setMarketingAccepted(e.target.checked)}
+                style={{
+                  width: 18,
+                  height: 18,
+                  cursor: "pointer",
+                  accentColor: "var(--ec-primary)",
+                  marginTop: 2,
+                  flexShrink: 0,
+                }}
+              />
+              <span>
+                {isSw
+                  ? "Nitumie ofa za mara kwa mara na mapendekezo muhimu ya huduma za e-citizen."
+                  : "Send me occasional offers and relevant e-citizen service recommendations."}
               </span>
             </label>
           </div>
