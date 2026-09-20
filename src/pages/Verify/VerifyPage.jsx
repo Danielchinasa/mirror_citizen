@@ -229,6 +229,7 @@ const VerifyPage = () => {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [marketingAccepted, setMarketingAccepted] = useState(true);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [consentRequestId, setConsentRequestId] = useState("");
@@ -2086,6 +2087,37 @@ const VerifyPage = () => {
                 Privacy Policy
               </span>
               .
+            </span>
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 12,
+              marginBottom: 24,
+              fontSize: "0.9rem",
+              color: "#4B5563",
+              lineHeight: 1.5,
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={marketingAccepted}
+              onChange={(e) => setMarketingAccepted(e.target.checked)}
+              style={{
+                width: 18,
+                height: 18,
+                cursor: "pointer",
+                accentColor: "var(--ec-primary)",
+                marginTop: 2,
+                flexShrink: 0,
+              }}
+            />
+            <span>
+              {" "}
+              Send me occasional offers and relevant e-citizen service recommendations.
             </span>
           </label>
 
