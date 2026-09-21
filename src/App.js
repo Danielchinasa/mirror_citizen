@@ -49,6 +49,7 @@ import ProtectedRoute from "./protectedRoute";
 import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
+import PrivacyPolicyText from "./pages/privacyPolicy/privacyPolicyText";
 import AnalyticsTracker from "./AnalyticsTracker";
 import { initializeAnalytics } from "./analytics/analytics";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
@@ -273,98 +274,102 @@ function AppContent() {
         />
         <AppLogout>
           <Switch>
-          <Route
-            path="/verify/:type"
-            render={(props) => {
-              const type = props.match.params.type;
-              return (
-                <ProtectedRoute
-                  path="/verify/:type"
-                  component={VerifyPage}
-                  redirectTo={`/verification-login?redirect=/verify/${type}`}
-                />
-              );
-            }}
-          />
-          <Route path="/" exact component={Home} />
-          <Route path="/sms" exact component={Sms} />
-          <Route path="/privacy_policy" exact component={PrivacyPolicy} />
-          <Route path="/terms_of_service" exact component={TermsOfService} />
-          <Route path="/payment/success" exact component={PaymentSuccess} />
-          <Route path="/payment/failure" exact component={PaymentFailure} />
-          <Route path="/payment/cancel" exact component={PaymentCancel} />
-          <Route
-            path="/payment/paystack-redirect"
-            exact
-            component={PaystackRedirect}
-          />
-          <Route path="/reach/:CLICK_ID" exact component={Home} />
-          <Route path="/login" component={VerificationLoginPage} />
-          <Route path="/forgot-password" component={ForgotPassword} />
-          <Route path="/verify-otp" component={VerifyOtp} />
-          <Route path="/email-confirm" component={EmailVerifiedConfirm} />
-          <Route path="/check-email" component={CheckPasswordResetLink} />
-          <ProtectedRoute path="/set-new-password" component={SetNewPassword} />
-          <Route path="/password-confirm" component={PasswordResetConfirm} />
-          <Route path="/contact" component={ContactPage} />
-          {/* <ProtectedRoute path="/dashboard" component={DashboardPage} /> */}
-          <Route path="/disclaimer" component={Disclaimer} />
-          <ProtectedRoute path="/consent" component={Consent} />
-          <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
-          <ProtectedRoute
-            path="/identity-verification-result"
-            component={Result}
-          />
-          <ProtectedRoute
-            path="/nin-verification-result"
-            component={PremblyNinResult}
-          />
-          <ProtectedRoute
-            path="/comprehensive-search-result"
-            component={SearchExtensionResult}
-          />
-          <ProtectedRoute
-            path="/vehicle-profile-result"
-            component={VehicleResult}
-          />
-          <ProtectedRoute
-            path="/vehicle-registration-result"
-            component={Vehicle2}
-          />
-          <ProtectedRoute
-            path="/vehicle-authentication-result"
-            component={LegitCar}
-          />
-          <ProtectedRoute
-            path="/business-name-result"
-            component={BusinessName}
-          />
-          <ProtectedRoute
-            path="/business-profile-result"
-            component={Business}
-          />
-          <ProtectedRoute
-            path="/financial-profile-result"
-            component={Financial}
-          />
-          <Route path="/faq" component={FaqPage} />
-          <Route path="/faq-kenya" component={KenyaFaqPage} />
-          <Route path="/api-docs" component={ApiDocsPage} />
-          <ProtectedRoute path="/profile" component={ProfilePage} />
-          {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
-          <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
-          <Route path="/products" component={Products} />
-          <Route path="/sign-up" component={SignUpPage} />
-          <Route path="/notFoundPage" component={NotFoundPage} />
-          <Route path="/individual/sign-up/1" component={IndividualSignUp} />
-          <Route path="/individual/sign-up/2" component={BusinessSignUp} />
-          <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
-          <Route
-            path="/reset-password/:email/:token"
-            exact
-            component={ResetPasswordPage}
-          />
-          <Route component={NotFoundPage} />
+            <Route
+              path="/verify/:type"
+              render={(props) => {
+                const type = props.match.params.type;
+                return (
+                  <ProtectedRoute
+                    path="/verify/:type"
+                    component={VerifyPage}
+                    redirectTo={`/verification-login?redirect=/verify/${type}`}
+                  />
+                );
+              }}
+            />
+            <Route path="/" exact component={Home} />
+            <Route path="/sms" exact component={Sms} />
+            <Route path="/privacy_policy" exact component={PrivacyPolicy} />
+            <Route path="/privacy-policy" exact component={PrivacyPolicyText} />
+            <Route path="/terms_of_service" exact component={TermsOfService} />
+            <Route path="/payment/success" exact component={PaymentSuccess} />
+            <Route path="/payment/failure" exact component={PaymentFailure} />
+            <Route path="/payment/cancel" exact component={PaymentCancel} />
+            <Route
+              path="/payment/paystack-redirect"
+              exact
+              component={PaystackRedirect}
+            />
+            <Route path="/reach/:CLICK_ID" exact component={Home} />
+            <Route path="/login" component={VerificationLoginPage} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/verify-otp" component={VerifyOtp} />
+            <Route path="/email-confirm" component={EmailVerifiedConfirm} />
+            <Route path="/check-email" component={CheckPasswordResetLink} />
+            <ProtectedRoute
+              path="/set-new-password"
+              component={SetNewPassword}
+            />
+            <Route path="/password-confirm" component={PasswordResetConfirm} />
+            <Route path="/contact" component={ContactPage} />
+            {/* <ProtectedRoute path="/dashboard" component={DashboardPage} /> */}
+            <Route path="/disclaimer" component={Disclaimer} />
+            <ProtectedRoute path="/consent" component={Consent} />
+            <ProtectedRoute path="/liveness-check" component={LiveFaceScreen} />
+            <ProtectedRoute
+              path="/identity-verification-result"
+              component={Result}
+            />
+            <ProtectedRoute
+              path="/nin-verification-result"
+              component={PremblyNinResult}
+            />
+            <ProtectedRoute
+              path="/comprehensive-search-result"
+              component={SearchExtensionResult}
+            />
+            <ProtectedRoute
+              path="/vehicle-profile-result"
+              component={VehicleResult}
+            />
+            <ProtectedRoute
+              path="/vehicle-registration-result"
+              component={Vehicle2}
+            />
+            <ProtectedRoute
+              path="/vehicle-authentication-result"
+              component={LegitCar}
+            />
+            <ProtectedRoute
+              path="/business-name-result"
+              component={BusinessName}
+            />
+            <ProtectedRoute
+              path="/business-profile-result"
+              component={Business}
+            />
+            <ProtectedRoute
+              path="/financial-profile-result"
+              component={Financial}
+            />
+            <Route path="/faq" component={FaqPage} />
+            <Route path="/faq-kenya" component={KenyaFaqPage} />
+            <Route path="/api-docs" component={ApiDocsPage} />
+            <ProtectedRoute path="/profile" component={ProfilePage} />
+            {/* <Route path="/update_profile" component={UpdateProfilePage} /> */}
+            <ProtectedRoute path="/main-dashboard" component={MainDashboard} />
+            <Route path="/products" component={Products} />
+            <Route path="/sign-up" component={SignUpPage} />
+            <Route path="/notFoundPage" component={NotFoundPage} />
+            <Route path="/individual/sign-up/1" component={IndividualSignUp} />
+            <Route path="/individual/sign-up/2" component={BusinessSignUp} />
+            <Route path="/individual/sign-up/3" component={BusinessSignUp2} />
+            <Route
+              path="/reset-password/:email/:token"
+              exact
+              component={ResetPasswordPage}
+            />
+            <Route component={NotFoundPage} />
           </Switch>
         </AppLogout>
       </Switch>
