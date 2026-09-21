@@ -150,6 +150,9 @@ function Footer() {
               >
                 {isSw ? "Sheria na Masharti" : "Terms of Service"}
               </FooterLink>
+              <FooterLink to="/account-deletion">
+                {isSw ? "Ufutaji wa Akaunti" : "Account Deletion"}
+              </FooterLink>
             </FooterCol>
 
             <FooterCol>
