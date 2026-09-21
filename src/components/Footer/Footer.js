@@ -117,6 +117,25 @@ function Footer() {
             </FooterCol>
 
             <FooterCol>
+              <FooterColTitle>Legal</FooterColTitle>
+              <FooterLink
+                as="span"
+                onClick={() => setIsOpen(true)}
+                style={{ cursor: "pointer" }}
+              >
+                Privacy Policy
+              </FooterLink>
+              <FooterLink
+                as="span"
+                onClick={() => setIsOpen2(true)}
+                style={{ cursor: "pointer" }}
+              >
+                Terms of Service
+              </FooterLink>
+              <FooterLink to="/account-deletion">Account Deletion</FooterLink>
+            </FooterCol>
+
+            <FooterCol>
               <FooterColTitle>Get the app</FooterColTitle>
               <AppCol>
                 <AppBadge
