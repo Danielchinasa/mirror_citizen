@@ -50,6 +50,7 @@ import Sms from "./pages/sms/sms";
 import PrivacyPolicy from "./pages/privacyPolicy/privacyPolicy";
 import TermsOfService from "./pages/privacyPolicy/termsOfService";
 import PrivacyPolicyText from "./pages/privacyPolicy/privacyPolicyText";
+import AccountDeletionPage from "./pages/AccountDeletion/accountDeletionPage";
 import AnalyticsTracker from "./AnalyticsTracker";
 import { initializeAnalytics } from "./analytics/analytics";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
@@ -290,8 +291,9 @@ function AppContent() {
             <Route path="/" exact component={Home} />
             <Route path="/sms" exact component={Sms} />
             <Route path="/privacy_policy" exact component={PrivacyPolicy} />
-            <Route path="/privacy-policy" exact component={PrivacyPolicyText} />
+            <Route path="/privacy-policy-text" exact component={PrivacyPolicyText} />
             <Route path="/terms_of_service" exact component={TermsOfService} />
+            <Route path="/account-deletion" exact component={AccountDeletionPage} />
             <Route path="/payment/success" exact component={PaymentSuccess} />
             <Route path="/payment/failure" exact component={PaymentFailure} />
             <Route path="/payment/cancel" exact component={PaymentCancel} />
