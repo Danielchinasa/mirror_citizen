@@ -1417,7 +1417,7 @@ const VerifyPage = () => {
             </React.Fragment>
           ))}
           {/* TODO: Uncomment this section if platform selection is needed for */}
-          {type === "vehicle" && (
+          {/* {type === "vehicle" && (
             <FormGroup>
               <FormLabel>Select Platform</FormLabel>
               <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
@@ -1527,7 +1527,7 @@ const VerifyPage = () => {
                 </label>
               </div>
             </FormGroup>
-          )}
+          )} */}
           {config.bureaus && (
             <FormGroup>
               <div
