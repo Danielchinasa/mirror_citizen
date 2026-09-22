@@ -134,8 +134,17 @@ function dispatchFacebookEvent(eventName, eventParams) {
       window.fbq("track", "PageView", fbParams);
       break;
     case ANALYTICS_EVENTS.PURCHASE:
-      console.log("🔵 [FB Pixel] Firing: Purchase", fbParams);
-      window.fbq("track", "Purchase", fbParams);
+      const purchasePayload = {
+        ...fbParams,
+        value: Number(fbParams.value || fbParams.amount || 0),
+        currency: fbParams.currency || "NGN",
+        content_ids: fbParams.product_id
+          ? [fbParams.product_id.replace(/^NG_/, "")]
+          : [],
+        country: fbParams.country || "NG",
+      };
+      console.log("🔵 [FB Pixel] Firing: Purchase", purchasePayload);
+      window.fbq("track", "Purchase", purchasePayload);
       break;
     case ANALYTICS_EVENTS.BEGIN_CHECKOUT:
     case ANALYTICS_EVENTS.PAYMENT_INITIATED:
@@ -160,8 +169,20 @@ function dispatchFacebookEvent(eventName, eventParams) {
       window.fbq("track", "ViewContent", fbParams);
       break;
     case ANALYTICS_EVENTS.PAYMENT_FAILED:
-      console.log("🔵 [FB Pixel] Firing Custom: PaymentFailed", fbParams);
-      window.fbq("trackCustom", "PaymentFailed", fbParams);
+      const paymentFailedPayload = {
+        ...fbParams,
+        value: Number(fbParams.value || fbParams.amount || 0),
+        currency: fbParams.currency || "NGN",
+        content_ids: fbParams.product_id
+          ? [fbParams.product_id.replace(/^NG_/, "")]
+          : [],
+        country: fbParams.country || "NG",
+      };
+      console.log(
+        "🔵 [FB Pixel] Firing Custom: PaymentFailed",
+        paymentFailedPayload,
+      );
+      window.fbq("trackCustom", "PaymentFailed", paymentFailedPayload);
       break;
     default:
       // Track any unmapped events as custom events so you don't miss anything

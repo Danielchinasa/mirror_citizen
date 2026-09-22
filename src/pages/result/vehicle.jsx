@@ -29,6 +29,8 @@ import {
   FaCarSide,
   FaFileInvoice,
   FaRegCheckCircle,
+  FaRegUser,
+  FaPhone,
 } from "react-icons/fa";
 import { PiEngineLight } from "react-icons/pi";
 import { IoIosInformationCircleOutline } from "react-icons/io";
@@ -70,11 +72,24 @@ const Vehicle = () => {
   const [msrp, setMsrp] = useState("-");
   const [image, setImage] = useState("-");
   const [pdfUri, setpdfUri] = useState("-");
-  const [chasisNumber, setChasisNumber] = useState("-");
+  const [chassisNumber, setChassisNumber] = useState("-");
   const [stolen, setStolen] = useState(false);
   const [report, setReport] = useState("-");
   const [verificationStatus, setVerificationStatus] = useState("-");
   const [verificationReference, setVerificationReference] = useState("-");
+
+  const [decision, setDecision] = useState("-");
+  const [reason, setReason] = useState("-");
+  const [stolenReports, setStolenReports] = useState("-");
+  const [licenseNumber, setLicenseNumber] = useState("-");
+  const [category, setCategory] = useState("-");
+  const [ownerFirstName, setOwnerFirstName] = useState("-");
+  const [ownerMiddleName, setOwnerMiddleName] = useState("-");
+  const [ownerLastName, setOwnerLastName] = useState("-");
+  const [ownerAddress, setOwnerAddress] = useState("-");
+  const [ownerLga, setOwnerLga] = useState("-");
+  const [ownerState, setOwnerState] = useState("-");
+  const [ownerPhone, setOwnerPhone] = useState("-");
 
   // const verificationResult = useSelector(
   //   (state) => state.verificationResult.data
@@ -109,7 +124,10 @@ const Vehicle = () => {
         const vName = vehicleData.vehicleName || vehicleData.name || "-";
         const vAge = vehicleData.vehicleAge || "-";
         const vImage =
-          vehicleData.vehicleImage || vehicleData.previewImageURL || vehicleData.image || "-";
+          vehicleData.vehicleImage ||
+          vehicleData.previewImageURL ||
+          vehicleData.image ||
+          "-";
         const fuel = vehicleData.fuelType || "-";
         const trans = vehicleData.transmission || "-";
         const yr = vehicleData.year || "-";
@@ -123,7 +141,22 @@ const Vehicle = () => {
         const pdfUri = vehicleData.pdfUri || "-";
         const stolenFlag = vehicleData.stolen;
         const vStatus = vehicleData.verificationStatus || "-";
-        const vRef = vehicleData.verificationReference || vehicleData.reference || "-";
+        const vRef =
+          vehicleData.verificationReference || vehicleData.reference || "-";
+
+        const decisionSpec = vehicleData.decision || "-";
+        const reasonSpec = vehicleData.reason || "-";
+        const chassisNumberSpec = vehicleData.chassisNumber || "-";
+        const stolenReportsSpec = vehicleData.stolenReports || "-";
+        const licenseNumberSpec = vehicleData.license_number || "-";
+        const categorySpec = vehicleData.category || "-";
+        const ownerFirstNameSpec = vehicleData.owner_first_name || "-";
+        const ownerMiddleNameSpec = vehicleData.owner_middle_name || "-";
+        const ownerLastNameSpec = vehicleData.owner_last_name || "-";
+        const ownerAddressSpec = vehicleData.owner_address || "-";
+        const ownerLgaSpec = vehicleData.owner_lga || "-";
+        const ownerStateSpec = vehicleData.owner_state || "-";
+        const ownerPhoneSpec = vehicleData.owner_phone || "-";
 
         setVehicleName(vName);
         setVehicleAge(vAge);
@@ -145,6 +178,20 @@ const Vehicle = () => {
         setStolen(stolenFlag);
         setVerificationStatus(vStatus);
         setVerificationReference(vRef);
+
+        setDecision(decisionSpec);
+        setReason(reasonSpec);
+        setChassisNumber(chassisNumberSpec);
+        setStolenReports(stolenReportsSpec);
+        setLicenseNumber(licenseNumberSpec);
+        setCategory(categorySpec);
+        setOwnerFirstName(ownerFirstNameSpec);
+        setOwnerMiddleName(ownerMiddleNameSpec);
+        setOwnerLastName(ownerLastNameSpec);
+        setOwnerAddress(ownerAddressSpec);
+        setOwnerLga(ownerLgaSpec);
+        setOwnerState(ownerStateSpec);
+        setOwnerPhone(ownerPhoneSpec);
 
         // Your existing code for handling response data from the consent status check
       } catch (error) {
@@ -171,6 +218,42 @@ const Vehicle = () => {
   const storedValue = localStorage.getItem("profile");
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
+
+  const allDetails = [
+    { icon: <FaTeethOpen />, label: "Name", value: vehicleName },
+    { icon: <FaCalendarAlt />, label: "Year", value: year },
+    { icon: <FaGlobe />, label: "Made In", value: madeIn },
+    { icon: <FaCarAlt />, label: "Model", value: model },
+    { icon: <FaCarSide />, label: "Trim", value: trim },
+    { icon: <PiEngineLight />, label: "Engine", value: engine },
+    { icon: <FaCarAlt />, label: "Make", value: make },
+    { icon: <FaCarAlt />, label: "Fuel Type", value: fuelType },
+    { icon: <GiChemicalTank />, label: "Transmission", value: transmission },
+    // Premium fields
+    { icon: <FaTeethOpen />, label: "Chassis Number", value: chassisNumber },
+    { icon: <FaFileInvoice />, label: "Reason", value: reason },
+    {
+      icon: <FaFileInvoice />,
+      label: "Registration Number",
+      value: licenseNumber,
+    },
+    { icon: <FaFileInvoice />, label: "Decision", value: decision },
+    {
+      icon: <FaCarAlt />,
+      label: "Stolen",
+      value: stolen !== "-" ? (stolen ? "Yes" : "No") : "-",
+    },
+    { icon: <FaRegUser />, label: "Owner First Name", value: ownerFirstName },
+    { icon: <FaRegUser />, label: "Owner Last Name", value: ownerLastName },
+    { icon: <FaRegUser />, label: "Owner Middlename", value: ownerMiddleName },
+    { icon: <FaCarAlt />, label: "Vehicle Category", value: category },
+    { icon: <FaPhone />, label: "Owner Phone Number", value: ownerPhone },
+    { icon: <FaFileInvoice />, label: "Stolen Reports", value: stolenReports },
+    { icon: <FaGlobe />, label: "Owner Address", value: ownerAddress },
+    { icon: <FaGlobe />, label: "Owner LGA", value: ownerLga },
+    { icon: <FaGlobe />, label: "Owner State", value: ownerState },
+  ].filter((item) => item.value && item.value !== "-" && item.value !== "null");
+
   return (
     <div style={{ backgroundColor: bgContainer }}>
       <Container $token={token}>
@@ -289,61 +372,11 @@ const Vehicle = () => {
                   </div>
                   {/* )} */}
                 </Col>
-                <Col span={6}>
-                  {renderDetail(<FaTeethOpen />, "Name", `${vehicleName}`)}
-                  <Divider />
-
-                  {renderDetail(<FaCalendarAlt />, "Year", `${year}`)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaGlobe />, "Made In", `${madeIn}`)}
-                  <Divider />
-
-                  {renderDetail(<FaCarAlt />, "Model", `${model}`)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaCarSide />, "Trim", `${trim}`)}
-                  <Divider />
-                  {renderDetail(<PiEngineLight />, "Engine", `${engine}`)}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<FaCarAlt />, "Make", `${make}`)}
-                  <Divider />
-                  {renderDetail(<FaCarAlt />, "Fuel Type", `${fuelType}`)}
-                </Col>
-                <Divider />
-                {/* <Col span={6}>
-                  {renderDetail(
-                    <LiaFileInvoiceDollarSolid />,
-                    "Msrp",
-                    `${msrp}`
-                  )}
-                  <Divider />
-                  {renderDetail(
-                    <LiaFileInvoiceDollarSolid />,
-                    "Invoice",
-                    `${invoice}`
-                  )}
-                </Col>
-                <Col span={6}>
-                  {renderDetail(<TbSteeringWheel />, "Steering Type", `-`)}
-                  <Divider />
-                  {renderDetail(<GiCarWheel />, "Tires", `-`)}
-                </Col> */}
-                <Col span={6}>
-                  {renderDetail(
-                    <GiChemicalTank />,
-                    "Transmission",
-                    `${transmission}`,
-                  )}
-                  {/* <Divider />
-                  {renderDetail(<LuCar />, "Wheel drive", `-`)} */}
-                </Col>
-                {/* <Col span={6}>
-                  {renderDetail(<AiOutlineColumnWidth />, "Overall Width", `-`)}
-                  <Divider />
-                  {renderDetail(<IoMdSpeedometer />, "Highway Mileage", `-`)}
-                </Col> */}
+                {allDetails.map((detail, index) => (
+                  <Col span={6} key={index} style={{ marginBottom: "20px" }}>
+                    {renderDetail(detail.icon, detail.label, detail.value)}
+                  </Col>
+                ))}
               </Row>
               {/* <Divider /> */}
               {/* <div>

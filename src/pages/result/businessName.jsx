@@ -385,6 +385,11 @@ const BusinessName = () => {
               trackPurchase(serviceType, {
                 gateway: "Wallet",
                 transaction_id: randomTransactionId,
+                value:
+                  userCurrency.toUpperCase() === "USD"
+                    ? stakeHolderFeeUsd
+                    : stakeHolderFeeNgn,
+                currency: userCurrency.toUpperCase() === "USD" ? "USD" : "NGN",
               });
               const transactionID = localStorage.getItem("transactionID");
               const paymentType = localStorage.getItem("paymentType");

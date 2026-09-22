@@ -17,6 +17,7 @@ import {
   FaBuilding,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Tooltip } from "antd";
 import {
   initiateVerificationRequest,
   completeVerificationRequest,
@@ -233,6 +234,7 @@ const VerifyPage = () => {
   const [consentRequestId, setConsentRequestId] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [marketingAccepted, setMarketingAccepted] = useState(true);
   const [showTermsPopup, setShowTermsPopup] = useState(false);
   const [showPrivacyPopup, setShowPrivacyPopup] = useState(false);
   const pollingRef = useRef(null);
@@ -301,6 +303,8 @@ const VerifyPage = () => {
             trackPurchase(type, {
               gateway: activeGateway,
               transaction_id: paystackReference,
+              value: totalAmount,
+              currency: isNGN ? "NGN" : "USD",
             });
             setPaystackReference("");
             setLoading(true);
@@ -668,7 +672,8 @@ const VerifyPage = () => {
       business_name: "",
       bvn: "",
       vin: "",
-      stolencheck: formData.platform === "premium" ? true : "",
+      stolencheck:
+        type === "vehicle" && formData.platform === "premium" ? true : "",
       license_number: "",
       face: "",
       nin_csv: "",
@@ -677,7 +682,7 @@ const VerifyPage = () => {
       creditRegistry: "",
       paymentType: "",
       currency: "",
-      // platform: formData.platform || "standard",
+      platform: type === "vehicle" ? formData.platform || "standard" : "",
     };
 
     // Map form fields to API form
@@ -810,6 +815,8 @@ const VerifyPage = () => {
         trackPurchase(type, {
           gateway: "Wallet",
           transaction_id: transactionId,
+          value: totalAmount,
+          currency: isNGN ? "NGN" : "USD",
         });
         await handleCompleteVerification(apiFormData);
       } else {
@@ -931,7 +938,12 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          didOpen: () =>
+            trackPaymentFailed(type, {
+              gateway: activeGateway,
+              value: totalAmount,
+              currency: isNGN ? "NGN" : "USD",
+            }),
           confirmButtonColor: "#09c93a",
         });
         return;
@@ -950,6 +962,8 @@ const VerifyPage = () => {
         trackPurchase(type, {
           gateway: activeGateway,
           transaction_id: paystackReference,
+          value: totalAmount,
+          currency: isNGN ? "NGN" : "USD",
         });
         setLoading(true);
         setCurrentStep(2); // Processing
@@ -962,7 +976,12 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          didOpen: () =>
+            trackPaymentFailed(type, {
+              gateway: activeGateway,
+              value: totalAmount,
+              currency: isNGN ? "NGN" : "USD",
+            }),
           confirmButtonColor: "#09c93a",
         });
       }
@@ -1433,9 +1452,25 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Standard
+                    <Tooltip
+                      title={
+                        <div>
+                          <strong>Standard VIN Search</strong>
+                          <br />
+                          Essential vehicle information: Vehicle identity,
+                          specifications, engine, transmission, dimensions, fuel
+                          information, and other available vehicle details.
+                        </div>
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
                 <label
@@ -1467,9 +1502,27 @@ const VerifyPage = () => {
                       fontFamily: "Nunito, sans-serif",
                       color: "#374151",
                       fontWeight: 500,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
                     Premium
+                    <Tooltip
+                      title={
+                        <div>
+                          <strong>Advanced VIN Search</strong>
+                          <br />
+                          Detailed vehicle history & risk report: Everything you
+                          need to investigate a used vehicle's available history
+                          — including accident, title, salvage, mileage,
+                          insurance, lien, auction, valuation, theft, and recall
+                          records.
+                        </div>
+                      }
+                    >
+                      <FaInfoCircle color="#999" />
+                    </Tooltip>
                   </span>
                 </label>
               </div>
@@ -1950,6 +2003,36 @@ const VerifyPage = () => {
               >
                 Privacy Policy
               </span>
+            </span>
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 14px",
+              marginTop: 0,
+              marginBottom: 12,
+              border: `1.5px solid ${marketingAccepted ? "#09c93a" : "#e5e7eb"}`,
+              borderRadius: 8,
+              cursor: "pointer",
+              background: marketingAccepted ? "#f0fdf4" : "#fafafa",
+              transition: "all 0.2s",
+              fontFamily: "Nunito, sans-serif",
+              fontSize: 13,
+              color: "#555",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={marketingAccepted}
+              onChange={(e) => setMarketingAccepted(e.target.checked)}
+              style={{ accentColor: "#09c93a", width: 18, height: 18 }}
+            />
+            <span>
+              Send me occasional offers and relevant e-citizen service
+              recommendations.
             </span>
           </label>
 
