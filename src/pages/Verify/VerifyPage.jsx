@@ -303,6 +303,8 @@ const VerifyPage = () => {
             trackPurchase(type, {
               gateway: activeGateway,
               transaction_id: paystackReference,
+              value: totalAmount,
+              currency: isNGN ? "NGN" : "USD",
             });
             setPaystackReference("");
             setLoading(true);
@@ -813,6 +815,8 @@ const VerifyPage = () => {
         trackPurchase(type, {
           gateway: "Wallet",
           transaction_id: transactionId,
+          value: totalAmount,
+          currency: isNGN ? "NGN" : "USD",
         });
         await handleCompleteVerification(apiFormData);
       } else {
@@ -934,7 +938,12 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Cancelled",
           text: "Your payment was cancelled or declined.",
-          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          didOpen: () =>
+            trackPaymentFailed(type, {
+              gateway: activeGateway,
+              value: totalAmount,
+              currency: isNGN ? "NGN" : "USD",
+            }),
           confirmButtonColor: "#09c93a",
         });
         return;
@@ -953,6 +962,8 @@ const VerifyPage = () => {
         trackPurchase(type, {
           gateway: activeGateway,
           transaction_id: paystackReference,
+          value: totalAmount,
+          currency: isNGN ? "NGN" : "USD",
         });
         setLoading(true);
         setCurrentStep(2); // Processing
@@ -965,7 +976,12 @@ const VerifyPage = () => {
           icon: "error",
           title: "Payment Failed",
           text: "Your payment could not be completed. Please try again.",
-          didOpen: () => trackPaymentFailed(type, { gateway: activeGateway }),
+          didOpen: () =>
+            trackPaymentFailed(type, {
+              gateway: activeGateway,
+              value: totalAmount,
+              currency: isNGN ? "NGN" : "USD",
+            }),
           confirmButtonColor: "#09c93a",
         });
       }
