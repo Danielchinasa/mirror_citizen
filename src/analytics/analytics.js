@@ -16,6 +16,7 @@ let lastLandingPagePath = null;
 
 const BACKEND_OWNED_EVENTS = new Set([
   ANALYTICS_EVENTS.PURCHASE,
+  ANALYTICS_EVENTS.PAYMENT_FAILED,
   ANALYTICS_EVENTS.REPORT_DELIVERED,
   ANALYTICS_EVENTS.REFUND,
 ]);
@@ -193,12 +194,19 @@ function dispatchFacebookEvent(eventName, eventParams) {
 }
 
 function dispatchAnalyticsEvent(eventName, eventParams) {
-  console.log(
-    `🚀 [Analytics Tracker] Dispatched Event: ${eventName}`,
-    eventParams,
-  );
-
   const isBackendOwned = BACKEND_OWNED_EVENTS.has(eventName);
+
+  if (isBackendOwned) {
+    console.log(
+      `🚫 [Analytics Tracker] Ignored Backend-Owned Event (GA Skipped): ${eventName}`,
+      eventParams,
+    );
+  } else {
+    console.log(
+      `🚀 [Analytics Tracker] Dispatched Event: ${eventName}`,
+      eventParams,
+    );
+  }
 
   if (!isBackendOwned && typeof window !== "undefined" && window.gtag) {
     window.gtag("event", eventName, {
