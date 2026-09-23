@@ -4,6 +4,7 @@ jest.mock("../config", () => ({
     country: "NG",
     platform: "web",
     brand: "e-citizen",
+    metaPixelId: "1101219929509340",
     newGa4MeasurementId: "G-ETJKSQ0W0L",
     newGa4Enabled: true,
     legacyGtagMeasurementId: "G-XSHE0JCXW1",
@@ -31,6 +32,7 @@ import {
   trackBeginCheckout,
   trackPaymentInitiated,
   trackProductSelected,
+  trackPurchase,
   ANALYTICS_EVENTS,
 } from "../analytics";
 
@@ -51,12 +53,16 @@ describe("GA4 analytics instrumentation", () => {
     window.dataLayer = [];
     window.history.pushState({}, "", "/?utm_source=google&utm_medium=cpc&utm_campaign=nin_event_test");
     window.localStorage.clear();
+    delete window.fbq;
+    delete window._fbq;
   });
 
   afterEach(() => {
     document.cookie = "cc_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     delete window.gtag;
     delete window.dataLayer;
+    delete window.fbq;
+    delete window._fbq;
   });
 
   it("queues cold-load events until new GA4 is configured", () => {
@@ -348,5 +354,47 @@ describe("GA4 analytics instrumentation", () => {
 
     expect(window.gtag).not.toHaveBeenCalledWith("event", ANALYTICS_EVENTS.PURCHASE, expect.any(Object));
     expect(ReactGA.event).not.toHaveBeenCalledWith(ANALYTICS_EVENTS.PURCHASE, expect.any(Object));
+  });
+
+  it("does not initialize Meta Pixel without analytics consent", () => {
+    document.cookie = "cc_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    initializeAnalytics();
+    expect(window.fbq).toBeUndefined();
+  });
+
+  it("emits one deduplicated Meta Purchase with the shared transaction event ID", () => {
+    initializeAnalytics();
+    trackPurchase("nin", { transaction_id: "EA123", value: 645, currency: "NGN" });
+    trackPurchase("nin", { transaction_id: "EA123", value: 645, currency: "NGN" });
+
+    const purchases = window.fbq.queue.filter((call) => call[0] === "track" && call[1] === "Purchase");
+    expect(purchases).toHaveLength(1);
+    expect(purchases[0][2]).toEqual(expect.objectContaining({ value: 645, currency: "NGN" }));
+    expect(purchases[0][3]).toEqual({ eventID: "PURCHASE:EA123" });
+  });
+
+  it("skips invalid Meta Purchase data", () => {
+    initializeAnalytics();
+    expect(trackPurchase("nin", { transaction_id: "EA123", value: 0, currency: "NGN" })).toBe(false);
+    expect(trackPurchase("nin", { value: 10, currency: "NGN" })).toBe(false);
+  });
+
+  it("suppresses all Meta dispatches after consent withdrawal and resumes without reinjecting Pixel", () => {
+    initializeAnalytics();
+    const initialScriptCount = document.querySelectorAll("#ecitizen-meta-pixel").length;
+    const initialQueueLength = window.fbq.queue.length;
+
+    document.cookie = "cc_cookie=" + encodeURIComponent(JSON.stringify({ categories: [] }));
+    trackPageView("/withdrawn-consent");
+    trackPurchase("nin", { transaction_id: "EA-WITHDRAWN", value: 645, currency: "NGN" });
+    trackBeginCheckout("nin", { value: 645, currency: "NGN" });
+    expect(window.fbq.queue).toHaveLength(initialQueueLength);
+
+    document.cookie = "cc_cookie=" + encodeURIComponent(JSON.stringify({ categories: ["analytics"] }));
+    initializeAnalytics();
+    trackPurchase("nin", { transaction_id: "EA-REGIVEN", value: 645, currency: "NGN" });
+
+    expect(document.querySelectorAll("#ecitizen-meta-pixel")).toHaveLength(initialScriptCount);
+    expect(window.fbq.queue.some((call) => call[0] === "track" && call[1] === "Purchase" && call[3]?.eventID === "PURCHASE:EA-REGIVEN")).toBe(true);
   });
 });

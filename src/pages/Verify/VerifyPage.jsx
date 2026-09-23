@@ -304,7 +304,7 @@ const VerifyPage = () => {
               gateway: activeGateway,
               transaction_id: paystackReference,
               value: totalAmount,
-              currency: isNGN ? "NGN" : "USD",
+              currency: currencyCheck,
             });
             setPaystackReference("");
             setLoading(true);
@@ -822,7 +822,7 @@ const VerifyPage = () => {
           gateway: "Wallet",
           transaction_id: transactionId,
           value: totalAmount,
-          currency: isNGN ? "NGN" : "USD",
+          currency: currencyCheck,
         });
         await handleCompleteVerification(apiFormData);
       } else {
@@ -948,7 +948,7 @@ const VerifyPage = () => {
             trackPaymentFailed(type, {
               gateway: activeGateway,
               value: totalAmount,
-              currency: isNGN ? "NGN" : "USD",
+              currency: currencyCheck,
             }),
           confirmButtonColor: "#09c93a",
         });
@@ -969,7 +969,7 @@ const VerifyPage = () => {
           gateway: activeGateway,
           transaction_id: paystackReference,
           value: totalAmount,
-          currency: isNGN ? "NGN" : "USD",
+          currency: currencyCheck,
         });
         setLoading(true);
         setCurrentStep(2); // Processing
@@ -986,7 +986,7 @@ const VerifyPage = () => {
             trackPaymentFailed(type, {
               gateway: activeGateway,
               value: totalAmount,
-              currency: isNGN ? "NGN" : "USD",
+              currency: currencyCheck,
             }),
           confirmButtonColor: "#09c93a",
         });
