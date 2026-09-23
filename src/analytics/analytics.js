@@ -13,6 +13,9 @@ let flushingQueuedEvents = false;
 let pendingEvents = [];
 let lastTrackedPagePath = null;
 let lastLandingPagePath = null;
+let metaPixelInitialized = false;
+
+const META_PURCHASE_STORAGE_KEY = "ecitizen_meta_purchase_event_ids";
 
 const BACKEND_OWNED_EVENTS = new Set([
   ANALYTICS_EVENTS.PURCHASE,
@@ -77,6 +80,69 @@ function ensureGtag() {
   window.gtag("js", new Date());
 }
 
+function ensureMetaPixel() {
+  const pixelId = ANALYTICS_CONFIG.metaPixelId;
+  if (!pixelId || typeof window === "undefined" || typeof document === "undefined") {
+    return false;
+  }
+  if (metaPixelInitialized && window.fbq) return true;
+
+  if (!window.fbq) {
+    const fbq = function () {
+      fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
+    };
+    fbq.queue = [];
+    fbq.loaded = true;
+    fbq.version = "2.0";
+    window.fbq = fbq;
+    window._fbq = fbq;
+    const script = document.createElement("script");
+    script.async = true;
+    script.id = "ecitizen-meta-pixel";
+    script.src = "https://connect.facebook.net/en_US/fbevents.js";
+    document.head.appendChild(script);
+  }
+  window.fbq("init", pixelId);
+  metaPixelInitialized = true;
+  return true;
+}
+
+function validPurchaseValue(value) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) && numeric > 0 ? numeric : null;
+}
+
+function validCurrency(currency) {
+  const value = String(currency || "").trim().toUpperCase();
+  return /^[A-Z]{3}$/.test(value) ? value : null;
+}
+
+function metaPurchaseEventId(transactionRef) {
+  const ref = String(transactionRef || "").trim();
+  return ref ? `PURCHASE:${ref}` : null;
+}
+
+function readTrackedMetaPurchases() {
+  try {
+    return JSON.parse(window.localStorage.getItem(META_PURCHASE_STORAGE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function markMetaPurchaseTracked(transactionRef) {
+  try {
+    const tracked = readTrackedMetaPurchases();
+    if (tracked[transactionRef]) return false;
+    tracked[transactionRef] = Date.now();
+    window.localStorage.setItem(META_PURCHASE_STORAGE_KEY, JSON.stringify(tracked));
+    return true;
+  } catch {
+    // A storage restriction must not prevent a legitimate browser event.
+    return true;
+  }
+}
+
 function eventKey(eventName, eventParams) {
   if (eventName === ANALYTICS_EVENTS.PAGE_VIEW) {
     return `${eventName}:${eventParams.page_path || ""}`;
@@ -124,28 +190,38 @@ function legacyReactGaParams(eventParams) {
 }
 
 function dispatchFacebookEvent(eventName, eventParams) {
-  if (typeof window === "undefined" || !window.fbq) return;
+  // Pixel resources may remain loaded after withdrawal, but no new Meta event
+  // may be dispatched unless the current consent cookie still permits analytics.
+  if (typeof window === "undefined" || !window.fbq || !hasAnalyticsConsent()) return;
 
   const fbParams = { ...eventParams };
 
   switch (eventName) {
     case ANALYTICS_EVENTS.PAGE_VIEW:
-    case ANALYTICS_EVENTS.LANDING_PAGE_VIEW:
-      console.log("🔵 [FB Pixel] Firing: PageView", fbParams);
       window.fbq("track", "PageView", fbParams);
       break;
+    case ANALYTICS_EVENTS.LANDING_PAGE_VIEW:
+      // landing_page_view remains a GA4 event; AnalyticsTracker owns Meta PageView.
+      break;
     case ANALYTICS_EVENTS.PURCHASE:
+      const transactionRef = fbParams.transaction_id;
+      const eventID = metaPurchaseEventId(transactionRef);
+      const value = validPurchaseValue(fbParams.value ?? fbParams.amount);
+      const currency = validCurrency(fbParams.currency);
+      if (!eventID || value === null || !currency) {
+        console.warn("[Meta Pixel] Purchase skipped: missing transaction reference, positive value, or ISO currency");
+        break;
+      }
+      if (!markMetaPurchaseTracked(transactionRef)) break;
       const purchasePayload = {
         ...fbParams,
-        value: Number(fbParams.value || fbParams.amount || 0),
-        currency: fbParams.currency || "NGN",
+        value,
+        currency,
         content_ids: fbParams.product_id
-          ? [fbParams.product_id.replace(/^NG_/, "")]
+          ? [fbParams.product_id]
           : [],
-        country: fbParams.country || "NG",
       };
-      console.log("🔵 [FB Pixel] Firing: Purchase", purchasePayload);
-      window.fbq("track", "Purchase", purchasePayload);
+      window.fbq("track", "Purchase", purchasePayload, { eventID });
       break;
     case ANALYTICS_EVENTS.BEGIN_CHECKOUT:
     case ANALYTICS_EVENTS.PAYMENT_INITIATED:
@@ -172,8 +248,8 @@ function dispatchFacebookEvent(eventName, eventParams) {
     case ANALYTICS_EVENTS.PAYMENT_FAILED:
       const paymentFailedPayload = {
         ...fbParams,
-        value: Number(fbParams.value || fbParams.amount || 0),
-        currency: fbParams.currency || "NGN",
+        value: validPurchaseValue(fbParams.value ?? fbParams.amount),
+        currency: validCurrency(fbParams.currency),
         content_ids: fbParams.product_id
           ? [fbParams.product_id.replace(/^NG_/, "")]
           : [],
@@ -257,6 +333,7 @@ export function initializeAnalytics() {
   }
 
   ensureGtag();
+  ensureMetaPixel();
 
   if (ANALYTICS_CONFIG.legacyAnalyticsEnabled) {
     ReactGA.initialize(ANALYTICS_CONFIG.legacyReactGa4MeasurementId);
@@ -392,7 +469,7 @@ export function trackPurchase(serviceType, params = {}) {
   const currency = params.currency || ANALYTICS_CONFIG.defaultCurrency;
   const item = buildAnalyticsItem(product, amount);
 
-  trackAnalyticsEvent(ANALYTICS_EVENTS.PURCHASE, {
+  return trackMetaPurchase({
     ...product,
     currency,
     value: amount,
@@ -401,12 +478,33 @@ export function trackPurchase(serviceType, params = {}) {
   });
 }
 
+export function trackMetaPurchase(params = {}) {
+  if (!hasAnalyticsConsent()) {
+    return false;
+  }
+  const transactionRef = params.transactionRef || params.transaction_id;
+  const value = validPurchaseValue(params.value ?? params.amount);
+  const currency = validCurrency(params.currency);
+  if (!transactionRef || value === null || !currency) {
+    console.warn("[Meta Pixel] Purchase skipped: invalid authoritative transaction data");
+    return false;
+  }
+  trackAnalyticsEvent(ANALYTICS_EVENTS.PURCHASE, {
+    ...params,
+    transaction_id: transactionRef,
+    value,
+    currency,
+  });
+  return true;
+}
+
 export function __resetAnalyticsForTests() {
   initialized = false;
   flushingQueuedEvents = false;
   pendingEvents = [];
   lastTrackedPagePath = null;
   lastLandingPagePath = null;
+  metaPixelInitialized = false;
 }
 
 export { ANALYTICS_CONFIG, ANALYTICS_EVENTS, getAttribution };
