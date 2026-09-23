@@ -1,6 +1,6 @@
 import ReactGA from "react-ga4";
 import { ANALYTICS_CONFIG } from "./config";
-import { captureAttribution, getAttribution } from "./attribution";
+import { captureAttribution, getAttribution, hasAnalyticsConsent } from "./attribution";
 import {
   ANALYTICS_EVENTS,
   resolveAnalyticsProduct,
@@ -25,21 +25,6 @@ const BACKEND_OWNED_EVENTS = new Set([
 ]);
 
 const MAX_PENDING_EVENTS = 50;
-
-function hasAnalyticsConsent() {
-  if (typeof document === "undefined") return false;
-  const match = document.cookie.match(/(^| )cc_cookie=([^;]+)/);
-  if (!match) return false;
-
-  try {
-    const consent = JSON.parse(decodeURIComponent(match[2]));
-    return Array.isArray(consent.categories)
-      ? consent.categories.includes("analytics")
-      : false;
-  } catch {
-    return false;
-  }
-}
 
 function baseParams(params = {}) {
   return sanitizeAnalyticsParams({
