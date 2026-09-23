@@ -377,7 +377,13 @@ const BusinessName = () => {
               ),
             });
 
-            const data = await response.json();
+            const responseText = await response.text();
+            let data;
+            try {
+              data = responseText ? JSON.parse(responseText) : {};
+            } catch {
+              data = { message: "Unable to process wallet payment. Please try again." };
+            }
 
             if (data.status === "success") {
               const serviceType =
@@ -654,7 +660,13 @@ const BusinessName = () => {
               body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
             });
 
-            const data = await response.json();
+            const responseText = await response.text();
+            let data;
+            try {
+              data = responseText ? JSON.parse(responseText) : {};
+            } catch {
+              data = { message: "Unable to process wallet payment. Please try again." };
+            }
 
             if (response.ok && data.status === "success") {
               const transactionID = localStorage.getItem("transactionID");

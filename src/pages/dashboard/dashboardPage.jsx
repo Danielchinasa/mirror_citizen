@@ -1532,7 +1532,13 @@ const DashboardPage = () => {
             body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
           });
 
-          const data = await response.json();
+          const responseText = await response.text();
+          let data;
+          try {
+            data = responseText ? JSON.parse(responseText) : {};
+          } catch {
+            data = { message: "Unable to process wallet payment. Please try again." };
+          }
 
           if (response.ok && data.status === "success") {
             //!------------------- Do the Verification ------------------------//
@@ -1546,7 +1552,7 @@ const DashboardPage = () => {
               background: bgContainer,
               color: text,
               title: "Payment failed",
-              text: data,
+              text: data.message || "Unable to process wallet payment. Please try again.",
               icon: "error",
               customClass: {
                 confirmButton: "custom-swal-button",
