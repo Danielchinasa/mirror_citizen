@@ -305,7 +305,7 @@ const VerifyPage = () => {
               gateway: activeGateway,
               transaction_id: paystackReference,
               value: totalAmount,
-              currency: isNGN ? "NGN" : "USD",
+              currency: currencyCheck,
             });
             setPaystackReference("");
             setLoading(true);
@@ -810,14 +810,20 @@ const VerifyPage = () => {
         body: JSON.stringify(await withAnalyticsMetadata(requestBody)),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        data = { message: "Unable to process wallet payment. Please try again." };
+      }
 
       if (response.ok && data.status === "success") {
         trackPurchase(type, {
           gateway: "Wallet",
           transaction_id: transactionId,
           value: totalAmount,
-          currency: isNGN ? "NGN" : "USD",
+          currency: currencyCheck,
         });
         await handleCompleteVerification(apiFormData);
       } else {
@@ -943,7 +949,7 @@ const VerifyPage = () => {
             trackPaymentFailed(type, {
               gateway: activeGateway,
               value: totalAmount,
-              currency: isNGN ? "NGN" : "USD",
+              currency: currencyCheck,
             }),
           confirmButtonColor: "#09c93a",
         });
@@ -964,7 +970,7 @@ const VerifyPage = () => {
           gateway: activeGateway,
           transaction_id: paystackReference,
           value: totalAmount,
-          currency: isNGN ? "NGN" : "USD",
+          currency: currencyCheck,
         });
         setLoading(true);
         setCurrentStep(2); // Processing
@@ -981,7 +987,7 @@ const VerifyPage = () => {
             trackPaymentFailed(type, {
               gateway: activeGateway,
               value: totalAmount,
-              currency: isNGN ? "NGN" : "USD",
+              currency: currencyCheck,
             }),
           confirmButtonColor: "#09c93a",
         });
