@@ -38,6 +38,7 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import { getVerificationConfig } from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
+import VehicleSampleResult from "../../components/SampleResultPopup/VehicleSampleResult/VehicleSampleResult";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
 import { getCurrencySymbol } from "../../utils/currencyFormat";
@@ -2564,7 +2565,11 @@ const VerifyPage = () => {
           <SampleTitle>{t("verify.payment.sampleResult")}</SampleTitle>
         </SampleHeader>
         <SampleSub>{t("verify.payment.sampleSubtitle")}</SampleSub>
-        <SampleResultContent type={type} />
+        {type === "vehicle" ? (
+          <VehicleSampleResult isInline={true} />
+        ) : (
+          <SampleResultContent type={type} />
+        )}
       </SampleSection>
     </>
   );

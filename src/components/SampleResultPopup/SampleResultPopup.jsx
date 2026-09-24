@@ -7,6 +7,7 @@ import {
   FaInfoCircle,
   FaTimes,
   FaUserCircle,
+  FaShieldAlt,
 } from "react-icons/fa";
 import defaultDp from "../../images/defaultDp.png";
 import ninSampleAvatar from "../../images/dp.jpeg";
@@ -14,6 +15,7 @@ import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
 import vehicleSampleAvatar from "../../images/cieana.jpeg";
 import { useLocale } from "../LocaleProvider";
+import VehicleSampleResult from "./VehicleSampleResult/VehicleSampleResult";
 
 const sampleData = {
   nin: {
@@ -299,25 +301,48 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   return (
     <Overlay onClick={onClose} role="presentation">
       <Dialog
+        $isVehicle={type === "vehicle"}
         role="dialog"
         aria-modal="true"
         aria-labelledby="sample-result-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <Header>
+        <Header $isVehicle={type === "vehicle"}>
           <div>
             <TitleRow>
               <Title id="sample-result-title">{t("sample.title")}</Title>
               <Badge>{t("sample.badge")}</Badge>
             </TitleRow>
-            <Subtitle>{t(subtypeToKey[type] || "sample.ninSubtitle")}</Subtitle>
+            <Subtitle>
+              {type === "vehicle"
+                ? "See what your VIN verification report can reveal before you buy."
+                : t(subtypeToKey[type] || "sample.ninSubtitle")}
+            </Subtitle>
           </div>
-          <CloseButton type="button" onClick={onClose} aria-label="Close">
-            <FaTimes />
-          </CloseButton>
+
+          <HeaderRight>
+            {type === "vehicle" && (
+              <HeaderTrustBadge>
+                <HeaderTrustIcon>
+                  <FaShieldAlt />
+                </HeaderTrustIcon>
+                <HeaderTrustText>
+                  <strong>Trusted data. Safer purchases.</strong>
+                  <span>Get the full report in seconds.</span>
+                </HeaderTrustText>
+              </HeaderTrustBadge>
+            )}
+            <CloseButton type="button" onClick={onClose} aria-label="Close">
+              <FaTimes />
+            </CloseButton>
+          </HeaderRight>
         </Header>
 
-        <SampleResultContent type={type} />
+        {type === "vehicle" ? (
+          <VehicleSampleResult onClose={onClose} />
+        ) : (
+          <SampleResultContent type={type} />
+        )}
       </Dialog>
     </Overlay>
   );
@@ -335,7 +360,8 @@ const Overlay = styled.div`
 `;
 
 const Dialog = styled.div`
-  width: min(760px, 100%);
+  width: ${(props) => (props.$isVehicle ? "1024px" : "min(760px, 100%)")};
+  max-width: 100%;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
   background: var(--ec-bg);
@@ -348,7 +374,52 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: ${(props) => (props.$isVehicle ? "24px" : "18px")};
+  flex-wrap: wrap;
+`;
+
+const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const HeaderTrustBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff5eb;
+  border: 1px solid #ffd2a8;
+  border-radius: 8px;
+  padding: 8px 16px;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const HeaderTrustIcon = styled.div`
+  color: #fd7a00;
+  font-size: 20px;
+  display: flex;
+`;
+
+const HeaderTrustText = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fd7a00;
+  }
+
+  span {
+    font-family: "Nunito", sans-serif;
+    font-size: 11px;
+    color: #344054;
+  }
 `;
 
 const TitleRow = styled.div`
