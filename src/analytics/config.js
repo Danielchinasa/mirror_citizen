@@ -4,6 +4,7 @@ export const ANALYTICS_CONFIG = {
   country: process.env.REACT_APP_ANALYTICS_COUNTRY || "UG",
   brand: process.env.REACT_APP_ANALYTICS_BRAND || "e-raia",
   defaultCurrency: process.env.REACT_APP_ANALYTICS_DEFAULT_CURRENCY || "UGX",
+  metaPixelId: process.env.REACT_APP_META_PIXEL_ID || "",
   newGa4MeasurementId:
     process.env.REACT_APP_GA4_MEASUREMENT_ID || "G-ETJKSQ0W0L",
   newGa4Enabled: process.env.REACT_APP_GA4_NEW_PROPERTY_ENABLED === "true",
