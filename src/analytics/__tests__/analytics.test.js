@@ -4,6 +4,7 @@ jest.mock("../config", () => ({
     country: "CI",
     platform: "web",
     brand: "citoyen",
+    metaPixelId: "1101219929509340",
     newGa4MeasurementId: "G-ETJKSQ0W0L",
     newGa4Enabled: true,
     legacyGtagMeasurementId: "G-XSHE0JCXW1",
@@ -33,6 +34,7 @@ import {
   trackBeginCheckout,
   trackPaymentInitiated,
   trackProductSelected,
+  trackPurchase,
   ANALYTICS_EVENTS,
 } from "../analytics";
 
@@ -53,12 +55,16 @@ describe("GA4 analytics instrumentation", () => {
     window.dataLayer = [];
     window.history.pushState({}, "", "/?utm_source=google&utm_medium=cpc&utm_campaign=ci_national_id_event_test");
     window.localStorage.clear();
+    delete window.fbq;
+    delete window._fbq;
   });
 
   afterEach(() => {
     document.cookie = "cc_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     delete window.gtag;
     delete window.dataLayer;
+    delete window.fbq;
+    delete window._fbq;
   });
 
   it("queues cold-load events until new GA4 is configured", () => {
@@ -402,6 +408,7 @@ describe("GA4 analytics instrumentation", () => {
         analyticsClientId: expect.any(String),
         analyticsSessionId: "1712345678",
         analyticsPlatform: "web",
+        metaAnalyticsConsent: true,
         attribution: expect.objectContaining({
           utm_source: "google",
           utm_medium: "cpc",
@@ -431,4 +438,51 @@ describe("GA4 analytics instrumentation", () => {
     expect(window.gtag).not.toHaveBeenCalledWith("event", ANALYTICS_EVENTS.PURCHASE, expect.any(Object));
     expect(ReactGA.event).not.toHaveBeenCalledWith(ANALYTICS_EVENTS.PURCHASE, expect.any(Object));
   });
+  it("does not initialize Meta Pixel without valid analytics consent", () => {
+    document.cookie = "cc_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    initializeAnalytics();
+    expect(window.fbq).toBeUndefined();
+
+    document.cookie = "cc_cookie=%7Bnot-json";
+    initializeAnalytics();
+    expect(window.fbq).toBeUndefined();
+  });
+
+  it("adds the Pixel consent decision to payment metadata", async () => {
+    window.gtag.mockImplementation((command, _measurementId, field, callback) => {
+      if (command === "get" && field === "session_id") callback("1712345678");
+    });
+
+    await expect(withAnalyticsMetadata({ sessionCode: "SESSION_META" })).resolves.toEqual(
+      expect.objectContaining({ metaAnalyticsConsent: true }),
+    );
+
+    document.cookie = "cc_cookie=" + encodeURIComponent(JSON.stringify({ categories: [] }));
+    await expect(withAnalyticsMetadata({ sessionCode: "SESSION_META" })).resolves.toEqual(
+      expect.objectContaining({ metaAnalyticsConsent: false }),
+    );
+  });
+
+  it("emits one Meta Purchase using the shared stable event ID", () => {
+    initializeAnalytics();
+    trackPurchase("nin", { transaction_id: "EA123", value: 645, currency: "XOF" });
+    trackPurchase("nin", { transaction_id: "EA123", value: 645, currency: "XOF" });
+
+    const purchases = window.fbq.queue.filter((call) => call[0] === "track" && call[1] === "Purchase");
+    expect(purchases).toHaveLength(1);
+    expect(purchases[0][2]).toEqual(expect.objectContaining({ value: 645, currency: "XOF" }));
+    expect(purchases[0][3]).toEqual({ eventID: "PURCHASE:EA123" });
+  });
+
+  it("stops Meta dispatching after analytics consent is withdrawn", () => {
+    initializeAnalytics();
+    const queuedCalls = window.fbq.queue.length;
+
+    document.cookie = "cc_cookie=" + encodeURIComponent(JSON.stringify({ categories: [] }));
+    trackPageView("/withdrawn-consent");
+    trackPurchase("nin", { transaction_id: "EA-WITHDRAWN", value: 645, currency: "XOF" });
+
+    expect(window.fbq.queue).toHaveLength(queuedCalls);
+  });
+
 });
