@@ -48,8 +48,8 @@ import { absoluteAppUrl } from "../../routing";
 const { Title } = Typography;
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
 };
 
 const t = (label, isSw) => {

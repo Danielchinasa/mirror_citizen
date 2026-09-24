@@ -17,8 +17,8 @@ import vehicleSampleAvatar from "../../images/cieana.jpeg";
 import VehicleSampleResult from "./VehicleSampleResult/VehicleSampleResult";
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
 };
 
 const t = (label, isSw) => {

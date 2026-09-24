@@ -18,8 +18,8 @@ import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
 };
 
 const ContactPage = () => {

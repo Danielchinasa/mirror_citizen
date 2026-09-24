@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
 };
 
 const PrivacyPolicyText = () => {

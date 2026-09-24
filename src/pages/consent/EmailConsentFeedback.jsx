@@ -55,8 +55,8 @@ const Code = styled.span`
 
 const getCode = (search) => new URLSearchParams(search).get("code") || "";
 const getLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
 };
 
 function EmailConsentFeedback({ match, location }) {

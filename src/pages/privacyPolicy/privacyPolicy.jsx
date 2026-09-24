@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import privacyPdf from "../../images/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
 
 const getLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-  return window.localStorage.getItem("siteLanguage") === "EN" ? "EN" : "SW";
+  if (typeof window === "undefined") return "EN";
+  return window.localStorage.getItem("siteLanguage") === "SW" ? "SW" : "EN";
 };
 
 const PrivacyPolicy = () => {
