@@ -24,7 +24,7 @@ import {
 import useAuthRedirect from "../../../hooks/useAuthRedirect";
 import vehicleSampleAvatar from "../../../images/cieana.jpeg";
 
-const VehicleSampleResult = ({ onClose, isInline }) => {
+const VehicleSampleResult = ({ onClose, isInline, isSw }) => {
   const verifyLink = useAuthRedirect("/verify/vehicle");
 
   return (
@@ -37,37 +37,37 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
           <VehicleTitle>2018 Toyota Sienna</VehicleTitle>
           <SpecsGrid>
             <SpecItem>
-              <SpecLabel>PLATE NUMBER</SpecLabel>
+              <SpecLabel>{isSw ? "NAMBA YA USAJILI" : "PLATE NUMBER"}</SpecLabel>
               <SpecValue>ABC-123XY</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>VIN</SpecLabel>
+              <SpecLabel>{isSw ? "NAMBA YA VIN" : "VIN"}</SpecLabel>
               <SpecValue>89447585678</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>MAKE / MODEL</SpecLabel>
+              <SpecLabel>{isSw ? "AINA / MODELI" : "MAKE / MODEL"}</SpecLabel>
               <SpecValue>Toyota Sienna</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>YEAR</SpecLabel>
+              <SpecLabel>{isSw ? "MWAKA" : "YEAR"}</SpecLabel>
               <SpecValue>2018</SpecValue>
             </SpecItem>
           </SpecsGrid>
           <FeaturesRow>
             <Feature>
-              <FaCarSide /> Minivan
+              <FaCarSide /> {isSw ? "Minivan" : "Minivan"}
             </Feature>
             <Divider />
             <Feature>
-              <FaGasPump /> Gasoline
+              <FaGasPump /> {isSw ? "Petroli" : "Gasoline"}
             </Feature>
             <Divider />
             <Feature>
-              <FaCogs /> Automatic
+              <FaCogs /> {isSw ? "Otomatiki" : "Automatic"}
             </Feature>
             <Divider />
             <Feature>
-              <FaPalette /> Red
+              <FaPalette /> {isSw ? "Nyekundu" : "Red"}
             </Feature>
           </FeaturesRow>
         </DetailsSection>
@@ -76,13 +76,13 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
       <Section>
         <SectionHeader>
           <div>
-            <SectionTitle>Report Highlights</SectionTitle>
+            <SectionTitle>{isSw ? "Muhtasari wa Ripoti" : "Report Highlights"}</SectionTitle>
             <SectionSubtitle>
-              Key information from your VIN verification report.
+              {isSw ? "Taarifa muhimu kutoka kwenye ripoti yako ya uthibitishaji wa VIN." : "Key information from your VIN verification report."}
             </SectionSubtitle>
           </div>
           <TrustedBadge>
-            <FaCheckCircle /> Data from trusted government & industry sources
+            <FaCheckCircle /> {isSw ? "Data kutoka vyanzo vinavyoaminika vya serikali na sekta" : "Data from trusted government & industry sources"}
           </TrustedBadge>
         </SectionHeader>
 
@@ -92,12 +92,12 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaUser />
             </CardIcon>
             <CardContent>
-              <CardTitle>Ownership Status</CardTitle>
+              <CardTitle>{isSw ? "Hali ya Umiliki" : "Ownership Status"}</CardTitle>
               <CardValue $status="good">
-                Verified <FaCheckCircle />
+                {isSw ? "Imethibitishwa" : "Verified"} <FaCheckCircle />
               </CardValue>
               <CardDesc>
-                Current ownership is valid and matches records.
+                {isSw ? "Umiliki wa sasa ni halali na unalingana na rekodi." : "Current ownership is valid and matches records."}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -107,11 +107,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaShieldAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Theft / Watchlist Status</CardTitle>
+              <CardTitle>{isSw ? "Hali ya Wizi / Orodha ya Uangalizi" : "Theft / Watchlist Status"}</CardTitle>
               <CardValue $status="good">
-                Clear <FaCheckCircle />
+                {isSw ? "Safi" : "Clear"} <FaCheckCircle />
               </CardValue>
-              <CardDesc>Not reported stolen and not on any watchlist.</CardDesc>
+              <CardDesc>{isSw ? "Haijaripotiwa kuibiwa na haiko kwenye orodha yoyote ya uangalizi." : "Not reported stolen and not on any watchlist."}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -120,12 +120,12 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaFileAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Salvage / Rebuilt History</CardTitle>
+              <CardTitle>{isSw ? "Historia ya Uokoaji / Kujengwa Upya" : "Salvage / Rebuilt History"}</CardTitle>
               <CardValue $status="good">
-                No salvage record <FaCheckCircle />
+                {isSw ? "Hakuna rekodi ya uokoaji" : "No salvage record"} <FaCheckCircle />
               </CardValue>
               <CardDesc>
-                No salvage, rebuilt, or flood damage records found.
+                {isSw ? "Hakuna uokoaji, kujengwa upya, au rekodi za uharibifu wa mafuriko zilizopatikana." : "No salvage, rebuilt, or flood damage records found."}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -135,10 +135,10 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaExclamationTriangle />
             </CardIcon>
             <CardContent>
-              <CardTitle>Accident History</CardTitle>
-              <CardValue $status="warning">1 minor accident reported</CardValue>
+              <CardTitle>{isSw ? "Historia ya Ajali" : "Accident History"}</CardTitle>
+              <CardValue $status="warning">{isSw ? "Ajali 1 ndogo imeripotiwa" : "1 minor accident reported"}</CardValue>
               <CardDesc>
-                1 minor accident in 2020. No major damage reported.
+                {isSw ? "Ajali 1 ndogo mwaka 2020. Hakuna uharibifu mkubwa ulioripotiwa." : "1 minor accident in 2020. No major damage reported."}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -148,9 +148,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaUsers />
             </CardIcon>
             <CardContent>
-              <CardTitle>Previous Owners</CardTitle>
-              <CardValue $status="warning">3 previous owners</CardValue>
-              <CardDesc>Multiple owners may indicate higher usage.</CardDesc>
+              <CardTitle>{isSw ? "Wamiliki Waliopita" : "Previous Owners"}</CardTitle>
+              <CardValue $status="warning">{isSw ? "Wamiliki 3 waliopita" : "3 previous owners"}</CardValue>
+              <CardDesc>{isSw ? "Wamiliki wengi wanaweza kuonyesha matumizi makubwa." : "Multiple owners may indicate higher usage."}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -159,12 +159,12 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaTachometerAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Odometer / Mileage Check</CardTitle>
+              <CardTitle>{isSw ? "Ukaguzi wa Odometer / Maili" : "Odometer / Mileage Check"}</CardTitle>
               <CardValue $status="good">
                 89,450 km <FaCheckCircle />
               </CardValue>
               <CardDesc>
-                No rollback detected. Mileage appears consistent.
+                {isSw ? "Hakuna kurudishwa nyuma kulikogunduliwa. Maili inaonekana kuwa sawa." : "No rollback detected. Mileage appears consistent."}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -174,11 +174,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaBuilding />
             </CardIcon>
             <CardContent>
-              <CardTitle>Usage History</CardTitle>
+              <CardTitle>{isSw ? "Historia ya Matumizi" : "Usage History"}</CardTitle>
               <CardValue $status="good">
-                Personal use <FaCheckCircle />
+                {isSw ? "Matumizi binafsi" : "Personal use"} <FaCheckCircle />
               </CardValue>
-              <CardDesc>No commercial or rental use reported.</CardDesc>
+              <CardDesc>{isSw ? "Hakuna matumizi ya kibiashara au ya kukodisha yaliyoripotiwa." : "No commercial or rental use reported."}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -187,11 +187,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaMapMarkerAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Registration</CardTitle>
+              <CardTitle>{isSw ? "Usajili" : "Registration"}</CardTitle>
               <CardValue $status="good">
-                Lagos, Nigeria <FaCheckCircle />
+                {isSw ? "Nairobi, Kenya" : "Nairobi, Kenya"} <FaCheckCircle />
               </CardValue>
-              <CardDesc>Current registration in Lagos, Nigeria.</CardDesc>
+              <CardDesc>{isSw ? "Usajili wa sasa uko Nairobi, Kenya." : "Current registration in Nairobi, Kenya."}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -200,9 +200,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaChartBar />
             </CardIcon>
             <CardContent>
-              <CardTitle>Estimated Market Value</CardTitle>
-              <CardValue $status="good">₦12,000,000 - ₦15,000,000</CardValue>
-              <CardDesc>Based on market data and comparable listings.</CardDesc>
+              <CardTitle>{isSw ? "Thamani Inayokadiriwa ya Soko" : "Estimated Market Value"}</CardTitle>
+              <CardValue $status="good">{isSw ? "KES 1,200,000 - KES 1,500,000" : "KES 1,200,000 - KES 1,500,000"}</CardValue>
+              <CardDesc>{isSw ? "Kulingana na data ya soko na orodha zinazolingana." : "Based on market data and comparable listings."}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -211,11 +211,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaWrench />
             </CardIcon>
             <CardContent>
-              <CardTitle>Open Recalls</CardTitle>
+              <CardTitle>{isSw ? "Ukumbushaji Wazi" : "Open Recalls"}</CardTitle>
               <CardValue $status="good">
-                None found <FaCheckCircle />
+                {isSw ? "Hakuna kilichopatikana" : "None found"} <FaCheckCircle />
               </CardValue>
-              <CardDesc>No open safety recalls for this vehicle.</CardDesc>
+              <CardDesc>{isSw ? "Hakuna ukumbushaji wazi wa usalama kwa gari hili." : "No open safety recalls for this vehicle."}</CardDesc>
             </CardContent>
           </HighlightCard>
         </CardsGrid>
@@ -224,9 +224,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
       <Section>
         <WhySection>
           <WhyHeader>
-            <WhyTitle>Why this matters</WhyTitle>
+            <WhyTitle>{isSw ? "Kwa nini hii ni muhimu" : "Why this matters"}</WhyTitle>
             <WhySubtitle>
-              A VIN report gives you the facts you need to buy with confidence.
+              {isSw ? "Ripoti ya VIN inakupa ukweli unaohitaji kununua kwa ujasiri." : "A VIN report gives you the facts you need to buy with confidence."}
             </WhySubtitle>
           </WhyHeader>
           <WhyGrid>
@@ -235,9 +235,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaShieldAlt />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Avoid hidden accident history</WhyItemTitle>
+                <WhyItemTitle>{isSw ? "Epuka historia ya ajali iliyofichwa" : "Avoid hidden accident history"}</WhyItemTitle>
                 <WhyItemDesc>
-                  Know the true condition before you buy.
+                  {isSw ? "Jua hali halisi kabla ya kununua." : "Know the true condition before you buy."}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -246,9 +246,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaUsers />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Confirm ownership trail</WhyItemTitle>
+                <WhyItemTitle>{isSw ? "Thibitisha mfululizo wa umiliki" : "Confirm ownership trail"}</WhyItemTitle>
                 <WhyItemDesc>
-                  See how many owners the vehicle has had.
+                  {isSw ? "Tazama gari limekuwa na wamiliki wangapi." : "See how many owners the vehicle has had."}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -257,9 +257,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaExclamationTriangle />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Detect salvage or flood risk</WhyItemTitle>
+                <WhyItemTitle>{isSw ? "Gundua hatari ya uokoaji au mafuriko" : "Detect salvage or flood risk"}</WhyItemTitle>
                 <WhyItemDesc>
-                  Uncover title brands and major damage.
+                  {isSw ? "Gundua chapa za hatimiliki na uharibifu mkubwa." : "Uncover title brands and major damage."}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -268,9 +268,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaSearch />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Identify red flags early</WhyItemTitle>
+                <WhyItemTitle>{isSw ? "Tambua dalili za hatari mapema" : "Identify red flags early"}</WhyItemTitle>
                 <WhyItemDesc>
-                  Spot issues before they become your problem.
+                  {isSw ? "Gundua masuala kabla hayajawa tatizo lako." : "Spot issues before they become your problem."}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -281,14 +281,13 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
       <Footer>
         <Disclaimer>
           <FaInfoCircle />
-          This is a sample report. Results are based on data available at the
-          time of verification and may vary for your vehicle.
+          {isSw ? "Huu ni mfano wa ripoti. Matokeo yanategemea data inayopatikana wakati wa uthibitishaji na inaweza kutofautiana kwa gari lako." : "This is a sample report. Results are based on data available at the time of verification and may vary for your vehicle."}
         </Disclaimer>
         {!isInline && (
           <FooterActions>
-            <CloseButton onClick={onClose}>Close</CloseButton>
+            <CloseButton onClick={onClose}>{isSw ? "Funga" : "Close"}</CloseButton>
             <PrimaryButton to={verifyLink}>
-              Verify Your VIN Now <FaArrowRight />
+              {isSw ? "Thibitisha VIN Yako Sasa" : "Verify Your VIN Now"} <FaArrowRight />
             </PrimaryButton>
           </FooterActions>
         )}

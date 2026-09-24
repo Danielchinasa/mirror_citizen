@@ -2539,7 +2539,7 @@ const VerifyPage = () => {
             : "Here's an example of what your verification result will look like."}
         </SampleSub>
         {type === "vehicle" ? (
-          <VehicleSampleResult isInline={true} />
+          <VehicleSampleResult isInline={true} isSw={isSw} />
         ) : (
           <SampleResultContent type={type} />
         )}

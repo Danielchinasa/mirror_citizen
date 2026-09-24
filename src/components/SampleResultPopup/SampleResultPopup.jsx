@@ -438,7 +438,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         </Header>
 
         {type === "vehicle" ? (
-          <VehicleSampleResult onClose={onClose} />
+          <VehicleSampleResult onClose={onClose} isSw={isSw} />
         ) : (
           <SampleResultContent type={type} />
         )}
