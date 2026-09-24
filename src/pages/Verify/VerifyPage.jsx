@@ -30,8 +30,8 @@ import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import {
   SampleResultContent,
-  VehicleSampleContent,
 } from "../../components/SampleResultPopup/SampleResultPopup";
+import VehicleSampleResult from "../../components/SampleResultPopup/VehicleSampleResult/VehicleSampleResult";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { useLocale } from "../../components/LocaleProvider";
 import { withBasePath } from "../../routing";
@@ -2227,7 +2227,7 @@ const VerifyPage = () => {
         </SampleHeader>
         <SampleSub>{t("verify.payment.sampleSub")}</SampleSub>
         {type === "vehicle" || type === "vehicle_ug" ? (
-          <VehicleSampleContent hideActions={true} />
+          <VehicleSampleResult isInline={true} />
         ) : (
           <SampleResultContent type={type} />
         )}
