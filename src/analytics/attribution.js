@@ -79,6 +79,20 @@ function readCookie(name) {
   return match ? decodeURIComponent(match[2]) : null;
 }
 
+
+// This is the single consent decision used by both Meta Pixel and payment metadata.
+export function hasAnalyticsConsent() {
+  const rawConsent = readCookie("cc_cookie");
+  if (!rawConsent) return false;
+
+  try {
+    const consent = JSON.parse(rawConsent);
+    return Array.isArray(consent.categories) && consent.categories.includes("analytics");
+  } catch {
+    return false;
+  }
+}
+
 function generateClientId() {
   return "web." + Math.random().toString(36).slice(2) + "." + Date.now();
 }
@@ -152,6 +166,7 @@ export function withAttribution(payload = {}) {
 
 export async function withAnalyticsMetadata(payload = {}) {
   const nextPayload = withAttribution(payload);
+  nextPayload.metaAnalyticsConsent = hasAnalyticsConsent();
   const analyticsSessionId = await getAnalyticsSessionId();
   if (analyticsSessionId) {
     nextPayload.analyticsSessionId = analyticsSessionId;
