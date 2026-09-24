@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
   FaBuilding,
+  FaShieldAlt,
   FaCar,
   FaCheckCircle,
   FaInfoCircle,
@@ -13,6 +14,7 @@ import ninSampleAvatar from "../../images/dp.jpeg";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
 import vehicleSampleAvatar from "../../images/cieana.jpeg";
+import VehicleSampleContent from "./VehicleSample/VehicleSampleContent";
 
 const sampleData = {
   nin: {
@@ -103,7 +105,8 @@ const sampleData = {
     ],
   },
   vehicle: {
-    subtitle: "See an example of a vehicle verification report.",
+    subtitle:
+      "See what your VIN verification report can reveal before you buy.",
     image: vehicleSampleAvatar,
     banner: true,
     icon: FaCar,
@@ -262,6 +265,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         aria-modal="true"
         aria-labelledby="sample-result-title"
         onClick={(event) => event.stopPropagation()}
+        $isVehicle={type === "vehicle"}
       >
         <Header>
           <div>
@@ -271,12 +275,27 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
             </TitleRow>
             <Subtitle>{sample.subtitle}</Subtitle>
           </div>
-          <CloseButton type="button" onClick={onClose} aria-label="Close">
-            <FaTimes />
-          </CloseButton>
+          <HeaderRight>
+            {type === "vehicle" && (
+              <TrustedBadge>
+                <FaShieldAlt style={{ color: "#FBCB19", fontSize: "20px" }} />
+                <TrustedBadgeText>
+                  <strong>Trusted data. Safer purchases.</strong>
+                  <span>Get the full report in seconds.</span>
+                </TrustedBadgeText>
+              </TrustedBadge>
+            )}
+            <CloseButton type="button" onClick={onClose} aria-label="Close">
+              <FaTimes />
+            </CloseButton>
+          </HeaderRight>
         </Header>
 
-        <SampleResultContent type={type} />
+        {type === "vehicle" ? (
+          <VehicleSampleContent onClose={onClose} />
+        ) : (
+          <SampleResultContent type={type} />
+        )}
       </Dialog>
     </Overlay>
   );
@@ -294,7 +313,8 @@ const Overlay = styled.div`
 `;
 
 const Dialog = styled.div`
-  width: min(760px, 100%);
+  width: ${(props) =>
+    props.$isVehicle ? "min(1200px, 95vw)" : "min(760px, 100%)"};
   max-height: calc(100vh - 48px);
   overflow-y: auto;
   background: var(--ec-bg);
@@ -541,3 +561,38 @@ const StakeholderCell = styled.div`
 `;
 
 export default SampleResultPopup;
+
+const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const TrustedBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(251, 203, 25, 0.1);
+  border: 1px solid rgba(251, 203, 25, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
+`;
+
+const TrustedBadgeText = styled.div`
+  display: flex;
+  flex-direction: column;
+  strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    color: var(--ec-heading);
+  }
+  span {
+    font-family: "Nunito", sans-serif;
+    font-size: 10px;
+    color: var(--ec-text-muted);
+  }
+`;

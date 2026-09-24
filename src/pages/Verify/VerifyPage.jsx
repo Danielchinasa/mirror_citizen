@@ -31,6 +31,7 @@ import privacyPdf from "../../images/e-citizen Ghana Privacy Notice v1.2 - Confi
 import termsPdf from "../../images/e-citizen Ghana Terms of Service v1.2 - Confirmed Service Scope.pdf";
 import verificationConfig from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
+import VehicleSampleContent from "../../components/SampleResultPopup/VehicleSample/VehicleSampleContent";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { withBasePath } from "../../routing";
 import { getIpInfo } from "../../config/ipConfiguration";
@@ -2155,7 +2156,7 @@ const VerifyPage = () => {
         <SampleSub>
           Here's an example of what your verification result will look like.
         </SampleSub>
-        <SampleResultContent type={type} />
+        {type === "vehicle" ? <VehicleSampleContent hideFooter={true} /> : <SampleResultContent type={type} />}
       </SampleSection>
     </>
   );
