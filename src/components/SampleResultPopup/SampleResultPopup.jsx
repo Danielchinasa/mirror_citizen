@@ -5,6 +5,7 @@ import {
   FaCar,
   FaCheckCircle,
   FaInfoCircle,
+  FaShieldAlt,
   FaTimes,
   FaUserCircle,
 } from "react-icons/fa";
@@ -13,6 +14,7 @@ import ninSampleAvatar from "../../images/dp.jpeg";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
 import vehicleSampleAvatar from "../../images/cieana.jpeg";
+import VehicleSampleResult from "./VehicleSampleResult/VehicleSampleResult";
 
 const getLanguage = () => {
   if (typeof window === "undefined") return "SW";
@@ -388,25 +390,58 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   return (
     <Overlay onClick={onClose} role="presentation">
       <Dialog
+        $isVehicle={type === "vehicle"}
         role="dialog"
         aria-modal="true"
         aria-labelledby="sample-result-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <Header>
+        <Header $isVehicle={type === "vehicle"}>
           <div>
             <TitleRow>
               <Title id="sample-result-title">{t("Sample result", isSw)}</Title>
               <Badge>{t("This is a sample only", isSw)}</Badge>
             </TitleRow>
-            <Subtitle>{t(sample.subtitle, isSw)}</Subtitle>
+            <Subtitle>
+              {type === "vehicle"
+                ? isSw
+                  ? "Tazama kile ambacho ripoti ya uthibitishaji wako wa VIN inaweza kuonyesha."
+                  : "See what your VIN verification report can reveal before you buy."
+                : t(sample.subtitle, isSw)}
+            </Subtitle>
           </div>
-          <CloseButton type="button" onClick={onClose} aria-label="Close">
-            <FaTimes />
-          </CloseButton>
+
+          <HeaderRight>
+            {type === "vehicle" && (
+              <HeaderTrustBadge>
+                <HeaderTrustIcon>
+                  <FaShieldAlt />
+                </HeaderTrustIcon>
+                <HeaderTrustText>
+                  <strong>
+                    {isSw
+                      ? "Data ya kuaminika."
+                      : "Trusted data. Safer purchases."}
+                  </strong>
+                  <span>
+                    {isSw
+                      ? "Pata ripoti kamili kwa sekunde chache."
+                      : "Get the full report in seconds."}
+                  </span>
+                </HeaderTrustText>
+              </HeaderTrustBadge>
+            )}
+            <CloseButton type="button" onClick={onClose} aria-label="Close">
+              <FaTimes />
+            </CloseButton>
+          </HeaderRight>
         </Header>
 
-        <SampleResultContent type={type} />
+        {type === "vehicle" ? (
+          <VehicleSampleResult onClose={onClose} />
+        ) : (
+          <SampleResultContent type={type} />
+        )}
       </Dialog>
     </Overlay>
   );
@@ -424,7 +459,8 @@ const Overlay = styled.div`
 `;
 
 const Dialog = styled.div`
-  width: min(760px, 100%);
+  width: ${(props) => (props.$isVehicle ? "1024px" : "min(760px, 100%)")};
+  max-width: 100%;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
   background: var(--ec-bg);
@@ -437,7 +473,55 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  align-items: flex-start;
+  margin-bottom: ${(props) => (props.$isVehicle ? "20px" : "18px")};
+  padding-bottom: ${(props) => (props.$isVehicle ? "20px" : "0")};
+  border-bottom: ${(props) =>
+    props.$isVehicle ? "1px solid var(--ec-border)" : "none"};
+`;
+
+const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+const HeaderTrustBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff0f0;
+  border: 1px solid #ffd6d6;
+  border-radius: 8px;
+  padding: 8px 16px;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const HeaderTrustIcon = styled.div`
+  color: #dd0201;
+  font-size: 20px;
+  display: flex;
+`;
+
+const HeaderTrustText = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #dd0201;
+  }
+
+  span {
+    font-family: "Nunito", sans-serif;
+    font-size: 11px;
+    color: #344054;
+  }
 `;
 
 const TitleRow = styled.div`
