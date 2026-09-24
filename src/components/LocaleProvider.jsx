@@ -12,17 +12,10 @@ const MIGRATED_KEY = "siteLanguage_migrated";
 const LocaleContext = createContext(null);
 
 const getInitialLanguage = () => {
-  if (typeof window === "undefined") return "SW";
-
-  // Migration: clear the old default that was auto-saved as "EN"
-  // so returning users also see Swahili as the default
-  if (!window.localStorage.getItem(MIGRATED_KEY)) {
-    window.localStorage.removeItem(STORAGE_KEY);
-    window.localStorage.setItem(MIGRATED_KEY, "1");
-  }
+  if (typeof window === "undefined") return "EN";
 
   const storedLanguage = window.localStorage.getItem(STORAGE_KEY);
-  return storedLanguage === "EN" ? "EN" : "SW";
+  return storedLanguage === "SW" ? "SW" : "EN";
 };
 
 export function LocaleProvider({ children }) {
@@ -30,10 +23,7 @@ export function LocaleProvider({ children }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // Only persist when a migration has been done first
-    if (window.localStorage.getItem(MIGRATED_KEY)) {
-      window.localStorage.setItem(STORAGE_KEY, language);
-    }
+    window.localStorage.setItem(STORAGE_KEY, language);
     document.documentElement.lang = language === "SW" ? "sw" : "en";
   }, [language]);
 
