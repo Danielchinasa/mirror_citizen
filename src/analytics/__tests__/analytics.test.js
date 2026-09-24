@@ -4,6 +4,7 @@ jest.mock("../config", () => ({
     country: "KE",
     platform: "web",
     brand: "e-raia",
+    metaPixelId: "1101219929509340",
     defaultCurrency: "KES",
     newGa4MeasurementId: "G-ETJKSQ0W0L",
     newGa4Enabled: true,
@@ -34,6 +35,7 @@ import {
   trackBeginCheckout,
   trackPaymentInitiated,
   trackProductSelected,
+  trackPurchase,
   ANALYTICS_EVENTS,
 } from "../analytics";
 
@@ -68,6 +70,8 @@ describe("GA4 analytics instrumentation", () => {
     );
 
     window.localStorage.clear();
+    delete window.fbq;
+    delete window._fbq;
   });
 
   afterEach(() => {
@@ -76,6 +80,8 @@ describe("GA4 analytics instrumentation", () => {
 
     delete window.gtag;
     delete window.dataLayer;
+    delete window.fbq;
+    delete window._fbq;
   });
 
   it("queues cold-load events until new GA4 is configured", () => {
