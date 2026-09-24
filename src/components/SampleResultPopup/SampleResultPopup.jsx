@@ -7,8 +7,22 @@ import {
   FaInfoCircle,
   FaTimes,
   FaUserCircle,
+  FaArrowRight,
+  FaSearch,
+  FaWrench,
+  FaChartBar,
+  FaMapMarkerAlt,
+  FaTachometerAlt,
+  FaUserFriends,
+  FaExclamationTriangle,
+  FaFileAlt,
+  FaShieldAlt,
+  FaPalette,
+  FaCogs,
+  FaGasPump,
+  FaCarSide,
 } from "react-icons/fa";
-import defaultDp from "../../images/defaultDp.png";
+import { useHistory } from "react-router-dom";
 import ninSampleAvatar from "../../images/BW7A9844.png";
 import financialSampleAvatar from "../../images/avatar2.jpg";
 import phoneSampleAvatar from "../../images/avatar1.jpg";
@@ -287,6 +301,7 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
   const { t } = useLocale();
   const sample = sampleData[type] || sampleData.nin;
   const subtitleKey = subtitleKeys[type] || subtitleKeys.nin;
+  const isVehicle = type === "vehicle" || type === "vehicle_ug";
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -315,21 +330,54 @@ const SampleResultPopup = ({ isOpen, onClose, type = "nin" }) => {
         aria-modal="true"
         aria-labelledby="sample-result-title"
         onClick={(event) => event.stopPropagation()}
+        $isVehicle={isVehicle}
       >
-        <Header>
-          <div>
-            <TitleRow>
-              <Title id="sample-result-title">{t("sample.title")}</Title>
-              <Badge>{t("sample.badge")}</Badge>
-            </TitleRow>
-            <Subtitle>{t(subtitleKey)}</Subtitle>
-          </div>
-          <CloseButton type="button" onClick={onClose} aria-label="Close">
-            <FaTimes />
-          </CloseButton>
-        </Header>
+        {isVehicle ? (
+          <>
+            <VehicleHeader>
+              <div>
+                <TitleRow>
+                  <Title id="sample-result-title">{t("sample.title")}</Title>
+                  <Badge>{t("sample.badge")}</Badge>
+                </TitleRow>
+                <Subtitle>
+                  See what your VIN verification report can reveal before you
+                  buy.
+                </Subtitle>
+              </div>
+              <HeaderRight>
+                <TrustBanner>
+                  <FaShieldAlt style={{ color: "var(--ec-primary)" }} />
+                  <div>
+                    <strong>Trusted data. Safer purchases.</strong>
+                    <span>Get the full report in seconds.</span>
+                  </div>
+                </TrustBanner>
+                <CloseButton type="button" onClick={onClose} aria-label="Close">
+                  <FaTimes />
+                </CloseButton>
+              </HeaderRight>
+            </VehicleHeader>
+            <VehicleSampleContent onClose={onClose} />
+          </>
+        ) : (
+          <>
+            <Header>
+              <div>
+                <TitleRow>
+                  <Title id="sample-result-title">{t("sample.title")}</Title>
+                  <Badge>{t("sample.badge")}</Badge>
+                </TitleRow>
+                <Subtitle>{t(subtitleKey)}</Subtitle>
+              </div>
+              <CloseButton type="button" onClick={onClose} aria-label="Close">
+                <FaTimes />
+              </CloseButton>
+            </Header>
 
-        <SampleResultContent type={type} />
+            <SampleResultContent type={type} />
+          </>
+        )}
       </Dialog>
     </Overlay>
   );
@@ -347,13 +395,18 @@ const Overlay = styled.div`
 `;
 
 const Dialog = styled.div`
-  width: min(760px, 100%);
+  width: ${(props) =>
+    props.$isVehicle ? "min(1100px, 100%)" : "min(760px, 100%)"};
   max-height: calc(100vh - 48px);
   overflow-y: auto;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
-  padding: 24px;
+  padding: 32px;
+
+  @media screen and (max-width: 768px) {
+    padding: 24px;
+  }
 `;
 
 const Header = styled.div`
@@ -589,6 +642,697 @@ const StakeholderCell = styled.div`
   @media screen and (max-width: 480px) {
     &:last-child {
       display: none;
+    }
+  }
+`;
+
+export const VehicleSampleContent = ({ onClose, hideActions }) => {
+  const history = useHistory();
+  const handleVerify = () => {
+    onClose();
+    history.push("/verification-login?redirect=/verify/vehicle");
+  };
+  return (
+    <Container>
+      <MainCard>
+        <ImageSection>
+          <img src={vehicleSampleAvatar} alt="Toyota Sienna" />
+          <ImageCaption>Sample vehicle image</ImageCaption>
+        </ImageSection>
+        <DetailsSection>
+          <CarTitle>2018 Toyota Sienna</CarTitle>
+          <SpecsGrid>
+            <SpecBox>
+              <SpecLabel>PLATE NUMBER</SpecLabel>
+              <SpecValue>ABC-123XY</SpecValue>
+            </SpecBox>
+            <SpecBox>
+              <SpecLabel>VIN</SpecLabel>
+              <SpecValue>89447585678</SpecValue>
+            </SpecBox>
+            <SpecBox>
+              <SpecLabel>MAKE / MODEL</SpecLabel>
+              <SpecValue>Toyota Sienna</SpecValue>
+            </SpecBox>
+            <SpecBox>
+              <SpecLabel>YEAR</SpecLabel>
+              <SpecValue>2018</SpecValue>
+            </SpecBox>
+          </SpecsGrid>
+          <Divider />
+          <FeaturesRow>
+            <Feature>
+              <FaCarSide /> Minivan
+            </Feature>
+            <Feature>
+              <FaGasPump /> Gasoline
+            </Feature>
+            <Feature>
+              <FaCogs /> Automatic
+            </Feature>
+            <Feature>
+              <FaPalette /> Red
+            </Feature>
+          </FeaturesRow>
+        </DetailsSection>
+      </MainCard>
+
+      <SectionHeader>
+        <div>
+          <SectionTitle>Report Highlights</SectionTitle>
+          <SectionSubtitle>
+            Key information from your VIN verification report.
+          </SectionSubtitle>
+        </div>
+        <TrustedData>
+          <FaCheckCircle /> Data from trusted government & industry sources
+        </TrustedData>
+      </SectionHeader>
+
+      <HighlightsGrid>
+        <HighlightCard status="success">
+          <IconWrapper status="success">
+            <FaUserCircle />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Ownership Status</CardLabel>
+            <CardValue status="success">
+              Verified <FaCheckCircle />
+            </CardValue>
+            <CardDesc>Current ownership is valid and matches records.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success">
+          <IconWrapper status="success">
+            <FaShieldAlt />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Theft / Watchlist Status</CardLabel>
+            <CardValue status="success">
+              Clear <FaCheckCircle />
+            </CardValue>
+            <CardDesc>Not reported stolen and not on any watchlist.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success">
+          <IconWrapper status="success">
+            <FaFileAlt />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Salvage / Rebuilt History</CardLabel>
+            <CardValue status="success">
+              No salvage record <FaCheckCircle />
+            </CardValue>
+            <CardDesc>
+              No salvage, rebuilt, or flood damage records found.
+            </CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="warning">
+          <IconWrapper status="warning">
+            <FaExclamationTriangle />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Accident History</CardLabel>
+            <CardValue status="warning">1 minor accident reported</CardValue>
+            <CardDesc>
+              1 minor accident in 2020. No major damage reported.
+            </CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="warning">
+          <IconWrapper status="warning">
+            <FaUserFriends />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Previous Owners</CardLabel>
+            <CardValue status="warning">3 previous owners</CardValue>
+            <CardDesc>Multiple owners may indicate higher usage.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success">
+          <IconWrapper status="success">
+            <FaTachometerAlt />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Odometer / Mileage Check</CardLabel>
+            <CardValue status="success">
+              89,450 km <FaCheckCircle />
+            </CardValue>
+            <CardDesc>
+              No rollback detected. Mileage appears consistent.
+            </CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success">
+          <IconWrapper status="success">
+            <FaBuilding />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Usage History</CardLabel>
+            <CardValue status="success">
+              Personal use <FaCheckCircle />
+            </CardValue>
+            <CardDesc>No commercial or rental use reported.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success">
+          <IconWrapper status="success">
+            <FaMapMarkerAlt />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Registration</CardLabel>
+            <CardValue status="success">
+              Lagos, Nigeria <FaCheckCircle />
+            </CardValue>
+            <CardDesc>Current registration in Lagos, Nigeria.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success" $wide>
+          <IconWrapper status="success">
+            <FaChartBar />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Estimated Market Value</CardLabel>
+            <CardValue status="success">₦12,000,000 – ₦15,000,000</CardValue>
+            <CardDesc>Based on market data and comparable listings.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+
+        <HighlightCard status="success" $wide>
+          <IconWrapper status="success">
+            <FaWrench />
+          </IconWrapper>
+          <CardContent>
+            <CardLabel>Open Recalls</CardLabel>
+            <CardValue status="success">
+              None found <FaCheckCircle />
+            </CardValue>
+            <CardDesc>No open safety recalls for this vehicle.</CardDesc>
+          </CardContent>
+        </HighlightCard>
+      </HighlightsGrid>
+
+      <WhyMattersSection>
+        <SectionHeader>
+          <div>
+            <SectionTitle>Why this matters</SectionTitle>
+            <SectionSubtitle>
+              A VIN report gives you the facts you need to buy with confidence.
+            </SectionSubtitle>
+          </div>
+        </SectionHeader>
+        <MattersRow>
+          <MatterItem>
+            <IconWrapper status="success">
+              <FaShieldAlt />
+            </IconWrapper>
+            <MatterContent>
+              <MatterTitle>Avoid hidden accident history</MatterTitle>
+              <MatterDesc>Know the true condition before you buy.</MatterDesc>
+            </MatterContent>
+          </MatterItem>
+          <MatterDivider />
+          <MatterItem>
+            <IconWrapper status="success">
+              <FaUserFriends />
+            </IconWrapper>
+            <MatterContent>
+              <MatterTitle>Confirm ownership trail</MatterTitle>
+              <MatterDesc>See how many owners the vehicle has had.</MatterDesc>
+            </MatterContent>
+          </MatterItem>
+          <MatterDivider />
+          <MatterItem>
+            <IconWrapper status="warning">
+              <FaExclamationTriangle />
+            </IconWrapper>
+            <MatterContent>
+              <MatterTitle>Detect salvage or flood risk</MatterTitle>
+              <MatterDesc>Uncover title brands and major damage.</MatterDesc>
+            </MatterContent>
+          </MatterItem>
+          <MatterDivider />
+          <MatterItem>
+            <IconWrapper status="success">
+              <FaSearch />
+            </IconWrapper>
+            <MatterContent>
+              <MatterTitle>Identify red flags early</MatterTitle>
+              <MatterDesc>
+                Spot issues before they become your problem.
+              </MatterDesc>
+            </MatterContent>
+          </MatterItem>
+        </MattersRow>
+      </WhyMattersSection>
+
+      <FooterSection>
+        <FooterDisclaimer>
+          <FaInfoCircle />
+          This is a sample report. Results are based on data available at the
+          time of verification and may vary for your vehicle.
+        </FooterDisclaimer>
+        {!hideActions && (
+          <FooterActions>
+            <CloseBtn type="button" onClick={onClose}>
+              Close
+            </CloseBtn>
+            <VerifyBtn type="button" onClick={handleVerify}>
+              Verify Your Vehicle Now <FaArrowRight />
+            </VerifyBtn>
+          </FooterActions>
+        )}
+      </FooterSection>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const MainCard = styled.div`
+  display: flex;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const ImageSection = styled.div`
+  width: 280px;
+  background: #f9fafb;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+`;
+
+const ImageCaption = styled.span`
+  margin-top: 8px;
+  font-size: 11px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 99px;
+`;
+
+const DetailsSection = styled.div`
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const CarTitle = styled.h3`
+  margin: 0 0 16px 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+  font-family: "Poppins", sans-serif;
+`;
+
+const SpecsGrid = styled.div`
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+`;
+
+const SpecBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const SpecLabel = styled.span`
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 800;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
+
+const SpecValue = styled.span`
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  background: #e5e7eb;
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+const FeaturesRow = styled.div`
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+`;
+
+const Feature = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+  font-weight: 600;
+
+  svg {
+    color: #9ca3af;
+    font-size: 16px;
+  }
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+`;
+
+const SectionTitle = styled.h4`
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  font-family: "Poppins", sans-serif;
+`;
+
+const SectionSubtitle = styled.p`
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+`;
+
+const TrustedData = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+  font-weight: 600;
+
+  svg {
+    color: var(--ec-primary);
+  }
+`;
+
+const HighlightsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const HighlightCard = styled.div`
+  background: ${(props) =>
+    props.status === "warning" ? "#fffbeb" : "var(--ec-bg-primary-light)"};
+  border: 1px solid
+    ${(props) =>
+      props.status === "warning" ? "#fef08a" : "var(--ec-cta-shield)"};
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  ${(props) =>
+    props.$wide &&
+    `
+    grid-column: span 2;
+    @media screen and (max-width: 640px) {
+      grid-column: span 1;
+    }
+  `}
+`;
+
+const IconWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: ${(props) =>
+    props.status === "warning" ? "#fef3c7" : "var(--ec-bg-primary-muted)"};
+  color: ${(props) =>
+    props.status === "warning" ? "#d97706" : "var(--ec-primary)"};
+  font-size: 18px;
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const CardLabel = styled.span`
+  font-size: 13px;
+  font-weight: 800;
+  font-family: "Poppins", sans-serif;
+  color: #111827;
+`;
+
+const CardValue = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  color: ${(props) =>
+    props.status === "warning" ? "#d97706" : "var(--ec-primary)"};
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  svg {
+    font-size: 12px;
+  }
+`;
+
+const CardDesc = styled.span`
+  font-size: 11px;
+  color: #6b7280;
+  line-height: 1.4;
+`;
+
+const WhyMattersSection = styled.div`
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const MattersRow = styled.div`
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+  }
+`;
+
+const MatterItem = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+`;
+
+const MatterContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const MatterTitle = styled.span`
+  font-size: 14px;
+  font-weight: 800;
+  font-family: "Poppins", sans-serif;
+  color: #111827;
+`;
+
+const MatterDesc = styled.span`
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+`;
+
+const MatterDivider = styled.div`
+  width: 1px;
+  background: #e5e7eb;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 1px;
+  }
+`;
+
+const FooterSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+`;
+
+const FooterDisclaimer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6b7280;
+
+  svg {
+    color: var(--ec-primary);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+`;
+
+const FooterActions = styled.div`
+  display: flex;
+  gap: 12px;
+
+  @media screen and (max-width: 768px) {
+    justify-content: stretch;
+    > button {
+      flex: 1;
+    }
+  }
+`;
+
+const CloseBtn = styled.button`
+  padding: 10px 20px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: #f9fafb;
+  }
+`;
+
+const VerifyBtn = styled.button`
+  padding: 10px 20px;
+  background: var(--ec-primary);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--ec-primary-hover);
+  }
+`;
+
+const VehicleHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const TrustBanner = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--ec-bg-primary-light);
+  border: 1px solid var(--ec-cta-shield);
+  padding: 8px 16px;
+  border-radius: 8px;
+
+  svg {
+    font-size: 20px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+
+    strong {
+      font-size: 13px;
+      color: var(--ec-primary-dark);
+    }
+
+    span {
+      font-size: 11px;
+      color: var(--ec-primary-dark);
     }
   }
 `;

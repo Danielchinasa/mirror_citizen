@@ -28,7 +28,10 @@ import baseUrl from "../../apiConfig";
 import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
-import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
+import {
+  SampleResultContent,
+  VehicleSampleContent,
+} from "../../components/SampleResultPopup/SampleResultPopup";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import { useLocale } from "../../components/LocaleProvider";
 import { withBasePath } from "../../routing";
@@ -2223,7 +2226,11 @@ const VerifyPage = () => {
           <SampleTitle>{t("verify.payment.sampleResult")}</SampleTitle>
         </SampleHeader>
         <SampleSub>{t("verify.payment.sampleSub")}</SampleSub>
-        <SampleResultContent type={type} />
+        {type === "vehicle" || type === "vehicle_ug" ? (
+          <VehicleSampleContent hideActions={true} />
+        ) : (
+          <SampleResultContent type={type} />
+        )}
       </SampleSection>
     </>
   );
