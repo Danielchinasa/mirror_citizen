@@ -30,6 +30,7 @@ import paystackLogo from "../../images/paystack.png";
 import flutterwaveLogo from "../../images/flutterwave-logos-idVM8GW1LQ.png";
 import verificationConfig from "./verificationConfig";
 import { SampleResultContent } from "../../components/SampleResultPopup/SampleResultPopup";
+import VehicleSampleResult from "../../components/SampleResultPopup/VehicleSampleResult/VehicleSampleResult";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import privacyPdf from "../../images/e-raia Kenya Privacy Notice EN-SW v1.2 - Confirmed Service Scope.pdf";
 import termsPdf from "../../images/e-raia Kenya Terms of Service EN-SW v1.2 - Confirmed Service Scope.pdf";
@@ -2537,7 +2538,11 @@ const VerifyPage = () => {
             ? "Huu ni mfano wa jinsi matokeo yako ya uthibitishaji yatakavyoonekana."
             : "Here's an example of what your verification result will look like."}
         </SampleSub>
-        <SampleResultContent type={type} />
+        {type === "vehicle" ? (
+          <VehicleSampleResult isInline={true} />
+        ) : (
+          <SampleResultContent type={type} />
+        )}
       </SampleSection>
     </>
   );

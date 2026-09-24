@@ -1,0 +1,30 @@
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import {
+  FaCheckCircle,
+  FaShieldAlt,
+  FaFileAlt,
+  FaExclamationTriangle,
+  FaUsers,
+  FaTachometerAlt,
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaChartBar,
+  FaWrench,
+  FaCarSide,
+  FaGasPump,
+  FaCogs,
+  FaPalette,
+  FaUser,
+  FaSearch,
+  FaArrowRight,
+  FaInfoCircle,
+} from "react-icons/fa";
+import { useLocale } from "../../LocaleProvider";
+import useAuthRedirect from "../../../hooks/useAuthRedirect";
+import vehicleSampleAvatar from "../../../images/cieana.jpeg";
+
+const VehicleSampleResult = ({ onClose, isInline }) => {
+  const { t } = useLocale();
+  const verifyLink = useAuthRedirect("/verify/vehicle");
