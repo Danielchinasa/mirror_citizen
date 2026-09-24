@@ -68,6 +68,7 @@ const VehicleHero = () => {
         isOpen={showSampleResult}
         onClose={() => setShowSampleResult(false)}
         type="vehicle"
+        ctaLink={verifyLink}
       />
     </>
   );
