@@ -39,37 +39,37 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
           <VehicleTitle>2018 Toyota Sienna</VehicleTitle>
           <SpecsGrid>
             <SpecItem>
-              <SpecLabel>PLATE NUMBER</SpecLabel>
+              <SpecLabel>{t("vehicleSample.plateNumber", "PLATE NUMBER")}</SpecLabel>
               <SpecValue>ABC-123XY</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>VIN</SpecLabel>
+              <SpecLabel>{t("vehicleSample.vin", "VIN")}</SpecLabel>
               <SpecValue>89447585678</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>MAKE / MODEL</SpecLabel>
+              <SpecLabel>{t("vehicleSample.makeModel", "MAKE / MODEL")}</SpecLabel>
               <SpecValue>Toyota Sienna</SpecValue>
             </SpecItem>
             <SpecItem>
-              <SpecLabel>YEAR</SpecLabel>
+              <SpecLabel>{t("vehicleSample.year", "YEAR")}</SpecLabel>
               <SpecValue>2018</SpecValue>
             </SpecItem>
           </SpecsGrid>
           <FeaturesRow>
             <Feature>
-              <FaCarSide /> Minivan
+              <FaCarSide /> {t("vehicleSample.minivan", "Minivan")}
             </Feature>
             <Divider />
             <Feature>
-              <FaGasPump /> Gasoline
+              <FaGasPump /> {t("vehicleSample.gasoline", "Gasoline")}
             </Feature>
             <Divider />
             <Feature>
-              <FaCogs /> Automatic
+              <FaCogs /> {t("vehicleSample.automatic", "Automatic")}
             </Feature>
             <Divider />
             <Feature>
-              <FaPalette /> Red
+              <FaPalette /> {t("vehicleSample.red", "Red")}
             </Feature>
           </FeaturesRow>
         </DetailsSection>
@@ -78,13 +78,13 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
       <Section>
         <SectionHeader>
           <div>
-            <SectionTitle>Report Highlights</SectionTitle>
+            <SectionTitle>{t("vehicleSample.reportHighlights", "Report Highlights")}</SectionTitle>
             <SectionSubtitle>
-              Key information from your VIN verification report.
+              {t("vehicleSample.keyInfo", "Key information from your VIN verification report.")}
             </SectionSubtitle>
           </div>
           <TrustedBadge>
-            <FaCheckCircle /> Data from trusted government & industry sources
+            <FaCheckCircle /> {t("vehicleSample.trustedData", "Data from trusted government & industry sources")}
           </TrustedBadge>
         </SectionHeader>
 
@@ -94,12 +94,12 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaUser />
             </CardIcon>
             <CardContent>
-              <CardTitle>Ownership Status</CardTitle>
+              <CardTitle>{t("vehicleSample.ownershipStatus", "Ownership Status")}</CardTitle>
               <CardValue $status="good">
-                Verified <FaCheckCircle />
+                {t("vehicleSample.verified", "Verified")} <FaCheckCircle />
               </CardValue>
               <CardDesc>
-                Current ownership is valid and matches records.
+                {t("vehicleSample.ownershipValid", "Current ownership is valid and matches records.")}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -109,11 +109,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaShieldAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Theft / Watchlist Status</CardTitle>
+              <CardTitle>{t("vehicleSample.theftStatus", "Theft / Watchlist Status")}</CardTitle>
               <CardValue $status="good">
-                Clear <FaCheckCircle />
+                {t("vehicleSample.clear", "Clear")} <FaCheckCircle />
               </CardValue>
-              <CardDesc>Not reported stolen and not on any watchlist.</CardDesc>
+              <CardDesc>{t("vehicleSample.notStolen", "Not reported stolen and not on any watchlist.")}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -122,12 +122,12 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaFileAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Salvage / Rebuilt History</CardTitle>
+              <CardTitle>{t("vehicleSample.salvageHistory", "Salvage / Rebuilt History")}</CardTitle>
               <CardValue $status="good">
-                No salvage record <FaCheckCircle />
+                {t("vehicleSample.noSalvage", "No salvage record")} <FaCheckCircle />
               </CardValue>
               <CardDesc>
-                No salvage, rebuilt, or flood damage records found.
+                {t("vehicleSample.noSalvageDesc", "No salvage, rebuilt, or flood damage records found.")}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -137,10 +137,10 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaExclamationTriangle />
             </CardIcon>
             <CardContent>
-              <CardTitle>Accident History</CardTitle>
-              <CardValue $status="warning">1 minor accident reported</CardValue>
+              <CardTitle>{t("vehicleSample.accidentHistory", "Accident History")}</CardTitle>
+              <CardValue $status="warning">{t("vehicleSample.minorAccident", "1 minor accident reported")}</CardValue>
               <CardDesc>
-                1 minor accident in 2020. No major damage reported.
+                {t("vehicleSample.minorAccidentDesc", "1 minor accident in 2020. No major damage reported.")}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -150,9 +150,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaUsers />
             </CardIcon>
             <CardContent>
-              <CardTitle>Previous Owners</CardTitle>
-              <CardValue $status="warning">3 previous owners</CardValue>
-              <CardDesc>Multiple owners may indicate higher usage.</CardDesc>
+              <CardTitle>{t("vehicleSample.previousOwners", "Previous Owners")}</CardTitle>
+              <CardValue $status="warning">{t("vehicleSample.threeOwners", "3 previous owners")}</CardValue>
+              <CardDesc>{t("vehicleSample.multipleOwners", "Multiple owners may indicate higher usage.")}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -161,12 +161,12 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaTachometerAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Odometer / Mileage Check</CardTitle>
+              <CardTitle>{t("vehicleSample.odometerCheck", "Odometer / Mileage Check")}</CardTitle>
               <CardValue $status="good">
-                89,450 km <FaCheckCircle />
+                {t("vehicleSample.mileage", "89,450 km")} <FaCheckCircle />
               </CardValue>
               <CardDesc>
-                No rollback detected. Mileage appears consistent.
+                {t("vehicleSample.noRollback", "No rollback detected. Mileage appears consistent.")}
               </CardDesc>
             </CardContent>
           </HighlightCard>
@@ -176,11 +176,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaBuilding />
             </CardIcon>
             <CardContent>
-              <CardTitle>Usage History</CardTitle>
+              <CardTitle>{t("vehicleSample.usageHistory", "Usage History")}</CardTitle>
               <CardValue $status="good">
-                Personal use <FaCheckCircle />
+                {t("vehicleSample.personalUse", "Personal use")} <FaCheckCircle />
               </CardValue>
-              <CardDesc>No commercial or rental use reported.</CardDesc>
+              <CardDesc>{t("vehicleSample.noCommercial", "No commercial or rental use reported.")}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -189,11 +189,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaMapMarkerAlt />
             </CardIcon>
             <CardContent>
-              <CardTitle>Registration</CardTitle>
+              <CardTitle>{t("vehicleSample.registration", "Registration")}</CardTitle>
               <CardValue $status="good">
-                Lagos, Nigeria <FaCheckCircle />
+                {t("vehicleSample.location", "Abidjan, Côte d'Ivoire")} <FaCheckCircle />
               </CardValue>
-              <CardDesc>Current registration in Lagos, Nigeria.</CardDesc>
+              <CardDesc>{t("vehicleSample.locationDesc", "Current registration in Abidjan, Côte d'Ivoire.")}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -202,9 +202,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaChartBar />
             </CardIcon>
             <CardContent>
-              <CardTitle>Estimated Market Value</CardTitle>
-              <CardValue $status="good">₦12,000,000 - ₦15,000,000</CardValue>
-              <CardDesc>Based on market data and comparable listings.</CardDesc>
+              <CardTitle>{t("vehicleSample.estimatedValue", "Estimated Market Value")}</CardTitle>
+              <CardValue $status="good">{t("vehicleSample.priceRange", "CFA 12,000,000 - CFA 15,000,000")}</CardValue>
+              <CardDesc>{t("vehicleSample.basedOnMarket", "Based on market data and comparable listings.")}</CardDesc>
             </CardContent>
           </HighlightCard>
 
@@ -213,11 +213,11 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
               <FaWrench />
             </CardIcon>
             <CardContent>
-              <CardTitle>Open Recalls</CardTitle>
+              <CardTitle>{t("vehicleSample.openRecalls", "Open Recalls")}</CardTitle>
               <CardValue $status="good">
-                None found <FaCheckCircle />
+                {t("vehicleSample.noneFound", "None found")} <FaCheckCircle />
               </CardValue>
-              <CardDesc>No open safety recalls for this vehicle.</CardDesc>
+              <CardDesc>{t("vehicleSample.noRecalls", "No open safety recalls for this vehicle.")}</CardDesc>
             </CardContent>
           </HighlightCard>
         </CardsGrid>
@@ -226,9 +226,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
       <Section>
         <WhySection>
           <WhyHeader>
-            <WhyTitle>Why this matters</WhyTitle>
+            <WhyTitle>{t("vehicleSample.whyMatters", "Why this matters")}</WhyTitle>
             <WhySubtitle>
-              A VIN report gives you the facts you need to buy with confidence.
+              {t("vehicleSample.factsNeeded", "A VIN report gives you the facts you need to buy with confidence.")}
             </WhySubtitle>
           </WhyHeader>
           <WhyGrid>
@@ -237,9 +237,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaShieldAlt />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Avoid hidden accident history</WhyItemTitle>
+                <WhyItemTitle>{t("vehicleSample.avoidAccident", "Avoid hidden accident history")}</WhyItemTitle>
                 <WhyItemDesc>
-                  Know the true condition before you buy.
+                  {t("vehicleSample.trueCondition", "Know the true condition before you buy.")}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -248,9 +248,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaUsers />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Confirm ownership trail</WhyItemTitle>
+                <WhyItemTitle>{t("vehicleSample.confirmOwnership", "Confirm ownership trail")}</WhyItemTitle>
                 <WhyItemDesc>
-                  See how many owners the vehicle has had.
+                  {t("vehicleSample.howManyOwners", "See how many owners the vehicle has had.")}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -259,9 +259,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaExclamationTriangle />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Detect salvage or flood risk</WhyItemTitle>
+                <WhyItemTitle>{t("vehicleSample.detectSalvage", "Detect salvage or flood risk")}</WhyItemTitle>
                 <WhyItemDesc>
-                  Uncover title brands and major damage.
+                  {t("vehicleSample.uncoverBrands", "Uncover title brands and major damage.")}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -270,9 +270,9 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
                 <FaSearch />
               </WhyIcon>
               <WhyContent>
-                <WhyItemTitle>Identify red flags early</WhyItemTitle>
+                <WhyItemTitle>{t("vehicleSample.identifyFlags", "Identify red flags early")}</WhyItemTitle>
                 <WhyItemDesc>
-                  Spot issues before they become your problem.
+                  {t("vehicleSample.spotIssues", "Spot issues before they become your problem.")}
                 </WhyItemDesc>
               </WhyContent>
             </WhyItem>
@@ -283,14 +283,13 @@ const VehicleSampleResult = ({ onClose, isInline }) => {
       <Footer>
         <Disclaimer>
           <FaInfoCircle />
-          This is a sample report. Results are based on data available at the
-          time of verification and may vary for your vehicle.
+          {t("vehicleSample.sampleDisclaimer", "This is a sample report. Results are based on data available at the time of verification and may vary for your vehicle.")}
         </Disclaimer>
         {!isInline && (
           <FooterActions>
-            <CloseButton onClick={onClose}>Close</CloseButton>
+            <CloseButton onClick={onClose}>{t("sample.close", "Close")}</CloseButton>
             <PrimaryButton to={verifyLink}>
-              Verify Your VIN Now <FaArrowRight />
+              {t("vehicleSample.verifyNow", "Verify Your VIN Now")} <FaArrowRight />
             </PrimaryButton>
           </FooterActions>
         )}
