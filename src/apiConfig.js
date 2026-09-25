@@ -1,6 +1,6 @@
 //Staging API
-const baseUrl = "https://api-staging.e-citizen.ng/api/v2";
-const imageBaseUrl = "https://api-staging.e-citizen.ng";
+// const baseUrl = "https://api-staging.e-citizen.ng/api/v2";
+// const imageBaseUrl = "https://api-staging.e-citizen.ng";
 
 // Non-production IP testing:
 // true  = use the configured Cote d'Ivoire test IP in development and staging.
@@ -9,8 +9,8 @@ const imageBaseUrl = "https://api-staging.e-citizen.ng";
 const enableTestIpOverride = false;
 
 //Prod API
-// const baseUrl = "https://e-citizen.ng:8444/api/v2";
-// const imageBaseUrl = "https://e-citizen.ng:8444";
+const baseUrl = "https://api.e-citizen.ng/api/v2";
+const imageBaseUrl = "https://api.e-citizen.ng";
 // Keep this false when enabling the production API configuration.
 // const enableTestIpOverride = false;
 
