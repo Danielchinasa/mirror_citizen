@@ -446,13 +446,13 @@ const VehicleLoginSample = () => {
   const redirectTo = "/verify/vehicle";
 
   const [language, setLanguage] = useState(() => {
-    if (typeof window === "undefined") return "SW";
-    return window.localStorage.getItem("siteLanguage") || "SW";
+    if (typeof window === "undefined") return "EN";
+    return window.localStorage.getItem("siteLanguage") || "EN";
   });
 
   useEffect(() => {
     const handleLanguageChange = () => {
-      const lang = window.localStorage.getItem("siteLanguage") || "SW";
+      const lang = window.localStorage.getItem("siteLanguage") || "EN";
       setLanguage(lang);
     };
     window.addEventListener("siteLanguageChanged", handleLanguageChange);
