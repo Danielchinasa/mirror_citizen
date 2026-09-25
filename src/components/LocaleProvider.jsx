@@ -32,8 +32,18 @@ export function LocaleProvider({ children }) {
     return {
       language,
       setLanguage,
-      t: (key, fallback) =>
-        current[key] || translations.FR[key] || fallback || key,
+      t: (key, paramsOrFallback) => {
+        const raw =
+          current[key] ||
+          translations.FR[key] ||
+          translations.EN?.[key] ||
+          (typeof paramsOrFallback === "string" ? paramsOrFallback : key);
+        if (!paramsOrFallback || typeof paramsOrFallback !== "object")
+          return raw;
+        return raw.replace(/\{(\w+)\}/g, (_, k) =>
+          paramsOrFallback[k] !== undefined ? paramsOrFallback[k] : `{${k}}`,
+        );
+      },
     };
   }, [language]);
 
