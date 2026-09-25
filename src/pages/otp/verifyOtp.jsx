@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Alert, message, Spin } from "antd"; // Import message from Ant Design
 import {
   CenterText,
@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import Swal from "sweetalert2";
+import { getLanguage, t } from "../../utils/alertTranslations";
 
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
@@ -24,15 +25,31 @@ const { useToken } = theme;
 const VerifyOtp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
-  const formDataFromLocalStorage = JSON.parse(localStorage.getItem("formData"));
-  const email = formDataFromLocalStorage.email;
-  const phoneNumber = formDataFromLocalStorage.phoneNumber;
+  const formDataFromLocalStorage = JSON.parse(
+    localStorage.getItem("formData") || "{}",
+  );
+  const email = formDataFromLocalStorage?.email || "";
+  const phoneNumber = formDataFromLocalStorage?.phoneNumber || "";
 
   const encryptPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) return "";
     const countryCode = phoneNumber.slice(0, 4); // Extracting country code
     const hiddenDigits = phoneNumber.slice(4, -2).replace(/\d/g, "*"); // Masking digits except last 2
     const lastTwoDigits = phoneNumber.slice(-2); // Extracting last 2 digits
@@ -63,8 +80,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Success",
-          text: "OTP verification successful. Proceed to Sign In",
+          title: t("Success", isSw),
+          text: t("OTP verification successful. Proceed to Sign In", isSw),
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -81,8 +98,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: response.message || "OTP verification failed",
+          title: t("Error", isSw),
+          text: response?.message || t("OTP verification failed", isSw),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -99,8 +116,8 @@ const VerifyOtp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Error sending OTP",
+        title: t("Error", isSw),
+        text: t("Error sending OTP", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -126,8 +143,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Success",
-          text: "OTP Sent Successfully",
+          title: t("Success", isSw),
+          text: t("OTP Sent Successfully", isSw),
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -144,8 +161,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: response.message || "OTP Resend failed",
+          title: t("Error", isSw),
+          text: response?.message || t("OTP Resend failed", isSw),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -162,8 +179,8 @@ const VerifyOtp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Error sending OTP",
+        title: t("Error", isSw),
+        text: t("Error sending OTP", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -214,13 +231,22 @@ const VerifyOtp = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading $token={token}>Enter OTP</Heading>
+              <Heading $token={token}>
+                {isSw ? "Weka OTP" : "Enter OTP"}
+              </Heading>
               <Subtitle color="light" $token={token}>
-                Enter the OTP sent to {encryptedPhoneNumber} and {email} for
-                continuation
+                {isSw
+                  ? `Weka OTP iliyotumwa kwa ${encryptedPhoneNumber} na ${email} ili kuendelea`
+                  : `Enter the OTP sent to ${encryptedPhoneNumber} and ${email} for continuation`}
               </Subtitle>
-              <Spin spinning={loading} tip="Verifying OTP...">
-                <Spin spinning={loading2} tip="Resending OTP...">
+              <Spin
+                spinning={loading}
+                tip={isSw ? "Inathibitisha OTP..." : "Verifying OTP..."}
+              >
+                <Spin
+                  spinning={loading2}
+                  tip={isSw ? "Inatuma tena OTP..." : "Resending OTP..."}
+                >
                   <StyledForm>
                     <div
                       style={{
@@ -269,16 +295,18 @@ const VerifyOtp = () => {
                     </div>
 
                     <MainButtonFull type="primary" onClick={handleVerifyOTP}>
-                      Verify OTP
+                      {isSw ? "Thibitisha OTP" : "Verify OTP"}
                     </MainButtonFull>
 
-                    <p style={{ color: text }}>I didn’t receive the OTP</p>
+                    <p style={{ color: text }}>
+                      {isSw ? "Sikupokea OTP" : "I didn’t receive the OTP"}
+                    </p>
                     <p>
                       <strong
                         style={{ color: "#DD0201", cursor: "pointer" }}
                         onClick={handleReSendOTP}
                       >
-                        Resend Code
+                        {isSw ? "Tuma tena Msimbo" : "Resend Code"}
                       </strong>
                     </p>
                   </StyledForm>

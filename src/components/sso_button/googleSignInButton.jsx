@@ -27,14 +27,14 @@ const GoogleButton = styled.button`
   }
 `;
 
-function GoogleSignInButton({ onClick }) {
+function GoogleSignInButton({ onClick, text, children }) {
   return (
     <GoogleButton
       onClick={onClick}
       style={{ borderColor: "#000000", borderRadius: "8px" }}
     >
       <img src={googleLogo} alt="Google logo" />
-      Log in with Google
+      {text || children || "Log in with Google"}
     </GoogleButton>
   );
 }

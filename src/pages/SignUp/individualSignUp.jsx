@@ -49,6 +49,7 @@ import { FACEBOOK_APP_ID } from "../../config/facebook";
 import AppleLogin from "react-apple-login";
 import { apiPost } from "../../apiUtils";
 import { trackGA4Event } from "../../hooks/analytics";
+import { getLanguage, t } from "../../utils/alertTranslations";
 import {
   BackLink,
   FormSubtitle,
@@ -67,6 +68,19 @@ import {
 const IndividualSignUp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [language, setLanguage] = useState(getLanguage);
+  const isSw = language === "SW";
+
+  useEffect(() => {
+    const onLanguageChange = () => setLanguage(getLanguage());
+    window.addEventListener("siteLanguageChanged", onLanguageChange);
+    window.addEventListener("storage", onLanguageChange);
+    return () => {
+      window.removeEventListener("siteLanguageChanged", onLanguageChange);
+      window.removeEventListener("storage", onLanguageChange);
+    };
+  }, []);
+
   const [userType, setUserType] = useState("");
   const [ipAddress, setIpAddress] = useState("");
   const [ipCountry, setIpCountry] = useState("");
@@ -98,8 +112,6 @@ const IndividualSignUp = () => {
   const [response, setResponse] = useState(null);
 
   const handlePhoneChange = (phone) => {
-    // Update state using setPhone
-
     setPhone(phone);
     setFormData({
       ...formData,
@@ -145,9 +157,6 @@ const IndividualSignUp = () => {
       case "email":
         emailRef.current.focus();
         break;
-      // case "phoneNumber":
-      //   phoneNumberRef.current.focus();
-      //   break;
       case "password":
         passwordRef.current.focus();
         break;
@@ -197,22 +206,44 @@ const IndividualSignUp = () => {
     const errors = [];
 
     if (!password) {
-      errors.push("Please enter your password");
+      errors.push(
+        isSw ? "Tafadhali ingiza nenosiri lako" : "Please enter your password",
+      );
     }
     if (password.length < 8) {
-      errors.push("Password must be 8 characters or more");
+      errors.push(
+        isSw
+          ? "Nenosiri lazima liwe na herufi 8 au zaidi"
+          : "Password must be 8 characters or more",
+      );
     }
     if (!/[A-Z]/.test(password)) {
-      errors.push("Password must contain at least one capital letter");
+      errors.push(
+        isSw
+          ? "Nenosiri lazima liwe na angalau herufi moja kubwa"
+          : "Password must contain at least one capital letter",
+      );
     }
     if (!/[a-z]/.test(password)) {
-      errors.push("Password must contain at least one lowercase letter");
+      errors.push(
+        isSw
+          ? "Nenosiri lazima liwe na angalau herufi moja ndogo"
+          : "Password must contain at least one lowercase letter",
+      );
     }
     if (!/\d/.test(password)) {
-      errors.push("Password must contain at least one number");
+      errors.push(
+        isSw
+          ? "Nenosiri lazima liwe na angalau nambari moja"
+          : "Password must contain at least one number",
+      );
     }
     if (!/[^a-zA-Z0-9]/.test(password)) {
-      errors.push("Password must contain at least one special character");
+      errors.push(
+        isSw
+          ? "Nenosiri lazima liwe na angalau herufi maalum moja"
+          : "Password must contain at least one special character",
+      );
     }
 
     return errors.join(". "); // Join errors into a single string with a dot and space separator
@@ -224,34 +255,54 @@ const IndividualSignUp = () => {
     const errors = {};
     // First Name
     if (!formData.firstName) {
-      errors.firstName = "Please enter your first name";
+      errors.firstName = isSw
+        ? "Tafadhali ingiza jina lako la kwanza"
+        : "Please enter your first name";
     }
 
     // Last Name
     if (!formData.lastName) {
-      errors.lastName = "Please enter your last name";
+      errors.lastName = isSw
+        ? "Tafadhali ingiza jina lako la mwisho"
+        : "Please enter your last name";
     }
 
     if (!formData.email) {
-      errors.email = "Please enter your email";
+      errors.email = isSw
+        ? "Tafadhali ingiza barua pepe yako"
+        : "Please enter your email";
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)
     ) {
-      errors.email = "Invalid email format";
+      errors.email = isSw
+        ? "Fomati ya barua pepe si sahihi"
+        : "Invalid email format";
     }
 
     if (!formData.password) {
-      errors.password = "Please enter your password";
+      errors.password = isSw
+        ? "Tafadhali ingiza nenosiri lako"
+        : "Please enter your password";
     } else if (formData.password.length < 8) {
-      errors.password = "Password must be 8 characters or more";
+      errors.password = isSw
+        ? "Nenosiri lazima liwe na herufi 8 au zaidi"
+        : "Password must be 8 characters or more";
     } else if (!/[A-Z]/.test(formData.password)) {
-      errors.password = "Password must contain at least one capital letter";
+      errors.password = isSw
+        ? "Nenosiri lazima liwe na angalau herufi moja kubwa"
+        : "Password must contain at least one capital letter";
     } else if (!/[a-z]/.test(formData.password)) {
-      errors.password = "Password must contain at least one lowercase letter";
+      errors.password = isSw
+        ? "Nenosiri lazima liwe na angalau herufi moja ndogo"
+        : "Password must contain at least one lowercase letter";
     } else if (!/\d/.test(formData.password)) {
-      errors.password = "Password must contain at least one number";
+      errors.password = isSw
+        ? "Nenosiri lazima liwe na angalau nambari moja"
+        : "Password must contain at least one number";
     } else if (!/[^a-zA-Z0-9]/.test(formData.password)) {
-      errors.password = "Password must contain at least one special character";
+      errors.password = isSw
+        ? "Nenosiri lazima liwe na angalau herufi maalum moja"
+        : "Password must contain at least one special character";
     }
 
     return errors;
@@ -276,7 +327,11 @@ const IndividualSignUp = () => {
       }
 
       if (formData.password !== reenterPassword) {
-        setFormErrors({ reenterPassword: "Passwords do not match" });
+        setFormErrors({
+          reenterPassword: isSw
+            ? "Manenosiri hayafanani"
+            : "Passwords do not match",
+        });
         focusOnErrorField("reenterPassword");
         return;
       }
@@ -296,15 +351,8 @@ const IndividualSignUp = () => {
       setLoading(true);
       localStorage.setItem("formData", JSON.stringify(formData));
 
-      // if (response.status !== 200) {
-      //   throw new Error(response); // Throw an error with the response status text
-      // }
-
       if (response === "success") {
-        // On successful sign up, fire GA4 event
-
         trackGA4Event("sign_up", { method: "email" });
-        // On successful login, navigate to the main dashboard
         trackEvent({
           action: "click_individual_signup_form_success",
           category: "Account Creation Success",
@@ -313,13 +361,12 @@ const IndividualSignUp = () => {
         });
         history.push("/verify-otp");
       } else {
-        setFormErrors({ general: response.message }); // Set error message
-        // openNotification2("topRight");
+        setFormErrors({ general: response?.message || response });
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: response,
+          title: t("Error", isSw),
+          text: response?.message || response,
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -333,8 +380,8 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Sign up failed. Please try again.",
+        title: t("Error", isSw),
+        text: t("Sign up failed. Please try again.", isSw),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -377,8 +424,8 @@ const IndividualSignUp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Success",
-          text: "Google login successful!",
+          title: t("Success", isSw),
+          text: t("Google login successful!", isSw),
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -399,8 +446,8 @@ const IndividualSignUp = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Login failed",
+            title: t("Error", isSw),
+            text: t("Google login failed", isSw),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -408,32 +455,30 @@ const IndividualSignUp = () => {
             allowOutsideClick: false,
             allowEscapeKey: false,
           });
-          // openNotification2("topRight");
         }
       } catch (error) {
         console.error("Google login failed:", error);
 
-        let errorMessage = "Google login failed. Please try again.";
+        let errorMessage = t("Google login failed. Please try again.", isSw);
 
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           console.error("Server responded with status:", error.response.status);
           if (error.response.data && error.response.data.message) {
             errorMessage = error.response.data.message;
           }
         } else if (error.request) {
-          // The request was made but no response was received
           console.error("No response received from server:", error.request);
-          errorMessage = "Network error. Please check your connection.";
+          errorMessage = t(
+            "Network error. Please check your connection.",
+            isSw,
+          );
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error("Error setting up request:", error.message);
         }
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
+          title: t("Error", isSw),
           text: errorMessage,
           icon: "error",
           customClass: {
@@ -452,8 +497,8 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Facebook Login",
-        text: "Facebook login was cancelled or failed.",
+        title: t("Facebook Login", isSw),
+        text: t("Facebook login was cancelled or failed.", isSw),
         icon: "error",
         customClass: { confirmButton: "custom-swal-button" },
         allowOutsideClick: false,
@@ -467,7 +512,6 @@ const IndividualSignUp = () => {
 
       const payload = {
         accessToken: fbRes.accessToken,
-        // userId: fbRes.userID,
         deviceToken: localStorage.getItem("clientToken"),
         ipAddress: ipAddress,
         deviceName: "Web app",
@@ -478,8 +522,8 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Success",
-        text: "Facebook login successful!",
+        title: t("Success", isSw),
+        text: t("Facebook login successful!", isSw),
         icon: "success",
         customClass: { confirmButton: "custom-swal-button" },
         allowOutsideClick: false,
@@ -500,10 +544,10 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
+        title: t("Error", isSw),
         text:
           err?.response?.data?.message ||
-          "Facebook login failed. Please try again.",
+          t("Facebook login failed. Please try again.", isSw),
         icon: "error",
         customClass: { confirmButton: "custom-swal-button" },
         allowOutsideClick: false,
@@ -524,14 +568,19 @@ const IndividualSignUp = () => {
     <SignUpShell>
       <SignUpCard style={{ maxWidth: "620px" }}>
         <FormTitle style={{ textAlign: "center" }}>
-          Create your account
+          {isSw ? "Unda akaunti yako" : "Create your account"}
         </FormTitle>
         <FormSubtitle style={{ textAlign: "center", marginBottom: "24px" }}>
-          Enter your details to start verifying with e-Raia.
+          {isSw
+            ? "Weka maelezo yako ili kuanza kuthibitisha na e-Raia."
+            : "Enter your details to start verifying with e-Raia."}
         </FormSubtitle>
 
         <Space size="large" direction="vertical" style={{ display: "flex" }}>
-          <Spin spinning={loading} tip="Signing Up...">
+          <Spin
+            spinning={loading}
+            tip={isSw ? "Inasajili..." : "Signing Up..."}
+          >
             <StyledForm onSubmit={handleSignUp}>
               <style>
                 {`
@@ -559,10 +608,10 @@ const IndividualSignUp = () => {
               </style>
               <Space direction="vertical" style={{ width: "100%" }}>
                 <GoogleSignInButton
+                  text={isSw ? "Endelea na Google" : "Continue with Google"}
                   onClick={(e) => {
                     e.preventDefault();
                     localStorage.removeItem("token");
-                    // 🔍 Track the click event
                     trackEvent({
                       action: "click_google_signin",
                       category: "Authentication",
@@ -581,25 +630,13 @@ const IndividualSignUp = () => {
                   responseType="code"
                   callback={handleFacebook}
                   cssClass="facebook-btn"
-                  textButton="Continue with Facebook"
+                  textButton={
+                    isSw ? "Endelea na Facebook" : "Continue with Facebook"
+                  }
                   icon={<FacebookSignInButton />}
                 />
-                {/*  <AppleLogin
-                      clientId="com.react.apple.login"
-                      redirectURI="https://redirectUrl.com"
-                      responseType="code"
-                      responseMode="query"
-                      usePopup={true}
-                      callback={(response) => {
-                        console.log("Apple login response:", response);
-                        // handle login here
-                      }}
-                      render={({ onClick }) => (
-                        <AppleSignInButton onClick={onClick} />
-                      )}
-                    /> */}
               </Space>
-              <Divider>OR</Divider>
+              <Divider>{isSw ? "AU" : "OR"}</Divider>
               {formErrors.general && (
                 <Alert
                   message={formErrors.general}
@@ -608,11 +645,15 @@ const IndividualSignUp = () => {
                   style={{ marginBottom: "16px" }}
                 />
               )}
-              <AppleLabel $token={token}>First name</AppleLabel>
+              <AppleLabel $token={token}>
+                {isSw ? "Jina la kwanza" : "First name"}
+              </AppleLabel>
               <AppleInput
                 $token={token}
                 type="text"
-                placeholder="Enter your first name"
+                placeholder={
+                  isSw ? "Ingiza jina lako la kwanza" : "Enter your first name"
+                }
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
@@ -622,11 +663,15 @@ const IndividualSignUp = () => {
                 <Alert message={formErrors.firstName} type="error" showIcon />
               )}
 
-              <AppleLabel $token={token}>Last name</AppleLabel>
+              <AppleLabel $token={token}>
+                {isSw ? "Jina la mwisho" : "Last name"}
+              </AppleLabel>
               <AppleInput
                 $token={token}
                 type="text"
-                placeholder="Enter your last name"
+                placeholder={
+                  isSw ? "Ingiza jina lako la mwisho" : "Enter your last name"
+                }
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
@@ -644,18 +689,20 @@ const IndividualSignUp = () => {
                 name="nin"
                 value={formData.nin}
                 onChange={handleInputChange}
-                pattern="[0-9]*" // Allow only numbers
+                pattern="[0-9]*"
                 title="Please enter only numbers"
                 ref={ninRef}
               />
-              {/* {formErrors.nin && (
-                    <Alert message={formErrors.nin} type="error" showIcon />
-                  )} */}
-              <AppleLabel $token={token}>Email address</AppleLabel>
+
+              <AppleLabel $token={token}>
+                {isSw ? "Barua pepe" : "Email address"}
+              </AppleLabel>
               <AppleInput
                 $token={token}
                 type="text"
-                placeholder="Enter your Email address"
+                placeholder={
+                  isSw ? "Ingiza barua pepe yako" : "Enter your Email address"
+                }
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
@@ -665,7 +712,9 @@ const IndividualSignUp = () => {
                 <Alert message={formErrors.email} type="error" showIcon />
               )}
               <AppleLabel $token={token}>
-                Phone number (E.g: +254 XXX XXX XXX X)
+                {isSw
+                  ? "Nambari ya simu (Mfano: +254 XXX XXX XXX X)"
+                  : "Phone number (E.g: +254 XXX XXX XXX X)"}
               </AppleLabel>
               <PhoneInput
                 $token={token}
@@ -709,12 +758,14 @@ const IndividualSignUp = () => {
                 <Alert message={formErrors.phoneNumber} type="error" showIcon />
               )}
 
-              <AppleLabel $token={token}>Password</AppleLabel>
+              <AppleLabel $token={token}>
+                {isSw ? "Nenosiri" : "Password"}
+              </AppleLabel>
               <PasswordInputWrapper>
                 <AppleInput
                   $token={token}
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a password"
+                  placeholder={isSw ? "Unda nenosiri" : "Create a password"}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
@@ -734,11 +785,13 @@ const IndividualSignUp = () => {
                   ) : (
                     <CloseCircleFilled />
                   )}{" "}
-                  At least 8 characters long
+                  {isSw ? "Angalau herufi 8" : "At least 8 characters long"}
                 </PasswordHintItem>
                 <PasswordHintItem $valid={isCaseValid}>
                   {isCaseValid ? <CheckCircleFilled /> : <CloseCircleFilled />}{" "}
-                  1 uppercase and 1 lowercase letter
+                  {isSw
+                    ? "Herufi 1 kubwa na herufi 1 ndogo"
+                    : "1 uppercase and 1 lowercase letter"}
                 </PasswordHintItem>
                 <PasswordHintItem $valid={isNumberValid}>
                   {isNumberValid ? (
@@ -746,7 +799,7 @@ const IndividualSignUp = () => {
                   ) : (
                     <CloseCircleFilled />
                   )}{" "}
-                  1 number
+                  {isSw ? "Nambari 1" : "1 number"}
                 </PasswordHintItem>
                 <PasswordHintItem $valid={isSpecialValid}>
                   {isSpecialValid ? (
@@ -754,7 +807,7 @@ const IndividualSignUp = () => {
                   ) : (
                     <CloseCircleFilled />
                   )}{" "}
-                  1 special character
+                  {isSw ? "Herufi maalum 1" : "1 special character"}
                 </PasswordHintItem>
               </PasswordHintList>
 
@@ -767,12 +820,16 @@ const IndividualSignUp = () => {
                 />
               )}
 
-              <AppleLabel $token={token}>Confirm Password</AppleLabel>
+              <AppleLabel $token={token}>
+                {isSw ? "Thibitisha Nenosiri" : "Confirm Password"}
+              </AppleLabel>
               <PasswordInputWrapper>
                 <AppleInput
                   $token={token}
                   type={showReenterPassword ? "text" : "password"}
-                  placeholder="Re-enter the password"
+                  placeholder={
+                    isSw ? "Ingiza tena nenosiri" : "Re-enter the password"
+                  }
                   name="reenterPassword"
                   value={reenterPassword}
                   onChange={handleInputChange}
@@ -795,18 +852,22 @@ const IndividualSignUp = () => {
                 />
               )}
               <Checkbox onChange={onChangeIsAccepted}>
-                I certify that I have read and accepted the{" "}
+                {isSw
+                  ? "Ninathibitisha kuwa nimesoma na kukubali "
+                  : "I certify that I have read and accepted the "}
                 <span
                   style={{ color: "#DD0002", cursor: "pointer" }}
                   onClick={handleClickPrivacyPolicy}
                 >
-                  e-Raia™ Privacy Policy
+                  {isSw
+                    ? "Sera ya Faragha ya e-Raia™"
+                    : "e-Raia™ Privacy Policy"}
                 </span>
               </Checkbox>
               <PdfModal
                 open={isOpen}
                 onClose={() => setIsOpen(false)}
-                title="Privacy Policy"
+                title={isSw ? "Sera ya Faragha" : "Privacy Policy"}
                 src={privacyPdf}
                 height={560}
               />
@@ -826,7 +887,7 @@ const IndividualSignUp = () => {
                       }
                 }
               >
-                Proceed
+                {isSw ? "Endelea" : "Proceed"}
               </AppleButton>
             </StyledForm>
           </Spin>

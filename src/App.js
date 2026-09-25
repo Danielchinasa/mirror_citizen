@@ -291,9 +291,17 @@ function AppContent() {
             <Route path="/" exact component={Home} />
             <Route path="/sms" exact component={Sms} />
             <Route path="/privacy_policy" exact component={PrivacyPolicy} />
-            <Route path="/privacy-policy-text" exact component={PrivacyPolicyText} />
+            <Route
+              path="/privacy-policy-text"
+              exact
+              component={PrivacyPolicyText}
+            />
             <Route path="/terms_of_service" exact component={TermsOfService} />
-            <Route path="/account-deletion" exact component={AccountDeletionPage} />
+            <Route
+              path="/account-deletion"
+              exact
+              component={AccountDeletionPage}
+            />
             <Route path="/payment/success" exact component={PaymentSuccess} />
             <Route path="/payment/failure" exact component={PaymentFailure} />
             <Route path="/payment/cancel" exact component={PaymentCancel} />
