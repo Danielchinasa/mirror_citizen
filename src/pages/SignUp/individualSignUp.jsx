@@ -3,26 +3,29 @@ import { useDispatch } from "react-redux";
 import { trackEvent } from "../../hooks/analytics";
 
 import {
-  Typography,
   Alert,
   notification,
   Space,
-  Col,
-  Row,
   Checkbox,
   Spin,
+  message,
   Divider,
 } from "antd";
 import { useHistory } from "react-router-dom";
+
 import {
-  BtnLink,
   StyledForm,
   StyledInput,
   StyledLabel,
-  Subtitle,
   MainButtonFull,
 } from "../../globalStyles";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  CheckCircleFilled,
+  CloseCircleFilled,
+} from "@ant-design/icons";
 import { signUp, fetchUserProfile } from "../../redux/actions";
 import axios from "axios";
 import PhoneInput from "react-phone-input-2";
@@ -32,7 +35,6 @@ import PdfModal from "../../components/PdfModal/PdfModal";
 import privacyPdf from "../../images/citoyen Cote dIvoire Privacy Notice FR-EN v1.2 - Confirmed Service Scope.pdf";
 import Swal from "sweetalert2";
 import { theme } from "antd";
-import { useLocale } from "../../components/LocaleProvider";
 import { useTheme } from "../../components/ThemeProvider";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
@@ -42,19 +44,26 @@ import GoogleSignInButton from "../../components/sso_button/googleSignInButton";
 import FacebookSignInButton from "../../components/sso_button/facebookSignInButton";
 import AppleSignInButton from "../../components/sso_button/appleSignInButton";
 import FacebookLogin from "react-facebook-login";
+// import { FACEBOOK_APP_ID } from "../../config/facebook";
 import AppleLogin from "react-apple-login";
 import { apiPost } from "../../apiUtils";
-import { trackSignUp } from "../../analytics/analytics";
-const { Title } = Typography;
+import { trackGA4Event } from "../../hooks/analytics";
+import {
+  BackLink,
+  FormSubtitle,
+  FormTitle,
+  SignUpCard,
+  SignUpShell,
+  AppleLabel,
+  AppleInput,
+  AppleButton,
+  PasswordHintList,
+  PasswordInputWrapper,
+  EyeIconContainer,
+  PasswordHintItem,
+} from "./SignUp.elements";
 
 const IndividualSignUp = () => {
-  const data = [
-    {
-      title: "Ant Design Title 1",
-    },
-  ];
-  // const [selectedDiv, setSelectedDiv] = useState(null);
-
   const dispatch = useDispatch();
   const history = useHistory();
   const [userType, setUserType] = useState("");
@@ -67,6 +76,8 @@ const IndividualSignUp = () => {
   const phoneNumberRef = useRef(null);
   const passwordRef = useRef(null);
   const [reenterPassword, setReenterPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showReenterPassword, setShowReenterPassword] = useState(false);
   const [phone, setPhone] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
@@ -97,6 +108,9 @@ const IndividualSignUp = () => {
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => {
     setIsFocused(true);
+  };
+  const handleBlur = () => {
+    setIsFocused(false);
   };
 
   const [api, contextHolder] = notification.useNotification();
@@ -288,7 +302,7 @@ const IndividualSignUp = () => {
       if (response === "success") {
         // On successful sign up, fire GA4 event
 
-        trackSignUp({ method: "email" });
+        trackGA4Event("sign_up", { method: "email" });
         // On successful login, navigate to the main dashboard
         trackEvent({
           action: "click_individual_signup_form_success",
@@ -335,7 +349,6 @@ const IndividualSignUp = () => {
   const handleClickPrivacyPolicy = () => {
     setIsOpen(true);
   };
-  const { t } = useLocale();
   const [isAccepted, setIsAccepted] = useState(false);
 
   const onChangeIsAccepted = (e) => {
@@ -500,34 +513,27 @@ const IndividualSignUp = () => {
     }
   };
 
+  const pwd = formData.password || "";
+  const isLengthValid = pwd.length >= 8;
+  const isCaseValid = /[A-Z]/.test(pwd) && /[a-z]/.test(pwd);
+  const isNumberValid = /\d/.test(pwd);
+  const isSpecialValid = /[^a-zA-Z0-9]/.test(pwd);
+
   return (
-    <div style={{ backgroundColor: bgContainer }}>
-      <Row justify="center">
-        <Col span={24} sm={24} xs={24} md={16} lg={14}>
-          <div className="p-5">
-            <BtnLink to="/sign-up">
-              <ArrowLeftOutlined
-                style={{
-                  fontSize: "25px",
-                  color: text,
-                  cursor: "pointer",
-                }}
-              />
-            </BtnLink>
+    <SignUpShell>
+      <SignUpCard style={{ maxWidth: "620px" }}>
+        <FormTitle style={{ textAlign: "center" }}>
+          Create your account
+        </FormTitle>
+        <FormSubtitle style={{ textAlign: "center", marginBottom: "24px" }}>
+          Enter your details to start verifying with Citoyen.
+        </FormSubtitle>
 
-            <Space
-              size="large"
-              direction="vertical"
-              style={{
-                display: "flex",
-              }}
-            >
-              <Spin spinning={loading} tip="Signing Up...">
-                <StyledForm onSubmit={handleSignUp}>
-                  <Title>Create Account</Title>
-
-                  <style>
-                    {`
+        <Space size="large" direction="vertical" style={{ display: "flex" }}>
+          <Spin spinning={loading} tip="Signing Up...">
+            <StyledForm onSubmit={handleSignUp}>
+              <style>
+                {`
           .facebook-btn {
            display: flex;
             align-items: center;
@@ -549,33 +555,35 @@ const IndividualSignUp = () => {
            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
           }
         `}
-                  </style>
-                  <Space direction="vertical" style={{ width: "100%" }}>
-                    <GoogleSignInButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        localStorage.removeItem("token");
-                        // 🔍 Track the click event
-                        trackEvent({
-                          action: "click_google_signin",
-                          category: "Authentication",
-                          label: "Google Sign-In Button",
-                          value: 1,
-                        });
-                        login();
-                      }}
-                    />
-                    <FacebookLogin
-                      appId="541710452150170"
-                      autoLoad={false}
-                      fields="name,picture"
-                      scope="public_profile"
-                      callback={handleFacebook}
-                      cssClass="facebook-btn"
-                      textButton="Continue with Facebook"
-                      icon={<FacebookSignInButton />}
-                    />
-                    {/*  <AppleLogin
+              </style>
+              <Space direction="vertical" style={{ width: "100%" }}>
+                <GoogleSignInButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("token");
+                    // 🔍 Track the click event
+                    trackEvent({
+                      action: "click_google_signin",
+                      category: "Authentication",
+                      label: "Google Sign-In Button",
+                      value: 1,
+                    });
+                    login();
+                  }}
+                />
+                <FacebookLogin
+                  // appId={FACEBOOK_APP_ID}
+                  autoLoad={false}
+                  fields="name,email,picture"
+                  scope="public_profile,email"
+                  redirectUri="https://e-citizen.ng/verification-login"
+                  responseType="code"
+                  callback={handleFacebook}
+                  cssClass="facebook-btn"
+                  textButton="Continue with Facebook"
+                  icon={<FacebookSignInButton />}
+                />
+                {/*  <AppleLogin
                       clientId="com.react.apple.login"
                       redirectURI="https://redirectUrl.com"
                       responseType="code"
@@ -589,190 +597,241 @@ const IndividualSignUp = () => {
                         <AppleSignInButton onClick={onClick} />
                       )}
                     /> */}
-                  </Space>
-                  <Divider>OR</Divider>
-                  {formErrors.general && (
-                    <Alert
-                      message={formErrors.general}
-                      type="error"
-                      showIcon
-                      style={{ marginBottom: "16px" }}
-                    />
-                  )}
-                  <StyledLabel $token={token}>First name</StyledLabel>
-                  <StyledInput
-                    $token={token}
-                    type="text"
-                    placeholder="Enter your first name"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    ref={firstNameRef}
-                  />
-                  {formErrors.firstName && (
-                    <Alert
-                      message={formErrors.firstName}
-                      type="error"
-                      showIcon
-                    />
-                  )}
+              </Space>
+              <Divider>OR</Divider>
+              {formErrors.general && (
+                <Alert
+                  message={formErrors.general}
+                  type="error"
+                  showIcon
+                  style={{ marginBottom: "16px" }}
+                />
+              )}
+              <AppleLabel $token={token}>First name</AppleLabel>
+              <AppleInput
+                $token={token}
+                type="text"
+                placeholder="Enter your first name"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                ref={firstNameRef}
+              />
+              {formErrors.firstName && (
+                <Alert message={formErrors.firstName} type="error" showIcon />
+              )}
 
-                  <StyledLabel $token={token}>Last name</StyledLabel>
-                  <StyledInput
-                    $token={token}
-                    type="text"
-                    placeholder="Enter your last name"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    ref={lastNameRef}
-                  />
-                  {formErrors.lastName && (
-                    <Alert
-                      message={formErrors.lastName}
-                      type="error"
-                      showIcon
-                    />
-                  )}
+              <AppleLabel $token={token}>Last name</AppleLabel>
+              <AppleInput
+                $token={token}
+                type="text"
+                placeholder="Enter your last name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                ref={lastNameRef}
+              />
+              {formErrors.lastName && (
+                <Alert message={formErrors.lastName} type="error" showIcon />
+              )}
 
-                  <StyledInput
-                    $token={token}
-                    hidden
-                    type="text"
-                    placeholder="Enter your NIN"
-                    name="nin"
-                    value={formData.nin}
-                    onChange={handleInputChange}
-                    pattern="[0-9]*" // Allow only numbers
-                    title="Please enter only numbers"
-                    ref={ninRef}
-                  />
-                  {/* {formErrors.nin && (
+              <AppleInput
+                $token={token}
+                hidden
+                type="text"
+                placeholder="Enter your NIN"
+                name="nin"
+                value={formData.nin}
+                onChange={handleInputChange}
+                pattern="[0-9]*" // Allow only numbers
+                title="Please enter only numbers"
+                ref={ninRef}
+              />
+              {/* {formErrors.nin && (
                     <Alert message={formErrors.nin} type="error" showIcon />
                   )} */}
-                  <StyledLabel $token={token}>Email address</StyledLabel>
-                  <StyledInput
-                    $token={token}
-                    type="text"
-                    placeholder="Enter your Email address"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    ref={emailRef}
-                  />
-                  {formErrors.email && (
-                    <Alert message={formErrors.email} type="error" showIcon />
-                  )}
-                  <StyledLabel $token={token}>
-                    Phone number (E.g: +225 XX XXX XXXX)
-                  </StyledLabel>
-                  <PhoneInput
-                    $token={token}
-                    country={"ci"}
-                    value={formData.phoneNumber}
-                    onChange={handlePhoneChange}
-                    enableSearch
-                    onFocus={handleFocus}
-                    className={"input-phone-number mb-3"}
-                    inputStyle={{
-                      width: "100%",
-                      borderColor: isFocused ? "#FD7A00" : "",
-                      borderRadius: "5px",
-                      color: text,
-                      background: "rgba(53, 65, 56, 0.1)",
-                    }}
-                  />
+              <AppleLabel $token={token}>Email address</AppleLabel>
+              <AppleInput
+                $token={token}
+                type="text"
+                placeholder="Enter your Email address"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                ref={emailRef}
+              />
+              {formErrors.email && (
+                <Alert message={formErrors.email} type="error" showIcon />
+              )}
+              <AppleLabel $token={token}>
+                Phone number (E.g: +225 XXX XXX XXX X)
+              </AppleLabel>
+              <PhoneInput
+                $token={token}
+                country={"ci"}
+                value={formData.phoneNumber}
+                onChange={handlePhoneChange}
+                enableSearch
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className={"input-phone-number mb-3"}
+                inputStyle={{
+                  width: "100%",
+                  height: "52px",
+                  borderColor: isFocused
+                    ? "var(--ec-primary, #FD7A00)"
+                    : "transparent",
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderRadius: "12px",
+                  color: text,
+                  background: isFocused
+                    ? "var(--ec-bg, #fff)"
+                    : "var(--ec-input-bg, rgba(0, 0, 0, 0.04))",
+                  boxShadow: isFocused
+                    ? "0 0 0 4px rgba(253, 122, 0, 0.25)"
+                    : "none",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                  fontSize: "15px",
+                  transition: "all 0.2s ease",
+                }}
+                buttonStyle={{
+                  border: "none",
+                  background: "transparent",
+                  borderRadius: "12px 0 0 12px",
+                  paddingLeft: "8px",
+                }}
+              />
 
-                  {formErrors.phoneNumber && (
-                    <Alert
-                      message={formErrors.phoneNumber}
-                      type="error"
-                      showIcon
-                    />
-                  )}
+              {formErrors.phoneNumber && (
+                <Alert message={formErrors.phoneNumber} type="error" showIcon />
+              )}
 
-                  <small style={{ color: "#42B7FF" }}>
-                    Password must be 8 characters or more, contain at least one
-                    capital letter, <br /> contain at least one lowercase
-                    letter, contain at least one number, contain at least one
-                    special character.
-                  </small>
-                  <StyledLabel $token={token}>Password</StyledLabel>
-                  <StyledInput
-                    $token={token}
-                    type="password"
-                    placeholder="Create a password "
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    ref={passwordRef}
-                  />
+              <AppleLabel $token={token}>Password</AppleLabel>
+              <PasswordInputWrapper>
+                <AppleInput
+                  $token={token}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Create a password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  ref={passwordRef}
+                />
+                <EyeIconContainer
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                </EyeIconContainer>
+              </PasswordInputWrapper>
 
-                  {formErrors.password && (
-                    <Alert
-                      message={passwordErrorMessage}
-                      type="error"
-                      showIcon
-                    />
-                  )}
+              <PasswordHintList>
+                <PasswordHintItem $valid={isLengthValid}>
+                  {isLengthValid ? (
+                    <CheckCircleFilled />
+                  ) : (
+                    <CloseCircleFilled />
+                  )}{" "}
+                  At least 8 characters long
+                </PasswordHintItem>
+                <PasswordHintItem $valid={isCaseValid}>
+                  {isCaseValid ? <CheckCircleFilled /> : <CloseCircleFilled />}{" "}
+                  1 uppercase and 1 lowercase letter
+                </PasswordHintItem>
+                <PasswordHintItem $valid={isNumberValid}>
+                  {isNumberValid ? (
+                    <CheckCircleFilled />
+                  ) : (
+                    <CloseCircleFilled />
+                  )}{" "}
+                  1 number
+                </PasswordHintItem>
+                <PasswordHintItem $valid={isSpecialValid}>
+                  {isSpecialValid ? (
+                    <CheckCircleFilled />
+                  ) : (
+                    <CloseCircleFilled />
+                  )}{" "}
+                  1 special character
+                </PasswordHintItem>
+              </PasswordHintList>
 
-                  <StyledLabel $token={token}>Confirm Password</StyledLabel>
-                  <StyledInput
-                    $token={token}
-                    type="password"
-                    placeholder="Re-enter the password "
-                    name="reenterPassword"
-                    value={reenterPassword}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.reenterPassword && (
-                    <Alert
-                      message={formErrors.reenterPassword}
-                      type="error"
-                      showIcon
-                    />
+              {formErrors.password && (
+                <Alert
+                  message={passwordErrorMessage}
+                  type="error"
+                  showIcon
+                  style={{ marginBottom: "20px" }}
+                />
+              )}
+
+              <AppleLabel $token={token}>Confirm Password</AppleLabel>
+              <PasswordInputWrapper>
+                <AppleInput
+                  $token={token}
+                  type={showReenterPassword ? "text" : "password"}
+                  placeholder="Re-enter the password"
+                  name="reenterPassword"
+                  value={reenterPassword}
+                  onChange={handleInputChange}
+                />
+                <EyeIconContainer
+                  onClick={() => setShowReenterPassword(!showReenterPassword)}
+                >
+                  {showReenterPassword ? (
+                    <EyeInvisibleOutlined />
+                  ) : (
+                    <EyeOutlined />
                   )}
-                  <Checkbox onChange={onChangeIsAccepted}>
-                    I certify that I have read and accepted the{" "}
-                    <span
-                      style={{ color: "#FD7A00", cursor: "pointer" }}
-                      onClick={handleClickPrivacyPolicy}
-                    >
-                      e-citizen™ Privacy Policy
-                    </span>
-                  </Checkbox>
-                  <PdfModal
-                    open={isOpen}
-                    onClose={() => setIsOpen(false)}
-                    title={t("privacyPolicy.title")}
-                    src={privacyPdf}
-                    height={560}
-                  />
-                  <MainButtonFull
-                    type="primary"
-                    htmlType="submit"
-                    disabled={!isAccepted}
-                    style={
-                      isAccepted
-                        ? {}
-                        : {
-                            marginTop: "10px",
-                            backgroundColor: "gray",
-                            color: "white",
-                            cursor: "not-allowed",
-                          }
-                    }
-                  >
-                    Proceed
-                  </MainButtonFull>
-                </StyledForm>
-                {/* // Google SSO button */}
-              </Spin>
-            </Space>
-          </div>
-        </Col>
-      </Row>
-    </div>
+                </EyeIconContainer>
+              </PasswordInputWrapper>
+              {formErrors.reenterPassword && (
+                <Alert
+                  message={formErrors.reenterPassword}
+                  type="error"
+                  showIcon
+                />
+              )}
+              <Checkbox onChange={onChangeIsAccepted}>
+                I certify that I have read and accepted the{" "}
+                <span
+                  style={{ color: "#FD7A00", cursor: "pointer" }}
+                  onClick={handleClickPrivacyPolicy}
+                >
+                  e-citoyen™ Privacy Policy
+                </span>
+              </Checkbox>
+              <PdfModal
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                title="Privacy Policy"
+                src={privacyPdf}
+                height={560}
+              />
+
+              <AppleButton
+                type="primary"
+                htmlType="submit"
+                disabled={!isAccepted}
+                style={
+                  isAccepted
+                    ? {}
+                    : {
+                        marginTop: "10px",
+                        backgroundColor: "gray",
+                        color: "white",
+                        cursor: "not-allowed",
+                      }
+                }
+              >
+                Proceed
+              </AppleButton>
+            </StyledForm>
+          </Spin>
+        </Space>
+      </SignUpCard>
+    </SignUpShell>
   );
 };
 
