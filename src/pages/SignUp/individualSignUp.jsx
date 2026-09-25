@@ -37,6 +37,7 @@ import privacyPdf from "../../images/e-raia Uganda Privacy Notice EN-SW v1.2 - C
 import Swal from "sweetalert2";
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../../components/LocaleProvider";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSignUpButton from "../../components/sso_button/googleSignUpButton";
 import baseUrl from "../../apiConfig";
@@ -67,6 +68,7 @@ import {
 const IndividualSignUp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { t } = useLocale();
   const [userType, setUserType] = useState("");
   const [ipAddress, setIpAddress] = useState("");
   const [ipCountry, setIpCountry] = useState("");
@@ -197,22 +199,22 @@ const IndividualSignUp = () => {
     const errors = [];
 
     if (!password) {
-      errors.push("Please enter your password");
+      errors.push(t("signUp.errorEnterPassword"));
     }
     if (password.length < 8) {
-      errors.push("Password must be 8 characters or more");
+      errors.push(t("signUp.errorPasswordLength"));
     }
     if (!/[A-Z]/.test(password)) {
-      errors.push("Password must contain at least one capital letter");
+      errors.push(t("signUp.errorPasswordUpper"));
     }
     if (!/[a-z]/.test(password)) {
-      errors.push("Password must contain at least one lowercase letter");
+      errors.push(t("signUp.errorPasswordLower"));
     }
     if (!/\d/.test(password)) {
-      errors.push("Password must contain at least one number");
+      errors.push(t("signUp.errorPasswordNumber"));
     }
     if (!/[^a-zA-Z0-9]/.test(password)) {
-      errors.push("Password must contain at least one special character");
+      errors.push(t("signUp.errorPasswordSpecial"));
     }
 
     return errors.join(". "); // Join errors into a single string with a dot and space separator
@@ -224,34 +226,34 @@ const IndividualSignUp = () => {
     const errors = {};
     // First Name
     if (!formData.firstName) {
-      errors.firstName = "Please enter your first name";
+      errors.firstName = t("signUp.errorEnterFirstName");
     }
 
     // Last Name
     if (!formData.lastName) {
-      errors.lastName = "Please enter your last name";
+      errors.lastName = t("signUp.errorEnterLastName");
     }
 
     if (!formData.email) {
-      errors.email = "Please enter your email";
+      errors.email = t("signUp.errorEnterEmail");
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)
     ) {
-      errors.email = "Invalid email format";
+      errors.email = t("signUp.errorInvalidEmail");
     }
 
     if (!formData.password) {
-      errors.password = "Please enter your password";
+      errors.password = t("signUp.errorEnterPassword");
     } else if (formData.password.length < 8) {
-      errors.password = "Password must be 8 characters or more";
+      errors.password = t("signUp.errorPasswordLength");
     } else if (!/[A-Z]/.test(formData.password)) {
-      errors.password = "Password must contain at least one capital letter";
+      errors.password = t("signUp.errorPasswordUpper");
     } else if (!/[a-z]/.test(formData.password)) {
-      errors.password = "Password must contain at least one lowercase letter";
+      errors.password = t("signUp.errorPasswordLower");
     } else if (!/\d/.test(formData.password)) {
-      errors.password = "Password must contain at least one number";
+      errors.password = t("signUp.errorPasswordNumber");
     } else if (!/[^a-zA-Z0-9]/.test(formData.password)) {
-      errors.password = "Password must contain at least one special character";
+      errors.password = t("signUp.errorPasswordSpecial");
     }
 
     return errors;
@@ -276,7 +278,7 @@ const IndividualSignUp = () => {
       }
 
       if (formData.password !== reenterPassword) {
-        setFormErrors({ reenterPassword: "Passwords do not match" });
+        setFormErrors({ reenterPassword: t("signUp.passwordsDoNotMatch") });
         focusOnErrorField("reenterPassword");
         return;
       }
@@ -318,7 +320,7 @@ const IndividualSignUp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
+          title: t("common.error"),
           text: response,
           icon: "error",
           customClass: {
@@ -333,8 +335,8 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Sign up failed. Please try again.",
+        title: t("common.error"),
+        text: t("signUp.errorSignUpFailed"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -377,8 +379,8 @@ const IndividualSignUp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Success",
-          text: "Google login successful!",
+          title: t("common.success"),
+          text: t("signUp.googleLoginSuccess"),
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -399,8 +401,8 @@ const IndividualSignUp = () => {
           Swal.fire({
             background: bgContainer,
             color: text,
-            title: "Error",
-            text: "Login failed",
+            title: t("common.error"),
+            text: t("signUp.loginFailed"),
             icon: "error",
             customClass: {
               confirmButton: "custom-swal-button",
@@ -413,7 +415,7 @@ const IndividualSignUp = () => {
       } catch (error) {
         console.error("Google login failed:", error);
 
-        let errorMessage = "Google login failed. Please try again.";
+        let errorMessage = t("signUp.googleLoginFailed");
 
         if (error.response) {
           // The request was made and the server responded with a status code
@@ -425,7 +427,7 @@ const IndividualSignUp = () => {
         } else if (error.request) {
           // The request was made but no response was received
           console.error("No response received from server:", error.request);
-          errorMessage = "Network error. Please check your connection.";
+          errorMessage = t("signUp.networkError");
         } else {
           // Something happened in setting up the request that triggered an Error
           console.error("Error setting up request:", error.message);
@@ -433,7 +435,7 @@ const IndividualSignUp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
+          title: t("common.error"),
           text: errorMessage,
           icon: "error",
           customClass: {
@@ -452,8 +454,8 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Facebook Login",
-        text: "Facebook login was cancelled or failed.",
+        title: t("signUp.facebookLogin"),
+        text: t("signUp.facebookLoginCancelled"),
         icon: "error",
         customClass: { confirmButton: "custom-swal-button" },
         allowOutsideClick: false,
@@ -478,8 +480,8 @@ const IndividualSignUp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Success",
-        text: "Facebook login successful!",
+        title: t("common.success"),
+        text: t("signUp.facebookLoginSuccess"),
         icon: "success",
         customClass: { confirmButton: "custom-swal-button" },
         allowOutsideClick: false,
@@ -493,17 +495,15 @@ const IndividualSignUp = () => {
         localStorage.setItem("IpAddress", ipAddress);
         history.push("/main-dashboard");
       } else {
-        throw new Error("Login failed");
+        throw new Error(t("signUp.loginFailed"));
       }
     } catch (err) {
       console.error("Facebook login failed:", err);
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text:
-          err?.response?.data?.message ||
-          "Facebook login failed. Please try again.",
+        title: t("common.error"),
+        text: err?.response?.data?.message || t("signUp.facebookLoginFailed"),
         icon: "error",
         customClass: { confirmButton: "custom-swal-button" },
         allowOutsideClick: false,
@@ -524,14 +524,14 @@ const IndividualSignUp = () => {
     <SignUpShell>
       <SignUpCard style={{ maxWidth: "620px" }}>
         <FormTitle style={{ textAlign: "center" }}>
-          Create your account
+          {t("signUp.createAccount")}
         </FormTitle>
         <FormSubtitle style={{ textAlign: "center", marginBottom: "24px" }}>
-          Enter your details to start verifying with e-Raia.
+          {t("signUp.enterDetails")}
         </FormSubtitle>
 
         <Space size="large" direction="vertical" style={{ display: "flex" }}>
-          <Spin spinning={loading} tip="Signing Up...">
+          <Spin spinning={loading} tip={t("signUp.signingUp")}>
             <StyledForm onSubmit={handleSignUp}>
               <style>
                 {`
@@ -559,6 +559,7 @@ const IndividualSignUp = () => {
               </style>
               <Space direction="vertical" style={{ width: "100%" }}>
                 <GoogleSignInButton
+                  text={t("signUp.continueWithGoogle")}
                   onClick={(e) => {
                     e.preventDefault();
                     localStorage.removeItem("token");
@@ -581,7 +582,7 @@ const IndividualSignUp = () => {
                   responseType="code"
                   callback={handleFacebook}
                   cssClass="facebook-btn"
-                  textButton="Continue with Facebook"
+                  textButton={t("signUp.continueWithFacebook")}
                   icon={<FacebookSignInButton />}
                 />
                 {/*  <AppleLogin
@@ -599,7 +600,7 @@ const IndividualSignUp = () => {
                       )}
                     /> */}
               </Space>
-              <Divider>OR</Divider>
+              <Divider>{t("signUp.or")}</Divider>
               {formErrors.general && (
                 <Alert
                   message={formErrors.general}
@@ -608,11 +609,13 @@ const IndividualSignUp = () => {
                   style={{ marginBottom: "16px" }}
                 />
               )}
-              <AppleLabel $token={token}>First name</AppleLabel>
+              <AppleLabel $token={token}>
+                {t("signUp.firstNameLabel")}
+              </AppleLabel>
               <AppleInput
                 $token={token}
                 type="text"
-                placeholder="Enter your first name"
+                placeholder={t("signUp.firstNamePlaceholder")}
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
@@ -622,11 +625,13 @@ const IndividualSignUp = () => {
                 <Alert message={formErrors.firstName} type="error" showIcon />
               )}
 
-              <AppleLabel $token={token}>Last name</AppleLabel>
+              <AppleLabel $token={token}>
+                {t("signUp.lastNameLabel")}
+              </AppleLabel>
               <AppleInput
                 $token={token}
                 type="text"
-                placeholder="Enter your last name"
+                placeholder={t("signUp.lastNamePlaceholder")}
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
@@ -651,11 +656,11 @@ const IndividualSignUp = () => {
               {/* {formErrors.nin && (
                     <Alert message={formErrors.nin} type="error" showIcon />
                   )} */}
-              <AppleLabel $token={token}>Email address</AppleLabel>
+              <AppleLabel $token={token}>{t("signUp.emailLabel")}</AppleLabel>
               <AppleInput
                 $token={token}
                 type="text"
-                placeholder="Enter your Email address"
+                placeholder={t("signUp.emailPlaceholder")}
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
@@ -664,9 +669,7 @@ const IndividualSignUp = () => {
               {formErrors.email && (
                 <Alert message={formErrors.email} type="error" showIcon />
               )}
-              <AppleLabel $token={token}>
-                Phone number (E.g: +256 XXX XXX XXX X)
-              </AppleLabel>
+              <AppleLabel $token={token}>{t("signUp.phoneLabel")}</AppleLabel>
               <PhoneInput
                 $token={token}
                 country={"ug"}
@@ -709,12 +712,14 @@ const IndividualSignUp = () => {
                 <Alert message={formErrors.phoneNumber} type="error" showIcon />
               )}
 
-              <AppleLabel $token={token}>Password</AppleLabel>
+              <AppleLabel $token={token}>
+                {t("signUp.passwordLabel")}
+              </AppleLabel>
               <PasswordInputWrapper>
                 <AppleInput
                   $token={token}
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a password"
+                  placeholder={t("signUp.passwordPlaceholder")}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
@@ -734,11 +739,11 @@ const IndividualSignUp = () => {
                   ) : (
                     <CloseCircleFilled />
                   )}{" "}
-                  At least 8 characters long
+                  {t("signUp.hintLength")}
                 </PasswordHintItem>
                 <PasswordHintItem $valid={isCaseValid}>
                   {isCaseValid ? <CheckCircleFilled /> : <CloseCircleFilled />}{" "}
-                  1 uppercase and 1 lowercase letter
+                  {t("signUp.hintCase")}
                 </PasswordHintItem>
                 <PasswordHintItem $valid={isNumberValid}>
                   {isNumberValid ? (
@@ -746,7 +751,7 @@ const IndividualSignUp = () => {
                   ) : (
                     <CloseCircleFilled />
                   )}{" "}
-                  1 number
+                  {t("signUp.hintNumber")}
                 </PasswordHintItem>
                 <PasswordHintItem $valid={isSpecialValid}>
                   {isSpecialValid ? (
@@ -754,7 +759,7 @@ const IndividualSignUp = () => {
                   ) : (
                     <CloseCircleFilled />
                   )}{" "}
-                  1 special character
+                  {t("signUp.hintSpecial")}
                 </PasswordHintItem>
               </PasswordHintList>
 
@@ -767,12 +772,14 @@ const IndividualSignUp = () => {
                 />
               )}
 
-              <AppleLabel $token={token}>Confirm Password</AppleLabel>
+              <AppleLabel $token={token}>
+                {t("signUp.confirmPasswordLabel")}
+              </AppleLabel>
               <PasswordInputWrapper>
                 <AppleInput
                   $token={token}
                   type={showReenterPassword ? "text" : "password"}
-                  placeholder="Re-enter the password"
+                  placeholder={t("signUp.confirmPasswordPlaceholder")}
                   name="reenterPassword"
                   value={reenterPassword}
                   onChange={handleInputChange}
@@ -795,18 +802,18 @@ const IndividualSignUp = () => {
                 />
               )}
               <Checkbox onChange={onChangeIsAccepted}>
-                I certify that I have read and accepted the{" "}
+                {t("signUp.termsCertify")}
                 <span
                   style={{ color: "#DD0002", cursor: "pointer" }}
                   onClick={handleClickPrivacyPolicy}
                 >
-                  e-Raia™ Privacy Policy
+                  {t("signUp.privacyPolicy")}
                 </span>
               </Checkbox>
               <PdfModal
                 open={isOpen}
                 onClose={() => setIsOpen(false)}
-                title="Privacy Policy"
+                title={t("signUp.privacyPolicyTitle")}
                 src={privacyPdf}
                 height={560}
               />
@@ -826,7 +833,7 @@ const IndividualSignUp = () => {
                       }
                 }
               >
-                Proceed
+                {t("signUp.proceed")}
               </AppleButton>
             </StyledForm>
           </Spin>

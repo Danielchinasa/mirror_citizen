@@ -19,20 +19,25 @@ import Swal from "sweetalert2";
 
 import { theme } from "antd";
 import { useTheme } from "../../components/ThemeProvider";
+import { useLocale } from "../../components/LocaleProvider";
 const { useToken } = theme;
 
 const VerifyOtp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { t } = useLocale();
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
-  const formDataFromLocalStorage = JSON.parse(localStorage.getItem("formData"));
-  const email = formDataFromLocalStorage.email;
-  const phoneNumber = formDataFromLocalStorage.phoneNumber;
+  const formDataFromLocalStorage = JSON.parse(
+    localStorage.getItem("formData") || "{}",
+  );
+  const email = formDataFromLocalStorage?.email || "";
+  const phoneNumber = formDataFromLocalStorage?.phoneNumber || "";
 
   const encryptPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) return "";
     const countryCode = phoneNumber.slice(0, 4); // Extracting country code
     const hiddenDigits = phoneNumber.slice(4, -2).replace(/\d/g, "*"); // Masking digits except last 2
     const lastTwoDigits = phoneNumber.slice(-2); // Extracting last 2 digits
@@ -63,8 +68,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Success",
-          text: "OTP verification successful. Proceed to Sign In",
+          title: t("common.success"),
+          text: t("otp.verifySuccess"),
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -81,8 +86,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: response.message || "OTP verification failed",
+          title: t("common.error"),
+          text: response.message || t("otp.verifyFailed"),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -99,8 +104,8 @@ const VerifyOtp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Error sending OTP",
+        title: t("common.error"),
+        text: t("otp.errorSending"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -126,8 +131,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Success",
-          text: "OTP Sent Successfully",
+          title: t("common.success"),
+          text: t("otp.sentSuccess"),
           icon: "success",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -144,8 +149,8 @@ const VerifyOtp = () => {
         Swal.fire({
           background: bgContainer,
           color: text,
-          title: "Error",
-          text: response.message || "OTP Resend failed",
+          title: t("common.error"),
+          text: response.message || t("otp.resendFailed"),
           icon: "error",
           customClass: {
             confirmButton: "custom-swal-button",
@@ -162,8 +167,8 @@ const VerifyOtp = () => {
       Swal.fire({
         background: bgContainer,
         color: text,
-        title: "Error",
-        text: "Error sending OTP",
+        title: t("common.error"),
+        text: t("otp.errorSending"),
         icon: "error",
         customClass: {
           confirmButton: "custom-swal-button",
@@ -214,13 +219,15 @@ const VerifyOtp = () => {
         >
           <CenterText>
             <InfoSec>
-              <Heading $token={token}>Enter OTP</Heading>
+              <Heading $token={token}>{t("otp.heading")}</Heading>
               <Subtitle color="light" $token={token}>
-                Enter the OTP sent to {encryptedPhoneNumber} and {email} for
-                continuation
+                {t("otp.subtitle", {
+                  phone: encryptedPhoneNumber,
+                  email: email,
+                })}
               </Subtitle>
-              <Spin spinning={loading} tip="Verifying OTP...">
-                <Spin spinning={loading2} tip="Resending OTP...">
+              <Spin spinning={loading} tip={t("otp.verifying")}>
+                <Spin spinning={loading2} tip={t("otp.resending")}>
                   <StyledForm>
                     <div
                       style={{
@@ -269,16 +276,16 @@ const VerifyOtp = () => {
                     </div>
 
                     <MainButtonFull type="primary" onClick={handleVerifyOTP}>
-                      Verify OTP
+                      {t("otp.verifyButton")}
                     </MainButtonFull>
 
-                    <p style={{ color: text }}>I didn’t receive the OTP</p>
+                    <p style={{ color: text }}>{t("otp.notReceived")}</p>
                     <p>
                       <strong
                         style={{ color: "#DD0201", cursor: "pointer" }}
                         onClick={handleReSendOTP}
                       >
-                        Resend Code
+                        {t("otp.resendCode")}
                       </strong>
                     </p>
                   </StyledForm>
