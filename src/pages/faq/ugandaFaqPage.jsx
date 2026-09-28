@@ -2,9 +2,200 @@ import React from "react";
 import { Container, InfoSec, DynamicCollapse } from "../../globalStyles";
 import { Card, Collapse, Typography } from "antd";
 import { theme } from "antd";
+import { useLocale } from "../../components/LocaleProvider";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
+
+const enContent = {
+  pageTitle: "Frequently Asked Questions — Côte d'Ivoire",
+  sections: {
+    general: "GENERAL QUESTIONS",
+    matrix: "SERVICE AVAILABILITY MATRIX",
+    country: "SERVICES",
+    payments: "PAYMENTS, RESULTS AND SUPPORT",
+  },
+  generalItems: [
+    {
+      key: "1",
+      title: "Does e-citoyen.africa comply with privacy standards?",
+      content:
+        "Yes. e-citoyen.africa is designed as a consent-based platform. For this market, the service is operated in accordance with local data protection rules, e-citoyen.africa privacy policies and GDPR where it applies to cross-border or diaspora users.",
+    },
+    {
+      key: "2",
+      title: "What data requires consent?",
+      content:
+        "Personal data requires consent or another lawful basis before it is disclosed to a third party. This includes information that can directly or indirectly identify a person, such as names, identification numbers, phone numbers, dates of birth, addresses, photographs or similar identity information.",
+    },
+    {
+      key: "3",
+      title: "What data is accessible without consent?",
+      content:
+        "Public records, non-personal vehicle history data and information accessed by a public authority under the required legal basis may not require the same customer consent flow. e-citoyen.africa nonetheless applies access controls, audit logging and responsible-use checks.",
+    },
+    {
+      key: "4",
+      title: "How does consent work?",
+      content:
+        "For services that return personal data, the data subject is asked to approve the verification before the result is disclosed. Depending on the source, consent may be captured through the portal, SMS, email, OTP, WhatsApp or another approved channel. If consent is not completed, personal data should not be displayed.",
+    },
+    {
+      key: "5",
+      title: "Why do I need to pay before verifying?",
+      content:
+        "e-citoyen.africa is a premium verification service. The fee covers secure integrations, data-provider costs, payment processing, infrastructure, monitoring and customer support. The applicable local or diaspora price is displayed before payment.",
+    },
+    {
+      key: "6",
+      title: "Why do I need to register before verifying?",
+      content:
+        "Registration helps protect the platform, lets you track your transactions and gives you access to your payment history and eligible verification results.",
+    },
+    {
+      key: "7",
+      title: "Is my verification result saved on e-citoyen.africa?",
+      content:
+        "Verification results may be temporarily stored in your account so you can review your search history. Results should be deleted or anonymised after the applicable retention period stated in the privacy policy.",
+    },
+    {
+      key: "8",
+      title: "What do I do if my information is not correct?",
+      content:
+        "e-citoyen.africa aggregates and displays data from authorised data sources. If the information is incorrect, you should contact the relevant managing body or issuing authority to correct the underlying source record.",
+    },
+    {
+      key: "9",
+      title:
+        "I did not receive an email, SMS, OTP or WhatsApp verification message. What should I do?",
+      content:
+        "Check your spam or junk folder and confirm that the phone number or email address provided is correct. If the message still does not arrive, contact support with your payment reference, service name and the phone number or email used.",
+    },
+    {
+      key: "10",
+      title: "I paid but did not receive a result. What should I do?",
+      content:
+        "Contact support with the payment reference, amount paid, selected service, country and the email or phone number used. Support can trace the payment and confirm whether the verification request was completed, is pending, failed or requires refund or retry.",
+    },
+  ],
+  matrixRows: [
+    "National Identity Card (NNI): NNI number; supporting details if required. Consent required where personal data is returned. Typical result: identity status and permitted identity fields.",
+    "Resident Card: Resident card number; consent required. Consent required where personal data is returned. Typical result: residence status and validity.",
+    "VIN Verification: 17-character VIN. Consent is generally not required for non-personal vehicle history/public records. Typical result: available vehicle history fields from VIN sources.",
+    "Service availability depends on live connectivity to data sources and provider availability. When a source is unavailable, e-citoyen.africa may return a pending, failed or unavailable status rather than a result.",
+  ],
+  countryGroups: [
+    {
+      key: "1",
+      title: "National Identity Card (NNI) Verification",
+      items: [
+        {
+          key: "1",
+          title: "What is National Identity Card (NNI) verification?",
+          content:
+            "National Identity Card (NNI) verification confirms whether an identity number or card details match the records held by the relevant national identity data source, where that source is available through e-citoyen.africa.",
+        },
+        {
+          key: "2",
+          title: "What information is needed for NNI verification?",
+          content:
+            "You will normally need the NNI number. Depending on the data provider, supporting details such as name, date of birth, phone number or consent information may also be requested.",
+        },
+        {
+          key: "3",
+          title: "What information can the result provide?",
+          content:
+            "The result can confirm identity status and return available details such as names, sex, date of birth, photo or match indicators, plus other fields permitted by the data source.",
+        },
+        {
+          key: "4",
+          title: "Is consent required?",
+          content:
+            "Yes. When personal identity information is returned, consent or another lawful basis is required before the result is shown to a third party.",
+        },
+      ],
+    },
+    {
+      key: "2",
+      title: "Resident Card Verification",
+      items: [
+        {
+          key: "1",
+          title: "What is Resident Card verification?",
+          content:
+            "Resident Card verification confirms the identity details attached to a residence card issued to foreign residents in Côte d'Ivoire, when the competent data source is available.",
+        },
+        {
+          key: "2",
+          title: "What information is needed?",
+          content:
+            "You will normally need the resident card number. The data source may require an OTP, SMS, WhatsApp, email or another consent step before personal data is disclosed.",
+        },
+        {
+          key: "3",
+          title: "What information can the result provide?",
+          content:
+            "The result can confirm the resident card status and validity, permit type, holder information and registered address, subject to the fields allowed by the data provider.",
+        },
+        {
+          key: "4",
+          title: "Is consent required?",
+          content:
+            "Yes, whenever personal or identity information is returned.",
+        },
+      ],
+    },
+    {
+      key: "3",
+      title: "VIN History Report (Vehicle)",
+      items: [
+        {
+          key: "1",
+          title: "What is a VIN history report?",
+          content:
+            "A VIN history report uses a vehicle identification number (VIN) to retrieve the available history of a vehicle. It may be useful before buying a used or imported vehicle.",
+        },
+        {
+          key: "2",
+          title: "What information is needed?",
+          content:
+            "You need the 17-character VIN. The VIN is usually found on the dashboard, door frame, registration documents or vehicle purchase papers.",
+        },
+        {
+          key: "3",
+          title: "What information can a VIN report provide?",
+          content:
+            "A VIN report can include accident history, title or claim records, odometer information, recalls, ownership history, sale/auction records, maintenance history and theft/recovery indicators when available.",
+        },
+        {
+          key: "4",
+          title: "Is a VIN report reliable?",
+          content:
+            "A VIN report is helpful, but it may not include all events in a vehicle's history. Some records may be missing, delayed or unavailable from the source databases.",
+        },
+      ],
+    },
+  ],
+  paymentsItems: [
+    {
+      key: "1",
+      title: "How are pricing and payment options displayed?",
+      content:
+        "Payment gateways and currencies may vary by market. Available options are shown during checkout.",
+    },
+    {
+      key: "2",
+      title: "Can a result be empty or unavailable?",
+      content:
+        "Service availability depends on live connectivity to data sources and provider availability. When a source is unavailable, e-citoyen.africa may return a pending, failed or unavailable status rather than a result.",
+    },
+    {
+      key: "3",
+      title: "How do I contact support?",
+      content: "Support: info@e-raia.com",
+    },
+  ],
+};
 
 const frContent = {
   pageTitle: "Foire Aux Questions — Côte d'Ivoire",
@@ -53,7 +244,8 @@ const frContent = {
     },
     {
       key: "7",
-      title: "Mon résultat de vérification est-il sauvegardé sur e-citoyen.africa ?",
+      title:
+        "Mon résultat de vérification est-il sauvegardé sur e-citoyen.africa ?",
       content:
         "Les résultats de vérification peuvent être temporairement stockés dans votre compte afin que vous puissiez consulter votre historique de recherche. Les résultats doivent être supprimés ou anonymisés après la période de conservation applicable indiquée dans la politique de confidentialité.",
     },
@@ -90,13 +282,15 @@ const frContent = {
       items: [
         {
           key: "1",
-          title: "Qu'est-ce que la vérification de la Carte Nationale d'Identité (NNI) ?",
+          title:
+            "Qu'est-ce que la vérification de la Carte Nationale d'Identité (NNI) ?",
           content:
             "La vérification de la Carte Nationale d'Identité (NNI) permet de confirmer qu'un numéro d'identité ou les détails d'une carte correspondent aux registres détenus par la source de données d'identité nationale compétente, lorsque la source est disponible via e-citoyen.africa.",
         },
         {
           key: "2",
-          title: "Quelles informations sont nécessaires pour la vérification NNI ?",
+          title:
+            "Quelles informations sont nécessaires pour la vérification NNI ?",
           content:
             "Vous aurez normalement besoin du numéro NNI. Selon le fournisseur de données, des détails justificatifs tels que le nom, la date de naissance, le numéro de téléphone ou les informations de consentement peuvent également être demandés.",
         },
@@ -207,7 +401,8 @@ const renderQAGroup = (items) => (
 );
 
 const FrenchCivFaqPage = () => {
-  const content = frContent;
+  const { language } = useLocale();
+  const content = language === "EN" ? enContent : frContent;
   const { token } = theme.useToken();
   const { bgContainer, text } = token;
 
@@ -217,17 +412,17 @@ const FrenchCivFaqPage = () => {
       title: content.sections.general,
       content: renderQAGroup(content.generalItems),
     },
-    {
-      key: "2",
-      title: content.sections.matrix,
-      content: (
-        <div>
-          {content.matrixRows.map((row, idx) => (
-            <p key={idx}>{row}</p>
-          ))}
-        </div>
-      ),
-    },
+    // {
+    //   key: "2",
+    //   title: content.sections.matrix,
+    //   content: (
+    //     <div>
+    //       {content.matrixRows.map((row, idx) => (
+    //         <p key={idx}>{row}</p>
+    //       ))}
+    //     </div>
+    //   ),
+    // },
     {
       key: "3",
       title: content.sections.country,
