@@ -11,7 +11,7 @@ const enContent = {
   sections: {
     general: "GENERAL FAQS",
     matrix: "SERVICE AVAILABILITY MATRIX",
-    country: "COUNTRY SERVICE FAQS",
+    country: "SERVICE FAQS",
     payments: "PAYMENTS, RESULTS AND SUPPORT",
   },
   generalItems: [
@@ -121,48 +121,48 @@ const enContent = {
         ],
       ],
     },
-    {
-      title: "Driver's Licence Verification",
-      qa: [
-        [
-          "What is driver's licence verification?",
-          "This service helps confirm whether a driver's licence record exists and whether the licence details match the data available from the relevant licensing source.",
-        ],
-        [
-          "What information do I need?",
-          "You will normally need the licence number. Depending on the data source, additional details such as name, date of birth, or consent information may be required.",
-        ],
-        [
-          "What information can the result provide?",
-          "The result may confirm licence status and return permitted details such as names, licence class/category, issue/expiry dates, or match indicators, depending on the source.",
-        ],
-        [
-          "Is consent required?",
-          "Yes, where the check returns personal identity information.",
-        ],
-      ],
-    },
-    {
-      title: "Phone Number Verification",
-      qa: [
-        [
-          "What is phone number verification?",
-          "Phone number verification helps confirm identity information linked to a mobile number where the relevant telecommunications or identity data source is available.",
-        ],
-        [
-          "What information do I need?",
-          "You will normally need the mobile phone number. The data source may require OTP, SMS, WhatsApp, email, or another consent step before personal data is released.",
-        ],
-        [
-          "What information can the result provide?",
-          "The result may confirm whether the number has a matching record and may return permitted identity or match information. The exact fields depend on the data provider and consent flow.",
-        ],
-        [
-          "Is consent required?",
-          "Yes, where subscriber or identity information is returned.",
-        ],
-      ],
-    },
+    // {
+    //   title: "Driver's Licence Verification",
+    //   qa: [
+    //     [
+    //       "What is driver's licence verification?",
+    //       "This service helps confirm whether a driver's licence record exists and whether the licence details match the data available from the relevant licensing source.",
+    //     ],
+    //     [
+    //       "What information do I need?",
+    //       "You will normally need the licence number. Depending on the data source, additional details such as name, date of birth, or consent information may be required.",
+    //     ],
+    //     [
+    //       "What information can the result provide?",
+    //       "The result may confirm licence status and return permitted details such as names, licence class/category, issue/expiry dates, or match indicators, depending on the source.",
+    //     ],
+    //     [
+    //       "Is consent required?",
+    //       "Yes, where the check returns personal identity information.",
+    //     ],
+    //   ],
+    // },
+    // {
+    //   title: "Phone Number Verification",
+    //   qa: [
+    //     [
+    //       "What is phone number verification?",
+    //       "Phone number verification helps confirm identity information linked to a mobile number where the relevant telecommunications or identity data source is available.",
+    //     ],
+    //     [
+    //       "What information do I need?",
+    //       "You will normally need the mobile phone number. The data source may require OTP, SMS, WhatsApp, email, or another consent step before personal data is released.",
+    //     ],
+    //     [
+    //       "What information can the result provide?",
+    //       "The result may confirm whether the number has a matching record and may return permitted identity or match information. The exact fields depend on the data provider and consent flow.",
+    //     ],
+    //     [
+    //       "Is consent required?",
+    //       "Yes, where subscriber or identity information is returned.",
+    //     ],
+    //   ],
+    // },
     {
       title: "VIN Vehicle History Report",
       qa: [
@@ -424,7 +424,7 @@ const KenyaFaqPage = () => {
 
   const items = [
     { key: "1", title: c.sections.general, content: mapSimple(c.generalItems) },
-    { key: "2", title: c.sections.matrix, content: mapSimple(c.matrixItems) },
+    // { key: "2", title: c.sections.matrix, content: mapSimple(c.matrixItems) },
     {
       key: "3",
       title: c.sections.country,
