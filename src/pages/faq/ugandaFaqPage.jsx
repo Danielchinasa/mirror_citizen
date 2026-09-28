@@ -12,7 +12,7 @@ const enContent = {
   sections: {
     general: "GENERAL FAQS",
     matrix: "SERVICE AVAILABILITY MATRIX",
-    country: "COUNTRY SERVICE FAQS",
+    country: "SERVICE FAQS",
     payments: "PAYMENTS, RESULTS AND SUPPORT",
   },
   generalItems: [
@@ -116,35 +116,35 @@ const enContent = {
         },
       ],
     },
-    {
-      key: "2",
-      title: "Phone Number Verification",
-      items: [
-        {
-          key: "1",
-          title: "What is phone number verification?",
-          content:
-            "Phone number verification helps confirm identity information linked to a mobile number where the relevant telecommunications or identity data source is available.",
-        },
-        {
-          key: "2",
-          title: "What information do I need?",
-          content:
-            "You will normally need the mobile phone number. The data source may require OTP, SMS, WhatsApp, email, or another consent step before personal data is released.",
-        },
-        {
-          key: "3",
-          title: "What information can the result provide?",
-          content:
-            "The result may confirm whether the number has a matching record and may return permitted identity or match information. The exact fields depend on the data provider and consent flow.",
-        },
-        {
-          key: "4",
-          title: "Is consent required?",
-          content: "Yes, where subscriber or identity information is returned.",
-        },
-      ],
-    },
+    // {
+    //   key: "2",
+    //   title: "Phone Number Verification",
+    //   items: [
+    //     {
+    //       key: "1",
+    //       title: "What is phone number verification?",
+    //       content:
+    //         "Phone number verification helps confirm identity information linked to a mobile number where the relevant telecommunications or identity data source is available.",
+    //     },
+    //     {
+    //       key: "2",
+    //       title: "What information do I need?",
+    //       content:
+    //         "You will normally need the mobile phone number. The data source may require OTP, SMS, WhatsApp, email, or another consent step before personal data is released.",
+    //     },
+    //     {
+    //       key: "3",
+    //       title: "What information can the result provide?",
+    //       content:
+    //         "The result may confirm whether the number has a matching record and may return permitted identity or match information. The exact fields depend on the data provider and consent flow.",
+    //     },
+    //     {
+    //       key: "4",
+    //       title: "Is consent required?",
+    //       content: "Yes, where subscriber or identity information is returned.",
+    //     },
+    //   ],
+    // },
     {
       key: "3",
       title: "VIN Vehicle History Report",
@@ -409,17 +409,17 @@ const UgandaFaqPage = () => {
       title: content.sections.general,
       content: renderQAGroup(content.generalItems),
     },
-    {
-      key: "2",
-      title: content.sections.matrix,
-      content: (
-        <div>
-          {content.matrixRows.map((row, idx) => (
-            <p key={idx}>{row}</p>
-          ))}
-        </div>
-      ),
-    },
+    // {
+    //   key: "2",
+    //   title: content.sections.matrix,
+    //   content: (
+    //     <div>
+    //       {content.matrixRows.map((row, idx) => (
+    //         <p key={idx}>{row}</p>
+    //       ))}
+    //     </div>
+    //   ),
+    // },
     {
       key: "3",
       title: content.sections.country,
