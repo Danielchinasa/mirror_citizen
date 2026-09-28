@@ -156,105 +156,105 @@ const GhanaFaqPage = () => {
         </Collapse>
       ),
     },
-    {
-      key: "2",
-      title: "Driver's Licence Verification",
-      content: (
-        <Collapse accordion>
-          <Panel key="1" header="What is driver's licence verification?">
-            <p>
-              This service helps confirm whether a driver's licence record
-              exists and whether the licence details match the data available
-              from the relevant licensing source.
-            </p>
-          </Panel>
-          <Panel key="2" header="What information do I need?">
-            <p>
-              You will normally need the licence number. Depending on the data
-              source, additional details such as name, date of birth, or consent
-              information may be required.
-            </p>
-          </Panel>
-          <Panel key="3" header="What information can the result provide?">
-            <p>
-              The result may confirm licence status and return permitted details
-              such as names, licence class/category, issue/expiry dates, or
-              match indicators, depending on the source.
-            </p>
-          </Panel>
-          <Panel key="4" header="Is consent required?">
-            <p>Yes, where the check returns personal identity information.</p>
-          </Panel>
-        </Collapse>
-      ),
-    },
-    {
-      key: "3",
-      title: "Phone Number Verification",
-      content: (
-        <Collapse accordion>
-          <Panel key="1" header="What is phone number verification?">
-            <p>
-              Phone number verification helps confirm identity information
-              linked to a mobile number where the relevant telecommunications or
-              identity data source is available.
-            </p>
-          </Panel>
-          <Panel key="2" header="What information do I need?">
-            <p>
-              You will normally need the mobile phone number. The data source
-              may require OTP, SMS, WhatsApp, email, or another consent step
-              before personal data is released.
-            </p>
-          </Panel>
-          <Panel key="3" header="What information can the result provide?">
-            <p>
-              The result may confirm whether the number has a matching record
-              and may return permitted identity or match information. The exact
-              fields depend on the data provider and consent flow.
-            </p>
-          </Panel>
-          <Panel key="4" header="Is consent required?">
-            <p>Yes, where subscriber or identity information is returned.</p>
-          </Panel>
-        </Collapse>
-      ),
-    },
-    {
-      key: "4",
-      title: "WAEC Result Verification",
-      content: (
-        <Collapse accordion>
-          <Panel key="1" header="What is WAEC result verification?">
-            <p>
-              WAEC result verification helps confirm examination result
-              information where the relevant examination data can be accessed
-              through an approved verification flow.
-            </p>
-          </Panel>
-          <Panel key="2" header="What information do I need?">
-            <p>
-              You may need the examination number, examination year, examination
-              type, and any required PIN, serial number, token, or consent
-              detail required by the source.
-            </p>
-          </Panel>
-          <Panel key="3" header="What information can the result provide?">
-            <p>
-              The result may confirm the candidate record and available subject
-              results. It is a verification report and does not replace an
-              official certificate issued by the examination body.
-            </p>
-          </Panel>
-          <Panel key="4" header="Can anyone check my result?">
-            <p>
-              Access should be limited to the person with the required
-              information and lawful authority or consent to run the check.
-            </p>
-          </Panel>
-        </Collapse>
-      ),
-    },
+    // {
+    //   key: "2",
+    //   title: "Driver's Licence Verification",
+    //   content: (
+    //     <Collapse accordion>
+    //       <Panel key="1" header="What is driver's licence verification?">
+    //         <p>
+    //           This service helps confirm whether a driver's licence record
+    //           exists and whether the licence details match the data available
+    //           from the relevant licensing source.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="2" header="What information do I need?">
+    //         <p>
+    //           You will normally need the licence number. Depending on the data
+    //           source, additional details such as name, date of birth, or consent
+    //           information may be required.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="3" header="What information can the result provide?">
+    //         <p>
+    //           The result may confirm licence status and return permitted details
+    //           such as names, licence class/category, issue/expiry dates, or
+    //           match indicators, depending on the source.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="4" header="Is consent required?">
+    //         <p>Yes, where the check returns personal identity information.</p>
+    //       </Panel>
+    //     </Collapse>
+    //   ),
+    // },
+    // {
+    //   key: "3",
+    //   title: "Phone Number Verification",
+    //   content: (
+    //     <Collapse accordion>
+    //       <Panel key="1" header="What is phone number verification?">
+    //         <p>
+    //           Phone number verification helps confirm identity information
+    //           linked to a mobile number where the relevant telecommunications or
+    //           identity data source is available.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="2" header="What information do I need?">
+    //         <p>
+    //           You will normally need the mobile phone number. The data source
+    //           may require OTP, SMS, WhatsApp, email, or another consent step
+    //           before personal data is released.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="3" header="What information can the result provide?">
+    //         <p>
+    //           The result may confirm whether the number has a matching record
+    //           and may return permitted identity or match information. The exact
+    //           fields depend on the data provider and consent flow.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="4" header="Is consent required?">
+    //         <p>Yes, where subscriber or identity information is returned.</p>
+    //       </Panel>
+    //     </Collapse>
+    //   ),
+    // },
+    // {
+    //   key: "4",
+    //   title: "WAEC Result Verification",
+    //   content: (
+    //     <Collapse accordion>
+    //       <Panel key="1" header="What is WAEC result verification?">
+    //         <p>
+    //           WAEC result verification helps confirm examination result
+    //           information where the relevant examination data can be accessed
+    //           through an approved verification flow.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="2" header="What information do I need?">
+    //         <p>
+    //           You may need the examination number, examination year, examination
+    //           type, and any required PIN, serial number, token, or consent
+    //           detail required by the source.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="3" header="What information can the result provide?">
+    //         <p>
+    //           The result may confirm the candidate record and available subject
+    //           results. It is a verification report and does not replace an
+    //           official certificate issued by the examination body.
+    //         </p>
+    //       </Panel>
+    //       <Panel key="4" header="Can anyone check my result?">
+    //         <p>
+    //           Access should be limited to the person with the required
+    //           information and lawful authority or consent to run the check.
+    //         </p>
+    //       </Panel>
+    //     </Collapse>
+    //   ),
+    // },
     {
       key: "5",
       title: "VIN Vehicle History Report",
@@ -328,22 +328,22 @@ const GhanaFaqPage = () => {
         </Collapse>
       ),
     },
-    {
-      key: "2",
-      title: "SERVICE AVAILABILITY MATRIX",
-      content: (
-        <Collapse accordion>
-          {matrixItems.map((item) => (
-            <Panel key={item.key} header={item.title}>
-              <p>{item.content}</p>
-            </Panel>
-          ))}
-        </Collapse>
-      ),
-    },
+    // {
+    //   key: "2",
+    //   title: "SERVICE AVAILABILITY MATRIX",
+    //   content: (
+    //     <Collapse accordion>
+    //       {matrixItems.map((item) => (
+    //         <Panel key={item.key} header={item.title}>
+    //           <p>{item.content}</p>
+    //         </Panel>
+    //       ))}
+    //     </Collapse>
+    //   ),
+    // },
     {
       key: "3",
-      title: "COUNTRY SERVICE FAQS",
+      title: "SERVICE FAQS",
       content: (
         <Collapse accordion>
           {countryServiceItems.map((item) => (
