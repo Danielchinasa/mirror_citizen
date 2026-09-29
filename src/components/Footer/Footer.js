@@ -156,8 +156,7 @@ function Footer() {
               {t("footer.copyright", { year: new Date().getFullYear() })}
             </Copyright>
             <Disclaimer>
-              {t("footer.disclaimer")}{" "}
-              <strong>{t("footer.disclaimerBody")}</strong>
+              {t("footer.disclaimer")} {t("footer.disclaimerBody")}
             </Disclaimer>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
