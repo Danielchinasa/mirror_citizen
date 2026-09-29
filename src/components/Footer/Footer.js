@@ -189,8 +189,8 @@ function Footer() {
               {isSw ? "Kanusho: " : "Disclaimer: "}
               <strong>
                 {isSw
-                  ? "e-raia si shirika la serikali"
-                  : "e-raia is not a government organisation"}
+                  ? "e-raia.com si shirika la serikali"
+                  : "e-raia.com is not a government organisation"}
               </strong>
             </Disclaimer>
             <LegalLinks>
