@@ -415,7 +415,7 @@ const translations = {
     "footer.termsOfService": "Terms of Service",
     "footer.copyright": "© e-raia.com {year}. All Rights Reserved.",
     "footer.disclaimer": "Disclaimer:",
-    "footer.disclaimerBody": "e-raia is not a government organisation",
+    "footer.disclaimerBody": "e-raia.com is not a government organisation",
 
     /* ── Sample Result Popup ── */
     "sample.title": "Sample result",
@@ -1208,7 +1208,7 @@ const translations = {
     "footer.termsOfService": "Sheria na Masharti",
     "footer.copyright": "© e-raia.com {year}. Haki Zote Zimehifadhiwa.",
     "footer.disclaimer": "Kanusho:",
-    "footer.disclaimerBody": "e-raia si shirika la serikali",
+    "footer.disclaimerBody": "e-raia.com si shirika la serikali",
 
     /* ── Sample Result Popup ── */
     "sample.title": "Mfano wa Matokeo",
