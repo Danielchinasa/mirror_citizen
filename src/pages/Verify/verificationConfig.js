@@ -78,7 +78,7 @@ const verificationConfig = {
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
-      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "Trusted Platform", desc: "Consent compliant" },
       { title: "500,000+ Users", desc: "Trust e-citizen" },
     ],
   },
@@ -120,7 +120,7 @@ const verificationConfig = {
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
-      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "Trusted Platform", desc: "Consent compliant" },
       { title: "500,000+ Users", desc: "Trust e-citizen" },
     ],
   },
@@ -173,7 +173,7 @@ const verificationConfig = {
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
-      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "Trusted Platform", desc: "Consent compliant" },
       { title: "500,000+ Users", desc: "Trust e-citizen" },
     ],
   },
@@ -229,7 +229,7 @@ const verificationConfig = {
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
-      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "Trusted Platform", desc: "Consent compliant" },
       { title: "500,000+ Users", desc: "Trust e-citizen" },
     ],
   },
@@ -281,7 +281,7 @@ const verificationConfig = {
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
-      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "Trusted Platform", desc: "Consent compliant" },
       { title: "500,000+ Users", desc: "Trust e-citizen" },
     ],
   },
@@ -325,7 +325,7 @@ const verificationConfig = {
     trustBar: [
       { title: "Secure & Private", desc: "Your data is protected" },
       { title: "Instant Results", desc: "Get results in seconds" },
-      { title: "Trusted Platform", desc: "Government compliant" },
+      { title: "Trusted Platform", desc: "Consent compliant" },
       { title: "500,000+ Users", desc: "Trust e-citizen" },
     ],
   },

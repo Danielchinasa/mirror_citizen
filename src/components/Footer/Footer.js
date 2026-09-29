@@ -18,6 +18,7 @@ import {
   AppBadge,
   FooterBottom,
   Copyright,
+  Disclaimer,
   LegalLinks,
   LegalLink,
   PublicBrand,
@@ -161,6 +162,10 @@ function Footer() {
               © e-citizen.africa {new Date().getFullYear()}. All Rights
               Reserved.
             </Copyright>
+            <Disclaimer>
+              Disclaimer:{" "}
+              <strong>e-citizen is not a government organisation</strong>
+            </Disclaimer>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
                 Privacy Policy

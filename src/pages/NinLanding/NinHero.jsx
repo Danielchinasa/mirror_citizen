@@ -123,8 +123,8 @@ const NinHero = () => {
                   <FaShieldAlt />
                 </TrustIcon>
                 <TrustLabel>
-                  <TrustTitle>Government Compliant</TrustTitle>
-                  <TrustDesc>Official & reliable records</TrustDesc>
+                  <TrustTitle>Consent compliant</TrustTitle>
+                  <TrustDesc>Your official & reliable records</TrustDesc>
                 </TrustLabel>
               </TrustItem>
             </TrustIndicators>
