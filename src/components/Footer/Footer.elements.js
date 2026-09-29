@@ -234,7 +234,6 @@ export const Copyright = styled.span`
 export const Disclaimer = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 13px;
-  font-style: italic;
   color: var(--ec-text-secondary);
   text-align: center;
   justify-self: center;

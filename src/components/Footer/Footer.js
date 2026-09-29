@@ -187,11 +187,10 @@ function Footer() {
             </Copyright>
             <Disclaimer>
               {isSw ? "Kanusho: " : "Disclaimer: "}
-              <strong>
-                {isSw
-                  ? "e-raia.com si shirika la serikali"
-                  : "e-raia.com is not a government organisation"}
-              </strong>
+
+              {isSw
+                ? "e-raia.com si shirika la serikali"
+                : "e-raia.com is not a government organisation"}
             </Disclaimer>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
