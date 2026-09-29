@@ -16,6 +16,7 @@ import {
   AppBadge,
   FooterBottom,
   Copyright,
+  Disclaimer,
   LegalLinks,
   LegalLink,
   PublicBrand,
@@ -184,6 +185,14 @@ function Footer() {
                 ? `© e-raia.com ${new Date().getFullYear()}. Haki Zote Zimehifadhiwa.`
                 : `© e-raia.com ${new Date().getFullYear()}. All Rights Reserved.`}
             </Copyright>
+            <Disclaimer>
+              {isSw ? "Kanusho: " : "Disclaimer: "}
+              <strong>
+                {isSw
+                  ? "e-raia si shirika la serikali"
+                  : "e-raia is not a government organisation"}
+              </strong>
+            </Disclaimer>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
                 {isSw ? "Sera ya Faragha" : "Privacy Policy"}

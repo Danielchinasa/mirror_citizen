@@ -452,12 +452,14 @@ const Home = () => {
                 </TrustIcon>
                 <TrustLabel>
                   <TrustTitle>
-                    {isSw ? "Inazingatia Serikali" : "Government Compliant"}
+                    {isSw
+                      ? "Inayokidhi mahitaji ya idhini"
+                      : "Consent compliant"}
                   </TrustTitle>
                   <TrustDesc>
                     {isSw
-                      ? "Rekodi rasmi na za kuaminika"
-                      : "Official & reliable records"}
+                      ? "Rekodi zako rasmi na za kuaminika"
+                      : "Your official & reliable records"}
                   </TrustDesc>
                 </TrustLabel>
               </TrustItem>

@@ -209,12 +209,13 @@ export const AppBadge = styled.a`
 export const FooterBottom = styled.div`
   border-top: 1px solid rgba(17, 24, 39, 0.08);
   padding: 20px 0;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  gap: 16px;
 
   @media screen and (max-width: 768px) {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 12px;
     text-align: center;
   }
@@ -224,13 +225,38 @@ export const Copyright = styled.span`
   font-family: "Nunito", sans-serif;
   font-size: 14px;
   color: var(--ec-text-muted);
+
+  @media screen and (max-width: 768px) {
+    justify-self: center;
+  }
+`;
+
+export const Disclaimer = styled.span`
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ec-text-secondary);
+  text-align: center;
+  justify-self: center;
+  line-height: 1.5;
+
+  strong {
+    color: var(--ec-text);
+    font-weight: 700;
+  }
+
+  @media screen and (max-width: 768px) {
+    justify-self: center;
+  }
 `;
 
 export const LegalLinks = styled.div`
   display: flex;
   gap: 20px;
+  justify-self: end;
 
   @media screen and (max-width: 768px) {
+    justify-self: center;
     justify-content: center;
   }
 `;
