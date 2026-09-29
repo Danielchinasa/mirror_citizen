@@ -16,6 +16,7 @@ import {
   AppBadge,
   FooterBottom,
   Copyright,
+  Disclaimer,
   LegalLinks,
   LegalLink,
   PublicBrand,
@@ -165,6 +166,10 @@ function Footer() {
                 String(new Date().getFullYear()),
               )}
             </Copyright>
+            <Disclaimer>
+              {t("footer.disclaimer")}{" "}
+              <strong>{t("footer.disclaimerBold")}</strong>
+            </Disclaimer>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
                 {t("footer.privacyPolicy")}
