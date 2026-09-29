@@ -133,9 +133,7 @@ function Footer() {
               >
                 {t("footer.termsOfService")}
               </FooterLink>
-              <FooterLink to="/account-deletion">
-                Account Deletion
-              </FooterLink>
+              <FooterLink to="/account-deletion">Account Deletion</FooterLink>
             </FooterCol>
 
             <FooterCol>
@@ -167,8 +165,7 @@ function Footer() {
               )}
             </Copyright>
             <Disclaimer>
-              {t("footer.disclaimer")}{" "}
-              <strong>{t("footer.disclaimerBold")}</strong>
+              {t("footer.disclaimer")} {t("footer.disclaimerBold")}
             </Disclaimer>
             <LegalLinks>
               <LegalLink onClick={() => setIsOpen(true)}>
