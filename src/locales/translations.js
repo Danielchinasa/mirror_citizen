@@ -107,8 +107,8 @@ const translations = {
     "home.trust.secureDesc": "Your data is protected",
     "home.trust.instantTitle": "Instant Results",
     "home.trust.instantDesc": "Results in seconds",
-    "home.trust.compliantTitle": "Government Compliant",
-    "home.trust.compliantDesc": "Official and reliable records",
+    "home.trust.compliantTitle": "Consent compliant",
+    "home.trust.compliantDesc": "Your official and reliable records",
     "home.socialProof": "Join 500,000+ Ugandans who trust e-raia",
     "home.how.title": "How it works",
     "home.how.subtitle": "Get verified in just 3 simple steps",
@@ -414,6 +414,8 @@ const translations = {
     "footer.privacyPolicy": "Privacy Policy",
     "footer.termsOfService": "Terms of Service",
     "footer.copyright": "© e-raia.com {year}. All Rights Reserved.",
+    "footer.disclaimer": "Disclaimer:",
+    "footer.disclaimerBody": "e-raia is not a government organisation",
 
     /* ── Sample Result Popup ── */
     "sample.title": "Sample result",
@@ -891,8 +893,8 @@ const translations = {
     "home.trust.secureDesc": "Taarifa zako zinalindwa",
     "home.trust.instantTitle": "Matokeo ya Haraka",
     "home.trust.instantDesc": "Matokeo ndani ya sekunde",
-    "home.trust.compliantTitle": "Inazingatia Serikali",
-    "home.trust.compliantDesc": "Rekodi rasmi na za kuaminika",
+    "home.trust.compliantTitle": "Inayokidhi mahitaji ya idhini",
+    "home.trust.compliantDesc": "Rekodi zako rasmi na za kuaminika",
     "home.socialProof": "Jiunge na Waganda zaidi ya 500,000 wanaoamini e-raia",
     "home.how.title": "Inavyofanya kazi",
     "home.how.subtitle": "Thibitishwa kwa hatua 3 rahisi",
@@ -1205,6 +1207,8 @@ const translations = {
     "footer.privacyPolicy": "Sera ya Faragha",
     "footer.termsOfService": "Sheria na Masharti",
     "footer.copyright": "© e-raia.com {year}. Haki Zote Zimehifadhiwa.",
+    "footer.disclaimer": "Kanusho:",
+    "footer.disclaimerBody": "e-raia si shirika la serikali",
 
     /* ── Sample Result Popup ── */
     "sample.title": "Mfano wa Matokeo",
