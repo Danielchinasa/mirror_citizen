@@ -144,8 +144,7 @@ function Footer() {
             © e-citizen {new Date().getFullYear()}. All Rights Reserved.
           </Copyright>
           <Disclaimer>
-            Disclaimer:{" "}
-            <strong>e-citizen is not a government organisation</strong>
+            Disclaimer: e-citizen is not a government organisation
           </Disclaimer>
           <LegalLinks>
             <LegalLink as={Link} to="/privacy-policy">
