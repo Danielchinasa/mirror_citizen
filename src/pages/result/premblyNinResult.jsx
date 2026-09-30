@@ -50,6 +50,7 @@ const t = (label, isSw) => {
     "Date of Birth": isSw ? "Tarehe ya Kuzaliwa" : "Date of Birth",
     "ID Number": isSw ? "Nambari ya Kitambulisho" : "ID Number",
     "ID Type": isSw ? "Aina ya Kitambulisho" : "ID Type",
+    Photo: isSw ? "Picha" : "Photo",
     "Session Info": isSw ? "Taarifa za Kipindi" : "Session Info",
     "Session ID": isSw ? "Kitambulisho cha Kipindi" : "Session ID",
     "Consent Status": isSw ? "Hali ya Idhini" : "Consent Status",
@@ -103,16 +104,23 @@ const CardHeader = styled.div`
 `;
 
 const HeaderIcon = styled.div`
-  width: 52px;
-  height: 52px;
+  width: 128px;
+  height: 128px;
   background: #f3f4f6;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 42px;
   color: #374151;
   flex-shrink: 0;
+`;
+
+const HeaderPhoto = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const HeaderText = styled.div`
@@ -372,6 +380,13 @@ const PremblyNinResult = () => {
     </FieldBox>
   );
 
+  const photo = typeof result?.photo === "string" ? result.photo.trim() : "";
+  const photoSrc = photo
+    ? photo.startsWith("data:")
+      ? photo
+      : `data:${photo.startsWith("iVBORw0KGgo") ? "image/png" : "image/jpeg"};base64,${photo}`
+    : "";
+
   return (
     <PageWrapper $bg={token.bgContainer}>
       <Inner>
@@ -384,7 +399,11 @@ const PremblyNinResult = () => {
             {/* ── Header ── */}
             <CardHeader>
               <HeaderIcon>
-                <FaIdCard />
+                {photoSrc ? (
+                  <HeaderPhoto src={photoSrc} alt={t("Photo", isSw)} />
+                ) : (
+                  <FaIdCard />
+                )}
               </HeaderIcon>
               <HeaderText>
                 <HeaderSub>
