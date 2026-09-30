@@ -402,7 +402,7 @@ const Home = () => {
                 </TrustIcon>
                 <TrustLabel>
                   <TrustTitle>Trusted Platform</TrustTitle>
-                  <TrustDesc>Government compliant</TrustDesc>
+                  <TrustDesc>Consent compliant</TrustDesc>
                 </TrustLabel>
               </TrustItem>
             </TrustIndicators>

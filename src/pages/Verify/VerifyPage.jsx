@@ -32,6 +32,7 @@ import verificationConfig from "./verificationConfig";
 import RecommendedOffers from "../../components/ads/RecommendedOffers";
 import {
   SampleResultContent,
+  VehicleSampleReport,
   sampleData,
 } from "../../components/SampleResultPopup/SampleResultPopup";
 import PdfModal from "../../components/PdfModal/PdfModal";
@@ -2081,8 +2082,12 @@ const VerifyPage = () => {
           <SampleBadge>This is a sample only</SampleBadge>
         </SampleHeader>
         <SampleSub>{sampleMeta.subtitle}</SampleSub>
-        <div style={{ maxWidth: 760 }}>
-          <SampleResultContent type={sampleType} />
+        <div style={{ maxWidth: sampleType === "vehicle" ? 1180 : 760 }}>
+          {sampleType === "vehicle" ? (
+            <VehicleSampleReport hideFooter />
+          ) : (
+            <SampleResultContent type={sampleType} />
+          )}
         </div>
       </SampleSection>
     </>

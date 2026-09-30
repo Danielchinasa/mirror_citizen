@@ -144,6 +144,7 @@ function VehicleNavbar() {
         isOpen={showSampleResult}
         onClose={() => setShowSampleResult(false)}
         type="vehicle"
+        ctaLink={verifyLink}
       />
     </>
   );
